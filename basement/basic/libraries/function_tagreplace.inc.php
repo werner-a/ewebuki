@@ -140,6 +140,21 @@
                     case "[BR]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<br />",$replace);
                         break;
+                    case "[BR=":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $brwerte = explode(";",$tagwerte[0]);
+                        if ( $brwerte[0] == "a" ) {
+                            $clear = "all";
+                        } elseif ( $brwerte[1] == "l" ) {
+                            $clear = "left";
+                        } elseif ( $brwerte[1] == "r" ) {
+                            $clear = "right";
+                        } else {
+                            $clear = "";
+                        }
+                        if ( $clear != "" ) $clear = " clear=\"".$clear."\"";
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<br ".$clear."/>",$replace);
+                        break;
                     case "[SP]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"&nbsp;",$replace);
                         break;
