@@ -1,0 +1,99 @@
+<?php
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// "$Id$";
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+    eWeBuKi - a easy website building kit
+    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+
+    This script is a part of eWeBuKi
+
+    eWeBuKi is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    eWeBuKi is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with eWeBuKi; If you did not, you may download a copy at:
+
+    URL:  http://www.gnu.org/licenses/gpl.txt
+
+    You may also request a copy from:
+
+    Free Software Foundation, Inc.
+    59 Temple Place, Suite 330
+    Boston, MA 02111-1307
+    USA
+
+    You may contact the author/development team at:
+
+    Chaos Networks
+    c/o Werner Ammon
+    Lerchenstr. 11c
+
+    86343 Königsbrunn
+
+    URL: http://www.chaos.de
+*/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // dist menu - 2 ebenen dynamisch
+    include $pathvars["config"]."menu.cfg.php";
+    include $pathvars["libraries"]."menu.inc.php";
+
+    // kekse erstellen
+    include $pathvars["config"]."kekse.cfg.php";
+    include $pathvars["libraries"]."kekse.inc.php";
+    
+    // dynamisches dist menu 3 ebenen
+    #$specialvars["scriptbase"] = "intrabvv/globalmenu";
+    #include $pathvars["addonroot"].$specialvars["scriptbase"].".cfg.php";
+    #include $pathvars["addonroot"].$specialvars["scriptbase"].".inc.php";  
+    
+    // leveled
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
+       || ( $environment["ebene"] == "/admin/leveled" ))
+    {
+        include $pathvars["addonroot"]."admin/leveled.cfg.php";
+        include $pathvars["addonroot"]."admin/leveled.inc.php";
+    }
+
+    // usered
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "usered" )
+       || ( $environment["ebene"] == "/admin/usered" ))
+    {
+        include $pathvars["addonroot"]."admin/usered.cfg.php";
+        include $pathvars["addonroot"]."admin/usered.inc.php";
+    }
+
+    // menued
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued" )
+       || ( $environment["ebene"] == "/admin/menued" ))
+    {
+        include $pathvars["addonroot"]."admin/menued.cfg.php";
+        include $pathvars["addonroot"]."admin/menued.inc.php";
+    }
+    
+    // fileed
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "fileed" )
+       || ( $environment["ebene"] == "/admin/fileed" ))
+    {
+        include $pathvars["addonroot"]."admin/fileed.cfg.php";
+        include $pathvars["addonroot"]."admin/fileed-ctrl.inc.php";
+    }
+
+    // passed
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "passed" )
+       || ( $environment["ebene"] == "/admin/passed" ))
+    {
+        include $pathvars["addonroot"]."admin/passed.cfg.php";
+        include $pathvars["addonroot"]."admin/passed.inc.php";
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>

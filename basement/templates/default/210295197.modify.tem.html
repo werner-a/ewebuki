@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta NAME="author" CONTENT="Werner Ammon">
+<meta NAME="publisher" CONTENT="Chaos Networks">
+<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
+<meta NAME="audience" CONTENT="alle">
+<meta NAME="robots" CONTENT="index,follow">
+<meta NAME="language" CONTENT="de">
+<meta http-equiv="Content-Language" content="de">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>usered.modify</title>
+<link rel="stylesheet" href="../../css/business.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr> 
+    <td bgcolor="#EC9379">#(ueberschrift)</td>
+  </tr>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="2">
+        <tr> 
+          <td>#(inhalt)</td>
+        </tr>
+        <tr> 
+          <td>
+            <form method="POST" action="!#ausgaben_form_aktion" name="modify">
+              <table border="0" cellpadding="4" cellspacing="0">
+                <tr> 
+                  <td colspan="4"><font color="#FF0000">!#ausgaben_form_error</font></td>
+                </tr>
+                <tr> 
+                  <td>Username</td>
+                  <td colspan="3">!#element_username</td>
+                </tr>
+                <tr> 
+                  <td>Passwort</td>
+                  <td colspan="3">!#element_newpass</td>
+                </tr>
+                <tr> 
+                  <td>Wiederholung</td>
+                  <td colspan="3">!#element_chkpass</td>
+                </tr>
+                <tr> 
+                  <td>&nbsp;</td>
+                  <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td>Nachname</td>
+                  <td colspan="3">!#element_nachname</td>
+                </tr>
+                <tr> 
+                  <td>Vorname</td>
+                  <td colspan="3">!#element_vorname</td>
+                </tr>
+                <tr> 
+                  <td>eMail</td>
+                  <td colspan="3">!#element_email</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td align="right">&nbsp;</td>
+                  <td align="right">&nbsp;</td>
+                  <td align="right">&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td valign="top" align="left" height="18">!#element_actual</td>
+                  <td align="center" valign="top" height="18">!#element_add</td>
+                  <td align="center" valign="top" height="18">!#element_del</td>
+                  <td align="right" valign="top" height="18">!#element_avail</td>
+                </tr>
+                <tr> 
+                  <td>&nbsp;</td>
+                  <td align="right">&nbsp;</td>
+                  <td align="right">&nbsp;</td>
+                  <td align="right">&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td> 
+                    <input type="submit" value="#(senden)" name="submit">
+                  </td>
+                  <td colspan="2"><a href="!#ausgaben_form_break"> 
+                    <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+                    </a></td>
+                  <td align="right"><a href="!#ausgaben_form_break">Abbruch</a> 
+                  </td>
+                </tr>
+              </table>
+            </form>
+            <br>
+            !#ausgaben_output </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!--##end-->
+</body>
+</html>

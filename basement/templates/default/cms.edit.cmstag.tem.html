@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>cms.edit.cmstag</title>
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+!#ausgaben_ce_script
+<form style="margin:0; padding:0;" action="!#ausgaben_form_aktion" method="post" name="ceform" id="ceform" onsubmit=" return chk()">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td align="left" valign="top" colspan="3">!#ausgaben_ce_tem_db - !#ausgaben_ce_tem_name 
+        - !#ausgaben_ce_tem_label - !#ausgaben_ce_tem_lang</td>
+    </tr>
+    <tr> 
+      <td align="left" valign="top" nowrap colspan="3"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td>!#ausgaben_ce_button</td>
+            <td>!#ausgaben_ce_upload</td>
+            <td>!#ausgaben_ce_dropdown</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td align="left" valign="top" colspan="3"> 
+        <textarea name="!#ausgaben_ce_name" cols=80 rows=20 id="textarea" !#ausgaben_ce_eventh>!#ausgaben_ce_inhalt</textarea>
+        <input type="hidden" name="html" value="!#ausgaben_form_hidden">
+        <input name="form_referer" type="hidden" id="form_referer" value="!#ausgaben_form_referer">
+      </td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr> 
+      <td align="right">Zeichen:</td>
+      <td> 
+        <DIV ID="Zeichen" style="position:relative; visibility:visible;"></DIV>
+      </td>
+      <td align="right"> 
+        <input type="SUBMIT" value="Speichern" name="SUBMIT">
+        <input type="BUTTON" value="Abbrechen" onClick="self.location.href='!#ausgaben_form_abbrechen'" name="BUTTON">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="3">!#ausgaben_tn</td>
+    </tr>
+  </table>
+  </FORM>
+<!--##end-->
+</body>
+</html>

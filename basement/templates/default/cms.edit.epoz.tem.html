@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta NAME="author" CONTENT="Werner Ammon">
+<meta NAME="publisher" CONTENT="Chaos Networks">
+<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
+<meta NAME="audience" CONTENT="alle">
+<meta NAME="robots" CONTENT="index,follow">
+<meta NAME="language" CONTENT="de">
+<meta http-equiv="Content-Language" content="de">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>default</title>
+<link rel="stylesheet" href="../../css/business.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<script language="JavaScript" type="text/javascript" src="/epoz/epoz.js"></script>
+<iframe id="EpozIFrame" style="position: absolute; visibility: hidden; width: 0px; height: 0px;"></iframe>
+<script language="JavaScript" type="text/javascript" src="/epoz/lang/epoz_lang_de.js"></script>
+<!--  InitEpoz braucht folgende Parameter:
+    name1 : the name of the form-element which submits the data
+    data2 : the data to edit
+    path3 : path to Epoz-Javascript. Needed mainly for Plone (portal_url).
+    toolbox4 : a link to a HTML-Page which delivers additional tools
+    style5 : style-definition for the editor-area
+    button6 : style-definiton for buttons
+// -->
+            <form action="!#ausgaben_form_aktion" method=post name="ceform">
+
+<script language="JavaScript" type="text/javascript">
+<!--
+  InitEpoz('!#ausgaben_ce_name','!#ausgaben_ce_inhalt','/epoz/img/','','width: 550px; height: 250px; border: 1px solid #000000;',
+    'background-color: #EFEFEF; border: 1px solid #A0A0A0; cursor: pointer; margin-right: 1px; margin-bottom: 1px;');
+    // -->
+</script>
+<noscript>
+  <textarea name="!#ausgaben_ce_name" style="">!#ausgaben_ce_inhalt</textarea>
+</noscript> 
+  <input type="hidden" name="html" value="!#ausgaben_form_hidden">
+  <input name="form_referer" type="hidden" id="form_referer" value="!#ausgaben_form_referer">
+  <input type="submit" value="Speichern">
+</form>
+<!--##end-->
+</body>
+</html>

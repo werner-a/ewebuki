@@ -1,0 +1,3 @@
+RewriteEngine  on
+RewriteBase    /
+RewriteRule    ^default		basic/main.php	[T=application/x-httpd-php]

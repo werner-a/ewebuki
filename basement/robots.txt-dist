@@ -1,0 +1,5 @@
+User-agent: *
+
+Disallow: /phpMyAdmin/
+Disallow: /phpPgAdmin/
+Disallow: /myadmin/

@@ -1,0 +1,188 @@
+====================================================================
+Hi!
+Welcome to the step-for-step install-tutorial von eWeBuKi!
+====================================================================
+
+This document is not written by the author of eWeBuKi, Werner 
+Ammon for he - as every programmer - has no clue what difficulties 
+arise when you don't have any idea what MySQL, PHP or similar are 
+but nevertheless want to use eWeBuKi.
+
+When a line starts with 
+#
+then this is an example of what you can/could/should enter at your 
+server's command line. The path names are pure examples!
+
+
+1) First of all:
+================
+SAVE ANY DOCUMENTS YOU MIGHT HAVE OF YOUR OLD WEBSERVER!
+
+I did what Werner recommended:
+
+#cd /var/www
+#mv htdocs htdocs.sav
+#tar xvzf /foo/bar/eWeBuKi.1.0.0.tar.gz
+#mv eWeBuKi.1.1.0 htdocs
+#chown wwwrun.nogroup htdocs
+
+(the path /foo/bar OF COURSE is only an example, you should put the 
+real location of the downloaded archive here) That way, you don't 
+accidentally overwrite your index.html or something similar 
+important.
+
+2) Install phpMyAdmin
+=====================
+Then, download phpMyAdmin at
+
+http://www.phpmyadmin.net/index.php?dl=1
+
+Untar the archive in your /usr/local/share tree and create a 
+symbolic link towards the directory.
+
+#cd /usr/local/share
+#tar xvjf /foo/bar/phpMyAdmin-2.4.1-php.tar.bz2
+#cd /var/www/htdocs
+#rm phpMyAdmin 
+#ln -s /usr/local/share/phpMyAdmin-2.4.1 phpMyAdmin
+
+The "rm" is only needed if Werner still included his own link into 
+the distribution archive... :-) 
+
+The actual path name of phpMyAdmin varies with the ongoing versions, 
+so PLEASE don't just type what's written above but see for yourself.
+
+
+3) Change Password in phpMyAdmin's config
+=========================================
+We do state that your MySQL is up and running and that you had any 
+possibility to enter a "root"-password for MySQL. Please don't mix 
+this up with the password of the "root"-User of your System! If you 
+did NOT enter any root password, you can skip the next paragraph.
+
+Change into the directory of phpMyAdmin and enter the MySQL-root-
+password in the file config.inc.php
+
+#cd /var/www/htdocs/phpMyAdmin
+#joe config.inc.php
+
+It's quite a bit down, the line is
+$cfg'Servers'$i'password = '' ;
+
+enter the password between the ''.
+
+While you're at it, edit eWeBuKi's configuration as well:
+
+#cd /var/www/htdocs/config
+#joe site.cfg.php
+
+in the lines
+
+define ('DB_USER', 'changeme')change "changeme" to "root" and in
+define ('DB_PASSWORD', 'changeme')  enter the correct password.
+
+
+4) Create eWeBuKi database
+============================
+You should now be able to start phpMyAdmin via your favourite 
+browser. At my site, it's 
+
+http://192.168.240.3/phpMyAdmin
+
+If anything goes wrong, try to restart MySQL, check the proper 
+installation, check if Apache is up and running, if PHP is running 
+smoothly, if mod_rewrite is activated in Apache's config.
+
+You should see a two-framed screen with a 
+
+MySQL
+>Create new database
+
+field in the right frame, left border.
+Just enter
+
+eWeBuKi
+
+(this is case-sensitive, so don't try "phpwebkit" or "PHPWEBKIT")
+and klick onto the "Create" button. You will then be able to read
+
+No tables found in database.
+
+Click onto the "SQL" tab in the top row.
+
+Click onto the "Browse" button in that window and select the file 
+
+eWeBuKi.mysql.sql
+
+in your htdocs-directory. (That of course is only possible if you can access 
+that directory from the computer you run the browser on!)
+
+Then click onto "Go".
+
+
+
+5) Check
+========
+Now start up your browser and access your server.
+You should see something like 
+
+"Gratulation"
+
+Ta-Daaa!
+
+
+6) Securing the Site
+====================
+PLEASE!!!!!! Do us a favor and change / delete the admin user 
+"phpwebkit", otherwise your site will be the easy prey for hackers 
+like us :-)
+
+
+Step 1: Change the Editing User
+===============================
+To do that, reenter phpMyAdmin (http://yourhost/phpMyAdmin)
+- Select "eWeBuKi" under the text "Home" in the left frame.
+- Click onto the tiny icon left of "auth_user" (NOT the text itself!)
+- You see the line with "eWeBuKi". 
+- You now can edit this line or add a new user.
+- NEVER, NEVER, NEVER delete the last user!
+
+
+Step 2: Change the database user
+================================
+With step 1, you prevented other people from changing the contents 
+of your new site.
+
+Now, we have to secure your database itself.
+To do that, reenter phpMyAdmin (http://yourhost/phpMyAdmin)
+- Under "Home", select "mysql" (left frame)
+- Click onto the tiny icon left of "user" (NOT "user" itself)
+  You should now see the users you already have.
+- Click onto "Insert new row" (auf Deutsch "Neue Zeile einfuegen")
+- In the field "Host" enter "localhost", leave the function empty
+- In "User" enter your desired user, leave the function empty
+- In "Password" enter your password in cleartext, select "PASSWORD"
+  as function.
+- You can leave all checkboxes on "N".
+- Click on "Go".
+Half way done
+- Click on the tiny icon left of "db"
+- Click onto "Insert new row" (auf Deutsch "Neue Zeile einfuegen")
+- In the field "Host" enter "localhost", leave the function empty
+- In the field "Db" enter "eWeBuKi", leave the function empty
+- In the field "User" enter the SAME user as before.
+- Check "Insert", "Update", "Select" and "Delete" to "Y"es
+
+- restart MySQL.
+
+Now edit eWeBuKi's configuration
+
+#cd /var/www/htdocs/config
+#joe site.cfg.php
+
+in the lines
+define ('DB_USER', 'root')      change "root" to the newly created user.
+define ('DB_PASSWORD', 'xxx')   enter the correct password.
+
+DONE!
+

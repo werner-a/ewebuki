@@ -1,0 +1,76 @@
+<!--##begin-->
+<NOSCRIPT>
+Sie haben Javascript deaktiviert!<BR>
+Das einfügen von HTML Tags funktioniert nicht ohne Javascript. Bitte aktivieren Sie Javascript.
+</NOSCRIPT>
+<SCRIPT language="JavaScript1.1">
+function chk(field,anzahl){
+	anzahl=5000;
+	laenge=eval('document.form.content.value.length');
+	/*
+	if (laenge>=anzahl){
+		alert('Ihre Eingabe im Feld "Text" ist '+laenge+' Zeichen lang.\nMaximal sind nur '+anzahl+' Zeichen erlaubt.\nKürzen Sie bitte Ihre Eingabe und wiederholen Sie den Vorgang.\n');
+	return false;
+	}
+	*/
+}
+function zaehler(field,anzahl){
+	/* anzahl=5000; */
+	laenge=eval('document.form.content.value.length');
+	/* document.all.Zeichen.innerHTML=anzahl-laenge-1; */
+	document.all.Zeichen.innerHTML=laenge+1;
+}
+function INSst(st,form,field){
+	if (st=='b')
+		st='[B][\/B]';
+	else if (st=='i')
+		st='[I][\/I]';
+	else if (st=='bi')
+		st='[B][I][\/I][\/B]';
+	else if (st=='cent')
+		st='[CENTER][\/CENTER]';
+	else if (st=='q')
+		st='[QUOTE][\/QUOTE]';
+	else if (st=='c')
+		st='[CITE][\/CITE]';
+	else if (st=='ul')
+		st='[LIST]Element[*]Element[\/LIST]';
+	else if (st=='ol')
+		st='[LIST=1|a]Element[*]Element[\/LIST]';
+	else if (st=='img')
+		st='[IMG]Url,...[\/IMG]';
+	else if (st=='imgb')
+		st='[IMG=image.art\;l|r]alt[\/IMG]';
+	else if (st=='link')
+		st='[LINK]http:\/\/[\/LINK]';
+	else if (st=='linkb')
+		st='[LINK=http:\/\/]Text[\/LINK]';
+	else if (st=='e')
+		st='[EMAIL]Adresse[\/EMAIL]';
+	else if (st=='eb')
+		st='[EMAIL=Adresse]Text[\/EMAIL]';
+	else if (st=='h1')
+		st='[H1][\/H1]';
+	else if (st=='h2')
+		st='[H2][\/H2]';
+	else if (st=='hl')
+		st='[HL][\/HL]';
+	else if (st=='tab')
+		st='[TAB][ROW][COL]Text[\/COL][\/ROW][\/TAB]';	
+	else if (st=='row')
+		st='[ROW][\/ROW]';
+	else if (st=='col')
+		st='[COL]Text[\/COL]';
+	else if (st=='int')
+		st='#[link][opt. text]';
+!{extension}
+	else
+		st='';
+	standard='';
+	text=eval('document.'+form+'.'+field+'.value')+st;
+	eval('document.'+form+'.'+field+'.value=text');
+	eval('document.'+form+'.'+field+'.focus()');
+	eval('document.'+form+'.st.value=standard');
+}
+</SCRIPT>
+<!--##end-->

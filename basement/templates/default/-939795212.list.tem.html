@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>fileed.list</title>
+<link href="../../css/net.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr> 
+    <td bgcolor="#EC9379">#(ueberschrift)</td>
+  </tr>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="2">
+        <tr> 
+          <td>#(inhalt)</td>
+        </tr>
+        <tr> 
+          <td>
+            <form method="GET" action="!#ausgaben_form_aktion">
+              #(fieldlabel) 
+              <input name="search" type="text" class="textfield" value="!#ausgaben_search">
+              <input type="submit" name="Abschicken" value="#-(senden)">
+              <label> 
+              <input type="radio" name="what" value="1" !#ausgaben_1>
+              #-(filter1)</label> <label> 
+              <input type="radio" name="what" value="2" !#ausgaben_2>
+              #-(filter2).</label> <label> 
+              <input type="radio" name="what" value="3" !#ausgaben_3>
+              #-(filter3) </label> 
+            </form>
+            
+          </td>
+        </tr>
+        <tr> 
+          <td> 
+            <hr>
+            !#ausgaben_result !#ausgaben_output 
+            <hr>
+          </td>
+        </tr>
+        <tr>
+          <td>!#ausgaben_upload</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!--##end-->
+</body>
+</html>
