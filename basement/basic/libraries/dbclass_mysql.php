@@ -68,7 +68,7 @@
             $host = $this->HOST;
             $db   = $this->DB;
             $conn = mysql_connect($host,$user,$pass);
-            $return = true;
+            $return = false;
             
             // error-handling first for connection, second for
             // db-finding
@@ -96,15 +96,14 @@
             $host = $this->HOST;
             $db   = $this->DB;
             $conn = mysql_pconnect($host,$user,$pass);
-            $return = true;
+            $return = false;
 
             // error-handling first for connection, second for
             // db-finding
 
             if(!$conn) {
                 if ( $host == "" ) $host = "localhost";            
-                $return = $this->error("Connection to $db on $host failed.");
-                
+                $return = $this->error("Connection to $db on $host failed.");                
             }
 
             if($this->ROOT_RUN != "yes") {
