@@ -53,7 +53,12 @@
 
     $pathvars["requested"] = explode("?", $_SERVER["REQUEST_URI"]);
     $pathvars["requested"] = $pathvars["requested"][0];
-    if ( $pathvars["requested"] == "/" ) $pathvars["requested"] = "/index.html"; ###
+    
+    // url ohne .html wird auf index.html gesetzt    
+    if ( !strstr($pathvars["requested"],".html") ) {
+       $pathvars["requested"] = $pathvars["requested"]."index.html"; ###
+    }
+    
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "pathvars requested: ".$pathvars["requested"].$debugging["char"];
 
     $pathvars["level"] = explode("/", $pathvars["requested"]);
