@@ -134,12 +134,13 @@
         $ausgaben["logout_meldung"] = "\"".$HTTP_SESSION_VARS["username"]."\"";
         $ausgaben["logout_rechte"] = "";
 
+
         $funktionen = array("leveled","usered","menued","fileed","passed");
         foreach( $funktionen as $funktion ) {
-            $array = explode(";", $cfg["right"][$funktion]);
+            $array = explode(";", $cfg["right"][$funktion][0]);
             foreach( $array as $value) {
                 if ( $rechte[$value] == -1 || $value == "" ) {
-                    $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/".$funktion."/list.html\">#(".$funktion.")</a><br>";
+                    $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/".$funktion."/".$cfg["right"][$funktion][1].".html\">#(".$funktion.")</a><br>";
                     break;
                 }
             }
