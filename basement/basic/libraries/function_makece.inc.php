@@ -104,6 +104,22 @@
 
                         $extension .= "else if (st=='doc".$data["fid"]."')\nst='[LINK=/dateien/dokumente/doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                         break;
+                    case "zip":
+                        // die boese schneide ab funktion
+                        if ( strlen($data["fdesc"]) > 10 ) {
+                            $fdesc = substr($data["fdesc"],0,10)." ...";
+                        } else {
+                            $fdesc = $data["fdesc"];
+                        }
+                        #$tn .= "<a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img src=\"".$pathvars["images"]."pdf.png"."\"></a> ";
+                        $tn .= "<table align=\"left\" width=\"96\">";
+                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('arc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$fdesc."</a></td></tr>";
+
+                        $tn .= "<tr><td><img src=\"".$pathvars["images"]."zip_icon.png\"></td></tr>";
+                        $tn .= "</table>";
+
+                        $extension .= "else if (st=='arc".$data["fid"]."')\nst='[LINK=/dateien/archiv/arc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
+                        break;
                     default:
                         $imgsize = getimagesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]);
                         $imgsize = " ".$imgsize[3];
