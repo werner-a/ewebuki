@@ -78,7 +78,11 @@
             $HTTP_SESSION_VARS["username"] = $AUTH[$cfg["db"]["user"]["name"]];
             session_register("custom");
             $HTTP_SESSION_VARS["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
-            $destination = str_replace($pathvars["virtual"],$pathvars["virtual"]."/auth",$pathvars["requested"]);
+            if ( $pathvars["virtual"] != "" ) {
+              $destination = str_replace($pathvars["virtual"],$pathvars["virtual"]."/auth",$pathvars["requested"]);
+            } else {
+              $destination = "/auth".$pathvars["requested"];
+            }
             header("Location: ".$destination);
         } else {
             session_start();
