@@ -100,19 +100,11 @@
                 $sql = "SELECT * FROM ". BEITRAG_INHALT ." where beitragid = '".$environment[param][1]."' AND seite='".$environment[param][2]."'";
                 $result = $db -> query($sql);
                 $news_content = $db -> fetch_array($result,1);
-
-                #print("<pre>");
-                #print_r($news_content);
-                #print("</pre>");
-
-                #$sql = "show fields from ". BEITRAG_INHALT ." like 'inh\_%'";
-                #$result  = $db -> query($sql);
                 $news_content_columns = $db -> show_columns(BEITRAG_INHALT);
-
-                #while ( $news_content_tables = $db -> fetch_row($result) ) {
                 foreach ( $news_content_columns as $key => $rows ) {
                     $fieldname = $news_content_columns[$key]["Field"];
                     $ausgaben[$fieldname] = $news_content[$fieldname];
+                    // felder die nicht befuellt wurden, uebernehmen den inhalt der ersten seite
                     if ( $ausgaben[$fieldname] == "" ) {
                         $sql = "SELECT ".$fieldname." FROM ". BEITRAG_INHALT ." where beitragid = '".$environment[param][1]."' AND seite='1'";
                         $result2 = $db -> query($sql);
@@ -123,7 +115,7 @@
                     $ausgaben[$fieldname] = tagreplace($ausgaben[$fieldname]);
                     if ( $environment[param][1] != "" && $rechte[news_edit] == -1 ) {
 
-                        $edit_link = $pathvars[virtual]."/news/edit,".$environment[parameter][1].",".$fieldname.".html";
+                        $edit_link = $pathvars[virtual]."/news/edit,".$news_content[inhaltid].",".$fieldname.".html";
                         $ausgaben[$fieldname] .= "<a target=\"_top\" href=\"".$edit_link."\">(E)</a>";
                     }
                 }
