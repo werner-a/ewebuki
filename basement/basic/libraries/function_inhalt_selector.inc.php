@@ -47,7 +47,7 @@
     //         $inhalt_selector[0] = $ausgaben["inh_selektor"]
     //         $inhalt_selector[1] = $sql
 
-    function inhalt_selector($sql, $position, $menge, $parameter, $art = False, $selects = 6, $getvalues = False) {
+    function inhalt_selector($sql, $position=0, $menge, $parameter, $art = False, $selects = 6, $getvalues = False) {
 
         global $db, $debugging, $pathvars, $environment, $defaults;
 
@@ -57,7 +57,6 @@
         $defaults["select"]["next"] == "" ? $defaults["select"]["next"] = "<img src=\"/images/default/right.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
 
         $inh_selector = "";
-        $position = $position+0;
 
         if ( $getvalues != False ) {
             $getvalues = "?".$getvalues;
