@@ -48,9 +48,9 @@
 
         // cariage return + linefeed fix
         $sear = array("\r\n[TA", "\r\n[RO", "\r\n[CO", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "/HR]\r\n", "AB]\r\n", "OW]\r\n", "OL]\r\n", );
-        $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "/HR]",     "AB]",     "OW]",     "OL]",);           
-        $replace = str_replace($sear,$repl,$replace);        
-                
+        $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "/HR]",     "AB]",     "OW]",     "OL]",);
+        $replace = str_replace($sear,$repl,$replace);
+
         // neues generelles tagreplace
         while ( preg_match("/\[[A-Z1-6]{1,6}(\]|=)/", $replace, $tag ) ) {
         // fuck ereg -> is to slow!
@@ -74,7 +74,7 @@
                 $tagwertbeg = $tagbeg + strlen($opentag);
                 $tagwertlen = $taglen - strlen($endtag)+1;
                 $tagwert = substr($replace,$tagwertbeg,$tagwertlen);
-               
+
                 // offene tags abfangen
                 #if ( strstr($tagwert, $opentag) || ( strstr($replace, $opentag) && $tagwert == "" ) ) {
                 if ( strstr($tagwert, $opentag) || $tagwertlen < 0 ) {
@@ -91,13 +91,13 @@
                         break;
                     case "[STRONG]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<strong>".$tagwert."</strong>",$replace);
-                        break;                                       
+                        break;
                     case "[I]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<i>".$tagwert."</i>",$replace);
                         break;
                     case "[EM]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<em>".$tagwert."</em>",$replace);
-                        break;                                                              
+                        break;
                     case "[TT]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<tt>".$tagwert."</tt>",$replace);
                         break;
@@ -136,7 +136,7 @@
                         break;
                     case "[P]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<p>".$tagwert."</p>",$replace);
-                        break;                    
+                        break;
                     case "[BR]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<br />",$replace);
                         break;
@@ -285,7 +285,7 @@
                             $hspace = "";
                         } else {
                             $hspace = "hspace=\"".$imgwerte[5]."\"";
-                        }                                                                      
+                        }
                         if ( $tagwerte[1] == "" ) {
                             $beschriftung = $imgwerte[0];
                         } else {
@@ -407,7 +407,7 @@
                         }
                         $ausgaben["alt"] = $beschriftung;
                         $ausgaben["beschriftung"] = $beschriftung;
-                       
+
                         $ausgaben["tspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$tspace."\">";
                         $ausgaben["lspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$lspace."\" height=\"1\">";
                         $ausgaben["rspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$rspace."\" height=\"1\">";
@@ -474,75 +474,75 @@
                         $replace = str_replace($opentag.$tagwert.$endtag,"<td valign=\"top\"".$align.$width.">".$tagwerte[1]."</td>",$replace);
                         break;
                     case "[H1]":
-                        if ( $defaults["tag"]["h1"] == "" ) { 
+                        if ( $defaults["tag"]["h1"] == "" ) {
                           $defaults["tag"]["h1"] = "<h1>";
                           $defaults["tag"]["/h1"] = "</h1>";
-                        }                        
-                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h1"].$tagwert.$defaults["tag"]["/h1"],$replace);                        
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h1"].$tagwert.$defaults["tag"]["/h1"],$replace);
                         break;
                     case "[H2]":
-                        if ( $defaults["tag"]["h2"] == "" ) { 
+                        if ( $defaults["tag"]["h2"] == "" ) {
                           $defaults["tag"]["h2"] = "<h2>";
                           $defaults["tag"]["/h2"] = "</h2>";
-                        }                                            
+                        }
                         $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h2"].$tagwert.$defaults["tag"]["/h2"],$replace);
                         break;
-                    case "[H3]":                  
-                        if ( $defaults["tag"]["h3"] == "" ) { 
+                    case "[H3]":
+                        if ( $defaults["tag"]["h3"] == "" ) {
                           $defaults["tag"]["h3"] = "<h3>";
                           $defaults["tag"]["/h3"] = "</h3>";
                         }
-                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h3"].$tagwert.$defaults["tag"]["/h3"],$replace);                        
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h3"].$tagwert.$defaults["tag"]["/h3"],$replace);
                         break;
-                    case "[H4]":                  
-                        if ( $defaults["tag"]["h4"] == "" ) { 
+                    case "[H4]":
+                        if ( $defaults["tag"]["h4"] == "" ) {
                           $defaults["tag"]["h4"] = "<h4>";
                           $defaults["tag"]["/h4"] = "</h4>";
-                        }                        
+                        }
                         $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h4"].$tagwert.$defaults["tag"]["/h4"],$replace);
-                        break;                                      
-                    case "[H5]":                  
-                        if ( $defaults["tag"]["h5"] == "" ) { 
+                        break;
+                    case "[H5]":
+                        if ( $defaults["tag"]["h5"] == "" ) {
                           $defaults["tag"]["h5"] = "<h5>";
                           $defaults["tag"]["/h5"] = "</h5>";
-                        }                      
+                        }
                         $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h5"].$tagwert.$defaults["tag"]["/h5"],$replace);
-                        break;                        
+                        break;
                     case "[H6]":
-                        if ( $defaults["tag"]["h6"] == "" ) { 
+                        if ( $defaults["tag"]["h6"] == "" ) {
                           $defaults["tag"]["h6"] = "<h6>";
                           $defaults["tag"]["/h6"] = "</h6>";
-                        }                        
-                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);                   
-                        break;                        
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);
+                        break;
                     case "[HR]":
-                        if ( $defaults["tag"]["hr"] == "" ) { 
+                        if ( $defaults["tag"]["hr"] == "" ) {
                           $defaults["tag"]["hr"] = "<hr />";
                           $defaults["tag"]["/hr"] = "";
                         }
                         $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["hr"].$tagwert.$defaults["tag"]["/hr"],$replace);
                         break;
                     case "[HL]":
-                        if ( $defaults["tag"]["hl"] == "" ) { 
+                        if ( $defaults["tag"]["hl"] == "" ) {
                           $defaults["tag"]["hl"] = "<hr />";
                           $defaults["tag"]["/hl"] = "";
                         }
                         $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["hl"].$tagwert.$defaults["tag"]["/hl"],$replace);
                         break;
                     case "[IN]":
-                        if ( $defaults["tag"]["in"] == "" ) { 
+                        if ( $defaults["tag"]["in"] == "" ) {
                           $defaults["tag"]["in"] = "<em>";
                           $defaults["tag"]["/in"] = "</em>";
-                        }                    
-                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["in"].$tagwert.$defaults["tag"]["/in"],$replace);                                      
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["in"].$tagwert.$defaults["tag"]["/in"],$replace);
                     case "[M1]":
                         if ( $tagwert == "" ) {
                             $label = " .. ";
                         } else {
                             $label = $tagwert;
                         }
-                        if ( $ausgaben["M2"] != "" ) {
-                            $trenner = " &middot; ";
+                        if ( $ausgaben["M1"] != "" ) {
+                            $trenner = $defaults["split"]["m1"];
                         } else {
                             $trenner = "";
                         }
@@ -560,14 +560,14 @@
                         if ( $m1werte[0] == "l" ) {
                             $m1 = "";
                             if ( $m1werte[1] == "b" ) {
-                                $m1 = "&middot; <a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
+                                $m1 = $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
                             }
                             $m1 .= $ausgaben["L1"];
                         } else {
                             $m1 = "";
                             if ( $m1werte[1] == "b" ) {
                                 if ( $ausgaben["M1"] != "" ) {
-                                    $trenner = " &middot; ";
+                                    $trenner = $defaults["split"]["m1"];
                                 } else {
                                     $trenner = "";
                                 }
@@ -584,7 +584,7 @@
                             $label = $tagwert;
                         }
                         if ( $ausgaben["M2"] != "" ) {
-                            $trenner = " &middot; ";
+                            $trenner = $defaults["split"]["m2"];
                         } else {
                             $trenner = "";
                         }
@@ -602,14 +602,14 @@
                        if ( $m2werte[0] == "l" ) {
                             $m2 = "";
                             if ( $m2werte[1] == "b" ) {
-                                $m2 = "&middot; <a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
+                                $m2 = $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
                             }
                             $m2 .= $ausgaben["L2"];
                         } else {
                             $m2 = "";
                             if ( $m2werte[1] == "b" ) {
                                 if ( $ausgaben["M2"] != "" ) {
-                                    $trenner = " &middot; ";
+                                    $trenner = $defaults["split"]["m2"];
                                 } else {
                                     $trenner = "";
                                 }
