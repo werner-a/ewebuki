@@ -49,12 +49,12 @@
     // kekse erstellen
     include $pathvars["config"]."kekse.cfg.php";
     include $pathvars["libraries"]."kekse.inc.php";
-    
+
     // dynamisches dist menu 3 ebenen
     #$specialvars["scriptbase"] = "intrabvv/globalmenu";
     #include $pathvars["addonroot"].$specialvars["scriptbase"].".cfg.php";
-    #include $pathvars["addonroot"].$specialvars["scriptbase"].".inc.php";  
-    
+    #include $pathvars["addonroot"].$specialvars["scriptbase"].".inc.php";
+
     // leveled
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
        || ( $environment["ebene"] == "/admin/leveled" ))
@@ -76,9 +76,9 @@
        || ( $environment["ebene"] == "/admin/menued" ))
     {
         include $pathvars["addonroot"]."admin/menued.cfg.php";
-        include $pathvars["addonroot"]."admin/menued.inc.php";
+        include $pathvars["addonroot"]."admin/menued-ctrl.inc.php";
     }
-    
+
     // fileed
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "fileed" )
        || ( $environment["ebene"] == "/admin/fileed" ))
