@@ -194,7 +194,11 @@
             } elseif ( strstr($fields["Type"], "date")) {
                 $preg = "^([0-9]{4})\-([0-9]{2})\-([0-9]{2})";
                 if ( $form_values[$fields["Field"]] == "" ) {
-                    $form_values[$fields["Field"]] = $fields["Default"];
+                    if ( $fields["Default"] != "" ) {
+                        $form_values[$fields["Field"]] = $fields["Default"];
+                    } else {
+                        $form_values[$fields["Field"]] = date("d.m.Y");
+                    }
                 } elseif (preg_match_all("/$preg/",$form_values[$fields["Field"]],$regs)) {
                 #} elseif ( substr($form_values[$fields["Field"]],2,1) != "." ) {
                     $convert = $form_values[$fields["Field"]];
