@@ -68,7 +68,7 @@
             $host = $this->HOST;
             $db   = $this->DB;
             $conn = mysql_connect($host,$user,$pass);
-            $return = "success";
+            $return = true;
             
             // error-handling first for connection, second for
             // db-finding
