@@ -76,7 +76,6 @@
                 ),
                 "text"        => array(
                     "entries"       => "site_text",
-                    "key"           => "tid",
                 ),
         ),
         "fqdn0"     => "www",

@@ -103,19 +103,17 @@
             $ebene = make_ebene($refid);
             if ( $ebene != "/" ) $extend = crc32($ebene).".";
             $tname = $extend.$kategorie;
-            $sql = "SELECT tid, lang, label, content
+            $sql = "SELECT lang, label, tname, content
                       FROM ".$cfg["db"]["text"]["entries"]."
                      WHERE tname='".$tname."';";
             $result  = $db -> query($sql);
             while ( $array = $db -> fetch_array($result,$nop) ) {
-                if ( $tids != "" ) $tids .= ",";
-                $tids .= $array["tid"];
                 $ausgaben["content"] .=  $array["lang"].": "
-                                       .$array["label"].": "
-                                       .substr($array["content"],0,20)." ...<br />";
+                                        .$array["label"].": "
+                                        .substr($array["content"],0,20)." ...<br />";
             }
             if ( $ausgaben["content"] == "" ) $ausgaben["content"] = "#(no_content)";
-            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"tids\" value=\"".$tids."\" />";
+            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"tname\" value=\"".$tname."\" />";
             // +++
             // content holen (alle sprachen)
 
@@ -163,14 +161,11 @@
 
                 // content loeschen
                 // ***
-                if ( $HTTP_POST_VARS["tids"] != "" ) {
-                    $array = split(",",$HTTP_POST_VARS["tids"]);
-                    foreach( $array as $value) {
-                        $sql = "DELETE FROM ".$cfg["db"]["text"]["entries"]." WHERE ".$cfg["db"]["text"]["key"]."='".$value."';";
-                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                        $result  = $db -> query($sql);
-                        if ( !$result ) $ausgaben["form_error"] = $db -> error("#(text_error)<br />");
-                    }
+                if ( $HTTP_POST_VARS["tname"] != "" ) {
+                    $sql = "DELETE FROM ".$cfg["db"]["text"]["entries"]." WHERE tname = '".$HTTP_POST_VARS["tname"]."'";
+                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                    $result  = $db -> query($sql);
+                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(text_error)<br />");
                 }
                 // +++
                 // content loeschen
