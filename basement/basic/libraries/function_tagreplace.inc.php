@@ -282,12 +282,12 @@
                         if ($imgwerte[4] == "" ) {
                             $vspace = "";
                         } else {
-                            $vspace = "vspace=\"".$imgwerte[4]."\"";
+                            $vspace = " vspace=\"".$imgwerte[4]."\"";
                         }
-                        if ($imgwerte[5] == "" ) {
+                        if ($imgwerte[6] == "" ) {
                             $hspace = "";
                         } else {
-                            $hspace = "hspace=\"".$imgwerte[5]."\"";
+                            $hspace = " hspace=\"".$imgwerte[6]."\"";
                         }
                         if ( $tagwerte[1] == "" ) {
                             $beschriftung = $imgwerte[0];
@@ -330,7 +330,7 @@
                                 }
                             }
                         }
-                        $ausgabewert = $linka."<img src=\"".$imgurl."\" ".$vspace.$hspace."alt=\"".$beschriftung."\"".$align.$border.$imgsize.">".$linkb;
+                        $ausgabewert = $linka."<img src=\"".$imgurl."\"".$vspace.$hspace." alt=\"".$beschriftung."\"".$align.$border.$imgsize.">".$linkb;
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
                         break;
                     case "[IMGB=":
