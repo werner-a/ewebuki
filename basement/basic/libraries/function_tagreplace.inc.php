@@ -145,9 +145,9 @@
                         $brwerte = explode(";",$tagwerte[0]);
                         if ( $brwerte[0] == "a" ) {
                             $clear = "all";
-                        } elseif ( $brwerte[1] == "l" ) {
+                        } elseif ( $brwerte[0] == "l" ) {
                             $clear = "left";
-                        } elseif ( $brwerte[1] == "r" ) {
+                        } elseif ( $brwerte[0] == "r" ) {
                             $clear = "right";
                         } else {
                             $clear = "";
