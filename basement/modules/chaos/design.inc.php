@@ -43,17 +43,20 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $debugging[html_enable] ) $debugging[ausgabe] .= "[ ** $script_name ** ]".$debugging[char];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
-    $links = "";
-    if ( $environment[design] != device ) $links .= "<a href=\"".$pathvars[webroot]."/device/".$environment[language]."/".$environment[katid]."/\" class=\"menu_punkte\">device</a><br>";
-    #if ( $environment[design] != hase ) $links .= "<a href=\"".$pathvars[webroot]."/hase/".$environment[language]."/".$environment[katid]."/\" class=\"menu_punkte\">hase</a><br>";
-    #if ( $environment[design] != classic ) $links .= "<a href=\"".$pathvars[webroot]."/classic/".$environment[language]."/".$environment[katid]."/\" class=\"menu_punkte\">classic</a><br>";
-    if ( $environment[design] != business ) $links .= "<a href=\"".$pathvars[webroot]."/business/".$environment[language]."/".$environment[katid]."/\" class=\"menu_punkte\">business</a><br>";
-    #if ( $environment[design] != creative ) $links .= "<a href=\"".$pathvars[webroot]."/creative/".$environment[language]."/".$environment[katid]."/\" class=\"menu_punkte\">creative</a>";
+    $ausgaben["design_hl"] = "#(des_label)";
 
-    $ausgaben[design] = parser( "design", "");
+    foreach ( $cfg["designs"] as $value ) {
+        if ( strstr($pathvars["virtual"], "/".$environment["design"]) ) {
+            $newpath = str_replace("/".$environment["design"], "/".$value, $pathvars["virtual"]);
+        } else {
+            $newpath = "/".$value.$pathvars["virtual"];
+        }
+        $ausgaben["design_sel"] .= "<a href=\"".$newpath.$environment["ebene"]."/".$environment["kategorie"].".html\">#(desla_".$value.")</a><br />";
+    }
 
-    if ( $debugging[html_enable] ) $debugging[ausgabe] .= "[ ++ $script_name ++ ]".$debugging[char];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

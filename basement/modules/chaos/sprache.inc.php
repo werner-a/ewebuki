@@ -43,12 +43,21 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $debugging[html_enable] ) $debugging[ausgabe] .= "[ ** $script_name ** ]".$debugging[char];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
-    $links = "sprache umschalten";
+    $ausgaben["lang_hl"] = "#(lang_label)".$environment["language"];
 
-    $ausgaben[sprache] = parser( "sprache", "" );
+    // verfuegbare sprachen
+    foreach ( $cfg["languages"] as $value ) {
+        if ( strstr($pathvars["virtual"], "/".$environment["language"]) ) {
+            $newpath = str_replace("/".$environment["language"], "/".$value, $pathvars["virtual"]);
+        } else {
+            $newpath = "/".$value.$pathvars["virtual"];
+        }
+        $ausgaben["lang_sel"] .= "<a href=\"".$newpath.$environment["ebene"]."/".$environment["kategorie"].".html\">#(lanla_".$value.")</a><br />";
+    }
 
-    if ( $debugging[html_enable] ) $debugging[ausgabe] .= "[ ++ $script_name ++ ]".$debugging[char];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
