@@ -124,7 +124,7 @@
                 if ( strstr($line,"!#lnk_" ) ) {
                     if ( is_array($lnk) ) {
                         foreach($lnk as $name => $value) {
-                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$lnk[$name]".$debugging["char"];
+                            #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$lnk[$name]".$debugging["char"];
                             $line=str_replace("!#lnk_$name",$value,$line);
                         }
                     }
