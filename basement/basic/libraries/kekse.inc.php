@@ -51,6 +51,17 @@
         $specialvars["rootname"] = $db->getDb();
     }
 
+    // dynamic style - db test/extension
+    $sql = "select dynamiccss from site_".$mt ;
+    $result = $db -> query($sql);
+    if ( $result ) {
+        #echo $db-> field_name($result,0);
+        $dynamiccss =  "site_".$mt.".dynamiccss,";
+    } else {
+        unset($dynamiccss);
+    }
+
+
     $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/\">".$specialvars["rootname"]."</a>";
 
     // special eintraege markieren
@@ -76,7 +87,7 @@
         #}
 
         $search = "like '".$value."%'";
-        $sql = "SELECT site_".$mt.".mid, site_".$mt.".refid,  site_".$mt.".entry, site_".$mt.".defaulttemplate, site_".$mt."_lang.label FROM site_".$mt." INNER JOIN site_".$mt."_lang ON site_".$mt.".mid = site_".$mt."_lang.mid WHERE site_".$mt.".entry ".$search." AND site_".$mt."_lang.lang='".$environment["language"]."' AND site_".$mt.".refid = '".$refid."' ;";
+        $sql = "SELECT site_".$mt.".mid, site_".$mt.".refid,  site_".$mt.".entry, site_".$mt.".defaulttemplate, ".$dynamiccss." site_".$mt."_lang.label FROM site_".$mt." INNER JOIN site_".$mt."_lang ON site_".$mt.".mid = site_".$mt."_lang.mid WHERE site_".$mt.".entry ".$search." AND site_".$mt."_lang.lang='".$environment["language"]."' AND site_".$mt.".refid = '".$refid."' ;";
         #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $keksresult = $db -> query($sql);
 
@@ -104,6 +115,11 @@
 
             // variables template laut menueintrag setzen
             $specialvars["default_template"] = $keksarray["defaulttemplate"];
+
+            // variables css file - erweiterung laut menueintrag setzen
+            if ( $keksarray["dynamiccss"] != "" ) {
+                $specialvars["dynamic_css"] = $keksarray["dynamiccss"];
+            }
 
             // navbar erstellen
             #$ausgaben["UP"] = "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
