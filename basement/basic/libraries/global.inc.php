@@ -47,9 +47,9 @@
     $pathvars["webroot"]   = "http://".$_SERVER["HTTP_HOST"];
     $pathvars["webimages"] = "/images/main"."/";                        # gilt nur fuer select seite
     $pathvars["webcss"]    = "/css"."/";                                # gilt nur fuer select seite
-
-    $pathvars["fileroot"]   = $_SERVER["DOCUMENT_ROOT"];#."/";
-
+    
+    $pathvars["fileroot"] = rtrim($_SERVER["DOCUMENT_ROOT"],"/")."/";
+        
     $pathvars["basicroot"]  = $pathvars["fileroot"]."basic/";
     $pathvars["addonroot"]  = $pathvars["fileroot"]."modules/";
 
