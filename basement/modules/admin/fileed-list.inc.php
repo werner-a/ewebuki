@@ -329,17 +329,17 @@
             break;
 
         case 1:
-            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">[ Metadaten bearbeiten ]</a>";
-            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">[ ausgewählte Datei löschen ]</a>";
+            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">#(describe)</a>";
+            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">#(delete1)</a>";
             break;
 
         default:
-            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">[ Metadaten bearbeiten ]</a>";
-            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">[ Ausgewählte Dateien löschen ]</a>";
+            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">#(describe)</a>";
+            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">#(delete2)</a>";
     }
 
     if ($HTTP_SESSION_VARS["return"]) {
-        $ausgaben["send_image"] = "<a href=".$HTTP_SESSION_VARS["return"]."?referer=".$HTTP_SESSION_VARS["referer"].">[ Zum Beitrag ]</a>";
+        $ausgaben["send_image"] = "<a href=".$HTTP_SESSION_VARS["return"]."?referer=".$HTTP_SESSION_VARS["referer"].">#(send_image)</a>";
     } else {
         $ausgaben["send_image"] = "";
     }
