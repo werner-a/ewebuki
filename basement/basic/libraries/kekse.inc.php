@@ -51,7 +51,7 @@
         $specialvars["rootname"] = $db->getDb();
     }
 
-    $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/\">".$specialvars["rootname"]."</a>";
+    $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/index.html\">".$specialvars["rootname"]."</a>";
 
     // special eintraege markieren
     #$special = array( "list", "details", "modify", "start" );
