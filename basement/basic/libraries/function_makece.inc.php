@@ -164,7 +164,7 @@
             #ce_anker
         }
         $ausgaben["ce_dropdown"] .= "</select>";
-        $ausgaben["ce_button"] .= "<input name=\"image\" type=\"image\" id=\"image\" value=\"add\" src=\"".$pathvars["images"]."cms-tag-imgb.png\" width=\"23\" height=\"22\">";
+        $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$pathvars["images"]."cms-tag-imgb.png\" width=\"23\" height=\"22\">";
 
         $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";
         $ausgaben["ce_upload"] .= "<option value=\"\">Upload</option>";
