@@ -103,7 +103,7 @@ Just enter
 
 eWeBuKi
 
-(this is case-sensitive, so don't try "phpwebkit" or "PHPWEBKIT")
+(this is case-sensitive, so don't try "ewebuki" or "EWEBUKI")
 and klick onto the "Create" button. You will then be able to read
 
 No tables found in database.
@@ -134,7 +134,7 @@ Ta-Daaa!
 6) Securing the Site
 ====================
 PLEASE!!!!!! Do us a favor and change / delete the admin user 
-"phpwebkit", otherwise your site will be the easy prey for hackers 
+"changeme", otherwise your site will be the easy prey for hackers 
 like us :-)
 
 
