@@ -43,13 +43,14 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     // aufruf: $form_elements = form_options( formular tabelle, form werte des user );
-
-    function form_elements( $table, $form_values ) {
+    function form_elements( $table, $form_values, $extend = "" ) {
         global $db, $form_options, $defaults;
+
         $columns = $db -> show_columns($table);
-        foreach ( $columns as $key => $fields ) {
+        #echo "<pre>".print_r($columns,True)."</pre>";
+        foreach ( $columns as /* $key => */ $fields ) {
+
 
             // not null bedeutet feld ausfuellen
             if ( $fields["Null"] == "" && $form_options[$fields["Field"]]["frequired"] == "" ) {
@@ -61,6 +62,7 @@
             if ( ($form_options[$fields["Field"]]["foption"] == "pgenum") && ($form_options[$fields["Field"]]["fpgenum"] != "") ) {
                 $fields["Type"] = "enum(".$form_options[$fields["Field"]]["fpgenum"].")";
             }
+
 
             // textfelder
             if ( strstr($fields["Type"], "char")) {
@@ -78,13 +80,13 @@
                 ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
                 ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["textfield"]["class"]."\"";
                 ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".$form_values[$fields["Field"]]."\"" : $value = "";
+                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".$form_values[$fields["Field"]]."\"" : $value = " value=\"".$fields["Default"]."\"";
                 ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);
-                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"]."\" ".$value.$readonly.">\n";
-                $element[$fields["Field"]] = $formularobject;
+                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"].$extend."\" ".$value.$readonly.">\n";
+                $element[$fields["Field"].$extend] = $formularobject;
             }
             // textfelder (mehrzeilig)
             if ( strstr($fields["Type"], "text")) {
@@ -98,8 +100,8 @@
                 }
                 ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["textbox"]["class"]."\"";
                 ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                $formularobject = "<textarea".$cols.$rows.$class.$style." name=\"".$fields["Field"]."\">".$form_values[$fields["Field"]]."</textarea>\n";
-                $element[$fields["Field"]] = $formularobject;
+                $formularobject = "<textarea".$cols.$rows.$class.$style." name=\"".$fields["Field"].$extend."\">".$form_values[$fields["Field"]]."</textarea>\n";
+                $element[$fields["Field"].$extend] = $formularobject;
             }
             // checkbox, dropdown
             if ( strstr($fields["Type"], "enum(") ) {
@@ -118,8 +120,8 @@
                     // hack: bei nicht auf "checked" gesetzten check boxen
                     // bleibt der post/get value leer
                     // der required check versagt, das feld kann nicht geaendert werden
-                    $formularobject  = "<input type=\"hidden\" name=\"".$fields["Field"]."\" value=\"\">\n";
-                    $formularobject .= "<input type=\"checkbox\" name=\"".$fields["Field"]."\" value=\"".$options[0]."\"".$checked.">\n";
+                    $formularobject  = "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"\">\n";
+                    $formularobject .= "<input type=\"checkbox\" name=\"".$fields["Field"].$extend."\" value=\"".$options[0]."\"".$checked.">\n";
                 } elseif ( count($options) >= 4 ) {
                     ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "1";
                     ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["dropdown"]["class"]."\"";
@@ -127,7 +129,7 @@
                     // multiple koennte gehen, mommentan deaktiviert
                     ( strstr($form_options[$fields["Field"]]["opt"], "multiple") ) ? $multiple = " multiple" : $multiple = "";
                     ( strstr($form_options[$fields["Field"]]["opt"], "multiple") ) ? $isarray = "[]" : $isarray = "";
-                    $formularobject = "<select name=\"".$fields["Field"].$isarray."\"".$size.$class.$style."".$multiple.">\n";
+                    $formularobject = "<select name=\"".$fields["Field"].$extend.$isarray."\"".$size.$class.$style."".$multiple.">\n";
                     foreach( $options as $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
                             $selected = " selected";
@@ -148,7 +150,7 @@
                     // hack: bei nicht auf "checked" gesetzten radio buttons
                     // bleibt der post/get value leer
                     // der required check versagt!
-                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"]."\" value=\"".$form_values[$fields["Field"]]."\">\n";
+                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".$form_values[$fields["Field"]]."\">\n";
                     foreach( $options as $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
                             $checked = " checked";
@@ -161,11 +163,11 @@
                         } else {                           #
                             $label_wert = $value;          #
                         }                                  #
-                        $formularobject .= "<input type=\"radio\" name=\"".$fields["Field"]."\" value=\"".$value."\"".$checked.">".$label_wert." \n";
+                        $formularobject .= "<input type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$checked.">".$label_wert." \n";
                     }
-                    $element[$fields["Field"]] = $formularobject;
+                    $element[$fields["Field"].$extend] = $formularobject;
                 }
-                $element[$fields["Field"]] = $formularobject;
+                $element[$fields["Field"].$extend] = $formularobject;
             // datetime (timestamp)
             } elseif ( strstr($fields["Type"], "datetime")) {
                 $preg = "^([0-9]{4})\-([0-9]{2})\-([0-9]{2})";
@@ -188,8 +190,8 @@
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);
-                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"]."\" value=\"".$form_values[$fields["Field"]]."\"".$readonly.">\n";
-                $element[$fields["Field"]] = $formularobject;
+                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"].$extend."\" value=\"".$form_values[$fields["Field"]]."\"".$readonly.">\n";
+                $element[$fields["Field"].$extend] = $formularobject;
             // date
             } elseif ( strstr($fields["Type"], "date")) {
                 $preg = "^([0-9]{4})\-([0-9]{2})\-([0-9]{2})";
@@ -215,8 +217,8 @@
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);
-                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"]."\" value=\"".$form_values[$fields["Field"]]."\"".$readonly.">\n";
-                $element[$fields["Field"]] = $formularobject;
+                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"].$extend."\" value=\"".$form_values[$fields["Field"]]."\"".$readonly.">\n";
+                $element[$fields["Field"].$extend] = $formularobject;
             // id feld
             } elseif ( strstr($fields["Type"], "int")) {
                 if ( strstr($form_options[$fields["Field"]]["foption"], "hidden") ) {
@@ -227,18 +229,17 @@
                 ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
                 ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["int"]["class"]."\"";
                 ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".$form_values[$fields["Field"]]."\"" : $value = "";
+                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".$form_values[$fields["Field"]]."\"" : $value = " value=\"".$fields["Default"]."\"";
                 ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);
-                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"]."\" ".$value.$readonly.">\n";
-                $element[$fields["Field"]] = $formularobject;
+                $formularobject = "<input type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"].$extend."\" ".$value.$readonly.">\n";
+                $element[$fields["Field"].$extend] = $formularobject;
             }
         }
         return $element;
     }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
