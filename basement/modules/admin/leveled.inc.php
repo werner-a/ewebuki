@@ -235,7 +235,7 @@
                                          VALUES ('".$environment["parameter"][2]."',
                                                  '".$value."')";
                             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                            $db -> query($sql);
+                            $result = $db -> query($sql);
                             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                         }
                         if ( $HTTP_POST_VARS["add"] ) {
@@ -249,7 +249,7 @@
                         foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
                             $sql = "DELETE FROM auth_right where rid='".$value."'";
                             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                            $db -> query($sql);
+                            $result = $db -> query($sql);
                             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                         }
                         if ( $HTTP_POST_VARS["del"] ) {
