@@ -697,9 +697,14 @@
                         $replace = str_replace($opentag.$tagwert.$closetag,$ausgaben["M3"],$replace);
                         break;
                     default:
+                        // unbekannte tags verstecken
+                        $replace = str_replace($closetag,"[##".substr($closetag,1),$replace);
                }
            }
         }
+        // unbekannte tags wiederherstellen
+        $replace = str_replace("[##/","[/",$replace);
+
         return $replace;
     }
 
