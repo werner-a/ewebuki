@@ -84,16 +84,16 @@
 
         // bildausgabe
         switch ( substr(strrchr($file,"."),1 ) ){
-            case "jpg":
+            case "jpg": case "JPG":
                 $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."&size=280\">";
                 break;
-            case "png":
+            case "png": case "PNG":
                 $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."&size=280\">";
                 break;
-            case "zip":
+            case "zip": case "ZIP":
                 $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."zip_icon.jpg&size=280\">";
                 break;
-            case "pdf":
+            case "pdf": case "PDF":
                 $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."pdf_big.png&size=280\">";
                 break;
         }
@@ -154,7 +154,7 @@
 
                 // Sql um spezielle Felder erweitern
                 $sqla .= ", ffart";
-                $sqlb .= ", '".substr(strrchr($file,"."),1)."'";
+                $sqlb .= ", '".strtolower(substr(strrchr($file,"."),1))."'";
                 $sqla .= ", fuid";
                 $sqlb .= ", '".$HTTP_SESSION_VARS["uid"]."'";
                 $sqla .= ", fdid";
