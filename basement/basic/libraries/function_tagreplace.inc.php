@@ -491,7 +491,7 @@
                         } elseif ( $colwerte[2] == "g" ) {
                             $valign = " valign=\"baseline\"";
                         } else {
-                            $valign = "\"top\"";
+                            $valign = " valign=\"top\"";
                         }
                         $replace = str_replace($opentag.$tagwert.$endtag,"<td".$align.$width.$valign.">".$tagwerte[1]."</td>",$replace);
                         break;
