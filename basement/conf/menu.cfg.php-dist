@@ -58,7 +58,7 @@
             "full"     => -1,
             "force"    => 0,
             "length"   => 24,
-            "target"   => "",// z.B. target=\"_blank\"
+            "target"   => "", // z.B. target=\"_blank\"
             // tipp: mit eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden,
             // die bilder werden dann immer aus dem jeweiligen /images/design verzeichnis geladen.
             // ##target##, ##link##, ##label## werden automatisch durch die richtigen werte ersetzt.
