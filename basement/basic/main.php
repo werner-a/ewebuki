@@ -53,6 +53,7 @@
 
     $pathvars["requested"] = explode("?", $_SERVER["REQUEST_URI"]);
     $pathvars["requested"] = $pathvars["requested"][0];
+    if ( $pathvars["requested"] == "/" ) $pathvars["requested"] = "/index.html"; ###
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "pathvars requested: ".$pathvars["requested"].$debugging["char"];
 
     $pathvars["level"] = explode("/", $pathvars["requested"]);
@@ -64,14 +65,38 @@
     $pathvars["level_depth"] = count($pathvars["level"])-1;
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "pathvars level depth: ".$pathvars["level_depth"].$debugging["char"];
 
-    $environment["design"] = $pathvars["level"][1];
-    $pathvars["virtual"] = "/".$environment["design"];
+    if ( $pathvars["level"][1] != "" && is_dir($pathvars["fileroot"]."templates/".$pathvars["level"][1]) ) {
+      $environment["design"] = $pathvars["level"][1];
+      $pathvars["virtual"] = "/".$environment["design"];       
+      $authcount++;
+    } else {
+      $environment["design"] = $specialvars["default_design"];
+    }
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "design: ".$environment["design"].$debugging["char"];
-
-    if ( strlen($pathvars["level"][2]) == 3 ) {
-        $environment["language"] = $pathvars["level"][2];
-        $pathvars["virtual"] .= "/".$environment["language"];
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang: ".$environment["language"].$debugging["char"];
+    
+    // language detection
+    for ( $i=1; $i<=2 ; $i++ ) {
+      if ( in_array($pathvars["level"][$i],$specialvars["available_languages"]) ) {
+        $position = $i;
+        break;
+      }
+    }              
+    if ( $position >= 1) {    
+      $environment["language"] = $pathvars["level"][$position];
+      $pathvars["virtual"] .= "/".$environment["language"];
+      $authcount++;        
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang: ".$environment["language"].$debugging["char"];
+    } else {      
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "http accept lang: ".$_SERVER["HTTP_ACCEPT_LANGUAGE"].$debugging["char"];     
+      $http_accept_language = explode(",",$_SERVER["HTTP_ACCEPT_LANGUAGE"]);     
+      foreach( $http_accept_language as $lang ) {
+        if ( in_array($lang,$specialvars["available_languages"]) ) {
+          $environment["language"] = $lang;
+          break;
+        }
+      }
+      if ( $environment["language"] == "" ) $environment["language"] = $specialvars["default_language"];
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang: ".$environment["language"].$debugging["char"];      
     }
 
     // host werte "www.xxx.yyy.de" in "www" und "xxx.yyy.de" array
@@ -79,7 +104,8 @@
 
     // virtual path auth korrektur und auth url init
     $ausgaben["auth_url"] = $pathvars["virtual"];
-    if ( strstr($pathvars["level"][3],"auth" ) ) {
+    $authcount++;   
+    if ( strstr($pathvars["level"][$authcount],"auth" ) ) {
         $pathvars["virtual"] .= "/auth";
     }
     $pathvars["virtual_depth"] = count(split("/",$pathvars["virtual"]));
@@ -92,7 +118,7 @@
     //
 
     // neuer parameter 'ebene'
-    $environment["ebene"] = str_replace($pathvars["virtual"],"",$pathvars["requested"]);
+    $environment["ebene"] = substr_replace($pathvars["requested"], '', 0, strlen($pathvars["virtual"]));
     $paramstr = strrchr($environment["ebene"],"/");
     $environment["ebene"] = str_replace($paramstr,"",$environment["ebene"]);
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg ebene: ".$environment["ebene"].$debugging["char"];
@@ -200,6 +226,7 @@
     $db      = new DB_connect();
     $version = $db->getVERSION();
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db version: ".$version.$debugging["char"];
+    
     $connect = $db->connect();
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db connect: ".$connect.$debugging["char"];
 
@@ -232,8 +259,8 @@
     require $pathvars["config"]."addon.cfg.php";
 
     // aenderungen durch webdesigner
-    require $pathvars["templates"]."linking.inc.php";
-
+    #require $pathvars["templates"]."linking.inc.php"; ###
+    
     // rekursiven parser aufrufen
     if ( $HTTP_POST_VARS["print"] != "" || $HTTP_GET_VARS["print"] != "" ) {
         $debugging["html_enable"] = 0;
