@@ -103,7 +103,7 @@
                         $tn .= "<tr><td>".$defaults["icon"]["pdf"]."</td></tr>";
                         $tn .= "</table>";
 
-                        $extension .= "else if (st=='doc".$data["fid"]."')\nst='[LINK=/dateien/dokumente/doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
+                        $extension .= "else if (st=='doc".$data["fid"]."')\nst='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["doc"]."doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                         break;
                     case "zip":
                         // die boese schneide ab funktion
@@ -120,7 +120,7 @@
                         $tn .= "<tr><td>".$defaults["icon"]["zip"]."</td></tr>";
                         $tn .= "</table>";
 
-                        $extension .= "else if (st=='arc".$data["fid"]."')\nst='[LINK=/dateien/archiv/arc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
+                        $extension .= "else if (st=='arc".$data["fid"]."')\nst='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["arc"]."arc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                         break;
                     default:
                         $imgsize = getimagesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]);
