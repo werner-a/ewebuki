@@ -232,7 +232,7 @@
     );
     $imgpath = $pathvars["images"];
 
-    $ausgaben["output"] .= "<table width=\"628\" border=\"0\"><tr><td>";
+    $ausgaben["output"] .= "<table width=\"100%\" border=\"0\"><tr><td>";
 
     if ( $db->num_rows($result) == 0 ) {
         $ausgaben["result"] .= " keine Einträge gefunden.";
@@ -265,7 +265,6 @@
         }
 
         // daten holen, row spulen
-
         while ( $data = $db -> fetch_array($result,$nop) ) {
             $i++;
             foreach($data as $key => $value) {
@@ -314,7 +313,7 @@
                     $ausgaben["output"] .= "<tr><td colspan=\"2\" align=\"left\"><img width=\"100\" height=\"1\" src=\"".$pathvars["images"]."pos.png\"></td></tr>";
                     $ausgaben["output"] .= "</table>";
                     $j++;
-                    $ja = $j / 6;
+                    $ja = $j / $cfg["db"]["line"];
                     if ( is_int($ja) ) $ausgaben["output"] .="</td></tr><tr><td>";
                     break;
             }
