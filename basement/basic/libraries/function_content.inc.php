@@ -45,7 +45,7 @@
 
     function content($line, $tname) {
 
-        global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $rechte;
+        global $db, $debugging, $pathvars, $specialvars, $environment, $defaults, $ausgaben, $rechte;
 
         if ( $specialvars["crc32"] == -1 ) {
             if ( $environment["ebene"] != "" && $tname == $environment["kategorie"] ) {
@@ -136,16 +136,21 @@
                 }
                 $editurl = $pathvars["virtual"]."/cms/edit,".$db->getDb().",".$dbtname.",".$label;
 
+                if ( $defaults["cms-tag"]["signal"] == "" ) {
+                    $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";
+                    $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
+                }
+
                 // wenn es kein button ist
                 if ( !strstr($line,"value=\"") ) {
-                    $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\"><img src=\"".$pathvars["images"]."cms-tag-".$signal.".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
+                    $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"];
                 } else {
                     #$line = $line." <a target=\"_top\" href=\"".$editurl.".html\"><img src=\"".$pathvars["images"]."cms-tag-".$signal.".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
                     $line = $line." <a target=\"_top\" href=\"".$editurl.".html\">".$label."</a>";
                 }
             }
             }
-            
+
             // wenn content nicht in html ist
             if ( $row[0] != -1 ) {
                 // intelligenten link tag bearbeiten
