@@ -72,7 +72,9 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "pathvars level depth: ".$pathvars["level_depth"].$debugging["char"];
 
     // design detection
-    if ( $pathvars["level"][1] != "" && is_dir($pathvars["fileroot"]."templates/".$pathvars["level"][1]) ) {
+    // wegen einem bug in php 4.1.0 unterdrueckt ein @is_dir die falsche warning
+    // http://bugs.php.net/bug.php?id=14420 und http://bugs.php.net/bug.php?id=14424
+    if ( $pathvars["level_depth"] >= 2 && @is_dir($pathvars["fileroot"]."templates/".$pathvars["level"][1]) ) {
       $environment["design"] = $pathvars["level"][1];
       $pathvars["virtual"] = "/".$environment["design"];
       $authcount++;
