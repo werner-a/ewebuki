@@ -62,7 +62,7 @@
         }
 
 
-        while ( strpos($line, "#(") || strpos($line, "g(") ) {
+        while ( strpos($line, "#(") !== false || strpos($line, "g(") !== false ) {
 
             // wo beginnt die marke
             $labelbeg = strpos($line,"#(");
@@ -174,7 +174,7 @@
             }
 
             // marke ersetzen
-            if ( strpos($line,$art) ) {
+            if ( strpos($line,$art) !== false ) {
                 $line = str_replace($art.$label.")",$replace,$line);
             }
         }
