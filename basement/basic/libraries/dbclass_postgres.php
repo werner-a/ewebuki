@@ -160,7 +160,7 @@
                 $oldlimit = $limit[0]." ".$limit[1];
                 $orglimitvalue = $limit[1];
                 $limitarray = explode(",", $orglimitvalue,2);
-                $newlimit = "LIMIT ".$limitarray[1].",".$limitarray[0];
+                $newlimit = "LIMIT ".$limitarray[1]." OFFSET ".$limitarray[0];
                 $sql = str_replace($oldlimit, $newlimit, $sql);
             }
 
@@ -335,29 +335,37 @@
                         t.typname AS type,
                         a.attlen AS length,
                         a.atttypmod AS lengthvar,
-                        a.attnotnull AS notnull
+                        a.attnotnull AS notnull,
+                        d.adsrc AS default
                     FROM
-                        pg_class c,
-                        pg_attribute a,
-                        pg_type t
+                        (pg_class c INNER JOIN pg_attribute a ON (a.attrelid = c.oid))
+                        INNER JOIN pg_type t ON (a.atttypid = t.oid )
+                        LEFT JOIN pg_attrdef d ON (d.adnum = a.attnum and d.adrelid = c.oid)
                     WHERE
                         c.relname = '".$table."'
                         and a.attnum > 0
-                        and a.attrelid = c.oid
-                        and a.atttypid = t.oid
                     ORDER BY a.attnum";
+
             $result = $this->query_quiet($sql);
             while ( $row = $this->fetch_array($result,$nop) ) {
                 if ( $row["lengthvar"] != -1 ) $length = $row["lengthvar"]-4;
                 if ( $row["type"] == "timestamp" ) $row["type"] = "datetime";
                 ( $row["notnull"] == "f" ) ? $row["notnull"] = "YES" : $row["notnull"] = "";
+                if ( strstr($row["default"],"nextval") ) {
+                    $row["default"] = "";
+                } elseif ( strstr($row["default"],"'::") ){
+                    $zeichen = strpos($row["default"],"'::");
+                    $row["default"] = substr($row["default"],1,$zeichen-1);
+                }
                 $columns[] = array(
                     0=>$row["field"],
                     "Field"=>$row["field"],
                     1=>$row["type"],
                     "Type"=>$row["type"]."(".$length.")",
                     2=>$row["notnull"],
-                    "Null"=>$row["notnull"]
+                    "Null"=>$row["notnull"],
+                    3=>$row["default"],
+                    "Default"=>$row["default"]
                 );
             }
             #if ( $debugging["html_enable"] ) {
