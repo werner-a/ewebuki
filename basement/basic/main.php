@@ -263,11 +263,11 @@
         include $pathvars["libraries"]."view.inc.php";
     }
 
+    // überschreiben von default werten
+    require $pathvars["config"]."overwrite.cfg.php";        
+    
     // steuerung der funktionen
     require $pathvars["config"]."addon.cfg.php";
-
-    // überschreiben von default werten
-    require $pathvars["config"]."overwrite.cfg.php";    
     
     // aenderungen durch webdesigner
     require $pathvars["templates"]."linking.inc.php";
