@@ -42,18 +42,46 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Tabellen Infos
-    $db_entries = "site_menu";
-    $db_entries_key = "mid";
-    $db_entries_lang = "site_menu_lang";
-    $db_entries_lang_key = "mlid";
+    // content umschaltung verhindern
+    $specialvars["dynlock"] = True;
 
-    $cfg["db"]["change"] = 0;
-    $cfg["fqdn0"] = "www";
-    $cfg["right"] = "cms_admin";
-
-    $environment["basis"] = $pathvars["virtual"]."/admin/menued";
-    $environment["name"] = "menued";
+    $cfg = array(
+        "subdir"    => "admin",
+        "name"      => "menued",
+        "basis"     => $pathvars["virtual"]."/admin/menued",
+        "iconpath"  => "", # leer: /images/default/; automatik: $pathvars["images"]
+        "color"     => array(
+                       "a" => "#cccccc",
+                       "b" => "#999999",
+        ),
+        "function"  => array(
+                       "list"   => array("sitemap"),
+                       "add"    => array(""),
+                       "edit"   => array("make_ebene", "update_tname"),
+                       "delete" => array("make_ebene"),
+                       "sort"   => array("sitemap", "renumber"),
+                       "move"   => array("sitemap", "make_ebene", "update_tname"),
+        ),
+        "db"        => array(
+                "change"      => 0,
+                "menu"        => array(
+                    "entries"       => "site_menu",
+                    "key"           => "mid",
+                    "order"         => "sort, label",
+                ),
+                "lang"        => array(
+                    "entries"       => "site_menu_lang",
+                    "key"           => "mlid",
+                    "order"         => "lang",
+                ),
+                "text"        => array(
+                    "entries"       => "site_text",
+                    "key"           => "tid",
+                ),
+        ),
+        "fqdn0"     => "www",
+        "right"     => "cms_admin",
+    );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
