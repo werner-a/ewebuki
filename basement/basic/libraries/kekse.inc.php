@@ -51,16 +51,16 @@
         $specialvars["rootname"] = $db->getDb();
     }
 
-    
+
     // altes verhalten wiederherstellen
     $defaults["split"]["title"] == "" ? $defaults["split"]["title"] = " - " : NOP;
     $defaults["split"]["kekse"] == "" ? $defaults["split"]["kekse"] = " - " : NOP;
     $defaults["split"]["m1"] == "" ? $defaults["split"]["m1"] = " &middot; " : NOP ;
     $defaults["split"]["m2"] == "" ? $defaults["split"]["m2"] = " &middot; " : NOP ;
     $defaults["split"]["l1"] == "" ? $defaults["split"]["l1"] = " &middot; " : NOP ;
-    $defaults["split"]["l2"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;        
+    $defaults["split"]["l2"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;
 
-    
+
     // dynamic style - db test/extension
     $sql = "select dynamiccss from site_".$mt ;
     $result = $db -> query($sql);
@@ -70,7 +70,7 @@
     } else {
         unset($dynamiccss);
     }
-    
+
     // dynamic bg - db test/extension
     $sql = "select dynamicbg from site_".$mt ;
     $result = $db -> query($sql);
@@ -139,12 +139,12 @@
             if ( $keksarray["dynamiccss"] != "" ) {
                 $specialvars["dynamiccss"] = $keksarray["dynamiccss"];
             }
-            
+
             // variables bg bild - erweiterung laut menueintrag setzen
             if ( $keksarray["dynamicbg"] != "" ) {
                 $specialvars["dynamicbg"] = $keksarray["dynamicbg"];
-            }          
-            
+            }
+
             // navbar erstellen
             #$ausgaben["UP"] = "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
             $ausgaben["M1"] = "";
@@ -167,10 +167,11 @@
 
                     if ( $right == -1 ) {
                         if ( $ausgaben["M1"] != "" ) $ausgaben["M1"] .= $defaults["split"]["m1"];
-                        if ( $navbararray["entry"] == "" ) {
-                            $link1url = $navbararray["exturl"];
-                        } else {
+                        if ( $navbararray["exturl"] == "" ) {
                             $link1url = "./".$navbararray["entry"].".html";
+                        } else {
+                            $link1url = $navbararray["exturl"];
+
                         }
                         $ausgaben["M1"] .= "<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a>";
                         $ausgaben["L1"] .= $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a><br>";
@@ -196,10 +197,10 @@
 
                     if ( $right == -1 ) {
                         if ( $ausgaben["M2"] != "" ) $ausgaben["M2"] .=$defaults["split"]["m2"] ;
-                        if ( $navbararray["entry"] == "" ) {
-                            $link2url = $navbararray["exturl"];
-                        } else {
+                        if ( $navbararray["exturl"] == "" ) {
                             $link2url = $pathvars["virtual"].$path."/".$navbararray["entry"].".html";
+                        } else {
+                            $link2url = $navbararray["exturl"];
                         }
                         $ausgaben["M2"] .= "<a class=\"menu_punkte\" href=\"".$link2url."\">".$navbararray["label"]."</a>";
                         $ausgaben["L2"] .= $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$link2url."\">".$navbararray["label"]."</a><br>";
