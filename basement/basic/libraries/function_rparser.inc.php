@@ -192,9 +192,10 @@
                     }
                 }
 
-                if ( strstr($line,"!#" ) ) {
+                if ( strstr($line,"!#") && !strstr($line,"<textarea") ) {
                     $line=str_replace("!#pathvars_webroot",$pathvars["webroot"],$line);
                     $line=str_replace("!#pathvars_menuroot",$pathvars["menuroot"],$line);
+                    $line=str_replace("!#pathvars_pretorian",$pathvars["pretorian"],$line);
                     $line=str_replace("!#specialvars_pagetitle",$specialvars["pagetitle"],$line);
                     $line=str_replace("!#date",gerdate(),$line);
                     $line=str_replace("!#environment_kekse",$environment["kekse"],$line);
