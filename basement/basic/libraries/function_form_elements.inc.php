@@ -47,10 +47,18 @@
     function form_elements( $table, $form_values, $extend = "" ) {
         global $db, $form_options, $defaults;
 
+        // wenn magic_quotes_gpc an ist muessen alle daten
+        // eines post von \ befreit werden.
+        if ( get_magic_quotes_gpc() ) {
+            $stripslashes = True;
+        }
+
         $columns = $db -> show_columns($table);
         #echo "<pre>".print_r($columns,True)."</pre>";
         foreach ( $columns as /* $key => */ $fields ) {
 
+            // stripslashes fuer das affenform
+            if ( $stripslashes == True ) $form_values[$fields["Field"]] = stripslashes($form_values[$fields["Field"]]);
 
             // not null bedeutet feld ausfuellen
             if ( $fields["Null"] == "" && $form_options[$fields["Field"]]["frequired"] == "" ) {
