@@ -61,6 +61,7 @@
     $specialvars["rootname"] = "Home"; // globaler root keks titel
     define ('SITETEXT','site_text'); // tabelle mit content
     $specialvars["available_languages"] = array("de","en"); // verfuegbare sprachen
+    #$specialvars["convert_languages"] = array("ger" => "de","eng" => "en"); // sprachen konverter (setzen nur nach umbau)
     $specialvars["default_language"] = "de"; // entwickler sprache
     $specialvars["default_design"] = "default"; // design bezeichnung
     $specialvars["default_template"] = "default1"; // basis name des default template
