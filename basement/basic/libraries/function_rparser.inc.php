@@ -90,10 +90,10 @@
             } elseif ($begin=="1") {
 
               // image path korrektur
-              if ( (strstr($line,"../../images/".$environment["design"]."/"))) {
-                $line=str_replace("../../images/".$environment["design"]."/",$pathvars["images"],$line);
+              if ( strstr($line,"../../images/") ) {
+                $line=str_replace("../../images/","/images/",$line);
               }
-
+             
               // style path korrektur + dynamic style
               if ( (strstr($line,"../../css/".$environment["design"].".css"))) {
                 if ( substr($specialvars["dynamiccss"],0,1) == "_" ) {

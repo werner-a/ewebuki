@@ -130,8 +130,8 @@
                     // hier alles eintragen was einmal pro zeile passieren soll
 
                     // image path anpassen
-                    if ( strstr($parse_mod,"../../images/".$environment["design"]."/") ) {
-                        $parse_mod=str_replace("../../images/".$environment["design"]."/",$pathvars["images"],$parse_mod);
+                    if ( strstr($parse_mod,"../../images/") ) {
+                        $parse_mod=str_replace("../../images/","/images/",$parse_mod);
                     }
 
                     // image language korrektur
