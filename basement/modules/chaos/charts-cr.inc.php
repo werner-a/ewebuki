@@ -130,7 +130,7 @@
               $new = "0";
           }
 
-          $sql = "SELECT id FROM ".$cfg["db"]["titel"]." WHERE titel = '".$value[1]."'";
+          $sql = "SELECT id FROM ".$cfg["db"]["titel"]." WHERE titel = '".addslashes($value[1])."'";
           #echo $sql."<br>";
           $result  = $db -> query($sql);
           $titel["data"] = $db -> fetch_row($result);
@@ -143,7 +143,7 @@
               $titel["id"] = $titel["data"][0];
           }
 
-          $sql = "SELECT id FROM ".$cfg["db"]["interpret"]." WHERE interpret = '".$value[2]."'";
+          $sql = "SELECT id FROM ".$cfg["db"]["interpret"]." WHERE interpret = '".addslashes($value[2])."'";
           #echo $sql."<br>";
           $result  = $db -> query($sql);
           $interpret["data"] = $db -> fetch_row($result);
