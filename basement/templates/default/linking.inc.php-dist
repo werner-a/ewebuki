@@ -44,8 +44,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
-  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "name: ".$_SERVER["SCRIPT_NAME"].$debugging["char"];
-  
+  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "linking path: ".$linking_path.$debugging["char"];      
+
   // mit diesem script kann ansatt der jeweiligen marke
   // abhaengig vom $environment["ebene"] und/oder $environment["kategorie"] 
   // mit dem wert der variable $mapping["markenbezeichnung"] 
