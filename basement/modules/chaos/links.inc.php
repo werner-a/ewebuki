@@ -121,7 +121,7 @@
         $links_complete .= $links_line."<br>";
       }
     }
-    $output .= "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+    $output .= "<table width=\"99%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
       $output .= "<tr>";
     $output .= "<td colspan=\"3\">".$links_kekse."</td>";
       $output .= "</tr>";
