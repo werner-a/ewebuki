@@ -235,7 +235,7 @@
       #"form"       => array("email,", "E-Mail", ""),
       #"delete"      => array("modify,", "Löschen")
     );
-    $imgpath = $pathvars["images"];
+    $imgpath = $cfg["iconpath"];
 
     $ausgaben["output"] .= "<table width=\"100%\" border=\"0\"><tr><td>";
 
@@ -280,24 +280,24 @@
 
             if (is_array($HTTP_SESSION_VARS["images_memo"])) {
                 if (in_array($fid,$HTTP_SESSION_VARS["images_memo"])) {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$pathvars["images"]."cms-cb1.png\"></a>";
+                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb1.png\"></a>";
                 } else {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$pathvars["images"]."cms-cb0.png\"></a>";
+                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb0.png\"></a>";
                 }
             } else {
-                $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img src=".$pathvars["images"]."cms-cb0.png border=0></a>";
+                $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img src=".$cfg["iconpath"]."cms-cb0.png border=0></a>";
             }
 
 #            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">BUFFY: ".$ffname."--".$fdesc."</font>".$debugging["char"];
             switch ( $ffart ) {
                 case ("zip"):
                     $ausgaben["output"] .="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"";
-                    $ausgaben["output"] .= "<tr><td width=\"8\">".$cb."</td><td align=left width=\"30\"><a href=".$cfg["file"]["webdir"].$cfg["file"]["archiv"]."arc_".$fid.".zip><img src=\"".$pathvars["images"]."details.png\" border=0></a></td><td align=left width=\"612\">".$fdesc."</td>";
+                    $ausgaben["output"] .= "<tr><td width=\"8\">".$cb."</td><td align=left width=\"30\"><a href=".$cfg["file"]["webdir"].$cfg["file"]["archiv"]."arc_".$fid.".zip><img src=\"".$cfg["iconpath"]."details.png\" border=0></a></td><td align=left width=\"612\">".$fdesc."</td>";
                     $ausgaben["output"] .= "</table>";
                     break;
                 case ("pdf"):
                     $ausgaben["output"] .="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"";
-                    $ausgaben["output"] .= "<tr><td width=\"8\">".$cb."</td><td align=left width=\"30\"><a target=\"_blank\" href=".$cfg["file"]["webdir"].$cfg["file"]["text"]."doc_".$fid.".pdf><img src=\"".$pathvars["images"]."details.png\" border=0></a></td><td align=left width=\"612\">".$fdesc."</td>";
+                    $ausgaben["output"] .= "<tr><td width=\"8\">".$cb."</td><td align=left width=\"30\"><a target=\"_blank\" href=".$cfg["file"]["webdir"].$cfg["file"]["text"]."doc_".$fid.".pdf><img src=\"".$cfg["iconpath"]."details.png\" border=0></a></td><td align=left width=\"612\">".$fdesc."</td>";
                     $ausgaben["output"] .= "</table>";
                     break;
                 default:
@@ -315,7 +315,7 @@
                     $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",big.html\">Big</a> ";
                     $ausgaben["output"] .= "<a href=\"".$cfg["basis"]."/preview,".$fid.",medium.html\">Med</a> ";
                     $ausgaben["output"] .= "<a href=\"".$cfg["basis"]."/preview,".$fid.",small.html\">Sma</a></td></tr>";
-                    $ausgaben["output"] .= "<tr><td colspan=\"2\" align=\"left\"><img width=\"100\" height=\"1\" src=\"".$pathvars["images"]."pos.png\"></td></tr>";
+                    $ausgaben["output"] .= "<tr><td colspan=\"2\" align=\"left\"><img width=\"100\" height=\"1\" src=\"".$cfg["iconpath"]."pos.png\"></td></tr>";
                     $ausgaben["output"] .= "</table>";
                     $j++;
                     $ja = $j / $cfg["db"]["line"];

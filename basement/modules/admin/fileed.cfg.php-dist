@@ -42,10 +42,14 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // content umschaltung verhindern
+    $specialvars["dynlock"] = True;
+
     $cfg = array(
         "subdir"    => "admin",
         "name"      => "fileed",
         "basis"     => $pathvars["virtual"]."/admin/fileed",
+        "iconpath"  => "", # leer: /images/default/; automatik: $pathvars["images"]
         "function"  => array("describe", "list", "note", "preview", "select"),
         "db"        => array(
             "entries"  => "site_file",
@@ -74,7 +78,7 @@
             "max"      => "580", # leer bedeutet, orginal bleibt erhalten
         ),
         "filter"    => array(
-            "0"        => array("Meine", "Dienststelle", "Alle"),
+            "0"        => array("Meine", "Gruppe", "Alle"),
             "1"        => array("Bilder", "PDF", "Archive"),
         ),
     );
