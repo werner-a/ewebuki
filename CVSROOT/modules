@@ -50,5 +50,6 @@ templates basement/templates
 # ampermod &first-dir
 
 # exmodule -a !first-dir/sdir first-dir
+snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
 
 # EOF
