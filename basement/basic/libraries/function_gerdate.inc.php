@@ -44,10 +44,15 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    function gerdate() {
+    function gerdate($art="", $value="") {
 
-        $temp=date("w");
-        switch ($temp) {
+        // gdl -> german day log
+        // gms -> german month short
+        // gml -> german month long
+
+
+        if ( $value == "" ) $value=date("w");
+        switch ($value) {
             case "0": $tag="Sonntag, "; break;
             case "1": $tag="Montag, "; break;
             case "2": $tag="Dienstag, "; break;
@@ -57,26 +62,64 @@
             case "6": $tag="Samstag, "; break;
         }
 
-        $temp=date("n");
-        switch ($temp) {
-            case 1: $monat="01."; break;
-            case 2: $monat="02."; break;
-            case 3: $monat="03."; break;
-            case 4: $monat="04."; break;
-            case 5: $monat="05."; break;
-            case 6: $monat="06."; break;
-            case 7: $monat="07."; break;
-            case 8: $monat="08."; break;
-            case 9: $monat="09."; break;
-            case 10: $monat="10."; break;
-            case 11: $monat="11."; break;
-            case 12: $monat="12."; break;
+        if ( $art == "gms" ) {
+            switch ($value) {
+                case 1: $monat="Jan."; break;
+                case 2: $monat="Feb."; break;
+                case 3: $monat="Mär."; break;
+                case 4: $monat="Apr."; break;
+                case 5: $monat="Mai"; break;
+                case 6: $monat="Jun."; break;
+                case 7: $monat="Jul."; break;
+                case 8: $monat="Aug."; break;
+                case 9: $monat="Sep."; break;
+                case 10: $monat="Okt."; break;
+                case 11: $monat="Nov."; break;
+                case 12: $monat="Dez."; break;
+            }
+        } elseif ( $art == "gml" ) {
+            switch ($value) {
+                case 1: $monat="Januar"; break;
+                case 2: $monat="Februar"; break;
+                case 3: $monat="März"; break;
+                case 4: $monat="April"; break;
+                case 5: $monat="Mai"; break;
+                case 6: $monat="Juni"; break;
+                case 7: $monat="July"; break;
+                case 8: $monat="August"; break;
+                case 9: $monat="September"; break;
+                case 10: $monat="Oktober"; break;
+                case 11: $monat="November"; break;
+                case 12: $monat="Dezember"; break;
+            }
+        } else {
+            if ( $value == "" ) $value=date("n");
+            switch ($value) {
+                case 1: $monat="01."; break;
+                case 2: $monat="02."; break;
+                case 3: $monat="03."; break;
+                case 4: $monat="04."; break;
+                case 5: $monat="05."; break;
+                case 6: $monat="06."; break;
+                case 7: $monat="07."; break;
+                case 8: $monat="08."; break;
+                case 9: $monat="09."; break;
+                case 10: $monat="10."; break;
+                case 11: $monat="11."; break;
+                case 12: $monat="12."; break;
+            }
         }
 
         $tagom=date("d");
         $jahr=date("Y");
 
-        return sprintf("%s%s.%s%s",$tag,$tagom,$monat,$jahr);
+        if ( $art == "gdl" ) {
+            return sprintf("%s",$tag);
+        } elseif ( $art == "gms" || $art == "gml" ) {
+            return sprintf("%s",$monat);
+        } else {
+            return sprintf("%s%s.%s%s",$tag,$tagom,$monat,$jahr);
+        }
     }
 
 
