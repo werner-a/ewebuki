@@ -237,7 +237,7 @@
     // rekursiven parser aufrufen
     if ( $HTTP_POST_VARS["print"] != "" || $HTTP_GET_VARS["print"] != "" ) {
         $debugging["html_enable"] = 0;
-        $print_template = $HTTP_POST_VARS["print"].$HTTP_GET_VARS["print"];
+        $print_template = $HTTP_POST_VARS["print"][2].$HTTP_GET_VARS["print"][2];
         rparser( $print_template.".tem.html", $specialvars["default_template"].".tem.html");
     } elseif ( $HTTP_POST_VARS["hijack"] != "" || $HTTP_GET_VARS["hijack"] != "" ) {
         foreach ( $HTTP_GET_VARS as $key => $value ) {
