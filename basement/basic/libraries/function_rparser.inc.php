@@ -86,17 +86,6 @@
               }
 
       //////////////////////////////////////////////////////////////////////////////////////////////
-      // language "#(label)" - hier kommt der text anhand von sprache,
-      //                       template und marke aus der datenbank
-      //////////////////////////////////////////////////////////////////////////////////////////////
-
-              if ( strstr($line,"#(") ) {
-                // wie heisst das template
-                $tname = substr($startfile,0,strpos($startfile,".tem.html"));
-                $line = content($line, $tname);
-              }
-
-      //////////////////////////////////////////////////////////////////////////////////////////////
       // variable "!#marke" - hier werden die variablen in die ausgabe eingebaut
       //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,6 +115,17 @@
                     $line=str_replace("!#environment_subkatid",$environment["subkatid"],$line);
                     $line=str_replace("!#specialvars_phpsessid",$specialvars["phpsessid"],$line);
                 }
+
+      //////////////////////////////////////////////////////////////////////////////////////////////
+      // language "#(label)" - hier kommt der text anhand von sprache,
+      //                       template und marke aus der datenbank
+      //////////////////////////////////////////////////////////////////////////////////////////////
+
+              if ( strstr($line,"#(") ) {
+                // wie heisst das template
+                $tname = substr($startfile,0,strpos($startfile,".tem.html"));
+                $line = content($line, $tname);
+              }
 
       //////////////////////////////////////////////////////////////////////////////////////////////
       // automatic "#{marke}" - rekursives !!!, automatisches einparsen von sub templates
