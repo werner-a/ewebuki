@@ -112,6 +112,7 @@
         $sql = "SELECT site_".$mt.".mid,
                        site_".$mt.".refid,
                        site_".$mt.".entry,
+                       site_".$mt.".level,
                        site_".$mt.".defaulttemplate,
                        ".$dynamiccss.$dynamicbg."
                        site_".$mt."_lang.label
@@ -119,15 +120,31 @@
             INNER JOIN site_".$mt."_lang
                     ON site_".$mt.".mid = site_".$mt."_lang.mid
                  WHERE site_".$mt.".entry ".$search."
-                   AND site_".$mt."_lang.lang='".$environment["language"]."'
-                   AND site_".$mt.".refid = '".$refid."';";
+                   AND site_".$mt.".refid = '".$refid."'
+                   AND site_".$mt."_lang.lang='".$environment["language"]."';";
+
+#                   AND ( site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL )
+
+#                 WHERE site_".$mt.".entry ".$search."
+#                   AND site_".$mt."_lang.lang='".$environment["language"]."'
+#                   AND site_".$mt.".refid = '".$refid."';";
+
+#                 WHERE (
+#                       (site_".$mt.".refid=".$keksarray["refid"].")
+#                   AND (site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL)
+#                   AND (site_".$mt."_lang.lang='".$environment["language"]."')
+#                       )
+
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $keksresult = $db -> query($sql);
 
         if ( $db -> num_rows($keksresult) == 1 ) {
 
-            $hitcounter++;
             $keksarray  = $db -> fetch_array($keksresult,1);
+
+            if ( $keksarray["level"] != "" && $rechte[$keksarray["level"]] != -1 ) break;
+
+            $hitcounter++;
 
             // refid setzen um richtigen eintrag zu finden
             $refid = $keksarray["mid"];
@@ -269,8 +286,10 @@
             if ( $_SERVER["HTTP_REFERER"] ) {
                 $ausgaben["404referer"] = $_SERVER["HTTP_REFERER"];
                 $mapping["main"] = "404referer";
+                header("HTTP/1.0 404 Not Found");
             } else {
                 $mapping["main"] = "404";
+                header("HTTP/1.0 404 Not Found");
                 #$ausgaben["404referer"] = "#(unbekannt)";
             }
 
