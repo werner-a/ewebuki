@@ -137,12 +137,12 @@
 
             // variables css file - erweiterung laut menueintrag setzen
             if ( $keksarray["dynamiccss"] != "" ) {
-                $specialvars["dynamic_css"] = $keksarray["dynamiccss"];
+                $specialvars["dynamiccss"] = $keksarray["dynamiccss"];
             }
             
             // variables bg bild - erweiterung laut menueintrag setzen
             if ( $keksarray["dynamicbg"] != "" ) {
-                $specialvars["dynamic_bg"] = $keksarray["dynamicbg"];
+                $specialvars["dynamicbg"] = $keksarray["dynamicbg"];
             }          
             
             // navbar erstellen
