@@ -46,7 +46,7 @@
         "subdir"    => "admin",
         "name"      => "fileed",
         "basis"     => $pathvars["virtual"]."/admin/fileed",
-        "function"  => array( "select", "describe", "resize", "preview", "note", "list"),
+        "function"  => array("describe", "list", "note", "preview", "select"),
         "db"        => array(
             "entries"  => "site_file",
             "key"      => "fid",
