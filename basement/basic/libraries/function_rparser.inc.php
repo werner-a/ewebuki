@@ -50,29 +50,29 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function rparser($startfile, $default_template) {
     global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $mapping, $loopcheck;
-    
+
     // original template find
     #$template = $pathvars["templates"].$startfile;
     if ( file_exists($pathvars["templates"].$startfile) ) {
       $template = $pathvars["templates"].$startfile;
-    } else { 
+    } else {
       $template = $pathvars["fileroot"]."templates/default/".$startfile;
     }
-    
-    // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.    
-    if ( !file_exists($template) && $default_template != "" ) {               
-        if ( $startfile == $loopcheck ) {        
+
+    // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
+    if ( !file_exists($template) && $default_template != "" ) {
+        if ( $startfile == $loopcheck ) {
           if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found. Loop detect!!!".$debugging["char"];
-        } else {  
+        } else {
           if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found using: ".$default_template.$debugging["char"];
           // original template find
           #$template = $pathvars["templates"].$default_template;
           if ( file_exists($pathvars["templates"].$default_template) ) {
             $template = $pathvars["templates"].$default_template;
-          } else { 
+          } else {
             $template = $pathvars["fileroot"]."templates/default/".$default_template;
           }
-        }        
+        }
         $loopcheck = $startfile;
     } else {
         unset($loopcheck);
@@ -93,7 +93,7 @@
               if ( strstr($line,"../../images/") ) {
                 $line=str_replace("../../images/","/images/",$line);
               }
-             
+
               // style path korrektur + dynamic style
               if ( (strstr($line,"../../css/".$environment["design"].".css"))) {
                 if ( substr($specialvars["dynamiccss"],0,1) == "_" ) {
@@ -105,20 +105,23 @@
                 }
                 $line=str_replace("../../css/".$environment["design"].".css",$pathvars["webcss"].$stylename.".css",$line);
               }
-              
+
               // dynamic bg
               if ( strstr($line,"background=\"!#specialvars_dynamicbg\"") ) {
                 if ( $specialvars["dynamicbg"] != "" ) {
-                    $line=str_replace("background=\"!#specialvars_dynamicbg\"","background=\"/images/".$environment["design"]."/".$specialvars["dynamicbg"]."\"",$line);                    
+                    $line=str_replace("background=\"!#specialvars_dynamicbg\"","background=\"/images/".$environment["design"]."/".$specialvars["dynamicbg"]."\"",$line);
                 } else {
-                    $line=str_replace("background=\"!#specialvars_dynamicbg\" ","",$line);                    
+                    $line=str_replace("background=\"!#specialvars_dynamicbg\" ","",$line);
                 }
-                
+
               }
 
               // image language korrektur
-              if ( strstr($line,"/".$specialvars["default_language"]."_") && $environment["language"] != $specialvars["default_language"] && $environment["language"] != "" ) {
-                $line=str_replace("/ger_","/".$environment["language"]."_",$line);
+              if ( strstr($line,"_".$specialvars["default_language"].".")
+                && $environment["language"] != $specialvars["default_language"]
+                && $environment["language"] != "" ) {
+
+                $line=str_replace("_".$specialvars["default_language"].".","_".$environment["language"].".",$line);
               }
 
       //////////////////////////////////////////////////////////////////////////////////////////////

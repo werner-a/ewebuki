@@ -145,8 +145,11 @@
                     }
 
                     // image language korrektur
-                    if ( strstr($parse_mod,"/".$specialvars["default_language"]."_") && $environment["language"] != $specialvars["default_language"] && $environment["language"] != "" ) {
-                        $parse_mod=str_replace("/ger_","/".$environment["language"]."_",$line);
+                    if ( strstr($parse_mod,"_".$specialvars["default_language"].".")
+                        && $environment["language"] != $specialvars["default_language"]
+                        && $environment["language"] != "" ) {
+
+                        $parse_mod=str_replace("_".$specialvars["default_language"].".","_".$environment["language"].".",$parse_mod);
                     }
 
                     //////////////////////////////////////////////////////////////////////////////////////////////
