@@ -82,7 +82,21 @@
         closedir($dp);
         if ( $found != true ) header("Location: ".$cfg["basis"]."/list.html");
 
-        $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."&size=280\">";
+        // bildausgabe
+        switch ( substr(strrchr($file,"."),1 ) ){
+            case "jpg":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."&size=280\">";
+                break;
+            case "png":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."&size=280\">";
+                break;
+            case "zip":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."zip_icon.jpg&size=280\">";
+                break;
+            case "pdf":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."pdf_big.png&size=280\">";
+                break;
+        }
 
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
@@ -195,7 +209,8 @@
 
                             // orginal bild nach max resizen oder loeschen
                             #if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
-                            if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
+#                            if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
+                            if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] ) {
                                 rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".jpg");
                             } else {
                                 img_resize( $file_org, $file_id, $img_src, $cfg["size"]["max"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."original", "img" );
@@ -235,10 +250,20 @@
         }
 
         // bildausgabe
-        if (strstr($form_values["ffname"],".pdf")) {
-            $ausgaben["image_print"] = "<img src=\"".$pathvars["images"]."pdf_big.png\">";
-        } else {
-            $ausgaben["image_print"] .= "<img src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$wert.".".$form_values["ffart"]."\">";
+#        if (strstr($form_values["ffname"],".pdf")) {
+        switch ( $form_values["ffart"] ){
+            case "jpg":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280\">";
+                break;
+            case "png":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280\">";
+                break;
+            case "zip":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."zip_icon.jpg&size=280\">";
+                break;
+            case "pdf":
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."pdf_big.png&size=280\">";
+                break;
         }
 
         // form options holen
@@ -247,8 +272,15 @@
         // form elememte bauen
         $element = form_elements( $cfg["db"]["entries"], $form_values );
 
-        // form elemente erweitern
-        $element["upload"] = "#(upa)<br><input type=\"file\" name=\"upload\"><br>#(upb)";
+        // form elemente erweitern nur eigene dateien duerfen ersetzt werden
+        if ( $HTTP_SESSION_VARS["uid"] == $form_values["fuid"] ) {
+            $element["upload"] = "#(upa)<br><input type=\"file\" name=\"upload\"><br>#(upb)";
+        } else {
+            $element["fdesc"] = str_replace(">"," readonly>",$element["fdesc"]);
+            $element["fhit"] = str_replace(">"," readonly>",$element["fhit"]);
+            $element["funder"] = str_replace(">"," readonly>",$element["funder"]);
+            $element["upload"] = "";
+        }
 
         // was anzeigen
         #$mapping["main"] = crc32($environment["ebene"]).".modify";
@@ -319,7 +351,8 @@
                             img_resize( $file_org, $file_id, $img_src, $cfg["size"]["thumb"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
 
                             // orginal bild nach max resizen oder loeschen
-                            if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
+#                            if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
+                            if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] ) {
                                 rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".jpg");
                             } else {
                                 img_resize( $file_org, $file_id, $img_src, $cfg["size"]["max"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."original", "img" );
