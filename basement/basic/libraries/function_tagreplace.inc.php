@@ -419,6 +419,14 @@
 
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
                         break;
+                    case "[DIV=":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $divwerte = explode(";",$tagwerte[0]);
+                        if ( $divwerte[0] != "" ) {
+                            $class = " class=\"".$divwerte[1]."\"";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<div".$class.">".$tagwerte[1]."</div>",$replace);
+                        break;
                     case "[TAB]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<table cellspacing=\"0\" cellpadding=\"1\">".$tagwert."</table>",$replace);
                         break;
