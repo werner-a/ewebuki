@@ -47,6 +47,19 @@
 
     // ACHTUNG: auth.cfg.php im Config Directory wird inkludiert!
 
+    // login link erstellen
+    $pathvars["pretorian"] = $pathvars["menuroot"]."/".$cfg["hidden"]["kategorie"].".html";
+
+    // referer im form mit hidden element mitschleppen
+    if ( $HTTP_POST_VARS["form_referer"] == "" ) {
+        $path = split("/",$_SERVER["HTTP_REFERER"],4);
+        $ausgaben["form_referer"] = "/".$path[3];
+        $ausgaben["form_break"] = $ausgaben["form_referer"];
+    } else {
+        $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
+        $ausgaben["form_break"] = $ausgaben["form_referer"];
+    }
+
     // login ueberpruefen
     if ( $HTTP_POST_VARS["login"] == "login" ) {
         if ( $cfg["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["db"]["user"]["custom"];
@@ -78,10 +91,15 @@
             $HTTP_SESSION_VARS["username"] = $AUTH[$cfg["db"]["user"]["name"]];
             session_register("custom");
             $HTTP_SESSION_VARS["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
-            if ( $pathvars["virtual"] != "" ) {
-              $destination = str_replace($pathvars["virtual"],$pathvars["virtual"]."/auth",$pathvars["requested"]);
+            if ( $cfg["hidden"]["set"] == True ) {
+                $destination_src = $ausgaben["form_referer"];
             } else {
-              $destination = "/auth".$pathvars["requested"];
+                $destination_src = $pathvars["requested"];
+            }
+            if ( $pathvars["virtual"] != "" ) {
+                $destination = str_replace($pathvars["virtual"],$pathvars["virtual"]."/auth",$destination_src);
+            } else {
+                $destination = "/auth".$destination_src;
             }
             header("Location: ".$destination);
         } else {
@@ -94,10 +112,10 @@
 
     // logout durchfuehren und session loeschen
     if ( $HTTP_POST_VARS["logout"] == "logout" ) {
-            session_start();
-            session_unset();
-            session_destroy();
-            $ausgaben["login_meldung"] = "#(logout)";
+        session_start();
+        session_unset();
+        session_destroy();
+        $ausgaben["login_meldung"] = "#(logout)";
     }
 
     // session variablen nur holen wenn /auth/ in der url
@@ -129,6 +147,9 @@
         }
         $specialvars["phpsessid"] = "?PHPSESSID=".session_id();
      }
+
+    // da hidden menu aktiviert ist, 404 fuer diese kategorie ausschalten
+    if ( $cfg["hidden"]["set"] == True ) $specialvars["404"]["nochk"]["kategorie"][] =  $cfg["hidden"]["kategorie"];
 
     // daten fuer login, logout formular setzen
     if ( $HTTP_SESSION_VARS["auth"] != -1 ) {
