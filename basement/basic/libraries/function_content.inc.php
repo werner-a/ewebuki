@@ -117,6 +117,7 @@
             }
 
             // cms edit link einblenden
+            if ( $specialvars["editlock"] == False ) {
             if ( $rechte["cms_edit"] == -1
               /* || $rechte["administration"] == -1 && $rechte["sti"] == -1 ### loesung? */
               || $rechte["administration"] == -1 && $dbzugriff == -1
@@ -139,10 +140,12 @@
                 if ( !strstr($line,"value=\"") ) {
                     $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\"><img src=\"".$pathvars["images"]."cms-tag-".$signal.".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
                 } else {
-                    $line = $line." <a target=\"_top\" href=\"".$editurl.".html\"><img src=\"".$pathvars["images"]."cms-tag-".$signal.".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
+                    #$line = $line." <a target=\"_top\" href=\"".$editurl.".html\"><img src=\"".$pathvars["images"]."cms-tag-".$signal.".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
+                    $line = $line." <a target=\"_top\" href=\"".$editurl.".html\">".$label."</a>";
                 }
             }
-
+            }
+            
             // wenn content nicht in html ist
             if ( $row[0] != -1 ) {
                 // intelligenten link tag bearbeiten

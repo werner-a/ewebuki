@@ -44,8 +44,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function makece($ce_formname, $ce_name, $ce_inhalt) {
-        global $db, $pathvars, $ausgaben, $extension;
+        global $db, $pathvars, $ausgaben, $extension, $specialvars;
         $ausgaben["ce_name"] = $ce_name;
+
+        $specialvars["editlock"] = -1;
 
         // vogelwilde regex die viel arbeit erspart hat
         preg_match_all("/_([0-9]*)\./",$ce_inhalt,$found);
@@ -134,35 +136,35 @@
 
 
         $ausgaben["ce_script"] = parser("cms.edit-js","");
-        $cetag = array( "b"     => array( "1", "Fett"),
-                        "i"     => array( "1", "Kursiv"),
-                        "cent"  => array( "1", "Zentrieren"),
-                        "bi"    => array( "",  "Fett und Kursiv"),
-                        "q"     => array( "",  "Anführungszeichen"),
-                        "c"     => array( "",  "Zitat"),
-                        "ul"    => array( "1", "Normale Liste"),
-                        "ol"    => array( "",  "Sortierte Liste"),
-                        "img"   => array( "",  "Bild einfügen"),
-                        "imgb"  => array( "",  "Bild mit Beschriftung einfügen"),
-                        "link"  => array( "",  "Link einfügen"),
-                        "linkb" => array( "1", "Link Über einfügen"),
-                        "e"     => array( "",  "E-Mail einfügen"),
-                        "eb"    => array( "1", "E-Mail Über einfügen"),
-                        "h1"    => array( "1", "Hauptüberschrift einfügen"),
-                        "h2"    => array( "1", "Unterüberschrift einfügen"),
-                        "hl"    => array( "1", "Waagrechte Linie"),
-                        "tab"   => array( "1", "Tabelle einfügen"),
-                        "row"   => array( "1", "Zeile einfügen"),
-                        "col"   => array( "1", "Spalte einfügen"),
-                        "up"    => array( "", "Zurück Link"),
-                        "m1"    => array( "", "Menü"),
-                        "m2"    => array( "", "Untermenü"),
-                        #"m3"    => array( "", "Menu Automatic"),
-                        "int"   => array( "",  "Intelligenter Link"),
+        $cetag = array( "b"     => array( "1", "#(b)"),
+                        "i"     => array( "1", "#(i)"),
+                        "cent"  => array( "1", "#(cent)"),
+                        "bi"    => array( "",  "#(bi)"),
+                        "q"     => array( "",  "#(q)"),
+                        "c"     => array( "",  "#(c)"),
+                        "ul"    => array( "1", "#(ul)"),
+                        "ol"    => array( "",  "#(ol)"),
+                        "img"   => array( "",  "#(img)"),
+                        "imgb"  => array( "",  "#(imgb)"),
+                        "link"  => array( "",  "#(link)"),
+                        "linkb" => array( "1", "#(linkb)"),
+                        "e"     => array( "",  "#(e)"),
+                        "eb"    => array( "1", "#(eb)"),
+                        "h1"    => array( "1", "#(h1)"),
+                        "h2"    => array( "1", "#(h2)"),
+                        "hl"    => array( "1", "#(hl)"),
+                        "tab"   => array( "1", "#(tab)"),
+                        "row"   => array( "1", "#(row)"),
+                        "col"   => array( "1", "#(col)"),
+                        "up"    => array( "", "#(up)"),
+                        "m1"    => array( "", "#(m1)"),
+                        "m2"    => array( "", "#(m2)"),
+                        #"m3"    => array( "", "#(m3)"),
+                        "int"   => array( "",  "#(int)"),
                       );
 
         $ausgaben["ce_dropdown"]  = "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"st\" size=\"1\" onChange=\"INSst(this.options[this.selectedIndex].value,'".$ce_formname."','".$ce_name."');this.selectedIndex=0;\">";
-        $ausgaben["ce_dropdown"] .= "<option value=\"\">TAG Select</option>";
+        $ausgaben["ce_dropdown"] .= "<option value=\"\">#(tagselect)</option>";
         foreach( $cetag as $key => $value ) {
             if ( $value[0] == 1 ) {
                 $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\"><img src=\"".$pathvars["images"]."cms-tag-".$key.".png\" alt=\"".$value[1]."\" width=\"23\" height=\"22\" border=\"0\"></a> ";
@@ -174,7 +176,7 @@
         $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$pathvars["images"]."cms-tag-imgb.png\" width=\"23\" height=\"22\">";
 
         $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";
-        $ausgaben["ce_upload"] .= "<option value=\"\">Upload</option>";
+        $ausgaben["ce_upload"] .= "<option value=\"\">#(upload)</option>";
         $ausgaben["ce_upload"] .= "<option value=\"1\">1 Datei</option>";
         $ausgaben["ce_upload"] .= "<option value=\"2\">2 Dateien</option>";
         $ausgaben["ce_upload"] .= "<option value=\"3\">3 Dateien</option>";
