@@ -45,8 +45,9 @@
 
     function tagreplace($replace) {
         global $pathvars, $environment, $ausgaben;
+
         // neues generelles tagreplace
-        while ( preg_match("/\[[A-Z1-2]{1,6}(\]|=)/", $replace, $tag ) ) {
+        while ( preg_match("/\[[A-Z1-3]{1,6}(\]|=)/", $replace, $tag ) ) {
         // fuck ereg -> is to slow!
         #while ( ereg("\[[A-Z1-2]{1,6}(\]|=)", $replace, $tag ) ) {
             $opentag = $tag[0];
@@ -477,10 +478,96 @@
                         $replace = str_replace($opentag.$tagwert.$endtag,"<img src=\"".$pathvars["images"]."hl.png\" height=\"1\" width=\"628\" vspace=\"2\" alt=\"\">",$replace);
                         break;
                     case "[M1]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,$ausgaben["M1"],$replace);
+                        if ( $tagwert == "" ) {
+                            $label = " .. ";
+                        } else {
+                            $label = $tagwert;
+                        }
+                        if ( $ausgaben["M2"] != "" ) {
+                            $trenner = " &middot; ";
+                        } else {
+                            $trenner = "";
+                        }
+                        $m1 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>".$trenner.$ausgaben["M1"];
+                        $replace = str_replace($opentag.$tagwert.$endtag,$m1,$replace);
+                        break;
+                    case "[M1=":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $m1werte = explode(";",$tagwerte[0]);
+                        if ( $tagwerte[1] == "" ) {
+                            $label = " .. ";
+                        } else {
+                            $label = $tagwerte[1];
+                        }
+                        if ( $m1werte[0] == "list" ) {
+                            if ( $m1werte[1] == "back" ) {
+                                $m1 = "&middot; <a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
+                            }
+                            $m1 .= $ausgaben["L1"];
+                        } else {
+                            if ( $m1werte[1] == "back" ) {
+                                if ( $ausgaben["M1"] != "" ) {
+                                    $trenner = " &middot; ";
+                                } else {
+                                    $trenner = "";
+                                }
+                                $m1 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>".$trenner;
+                            }
+                            $m1 .= $ausgaben["M1"];
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$m1,$replace);
                         break;
                     case "[M2]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,$ausgaben["M2"],$replace);
+                        if ( $tagwert == "" ) {
+                            $label = " .. ";
+                        } else {
+                            $label = $tagwert;
+                        }
+                        if ( $ausgaben["M2"] != "" ) {
+                            $trenner = " &middot; ";
+                        } else {
+                            $trenner = "";
+                        }
+                        $m2 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>".$trenner.$ausgaben["M2"];
+                        $replace = str_replace($opentag.$tagwert.$endtag,$m2,$replace);
+                        break;
+                    case "[M2=":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $m2werte = explode(";",$tagwerte[0]);
+                        if ( $tagwerte[1] == "" ) {
+                            $label = " .. ";
+                        } else {
+                            $label = $tagwerte[1];
+                        }
+                        if ( $m2werte[0] == "list" ) {
+                            if ( $m2werte[1] == "back" ) {
+                                $m2 = "&middot; <a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
+                            }
+                            $m2 .= $ausgaben["L2"];
+                        } else {
+                            if ( $m2werte[1] == "back" ) {
+                                if ( $ausgaben["M2"] != "" ) {
+                                    $trenner = " &middot; ";
+                                } else {
+                                    $trenner = "";
+                                }
+                                $m2 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>".$trenner;
+                            }
+                            $m2 .= $ausgaben["M2"];
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$m2,$replace);
+                        break;
+                    case "[UP]":
+                        if ( $tagwert == "" ) {
+                            $label = " .. ";
+                        } else {
+                            $label = $tagwert;
+                        }
+                        $m2 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>";
+                        $replace = str_replace($opentag.$tagwert.$endtag,$m2,$replace);
+                        break;
+                    case "[M3]":
+                        $replace = str_replace($opentag.$tagwert.$endtag,$ausgaben["M3"],$replace);
                         break;
                     default:
                         #$ausgabewert = "\"illegal tag: ".strtolower($opentag)."\"";
@@ -500,6 +587,7 @@
                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ersetze marke ".$key." => ".$value.$debugging["char"];
             }
         }
+
         return $replace;
     }
 
