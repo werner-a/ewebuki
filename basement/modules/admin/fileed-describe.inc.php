@@ -45,9 +45,9 @@
 
 
     if ( $environment[parameter][1] == "check" ) {
-        $valid = array("jpg", "png", "pdf");
         foreach ( $_FILES as $key => $value ) {
-            $file = file_verarbeitung($cfg["file"]["new"], $key, 2000000, $valid, $cfg["file"]["maindir"]);
+            $file = file_verarbeitung($cfg["file"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $cfg["file"]["maindir"]);
+
             if ( $file["returncode"] == 0 ) {
                 rename($cfg["file"]["maindir"].$cfg["file"]["new"].$file["name"],$cfg["file"]["maindir"].$cfg["file"]["new"].$HTTP_SESSION_VARS["uid"]."_".$file["name"]);
             } else {
@@ -98,6 +98,8 @@
                 $element[$key] = str_replace($key."\"", $key."\" value=\"".$value."\"", $element[$key]);
             }
         }
+        $element["upload"] = "";
+        $element["fid"] = "";
 
         // was anzeigen
         # automatik sollte gehen $mapping[main] = crc32($environment[ebene]).".".$environment[kategorie];
@@ -152,19 +154,28 @@
                     $file_ext = strrchr($file,".");
 
                     switch ($file_ext) {
+                        case ".zip":
+                            rename($file_org, $cfg["file"]["maindir"].$cfg["file"]["archiv"]."arc_".$file_id.$file_ext);
+                            break;
                         case ".pdf":
                             rename($file_org, $cfg["file"]["maindir"].$cfg["file"]["text"]."doc_".$file_id.$file_ext);
                             break;
                         case ".png":
                             // quellbild in speicher einlesen
                             $img_src = @imagecreatefrompng($file_org);
-                            img_resize( $file_org, $file_id, $img_src, 628, $cfg["file"]["maindir"].$cfg["file"]["picture"]."big", "img" );
-                            img_resize( $file_org, $file_id, $img_src, 250, $cfg["file"]["maindir"].$cfg["file"]["picture"]."medium", "img" );
-                            img_resize( $file_org, $file_id, $img_src, 150, $cfg["file"]["maindir"].$cfg["file"]["picture"]."small", "img" );
-                            img_resize( $file_org, $file_id, $img_src, 96, $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
-                            // orginal bild loeschen
-                            #unlink($file_org);
-                            rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".png");
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["big"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."big", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["medium"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."medium", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["small"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."small", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["thumb"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
+
+                            // orginal bild nach max resizen oder loeschen
+                            if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
+                                rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".png");
+                            } else {
+                                img_resize( $file_org, $file_id, $img_src, $cfg["size"]["max"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."original", "img" );
+                                unlink($file_org);
+                            }
+
                             // speicher des quellbild freigeben
                             imagedestroy($img_src);
                             break;
@@ -172,16 +183,19 @@
                             // quellbild in speicher einlesen
                             $img_src = @imagecreatefromjpeg($file_org);
 
-                            img_resize( $file_org, $file_id, $img_src, 628, $cfg["file"]["maindir"].$cfg["file"]["picture"]."big", "img" );
-                            img_resize( $file_org, $file_id, $img_src, 250, $cfg["file"]["maindir"].$cfg["file"]["picture"]."medium", "img" );
-                            img_resize( $file_org, $file_id, $img_src, 150, $cfg["file"]["maindir"].$cfg["file"]["picture"]."small", "img" );
-                            img_resize( $file_org, $file_id, $img_src, 96, $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
-                            // orginal bild loeschen
-                            #unlink($file_org);
-                            #echo $file_org;
-                            #echo $cfg["file"]["maindir"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".jpg";
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["big"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."big", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["medium"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."medium", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["small"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."small", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["thumb"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
 
-                            rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".jpg");
+                            // orginal bild nach max resizen oder loeschen
+                            #if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
+                            if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
+                                rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".jpg");
+                            } else {
+                                img_resize( $file_org, $file_id, $img_src, $cfg["size"]["max"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."original", "img" );
+                                unlink($file_org);
+                            }
                             // speicher des quellbild freigeben
                             imagedestroy($img_src);
                             break;
@@ -198,7 +212,7 @@
             }
         }
 
-    }elseif ( $environment["parameter"][1] == "edit" ){#&& $rechte[$cfg["right"]["adress"]] == -1) {
+    } elseif ( $environment["parameter"][1] == "edit" ){#&& $rechte[$cfg["right"]["adress"]] == -1) {
 
         while ( count($HTTP_SESSION_VARS["images_memo"]) > 0 ) {
             $wert = current($HTTP_SESSION_VARS["images_memo"]);
@@ -206,7 +220,7 @@
             break;
         }
 
-        if (count($HTTP_POST_VARS) == 0) {
+        if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$wert."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
@@ -221,11 +235,19 @@
         } else {
             $ausgaben["image_print"] .= "<img src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$wert.".".$form_values["ffart"]."\">";
         }
+
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
         $element = form_elements( $cfg["db"]["entries"], $form_values );
+
+        // form elemente erweitern
+
+        $element["upload"] = "Ersetzen durch<br>";
+        $element["upload"] .= "<input type=\"file\" name=\"upload\">";
+        $element["upload"] .= "<br><br>Die Endung der vorhandenen Datei muß mit der Endung der neuen Datei identisch sein!";
+
 
         // was anzeigen
         #$mapping["main"] = crc32($environment["ebene"]).".modify";
@@ -242,13 +264,78 @@
         if ( $environment["parameter"][2] == "verify" ) {
 
             // form eingaben prüfen
-            #bugfix#form_errors( $form_options, $HTTP_POST_VARS );
-            #echo "<pre>";
-            #print_r($form_values);
-            #echo "</pre>";
-
-
             form_errors( $form_options, $form_values );
+
+            // files ersetzen
+            if ( $_FILES["upload"]["name"] != "" ) {
+                if ( substr($form_values["ffname"],-4,1) == "." ) {
+                    $dateiendung = substr($form_values["ffname"],-3,3);
+                } else {
+                    $dateiendung = substr($form_values["ffname"],-4,4);
+                }
+                $replace = file_verarbeitung($cfg["file"]["new"], "upload", $cfg["filesize"], array($dateiendung), $cfg["file"]["maindir"]);
+                if ( $replace["returncode"] == 0 ) {
+                    #rename($cfg["file"]["maindir"].$cfg["file"]["new"].$file["name"],$cfg["file"]["maindir"].$cfg["file"]["new"].$HTTP_SESSION_VARS["uid"]."_".$file["name"]);
+                    $file_id = $form_values["fid"];
+
+                    $file = $replace["name"];
+                    $file_org = $cfg["file"]["maindir"].$cfg["file"]["new"].$file;
+                    $file_ext = strrchr($file,".");
+
+                    switch ($file_ext) {
+                        case ".zip":
+                            rename($file_org, $cfg["file"]["maindir"].$cfg["file"]["archiv"]."arc_".$file_id.$file_ext);
+                            break;
+                        case ".pdf":
+                            rename($file_org, $cfg["file"]["maindir"].$cfg["file"]["text"]."doc_".$file_id.$file_ext);
+                            break;
+                        case ".png":
+                            // quellbild in speicher einlesen
+                            $img_src = @imagecreatefrompng($file_org);
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["big"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."big", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["medium"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."medium", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["small"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."small", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["thumb"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
+
+                            // orginal bild nach max resizen oder loeschen
+                            if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
+                                rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".png");
+                            } else {
+                                img_resize( $file_org, $file_id, $img_src, $cfg["size"]["max"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."original", "img" );
+                                unlink($file_org);
+                            }
+
+                            // speicher des quellbild freigeben
+                            imagedestroy($img_src);
+                            break;
+                        case ".jpg":
+                            // quellbild in speicher einlesen
+                            $img_src = @imagecreatefromjpeg($file_org);
+
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["big"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."big", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["medium"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."medium", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["small"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."small", "img" );
+                            img_resize( $file_org, $file_id, $img_src, $cfg["size"]["thumb"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
+
+                            // orginal bild nach max resizen oder loeschen
+                            #if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
+                            if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
+                                rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".jpg");
+                            } else {
+                                img_resize( $file_org, $file_id, $img_src, $cfg["size"]["max"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."original", "img" );
+                                unlink($file_org);
+                            }
+                            // speicher des quellbild freigeben
+                            imagedestroy($img_src);
+                            break;
+                        default:
+                            echo "da ist der wurm drin";
+                    }
+                } else {
+                    $ausgaben["form_error"] .= "Ergebnis: ".$replace["name"]." ";
+                    $ausgaben["form_error"] .= file_error($replace["returncode"])."<br>";
+                }
+            }
 
             // ohne fehler sql bauen und ausfuehren
             if ( $ausgaben["form_error"] == "" /* && ( $HTTP_POST_VARS[submit] != "" || $HTTP_POST_VARS[image] != "" ) */ ){
@@ -266,19 +353,12 @@
 
                 $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$wert."'";
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "mainsql: ".$sql.$debugging["char"];
-
                 $result  = $db -> query($sql);
-
                 unset($HTTP_SESSION_VARS["images_memo"][$wert]);
-
                 if (count($HTTP_SESSION_VARS["images_memo"]) > 0) {
-
                     header("Location: ".$cfg["basis"]."/describe,edit.html");
-
                 } else {
-
-                   header("Location: ".$cfg["basis"]."/list.html");
-
+                    header("Location: ".$cfg["basis"]."/list.html");
                 }
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             }

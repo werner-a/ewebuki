@@ -85,25 +85,21 @@
     $position = $environment["parameter"][1]+0;
     $ausgaben["search"] = "";
 
-    $ausgaben["1"] = "";
-    $ausgaben["2"] = "";
-    $ausgaben["3"] = "";
-    $ausgaben["4"] = "";
-    $ausgaben["5"] = "";
 
+
+    #$ausgaben["1"] = "";
+    #$ausgaben["2"] = "";
+    #$ausgaben["3"] = "";
+    #$ausgaben["4"] = "";
+    #$ausgaben["5"] = "";
+
+    /*
     session_register("what");
     if ( $HTTP_GET_VARS["what"] != "" ) {
         $what = $HTTP_GET_VARS["what"];
         $HTTP_SESSION_VARS["what"] = $HTTP_GET_VARS["what"];
     } else {
         $what = $HTTP_SESSION_VARS["what"];
-    }
-    session_register("art");
-    if ( $HTTP_GET_VARS["art"] != "") {
-        $art = $HTTP_GET_VARS["art"];
-        $HTTP_SESSION_VARS["art"] = $HTTP_GET_VARS["art"];
-    } else {
-        $art = $HTTP_SESSION_VARS["art"];
     }
 
     switch ( $what ) {
@@ -116,6 +112,16 @@
         default:
             $ausgaben["1"] = " checked";
     }
+    */
+
+    session_register("art");
+    if ( $HTTP_GET_VARS["art"] != "") {
+        $art = $HTTP_GET_VARS["art"];
+        $HTTP_SESSION_VARS["art"] = $HTTP_GET_VARS["art"];
+    } else {
+        $art = $HTTP_SESSION_VARS["art"];
+    }
+
     switch ( $art ) {
         case "pdf":
             $ausgaben["4"] = " checked";
@@ -125,6 +131,27 @@
             $art = "'jpg','png'";
             $ausgaben["5"] = " checked";
     }
+
+
+
+    // filter selektoren erstellen
+    foreach( $cfg["filter"] as $key => $value ) {
+        unset($filter);
+        $ausgaben["filter"] .= " ";
+        session_register("filter".$key);
+        if ( $HTTP_GET_VARS["filter".$key] != "" ) {
+            $filter[$HTTP_GET_VARS["filter".$key]] = " selected";
+            $HTTP_SESSION_VARS["filter".$key] = $HTTP_GET_VARS["filter".$key];
+        } else {
+            $filter[$HTTP_SESSION_VARS["filter".$key]] = " selected";
+        }
+        $ausgaben["filter"]  .= "<select name=\"filter".$key."\">";
+        foreach ( $value as $num => $label ) {
+            $ausgaben["filter"] .= "<option value=\"".$num."\"".$filter[$num].">".$label."</option>";
+        }
+        $ausgaben["filter"] .= "</select>";
+    }
+
 
     // Suche
     if ( $HTTP_GET_VARS["search"] != "" ) {
@@ -146,22 +173,38 @@
         }
 
     }
+
+
     // sql erweitern
-    switch ( $what ) {
-        case 3:
-            $whereb = "";
-            $whereb .= " ffart in   (".$art.")";
-            $getvalues .= "&what=3&art=".$HTTP_GET_VARS["art"];
-            break;
+    switch ( $HTTP_SESSION_VARS["filter0"] ) {
         case 2:
-            $whereb = " fdid = '".$HTTP_SESSION_VARS["custom"]."'";
-            $whereb .= " AND ffart in (".$art.")";
-            $getvalues .= "&what=2&art=".$HTTP_GET_VARS["art"];
+            $whereb = "";
+            $getvalues .= "&what=3";
+            break;
+        case 1:
+            $whereb = " fdid = '".$HTTP_SESSION_VARS["custom"]."' AND";
+            $getvalues .= "&what=2";
             break;
         default:
-           $whereb = " fuid = '".$HTTP_SESSION_VARS["uid"]."'";
-           $whereb .= " AND ffart in (".$art.")";
+           $whereb = " fuid = '".$HTTP_SESSION_VARS["uid"]."' AND";
+           #$getvalues .= "&what=1&art=".$HTTP_GET_VARS["art"];
     }
+
+
+    switch ( $HTTP_SESSION_VARS["filter1"] ) {
+        case 2:
+            $whereb .= " ffart in ('zip')";
+            $getvalues .= "&art=".$HTTP_SESSION_VARS["filter1"];
+            break;
+        case 1:
+            $whereb .= " ffart in ('pdf')";
+            $getvalues .= "&art=".$HTTP_SESSION_VARS["filter1"];
+            break;
+        default:
+            $whereb .= " ffart in ('jpg','png')";
+            #$getvalues .= "&what=1&art=".$HTTP_GET_VARS["art"];
+    }
+
 
     // gibt es beide
     if ($wherea && $whereb) $trenner = " AND ";
@@ -172,7 +215,6 @@
 
     // Sql Query
     $sql = "SELECT * FROM ".$cfg["db"]["entries"].$where." ORDER by ".$cfg["db"]["order"]." ".$cfg["db"]["sort"];
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">SQL".$sql.".tem.html</font>".$debugging["char"];
     // Inhalt Selector erstellen und SQL modifizieren
     $inhalt_selector = inhalt_selector( $sql, $position, $cfg["db"]["rows"], $parameter, 1, 10, $getvalues );
     $ausgaben["inhalt_selector"] .= $inhalt_selector[0];
@@ -237,9 +279,9 @@
 
             if (is_array($HTTP_SESSION_VARS["images_memo"])) {
                 if (in_array($fid,$HTTP_SESSION_VARS["images_memo"])) {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img src=".$pathvars["images"]."cms-cb1.png border=0></a>";
+                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$pathvars["images"]."cms-cb1.png\"></a>";
                 } else {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img src=".$pathvars["images"]."cms-cb0.png border=0></a>";
+                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$pathvars["images"]."cms-cb0.png\"></a>";
                 }
             } else {
                 $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img src=".$pathvars["images"]."cms-cb0.png border=0></a>";
@@ -249,6 +291,11 @@
 
 #            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">BUFFY: ".$ffname."--".$fdesc."</font>".$debugging["char"];
             switch ( $ffart ) {
+                case ("zip"):
+                    $ausgaben["output"] .="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"";
+                    $ausgaben["output"] .= "<tr><td width=\"8\">".$cb."</td><td align=left width=\"30\"><a href=".$cfg["file"]["webdir"].$cfg["file"]["archiv"]."arc_".$fid.".zip><img src=\"".$pathvars["images"]."details.png\" border=0></a></td><td align=left width=\"612\">".$fdesc."</td>";
+                    $ausgaben["output"] .= "</table>";
+                    break;
                 case ("pdf"):
                     $ausgaben["output"] .="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"";
                     $ausgaben["output"] .= "<tr><td width=\"8\">".$cb."</td><td align=left width=\"30\"><a target=\"_blank\" href=".$cfg["file"]["webdir"].$cfg["file"]["text"]."doc_".$fid.".pdf><img src=\"".$pathvars["images"]."details.png\" border=0></a></td><td align=left width=\"612\">".$fdesc."</td>";
@@ -261,11 +308,12 @@
                     #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">ATTENTION: IMAGSIZE ".$imgsize."</font>".$debugging["char"];
                     #echo $imgsize;
                     $ausgaben["output"] .="<table border=\"0\" cellspacing=\"1\" cellpading=\"1\" align=\"left\">";
-                    $ausgaben["output"] .= "<tr><td width=\"22\">".$cb."</td>";
-                    $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",big.html\">Big</a></td>";
-                    $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",medium.html\">Med</a></td>";
-                    $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",small.html\">Sma</a></td></tr>";
-                    $ausgaben["output"] .= "<tr><td colspan=4 align=\"center\"><a href=".$cfg["basis"]."/preview,".$fid.",big.html><img ".$imgsize." src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\"></a></td></tr>";
+                    $ausgaben["output"] .= "<tr><td height=\"100\" colspan=2 align=\"left\" valign=\"bottom\"><a href=".$cfg["basis"]."/preview,".$fid.",original.html><img border=\"0\" ".$imgsize." src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\"></a></td></tr>";
+                    $ausgaben["output"] .= "<tr><td width=\"13\">".$cb."</td>";
+                    $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",big.html\">Big</a> ";
+                    $ausgaben["output"] .= "<a href=\"".$cfg["basis"]."/preview,".$fid.",medium.html\">Med</a> ";
+                    $ausgaben["output"] .= "<a href=\"".$cfg["basis"]."/preview,".$fid.",small.html\">Sma</a></td></tr>";
+                    $ausgaben["output"] .= "<tr><td colspan=\"2\" align=\"left\"><img width=\"100\" height=\"1\" src=\"".$pathvars["images"]."pos.png\"></td></tr>";
                     $ausgaben["output"] .= "</table>";
                     $j++;
                     $ja = $j / 6;
