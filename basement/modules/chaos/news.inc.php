@@ -157,18 +157,18 @@
                 $sql = "SELECT * FROM ". BEITRAG_KOPF ." WHERE ".$news_where_statement_aktuell;
                 $result  = $db -> query($sql);
                 while ( $news = $db -> fetch_array($result,1) ) {
-                    $ausgaben[news_ueberschrift] = "<a href=\"".$pathvars[virtual]."/news,".$news[beitragid].",1.html\">".$news[beitrag]."</a><br>";
+                    $ausgaben[news_ueberschrift] = "<a href=\"".$pathvars[virtual]."/news,".$news[beitragid].",1.html\">".$news[beitrag]."</a><br />";
                     $sql = "SELECT ".$environment[news_uebersicht_pre_inh]." FROM ". BEITRAG_INHALT ." where beitragid = '".$news[beitragid]."'";
                     $inh_result  = $db -> query($sql);
                     $row = $db -> fetch_row($inh_result,1);
                     $ausgaben[news_teiltext] = tagremove($row[0]);
-                    $ausgaben[news_teiltext] = substr($ausgaben[news_teiltext],0,$environment[news_uebersicht_pre_len])."&nbsp;<a href=\"".$pathvars[virtual]."/news,".$news[beitragid].",1.html\">... mehr?</a><br>";
+                    $ausgaben[news_teiltext] = substr($ausgaben[news_teiltext],0,$environment[news_uebersicht_pre_len])."&nbsp;<a href=\"".$pathvars[virtual]."/news,".$news[beitragid].",1.html\">... mehr?</a><br />";
                     if ( $spalte == "news_lspalte" ) {
                          $spalte = "news_rspalte";
                     } else {
                          $spalte = "news_lspalte";
                     }
-                    $ausgaben[$spalte] .= parser("news.preview", "")."<br>";
+                    $ausgaben[$spalte] .= parser("news.preview", "")."<br />";
                 }
                 $mapping[main] = "news";
                 if ( $ausgaben[news_lspalte] == "" ) $ausgaben[news_lspalte] = "Aktuell keine Eintr&auml;ge";
@@ -179,15 +179,15 @@
             $result  = $db -> query($sql);
             while ( $news = $db -> fetch_array($result,1) ) {
                 if ( $news[ausgabe] != $newsausgabe ) {
-                    if ( $newsausgabe != "" ) $ausgaben[news_lspalte] .= "<br>";
+                    if ( $newsausgabe != "" ) $ausgaben[news_lspalte] .= "<br />";
                     $newsausgabe = $news[ausgabe];
-                    $ausgaben[news_archiv_liste] .= "<b>Ausgabe ".substr($news[ausgabe],5,2)."/".substr($news[ausgabe],0,4)."</b><br>";
+                    $ausgaben[news_archiv_liste] .= "<b>Ausgabe ".substr($news[ausgabe],5,2)."/".substr($news[ausgabe],0,4)."</b><br />";
                 }
                 $ausgaben[news_archiv_liste] .= "<a href=\"".$pathvars[virtual]."/news,".$news[beitragid].",1.html\">".$news[beitrag]."</a>";
                 if ( $news[autor] != "" ) {
-                    $ausgaben[news_archiv_liste] .= " von ".$news[autor]."<br>";
+                    $ausgaben[news_archiv_liste] .= " von ".$news[autor]."<br />";
                 } else {
-                    $ausgaben[news_archiv_liste] .= "<br>";
+                    $ausgaben[news_archiv_liste] .= "<br />";
                 }
             }
             if ( $ausgaben[news_archiv_liste] == "" ) $ausgaben[news_archiv_liste] = "Kein Eintrag";
@@ -253,10 +253,10 @@
         $bullet = "<img src=\"".$imageurl."\"".$imagesize." alt=\"\"> ";
     }
     while ( $news = $db -> fetch_array($result,1) ) {
-        $ausgaben[news_menu] .= $bullet."<a class=\"menu_punkte\" href=\"".$pathvars[virtual]."/news,".$news[beitragid].",1.html\">".$news[beitrag]."</a><br>";
+        $ausgaben[news_menu] .= $bullet."<a class=\"menu_punkte\" href=\"".$pathvars[virtual]."/news,".$news[beitragid].",1.html\">".$news[beitrag]."</a><br />";
     }
     if ( $ausgaben[news_menu] == "" ) $ausgaben[news_menu] = "Kein Eintrag";
-    if ( $rechte[news_edit] == -1 ) $ausgaben[news_menu] .= "<a href=\"".$pathvars[virtual]."/news/create.html\">[New]</a><br>";
+    if ( $rechte[news_edit] == -1 ) $ausgaben[news_menu] .= "<a href=\"".$pathvars[virtual]."/news/create.html\">[New]</a><br />";
 
     if ( $debugging[html_enable] ) $debugging[ausgabe] .= "[ ++ $script_name ++ ]".$debugging[char];
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
