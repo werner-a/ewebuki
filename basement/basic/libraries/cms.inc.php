@@ -196,7 +196,7 @@
             }
             $result  = $db -> query($sql);
 
-            if ( $HTTP_POST_VARS["image"] == "add" || $HTTP_POST_VARS["upload"] > 0 ) {
+            if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["upload"] > 0 ) {
 
                 session_register("referer");
                 $HTTP_SESSION_VARS["referer"] = $ausgaben["form_referer"];
