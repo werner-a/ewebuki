@@ -184,7 +184,7 @@
                     if ( $hidestatus != "" ) $tree .= "<td><img src=\"".$cfg["iconpath"].$hideimage."\" border=\"0\" alt=\"".$hidetext."\" title=\"".$hidetext."\" width=\"13\" height=\"13\"></td>\n";
                     if ( $sortinfo != "" ) $tree .= "<td>(".$array["sort"].")</td>\n";
                     $tree .= "<td width=\"100%\">".$level.$ankerpos."<a class=\"\" href=\"".$href."\"><img src=\"".$cfg["iconpath"]."sitemap.png\" width=\"16\" height=\"16\" align=\"absbottom\" border=\"0\"><img src=\"".$pathvars["images"]."pos.png\" width=\"3\" height=\"1\" align=\"absbottom\" border=\"0\">".$array["label"]."</a>".$extern."</td>\n";
-                    if ( $aktionlinks != "" ) $tree .= "<td align=\"right\">".$aktion."</td>\n";
+                    if ( $aktionlinks != "" ) $tree .= "<td align=\"right\" nowrap>".$aktion."</td>\n";
                     $tree .= "</tr>\n";
                     $tree .= sitemap($array["mid"], $art, $modify, -1);
                 }
