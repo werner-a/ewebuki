@@ -91,10 +91,10 @@
                 $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."&size=280\">";
                 break;
             case "zip": case "ZIP":
-                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."zip_icon.jpg&size=280\">";
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$cfg["iconpath"]."zip_icon.jpg&size=280\">";
                 break;
             case "pdf": case "PDF":
-                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."pdf_big.png&size=280\">";
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$cfg["iconpath"]."pdf_big.png&size=280\">";
                 break;
         }
 
@@ -259,10 +259,10 @@
                 $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280\">";
                 break;
             case "zip":
-                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."zip_icon.jpg&size=280\">";
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$cfg["iconpath"]."zip_icon.jpg&size=280\">";
                 break;
             case "pdf":
-                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$pathvars["images"]."pdf_big.png&size=280\">";
+                $ausgaben["image_print"] .= "<img src=\"".$pathvars["webroot"]."/images/magic.php?path=".$pathvars["fileroot"].$cfg["iconpath"]."pdf_big.png&size=280\">";
                 break;
         }
 
