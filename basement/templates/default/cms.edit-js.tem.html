@@ -27,12 +27,12 @@ function zaehler(field,anzahl){
 function INSst(st,form,field){
 
     var myField = eval('document.'+form+'.'+field+'');
-    
+
     //IE - markierten Text in den Tag einbauen
     if (document.selection) {
         myField.focus();
         sel = document.selection.createRange();
-		selText = sel.text;        
+		selText = sel.text;
     }
     //MOZILLA + NETSCAPE - markierten Text in den Tag einbauen
     if (eval('document.'+form+'.'+field+'.selectionStart') || eval('document.'+form+'.'+field+'.selectionStart') == "0") {
@@ -46,52 +46,95 @@ function INSst(st,form,field){
         // selText = '';
     }
 
+    // physisch
     if (st=='b')
         st='[B]' + selText + '[\/B]';
     else if (st=='i')
         st='[I]' + selText + '[\/I]';
-    else if (st=='bi')
-        st='[B][I]' + selText + '[\/I][\/B]';
-    else if (st=='cent')
-        st='[CENTER]' + selText + '[\/CENTER]';
-    else if (st=='q')
-        st='[QUOTE]' + selText + '[\/QUOTE]';
-    else if (st=='c')
+    else if (st=='tt')
+        st='[TT]' + selText + '[\/TT]';
+    else if (st=='u')
+        st='[U]' + selText + '[\/U]';
+    else if (st=='s')
+        st='[S]' + selText + '[\/S]';
+    else if (st=='st')
+        st='[ST]' + selText + '[\/ST]';
+    else if (st=='big')
+        st='[BIG]' + selText + '[\/BIG]';
+    else if (st=='small')
+        st='[SMALL]' + selText + '[\/SMALL]';
+    else if (st=='sup')
+        st='[SUP]' + selText + '[\/SUP]';
+    else if (st=='sub')
+        st='[SUB]' + selText + '[\/SUB]';
+
+    // logisch
+    else if (st=='em')
+        st='[EM]' + selText + '[\/EM]';
+    else if (st=='strong')
+        st='[STRONG]' + selText + '[\/STRONG]';
+    else if (st=='cite')
         st='[CITE]' + selText + '[\/CITE]';
-    else if (st=='ul')
-        st='[LIST]' + selText + '[*]Element[\/LIST]';
-    else if (st=='ol')
-        st='[LIST=1|a]' + selText + '[*]Element[\/LIST]';
-    else if (st=='img')
-        st='[IMG]Url,...[\/IMG]';
-    else if (st=='imgb')
-        st='[IMG=image.art\;l|r]' + selText + '[\/IMG]';
-    else if (st=='link')
-        st='[LINK]http:\/\/[\/LINK]';
-    else if (st=='linkb')
-        st='[LINK=http:\/\/]' + selText + '[\/LINK]';
-    else if (st=='e')
-        st='[EMAIL]Adresse[\/EMAIL]';
-    else if (st=='eb')
-        st='[EMAIL=Adresse]' + selText + '[\/EMAIL]';
+
+    // allgemein
+    else if (st=='div')
+        st='[DIV=art]' + selText + '[\/DIV]';
+    else if (st=='center')
+        st='[CENTER]' + selText + '[\/CENTER]';
+    else if (st=='pre')
+        st='[PRE]' + selText + '[\/PRE]';
+    else if (st=='quote')
+        st='[QUOTE]' + selText + '[\/QUOTE]';
+
+    // ueberschrrift, umbruch, trennlinie
     else if (st=='h1')
         st='[H1]' + selText + '[\/H1]';
     else if (st=='h2')
         st='[H2]' + selText + '[\/H2]';
+    else if (st=='hr')
+        st='[hr][\/hr]';
+    else if (st=='sp')
+        st='[SP][\/SP]';
+    else if (st=='br')
+        st='[BR][\/BR]';
+
+    // spezielle
     else if (st=='hl')
         st='[HL][\/HL]';
+    else if (st=='in')
+        st='[IN]' + selText + '[\/IN]';
+    else if (st=='m1')
+        st='[M1]' + selText + '[\/M1]';
+    else if (st=='m2')
+        st='[M2]' + selText + '[\/M2]';
+    else if (st=='up')
+        st='[UP]' + selText + '[\/UP]';
+
+    // erweiterte
+    else if (st=='list')
+        st='[LIST=1|a]' + selText + '[*]Element[\/LIST]';
+    else if (st=='img')
+        st='[IMG=image,art\;l]' + selText + '[\/IMG]';
+    else if (st=='imgb')
+        st='[IMGB=image.art\;l|r;0;b;20;20;10]' + selText + '[\/IMGB]';
+    else if (st=='link')
+        st='[LINK=http:\/\/]' + selText + '[\/LINK]';
+    else if (st=='email')
+        st='[EMAIL=Adresse]' + selText + '[\/EMAIL]';
     else if (st=='tab')
         st='[TAB][ROW][COL]' + selText + '[\/COL][\/ROW][\/TAB]';
     else if (st=='row')
         st='[ROW][\/ROW]';
     else if (st=='col')
         st='[COL]' + selText + '[\/COL]';
+
+    // alt
     else if (st=='int')
         st='#[link][' + selText + ']';
 !{extension}
     else
         st='';
-		
+
     //IE support
     if (document.selection) {
         myField.focus();
@@ -106,16 +149,16 @@ function INSst(st,form,field){
         // var chaineContent = eval('document.'+form+'.'+field+'.value');
 
         myField.value = chaineContent.substring(0, startPos) + st + chaineContent.substring(endPos, chaineContent.length);
-        
+
         // scrollen und cursor an die richtige stelle
-        document.eval(form+'.'+field).focus();        
+        document.eval(form+'.'+field).focus();
         var cPos=startPos+st.length;
         document.eval(form+'.'+field).selectionStart=cPos;
-        document.eval(form+'.'+field).selectionEnd=cPos;                
+        document.eval(form+'.'+field).selectionEnd=cPos;
         document.eval(form+'.'+field).scrollTop=scrollTop;
     } else {
         myField.value += st;
-    }     
+    }
 }
 </SCRIPT>
 <!--##end-->

@@ -155,44 +155,70 @@
 
 
         $ausgaben["ce_script"] = parser("cms.edit-js","");
-        $cetag = array( "b"     => array( "1", "#(b)"),
-                        "i"     => array( "1", "#(i)"),
-                        "cent"  => array( "1", "#(cent)"),
-                        "bi"    => array( "",  "#(bi)"),
-                        "q"     => array( "",  "#(q)"),
-                        "c"     => array( "",  "#(c)"),
-                        "ul"    => array( "1", "#(ul)"),
-                        "ol"    => array( "",  "#(ol)"),
-                        "img"   => array( "",  "#(img)"),
-                        "imgb"  => array( "",  "#(imgb)"),
-                        "link"  => array( "",  "#(link)"),
-                        "linkb" => array( "1", "#(linkb)"),
-                        "e"     => array( "",  "#(e)"),
-                        "eb"    => array( "1", "#(eb)"),
-                        "h1"    => array( "1", "#(h1)"),
-                        "h2"    => array( "1", "#(h2)"),
-                        "hl"    => array( "1", "#(hl)"),
-                        "tab"   => array( "1", "#(tab)"),
-                        "row"   => array( "1", "#(row)"),
-                        "col"   => array( "1", "#(col)"),
-                        "up"    => array( "", "#(up)"),
-                        "m1"    => array( "", "#(m1)"),
-                        "m2"    => array( "", "#(m2)"),
-                        #"m3"    => array( "", "#(m3)"),
-                        "int"   => array( "",  "#(int)"),
+        $cetag = array( // physisch
+                        "b"      => array( "1", "1", "#(b)"),
+                        "i"      => array( "1",  "1", "#(i)"),
+                        "tt"     => array( "1",  "",  "#(tt)"),
+                        "u"      => array( "1",  "",  "#(u)"),
+                        "s"      => array( "1",  "",  "#(s)"),
+                        "st"     => array( "0",  "",  "#(st)"),
+                        "big"    => array( "1",  "",  "#(big)"),
+                        "small"  => array( "1",  "",  "#(small)"),
+                        "sup"    => array( "1",  "",  "#(sup)"),
+                        "sub"    => array( "1",  "",  "#(sub)"),
+
+                        // logisch
+                        "em"     => array( "1",  "",  "#(em)"),
+                        "strong" => array( "1",  "",  "#(strong)"),
+                        "cite"   => array( "1",  "",  "#(cite)"),
+
+                        // allgemein
+                        "div"    => array( "1",  "", "#(div)"),
+                        "center" => array( "1",  "1", "#(center)"),
+                        "quote"  => array( "1",  "",  "#(quote)"),
+                        "pre"    => array( "1",  "",  "#(pre)"),
+
+                        // ueberschrrift, umbruch, trennlinie
+                        "h1"     => array( "1",  "1", "#(h1)"),
+                        "h2"     => array( "1",  "1", "#(h2)"),
+                        "hr"     => array( "1",  "", "#(hr)"),
+                        "sp"     => array( "1",  "",  "#(sp)"),
+                        "br"     => array( "1",  "",  "#(br)"),
+
+                        // spezielle
+                        "hl"     => array( "1",  "1", "#(hl)"),
+                        "in"     => array( "1",  "",  "#(in)"),
+                        "m1"     => array( "1",  "",  "#(m1)"),
+                        "m2"     => array( "1",  "",  "#(m2)"),
+                        "up"     => array( "1",  "",  "#(up)"),
+
+                        // erweiterte
+                        "list"   => array( "1",  "1", "#(list)"),
+                        "img"    => array( "1",  "",  "#(img)"),
+                        "imgb"   => array( "1",  "",  "#(imgb)"),
+                        "link"   => array( "1",  "",  "#(link)"),
+                        "email"  => array( "1",  "",  "#(email)"),
+                        "tab"    => array( "1",  "1", "#(tab)"),
+                        "row"    => array( "1",  "1", "#(row)"),
+                        "col"    => array( "1",  "1", "#(col)"),
+
+                        // alt
+                        "int"    => array( "",   "",  "#(int)"),
                       );
 
         $ausgaben["ce_dropdown"]  = "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"st\" size=\"1\" onChange=\"INSst(this.options[this.selectedIndex].value,'".$ce_formname."','".$ce_name."');this.selectedIndex=0;\">";
         $ausgaben["ce_dropdown"] .= "<option value=\"\">#(tagselect)</option>";
         foreach( $cetag as $key => $value ) {
-            if ( $value[0] == 1 ) {
-                $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[1]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
+            if ( $value[1] == 1 ) {
+                $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[2]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[2]."\" title=\"".$value[2]."\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
             }
-            $ausgaben["ce_dropdown"] .= "<option value=\"".$key."\">".$value[1]."</option>\n";
+            if ( $value[0] == 1 ) {
+                $ausgaben["ce_dropdown"] .= "<option value=\"".$key."\">".$value[2]."</option>\n";
+            }
             #ce_anker
         }
         $ausgaben["ce_dropdown"] .= "</select>";
-        $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$defaults["cms-tag"]["path"]."cms-tag-imgb.png\" width=\"23\" height=\"22\">";
+        $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$defaults["cms-tag"]["path"]."cms-tag-imgb.png\" title=\"#(add)\" width=\"23\" height=\"22\">";
 
         $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";
         $ausgaben["ce_upload"] .= "<option value=\"\">#(upload)</option>";
