@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tagreplace($replace) {
-        global $pathvars, $environment, $ausgaben;
+        global $pathvars, $environment, $ausgaben, $defaults;
 
         // cariage return + linefeed fix
         $sear = array("\r\n[TA", "\r\n[RO", "\r\n[CO", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "AB]\r\n", "OW]\r\n", "OL]\r\n", );
@@ -459,44 +459,46 @@
                         $replace = str_replace($opentag.$tagwert.$endtag,"<td valign=\"top\"".$align.$width.">".$tagwerte[1]."</td>",$replace);
                         break;
                     case "[H1]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<span class=\"id_top_head\">".$tagwert."</span>",$replace);
+                        if ( $defaults["tag"]["h1"] == "" ) { 
+                          $defaults["tag"]["h1"] = "<h1>";
+                          $defaults["tag"]["/h1"] = "</h1>";
+                        }                        
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h1"].$tagwert.$defaults["tag"]["/h1"],$replace);                        
                         break;
                     case "[H2]":
-                        $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/dot1.gif";
-                        if ( file_exists($imgfile) ) {
-                            $imgsize = getimagesize($imgfile);
-                            $imgsize = " ".$imgsize[3];
-                            $imgurl = $pathvars["images"]."dot1.gif";
-                        }
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<img src=\"".$imgurl."\" alt=\"\"".$imgsize."> <span class=\"fkrcontentlead\">".$tagwert."</span>",$replace);
+                        if ( $defaults["tag"]["h2"] == "" ) { 
+                          $defaults["tag"]["h2"] = "<h2>";
+                          $defaults["tag"]["/h2"] = "</h2>";
+                        }                                            
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h2"].$tagwert.$defaults["tag"]["/h2"],$replace);
                         break;
                     case "[H3]":                  
-                        if ( $format["h3"] == "" ) { 
-                          $format["h3"] = "<h3>";
-                          $format["/h3"] = "</h3>";
+                        if ( $defaults["tag"]["h3"] == "" ) { 
+                          $defaults["tag"]["h3"] = "<h3>";
+                          $defaults["tag"]["/h3"] = "</h3>";
                         }
-                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h3"].$tagwert.$format["/h3"],$replace);                        
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h3"].$tagwert.$defaults["tag"]["/h3"],$replace);                        
                         break;
                     case "[H4]":                  
-                        if ( $format["h4"] == "" ) { 
-                          $format["h4"] = "<h4>";
-                          $format["/h4"] = "</h4>";
-                        }
-                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h4"].$tagwert.$format["/h4"],$replace);
+                        if ( $defaults["tag"]["h4"] == "" ) { 
+                          $defaults["tag"]["h4"] = "<h4>";
+                          $defaults["tag"]["/h4"] = "</h4>";
+                        }                        
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h4"].$tagwert.$defaults["tag"]["/h4"],$replace);
                         break;                                      
                     case "[H5]":                  
-                        if ( $format["h5"] == "" ) { 
-                          $format["h5"] = "<h5>";
-                          $format["/h5"] = "</h5>";
-                        }
-                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h5"].$tagwert.$format["/h5"],$replace);
+                        if ( $defaults["tag"]["h5"] == "" ) { 
+                          $defaults["tag"]["h5"] = "<h5>";
+                          $defaults["tag"]["/h5"] = "</h5>";
+                        }                      
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h5"].$tagwert.$defaults["tag"]["/h5"],$replace);
                         break;                        
                     case "[H6]":
-                        if ( $format["h6"] == "" ) { 
-                          $format["h6"] = "<h6>";
-                          $format["/h6"] = "</h6>";
-                        }
-                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h6"].$tagwert.$format["/h6"],$replace);                   
+                        if ( $defaults["tag"]["h6"] == "" ) { 
+                          $defaults["tag"]["h6"] = "<h6>";
+                          $defaults["tag"]["/h6"] = "</h6>";
+                        }                        
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);                   
                         break;                        
                     case "[HL]":
                         $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/dot1.gif";
