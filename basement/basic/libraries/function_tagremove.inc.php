@@ -43,187 +43,122 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function tagremove( $text, $legende = False ) {
-        global $image_ausgabe, $links_ausgabe;
-        // tags entfernen
-        $i = 0;
-        $preg = "\[[A-Z0-9]{1,6}(\]|=)";
-        while ( preg_match("/$preg/",$text,$regs ) ) {
-            $opentag = $regs[0];
-            # echo $opentag;
-            if ( strstr($text, $opentag) ){
-                // wo beginnt der tag
-                $tagbeg = strpos($text,$opentag);
-                // wie sieht der endtag aus
-                if ( strstr($opentag, "=") ) {
-                  $endtag = str_replace("=","]",$opentag);
-                  $endtag = str_replace("[","[/",$endtag);
-                } else {
-                  $endtag = str_replace("[","[/",$opentag);
+    function tagremove( $replace, $legende = False ) {
+        global $image_ausgabe, $links_ausgabe, $defaults;
+        $image_ausgabe = "";
+        $links_ausgabe = "";
+        $preg = "\[\/[A-Z0-9]{1,6}\]";
+        while ( preg_match("/$preg/", $replace, $match ) ) {
+
+            $closetag = $match[0];
+            if ( strstr($replace, $closetag) ){
+
+                // wo beginnt der closetag
+                $closetagbeg = strpos($replace,$closetag);
+
+                // wie sieht der opentag aus
+                $opentag = str_replace(array("/","]"),array("",""),$closetag);
+
+                // wie lang ist der opentag
+                $opentaglen = strlen($opentag);
+
+                // nur hier kann der opentag sein
+                $haystack = substr($replace,0,$closetagbeg);
+
+                // fehlenden open tag abfangen
+                if ( (strpos($haystack,$opentag."]") === false) && (strpos($haystack,$opentag."=") === false) ) {
+                    if ( $defaults["tag"]["error"] == "" ) {
+                        $error = " <font color=\"#FF0000\">".$opentag."]?</font> ";
+                    } else {
+                        $error = $defaults["tag"]["error"].$opentag."]".$defaults["tag"]["/error"];
+                    }
+                    $replace = $error;
+                    #$replace = $haystack.$error.substr($replace,$closetagbeg+$opentaglen+2);
+                    continue;
                 }
-                // wo endet der tag
-                $tagend = strpos($text,$endtag);
-                // wie lang ist der tag
-                $taglen = (int) $tagend-$tagbeg;
+
                 // wie lautet der tagwert
-                $tagwertbeg = $tagbeg + strlen($opentag);
-                $tagwertlen = $taglen - strlen($endtag)+1;
-                $tagwert = substr($text,$tagwertbeg,$tagwertlen);
+                $tagwertbeg = strlen($haystack) - (strpos(strrev($haystack), strrev($opentag)) + strlen($opentag)) + $opentaglen + 1;
+                $tagwert = substr($replace,$tagwertbeg,$closetagbeg-$tagwertbeg);
 
-                /*
-                // cariage return + linefeed fix
-                $tagwert_nocrlf = str_replace("AB]\r\n","AB]",$tagwert);
-                $tagwert_nocrlf = str_replace("W]\r\n","W]",$tagwert_nocrlf);
-                $tagwert_nocrlf = str_replace("L]\r\n","L]",$tagwert_nocrlf);
-                $tagwert_nocrlf = str_replace("\r\n[","[",$tagwert_nocrlf);
-                */
+                // parameter?
+                $sign = substr($replace,$tagwertbeg-1,1);
+                // opentag komplettieren
+                $opentag = $opentag.$sign;
 
-
-                /*
-                // offene tags abfangen
-                #if ( strstr($tagwert, $opentag) || ( strstr($replace, $opentag) && $tagwert == "" ) ) {
-                if ( strstr($tagwert, $opentag) || $tagwertlen < 0 ) {
-                    $i++;
-                    $merk_es_dir["##$i##"] = $opentag;
-                    $ausgabewert = "<big><font color=\"#FF0000\">##$i## (close tag?) </font></big>";
-                    $replace = str_replace($opentag,$ausgabewert,$replace);
-                }
-                */
-                switch ($opentag) {
-                    case "[IMGB=":
-                            if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
-                                $text = str_replace($opentag.$tagwert.$endtag,"",$text);
-                            continue;
-                            }
+                switch ($closetag) {
+                    case "[/IMGB]": case "[/IMG]":
+                        if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
+                            $removed = "";
+                        } else {
                             $j++;
-                            $image[$j] = $tagwert;
-                            $text = str_replace($opentag.$tagwert.$endtag,"{BILD $j}",$text);
-                        break;
-                    case "[IMG=":
-                            if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
-                                $text = str_replace($opentag.$tagwert.$endtag,"",$text);
-                            continue;
-                            }
-                            $j++;
-                            $image[$j] = $tagwert;
-                            if ( $legende == True ) {
-                                $replace = "{BILD ".$j."}";
-                            } else {
-                                $replace = "";
-                            }
-                            $text = str_replace($opentag.$tagwert.$endtag,$replace,$text);
-                        break;
-                    case "[IMG]":
-                            if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
-                                $text = str_replace($opentag.$tagwert.$endtag,"",$text);
-                            continue;
-                            }
-                            $j++;
-                            $image[$j] = $tagwert;
-                            $text = str_replace($opentag.$tagwert.$endtag,"{BILD $j}",$text);
-                        break;
-                    case "[LINK]":
-                            $i++;
-                            $text = str_replace($opentag.$tagwert.$endtag,"{LINK ".$i."}",$text);
-                            $links[$i] = $tagwert;
-                            break;
-                    case "[LINK=":
                             $tagwerte = explode("]",$tagwert,2);
-                            if ( strstr($tagwerte[0],"#") ) {
-                                $text = str_replace($opentag.$tagwert.$endtag,$tagwerte[1],$text);
-                                continue;
-                            }
-                            $i++;
-                            $pos = strrpos($tagwerte[0],";");
-                            if ( $pos >= 1 ) {
-                                $replace = substr($tagwerte[0],0,$pos);
-                            } else {
-                                $replace = $tagwerte[0];
-                            }
-                            $text = str_replace($opentag.$tagwert.$endtag,"{LINK ".$i."}".$tagwerte[1],$text);
-                            $links[$i] = $replace;
+                            $parameter = explode(";",$tagwerte[0],2);
+                            // legende erzeugen
+                            if ( $legende == true ) $image[$j] = $parameter[0];
+                            $removed = " {BILD ".$j."} ";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$closetag,$removed,$replace);
                         break;
-                    case "[LIST]":
-                            $text = str_replace($opentag.$tagwert.$endtag,"§§".$tagwert."%%",$text);
-                        break;
-                    case "[LIST=":
-                            $taglistend = strpos($tagwert,"]");
-                            $taglist = substr($tagwert,$taglistend+1);
-                            $text = str_replace($opentag.$tagwert.$endtag,"§§".$taglist."%%",$text);
-                        break;
-                    case "[EMAIL=":
+                    case "[/LINK]":
+                        if ( substr($tagwert,0,1) == "#" ) {
+                            $removed = "";
+                        } else {
+                            $l++;
                             $tagwerte = explode("]",$tagwert,2);
-                            if ( $tagwerte[1] == "" ) {
-                                $beschriftung = $tagwerte[0];
-                            } else {
-                                $beschriftung = $tagwerte[1]." ".$tagwerte[0];
-                            }
-                            $text = str_replace($opentag.$tagwert,$beschriftung,$text);
-                            $text = str_replace($endtag,"",$text);
+                            $parameter = explode(";",$tagwerte[0],2);
+                            // legende erzeugen
+                            if ( $legende == true ) $links[$l] = $parameter[0];
+                            $removed = " {LINK ".$l."} ";
+                        }
+
                         break;
-                    case "[ANK=":
-                        $tagrestbeg = strpos($tagwert,"]");
-                        $ankart = substr($tagwert,0,$tagrestbeg+1);
-                        $text = str_replace($opentag.$ankart,"",$text);
-                        $text = str_replace($endtag,"",$text);
+                    case "[/LIST]":
+                        if ( $sign == "]" ) {
+                            $removed = str_replace("[*]"," ",$tagwert);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $removed = str_replace("[*]"," ",$tagwerte[1]);
+                        }
                         break;
+                    case "[/EMAIL]":
+                        if ( $sign == "]" ) {
+                            $removed = $tagwert;
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $removed = $tagwerte[0];
+                        }
+                    break;
                     default:
-                        $text = str_replace($opentag,"",$text);
-                        $text = str_replace($endtag,"",$text);
+                        if ( $sign == "=" ) {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $removed = $tagwerte[1];
+                        } else {
+                            $removed = $tagwert;
+                        }
                 }
+                $replace = str_replace($opentag.$tagwert.$closetag,$removed,$replace);
             }
         }
-
         // links und bilder nach text wandeln
         $i = 0;
         if ( $legende == True ) {
-
             // links
-            if (is_array($links) ) {
-                foreach ($links as $key => $value) {
-                    $i++;
-                    $links_ausgabe .= "Link ".$i.": ".$value."\n";
-                }
-                $links_ausgabe = "\nLinks zum Beitrag:\n".$links_ausgabe;
+            foreach ((array)$links as $key => $value) {
+                $zl++;
+                if ( $zl == 1 ) $links_ausgabe = "<br>Links zum Beitrag:<br>";
+                $links_ausgabe .= "<a href=".$value.">LINK ".$key."</a><br>";
             }
-
             // bilder
-            if ( is_array($image) ) {
-                foreach ($image as $key => $value) {
-                    if ( strstr($value, ";") ) {
-                        $pos = strpos($value,";");
-                        $value = substr($value,0,$pos);
-                    }
-                    if ( strstr($value, "]") ) {
-                        $pos = strpos($value,"]");
-                        $value = substr($value,0,$pos);
-                    }
-                    $image_ausgabe .= "Bild ".$key." http://www.bvv.bayern.de".$value."\n";
-                }
-                $image_ausgabe = "\nBilder zum Beitrag:\n".$image_ausgabe;
+            foreach ((array)$image as $key => $value) {
+                $zb++;
+                if ( $zb == 1 ) $image_ausgabe = "<br>Bilder zum Beitrag:<br>";
+                $image_ausgabe .= "<a href=".$value.">Bild ".$key."</a><br>";
             }
         }
 
-        // den markierten LIST-Tag finden und formatiert ausgeben
-        $preg= "§§";
-        while ( preg_match("/$preg/",$text,$regs ) ) {
-            $listbeg = strpos($text,"§§");
-            $listend = strpos($text,"%%");
-            $listlen = (int) ($listend)-$listbeg;
-            $wert = substr($text,$listbeg,$listlen+2);
-            $listausgabe = substr($text,$listbeg+2,$listlen-2);
-            #echo $listausgabe;
-            $liste = explode("[*]",$listausgabe);
-            foreach ($liste as $key) {
-                $key = wordwrap($key,60,"\n",0);
-                $key = str_replace("\n","\n     ",$key);
-                $ersatz .= "\n   * ".$key."\n";
-            }
-            $text = str_replace($wert,$ersatz."\n",$text);
-            $wert = "";
-            $ersatz = "";
-        }
-        return($text);
+
+        return($replace);
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
