@@ -274,9 +274,15 @@
     // steuerung der funktionen
     require $pathvars["config"]."addon.cfg.php";
     
-    // aenderungen durch webdesigner
-    require $pathvars["templates"]."linking.inc.php";
-    
+    // webdesigner kann mit dieser datei das laden der templates beinflussen
+    if ( file_exists($pathvars["templates"]."linking.inc.php") ) {
+      $linking_path = $pathvars["templates"];      
+      include $linking_path."linking.inc.php";
+    } elseif ( file_exists($pathvars["fileroot"]."templates/default/linking.inc.php") ) {  
+      $linking_path = $pathvars["fileroot"]."templates/default/";      
+      include $linking_path."linking.inc.php";
+    }
+           
     // rekursiven parser aufrufen
     if ( $HTTP_POST_VARS["print"] != "" || $HTTP_GET_VARS["print"] != "" ) {
         $debugging["html_enable"] = 0;
