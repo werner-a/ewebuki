@@ -169,25 +169,25 @@
                 // und inhalte aus $dataloop array einbauen
                 if ( strpos($line,"##loop")  !== false ) {
                     $loop   = "1";
-                    $mark   = explode("-",strstr($line,"##loop"),3);
-                    $label  = $mark[1];
-                    $buffer = "";
+                    $loop_mark   = explode("-",strstr($line,"##loop"),3);
+                    $loop_label  = $loop_mark[1];
+                    $loop_buffer = "";
                 } else {
                     if ( strpos($line,"##cont") !== false ) {
                         $loop  = "0";
-                        $block = "";
-                        $labelloop = $dataloop[$label];
+                        $loop_block = "";
+                        $labelloop = $dataloop[$loop_label];
                         foreach ( (array) $labelloop as $data ) {
-                            $work = $buffer;
+                            $loop_work = $loop_buffer;
                             foreach ( (array)$data as $name => $value ) {
-                                $work = str_replace("!{".$name."}",$value,$work);
+                                $loop_work = str_replace("!{".$name."}",$value,$loop_work);
                             }
-                            $work = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$work);
-                            $block .= $work;
+                            $loop_work = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$loop_work);
+                            $loop_block .= $loop_work;
                         }
-                        $line = $block.trim($line)."\n";
+                        $line = $loop_block.trim($line)."\n";
                     } elseif ( $loop == "1" ) {
-                        $buffer .= trim($line)."\n";
+                        $loop_buffer .= trim($line)."\n";
                         continue;
                     }
                 }
@@ -196,24 +196,24 @@
                 // nur wenn $hidedata["???"] verfuegbar ist einblenden
                 if ( strpos($line,"##hide") !== false ) {
                     $hide   = "1";
-                    $mark   = explode("-",strstr($line,"##hide"),3);
-                    $label  = $mark[1];
-                    $buffer = "";
+                    $hide_mark   = explode("-",strstr($line,"##hide"),3);
+                    $hide_label  = $hide_mark[1];
+                    $hide_buffer = "";
                     continue; // marke ebenfalls kicken!
                 } else {
                     if ( strpos($line,"##show") !== false ) {
                         $hide  = "0";
-                        $block = "";
-                        if ( is_array($hidedata[$label]) ) {
-                            foreach ( $hidedata[$label] as $name => $value ) {
-                                $buffer = str_replace("!{".$name."}",$value,$buffer);
+                        $hide_block = "";
+                        if ( is_array($hidedata[$hide_label]) ) {
+                            foreach ( $hidedata[$hide_label] as $name => $value ) {
+                                $hide_buffer = str_replace("!{".$name."}",$value,$hide_buffer);
                             }
-                            $block = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$buffer);
+                            $hide_block = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$hide_buffer);
                         }
                         #$line = $block.trim($line)."\n";
-                        $line = $block; // marke ebenfalls kicken!
+                        $line = $hide_block; // marke ebenfalls kicken!
                     } elseif ( $hide == "1" ) {
-                        $buffer .= trim($line)."\n";
+                        $hide_buffer .= trim($line)."\n";
                         continue;
                     }
                 }
