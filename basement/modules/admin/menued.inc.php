@@ -45,9 +45,10 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
+    // content umschaltung verhindern
+    $specialvars["dynlock"] = True;
 
     if ( $rechte[$cfg["right"]["admin"]] == -1 ) {
-
 
         if ( $cfg["db"]["change"] == -1 ) {
             // lokale db auswaehlen
@@ -483,10 +484,9 @@
 
         if ( $cfg["db"]["change"] == -1 ) {
             // globale db auswaehlen
-            if ( $db_db != "" ) {
                 $db -> selectDb(DATABASE,FALSE);
-            }
         }
+
     } else {
         header("Location: ".$pathvars["webroot"]."/".$environment["design"]."/".$environment["language"]."/index.html");
     }

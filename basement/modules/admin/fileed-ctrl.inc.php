@@ -45,6 +45,9 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
+    // content umschaltung verhindern
+    $specialvars["dynlock"] = True;
+
     // magic include loader
     if ( in_array($environment["kategorie"], $cfg["function"]) ) {
         include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";

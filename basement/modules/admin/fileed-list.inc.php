@@ -43,27 +43,42 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $environment[parameter][1] == "delete" ) {
+    $ausgaben["form_error"] = "";
+    if ( $environment["parameter"][1] == "delete" ) {
         foreach ($HTTP_SESSION_VARS["images_memo"] as $key => $value) {
-            $sql = "DELETE FROM site_file WHERE fid=".$value;
-            #echo $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$value.".jpg";
-            $error  = unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$value.".jpg");
-            $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$value.".jpg");
-            $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$value.".jpg");
-            $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$value.".jpg");
-            $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$value.".jpg");
-            if ($error == "11111") {
-                $result = $db -> query($sql);
+            $sql = "SELECT ffart,fuid FROM site_file WHERE fid =".$value;
+            $result = $db -> query($sql);
+            $file_art = $db -> fetch_array($result,$nop);
+            if ($file_art["fuid"] == $HTTP_SESSION_VARS["uid"]) {
+                $sql = "DELETE FROM site_file WHERE fid=".$value;
+                if ($file_art["ffart"] == "pdf") {
+                    #echo $pathvars["filebase"]["maindir"].$cfg["file"]["text"]."doc_".$value.".".$file_art["ffart"];
+                    $error  = unlink($pathvars["filebase"]["maindir"].$cfg["file"]["text"]."doc_".$value.".".$file_art["ffart"]);
+                    if ($error == "1") {
+                        $result = $db -> query($sql);
+                    }
+                } else {
+                    $error  = unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$value.".".$file_art["ffart"]);
+                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$value.".".$file_art["ffart"]);
+                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$value.".".$file_art["ffart"]);
+                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$value.".".$file_art["ffart"]);
+                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$value.".".$file_art["ffart"]);
+                    if ($error == "11111") {
+                        $result = $db -> query($sql);
+                    }
+                }
+            } else {
+                $ausgaben["form_error"] .= "Fehler ! Es können nur eigene Dateien gelöscht werden<br>";
+                unset ($HTTP_SESSION_VARS["images_memo"][$environment["parameter"][2]]);
             }
-            #echo $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."img_".$value.".jpg"."<br>";
         }
         $HTTP_SESSION_VARS["images_memo"] = "";
 
     }
+
     session_register("return");
-
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Session (return): ".$HTTP_SESSION_VARS["return"].$debugging["char"];
-
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "UID: ".$HTTP_SESSION_VARS["uid"].$debugging["char"];
     $ausgaben["images_aktion"] = $HTTP_SESSION_VARS["return"];
 
 
@@ -73,7 +88,8 @@
     $ausgaben["1"] = "";
     $ausgaben["2"] = "";
     $ausgaben["3"] = "";
-
+    $ausgaben["4"] = "";
+    $ausgaben["5"] = "";
 
     session_register("what");
     if ( $HTTP_GET_VARS["what"] != "" ) {
@@ -81,6 +97,13 @@
         $HTTP_SESSION_VARS["what"] = $HTTP_GET_VARS["what"];
     } else {
         $what = $HTTP_SESSION_VARS["what"];
+    }
+    session_register("art");
+    if ( $HTTP_GET_VARS["art"] != "") {
+        $art = $HTTP_GET_VARS["art"];
+        $HTTP_SESSION_VARS["art"] = $HTTP_GET_VARS["art"];
+    } else {
+        $art = $HTTP_SESSION_VARS["art"];
     }
 
     switch ( $what ) {
@@ -93,7 +116,15 @@
         default:
             $ausgaben["1"] = " checked";
     }
-
+    switch ( $art ) {
+        case "pdf":
+            $ausgaben["4"] = " checked";
+            $art = "'pdf'";
+            break;
+        default:
+            $art = "'jpg','png'";
+            $ausgaben["5"] = " checked";
+    }
 
     // Suche
     if ( $HTTP_GET_VARS["search"] != "" ) {
@@ -119,16 +150,19 @@
     switch ( $what ) {
         case 3:
             $whereb = "";
-            $getvalues .= "&what=3";
+            $whereb .= " ffart in   (".$art.")";
+            $getvalues .= "&what=3&art=".$HTTP_GET_VARS["art"];
             break;
         case 2:
             $whereb = " fdid = '".$HTTP_SESSION_VARS["custom"]."'";
-            $getvalues .= "&what=2";
+            $whereb .= " AND ffart in (".$art.")";
+            $getvalues .= "&what=2&art=".$HTTP_GET_VARS["art"];
             break;
         default:
            $whereb = " fuid = '".$HTTP_SESSION_VARS["uid"]."'";
-
+           $whereb .= " AND ffart in (".$art.")";
     }
+
     // gibt es beide
     if ($wherea && $whereb) $trenner = " AND ";
     // ist wherea da, klammern setezn
@@ -136,10 +170,9 @@
     // where zusammensetzen
     if ($wherea || $whereb) $where = " WHERE ".$wherea.$trenner.$whereb;
 
-
     // Sql Query
     $sql = "SELECT * FROM ".$cfg["db"]["entries"].$where." ORDER by ".$cfg["db"]["order"]." ".$cfg["db"]["sort"];
-
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">SQL".$sql.".tem.html</font>".$debugging["char"];
     // Inhalt Selector erstellen und SQL modifizieren
     $inhalt_selector = inhalt_selector( $sql, $position, $cfg["db"]["rows"], $parameter, 1, 10, $getvalues );
     $ausgaben["inhalt_selector"] .= $inhalt_selector[0];
@@ -159,6 +192,8 @@
       #"delete"      => array("modify,", "Löschen")
     );
     $imgpath = $pathvars["images"];
+
+    $ausgaben["output"] .= "<table width=\"628\" border=\"0\"><tr><td>";
 
     if ( $db->num_rows($result) == 0 ) {
         $ausgaben["result"] .= " keine Einträge gefunden.<br><br>";
@@ -185,38 +220,18 @@
               }
         }
 
-
         // daten holen, row spulen
-        while ( $data = $db -> fetch_array($result,$nop) ) {
 
+        while ( $data = $db -> fetch_array($result,$nop) ) {
             $i++;
             foreach($data as $key => $value) {
                 $$key = $value;
             }
 
-
-            // thumbnail anzeigen
-            switch ( $ffart ) {
-                case jpg:
-                    $thumbnail = "<a href=\"".$cfg["basis"]."/preview,".$fid.",medium.html\"><img border=\"0\" src=\"".$cfg["file"]["webdir"].$cfg["file"]["picture"]."/"."thumbnail/tn_".$fid.".".$ffart."\"></a>";
-                    #vspace=\"5\" hspace=\"5\"
-                    break;
-                case png:
-                    $thumbnail = "<a href=\"".$cfg["basis"]."/preview,".$fid.".,medium.html\"><img border=\"0\" src=\"".$cfg["file"]["webdir"].$cfg["file"]["picture"]."/"."thumbnail/tn_".$fid.".".$ffart."\"></a>";
-                    break;
-                case pdf:
-                    $thumbnail = "<a href=\"".$cfg["basis"]."/preview,".$fid.",medium.html\"><img hight=\"64\" width\"64\" border=\"0\" src=\"".$pathvars["images"]."pdf.png\"></a>";
-                    break;
-            }
-
             $environment["parameter"][1] = $environment["parameter"][1] + 0;
 
-            // zu lange filenamen kuerzen
-            if ( strlen($ffname) > 10 ) {
-                $ffname = substr($ffname,0,10)."...";
-            }
-            if (is_array($HTTP_SESSION_VARS[images_memo])) {
-                if (in_array($fid,$HTTP_SESSION_VARS[images_memo])) {
+            if (is_array($HTTP_SESSION_VARS["images_memo"])) {
+                if (in_array($fid,$HTTP_SESSION_VARS["images_memo"])) {
                     $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html><img src=".$pathvars["images"]."cms-cb1.png border=0></a>";
                 } else {
                     $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html><img src=".$pathvars["images"]."cms-cb0.png border=0></a>";
@@ -225,38 +240,33 @@
                 $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html><img src=".$pathvars["images"]."cms-cb0.png border=0></a>";
             }
 
-            // datum richtig setzen
-            #$ierstellt = substr($ierstellt,8,2).".".substr($ierstellt,5,2).".".substr($ierstellt,0,4);
+            //morhart test
 
-            // mehr link
-            #$mehr = $cfg["basis"]."/".$cfg["ebene"]["zwei"]."/details,".$data[$cfg["db"]["key"]].".html";
-            #$environment["parameter"][1] = $environment["parameter"][1] + 0;
-            #$mehr = $cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html";
-
-            // aktionen erstellen
-            $aktion = "";
-            foreach($modify as $name => $value) {
-                if ( $rechte[$value[2]] == -1 || $value[2] == "" ) {
-                    $aktion .= "<a href=\"".$cfg["basis"]."/".$cfg["ebene"]["zwei"]."/".$value[0].$name.",".$data[$cfg["db"]["key"]].".html\"><img src=\"".$imgpath."/".$name.".gif\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
-                } else {
-                    $aktion .= "<img src=\"".$imgpath."/pos.png\" alt=\"\" width=\"24\" height=\"18\">";
-                }
+#            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">BUFFY: ".$ffname."--".$fdesc."</font>".$debugging["char"];
+            switch ( $ffart ) {
+                case ("pdf"):
+                    $ausgaben["output"] .="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"";
+                    $ausgaben["output"] .= "<tr><td width=\"8\">".$cb."</td><td align=left width=\"30\"><a target=\"_blank\" href=".$cfg["file"]["webdir"].$cfg["file"]["text"]."doc_".$fid.".pdf><img src=\"".$pathvars["images"]."details.png\" border=0></a></td><td align=left width=\"612\">".$fdesc."</td>";
+                    $ausgaben["output"] .= "</table>";
+                    break;
+                default:
+                    $imgsize = getimagesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$fid.".".$ffart);
+                    $imgsize = " ".$imgsize[3];
+                    #$imgsize = str_replace("\"","",$imgsize);
+                    #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">ATTENTION: IMAGSIZE ".$imgsize."</font>".$debugging["char"];
+                    #echo $imgsize;
+                    $ausgaben["output"] .="<table border=\"0\" cellspacing=\"1\" cellpading=\"1\" align=\"left\">";
+                    $ausgaben["output"] .= "<tr><td width=\"22\">".$cb."</td>";
+                    $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",big.html\">Big</a></td>";
+                    $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",medium.html\">Med</a></td>";
+                    $ausgaben["output"] .= "<td><a href=\"".$cfg["basis"]."/preview,".$fid.",small.html\">Sma</a></td></tr>";
+                    $ausgaben["output"] .= "<tr><td colspan=4 align=\"center\"><a href=".$cfg["basis"]."/preview,".$fid.",big.html><img ".$imgsize." src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\"></a></td></tr>";
+                    $ausgaben["output"] .= "</table>";
+                    $j++;
+                    $ja = $j / 6;
+                    if ( is_int($ja) ) $ausgaben["output"] .="</td></tr><tr><td>";
+                    break;
             }
-            $feld = "feld".$i;
-            $$feld = parser( "-939795212.list-feld", "");
-
-            if ( $i == 6 ) {
-                $i = 0;
-                $ausgaben["output"] .= parser( "-939795212.list-row", "");
-            }
-        }
-        if ( $i << 6 ) {
-            while ( $i < 6 ) {
-                $i++;
-                $feld = "feld".$i;
-                $$feld = "<img src=\"".$imgpath."/pos.png\" alt=\"\" width=\"96\" height=\"96\">";
-            }
-            $ausgaben["output"] .= parser( "-939795212.list-row", "");
         }
     }
 
@@ -269,12 +279,12 @@
             break;
 
         case 1:
-            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">Datei editieren</a>";
+            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">Metadaten bearbeiten</a>";
             $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">ausgewählte Datei löschen</a>";
             break;
 
         default:
-            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">Dateien editieren</a>";
+            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">Metadaten bearbeiten</a>";
             $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">ausgewählte Dateien löschen</a>";
     }
 
@@ -289,7 +299,12 @@
     } else {
         #$neu = "";
     }
+
+
+    $ausgaben["output"] .= "</td></tr></table>";
+
     $ausgaben["output"] .= parser( "-939795212.list-foot", "");
+
 
     // was anzeigen
     #$mapping["main"] = "152366123.list";

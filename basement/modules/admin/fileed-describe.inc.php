@@ -212,11 +212,15 @@
             $form_values = $db -> fetch_array($result,1);
         } else {
             $form_values = $HTTP_POST_VARS;
+            $form_values["ffart"] = substr($form_values["ffname"],strrpos($form_values["ffname"],".")+1,3);
         }
 
         // bildausgabe
-        $ausgaben["image_print"] .= "<img src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$wert.".jpg\">";
-
+        if (strstr($form_values["ffname"],".pdf")) {
+            $ausgaben["image_print"] = "<img src=\"".$pathvars["images"]."pdf_big.png\">";
+        } else {
+            $ausgaben["image_print"] .= "<img src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$wert.".".$form_values["ffart"]."\">";
+        }
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
@@ -232,18 +236,8 @@
         $ausgaben["form_aktion"] = $cfg["basis"]."/describe,edit,verify.html";
 
 
-        // referer im form mit hidden element mitschleppen
-        if ( $HTTP_GET_VARS["referer"] != "" ) {
-            $ausgaben["form_referer"] = $HTTP_GET_VARS["referer"];
-            $ausgaben["form_break"] = $ausgaben["form_referer"];
-        } elseif ( $HTTP_POST_VARS["form_referer"] == "" ) {
-            $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
-            $ausgaben["form_break"] = $ausgaben["form_referer"];
-        } else {
-            $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
-            $ausgaben["form_break"] = $ausgaben["form_referer"];
-        }
-
+        // referer immer auf list setzen
+        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
         if ( $environment["parameter"][2] == "verify" ) {
 
@@ -317,7 +311,7 @@
             $img_dst = imagecreate($dest_width,$dest_height);
             imagecopyresized($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height, $src_width, $src_height);
         }
-        
+
         if ( strrchr($img_org,".") == ".jpg" ) {
             imagejpeg($img_dst,$img_path."/".$img_name."_".$img_id.".jpg");
         } elseif ( strrchr($img_org,".") == ".png" ) {

@@ -63,9 +63,9 @@
             $ausgaben["output"] .= "<a href=\"".$cfg["basis"]."/preview,".$data["fid"].",medium.html\">Mittel</a> ";
             $ausgaben["output"] .= "<a href=\"".$cfg["basis"]."/preview,".$data["fid"].",big.html\">Groß</a> ";
             break;
-        case pdf:
-            $ausgaben["output"] .= "<a target=\"_blank\" href=\"".$cfg["file"]["webdir"].$cfg["file"]["text"]."/doc_".$data["fid"].".".$data["ffart"]."\"><img hight=\"64\" width\"64\" border=\"0\" src=\"".$pathvars["images"]."pdf.png\"></a>";
-            break;
+        #case pdf:
+        #    $ausgaben["output"] .= "<a target=\"_blank\" href=\"".$cfg["file"]["webdir"].$cfg["file"]["text"]."doc_".$data["fid"].".".$data["ffart"]."\"><img hight=\"64\" width\"64\" border=\"0\" src=\"".$pathvars["images"]."pdf.png\"></a>";
+        #    break;
     }
 
 
