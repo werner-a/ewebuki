@@ -2,6 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<!--$Id$-->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>!#specialvars_pagetitle</title>
 </head>
@@ -21,7 +22,7 @@
 </table>
 <table width="735" border="0" cellspacing="0" cellpadding="0" align="center">
   <tr> 
-    <td>Kekse: !#environment_kekse</td>
+    <td>#(kekse) !#environment_kekse</td>
     <td align="right">!#date</td>
   </tr>
   <tr> 
@@ -30,7 +31,7 @@
 </table>
 <table width="735" border="0" cellpadding="0" align="center" cellspacing="0">
   <tr> 
-    <td width="135" valign="top">
+    <td width="135" valign="top"> 
       <table width="138" border="1" cellpadding="0" cellspacing="0" >
         <tr> 
           <td nowrap>#(ueberschrift)</td>
@@ -45,18 +46,18 @@
   </tr>
 </table>
 <table width="735" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr>
-    <td>&nbsp;</td>
+  <tr> 
+    <td colspan="2">&nbsp;</td>
   </tr>
   <tr> 
-    <td>
-<hr size="1">
+    <td colspan="2"> 
+      <hr size="1">
     </td>
   </tr>
   <tr> 
     <td><a href="!#pathvars_menuroot/index.html!#specialvars_phpsessid">Home</a> 
-      <a href="!#pathvars_menuroot/impressum.html"></a><a href="!#pathvars_menuroot/impressum.html">Kontakt</a> 
-    </td>
+      <a href="!#pathvars_menuroot/impressum.html"></a><a href="!#pathvars_menuroot/impressum.html">Kontakt</a></td>
+    <td align="right">#(copyright)</td>
   </tr>
 </table>
 </body>
