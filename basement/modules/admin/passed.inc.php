@@ -45,8 +45,18 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    // content umschaltung verhindern
-    $specialvars["dynlock"] = True;
+    // warning ausgeben
+    if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
+
+    // path fuer die schaltflaechen anpassen
+    if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+
+    // label bearbeitung aktivieren
+    if ( isset($HTTP_GET_VARS["edit"]) ) {
+        $specialvars["editlock"] = 0;
+    } else {
+        $specialvars["editlock"] = -1;
+    }
 
     // warning ausgeben
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
@@ -82,6 +92,14 @@
         $ausgaben["form_error"] = "";
         $ausgaben["form_aktion"] = $cfg["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html";
 
+        // unzugaengliche #(marken) sichtbar machen
+        if ( isset($HTTP_GET_VARS["edit"]) ) {
+            $ausgaben["inaccessible"] = "inaccessible values:<br />";
+            #$ausgaben["inaccessible"] .= "# (error_?) #(error_?)<br />";
+        } else {
+            $ausgaben["inaccessible"] = "";
+        }
+
         // referer im form mit hidden element mitschleppen
         if ( $HTTP_POST_VARS["form_referer"] == "" ) {
             $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
@@ -103,8 +121,8 @@
             $salt = substr($data[$cfg["db"]["pass"]],0,2);
             $oldpass = crypt($HTTP_POST_VARS["oldpass"],$salt);
 
-            if ( $oldpass == $data[$cfg["db"]["pass"]] ) {               
-                if ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] && $HTTP_POST_VARS["newpass"] != "" ) {                   
+            if ( $oldpass == $data[$cfg["db"]["pass"]] ) {
+                if ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] && $HTTP_POST_VARS["newpass"] != "" ) {
                     $checked_password = $HTTP_POST_VARS["newpass"];
                     mt_srand((double)microtime()*1000000);
                     $a=mt_rand(1,128);
@@ -136,7 +154,7 @@
                 if ( $checked_password != "" ) {
                     $sqla .= $cfg["db"]["pass"]."='".$checked_password."'";
                 }
-                $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";               
+                $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
                 $result  = $db -> query($sql);
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 header("Location: ".$ausgaben["form_referer"]);
@@ -145,7 +163,6 @@
     } else {
         header("Location: ".$pathvars["webroot"]."/".$environment["design"]."/".$environment["language"]."/index.html");
     }
-
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
