@@ -65,7 +65,6 @@
         if ( count($array) >= 1 ) {
             $merken = $db -> getDb();
             if ( $merken != DATABASE ) {
-                echo tet;
                 $db -> selectDB( DATABASE ,"");
             }
             foreach ( $array as $value ) {
@@ -120,6 +119,12 @@
             }
             $tn .= "</td></tr></table>";
         }
+
+        $danei ='[TAB=l;300]\n[ROW]\n[COL]1,1[\/COL]\n[COL]1,2[\/COL]\n[COL]1,3[\/COL]\n[\/ROW][ROW]\n[COL]2,1[\/COL]\n[COL]2,2[\/COL]\n[COL]2,3[\/COL]\n[\/ROW]\n[\/TAB]';
+
+        $extension .= "else if (st=='tabb')\nst='".$danei."';";
+        $tn .= "<a href=\"#\" onclick=\"INSst('tabb','".$ce_formname."','".$ce_name."')\">Tabellen Beispiel</a>";
+
 
         $ausgaben["ce_script"] = parser("cms.edit-js","");
         $cetag = array( "b"     => array( "1", "Fett"),
