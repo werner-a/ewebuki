@@ -46,6 +46,10 @@
            "subdir"    => "",
            "name"      => "",
            "basis"     => $pathvars["virtual"]."",
+           "hidden"    => array(
+                          "set"        => False,
+                          "kategorie"  => "login",                          
+                          ),            
            "db"        => array(
                           "user"  => array(
                                      "entries" => "auth_user",
