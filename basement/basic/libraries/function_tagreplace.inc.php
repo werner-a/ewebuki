@@ -46,8 +46,13 @@
     function tagreplace($replace) {
         global $pathvars, $environment, $ausgaben;
 
+        // cariage return + linefeed fix
+        $sear = array("\r\n[", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "AB]\r\n", "W]\r\n", "L]\r\n", );
+        $repl = array("[",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "AB]",     "W]",     "L]",);           
+        $replace = str_replace($sear,$repl,$replace);        
+                
         // neues generelles tagreplace
-        while ( preg_match("/\[[A-Z1-3]{1,6}(\]|=)/", $replace, $tag ) ) {
+        while ( preg_match("/\[[A-Z1-6]{1,6}(\]|=)/", $replace, $tag ) ) {
         // fuck ereg -> is to slow!
         #while ( ereg("\[[A-Z1-2]{1,6}(\]|=)", $replace, $tag ) ) {
             $opentag = $tag[0];
@@ -69,16 +74,7 @@
                 $tagwertbeg = $tagbeg + strlen($opentag);
                 $tagwertlen = $taglen - strlen($endtag)+1;
                 $tagwert = substr($replace,$tagwertbeg,$tagwertlen);
-
-                // cariage return + linefeed fix
-                $tagwert_nocrlf = str_replace("AB]\r\n","AB]",$tagwert);
-                $tagwert_nocrlf = str_replace("W]\r\n","W]",$tagwert_nocrlf);
-                $tagwert_nocrlf = str_replace("L]\r\n","L]",$tagwert_nocrlf);
-                $tagwert_nocrlf = str_replace("\r\n[","[",$tagwert_nocrlf);
-                #echo "<pre>";
-                #echo ">".$tagwert_nocrlf."<";
-                #echo "</pre>";
-
+               
                 // offene tags abfangen
                 #if ( strstr($tagwert, $opentag) || ( strstr($replace, $opentag) && $tagwert == "" ) ) {
                 if ( strstr($tagwert, $opentag) || $tagwertlen < 0 ) {
@@ -133,6 +129,9 @@
                     case "[PRE]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<pre>".$tagwert."</pre>",$replace);
                         break;
+                    case "[P]":
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<p>".$tagwert."</p>",$replace);
+                        break;                    
                     case "[BR]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<br />",$replace);
                         break;
@@ -403,10 +402,10 @@
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
                         break;
                     case "[TAB]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<table cellspacing=\"0\" cellpadding=\"1\">".$tagwert_nocrlf."</table>",$replace);
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<table cellspacing=\"0\" cellpadding=\"1\">".$tagwert."</table>",$replace);
                         break;
                     case "[TAB=":
-                        $tagwerte = explode("]",$tagwert_nocrlf,2);
+                        $tagwerte = explode("]",$tagwert,2);
                         $tabwerte = explode(";",$tagwerte[0]);
                         if ( $tabwerte[0] == "l" ) {
                             $align = " align=\"left\"";
@@ -437,13 +436,13 @@
                         $replace = tagreplace($replace);
                         break;
                     case "[ROW]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<tr>".$tagwert_nocrlf."</tr>",$replace);
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<tr>".$tagwert."</tr>",$replace);
                         break;
                     case "[COL]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<td valign=\"top\">".$tagwert_nocrlf."</td>",$replace);
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<td valign=\"top\">".$tagwert."</td>",$replace);
                         break;
                     case "[COL=":
-                        $tagwerte = explode("]",$tagwert_nocrlf,2);
+                        $tagwerte = explode("]",$tagwert,2);
                         $colwerte = explode(";",$tagwerte[0]);
                         if ( $colwerte[0] == "l" ) {
                             $align = " align=\"left\"";
@@ -471,6 +470,34 @@
                         }
                         $replace = str_replace($opentag.$tagwert.$endtag,"<img src=\"".$imgurl."\" alt=\"\"".$imgsize."> <span class=\"fkrcontentlead\">".$tagwert."</span>",$replace);
                         break;
+                    case "[H3]":                  
+                        if ( $format["h3"] == "" ) { 
+                          $format["h3"] = "<h3>";
+                          $format["/h3"] = "</h3>";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h3"].$tagwert.$format["/h3"],$replace);                        
+                        break;
+                    case "[H4]":                  
+                        if ( $format["h4"] == "" ) { 
+                          $format["h4"] = "<h4>";
+                          $format["/h4"] = "</h4>";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h4"].$tagwert.$format["/h4"],$replace);
+                        break;                                      
+                    case "[H5]":                  
+                        if ( $format["h5"] == "" ) { 
+                          $format["h5"] = "<h5>";
+                          $format["/h5"] = "</h5>";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h5"].$tagwert.$format["/h5"],$replace);
+                        break;                        
+                    case "[H6]":
+                        if ( $format["h6"] == "" ) { 
+                          $format["h6"] = "<h6>";
+                          $format["/h6"] = "</h6>";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$format["h6"].$tagwert.$format["/h6"],$replace);                   
+                        break;                        
                     case "[HL]":
                         $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/dot1.gif";
                         $replace = str_replace($opentag.$tagwert.$endtag,"<img src=\"".$pathvars["images"]."hl.png\" height=\"1\" width=\"628\" vspace=\"2\" alt=\"\">",$replace);
