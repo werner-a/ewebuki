@@ -26,30 +26,34 @@
 # spread out over the entire source repository.
 
 # alias -a first-dir
+# regular first-dir/sdir sfile
+# ampermod &first-dir
+# exmodule -a !first-dir/sdir first-dir
+
+
+# alter name geht weiterhin 
 phpwebkit -a htdocs
 
-# regular first-dir/sdir sfile
+# ewebuki in einzelteilen
 htdocs basement index.php.auto-dist index.php.rand-dist robots.txt-dist .htaccess-dist
 basic basement/basic
 conf basement/conf
 css basement/css
 docu basement/docu
 images basement/images
-
 modules basement/modules README leer-sub.inc.php leer.cfg.php leer.inc.php
+sql basement/sql
+file basement/file
+templates basement/templates
+
+# die kunden  module
 admin basement/modules/admin
 chaos basement/modules/chaos
 creative basement/modules/creative
 intrabvv basement/modules/intrabvv
 koppe basement/modules/koppe
 
-sql basement/sql
-file basement/file
-templates basement/templates
-
-# ampermod &first-dir
-
-# exmodule -a !first-dir/sdir first-dir
-snapshot -d eWeBuKi -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
+# grundelemente auf einmal
+snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
 
 # EOF
