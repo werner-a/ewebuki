@@ -167,9 +167,13 @@
 
                     if ( $right == -1 ) {
                         if ( $ausgaben["M1"] != "" ) $ausgaben["M1"] .= $defaults["split"]["m1"];
-                        $ausgaben["M1"] .= "<a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
-
-                        $ausgaben["L1"] .= $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
+                        if ( $navbararray["entry"] == "" ) {
+                            $link1url = $navbararray["exturl"];
+                        } else {
+                            $link1url = "./".$navbararray["entry"].".html";
+                        }
+                        $ausgaben["M1"] .= "<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a>";
+                        $ausgaben["L1"] .= $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a><br>";
                     }
                 }
 
@@ -192,13 +196,17 @@
 
                     if ( $right == -1 ) {
                         if ( $ausgaben["M2"] != "" ) $ausgaben["M2"] .=$defaults["split"]["m2"] ;
-                        $ausgaben["M2"] .= "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
-
-                        $ausgaben["L2"] .= $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
+                        if ( $navbararray["entry"] == "" ) {
+                            $link2url = $navbararray["exturl"];
+                        } else {
+                            $link2url = $pathvars["virtual"].$path."/".$navbararray["entry"].".html";
+                        }
+                        $ausgaben["M2"] .= "<a class=\"menu_punkte\" href=\"".$link2url."\">".$navbararray["label"]."</a>";
+                        $ausgaben["L2"] .= $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$link2url."\">".$navbararray["label"]."</a><br>";
 
                         // $lnk_* mit links belegen
                         $lnkcount++;
-                        $lnk[$lnkcount] = $pathvars["virtual"].$path."/".$navbararray["entry"].".html";
+                        $lnk[$lnkcount] = $link2url;
                     }
                 }
             }
