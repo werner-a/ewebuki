@@ -43,6 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "php version: ". PHP_VERSION .$debugging["char"];
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $main_script_name ** ]".$debugging["char"];
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "script name: ".$_SERVER["SCRIPT_NAME"].$debugging["char"];
@@ -239,17 +240,35 @@
         }
     }
 
-    // was steht in den post vars
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $debugging["char"]."form (post):".$debugging["char"];
-    foreach($HTTP_POST_VARS as $name => $value) {
-         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
+    if (version_compare(PHP_VERSION, "4.3.0", ">=")) {
+        // was steht in den post vars
+        if ( $debugging["html_enable"] && count($HTTP_POST_VARS) > 0 ) {
+            $debugging["ausgabe"] .= "form (post):";
+            $debugging["ausgabe"] .= "<pre>".print_r($HTTP_POST_VARS,True)."</pre>";
+        }
+        // was steht in den get vars
+        if ( $debugging["html_enable"] && count($HTTP_GET_VARS) > 0 ) {
+            $debugging["ausgabe"] .= "form (post):";
+            $debugging["ausgabe"] .= "<pre>".print_r($HTTP_GET_VARS,True)."</pre>";
+        }
+    } else {
+        // was steht in den post vars
+        if ( $debugging["html_enable"] && count($HTTP_POST_VARS) > 0 ) {
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form (post):".$debugging["char"];
+            foreach($HTTP_POST_VARS as $name => $value) {
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
+            }
+        }
+
+        // was steht in den get vars
+        if ( $debugging["html_enable"] && count($HTTP_GET_VARS) > 0 ) {
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form (get):".$debugging["char"];
+            foreach($HTTP_GET_VARS as $name => $value) {
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
+            }
+        }
     }
 
-    // was steht in den get vars
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $debugging["char"]."form (get):".$debugging["char"];
-    foreach($HTTP_GET_VARS as $name => $value) {
-         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
-    }
 
     // hallo zur datenbank
     $db      = new DB_connect();
