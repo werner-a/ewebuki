@@ -50,6 +50,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function rparser($startfile, $default_template) {
     global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $mapping, $loopcheck;
+    
     // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
     $template = $pathvars["templates"].$startfile;
     if ( !file_exists($template) && $default_template != "" ) {               
@@ -224,45 +225,45 @@
                             array_pop($path_element); // thanks @ Günther Morhart
                             if ( $value != "" ) {
                                 $find_ebene = "/".implode("/",$path_element);
-                                $startfile = crc32($find_ebene).".".$token_name.".tem.html";
-                                if ( !file_exists($pathvars["templates"].$startfile) ) {
-                                  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$startfile." crc32 template found for ebene (".$find_ebene.")".$debugging["char"];
+                                $newstartfile = crc32($find_ebene).".".$token_name.".tem.html";
+                                if ( !file_exists($pathvars["templates"].$newstartfile) ) {
+                                  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$newstartfile." crc32 template found for ebene (".$find_ebene.")".$debugging["char"];
                                 } else {
                                   break; // thanks @ Günther Wach
                                 }
                             } else {
                                 global $HTTP_GET_VARS;
                                 if ( $HTTP_GET_VARS["lost"] == "" ) {
-                                    $startfile = crc32($environment["ebene"]).".".$token_name.".tem.html";
-                                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "reset to: ".$startfile." crc32 content for ebene (".$environment["ebene"].")".$debugging["char"];
+                                    $newstartfile = crc32($environment["ebene"]).".".$token_name.".tem.html";
+                                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "reset to: ".$newstartfile." crc32 content for ebene (".$environment["ebene"].")".$debugging["char"];
                                 }
                             }
                         }
 
                       } else {
                         // token name und template endung zusammen bauen
-                        $startfile = $token_name.".tem.html";
+                        $newstartfile = $token_name.".tem.html";
                       }
                   } else {
                       // ist das eine sub kategorie ?
                       if ( $token_name == $environment["katid"] && $environment["subkatid"] != "" ) {
                         // token name und template endung zusammen bauen
-                        $startfile = $token_name.".".$environment["subkatid"].".tem.html";
+                        $newstartfile = $token_name.".".$environment["subkatid"].".tem.html";
                         // es gibt kein besonderes template
-                        if ( !file_exists($pathvars["templates"].$startfile)) {
-                          if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$startfile." template found using ".$token_name.".tem.html".$debugging["char"];
-                          $startfile = $token_name.".tem.html";
+                        if ( !file_exists($pathvars["templates"].$newstartfile)) {
+                          if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$newstartfile." template found using ".$token_name.".tem.html".$debugging["char"];
+                          $newstartfile = $token_name.".tem.html";
                         }
                       } else {
                         // token name und template endung zusammen bauen
-                        $startfile = $token_name.".tem.html";
+                        $newstartfile = $token_name.".tem.html";
                       }
                   }
 
                   // gemerkten zeilen anfang ausgeben
                   echo $lline;
                   // parser nochmal aufrufen um untertemplate mit dem namen: "$token".tem.html zu parsen
-                  rparser($startfile, $default_template);
+                  rparser($newstartfile, $default_template);
 
                   if ( strstr($rline,"###switchback###") ) {
                       $db -> selectDb(DATABASE,FALSE);
