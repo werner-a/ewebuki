@@ -50,8 +50,12 @@
   #$defaults["split"]["l1"] = " # ";
   #$defaults["split"]["l2"] = " - ";        
   
+  // tipp: 
+  // bei eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden
+  // dann werden die bilder aus immer aus dem jeweiligen /images/design verzeichnis geladen.
+  
   // [H1] tag wird zu einem kleinen rechteck aus einer punkt grafik und speziell css style formatierter schrift
-  #$defaults["tag"]["h1"] = "<img src=\"".$pathvars["images"]."pt.png\" height=\"7\" width=\"7\" alt=\"\"> <span class=\"spezial_h1\">";
+  #$defaults["tag"]["h1"] = "<img src=\"/images/default/pt.png\" height=\"7\" width=\"7\" alt=\"\"> <span class=\"spezial_h1\">";
   #$defaults["tag"]["/h1"] = "</span><br />";
   
   // [H2] tag wird mit speziellem style formatiert
@@ -59,7 +63,7 @@
   #$defaults["tag"]["/h2"] = "</span><br />";       
   
   // [HL] die linie mit hl wird 300px lang und 1px hoch aus einer ein punkt grafik erstellt.
-  #$defaults["tag"]["hl"] = "<img src=\"".$pathvars["images"]."pt.png\" height=\"1\" width=\"300\" vspace=\"2\" alt=\"\">";
+  #$defaults["tag"]["hl"] = "<img src=\"/images/default/pt.png\" height=\"1\" width=\"300\" vspace=\"2\" alt=\"\">";
   #$defaults["tag"]["/hl"] = "";
   
   // [IN] ein initial kann rot, hervorgehoen und grosser dargestellt werden.
