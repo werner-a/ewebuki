@@ -45,13 +45,23 @@
 
   if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
+      // warning ausgeben
+      if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
+
+      // path fuer die schaltflaechen anpassen
+      if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+
+      // label bearbeitung aktivieren
+      if ( isset($HTTP_GET_VARS["edit"]) ) {
+          $specialvars["editlock"] = 0;
+      } else {
+          $specialvars["editlock"] = -1;
+      }
+
       //
       // Bearbeiten
       //
       if ( $environment["kategorie"] == "modify" ) {
-
-          // warning ausgeben
-          if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
           if ( $environment["parameter"][1] == "add" && $rechte["cms_admin"] == -1 ) {
 
@@ -337,8 +347,8 @@
 
           $ausgaben["ldetail"] = nlreplace($ausgaben["ldetail"]);
 
-          $ausgaben["navigation"] .= "<a href=\"".$_SERVER["HTTP_REFERER"]."\"><img src=\"".$pathvars["images"]."left.png\" border=\"0\" alt=\"Zurück\" title=\"Zurück\" width=\"24\" height=\"18\"></a>";
-          $ausgaben["navigation"] .= "<a href=\"".$environment["basis"]."/modify,edit,".$environment["parameter"][1].".html\"><img src=\"".$pathvars["images"]."edit.png\" border=\"0\" alt=\"Bearbeiten\" title=\"Bearbeiten\" width=\"24\" height=\"18\"></a>";
+          $ausgaben["navigation"] .= "<a href=\"".$_SERVER["HTTP_REFERER"]."\"><img src=\"".$cfg["iconpath"]."left.png\" border=\"0\" alt=\"Zurück\" title=\"Zurück\" width=\"24\" height=\"18\"></a>";
+          $ausgaben["navigation"] .= "<a href=\"".$environment["basis"]."/modify,edit,".$environment["parameter"][1].".html\"><img src=\"".$cfg["iconpath"]."edit.png\" border=\"0\" alt=\"Bearbeiten\" title=\"Bearbeiten\" width=\"24\" height=\"18\"></a>";
           $mapping["main"] = crc32($environment["ebene"]).".details";
 
       //
@@ -375,7 +385,7 @@
 
           $ausgaben["output"] .= "<tr>";
           $class = " class=\"lines\"";
-          $ausgaben["output"] .= "<td".$class." colspan=\"14\"><img src=\"".$pathvars["images"]."/pos.png\" alt=\"\" width=\"1\" height=\"1\"></td>";
+          $ausgaben["output"] .= "<td".$class." colspan=\"14\"><img src=\"".$cfg["iconpath"]."/pos.png\" alt=\"\" width=\"1\" height=\"1\"></td>";
           $ausgaben["output"] .= "</tr>";
           $class = " class=\"contenthead\"";
           #$size  = " width=\"30\" height=\"20\"";
@@ -393,7 +403,7 @@
           $ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>";
           $ausgaben["output"] .= "</tr><tr>";
           $class = " class=\"lines\"";
-          $ausgaben["output"] .= "<td".$class." colspan=\"14\"><img src=\"".$pathvars["images"]."/pos.png\" alt=\"\" width=\"1\" height=\"1\"></td>";
+          $ausgaben["output"] .= "<td".$class." colspan=\"14\"><img src=\"".$cfg["iconpath"]."/pos.png\" alt=\"\" width=\"1\" height=\"1\"></td>";
           $ausgaben["output"] .= "</tr>";
 
 
@@ -403,7 +413,7 @@
               "delete"    => array("modify,", "Löschen", "cms_admin"),
               "details"   => array("", "Details")
           );
-          $imgpath = $pathvars["images"];
+          $imgpath = $cfg["iconpath"];
 
           while ( $field = $db -> fetch_array($result,$nop) ) {
               $ausgaben["output"] .= "<tr>";
@@ -427,7 +437,7 @@
                   if ( $value[2] == "" || $rechte[$value[2]] == -1) {
                         $aktion .= "<a href=\"".$environment["basis"]."/".$value[0].$name.",".$field["uid"].".html\"><img src=\"".$imgpath.$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
               } else {
-                        $aktion .= "<img src=\"".$pathvars["images"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
+                        $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
                   }
               }
               $ausgaben["output"] .= "<td".$class.">".$aktion."</td>";
@@ -436,7 +446,7 @@
 
               $ausgaben["output"] .= "</tr><tr>";
               $class = " class=\"lines\"";
-              $ausgaben["output"] .= "<td".$class." colspan=\"14\"><img src=\"".$pathvars["images"]."/pos.png\" alt=\"\" width=\"1\" height=\"1\"></td>";
+              $ausgaben["output"] .= "<td".$class." colspan=\"14\"><img src=\"".$cfg["iconpath"]."/pos.png\" alt=\"\" width=\"1\" height=\"1\"></td>";
               $ausgaben["output"] .= "</tr>";
 
 
