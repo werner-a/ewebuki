@@ -29,16 +29,16 @@
             <td colspan="2"> 
               <table border="0" cellspacing="0" cellpadding="0" width="100%">
                 <tr> 
-                  <td>#(label)</td>
-                  <td>!#element_nachname</td>
+                  <td>#(username)</td>
+                  <td>!#element_username</td>
                 </tr>
                 <tr> 
-                  <td>#(lang)</td>
-                  <td>!#element_vorname</td>
+                  <td>#(newpass)</td>
+                  <td>!#element_newpass</td>
                 </tr>
                 <tr> 
-                  <td>#(exturl)</td>
-                  <td>!#element_email</td>
+                  <td>#(chkpass)</td>
+                  <td>!#element_chkpass</td>
                 </tr>
               </table>
             </td>
@@ -75,9 +75,7 @@
             <td colspan="4"><a href="!#ausgaben_form_break"> </a>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr> 
-                  <td colspan="3">
-                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
-                  </td>
+                  <td colspan="3">&nbsp; </td>
                 </tr>
                 <tr> 
                   <td><input type="submit" value="#(senden)" name="submit"></td>
@@ -98,5 +96,6 @@
   </table>
   </form>
 <!--##end-->
+<input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
 </body>
 </html>
