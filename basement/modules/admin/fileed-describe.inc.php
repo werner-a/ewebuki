@@ -243,11 +243,7 @@
         $element = form_elements( $cfg["db"]["entries"], $form_values );
 
         // form elemente erweitern
-
-        $element["upload"] = "Ersetzen durch<br>";
-        $element["upload"] .= "<input type=\"file\" name=\"upload\">";
-        $element["upload"] .= "<br><br>Die Endung der vorhandenen Datei muﬂ mit der Endung der neuen Datei identisch sein!";
-
+        $element["upload"] = "#(upa)<br><input type=\"file\" name=\"upload\"><br>#(upb)";
 
         // was anzeigen
         #$mapping["main"] = crc32($environment["ebene"]).".modify";

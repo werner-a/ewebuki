@@ -85,8 +85,6 @@
     $position = $environment["parameter"][1]+0;
     $ausgaben["search"] = "";
 
-
-
     #$ausgaben["1"] = "";
     #$ausgaben["2"] = "";
     #$ausgaben["3"] = "";
@@ -145,7 +143,7 @@
         } else {
             $filter[$HTTP_SESSION_VARS["filter".$key]] = " selected";
         }
-        $ausgaben["filter"]  .= "<select name=\"filter".$key."\">";
+        $ausgaben["filter"]  .= "<select name=\"filter".$key."\" onChange=\"submit()\">";
         foreach ( $value as $num => $label ) {
             $ausgaben["filter"] .= "<option value=\"".$num."\"".$filter[$num].">".$label."</option>";
         }
@@ -173,7 +171,6 @@
         }
 
     }
-
 
     // sql erweitern
     switch ( $HTTP_SESSION_VARS["filter0"] ) {
@@ -238,12 +235,12 @@
     $ausgaben["output"] .= "<table width=\"628\" border=\"0\"><tr><td>";
 
     if ( $db->num_rows($result) == 0 ) {
-        $ausgaben["result"] .= " keine Einträge gefunden.<br><br>";
+        $ausgaben["result"] .= " keine Einträge gefunden.";
     } else {
 
         // nur erweitern wenn bereits was drin steht
         if ( $ausgaben["result"] ) {
-            $ausgaben["result"] .= " folgende Einträge gefunden.<br><br>";
+            $ausgaben["result"] .= " folgende Einträge gefunden.";
         } else {
             $ausgaben["result"]  = "";
         }
@@ -287,8 +284,6 @@
                 $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$fid.".html".$anhang."><img src=".$pathvars["images"]."cms-cb0.png border=0></a>";
             }
 
-            //morhart test
-
 #            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">BUFFY: ".$ffname."--".$fdesc."</font>".$debugging["char"];
             switch ( $ffart ) {
                 case ("zip"):
@@ -302,8 +297,11 @@
                     $ausgaben["output"] .= "</table>";
                     break;
                 default:
-                    $imgsize = getimagesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$fid.".".$ffart);
-                    $imgsize = " ".$imgsize[3];
+                    $image = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$fid.".".$ffart;
+                    if ( file_exists($image) ) {
+                        $imgsize = getimagesize($image);
+                        $imgsize = " ".$imgsize[3];
+                    }
                     #$imgsize = str_replace("\"","",$imgsize);
                     #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">ATTENTION: IMAGSIZE ".$imgsize."</font>".$debugging["char"];
                     #echo $imgsize;
@@ -332,17 +330,17 @@
             break;
 
         case 1:
-            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">Metadaten bearbeiten</a>";
-            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">ausgewählte Datei löschen</a>";
+            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">[ Metadaten bearbeiten ]</a>";
+            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">[ ausgewählte Datei löschen ]</a>";
             break;
 
         default:
-            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">Metadaten bearbeiten</a>";
-            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">ausgewählte Dateien löschen</a>";
+            $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/describe,edit.html\">[ Metadaten bearbeiten ]</a>";
+            $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/list,delete.html\">[ Ausgewählte Dateien löschen ]</a>";
     }
 
     if ($HTTP_SESSION_VARS["return"]) {
-        $ausgaben["send_image"] = "<a href=".$HTTP_SESSION_VARS["return"]."?referer=".$HTTP_SESSION_VARS["referer"].">Zum Beitrag</a>";
+        $ausgaben["send_image"] = "<a href=".$HTTP_SESSION_VARS["return"]."?referer=".$HTTP_SESSION_VARS["referer"].">[ Zum Beitrag ]</a>";
     } else {
         $ausgaben["send_image"] = "";
     }
@@ -352,10 +350,7 @@
     } else {
         #$neu = "";
     }
-
-
     $ausgaben["output"] .= "</td></tr></table>";
-
     $ausgaben["output"] .= parser( "-939795212.list-foot", "");
 
 
@@ -365,8 +360,10 @@
     #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">ATTENTION: template overwrite -> ".$mapping["main"].".tem.html</font>".$debugging["char"];
 
     // wohin schicken ?
-    $ausgaben["form_aktion"] = $cfg["basis"]."/list.html";
+    $ausgaben["form1_aktion"] = $cfg["basis"]."/list.html";
+    $ausgaben["form2_aktion"] = $cfg["basis"]."/select.html";
 
+    /*
     // upload auswahl
     #$ausgaben["upload"] .="<br>";
     $ausgaben["upload"] .="<form action=\"".$cfg["basis"]."/select.html\" method=\"get\" enctype=\"multipart/form-data\">";
@@ -380,7 +377,7 @@
     $ausgaben["upload"] .="<input type=\"submit\" value=\"Weiter\">";
     $ausgaben["upload"] .="</form>";
     #$ausgaben["upload"] .= "<a href=\"".$cfg["basis"]."/fbrowse.html\">Browser</a>";
-
+    */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
