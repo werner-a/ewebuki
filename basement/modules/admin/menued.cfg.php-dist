@@ -52,10 +52,6 @@
     $cfg["fqdn0"] = "www";
     $cfg["right"] = "cms_admin";
 
-    // Form Settings
-    $form_defaults["class"]["textfield"] = " class=\"class\"";
-    $form_defaults["class"]["textbox"] = " class=\"class\"";
-
     $environment["basis"] = $pathvars["virtual"]."/admin/menued";
     $environment["name"] = "menued";
 
