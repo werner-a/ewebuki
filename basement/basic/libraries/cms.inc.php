@@ -45,6 +45,13 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
+    // label bearbeitung aktivieren
+    if ( isset($HTTP_GET_VARS["edit"]) ) {
+        $specialvars["editlock"] = 0;
+    } else {
+        $specialvars["editlock"] = -1;
+    }
+
     // erlaubnis bei intrabvv speziell setzen
     #global $HTTP_SESSION_VARS;
     $database = $environment["parameter"][1];
@@ -69,11 +76,11 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$HTTP_SESSION_VARS["ebene"].$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$HTTP_SESSION_VARS["kategorie"].$debugging["char"];
 
-            $ausgaben["ce_tem_db"]      = "DB: ".$environment["parameter"][1];
-            $ausgaben["ce_tem_name"]    = "Template: ".$environment["parameter"][2];
-            $ausgaben["ce_tem_label"]   = "Label: ".$environment["parameter"][3];
-            $ausgaben["ce_tem_convert"] = "Convert: ".$environment["parameter"][5];
-            $ausgaben["ce_tem_lang"]    = "Sprache: ".$environment["language"];
+            $ausgaben["ce_tem_db"]      = "#(db): ".$environment["parameter"][1];
+            $ausgaben["ce_tem_name"]    = "#(template): ".$environment["parameter"][2];
+            $ausgaben["ce_tem_label"]   = "#(label): ".$environment["parameter"][3];
+            $ausgaben["ce_tem_convert"] = "#(convert): ".$environment["parameter"][5];
+            $ausgaben["ce_tem_lang"]    = "#(language): ".$environment["language"];
 
             $sql = "SELECT tid, html, content FROM ". SITETEXT ." WHERE tname='".$environment["parameter"][2]."' AND lang='".$environment["language"]."' AND label='".$environment["parameter"][3]."'";
             $result  = $db -> query($sql);
@@ -128,10 +135,23 @@
                 $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
             }
 
-            // was anzeigen
+            // navigation erstellen
             $ausgaben["form_hidden"] = $data["html"];
             $ausgaben["form_abbrechen"] = $HTTP_SESSION_VARS["page"];
+
+            // was anzeigen
             $mapping["main"] = $template;
+            $mapping["navi"] = "";
+
+            // unzugaengliche #(marken) sichtbar machen
+            if ( isset($HTTP_GET_VARS["edit"]) ) {
+                $ausgaben["inaccessible"]  = "inaccessible values:<br />";
+                $ausgaben["inaccessible"] .= "# (upload) #(upload)<br />";
+                $ausgaben["inaccessible"] .= "# (file) #(file)<br />";
+                $ausgaben["inaccessible"] .= "# (files) #(files)<br />";
+            } else {
+                $ausgaben["inaccessible"] = "";
+            }
 
             // wohin schicken
             $ausgaben["form_aktion"] = $pathvars["virtual"]."/cms/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$data["tid"].".html";
