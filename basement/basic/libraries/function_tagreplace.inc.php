@@ -47,8 +47,8 @@
         global $pathvars, $environment, $ausgaben, $defaults;
 
         // cariage return + linefeed fix
-        $sear = array("\r\n[TA", "\r\n[RO", "\r\n[CO", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "AB]\r\n", "OW]\r\n", "OL]\r\n", );
-        $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "AB]",     "OW]",     "OL]",);           
+        $sear = array("\r\n[TA", "\r\n[RO", "\r\n[CO", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "/HR]\r\n", "AB]\r\n", "OW]\r\n", "OL]\r\n", );
+        $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "/HR]",     "AB]",     "OW]",     "OL]",);           
         $replace = str_replace($sear,$repl,$replace);        
                 
         // neues generelles tagreplace
@@ -87,12 +87,17 @@
                 // kompletten tag mit tagwert ersetzen
                 switch ($opentag) {
                     case "[B]":
-                        #$replace = str_replace($opentag.$tagwert.$endtag,"<span class=\"fkrcontentlead\">".$tagwert."</span>",$replace);
                         $replace = str_replace($opentag.$tagwert.$endtag,"<b>".$tagwert."</b>",$replace);
                         break;
+                    case "[STRONG]":
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<strong>".$tagwert."</strong>",$replace);
+                        break;                                       
                     case "[I]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<i>".$tagwert."</i>",$replace);
                         break;
+                    case "[EM]":
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<em>".$tagwert."</em>",$replace);
+                        break;                                                              
                     case "[TT]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<tt>".$tagwert."</tt>",$replace);
                         break;
@@ -392,7 +397,7 @@
                         }
                         $ausgaben["alt"] = $beschriftung;
                         $ausgaben["beschriftung"] = $beschriftung;
-
+                       
                         $ausgaben["tspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$tspace."\">";
                         $ausgaben["lspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$lspace."\" height=\"1\">";
                         $ausgaben["rspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$rspace."\" height=\"1\">";
@@ -500,10 +505,26 @@
                         }                        
                         $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);                   
                         break;                        
-                    case "[HL]":
-                        $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/dot1.gif";
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<img src=\"".$pathvars["images"]."hl.png\" height=\"1\" width=\"628\" vspace=\"2\" alt=\"\">",$replace);
+                    case "[HR]":
+                        if ( $defaults["tag"]["hr"] == "" ) { 
+                          $defaults["tag"]["hr"] = "<hr />";
+                          $defaults["tag"]["/hr"] = "";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["hr"].$tagwert.$defaults["tag"]["/hr"],$replace);
                         break;
+                    case "[HL]":
+                        if ( $defaults["tag"]["hl"] == "" ) { 
+                          $defaults["tag"]["hl"] = "<hr />";
+                          $defaults["tag"]["/hl"] = "";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["hl"].$tagwert.$defaults["tag"]["/hl"],$replace);
+                        break;
+                    case "[IN]":
+                        if ( $defaults["tag"]["in"] == "" ) { 
+                          $defaults["tag"]["in"] = "<em>";
+                          $defaults["tag"]["/in"] = "</em>";
+                        }                    
+                        $replace = str_replace($opentag.$tagwert.$endtag,$defaults["tag"]["in"].$tagwert.$defaults["tag"]["/in"],$replace);                                      
                     case "[M1]":
                         if ( $tagwert == "" ) {
                             $label = " .. ";
