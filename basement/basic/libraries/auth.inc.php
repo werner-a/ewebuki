@@ -146,12 +146,12 @@
             $array = explode(";", $werte[1]);
             foreach( $array as $value) {
                 if ( $rechte[$value] == -1 || $value == "" ) {
-                    $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br>";
+                    $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
                     break;
                 }
             }
         }
-        if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = "<br>#(desc)<br><br>".$ausgaben["logout_rechte"];
+        if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = "<br />#(desc)<br /><br />".$ausgaben["logout_rechte"];
 
         $ausgaben["auth"] = parser( "auth.logout", "");
     }

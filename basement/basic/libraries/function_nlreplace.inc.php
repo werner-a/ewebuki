@@ -46,8 +46,8 @@
 
     function nlreplace($replace) {
         # $replace = nl2br($replace);
-        $replace = str_replace(chr(13).chr(10),"<br>",$replace);
-        #$replace = str_replace(chr(10).chr(13),"<br>\n",$replace);
+        $replace = str_replace(chr(13).chr(10),"<br />",$replace);
+        #$replace = str_replace(chr(10).chr(13),"<br />\n",$replace);
         #$replace = wordwrap( $replace, 79, "\n", 1);
         return $replace;
     }

@@ -138,7 +138,7 @@
 
                 if ( $defaults["cms-tag"]["signal"] == "" ) {
                     $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";
-                    $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
+                    $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\" /></a>";
                 }
 
                 // wenn es kein button ist

@@ -99,7 +99,7 @@
                         $tn .= "<table align=\"left\" width=\"96\">";
                         $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$fdesc."</a></td></tr>";
 
-                        if ( $defaults["icon"]["pdf"] == "" ) $defaults["icon"]["pdf"] = "<img src=\"/images/default/icon_pdf.png\">";
+                        if ( $defaults["icon"]["pdf"] == "" ) $defaults["icon"]["pdf"] = "<img src=\"/images/default/icon_pdf.png\" />";
                         $tn .= "<tr><td>".$defaults["icon"]["pdf"]."</td></tr>";
                         $tn .= "</table>";
 
@@ -116,7 +116,7 @@
                         $tn .= "<table align=\"left\" width=\"96\">";
                         $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('arc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$fdesc."</a></td></tr>";
 
-                        if ( $defaults["icon"]["zip"] == "" ) $defaults["icon"]["zip"] = "<img src=\"/images/default/icon_zip.png\">";
+                        if ( $defaults["icon"]["zip"] == "" ) $defaults["icon"]["zip"] = "<img src=\"/images/default/icon_zip.png\" />";
                         $tn .= "<tr><td>".$defaults["icon"]["zip"]."</td></tr>";
                         $tn .= "</table>";
 
@@ -132,7 +132,7 @@
                         $tn .= "<a href=\"#\" onclick=\"INSst('imm".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Mid</a> ";
                         $tn .= "<a href=\"#\" onclick=\"INSst('ims".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Sma</a></td></tr>";
 
-                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\"></a></td></tr>";
+                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" /></a></td></tr>";
                         $tn .= "</table>";
 
                         $extension .= "else if (st=='imo".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
@@ -188,7 +188,7 @@
         $ausgaben["ce_dropdown"] .= "<option value=\"\">#(tagselect)</option>";
         foreach( $cetag as $key => $value ) {
             if ( $value[0] == 1 ) {
-                $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[1]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[1]."\" width=\"23\" height=\"22\" border=\"0\"></a> ";
+                $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[1]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[1]."\" width=\"23\" height=\"22\" border=\"0\" /></a> ";
             }
             $ausgaben["ce_dropdown"] .= "<option value=\"".$key."\">".$value[1]."</option>";
             #ce_anker

@@ -259,7 +259,7 @@
                                 }
                             }
                         }
-                        $ausgabewert = "<img src=\"".$imgurl."\" alt=\"".$tagwert."\"".$imgsize.">";
+                        $ausgabewert = "<img src=\"".$imgurl."\" alt=\"".$tagwert."\"".$imgsize." />";
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
                         break;
                     case "[IMG=":
@@ -330,7 +330,7 @@
                                 }
                             }
                         }
-                        $ausgabewert = $linka."<img src=\"".$imgurl."\"".$vspace.$hspace." alt=\"".$beschriftung."\"".$align.$border.$imgsize.">".$linkb;
+                        $ausgabewert = $linka."<img src=\"".$imgurl."\"".$vspace.$hspace." alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
                         break;
                     case "[IMGB=":
@@ -411,10 +411,10 @@
                         $ausgaben["alt"] = $beschriftung;
                         $ausgaben["beschriftung"] = $beschriftung;
 
-                        $ausgaben["tspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$tspace."\">";
-                        $ausgaben["lspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$lspace."\" height=\"1\">";
-                        $ausgaben["rspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$rspace."\" height=\"1\">";
-                        $ausgaben["bspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$bspace."\">";
+                        $ausgaben["tspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$tspace."\" />";
+                        $ausgaben["lspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$lspace."\" height=\"1\" />";
+                        $ausgaben["rspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$rspace."\" height=\"1\" />";
+                        $ausgaben["bspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$bspace."\" />";
                         $ausgabewert = str_replace(chr(13).chr(10),"",parser("imgb", ""));
 
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
@@ -582,7 +582,7 @@
                         if ( $m1werte[0] == "l" ) {
                             $m1 = "";
                             if ( $m1werte[1] == "b" ) {
-                                $m1 = $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
+                                $m1 = $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br />";
                             }
                             $m1 .= $ausgaben["L1"];
                         } else {
@@ -624,7 +624,7 @@
                        if ( $m2werte[0] == "l" ) {
                             $m2 = "";
                             if ( $m2werte[1] == "b" ) {
-                                $m2 = $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
+                                $m2 = $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br />";
                             }
                             $m2 .= $ausgaben["L2"];
                         } else {

@@ -290,7 +290,7 @@
 
                   if ( strstr($rline,"###switchback###") ) {
                       $db -> selectDb(DATABASE,FALSE);
-                      #echo "<br>2: ".$db->getDb();
+                      #echo "<br />2: ".$db->getDb();
                       unset($specialvars["changed"]);
                       $rline = str_replace("###switchback###","",$rline);
                   }

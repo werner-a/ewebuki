@@ -328,7 +328,7 @@
         // new field_type function for pg
         function field_type($result,$int) {
             $fieldtype = pg_fieldtype($result,$int);
-            #echo $fieldtype.", ".$fieldlen."<br>";
+            #echo $fieldtype.", ".$fieldlen."<br />";
             #if ( strstr($fieldtype, "char") ) $fieldtype = "string";
             #if ( $fieldtype == "text" ) $fieldtype = "blob";
             return $fieldtype;
