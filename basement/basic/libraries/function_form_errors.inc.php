@@ -48,7 +48,7 @@
 
     function form_errors( $form_options, $form_values ) {
         global $ausgaben;
-        $ausgaben["form_error"] = "";
+        #$ausgaben["form_error"] = "";
         if ( is_array($form_options) && count($form_values) > 0 ) {
             // form options durchlaufen
             foreach($form_options as $name => $value) {
