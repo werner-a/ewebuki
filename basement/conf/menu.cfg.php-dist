@@ -65,6 +65,7 @@
             "icona"    => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuopen.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
             "iconb"    => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuclose.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
             // tipp: mit class=\"menupunkt\" laesst sich das aussehen anpassen
+            //       ##picture## enthaelt den im menued unter bild vergebenen wert
             "link"     => "<a ##target## href=\"##link##\">##label##</a><br>",
         ),
         // zweite ebene
