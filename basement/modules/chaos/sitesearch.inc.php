@@ -43,25 +43,25 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  if ( $debugging[html_enable] ) $debugging[ausgabe] .= "[ ** $script_name ** ]".$debugging[char];
+  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
       // konfiguration
-      #require $pathvars[config]."addon/sitesearch.inc.php";
-      if ( $debugging[html_enable] ) $debugging[ausgabe] .= "(1) funktion: ".$environment[subparam][1].$debugging[char];
+      #require $pathvars["config"]."addon/sitesearch.inc.php";
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "(1) funktion: ".$environment["subparam"][1].$debugging["char"];
 
-      $ausgaben[sitesearch_aktion] = $pathvars[virtual]."/sitesearch,search.html";
-      $ausgaben[sitesearch_search] = $HTTP_POST_VARS[search];
-      if ( $environment[param][1] == "search" ) {
-          $sql = "SELECT tname, content, ebene, kategorie FROM site_text WHERE content LIKE '%".$HTTP_POST_VARS[search]."%'";
+      $ausgaben["sitesearch_aktion"] = $pathvars["virtual"]."/sitesearch,search.html";
+      $ausgaben["sitesearch_search"] = $HTTP_POST_VARS["search"];
+      if ( $environment["param"][1] == "search" ) {
+          $sql = "SELECT lang, tname, content, ebene, kategorie FROM site_text WHERE content LIKE '%".$HTTP_POST_VARS["search"]."%'";
           $result = $db -> query($sql);
           while ( $site_text = $db -> fetch_array($result,$nop) ) {
-               #$path = str_replace(".","/",$site_text[tname]);
-               $ausgaben[output] .= "<a target=\"_blank\" href=\"/".$environment[design]."/".$environment[language].$site_text["ebene"]."/".$site_text["kategorie"].".html\">".$specialvars[pagetitle]." - ".$site_text[kategorie]."</a><br>";
-               $site_text[content] = tagremove($site_text[content]);
+               #$path = str_replace(".","/",$site_text["tname"]);
+               $ausgaben["output"] .= "<a target=\"_blank\" href=\"/".$environment["design"]."/".$site_text["lang"].$site_text["ebene"]."/".$site_text["kategorie"].".html\">".$specialvars["pagetitle"]." - ".$site_text["kategorie"]."</a><br>";
+               $site_text["content"] = tagremove($site_text["content"]);
 
 
-               $pos = strpos($site_text[content], $HTTP_POST_VARS[search]);
-               $laenge = strlen($site_text[content]);
+               $pos = strpos($site_text["content"], $HTTP_POST_VARS["search"]);
+               $laenge = strlen($site_text["content"]);
 
                $bereich = 120;
                $how = $bereich / 2;
@@ -75,19 +75,19 @@
                   $start = $how-$pos;
                }
 
-               $found = substr($site_text[content],$start,$bereich);
-               $ausgaben[output] .= "... "." ".$found." ( $laenge / $bereich / $pos / $start )"." ...<br><br>";
+               $found = substr($site_text["content"],$start,$bereich);
+               $ausgaben["output"] .= "... "." ".$found." ( $laenge / $bereich / $pos / $start )"." ...<br><br>";
           }
           $ergebnisse = $db -> num_rows($result);
-          $ausgaben[output] = "Durchsuche die Website:<br><br>".$ausgaben[output];
+          $ausgaben["output"] = "Durchsuche die Website:<br><br>".$ausgaben["output"];
           if ( $ergebnisse >= 1 ) {
-              $ausgaben[output] .= "<br> ... ".$ergebnisse." Bereich(e) wurde gefunden.";
+              $ausgaben["output"] .= "<br> ... ".$ergebnisse." Bereich(e) wurde gefunden.";
           } else {
-              $ausgaben[output] .= "... leider nichts gefunden.";
+              $ausgaben["output"] .= "... leider nichts gefunden.";
           }
       }
 
-  if ( $debugging[html_enable] ) $debugging[ausgabe] .= "[ ++ $script_name ++ ]".$debugging[char];
+  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
