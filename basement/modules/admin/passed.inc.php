@@ -119,7 +119,7 @@
             }
 
             // ohne fehler sql bauen und ausfuehren
-            if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] != "" ) ){
+            if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] || $HTTP_POST_VARS["image"] != "" ) ){
                 $kick = array( "PHPSESSID", "ablogin", "oldpass", "newpass", "chkpass", "submit", "submit_x", "submit_y", "form_referer" );
 
                 foreach($form_values as $name => $value) {

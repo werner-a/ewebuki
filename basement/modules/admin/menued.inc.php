@@ -152,7 +152,7 @@
                     form_errors( $form_options, $HTTP_POST_VARS );
 
                     // ohne fehler sql bauen und ausfuehren
-                    if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] != "" || $HTTP_POST_VARS["add"] ) ) {
+                    if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] || $HTTP_POST_VARS["add"] ) ) {
                         $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "add_x", "add_y", "add", "form_referer", "lang", "label", "exturl", "new_lang", "entry");
                         foreach($HTTP_POST_VARS as $name => $value) {
                             if ( !in_array($name,$kick) ) {
@@ -227,7 +227,7 @@
                     $ausgaben["langtabelle"] .= "<td>".str_replace("name=\"","name=\"".$lang["mlid"].")",$element_lang["label"])."</td>";
                     $ausgaben["langtabelle"] .= "<td>".str_replace("name=\"","name=\"".$lang["mlid"].")",$element_lang["exturl"])."</td>";
                     $ausgaben["langtabelle"] .= "<td>";
-                    $ausgaben["langtabelle"] .= "<input name=\"edit\" type=\"image\" src=\"".$pathvars["images"]."edit.png\" width=\"24\" height=\"18\" border=\"0\" value=\"".$lang["mlid"]."\">";
+                    $ausgaben["langtabelle"] .= "<input name=\"edit[]\" type=\"image\" src=\"".$pathvars["images"]."edit.png\" width=\"24\" height=\"18\" border=\"0\" value=\"".$lang["mlid"]."\">";
                     $ausgaben["langtabelle"] .= "<input name=\"delete\" type=\"image\" src=\"".$pathvars["images"]."delete.png\" width=\"24\" height=\"18\" border=\"0\" value=\"".$lang["mlid"]."\">";
                     $ausgaben["langtabelle"] .= "</td></tr>";
                 }
@@ -324,7 +324,7 @@
                 $ausgaben["form_aktion"] = $environment["basis"]."/modify,delete,".$environment["parameter"][2].".html";
                 $ausgaben["form_break"] = $_SERVER["HTTP_REFERER"];
 
-                if ( $HTTP_POST_VARS["delete"] == "true" ) {
+                if ( $HTTP_POST_VARS["delete"] ) {
                     $sql = "SELECT ".$db_entries_key." FROM ".$db_entries." WHERE refid='".$environment["parameter"][2]."'";
                     $result = $db -> query($sql);
                     $num_rows = $db -> num_rows($result);
@@ -382,7 +382,7 @@
             function sitemap($refid) {
                 global $environment, $db, $mt, $mtl, $pathvars, $specialvars, $rechte, $ast, $astpath, $lokal;
                 $sql = "SELECT $mt.mid, $mt.entry, $mt.refid, $mt.level, $mt.sort, $mtl.lang, $mtl.label, $mtl.exturl FROM $mt INNER JOIN $mtl ON $mt.mid = $mtl.mid WHERE ((($mt.refid)=$refid) AND (($mtl.lang)='".$environment["language"]."')) order by sort, label;";
-                #echo $sql;
+                #echo $sql."<br><br>";
                 $menuresult  = $db -> query($sql);
 
                 $modify  = array (
