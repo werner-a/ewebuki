@@ -55,12 +55,26 @@
             "rows"     => "18",
             "language" => "",
         ),
+        "filetyp"   => array("jpg", "png", "pdf", "zip"),
+        "filesize"  => "5000000",
         "file"      => array(
             "maindir"  => $pathvars["filebase"]["maindir"],
             "webdir"   => $pathvars["filebase"]["webdir"],
             "new"      => $pathvars["filebase"]["new"],
             "picture"  => $pathvars["filebase"]["pic"]["root"],
             "text"     => $pathvars["filebase"]["doc"],
+            "archiv"   => $pathvars["filebase"]["arc"],
+        ),
+        "size"      => array(
+            "big"      => "628",
+            "medium"   => "250",
+            "small"    => "150",
+            "thumb"    => "96",
+            "max"      => "628", # leer bedeutet, orginal bleibt erhalten
+        ),
+        "filter"    => array(
+            "0"        => array("Meine", "Dienststelle", "Alle"),
+            "1"        => array("Bilder", "PDF", "Archive"),
         ),
     );
 
