@@ -3,7 +3,7 @@
 # eWeBuKi install script
 #
 # (c) Stefan Krister
-#     stefan.krister@creative.chaos.de
+#     stefan.krister (at) creative.chaos.de
 #
 # $Id$
 #
