@@ -46,20 +46,32 @@
 
     function gerdate($art="", $value="") {
 
+        // gds -> german day short
         // gdl -> german day log
         // gms -> german month short
         // gml -> german month long
 
-
-        if ( $value == "" ) $value=date("w");
-        switch ($value) {
-            case "0": $tag="Sonntag, "; break;
-            case "1": $tag="Montag, "; break;
-            case "2": $tag="Dienstag, "; break;
-            case "3": $tag="Mittwoch, "; break;
-            case "4": $tag="Donnerstag, "; break;
-            case "5": $tag="Freitag, "; break;
-            case "6": $tag="Samstag, "; break;
+        if ( $art == "gds" ) {
+            switch ($value) {
+                case "0": $tag="So, "; break;
+                case "1": $tag="Mo, "; break;
+                case "2": $tag="Di, "; break;
+                case "3": $tag="Mi, "; break;
+                case "4": $tag="Do, "; break;
+                case "5": $tag="Fr, "; break;
+                case "6": $tag="Sa, "; break;
+            }
+        } else {
+            if ( $value == "" ) $value=date("w");
+            switch ($value) {
+                case "0": $tag="Sonntag, "; break;
+                case "1": $tag="Montag, "; break;
+                case "2": $tag="Dienstag, "; break;
+                case "3": $tag="Mittwoch, "; break;
+                case "4": $tag="Donnerstag, "; break;
+                case "5": $tag="Freitag, "; break;
+                case "6": $tag="Samstag, "; break;
+            }
         }
 
         if ( $art == "gms" ) {
@@ -113,7 +125,7 @@
         $tagom=date("d");
         $jahr=date("Y");
 
-        if ( $art == "gdl" ) {
+        if ( $art == "gds" || $art == "gdl" ) {
             return sprintf("%s",$tag);
         } elseif ( $art == "gms" || $art == "gml" ) {
             return sprintf("%s",$monat);
