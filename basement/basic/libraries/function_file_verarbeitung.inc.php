@@ -71,11 +71,10 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file mime type: ".$_FILES[$name]["type"].$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file size: ".$_FILES[$name]["size"].$debugging["char"];
 
-            if ( substr($_FILES[$name]["name"],-4,1) == "." ) {
-                $dateiendung = substr($_FILES[$name]["name"],-3,3);
-            } else {
-                $dateiendung = substr($_FILES[$name]["name"],-4,4);
-            }
+            // dateiendung erkennen
+            $path_parts = pathinfo($_FILES[$name]["name"]);
+            $dateiendung = strtolower($path_parts["extension"]);
+
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file extension: ".$dateiendung.$debugging["char"];
 
             // php minor version auf oder >= 2 pruefen
