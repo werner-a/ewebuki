@@ -51,6 +51,16 @@
         $specialvars["rootname"] = $db->getDb();
     }
 
+    
+    // altes verhalten wiederherstellen
+    $defaults["split"]["title"] == "" ? $defaults["split"]["title"] = " - " : NOP;
+    $defaults["split"]["kekse"] == "" ? $defaults["split"]["kekse"] = " - " : NOP;
+    $defaults["split"]["m1"] == "" ? $defaults["split"]["m1"] = " &middot; " : NOP ;
+    $defaults["split"]["m2"] == "" ? $defaults["split"]["m2"] = " &middot; " : NOP ;
+    $defaults["split"]["l1"] == "" ? $defaults["split"]["l1"] = " &middot; " : NOP ;
+    $defaults["split"]["l2"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;        
+
+    
     // dynamic style - db test/extension
     $sql = "select dynamiccss from site_".$mt ;
     $result = $db -> query($sql);
@@ -60,7 +70,6 @@
     } else {
         unset($dynamiccss);
     }
-
 
     $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/\">".$specialvars["rootname"]."</a>";
 
@@ -109,8 +118,8 @@
 
                 $path .= "/".$keksarray["entry"];
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
-                $specialvars["pagetitle"] .= " - ".$keksarray["label"];
-                $environment["kekse"] .= " - "."<a href=\"".$pathvars["virtual"].$path.".html\">".$keksarray["label"]."</a>";
+                $specialvars["pagetitle"] .= $defaults["split"]["title"].$keksarray["label"];
+                $environment["kekse"] .= $defaults["split"]["kekse"]."<a href=\"".$pathvars["virtual"].$path.".html\">".$keksarray["label"]."</a>";
             }
 
             // variables template laut menueintrag setzen
@@ -142,10 +151,10 @@
                     }
 
                     if ( $right == -1 ) {
-                        if ( $ausgaben["M1"] != "" ) $ausgaben["M1"] .= " &middot; ";
+                        if ( $ausgaben["M1"] != "" ) $ausgaben["M1"] .= $defaults["split"]["m1"];
                         $ausgaben["M1"] .= "<a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
 
-                        $ausgaben["L1"] .= "&middot; <a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
+                        $ausgaben["L1"] .= $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
                     }
                 }
 
@@ -167,10 +176,10 @@
                     }
 
                     if ( $right == -1 ) {
-                        if ( $ausgaben["M2"] != "" ) $ausgaben["M2"] .= " &middot; ";
+                        if ( $ausgaben["M2"] != "" ) $ausgaben["M2"] .=$defaults["split"]["m2"] ;
                         $ausgaben["M2"] .= "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
 
-                        $ausgaben["L2"] .= "&middot; <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
+                        $ausgaben["L2"] .= $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
 
                         // $lnk_* mit links belegen
                         $lnkcount++;
