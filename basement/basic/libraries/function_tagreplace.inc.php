@@ -499,13 +499,15 @@
                         } else {
                             $label = $tagwerte[1];
                         }
-                        if ( $m1werte[0] == "list" ) {
-                            if ( $m1werte[1] == "back" ) {
+                        if ( $m1werte[0] == "l" ) {
+                            $m1 = "";
+                            if ( $m1werte[1] == "b" ) {
                                 $m1 = "&middot; <a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
                             }
                             $m1 .= $ausgaben["L1"];
                         } else {
-                            if ( $m1werte[1] == "back" ) {
+                            $m1 = "";
+                            if ( $m1werte[1] == "b" ) {
                                 if ( $ausgaben["M1"] != "" ) {
                                     $trenner = " &middot; ";
                                 } else {
@@ -539,13 +541,15 @@
                         } else {
                             $label = $tagwerte[1];
                         }
-                        if ( $m2werte[0] == "list" ) {
-                            if ( $m2werte[1] == "back" ) {
+                       if ( $m2werte[0] == "l" ) {
+                            $m2 = "";
+                            if ( $m2werte[1] == "b" ) {
                                 $m2 = "&middot; <a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br>";
                             }
                             $m2 .= $ausgaben["L2"];
                         } else {
-                            if ( $m2werte[1] == "back" ) {
+                            $m2 = "";
+                            if ( $m2werte[1] == "b" ) {
                                 if ( $ausgaben["M2"] != "" ) {
                                     $trenner = " &middot; ";
                                 } else {
@@ -563,8 +567,8 @@
                         } else {
                             $label = $tagwert;
                         }
-                        $m2 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>";
-                        $replace = str_replace($opentag.$tagwert.$endtag,$m2,$replace);
+                        $up = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>";
+                        $replace = str_replace($opentag.$tagwert.$endtag,$up,$replace);
                         break;
                     case "[M3]":
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgaben["M3"],$replace);
