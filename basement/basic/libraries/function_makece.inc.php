@@ -64,14 +64,19 @@
         // wenn es thumbnails gibt, anzeigen
         if ( count($array) >= 1 ) {
             $merken = $db -> getDb();
-            $db -> selectDB("intrabvv","");
+            if ( $merken != DATABASE ) {
+                echo tet;
+                $db -> selectDB( DATABASE ,"");
+            }
             foreach ( $array as $value ) {
                 if ( $where != "" ) $where .= " OR ";
                 $where .= "fid = '".$value."'";
             }
             $sql = "SELECT * FROM site_file WHERE ".$where;
             $result = $db -> query($sql);
-            $db -> selectDB($merken,"");
+            if ( $merken != DATABASE ) {
+                $db -> selectDB($merken,"");
+            }
             $extension= "";
 
             $tn = "<table><tr><td>";
