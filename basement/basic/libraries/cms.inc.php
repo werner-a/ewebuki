@@ -82,9 +82,10 @@
             $ausgaben["ce_tem_convert"] = "#(convert): ".$environment["parameter"][5];
             $ausgaben["ce_tem_lang"]    = "#(language): ".$environment["language"];
 
-            $sql = "SELECT tid, html, content FROM ". SITETEXT ." WHERE tname='".$environment["parameter"][2]."' AND lang='".$environment["language"]."' AND label='".$environment["parameter"][3]."'";
+            $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='".$environment["parameter"][2]."' AND lang='".$environment["language"]."' AND label='".$environment["parameter"][3]."'";
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result, $nop);
+            $found = $db -> num_rows($result);
 
             // convert tag 2 html
             switch ( $environment["parameter"][5] ) {
@@ -104,6 +105,8 @@
                     // html db value aendern
                     $data["html"] = 0;
                     break;
+                default:
+                    $data["html"] = 0;
             }
 
             if ( $data["html"] == "-1" ) {
@@ -154,7 +157,7 @@
             }
 
             // wohin schicken
-            $ausgaben["form_aktion"] = $pathvars["virtual"]."/cms/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$data["tid"].".html";
+            $ausgaben["form_aktion"] = $pathvars["virtual"]."/cms/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$found.".html";
 
        } elseif ( $environment["kategorie"] == "save" ) {
 
@@ -189,32 +192,40 @@
             }
 
 
-            if ( $environment["parameter"][4] != "" ) {
+            if ( $environment["parameter"][4] == 1 ) {
                 if ( $HTTP_POST_VARS["content"] == "" ) {
-                    $sql = "DELETE FROM ". SITETEXT ." WHERE tid='".$environment["parameter"][4]."'";
+                    $sql = "DELETE FROM ". SITETEXT ."
+                                  WHERE  label ='".$environment["parameter"][3]."'
+                                    AND  tname ='".$environment["parameter"][2]."'";
+                                    #tid='".$environment["parameter"][4]."'";
                 } else {
                     $sql = "UPDATE ". SITETEXT ." set
-                    content='".$content."',
-                    crc32='".$specialvars["crc32"]."',
-                    html='".$HTTP_POST_VARS["html"]."',
-                    ebene='".$HTTP_SESSION_VARS["ebene"]."',
-                    kategorie='".$HTTP_SESSION_VARS["kategorie"]."'
-                    WHERE tid='".$environment["parameter"][4]."'";
+                                    content = '".$content."',
+                                    crc32 = '".$specialvars["crc32"]."',
+                                    html = '".$HTTP_POST_VARS["html"]."',
+                                    ebene = '".$HTTP_SESSION_VARS["ebene"]."',
+                                    kategorie = '".$HTTP_SESSION_VARS["kategorie"]."'
+                             WHERE  label = '".$environment["parameter"][3]."'
+                               AND  tname = '".$environment["parameter"][2]."'";
+                                    #tid='".$environment["parameter"][4]."'";
                 }
             } else {
                 $sql = "INSERT INTO ". SITETEXT ."
-                        (lang, crc32, tname, label, ebene, kategorie, html, content)
-                        VALUES (
-                        '".$environment["language"]."',
-                        '".$specialvars["crc32"]."',
-                        '".$environment["parameter"][2]."',
-                        '".$environment["parameter"][3]."',
-                        '".$HTTP_SESSION_VARS["ebene"]."',
-                        '".$HTTP_SESSION_VARS["kategorie"]."',
-                        '".$HTTP_POST_VARS["html"]."',
-                        '".$content."')";
+                                    (lang, crc32, label,
+                                     tname, ebene, kategorie,
+                                     html, content)
+                             VALUES ( '".$environment["language"]."',
+                                      '".$specialvars["crc32"]."',
+                                      '".$environment["parameter"][3]."',
+                                      '".$environment["parameter"][2]."',
+                                      '".$HTTP_SESSION_VARS["ebene"]."',
+                                      '".$HTTP_SESSION_VARS["kategorie"]."',
+                                      '".$HTTP_POST_VARS["html"]."',
+                                      '".$content."')";
             }
             $result  = $db -> query($sql);
+            if ( !$result ) die($db -> error("DB ERROR: "));
+
 
             if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["upload"] > 0 ) {
 
