@@ -454,10 +454,15 @@
                     case "[/DIV]":
                         $tagwerte = explode("]",$tagwert,2);
                         $divwerte = explode(";",$tagwerte[0]);
-                        if ( $divwerte[0] != "" ) {
-                            $class = " class=\"".$divwerte[0]."\"";
+                        if ( $divwerte[1] == "id" ) {
+                            $art = "id";
+                        } else {
+                            $art = "class";
                         }
-                        $replace = str_replace($opentag.$tagwert.$closetag,"<div".$class.">".$tagwerte[1]."</div>",$replace);
+                        if ( $divwerte[0] != "" ) {
+                            $uattrib = " ".$art."=\"".$divwerte[0]."\"";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$closetag,"<div".$uattrib.">".$tagwerte[1]."</div>",$replace);
                         break;
                     case "[/TAB]":
                         if ( $sign == "]" ) {
