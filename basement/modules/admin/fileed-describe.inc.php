@@ -294,7 +294,7 @@
                             img_resize( $file_org, $file_id, $img_src, $cfg["size"]["thumb"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
 
                             // orginal bild nach max resizen oder loeschen
-                            if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
+                            if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] ) {
                                 rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".png");
                             } else {
                                 img_resize( $file_org, $file_id, $img_src, $cfg["size"]["max"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."original", "img" );
@@ -314,7 +314,6 @@
                             img_resize( $file_org, $file_id, $img_src, $cfg["size"]["thumb"], $cfg["file"]["maindir"].$cfg["file"]["picture"]."thumbnail", "tn" );
 
                             // orginal bild nach max resizen oder loeschen
-                            #if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
                             if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
                                 rename($file_org,$cfg["file"]["maindir"].$cfg["file"]["picture"].$pathvars["filebase"]["pic"]["o"]."img_".$file_id.".jpg");
                             } else {
