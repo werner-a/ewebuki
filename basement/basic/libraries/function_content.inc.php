@@ -142,7 +142,7 @@
                 }
 
                 // wenn es kein button ist
-                if ( !strstr($line,"value=\"") ) {
+                if ( !strstr($line,"value=\"") && !strstr($line,"alt=\"") && !strstr($line,"title=\"") ) {
                     $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"];
                 } else {
                     #$line = $line." <a target=\"_top\" href=\"".$editurl.".html\"><img src=\"".$pathvars["images"]."cms-tag-".$signal.".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
