@@ -1,46 +1,60 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
 <head>
-<meta NAME="author" CONTENT="Werner Ammon">
-<meta NAME="publisher" CONTENT="Chaos Networks">
-<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
-<meta NAME="audience" CONTENT="alle">
-<meta NAME="robots" CONTENT="index,follow">
-<meta NAME="language" CONTENT="de">
-<meta http-equiv="Content-Language" content="de">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>leveled.delete</title>
-<link rel="stylesheet" href="../../css/business.css" type="text/css">
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
 </head>
 <body bgcolor="#FFFFFF">
 <!--##begin-->
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-  <tr> 
-    <td bgcolor="#EC9379">#(ueberschrift)</td>
-  </tr>
-  <tr> 
-    <td> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="2">
-        <tr> 
-          <td>#(inhalt)</td>
-        </tr>
-        <tr> 
-          <td> <b>#(frage)<br>
-            <br>
-            </b>
-            <form name="navi" method="post" action="!#ausgaben_form_aktion">
-              <img src="../../images/net/pos.png" width="1" height="1"> 
-              <input type="submit" value="#(delete)" name="button">
-              <a href="!#ausgaben_form_break">#(abort)</a> 
-              <input type="hidden" name="delete" value="true">
-            </form>
-            <b><br>
-            </b>!#ausgaben_output </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+<form name="navi" method="post" action="!#ausgaben_form_aktion">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr> 
+      <td bgcolor="#EC9379">#(ueberschrift)</td>
+    </tr>
+    <tr> 
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr> 
+            <td>#(inhalt)</td>
+          </tr>
+          <tr> 
+            <td>&nbsp; </td>
+          </tr>
+          <tr> 
+            <td>#(frage)</td>
+          </tr>
+          <tr> 
+            <td align="right"> 
+              <table border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td colspan="3"> 
+                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
+                  </td>
+                </tr>
+                <tr> 
+                  <td> 
+                    <input name="send[]" type="submit" value="#(send)">
+                  </td>
+                  <td align="center">&nbsp; </td>
+                  <td align="right"> 
+                    <input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button2">
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td> 
+              <p>!#ausgaben_output<br>
+                !#ausgaben_inaccessible</p>
+              </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  </form>
 <!--##end-->
 </body>
 </html>

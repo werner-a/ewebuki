@@ -1,19 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
 <head>
-<meta NAME="author" CONTENT="Werner Ammon">
-<meta NAME="publisher" CONTENT="Chaos Networks">
-<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
-<meta NAME="audience" CONTENT="alle">
-<meta NAME="robots" CONTENT="index,follow">
-<meta NAME="language" CONTENT="de">
-<meta http-equiv="Content-Language" content="de">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>leveled.list</title>
-<link rel="stylesheet" href="../../css/business.css" type="text/css">
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
 </head>
 <body bgcolor="#FFFFFF">
 <!--##begin-->
+<!--$Id$-->
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr> 
     <td bgcolor="#EC9379">#(ueberschrift)</td>
@@ -22,14 +16,18 @@
     <td> 
       <table width="100%" border="0" cellspacing="0" cellpadding="2">
         <tr> 
-          <td>#(inhalt)</td>
+          <td colspan="2">#(inhalt)</td>
         </tr>
         <tr> 
-          <td> 
-            <p>!#ausgaben_output<br>
-              !#ausgaben_inhalt_selector<br>
-              <a href="modify,add.html">Einen neuen Level erstellen</a></p>
-            </td>
+          <td colspan="2">!#ausgaben_output</td>
+        </tr>
+        <tr> 
+          <td>!#ausgaben_inhalt_selector </td>
+          <td align="right"><a href="!#ausgaben_link_new">#(new)</a></td>
+        </tr>
+        <tr>
+          <td>!#ausgaben_inaccessible</td>
+          <td align="right">&nbsp;</td>
         </tr>
       </table>
     </td>

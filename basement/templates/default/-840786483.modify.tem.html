@@ -1,83 +1,86 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
 <head>
-<meta NAME="author" CONTENT="Werner Ammon">
-<meta NAME="publisher" CONTENT="Chaos Networks">
-<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
-<meta NAME="audience" CONTENT="alle">
-<meta NAME="robots" CONTENT="index,follow">
-<meta NAME="language" CONTENT="de">
-<meta http-equiv="Content-Language" content="de">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>leveled.modify</title>
-<link rel="stylesheet" href="../../css/business.css" type="text/css">
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
 </head>
 <body bgcolor="#FFFFFF">
 <!--##begin-->
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-  <tr> 
-    <td bgcolor="#EC9379">#(ueberschrift)</td>
-  </tr>
-  <tr> 
-    <td> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="2">
-        <tr> 
-          <td>#(inhalt)</td>
-        </tr>
-        <tr> 
-          <td> 
-            <form method="POST" action="!#ausgaben_form_aktion" name="modify">
-              <table border="0" cellpadding="4" cellspacing="0">
+<!--$Id$-->
+<SCRIPT>
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+</SCRIPT>
+<form method="POST" action="!#ausgaben_form_aktion" name="modify">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr> 
+      <td bgcolor="#EC9379">#(ueberschrift)</td>
+    </tr>
+    <tr> 
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr> 
+            <td colspan="4">#(inhalt)</td>
+          </tr>
+          <tr> 
+            <td colspan="4"><font color="#FF0000">!#ausgaben_form_error</font></td>
+          </tr>
+          <tr> 
+            <td colspan="4">#(level)</td>
+          </tr>
+          <tr> 
+            <td colspan="4">!#element_level</td>
+          </tr>
+          <tr> 
+            <td colspan="4">#(description)</td>
+          </tr>
+          <tr> 
+            <td colspan="4">!#element_beschreibung</td>
+          </tr>
+          <tr> 
+            <td width="25%" align="right">!#element_actual</td>
+            <td align="left" width="25%">!#element_del</td>
+            <td align="right" width="25%">!#element_add</td>
+            <td width="25%">!#element_avail</td>
+          </tr>
+          <tr> 
+            <td colspan="4" align="right">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="4" align="right"> 
+              <table border="0" cellspacing="0" cellpadding="0">
                 <tr> 
-                  <td colspan="4"><font color="#FF0000">!#ausgaben_form_error</font></td>
-                </tr>
-                <tr> 
-                  <td colspan="4">Level:</td>
-                </tr>
-                <tr> 
-                  <td colspan="4"> !#element_level</td>
-                </tr>
-                <tr> 
-                  <td colspan="4">Beschreibung:</td>
-                </tr>
-                <tr> 
-                  <td colspan="4">!#element_beschreibung</td>
-                </tr>
-                <tr> 
-                  <td>&nbsp;</td>
-                  <td colspan="2">&nbsp;</td>
-                  <td>&nbsp;</td>
-                </tr>
-                <tr> 
-                  <td valign="top" align="left">!#element_actual</td>
-                  <td align="center" valign="top"> !#element_add</td>
-                  <td align="center" valign="top"> !#element_del</td>
-                  <td valign="top" align="right">!#element_avail</td>
-                </tr>
-                <tr> 
-                  <td>&nbsp;</td>
-                  <td colspan="2">&nbsp;</td>
-                  <td>&nbsp;</td>
+                  <td colspan="3"> 
+                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
+                  </td>
                 </tr>
                 <tr> 
                   <td> 
-                    <input type="submit" value="#(senden)" name="submit">
+                    <input name="send[]" type="submit" value="#(send)">
                   </td>
-                  <td colspan="2"> 
+                  <td align="center"> 
                     <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
                   </td>
-                  <td align="right"><a href="!#ausgaben_form_break">#(abort)</a> 
+                  <td align="right"> 
+                    <input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
                   </td>
                 </tr>
               </table>
-            </form>
-            <br>
-            !#ausgaben_output </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="4"> 
+              <p>!#ausgaben_output<br>
+                !#ausgaben_inaccessible </p>
+              </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  </form>
 <!--##end-->
 </body>
 </html>

@@ -1,19 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
 <head>
-<meta NAME="author" CONTENT="Werner Ammon">
-<meta NAME="publisher" CONTENT="Chaos Networks">
-<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
-<meta NAME="audience" CONTENT="alle">
-<meta NAME="robots" CONTENT="index,follow">
-<meta NAME="language" CONTENT="de">
-<meta http-equiv="Content-Language" content="de">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>leveled.details</title>
-<link rel="stylesheet" href="../../css/business.css" type="text/css">
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
 </head>
 <body bgcolor="#FFFFFF">
 <!--##begin-->
+<!--$Id$-->
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr> 
     <td bgcolor="#EC9379">#(ueberschrift)</td>
@@ -25,58 +19,34 @@
           <td>#(inhalt)</td>
         </tr>
         <tr> 
-          <td> 
-            <table border="0" cellspacing="0" cellpadding="0" width="100%">
+          <td>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr> 
-                <td width="100">!#ausgaben_navigation</td>
-                <td>&nbsp;</td>
+                <td width="50%">#(level)</td>
+                <td width="50%">#(beschreibung)</td>
               </tr>
               <tr> 
-                <td width="100">&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr> 
-                <td colspan="2"><b>Level:</b> !#ausgaben_level</td>
-              </tr>
-              <tr> 
-                <td width="100"><b></b></td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr> 
-                <td width="100"><b>Beschreibung</b></td>
-                <td>&nbsp;</td>
+                <td width="50%">!#ausgaben_level</td>
+                <td width="50%">!#ausgaben_beschreibung</td>
               </tr>
               <tr> 
                 <td colspan="2">&nbsp;</td>
               </tr>
               <tr> 
-                <td colspan="2">!#ausgaben_beschreibung</td>
+                <td colspan="2">#(user)</td>
               </tr>
-              <tr> 
-                <td width="100">&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr> 
-                <td width="100"><b>Mitglieder:</b></td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr> 
-                <td width="100">&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr> 
-                <td colspan="2">!#ausgaben_username</td>
-              </tr>
-              <tr> 
-                <td width="100">&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr> 
-                <td width="100">!#ausgaben_navigation</td>
-                <td>&nbsp;</td>
+              <tr>
+                <td colspan="2">!#ausgaben_users</td>
               </tr>
             </table>
-            !#ausgaben_output </td>
+          </td>
+        </tr>
+        <tr> 
+          <td align="right"><a href="!#ausgaben_link_edit">#(edit)</a> <a href="!#ausgaben_link_list">#(list)</a></td>
+        </tr>
+        <tr>
+          <td> !#ausgaben_output<br>
+            !#ausgaben_inaccessible</td>
         </tr>
       </table>
     </td>
