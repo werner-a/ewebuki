@@ -66,6 +66,10 @@
   #$defaults["select"]["prev"] = "<img src=\"".$pathvars["images"]."sel_left.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
   #$defaults["select"]["next"] = "<img src=\"".$pathvars["images"]."sel_right.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
 
+  // tag fehlermeldung
+  #$defaults["tag"]["error"] = " <font color=\"#FF0000\">(eWebuki findet den ";
+  #$defaults["tag"]["/error"] = " Tag leider nicht)</font> ";
+
   // eigene icons verwenden
   #$defaults["icon"]["pdf"] = "<img src=\"".$pathvars["images"]."icon_pdf.png\">";
   #$defaults["icon"]["zip"] = "<img src=\"".$pathvars["images"]."icon_zip.png\">";
