@@ -47,8 +47,8 @@
         global $pathvars, $environment, $ausgaben;
 
         // cariage return + linefeed fix
-        $sear = array("\r\n[", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "AB]\r\n", "W]\r\n", "L]\r\n", );
-        $repl = array("[",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "AB]",     "W]",     "L]",);           
+        $sear = array("\r\n[TA", "\r\n[RO", "\r\n[CO", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "AB]\r\n", "OW]\r\n", "OL]\r\n", );
+        $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "AB]",     "OW]",     "OL]",);           
         $replace = str_replace($sear,$repl,$replace);        
                 
         // neues generelles tagreplace
