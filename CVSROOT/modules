@@ -56,4 +56,7 @@ koppe basement/modules/koppe
 # grundelemente auf einmal
 snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
 
+# test
+test -d eWeBuKi snapshot
+
 # EOF
