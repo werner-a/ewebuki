@@ -93,7 +93,7 @@
                     $ausgaben["ordner"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$pathvars["virtual"]."/".$level1array["entry"].".html\"><img src=\"../../images/".$environment["design"]."/".$cfg["menu"]["image"]."close.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"".$level1array["label"]."\"></a>";
                     if ( $cfg["menu"]["level2"]["dynamic"] == -1 ) $cfg["menu"]["level2"]["enable"] = 0;
                 }
-                if ( $level1array["entry"] != "" ) {
+                if ( $level1array["exturl"] == "" ) {
                     $ausgaben["ueberschrift"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$pathvars["virtual"]."/".$level1array["entry"].".html\">".$level1array["label"]."</a><br>";
                 } else {
                     $ausgaben["ueberschrift"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" target=\"_blank\" href=\"".$level1array["exturl"]."\">".$level1array["label"]."</a><br>";
@@ -131,7 +131,7 @@
                     }
                 }
                 if ( $right == -1 ) {
-                    if ( $level2array["entry"] != "" ) {
+                    if ( $level2array["exturl"] == "" ) {
                         // mandatory
                         $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
                         if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
@@ -174,7 +174,7 @@
                             }
                         }
                         if ( $right == -1 ) {
-                            if ( $level3array["entry"] != "" ) {
+                            if ( $level3array["exturl"] == "" ) {
                                $ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" href=\"".$pathvars["virtual"]."/".$level1array["entry"]."/".$level2array["entry"]."/".$level3array["entry"].".html\">".$level3array["label"]."</a><br>";
                             } else {
                                $ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" target=\"_blank\" href=\"".$level3array["exturl"]."\">".$level3array["label"]."</a><br>";
