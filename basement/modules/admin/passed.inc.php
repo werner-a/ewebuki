@@ -112,10 +112,10 @@
                     $mysalt = chr($a).chr($b);
                     $checked_password = crypt($checked_password, $mysalt);
                 } else {
-                    $ausgaben["form_error"] .= $form_options["abpasswort"]["ferror"];
+                    $ausgaben["form_error"] .= $form_options[$cfg["db"]["pass"]]["ferror"]." ( <> )";
                 }
             } else {
-                $ausgaben["form_error"] .= $form_options["abpasswort"]["ferror"]."das alte passwort falsch";
+                $ausgaben["form_error"] .= $form_options[$cfg["db"]["pass"]]["ferror"]." ( !! )";
             }
 
             // ohne fehler sql bauen und ausfuehren
@@ -134,9 +134,9 @@
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
                 if ( $checked_password != "" ) {
-                    $sqla .= "pass='".$checked_password."'";
+                    $sqla .= $cfg["db"]["pass"]."='".$checked_password."'";
                 }
-                $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
+                $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";               
                 $result  = $db -> query($sql);
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 header("Location: ".$ausgaben["form_referer"]);
