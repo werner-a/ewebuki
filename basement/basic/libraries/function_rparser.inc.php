@@ -111,9 +111,11 @@
 
                 // !#element array pruefen und evtl. einsetzen
                 if ( strstr($line,"!#element_" ) ) {
-                    foreach($element as $name => $value) {
-                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
-                        $line=str_replace("!#element_$name",$value,$line);
+                    if ( is_array($element) ) {
+                        foreach($element as $name => $value) {
+                            #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
+                            $line=str_replace("!#element_$name",$value,$line);
+                        }
                     }
                 }
 
@@ -194,24 +196,26 @@
                   if ( $specialvars["crc32"] == -1 ) {
                       if ( $environment["ebene"] != "" && $token_name == $environment["kategorie"] ) {
                         $path_element = explode("/", substr($environment["ebene"]."/",1));
-                        krsort($path_element);
-                        foreach ( $path_element as $name => $value ) {
-                            if ( $value == "" ) {
-                                $cutstring = $value;
-                            } else {
-                                $cutstring = "/".$value.$cutstring;
-                            }
-                            $tetstring = str_replace($cutstring,"",$environment["ebene"]);
-                            if ( $tetstring != "" ) {
-                                #$prefix = "e";
-                                $startfile = $prefix.crc32($tetstring).".".$token_name.".tem.html";
+
+                        foreach ( $path_element as $value ) {
+                            array_pop($path_element); // thanks @ Günther Morhart
+                            if ( $value != "" ) {
+                                $find_ebene = "/".implode("/",$path_element);
+                                $startfile = crc32($find_ebene).".".$token_name.".tem.html";
                                 if ( !file_exists($pathvars["templates"].$startfile) ) {
-                                  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$startfile." crc32 template found for ebene (".$tetstring.")".$debugging["char"];
+                                  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$startfile." crc32 template found for ebene (".$find_ebene.")".$debugging["char"];
                                 } else {
                                   break; // thanks @ Günther Wach
                                 }
+                            } else {
+                                global $HTTP_GET_VARS;
+                                if ( $HTTP_GET_VARS["lost"] == "" ) {
+                                    $startfile = crc32($environment["ebene"]).".".$token_name.".tem.html";
+                                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "reset to: ".$startfile." crc32 content for ebene (".$environment["ebene"].")".$debugging["char"];
+                                }
                             }
                         }
+
                       } else {
                         // token name und template endung zusammen bauen
                         $startfile = $token_name.".tem.html";
