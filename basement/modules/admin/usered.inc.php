@@ -105,7 +105,7 @@
               // wohin schicken
               $ausgaben["form_error"] = "";
               $ausgaben["form_aktion"] = $environment["basis"]."/modify,add,verify.html";
-              $ausgaben["form_break"] = $environment["basis"].".html";
+              $ausgaben["form_break"] = $environment["basis"]."/list.html";
 
               if ( $environment["parameter"][2] == "verify" ) {
 
@@ -159,7 +159,7 @@
                           // +++
                           // level management sql end
 
-                          header("Location: ".$environment["basis"].".html");
+                          header("Location: ".$environment["basis"]."/list.html");
                       } else {
                           if ( @$db -> error() == 1062 ) {
                               if ( $form_options["username"]["fdberror"] != "" ) {
@@ -222,7 +222,7 @@
               // wohin schicken
               $ausgaben["form_error"] = "";
               $ausgaben["form_aktion"] = $environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html";
-              $ausgaben["form_break"] = $environment["basis"].".html";
+              $ausgaben["form_break"] = $environment["basis"]."/list.html";
 
               if ( $environment["parameter"][3] == "verify" ) {
 
@@ -287,7 +287,7 @@
                           $sql = "update ".$data_entries." SET ".$sqla." WHERE uid='".$environment["parameter"][2]."'";
                           $result  = $db -> query($sql);
                           if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                          header("Location: ".$environment["basis"].".html");
+                          header("Location: ".$environment["basis"]."/list.html");
                       }
                   }
               }
@@ -321,7 +321,7 @@
 
                   $sql = "DELETE FROM ".$data_entries." WHERE uid='".$environment["parameter"][2]."'";
                   $result  = $db -> query($sql);
-                  header("Location: ".$environment["basis"].".html");
+                  header("Location: ".$environment["basis"]."/list.html");
               }
           }
 
