@@ -57,14 +57,14 @@
 
     if ( $rechte["cms_edit"] == -1
       #|| $rechte["administration"] == -1 && $rechte["sti"] == -1 ) { ### loesung?
-      || $rechte["administration"] == -1 && $erlaubnis == -1 ) {
+      || $rechte["administration"] == -1 || $erlaubnis == -1 ) {
 
         $db->selectDb($database,FALSE);
 
         if ( $environment["kategorie"] == "edit" ) {
 
             session_register("ebene");
-            session_register("kategorie");        
+            session_register("kategorie");
 
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$HTTP_SESSION_VARS["ebene"].$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$HTTP_SESSION_VARS["kategorie"].$debugging["char"];
@@ -153,12 +153,28 @@
                 $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
             }
 
+            $content = $HTTP_POST_VARS["content"];
+
+            // html killer :)
+            if ( $specialvars["denyhtml"] == -1 ) {
+                $content = strip_tags($content);
+            }
+
+            // space killer
+            if ( $specialvars["denyspace"] == -1 ) {
+                $pattern = "  +";
+                while ( preg_match("/".$pattern."/", $content, $tag) ) {
+                    $content = str_replace($tag[0]," ",$content);
+                }
+            }
+
+
             if ( $environment["parameter"][4] != "" ) {
                 if ( $HTTP_POST_VARS["content"] == "" ) {
                     $sql = "DELETE FROM ". SITETEXT ." WHERE tid='".$environment["parameter"][4]."'";
                 } else {
                     $sql = "UPDATE ". SITETEXT ." set
-                    content='".$HTTP_POST_VARS["content"]."',
+                    content='".$content."',
                     crc32='".$specialvars["crc32"]."',
                     html='".$HTTP_POST_VARS["html"]."',
                     ebene='".$HTTP_SESSION_VARS["ebene"]."',
@@ -176,7 +192,7 @@
                         '".$HTTP_SESSION_VARS["ebene"]."',
                         '".$HTTP_SESSION_VARS["kategorie"]."',
                         '".$HTTP_POST_VARS["html"]."',
-                        '".$HTTP_POST_VARS["content"]."')";
+                        '".$content."')";
             }
             $result  = $db -> query($sql);
 
