@@ -69,10 +69,12 @@
       $environment["design"] = $pathvars["level"][1];
       $pathvars["virtual"] = "/".$environment["design"];       
       $authcount++;
+      $designsw = " (user)";
     } else {
       $environment["design"] = $specialvars["default_design"];
+      $designsw = " (default)";
     }
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "design: ".$environment["design"].$debugging["char"];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "design".$designsw.": ".$environment["design"].$debugging["char"];
     
     // language detection
     for ( $i=1; $i<=2 ; $i++ ) {
@@ -84,19 +86,24 @@
     if ( $position >= 1) {    
       $environment["language"] = $pathvars["level"][$position];
       $pathvars["virtual"] .= "/".$environment["language"];
+      $langsw = " (user)";
       $authcount++;        
-      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang: ".$environment["language"].$debugging["char"];
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang".$langsw.": ".$environment["language"].$debugging["char"];
     } else {      
       if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "http accept lang: ".$_SERVER["HTTP_ACCEPT_LANGUAGE"].$debugging["char"];     
       $http_accept_language = explode(",",$_SERVER["HTTP_ACCEPT_LANGUAGE"]);     
       foreach( $http_accept_language as $lang ) {
         if ( in_array($lang,$specialvars["available_languages"]) ) {
           $environment["language"] = $lang;
+          $langsw = " (browser)";
           break;
         }
       }
-      if ( $environment["language"] == "" ) $environment["language"] = $specialvars["default_language"];
-      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang: ".$environment["language"].$debugging["char"];      
+      if ( $environment["language"] == "" ) {
+        $environment["language"] = $specialvars["default_language"];
+        $langsw = " (default)";
+      }       
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang".$langsw.": ".$environment["language"].$debugging["char"];      
     }
 
     // host werte "www.xxx.yyy.de" in "www" und "xxx.yyy.de" array
@@ -234,7 +241,7 @@
     require $pathvars["config"]."auth.cfg.php";
     require $pathvars["libraries"]."auth.inc.php";
 
-
+    
     if ( $environment["katid"] == "cms") {
         include $pathvars["libraries"]."cms.inc.php";
     } elseif ($environment["katid"] == "fileed") {
@@ -259,7 +266,7 @@
     require $pathvars["config"]."addon.cfg.php";
 
     // aenderungen durch webdesigner
-    #require $pathvars["templates"]."linking.inc.php"; ###
+    require $pathvars["templates"]."linking.inc.php";
     
     // rekursiven parser aufrufen
     if ( $HTTP_POST_VARS["print"] != "" || $HTTP_GET_VARS["print"] != "" ) {
