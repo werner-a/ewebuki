@@ -56,7 +56,7 @@
 
   // bild fuer den bearbeiten link
   #$defaults["cms-tag"]["signal"] = "<img src=\"".$pathvars["images"]."/cms-tag-";
-  #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
+  #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\">";
 
   // eigene icons verwenden
   #$defaults["icon"]["pdf"] = "<img src=\"".$pathvars["images"]."icon_pdf.png\">";
