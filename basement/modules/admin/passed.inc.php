@@ -64,7 +64,6 @@
     if ( $HTTP_SESSION_VARS["auth"] == -1 ) {
 
         if ( count($HTTP_POST_VARS) == 0 ) {
-            #$sql = "SELECT ".$cfg["db"]["pass"]." FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
             $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,$nop);
@@ -95,7 +94,8 @@
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
-            #$ausgaben["inaccessible"] .= "# (error_?) #(error_?)<br />";
+            $ausgaben["inaccessible"] .= "# (error_chkpass) #(error_chkpass)<br />";
+            $ausgaben["inaccessible"] .= "# (error_oldpass) #(error_oldpass)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -109,20 +109,28 @@
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         }
 
-        if ( $environment["parameter"][3] == "verify" ) {
+        if ( $environment["parameter"][3] == "verify"
+            && $HTTP_POST_VARS["send"] != "" ) {
 
             // form eigaben prüfen
             form_errors( $form_options, $form_values );
 
-            // form eingaben prüfen erweitern
-            $sql = "SELECT ".$cfg["db"]["pass"]." FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
+            // altes salt aus der user tabelle holen
+            $sql = "SELECT ".$cfg["db"]["pass"]."
+                      FROM ".$cfg["db"]["entries"]."
+                     WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
             $result  = $db -> query($sql);
+            if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             $data = $db -> fetch_array($result,0);
             $salt = substr($data[$cfg["db"]["pass"]],0,2);
-            $oldpass = crypt($HTTP_POST_VARS["oldpass"],$salt);
 
-            if ( $oldpass == $data[$cfg["db"]["pass"]] ) {
-                if ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] && $HTTP_POST_VARS["newpass"] != "" ) {
+            // ist passwort db = gesendetes altes passwort
+            if ( $data[$cfg["db"]["pass"]] == crypt($HTTP_POST_VARS["oldpass"],$salt) ) {
+                // neues passwort vorhanden und die wiederholung stimmt
+                if ( $HTTP_POST_VARS["newpass"] != ""
+                    && ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] ) ) {
+
+                    // neues passwort verschluesseln ( mysql = ecncrypt() )
                     $checked_password = $HTTP_POST_VARS["newpass"];
                     mt_srand((double)microtime()*1000000);
                     $a=mt_rand(1,128);
@@ -130,35 +138,27 @@
                     $mysalt = chr($a).chr($b);
                     $checked_password = crypt($checked_password, $mysalt);
                 } else {
-                    $ausgaben["form_error"] .= $form_options[$cfg["db"]["pass"]]["ferror"]." ( <> )";
+                    $ausgaben["form_error"] .= "#(error_chkpass)";
                 }
             } else {
-                $ausgaben["form_error"] .= $form_options[$cfg["db"]["pass"]]["ferror"]." ( !! )";
+                $ausgaben["form_error"] .= "#(error_oldpass)";
             }
 
             // ohne fehler sql bauen und ausfuehren
-            if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] || $HTTP_POST_VARS["image"] != "" ) ){
-                $kick = array( "PHPSESSID", "ablogin", "oldpass", "newpass", "chkpass", "submit", "submit_x", "submit_y", "form_referer" );
-
-                foreach($form_values as $name => $value) {
-                    if ( !in_array($name,$kick) ) {
-                        if ( $sqla != "" ) $sqla .= ", ";
-                        $sqla .= $name."='".$value."'";
-                    }
-                }
-
-                // Sql um spezielle Felder erweitern
-                #$ldate = $HTTP_POST_VARS["ldate"];
-                #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
-                #$sqla .= ", ldate='".$ldate."'";
-                if ( $checked_password != "" ) {
-                    $sqla .= $cfg["db"]["pass"]."='".$checked_password."'";
-                }
-                $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
+            if ( $ausgaben["form_error"] == "" ) {
+                $sql = "UPDATE auth_user
+                           SET ".$cfg["db"]["pass"]." = '".$checked_password."'
+                         WHERE ".$cfg["db"]["key"]." = ".$HTTP_SESSION_VARS["uid"];
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
-                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+            }
+
+            // ohne fehlermeldungen, weiterschicken
+            if ( $ausgaben["form_error"] == "" ) {
                 header("Location: ".$ausgaben["form_referer"]);
             }
+
         }
     } else {
         header("Location: ".$pathvars["webroot"]."/".$environment["design"]."/".$environment["language"]."/index.html");
