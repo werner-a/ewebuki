@@ -206,6 +206,8 @@
             // lang tabellen aenderungen
             if ( $ausgaben["form_error"] == ""  ) {
 
+                $checkext = checkext();
+
                 $header_link = $cfg["basis"]."/edit,".$environment["parameter"][1].".html"; #?referer=".$ausgaben["form_referer"]);
                 if ( $HTTP_POST_VARS["add"] && $HTTP_POST_VARS["new_lang"] != "" ) {
                     $sql = "SELECT label
@@ -221,7 +223,11 @@
                         $ausgaben["form_error"] .= "#(error_lang_add)";
                         $header = $header_link;
                     } else {
-                        $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, label) VALUES ('".$environment["parameter"][1]."', '".$HTTP_POST_VARS["new_lang"]."', '".$HTTP_POST_VARS["entry"]."' )";
+                        if ( $checkext != "" ) {
+                            $extenda = "extend, ";
+                            $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
+                        }
+                        $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, ".$extenda."label) VALUES ('".$environment["parameter"][1]."', '".$HTTP_POST_VARS["new_lang"]."', ".$extendb."'".$HTTP_POST_VARS["entry"]."' )";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -249,9 +255,12 @@
                         $header = $header_link;
                     }
                 }
+
                 if ( count($HTTP_POST_VARS["lang"]) <= 1 ) {
+                    if ( $checkext != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"]."',";
                     $sql = "update ".$cfg["db"]["lang"]["entries"]."
                             set label = '".$HTTP_POST_VARS["label"]."',
+                                ".$extenddesc."
                                 exturl = '".$HTTP_POST_VARS["exturl"]."'
                             where mid = ".$environment["parameter"][1]; # mid statt mlid weil $key fehlt
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -259,8 +268,10 @@
                     if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 } else {
                     foreach( $HTTP_POST_VARS["lang"] as $key => $value ) {
+                        if ( $checkext != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"][$key]."',";
                         $sql = "update ".$cfg["db"]["lang"]["entries"]."
                                 set label = '".$HTTP_POST_VARS["label"][$key]."',
+                                    ".$extenddesc."
                                     exturl = '".$HTTP_POST_VARS["exturl"][$key]."'
                                 where mlid=".$key;
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -329,7 +340,7 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 $kick = array( "PHPSESSID", "send", "add", "delete", "image", "image_x", "image_y", "form_referer",
-                               "new_lang", "lang", "label", "exturl",
+                               "new_lang", "lang", "label", "extend", "exturl",
                                "entry" );
                 foreach($HTTP_POST_VARS as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {

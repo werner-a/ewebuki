@@ -289,5 +289,18 @@
         }
     }
 
+    // funktion um zu pruefen, ob das feld extend in der lang tabelle existiert
+    #if ( in_array("checkext", $cfg["function"][$environment["kategorie"]]) ) {
+
+        function checkext() {
+            global $db, $cfg;
+
+            // extend - db test
+            $sql = "select extend from ".$cfg["db"]["lang"]["entries"] ;
+            $result = $db -> query($sql);
+            return $result;
+        }
+    #}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

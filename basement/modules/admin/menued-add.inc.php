@@ -151,7 +151,7 @@
             // entry hinzufuegen
             if ( $ausgaben["form_error"] == "" ) {
                 $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y",
-                               "add_x", "add_y", "add", "form_referer", "lang", "label",
+                               "add_x", "add_y", "add", "form_referer", "lang", "label", "extend",
                                "exturl", "new_lang", "entry");
                 foreach($HTTP_POST_VARS as $name => $value) {
                     if ( !in_array($name,$kick) ) {
@@ -177,11 +177,16 @@
             // sprache hinzufuegen
             if ( $ausgaben["form_error"] == "" ) {
                 $lastid = $db -> lastid();
+                if ( checkext() != "" ) {
+                    $extenda = "extend, ";
+                    $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
+                }
                 $sql = "INSERT INTO  ".$cfg["db"]["lang"]["entries"]."
-                                    ( mid, lang, label, exturl )
+                                    ( mid, lang, label, ".$extenda." exturl )
                              VALUES ( '".$lastid."',
                                       '".$HTTP_POST_VARS["lang"]."',
                                       '".$HTTP_POST_VARS["label"]."',
+                                      ".$extendb."
                                       '".$HTTP_POST_VARS["exturl"]."' )";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);

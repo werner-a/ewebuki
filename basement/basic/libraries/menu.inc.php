@@ -20,7 +20,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with eWeBuKi; If you did not, you may download a copy at:
+//     along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -50,6 +50,7 @@
     //
     $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
     if ( $cfg["menu"]["level1"]["full"] == "-1" ) $mandatory = "";
+    if ( $cfg["menu"]["level1"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
 
     $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
                     ".$cfg["menu"]["db"]["entries"].".refid,
@@ -58,6 +59,7 @@
                     ".$cfg["menu"]["db"]["entries"].".level,
                     ".$cfg["menu"]["db"]["entries"]."_lang.lang,
                     ".$cfg["menu"]["db"]["entries"]."_lang.label,
+                    ".$extenddesc."
                     ".$cfg["menu"]["db"]["entries"]."_lang.exturl
               FROM  ".$cfg["menu"]["db"]["entries"]."
         INNER JOIN  ".$cfg["menu"]["db"]["entries"]."_lang
@@ -113,8 +115,8 @@
                     $href = $level1array["exturl"];
                     $target = $cfg["menu"]["level1"]["target"];
                 }
-                $marken = array("##target##", "##link##", "##label##", "##picture##");
-                $ersatz = array($target, $href, $level1array["label"], $level1array["picture"]);
+                $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##");
+                $ersatz = array($target, $href, $level1array["label"], $level1array["picture"], $level1array["extend"]);
 
                 // multiple db support
                 if ( $cfg["menu"]["mdbsupp"] == -1 ) {
@@ -148,6 +150,7 @@
         //
         // menupunkte level 2
         //
+        if ( $cfg["menu"]["level2"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
         $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
                         ".$cfg["menu"]["db"]["entries"].".refid,
                         ".$cfg["menu"]["db"]["entries"].".entry,
@@ -156,6 +159,7 @@
                         ".$cfg["menu"]["db"]["entries"].".level,
                         ".$cfg["menu"]["db"]["language"].".lang,
                         ".$cfg["menu"]["db"]["language"].".label,
+                        ".$extenddesc."
                         ".$cfg["menu"]["db"]["language"].".exturl
                   FROM  ".$cfg["menu"]["db"]["entries"]."
             INNER JOIN  ".$cfg["menu"]["db"]["language"]."
@@ -214,8 +218,8 @@
                         $href = $level2array["exturl"];
                         $target = $cfg["menu"]["level2"]["target"];
                     }
-                    $marken = array("##target##", "##link##", "##label##", "##picture##");
-                    $ersatz = array($target, $href, $level2array["label"], $level2array["picture"]);
+                    $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##");
+                    $ersatz = array($target, $href, $level2array["label"], $level2array["picture"], $level2array["extend"]);
 
                     $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level2"]["link"]);
                 }
@@ -225,6 +229,7 @@
             // menupunkte level 3
             //
             if ( strstr($environment["ebene"],"/".$level1array["entry"]) || strstr($environment["kategorie"],$level1array["entry"]) ) {
+                if ( $cfg["menu"]["level3"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
                 $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
                                 ".$cfg["menu"]["db"]["entries"].".refid,
                                 ".$cfg["menu"]["db"]["entries"].".entry,
@@ -233,6 +238,7 @@
                                 ".$cfg["menu"]["db"]["entries"].".level,
                                 ".$cfg["menu"]["db"]["language"].".lang,
                                 ".$cfg["menu"]["db"]["language"].".label,
+                                ".$extenddesc."
                                 ".$cfg["menu"]["db"]["language"].".exturl
                           FROM  ".$cfg["menu"]["db"]["entries"]."
                     INNER JOIN  ".$cfg["menu"]["db"]["language"]."
@@ -278,8 +284,8 @@
                                 $href = $level3array["exturl"];
                                 $target = $cfg["menu"]["level3"]["target"];
                             }
-                            $marken = array("##target##", "##link##", "##label##", "##picture##");
-                            $ersatz = array($target, $href, $level3array["label"], $level3array["picture"]);
+                            $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##");
+                            $ersatz = array($target, $href, $level3array["label"], $level3array["picture"], $level3array["extend"]);
 
                             $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level3"]["link"]);
                         }
