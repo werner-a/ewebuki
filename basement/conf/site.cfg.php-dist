@@ -61,7 +61,7 @@
     $specialvars["rootname"] = "Home"; // globaler root keks titel
     define ('SITETEXT','site_text'); // tabelle mit content
     $specialvars["available_languages"] = array("de","en"); // verfuegbare sprachen
-    $specialvars["default_language"] = "de"; // entwickler sprache    
+    $specialvars["default_language"] = "de"; // entwickler sprache
     $specialvars["default_design"] = "default"; // design bezeichnung
     $specialvars["default_template"] = "default1"; // basis name des default template
     $specialvars["menu_level0_start"] = 1; // erste zufall startseite
@@ -69,6 +69,9 @@
     $specialvars["crc32"] = -1; // ablage des content mit crc32.tname
     $specialvars["denyhtml"] = -1; // html im content verbieten
     $specialvars["denyspace"] = -1; // leerzeichen im content verbieten
+    $specialvars["404"]["enable"] = 0; // 404 fehlermeldungen aktivieren
+    $specialvars["404"]["nochk"]["ebene"] = array("/cms","/admin"); // ebenen ohne 404 meldung
+    $specialvars["404"]["nochk"]["kategorie"] = array("index"); // kategorien ohne 404 meldung
 
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.
