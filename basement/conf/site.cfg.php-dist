@@ -77,7 +77,7 @@
     // ACHTUNG **************
 
     // datei variablen
-    $pathvars["filebase"]["maindir"] = $_SERVER["DOCUMENT_ROOT"]."/file/"; // pfad der dateien im filesystem
+    $pathvars["filebase"]["maindir"] = $pathvars["fileroot"]."file/"; // pfad der dateien im filesystem
     $pathvars["filebase"]["webdir"] = "/file/"; // pfad der dateien auf dem webserver
     $pathvars["filebase"]["new"] = "new/";
     $pathvars["filebase"]["pic"]["root"] = "picture/";
