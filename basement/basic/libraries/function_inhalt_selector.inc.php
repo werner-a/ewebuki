@@ -49,7 +49,12 @@
 
     function inhalt_selector($sql, $position, $menge, $parameter, $art = False, $selects = 6, $getvalues = False) {
 
-        global $db, $debugging, $pathvars, $environment;
+        global $db, $debugging, $pathvars, $environment, $defaults;
+
+        // default images setzen
+        $defaults["select"]["none"] == "" ? $defaults["select"]["none"] = "<img src=\"/images/default/pos.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"\" />" : NOP;
+        $defaults["select"]["prev"] == "" ? $defaults["select"]["prev"] = "<img src=\"/images/default/left.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
+        $defaults["select"]["next"] == "" ? $defaults["select"]["next"] = "<img src=\"/images/default/right.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
 
         $inh_selector = "";
         $position = $position+0;
@@ -72,9 +77,9 @@
             $links = $position-$menge;
             $rechts = $position+$menge;
             if ( $position != 0 ) {
-                $inh_selector .= "<a href=\"".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"].",".$links.$parameter.".html".$getvalues."\"><img src=\"".$pathvars["images"]."sel_left.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" /></a> ";
+                $inh_selector .= "<a href=\"".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"].",".$links.$parameter.".html".$getvalues."\">".$defaults["select"]["prev"]."</a> ";
             } else {
-                $inh_selector .= "<img src=\"".$pathvars["images"]."pos.png\" height=\"9\" width=\"15\" border=\"0\" />";
+                $inh_selector .= $defaults["select"]["none"];
             }
 
 
@@ -153,9 +158,9 @@
                 if ( $art == 1 ) {
                     $inh_selector .= $weiter;
                 }
-                $inh_selector .= "<a href=\"".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"].",".$rechts.$parameter.".html".$getvalues."\"><img src=\"".$pathvars["images"]."sel_right.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" /></a> ";
+                $inh_selector .= "<a href=\"".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"].",".$rechts.$parameter.".html".$getvalues."\">".$defaults["select"]["next"]."</a> ";
             } else {
-                $inh_selector .= "<img src=\"".$pathvars["images"]."pos.png\" height=\"9\" width=\"15\" border=\"0\" />";
+                $inh_selector .= $defaults["select"]["none"];
             }
         }
 
