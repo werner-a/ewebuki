@@ -67,10 +67,12 @@
             // wo beginnt die marke
             $labelbeg = strpos($line,"#(");
             $art = "#(";
+            $bez = "# (";
             $dbtname = $tname;
             if ( $labelbeg === false ) {
                 $labelbeg = strpos($line,"g(");
                 $art = "g(";
+                $bez = "g (";
                 $dbtname = "global";
             }
 
@@ -156,7 +158,7 @@
                 } else {
                     #$line = $line."# (".$label.")&nbsp;<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
                     #$ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
-                    $ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<br />\n";
+                    $ausgaben["inaccessible"] .= $bez.$label.")&nbsp;".$art.$label.")<br />\n";
                 }
             }
             }
