@@ -134,9 +134,6 @@
         $ausgaben["logout_meldung"] = "\"".$HTTP_SESSION_VARS["username"]."\"";
         $ausgaben["logout_rechte"] = "";
 
-
-        #$funktionen = array("leveled","usered","menued","fileed","passed");
-        #foreach( $funktionen as $funktion ) {
         foreach( $cfg["menu"] as $funktion => $werte) {
             $array = explode(";", $werte[1]);
             foreach( $array as $value) {
