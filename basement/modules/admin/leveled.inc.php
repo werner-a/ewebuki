@@ -399,11 +399,11 @@
         $class = " class=\"contenthead\"";
         $size  = " width=\"30\"";
 
-        $ausgaben["output"] .= "<td".$class.">Level</td>\n";
+        $ausgaben["output"] .= "<td".$class.">#(level)</td>\n";
         $ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>\n";
-        $ausgaben["output"] .= "<td".$class.">Beschreibung</td>\n";
+        $ausgaben["output"] .= "<td".$class.">#(beschreibung)</td>\n";
         $ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>\n";
-        $ausgaben["output"] .= "<td".$class.">Bearbeiten</td>\n";
+        $ausgaben["output"] .= "<td".$class.">#(modify)</td>\n";
         $ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>\n";
         $ausgaben["output"] .= "</tr><tr>\n";
 
@@ -415,9 +415,9 @@
 
         $result = $db -> query($sql);
         $modify  = array (
-            "edit"      => array("modify,", "Editieren", "cms_admin"),
-            "delete"    => array("modify,", "Löschen", "cms_admin"),
-            "details"   => array("", "Details")
+            "edit"      => array("modify,", "#(edit)", "cms_admin"),
+            "delete"    => array("modify,", "#(delete)", "cms_admin"),
+            "details"   => array("", "#(details)")
         );
 
         while ( $field = $db -> fetch_array($result,$nop) ) {
