@@ -60,7 +60,9 @@
     $specialvars["pagetitle"] = "eWeBuKi"; // globaler html seiten titel
     $specialvars["rootname"] = "Home"; // globaler root keks titel
     define ('SITETEXT','site_text'); // tabelle mit content
-    $specialvars["default_language"] = "ger"; // was die entwickler sprache
+    $specialvars["available_languages"] = array("de","en"); // verfuegbare sprachen
+    $specialvars["default_language"] = "de"; // entwickler sprache    
+    $specialvars["default_design"] = "default"; // design bezeichnung
     $specialvars["default_template"] = "default1"; // basis name des default template
     $specialvars["menu_level0_start"] = 1; // erste zufall startseite
     $specialvars["menu_level0_end"] = 0; // letzte zufall startseite (0 = disable)
