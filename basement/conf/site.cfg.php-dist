@@ -72,7 +72,7 @@
     $specialvars["denyspace"] = -1; // leerzeichen im content verbieten
     $specialvars["404"]["enable"] = 0; // 404 fehlermeldungen aktivieren
     $specialvars["404"]["nochk"]["ebene"] = array("/cms","/admin"); // ebenen ohne 404 meldung
-    $specialvars["404"]["nochk"]["kategorie"] = array("index"); // kategorien ohne 404 meldung
+    $specialvars["404"]["nochk"]["kategorie"] = array("index","view"); // kategorien ohne 404 meldung
 
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.
