@@ -49,7 +49,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function rparser($startfile, $default_template) {
-    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $mapping;
+    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $mapping;
 
     // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
     $template = $pathvars["templates"].$startfile;
@@ -115,6 +115,17 @@
                         foreach($element as $name => $value) {
                             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
                             $line=str_replace("!#element_$name",$value,$line);
+                        }
+                    }
+                }
+
+                // !#lnk array pruefen und evtl. einsetzen
+                // $lnk wird in kekse.inc.php erstellt
+                if ( strstr($line,"!#lnk_" ) ) {
+                    if ( is_array($lnk) ) {
+                        foreach($lnk as $name => $value) {
+                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$lnk[$name]".$debugging["char"];
+                            $line=str_replace("!#lnk_$name",$value,$line);
                         }
                     }
                 }

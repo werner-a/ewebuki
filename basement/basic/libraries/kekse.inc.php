@@ -132,6 +132,11 @@
                         $ausgaben["L1"] .= "&middot; <a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
                     }
                 }
+
+                // $lnk_0 mit back link belegen
+                $lnkcount = 0;
+                $lnk[$lnkcount] = $ausgaben["UP"];
+
                 $sql = "SELECT site_menu.entry, site_menu.refid, site_menu.level, site_menu_lang.lang, site_menu_lang.label, site_menu_lang.exturl FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid = site_menu_lang.mid WHERE (((site_menu.refid)=".$keksarray["mid"].") AND ((site_menu_lang.lang)='".$environment["language"]."')) order by sort;";
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
@@ -150,6 +155,10 @@
                         $ausgaben["M2"] .= "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
 
                         $ausgaben["L2"] .= "&middot; <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
+
+                        // $lnk_* mit links belegen
+                        $lnkcount++;
+                        $lnk[$lnkcount] = $pathvars["virtual"].$path."/".$navbararray["entry"].".html";
                     }
                 }
             }
