@@ -68,16 +68,16 @@
 
         // variableninit
         global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben;
-        
+
         // original template find
-        #$template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";        
+        #$template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";
         if ( file_exists($pathvars["templates"].$parse_path.$parse_name.".tem.html") ) {
           $template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";
-        } else { 
+        } else {
           $template = $pathvars["fileroot"]."templates/default/".$parse_path.$parse_name.".tem.html";
         }
-        
-        // file auf existenz ueberpruefen        
+
+        // file auf existenz ueberpruefen
         if ( file_exists($template) == -1 ) {
             $fd = fopen($template,"r");
 
@@ -109,6 +109,16 @@
                         foreach($ausgaben as $name => $value) {
                             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$ausgaben[$name]".$debugging["char"];
                             $parse_mod = str_replace("!#ausgaben_$name",$value,$parse_mod);
+                        }
+                    }
+
+                    // !#element array pruefen und evtl. einsetzen
+                    if ( strstr($parse_mod,"!#element_" ) ) {
+                        if ( is_array($element) ) {
+                            foreach($element as $name => $value) {
+                                #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
+                                $parse_mod = str_replace("!#element_$name",$value,$parse_mod);
+                            }
                         }
                     }
 
