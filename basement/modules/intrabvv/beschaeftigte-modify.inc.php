@@ -4,23 +4,23 @@
 // "Beschaeftigte modify";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -44,18 +44,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    if ( strstr($environment[kategorie], "modify") ) {
+    if ( strstr($environment["kategorie"], "modify") ) {
 
         // warning ausgeben
-        if ( get_cfg_var('register_globals') == 1 ) $debugging[ausgabe] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging[char];
+        if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
 
 
-        if ( $environment[parameter][1] == "add" && $rechte[$cfg["right"]["adress"]] == -1) {
+        if ( $environment["parameter"][1] == "add" && $rechte[$cfg["right"]["adress"]] == -1) {
             $form_values = $HTTP_POST_VARS;
 
             // form options holen
-            $form_options = form_options(crc32($environment[ebene]).".".$environment[kategorie]);
+            $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
             // form elememte bauen
             $element = form_elements( $cfg["db"]["entries"], $HTTP_POST_VARS );
@@ -174,32 +174,32 @@
             // alle veraenderten elemente umbauen
 
             // form elemente erweitern
-            $modify  = array ("abdstmobil", "abprivtel", "abprivmobil");
-            foreach($modify as $key => $value) {
-                if ( $HTTP_POST_VARS[$value] == "" )
-                {
-                    $element[$value] = str_replace($value."\"", $value."\" value=\"+49-\"", $element[$value]);
-                }
-            }
+            #$modify  = array ("abdstmobil", "abprivtel", "abprivmobil");
+            #foreach($modify as $key => $value) {
+                #if ( $HTTP_POST_VARS[$value] == "" )
+                #{
+                    #$element[$value] = str_replace($value."\"", $value."\" value=\"+49-\"", $element[$value]);
+                #}
+            #}
 
             // marke !#ausgaben_administration verschwinden lassen (wird im sql gesetzt)
             $ausgaben["administration"] = "";
 
             // was anzeigen
-            $mapping[main] = crc32($environment[ebene]).".".$environment[kategorie];
+            $mapping["main"] = crc32($environment["ebene"]).".".$environment["kategorie"];
             $mapping["navi"] = "leer";
 
             // wohin schicken
-            $ausgaben[form_error] = "";
-            $ausgaben[form_aktion] = $cfg["basis"]."/".$environment[kategorie].",add,verify.html";
+            $ausgaben["form_error"] = "";
+            $ausgaben["form_aktion"] = $cfg["basis"]."/".$environment["kategorie"].",add,verify.html";
 
             // referer im form mit hidden element mitschleppen
             if ( $HTTP_POST_VARS["form_referer"] == "" ) {
-                $ausgaben[form_referer] = $_SERVER["HTTP_REFERER"];
-                $ausgaben[form_break] = $ausgaben[form_referer];
+                $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
+                $ausgaben["form_break"] = $ausgaben["form_referer"];
             } else {
-                $ausgaben[form_referer] = $HTTP_POST_VARS["form_referer"];
-                $ausgaben[form_break] = $ausgaben[form_referer];
+                $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
+                $ausgaben["form_break"] = $ausgaben["form_referer"];
             }
 
             // interessen mit ";" trennen für Datenbankeintrag
@@ -212,28 +212,28 @@
 
 
 
-            if ( $environment[parameter][2] == "verify" ) {
+            if ( $environment["parameter"][2] == "verify" ) {
 
                 // pflichtfelder setzen bei anrede Herr oder Frau (wa 0705)
                 // Datenbankeintrag (nicht required) wird ignoriert
                 // ***
-                if ( $form_values[abanrede] == "Frau" || $form_values[abanrede] == "Herr" ) {
-                    $form_options[abnamvor][frequired] = -1;
-                    $form_options[abnamkurz][frequired] = -1;
-                    $form_options[abamtbez][frequired] = -1;
-                    $form_options[abdstposten][frequired] = -1;
-                    $form_options[abdstemail][frequired] = -1;
+                if ( $form_values["abanrede"] == "Frau" || $form_values["abanrede"] == "Herr" ) {
+                    $form_options["abnamvor"][frequired] = -1;
+                    $form_options["abnamkurz"][frequired] = -1;
+                    $form_options["abamtbez"][frequired] = -1;
+                    $form_options["abdstposten"][frequired] = -1;
+                    $form_options["abdstemail"][frequired] = -1;
 
                     // Feld dienstposten ist kein Pflichtfeld bei amtsbezeichnung Arbeiter und Angestellte
                     // 1=Arb, 2=Arbin, 3=VA, 4=VAe
                     // ***
                     #$amtsbezeichnung = array(1,2,3,4);
                     #foreach ( $amtsbezeichnung as $value ) {
-                    #    if ( $value == $form_values[abamtbez] ) {
-                    #        $form_options[abdstposten][frequired] = 0;
+                    #    if ( $value == $form_values["abamtbez"] ) {
+                    #        $form_options["abdstposten"][frequired] = 0;
                     #        break;
                     #    } else {
-                    #        $form_options[abdstposten][frequired] = -1;
+                    #        $form_options["abdstposten"][frequired] = -1;
                     #    }
                     #}
                     // +++
@@ -270,7 +270,7 @@
                 }
 
                 // ohne fehler sql bauen und ausfuehren
-                if ( $ausgaben[form_error] == "" && ( $HTTP_POST_VARS[submit] != "" || $HTTP_POST_VARS[image] != "" ) ) {
+                if ( $ausgaben["form_error"] == "" /* && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] != "" ) */) {
                     $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "bnet", "cnet" );
                     #bugfix# foreach($HTTP_POST_VARS as $name => $value) {
                         foreach($form_values as $name => $value) {
@@ -291,23 +291,23 @@
                     #$sqlb .= ", '".$ip_class[1]."', '".$ip_class[2]."'";
 
 
-                    #$ldate = $HTTP_POST_VARS[ldate];
+                    #$ldate = $HTTP_POST_VARS["ldate"];
                     #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                     #$sqla .= ", ldate";
                     #$sqlb .= ", '".$ldate."'";
                     $sql = "insert into ".$cfg["db"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                     $result  = $db -> query($sql);
-                    if ( $debugging[html_enable] ) $debugging[ausgabe] .= "sql: ".$sql.$debugging[char];
-                    header("Location: ".$ausgaben[form_referer]);
+                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                    header("Location: ".$ausgaben["form_referer"]);
                 }
             }
 
 
 
-        } elseif ( $environment[parameter][1] == "edit" && $rechte[$cfg["right"]["adress"]] == -1 ) {
+        } elseif ( $environment["parameter"][1] == "edit" && $rechte[$cfg["right"]["adress"]] == -1 ) {
 
             if ( count($HTTP_POST_VARS) == 0 ) {
-                $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$environment[parameter][2]."'";
+                $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$environment["parameter"][2]."'";
                 $result = $db -> query($sql);
                 $form_values = $db -> fetch_array($result,$nop);
             } else {
@@ -321,7 +321,7 @@
             }
 
             // form otions holen
-            $form_options = form_options(crc32($environment[ebene]).".".$environment[kategorie]);
+            $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
             // form elememte bauen
             $element = form_elements( $cfg["db"]["entries"], $form_values );
@@ -478,12 +478,12 @@
             $ausgaben["form_aktion"] = $cfg["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html";
 
 
-            if ( $environment[parameter][3] == "verify" ) {
+            if ( $environment["parameter"][3] == "verify" ) {
 
                 // pflichtfelder setzen bei anrede Herr oder Frau (wach 0705)
                 // Datenbankeintrag (nicht required) wird ignoriert
                 // ***
-                if ( $form_values["abanrede"] == "Frau" || $form_values[abanrede] == "Herr" ) {
+                if ( $form_values["abanrede"] == "Frau" || $form_values["abanrede"] == "Herr" ) {
                     $form_options["abnamvor"]["frequired"] = -1;
                     $form_options["abnamkurz"]["frequired"] = -1;
                     $form_options["abamtbez"]["frequired"] = -1;
@@ -505,7 +505,7 @@
                 form_errors( $form_options, $form_values );
 
                 //  namenskuerzel ist an dienststelle bereits vorhanden
-                $sql = "SELECT abnamkurz, abdststelle FROM ".$cfg["db"]["entries"] ." WHERE abnamkurz='".$form_values["abnamkurz"]."' AND abdststelle='".$form_values["abdststelle"]."' AND abid<>'".$environment[parameter][2]."'";
+                $sql = "SELECT abnamkurz, abdststelle FROM ".$cfg["db"]["entries"] ." WHERE abnamkurz='".$form_values["abnamkurz"]."' AND abdststelle='".$form_values["abdststelle"]."' AND abid<>'".$environment["parameter"][2]."'";
                 $result = $db -> query($sql);
                 $field = $db -> fetch_array($result,$nop);
                 if ( $field["abnamkurz"] != "" )  {
@@ -521,7 +521,7 @@
                 }
 
                 // ohne fehler sql bauen und ausfuehren
-                if ( $ausgaben[form_error] == "" && ( $HTTP_POST_VARS[submit] != "" || $HTTP_POST_VARS[image] != "" ) ){
+                if ( $ausgaben["form_error"] == "" /* && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] != "" ) */ ){
 
                     $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "bnet", "cnet" );
                     #bugfix# foreach($HTTP_POST_VARS as $name => $value) {
@@ -533,25 +533,25 @@
                     }
 
                     // Sql um spezielle Felder erweitern
-                    #$ldate = $HTTP_POST_VARS[ldate];
+                    #$ldate = $HTTP_POST_VARS["ldate"];
                     #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                     #$sqla .= ", ldate='".$ldate."'";
 
-                    $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$environment[parameter][2]."'";
+                    $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$environment["parameter"][2]."'";
                     $result  = $db -> query($sql);
-                    if ( $debugging[html_enable] ) $debugging[ausgabe] .= "sql: ".$sql.$debugging[char];
-                    header("Location: ".$ausgaben[form_referer]);
-                    #header("Location: ".$environment[basis]."/list.html");
+                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                    header("Location: ".$ausgaben["form_referer"]);
+                    #header("Location: ".$environment["basis"]."/list.html");
                 }
 
             }
 
 
 
-        } elseif ( $environment[parameter][1] == "delete" && $rechte[$cfg["right"]["adress"]] == -1 ) {
+        } elseif ( $environment["parameter"][1] == "delete" && $rechte[$cfg["right"]["adress"]] == -1 ) {
             $ausgaben["form_error"] = "";
 
-            $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$environment[parameter][2]."'";
+            $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$environment["parameter"][2]."'";
             $result = $db -> query($sql);
             $field = $db -> fetch_array($result,$nop);
 
@@ -614,7 +614,7 @@
 
             // bei allen nicht va bfd und abteilung holen (weam 2005)
             // ***
-            if ( $dststelle[adkate] != "VA" ) {
+            if ( $dststelle["adkate"] != "VA" ) {
                 $sql = "SELECT adstbfd, adstabt FROM db_adrd WHERE adbnet='".$field["abbnet"]."' AND adkate='BFD'";
                 $result = $db -> query($sql);
                 $data = $db -> fetch_array($result,$nop);
@@ -667,7 +667,9 @@
             }
             // +++
             // Bauen des Register-Kopfes (mor 1905)
-
+            #echo "<pre>";
+            #print_r($HTTP_POST_VARS);
+            #echo "</pre>";
 
             if ( $HTTP_POST_VARS["delete"] == "true" ) {
                 $sql = "SELECT adkate, adststelle, adleiter, adwebmid1, adwebmid2 FROM db_adrd WHERE adwebmid1='".$environment["parameter"][2]."' OR adwebmid2='".$environment["parameter"][2]."' OR adleiter='".$environment["parameter"][2]."'";

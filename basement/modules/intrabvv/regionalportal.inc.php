@@ -4,23 +4,23 @@
   $Script["desc"] = "short description";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -70,9 +70,15 @@
         } else {
             $seite = "rechts";
         }
+
+        // wenn amtskennzahl einstellig ist 0 anfügen (mor1410)
+        if ($data["adakz"] < 10) {
+            $data["adakz"] = "0".$data["adakz"];
+        }
+
         $$seite .= "<tr>";
         #$$seite .= "<td>".$data["adakz"]."</td><td>".$data["adkate"]."</td><td><a href=\"".$data["adintranet"]."\">".$data["adststelle"]."</a></td>";
-        $$seite .= "<td ".$class.">".$br."<a href=\"".$data["adintranet"]."/net/ger/index.html\">".$data["adkate"]."</a>".$br."</td><td ".$class.">".$br."<a href=\"".$data["adintranet"]."\">".$data["adststelle"]."</a>".$br."</td>";
+        $$seite .= "<td ".$class.">".$br."<a href=\"http://va".$data["adakz"]."s02.bvv.bayern.de\">".$data["adkate"]."</a>".$br."</td><td ".$class.">".$br."<a href=\"http://intra".$data["adakz"].".bvv.bayern.de\">".$data["adststelle"]."</a>".$br."</td>";
         $$seite .= "</tr>";
     }
     $ausgaben["output"] .= "<td valign=\"top\"><table".$links."</table></td><td valign=\"top\"><table>".$mitte."</table></td><td valign=\"top\"><table>".$rechts."</table></td>";

@@ -42,20 +42,53 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Tabellen
-    $db_entries = "set_it";
-    $db_entries_key = "set_it";
-    $db_entries_order = "set_it";
-    $db_rows = "15";
+    $cfg = array(
+        "subdir"    => "intrabvv",
+        "name"      => "kunden",
+        "basis"     => $pathvars["virtual"]."/treffpunkt/adressen",
+        "function"  => array(
+                       "modify",
+                       "details",
+                       "list",
+                       "mask",
+                       "print",
+        ),
+        "db"        => array(
+            "entries"       => "db_adrk",
+            "key"           => "akid",
+            "order"         => "aknam,akfirma1",
+            "rows"          => "15",
+            "entries_ans"   => "db_adrk_ansp",
+            "ansp_anzahl"   => 5,
+            "entries_kago"  => "db_adrk_kate",
+            "key_kago"      => "katid",
+            "order_kago"    => "kate"
+        ),
+        "form_defaults"     => array(
+                                "class"    => array(
+                                          "textfield"   => "textfield",
+                                          "textbox"     => "textbox",
+                                          "dropdown"    => "textfield",
+                                          "date"        => "textfield",
+                                          "int"         => "textfield"
+                                    )
+                               ),
+        "right"     => array(
+            "adress"   => "adressverwaltung",
+        )
+    );
+
+
+    $feldarray = array(22,26,27);
 
     // Form Settings
-    $form_defaults["class"]["textfield"] = "class_name";
-    $form_defaults["class"]["textbox"] = "class_name"";
-    $form_defaults["class"]["dropdown"] = "class_name";
-    $form_defaults["class"]["date"] = "class_name";
-    $form_defaults["class"]["int"] = "class_name";
+    $form_defaults["class"]["textfield"] = "textfield";
+    $form_defaults["class"]["textbox"] = "textbox";
+    $form_defaults["class"]["dropdown"] = "textfield";
+    $form_defaults["class"]["date"] = "textfield";
+    $form_defaults["class"]["int"] = "textfield";
 
-    $environment["basis"] = $pathvars["virtual"]."/path/to/kunden";
+    $environment["basis"] = $pathvars["virtual"]."/treffpunkt/adressen/kunden";
     $environment["name"] = "kunden";
     $environment["subdir"] = "intrabvv";
 

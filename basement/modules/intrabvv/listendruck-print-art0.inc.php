@@ -4,23 +4,23 @@
 // "short description";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -44,6 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // kopfdaten holen
+
     $result = $db -> query($cfg["db"]["sql"][1]);
     $data = $db -> fetch_array($result,1);
 
@@ -115,7 +116,7 @@
 
     // fuss
 
-    if ( $HTTP_GET_VARS["abad"]) {
+    if ( $HTTP_POST_VARS["abad"]) {
         $foot = $pdf->openObject();
         $va = $data["adststelle"];
         $links = 40;
@@ -156,7 +157,7 @@
 
 
     // tabellenüberschrift und sql erstellen
-    foreach($HTTP_GET_VARS as $name => $value) {
+    foreach($HTTP_POST_VARS as $name => $value) {
         if ( !in_array($name,$kck_main) ) {
             $colum[$name] = $cfg["field"][$environment["parameter"][1]][$name][0];
             // moeglichkeit fuer leere spalten
@@ -165,11 +166,36 @@
                 $field .= " ".$name;
             }
             // Tabellenbreite berechnen
-            $breite = $breite + $cfg["colsize"][$name];
+            #echo $name;
+            $breite = $breite + $cfg["colsize"][$environment["parameter"][1]][$name];
+            #echo $breite;
             // Grösse ermitteln
-            #$spalte[$data["content"]] = array("width"=>$cfg["colsize"][$name]);
+            if ($breite != "0") {
+                $spalte[$name] = array("width"=>$cfg["colsize"][$environment["parameter"][1]][$name]);
+            }
         }
     }
+    if ($HTTP_POST_VARS["adid"] == 48 && $environment["parameter"][1] == "privat") {
+
+        if($breite >= 528) {
+    #echo $breite;
+    #break;
+    #    $spalte["abprivmobil"] = array("width" => 50);
+            $spalte[0] = $spalte["abnamra"];
+            unset ($spalte["abnamra"]);
+        #echo "<pre>";
+        #print_r($spalte);
+        #echo "</pre>";
+        #break;
+        } else { unset($spalte);}
+    #unset ($spalte);
+        #        echo "<pre>";
+#        print_r($spalte);
+#        echo "</pre>";
+        #echo $breite;
+        #break;
+
+    } else { $spalte = "";}
     #if ( is_array($firma_join) ) {
         #array_unshift($colum,"Firma");
     #}
@@ -182,7 +208,7 @@
 
     // ueberschrift felder die im name_join array sind löschen
     foreach( $name_join as $name ) {
-        if ( $HTTP_GET_VARS [$name]) {
+        if ( $HTTP_POST_VARS [$name]) {
             unset ($colum[$name]);
         }
     }
@@ -198,9 +224,14 @@
     // haupttabelle erstellen
     $cfg["db"]["sql"][2] = str_replace("!felder!",$field,$cfg["db"]["sql"][2]);
     $cfg["db"]["sql"][2] = str_replace("!where!","abnet = ".$data["adbnet"]." AND acnet = ".$data["adcnet"],$cfg["db"]["sql"][2]);
+
     $result = $db -> query($cfg["db"]["sql"][2]);
+
     $rows = $db-> num_rows( $result);
+
+    #echo $cfg["db"]["sql"][2];
     #$spalte[0] = array("width"=>150);
+
     while ( $data = $db->fetch_array($result,1) ) {
 
         if ( $data["abad"] == -1 ) {
@@ -263,6 +294,8 @@
             #}
 
             $table[] = $data;
+
+
         } else {
             $buchstabe = substr($data["abnamra"],0,1);
             if ( $merker != "" && $merker != $buchstabe ) {
@@ -295,16 +328,14 @@
                           /*"xPos"             =>($abstand+$breite),*/
                           "xPos"             => 'left',
                           "xOrientation"     => 'right',
-                          "width"            =>528,
-                          "maxWidth"         =>528,
+                          "width"            => 528,
+                          #"maxWidth"         =>450,
                           "cols"             => $spalte
                          )
                     );
 
     // +++
     // haupttabelle
-
-
 
     // tabelle links unten
     // ***
@@ -315,7 +346,7 @@
         #$pdf->ezText("Räume",10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
 
         // tabellenüberschrift
-        foreach($HTTP_GET_VARS as $name => $value) {
+        foreach($HTTP_POST_VARS as $name => $value) {
             if ( in_array($name,$tab_left) ) {
                 $colum_left[$name] = $cfg["field"][$environment["parameter"][1]][$name][0];
                 if ( $field_left != "" ) $field_left .= ",";
@@ -325,7 +356,7 @@
         // nicht benötigte überschriften löschen
         $name_join = array("abtitel", "abnamvor");
         foreach( $name_join as $name ) {
-            if ( $HTTP_GET_VARS [$name] && $HTTP_GET_VARS["abnamra"] ) {
+            if ( $HTTP_POST_VARS [$name] && $HTTP_POST_VARS["abnamra"] ) {
                 $breite = $breite - $cfg["colsize"][$name];
                 unset ($colum_left[$name]);
             }
@@ -368,8 +399,8 @@
                               "xPos"             => 'left',
                               "xOrientation"     => 'right',
                               #"width"            =>550,
-                              "maxWidth"         =>528
-                              #"cols"             => $spalte
+                              "maxWidth"         =>528,
+                              "cols"             => $spalte
                               )
                       ) ;
     }
@@ -381,14 +412,14 @@
     // ***
 
     // tablelle bauen wenn checkbox "Mobil" gedrückt
-    if ($environment["parameter"][1] == "telint" AND $HTTP_GET_VARS["abdstmobil"] != "") {
+    if ($environment["parameter"][1] == "telint" AND $HTTP_POST_VARS["abdstmobil"] != "") {
 
         // ueberschrift
         #$pdf->ezSetDy(-20);
         #$pdf->ezText("Räume rechts",10,array( "justification" => "right", "left" => -5 )); // "leading"=>20, "spacing"=>1
 
         // tabellenüberschrift
-        foreach($HTTP_GET_VARS as $name => $value) {
+        foreach($HTTP_POST_VARS as $name => $value) {
             if ( in_array($name,$tab_right) ) {
                 $colum_right[$name] = $cfg["field"][$environment["parameter"][1]][$name][0];
                 if ( $field_right != "" ) $field_right .= ",";
@@ -399,7 +430,7 @@
         // nicht benötigte überschriften löschen
         $name_join = array("abtitel", "abnamvor");
         foreach( $name_join as $name ) {
-            if ( $HTTP_GET_VARS [$name] && $HTTP_GET_VARS["abnamra"] ) {
+            if ( $HTTP_POST_VARS [$name] && $HTTP_POST_VARS["abnamra"] ) {
                 $breite = $breite - $cfg["colsize"][$name];
                 unset ($colum_right[$name]);
             }

@@ -4,23 +4,23 @@
 // "kunden-list";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -42,7 +42,6 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     //
     // Liste anzeigen
@@ -78,9 +77,12 @@
         }
         // sql um lokal erweitern (mor1305)
         if ( $HTTP_GET_VARS["lokal"] == "on") {
+            $ausgaben["lokalcheck"] = "checked";
             if ($getvalues != "") $und= "&";
             $getvalues .= $und."lokal=on";
             $whereb = " (abnet='".$ip_class[1]."' AND acnet='".$ip_class[2]."')";
+        } else {
+            $ausgaben["lokalcheck"] = "";
         }
         // gibt es beide
         if ($wherea && $whereb) $trenner = " AND ";
@@ -111,7 +113,7 @@
                             } elseif ($key == "abnet") {
                                 $where .= $key."=".$value;
                             } else {
-                                $where .= $key." LIKE '%".$value."%'";
+                                $where .= $key." LIKE '".$value."%'";
                             }
                             // suchergebnis ausgabe bauen
                             if ( $suchergebnis !="" ) $suchergebnis .= " und ";
@@ -145,6 +147,7 @@
         }
         // +++
         // Erweiterte Suche (mor 2404)
+
 
         // Sql Query
         #$sql = "SELECT * FROM ".$cfg["db"]["entries"]." INNER JOIN ".$cfg["db"]["entries_kago"]." ON (akkate=katid) ".$where." ORDER by ".$cfg["db"]["order"];
@@ -201,7 +204,7 @@
             $ausgaben["output"] .= "</tr>";
 
             $modify  = array (
-                "edit"        => array("modify,", "Editieren",$cfg["right"]["adress"]), ###
+                "edit"        => array("modify,", "Bearbeiten",$cfg["right"]["adress"]), ###
                 "delete"      => array("modify,", "Löschen", $cfg["right"]["adress"]),
                 "details"     => array("", "Details", "")
             );

@@ -4,23 +4,23 @@
 // "short description";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -146,7 +146,7 @@
     $name_join = "";
 
     // name_join (fuer zeilenweise ausgabe)  und sql (mit $field) erstellen
-    foreach($HTTP_GET_VARS as $name => $value) {
+    foreach($HTTP_POST_VARS as $name => $value) {
         if ( !in_array($name,$kck_main) ) {
             $name_join[$name] = $name;
             if ( $field != "" ) $field .= ",";
@@ -154,7 +154,7 @@
 
         }
     }
-    if ($HTTP_GET_VARS["akpartner"]) {
+    if ($HTTP_POST_VARS["akpartner"]) {
         $name_join["akpartner"] = "akpartner";
     }
     #echo "<pre>";
@@ -213,7 +213,7 @@
         }
         // ansprechpartner
         #$text1 .= $data[akid];
-        if ($HTTP_GET_VARS["akpartner"]) {
+        if ($HTTP_POST_VARS["akpartner"]) {
 
             $sqlpart = "SELECT kanam,kavor,katel,kaemail FROM db_adrk_ansp WHERE eid=".$data["akid"]." ".$where_eigpartner;
             #echo $sqlpart;

@@ -42,52 +42,96 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    // spalten ueberschrift
+    $colum = array(
+            "kunden"    => array(
+                                "kanam"     => "<b>Abteilung</b>",
+                                "kavor"     => "<b>Name</b>",
+                                "katel"     => "<b>Telefon</b>",
+                                "kaemail"   => "<b>E-Mail</b>"
+                            ),
+            "dienststellen" => array(
+                                "abnamra"     => "<b>Name</b>",
+                                "abdsttel"    => "<b>Telefon</b>",
+                                "abdstemail"  => "<b>E-Mail</b>"
+
+                            )
+             );
+
+    // spalten breite
+    $col_width_allg = array('0'=>array('width'=>140),
+                            '1'=>array('width'=>350)
+                       );
+    $col_width_priv = array('0'=>array('width'=>140),
+                            '1'=>array('width'=>250)
+                       );
+
+
+
     $cfg = array(
-        "subdir"    => "intrabvv",
-        "name"      => "beschaeftigte",
-        "basis"     => $pathvars["virtual"]."/path/to/beschaeftigte",
-        "function"  => array(
-                       "what_to_do",
-                       "what_to_do",
-                       "what_to_do",
-                       "what_to_do",
-                       "what_to_do",
-                       "what_to_do",
-        ),
-        "db"        => array(
-            "entries"  => "set_it",
-            "key"      => "set_it",
-            "order"    => "set_it",
-            "rows"     => "set_it",
-        ),
-        "mail"      => array(
-            "limit"    => "set_it", // 0 = disable
-        )
-        "right"        => array(
-            "admin"    => "set_it",
-            "adress"   => "set_it",
-            "chf"      => "set_it",
-            "sti"      => "set_it",
-        )
-   );
+        "field"     => array(
+                        "kunden"        => array(
+                                            "akfirma1"     => array("Firma 1:", ""),
+                                            "akfirma2"     => array("Firma 2:", ""),
+                                            "aknam"        => array("Name:", ""),
+                                            "akvor"        => array("Vorname:", ""),
+                                            "akstr"        => array("Straße:"),
+                                            "akort"        => array("Ort:", array("akplz")),
+                                            "aktel"        => array("Tel.:", ""),
+                                            "akfax"        => array("Fax:", ""),
+                                            "akmobil"      => array("Mobil:", ""),
+                                            "akemail"      => array("E-Mail:", ""),
+                                            "akinternet"   => array("Internet:", ""),
+                                            "akinfos"      => array("Infos: ", "")
+                                            ),
+                        "beschaeftigte" => array(
+                                            "abnamra"      => array("Name:", array("abtitel","abgrad","abnamvor")),
+                                            "abamtbezkurz" => array("Amtsbezeichnung:", ""),
+                                            "abnamkurz"    => array("Namenskürzel:", ""),
+                                            "abdienst"     => array("Dienstposten:", ""),
+                                            "abdstref"     => array("Ref.:", ""),
+                                            "adstabt"      => array("Abteilung:",""),
+                                            "abdstzinr"    => array("Zi.Nr.:", ""),
+                                            "abdsttel"     => array("Tel.:", ""),
+                                            "abdstmobil"   => array("Mobil:", ""),
+                                            "abdstfax"     => array("Fax:",""),
+                                            "abdstemail"   => array("E-Mail:", ""),
+                                            "abinteressen" => array("Aufgabenbereich:",""),
+                                            "abbemerkung"  => array("Bemerkungen:", "")
+                                            ),
+                        "priv_beschaeftigte" => array(
+                                            "abprivstr"    => array("Anschrift:",""),
+                                            "abprivort"    => array("PLZ-Ort:", array("abprivplz")),
+                                            "abprivtel"    => array("Telefon:", ""),
+                                            "abprivmobil"  => array("Mobil:", ""),
+                                            "abprivemail"  => array("E-Mail:", ""),
+                                            "abprivgeb"    => array("Geburtstag:", ""),
+                                            ),
+                        "dienststellen" => array(
+                                            "adakz"        => array("Amtskennzahl:",""),
+                                            "adtelver"     => array("Tel.:", ""),
+                                            "adfax"        => array("Fax:", ""),
+                                            "ademail"      => array("E-Mail:", ""),
+                                            "adintranet"   => array("Intranet:", ""),
+                                            "adinternet"   => array("Internet:", ""),
+                                            "adcnet"       => array("IP-Adresse:", array("adbnet")),
+                                            "adstabt"      => array("Abteilung:",""),
+                                            "adstbfd"      => array("BFD-Bereich",""),
+                                            "adstr"        => array("Straße:", ""),
+                                            "adort"        => array("PLZ-Ort:", array("adplz")),
+                                            "adpfach"        => array("Postfach:", ""),
+                                            "adppfach"        => array("Postfach-PLZ:", ""),
+                                                ),
+                        "amtsleiter"    => array(
+                                            "abnamra"       => "Name:",
+                                            "abdsttel"      => "Telefon",
+                                            "abdstfax"      => "Fax:",
+                                            "abdstemail"    => "E-Mail"
+                                            )
+                        ),
 
-
-
-
-
-    // Form Settings
-    $form_defaults["class"]["textfield"] = "textfield";
-    $form_defaults["class"]["textbox"] = "textbox";
-    $form_defaults["class"]["dropdown"] = "dropdown";
-    $form_defaults["class"]["date"] = "textfield";
-    $form_defaults["class"]["int"] = "textfield";
-
-
-
-
-
-
-
+    );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

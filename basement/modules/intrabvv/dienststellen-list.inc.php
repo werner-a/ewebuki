@@ -4,23 +4,23 @@
 // "Dienststellen Liste";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -197,7 +197,7 @@
             $ausgaben["output"] .= "</tr>";
 
             $modify  = array (
-                "edit"        => array("modify,", "Editieren", $cfg["right"]["adress"]), ###
+                "edit"        => array("modify,", "Bearbeiten", $cfg["right"]["adress"]), ###
                 #"delete"      => array("modify,", "Löschen", $cfg["right"]["adress"]),
                 "details"     => array("", "Details", "")
             );
@@ -233,10 +233,14 @@
 
                 $aktion = "";
                 foreach($modify as $name => $value) {
+                    // nur eigene dienststelle bearbeiten
                     if ( $value[2] == ""
                             || $rechte[$value[2]] == -1
-                            && $HTTP_SESSION_VARS["custom"] == $field["adid"]) {
+                            && $HTTP_SESSION_VARS["custom"] == $field["adid"] ) {
                         $aktion .= "<a href=\"".$environment["basis"]."/".$value[0].$name.",".$field[$cfg["db"]["key"]].".html\"><img src=\"".$imgpath.$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
+                    // sti darf alle dienststellen bearbeiten
+                    } elseif ( $rechte["sti"] ==  -1 ) {
+                        $aktion .= "<a href=\"".$environment["basis"]."/".$value[0].$name.",".$field[$cfg["db"]["key"]].".html\"><img src=\"".$imgpath."edita.png\" border=\"0\" alt=\" Fremde Dienststellen bearbeiten\" title=\" Fremde Dienststellen bearbeiten\" width=\"24\" height=\"18\"></a>";
                     } else {
                         $aktion .= "<img src=\"".$imgpath."/pos.png\" alt=\"\" width=\"24\" height=\"18\">";
                     }

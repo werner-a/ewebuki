@@ -4,23 +4,23 @@
 // "kunden-details";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -82,14 +82,14 @@
         $ausgaben["afggebtxt"] = "Geburtsdatum:";
         $ausgaben["akfg"] = "Angaben zu den Feldgeschworenen";
         $ausgaben["afgstarttxt"] = "Startdatum";
-        if ($ausgaben["akfggeb"] != "--") {
-        #    $ausgaben["akfggeb"] = "--";
-        #} else {
+        if ($ausgaben["akfggeb"] == "1000-01-01") {
+            $ausgaben["akfggeb"] = "--";
+        } else {
             $ausgaben["akfggeb"] = substr($ausgaben["akfggeb"],8,2).".".substr($ausgaben["akfggeb"],5,2).".".substr($ausgaben["akfggeb"],0,4);
         }
-        if ($ausgaben["akfgstart"] != "--") {
-        #    $ausgaben["akfgstart"] = "--";
-        #} else {
+        if ($ausgaben["akfgstart"] == "1000-01-01") {
+            $ausgaben["akfgstart"] = "--";
+        } else {
             $ausgaben["akfgstart"] = substr($ausgaben["akfgstart"],8,2).".".substr($ausgaben["akfgstart"],5,2).".".substr($ausgaben["akfgstart"],0,4);
         }
     } else {

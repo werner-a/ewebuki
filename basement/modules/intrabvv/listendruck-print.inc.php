@@ -4,23 +4,23 @@
 //  "listendruck";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -57,10 +57,10 @@
             $title_right = "Mobilfunk";
 
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adfax FROM db_adrd WHERE adid =".$HTTP_GET_VARS["adid"];
-            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_dienst ON abdienst_id=abdstposten INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle = ". $HTTP_GET_VARS["adid"]." AND abanrede != 'Raum' ORDER BY abnamra";
-            $cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_GET_VARS["adid"]." AND abanrede = 'Raum' ORDER BY abnamra";
-            $cfg["db"]["sql"][4] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_GET_VARS["adid"]." AND (abdstmobil != '+49-' AND abdstmobil !='') ORDER BY abnamra";
+            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adfax FROM db_adrd WHERE adid =".$HTTP_POST_VARS["adid"];
+            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_dienst ON abdienst_id=abdstposten INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle = ". $HTTP_POST_VARS["adid"]." AND abanrede != 'Raum' ORDER BY abnamra";
+            $cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_POST_VARS["adid"]." AND abanrede = 'Raum' ORDER BY abnamra";
+            $cfg["db"]["sql"][4] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_POST_VARS["adid"]." AND (abdstmobil != '+49-' AND abdstmobil !='') ORDER BY abnamra";
 
             // besondere nicht benötigte felder entfernen
             $kck_main  = array_merge($kick, array("abdstmobil"));
@@ -80,10 +80,10 @@
             $title_zwei = "Räume";
 
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT * FROM db_adrd WHERE adid = ".$HTTP_GET_VARS["adid"];
-            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle = ". $HTTP_GET_VARS["adid"]." AND abanrede != 'Raum' ORDER BY abnamra";
-            $cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_GET_VARS["adid"]." AND abanrede = 'Raum' ORDER BY abnamra";
-            $cfg["db"]["sql"][4] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_GET_VARS["adid"]." AND (abdstmobil != '+49-' AND abdstmobil != '') ORDER BY abnamra";
+            $cfg["db"]["sql"][1] = "SELECT * FROM db_adrd WHERE adid = ".$HTTP_POST_VARS["adid"];
+            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle = ". $HTTP_POST_VARS["adid"]." AND abanrede != 'Raum' ORDER BY abnamra";
+            $cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_POST_VARS["adid"]." AND abanrede = 'Raum' ORDER BY abnamra";
+            $cfg["db"]["sql"][4] = "SELECT !felder! FROM db_adrb WHERE abdststelle = ". $HTTP_POST_VARS["adid"]." AND (abdstmobil != '+49-' AND abdstmobil != '') ORDER BY abnamra";
 
             // besondere nicht benötigte felder entfernen
             $kck_main  = array_merge($kick, array("abdstmobil"));
@@ -99,8 +99,8 @@
             $name_join = array("aknam", "akvor");
 
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_GET_VARS["adid"];
-            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrk WHERE !where! AND akkate =\"22\" ORDER BY aknam";
+            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_POST_VARS["adid"];
+            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrk WHERE !where! AND akkate =\"22\" ORDER BY akort";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede =\"Raum\" ORDER BY abnamra";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = '". $HTTP_GET_VARS["adid"]."' AND (abdstmobil != '+49-' AND abdstmobil != '') ORDER BY abnamra";
 
@@ -125,7 +125,7 @@
             #$firma_join = array("akfirma1", "akfirma2");
 
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_GET_VARS["adid"];
+            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_POST_VARS["adid"];
             #$cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrk WHERE !where!";
             $cfg["db"]["sql"][2] = "SELECT !felder!, akid , CONCAT(aknam,akfirma1) as sort FROM db_adrk WHERE !where! ORDER BY sort";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede =\"Raum\" ORDER BY abnamra";
@@ -148,7 +148,7 @@
             #$name_join = array("adkate","adststelle","adort");
 
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_GET_VARS["adid"];
+            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_POST_VARS["adid"];
             $cfg["db"]["sql"][2] = "SELECT !felder!,adkate FROM db_adrd ORDER BY adsort, adststelle";
             #$cfg["db"]["sql"][2] = "SELECT !felder!,adkate FROM db_adrd INNER JOIN db_adrb ON adleiter=abid ORDER BY adsort, adststelle";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede =\"Raum\" ORDER BY abnamra";
@@ -167,8 +167,8 @@
             $name_join = array("abtitel", "abnamra","abnamvor");
 
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_GET_VARS["adid"];
-            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb WHERE abdststelle =  ".$HTTP_GET_VARS["adid"]."  AND abanrede != 'Raum' ORDER BY abnamra";
+            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_POST_VARS["adid"];
+            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb WHERE abdststelle =  ".$HTTP_POST_VARS["adid"]."  AND abanrede != 'Raum' ORDER BY abnamra";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede =\"Raum\" ORDER BY abnamra";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = '". $HTTP_GET_VARS["adid"]."' AND (abdstmobil != '+49-' AND abdstmobil != '') ORDER BY abnamra";
 
@@ -186,8 +186,8 @@
 
             //$cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_dienst ON abdienst_id=abdstposten INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede !=\"Raum\" ORDER BY abnamra";
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_GET_VARS["adid"];
-            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle =  ".$HTTP_GET_VARS["adid"]." ORDER BY abnamra";
+            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_POST_VARS["adid"];
+            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle =  ".$HTTP_POST_VARS["adid"]." ORDER BY abnamra";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede =\"Raum\" ORDER BY abnamra";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = '". $HTTP_GET_VARS["adid"]."' AND (abdstmobil != '+49-' AND abdstmobil != '') ORDER BY abnamra";
 
@@ -205,8 +205,8 @@
 
             //$cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_dienst ON abdienst_id=abdstposten INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede !=\"Raum\" ORDER BY abnamra";
             // alle sql befehle
-            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_GET_VARS["adid"];
-            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_dienst ON abdienst_id=abdstposten INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle =  ".$HTTP_GET_VARS["adid"]." ORDER BY abnamra";
+            $cfg["db"]["sql"][1] = "SELECT adkate, adststelle, adtelver, adbnet, adcnet  FROM db_adrd WHERE adid =".$HTTP_POST_VARS["adid"];
+            $cfg["db"]["sql"][2] = "SELECT !felder! FROM db_adrb INNER JOIN db_adrb_dienst ON abdienst_id=abdstposten INNER JOIN db_adrb_amtbez ON abamtbez_id=abamtbez WHERE abdststelle =  ".$HTTP_POST_VARS["adid"]." ORDER BY abnamra";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = \"". $HTTP_GET_VARS["adid"]."\" AND abanrede =\"Raum\" ORDER BY abnamra";
             #$cfg["db"]["sql"][3] = "SELECT !felder! FROM db_adrb WHERE abdststelle = '". $HTTP_GET_VARS["adid"]."' AND (abdstmobil != '+49-' AND abdstmobil != '') ORDER BY abnamra";
 

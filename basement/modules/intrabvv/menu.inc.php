@@ -4,23 +4,23 @@
   $Script_desc = "menu generieren - 3 stufen ";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -87,24 +87,24 @@
                 if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
                 #if ( strpos($environment["ebene"],$level1array["entry"]) == 1 || ( $environment["kategorie"] == $level1array["entry"] && $environment["ebene"] == "" ) ) {
                 $aktdb = $db->getDb();
-                if ( $thirdlevel[0] == "www" ) {
+                if ( $environment["fqdn"][0] == "www" ) {
                     $aktlev = DATABASE;
                 } else {
-                    $aktlev = $thirdlevel[0];
+                    $aktlev = $environment["fqdn"][0];
                 }
                 if ( strpos($environment["ebene"],$level1array["entry"]) == 1 && $aktlev == $aktdb || ( $environment["kategorie"] == $level1array["entry"] && $environment["ebene"] == "" && $aktlev == $aktdb ) ) {
                     // ???open.png
-                    $ausgaben["ordner"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$pathvars["fqdn"].$pathvars["virtual"]."/".$level1array["entry"].".html\"><img src=\"../../images/".$environment["design"]."/".$cfg["menu"]["image"]."open.png\" width=\"16\" height=\"13\" align=\"absbottom\" border=\"0\" alt=\"".$level1array["label"]."\"></a>";
+                    $ausgaben["ordner"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$cfg["menu"]["fqdn"].$pathvars["virtual"]."/".$level1array["entry"].".html\"><img src=\"../../images/".$environment["design"]."/".$cfg["menu"]["image"]."open.png\" width=\"16\" height=\"13\" align=\"absbottom\" border=\"0\" alt=\"".$level1array["label"]."\"></a>";
                     // mandatory
                     if ( $cfg["menu"]["level2"]["full"] == -1 ) $mandatory = "";
                     if ( $cfg["menu"]["level2"]["dynamic"] == -1 ) $cfg["menu"]["level2"]["enable"] = -1;
                 } else {
                     // ???close.png
-                    $ausgaben["ordner"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$pathvars["fqdn"].$pathvars["virtual"]."/".$level1array["entry"].".html\"><img src=\"../../images/".$environment["design"]."/".$cfg["menu"]["image"]."close.png\" width=\"16\" height=\"13\" align=\"absbottom\" border=\"0\" alt=\"".$level1array["label"]."\"></a>";
+                    $ausgaben["ordner"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$cfg["menu"]["fqdn"].$pathvars["virtual"]."/".$level1array["entry"].".html\"><img src=\"../../images/".$environment["design"]."/".$cfg["menu"]["image"]."close.png\" width=\"16\" height=\"13\" align=\"absbottom\" border=\"0\" alt=\"".$level1array["label"]."\"></a>";
                     if ( $cfg["menu"]["level2"]["dynamic"] == -1 ) $cfg["menu"]["level2"]["enable"] = 0;
                 }
                 if ( $level1array["entry"] != "" ) {
-                    $ausgaben["ueberschrift"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$pathvars["fqdn"].$pathvars["virtual"]."/".$level1array["entry"].".html\">".$level1array["label"]."</a><br>";
+                    $ausgaben["ueberschrift"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$cfg["menu"]["fqdn"].$pathvars["virtual"]."/".$level1array["entry"].".html\">".$level1array["label"]."</a><br>";
                 } else {
                     #$ausgaben["ueberschrift"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" target=\"_blank\" href=\"".$level1array["exturl"]."\">".$level1array["label"]."</a><br>";
                     $ausgaben["ueberschrift"] = "<a class=\"".$cfg["menu"]["level1"]["style"]."\" href=\"".$level1array["exturl"]."\">".$level1array["label"]."</a><br>";
@@ -159,7 +159,7 @@
                         } else {
                             if ( $cfg["menu"]["level3"]["dynamic"] == -1 ) $cfg["menu"]["level3"]["enable"] = 0;
                         }
-                       $ausgaben["punkte"] .= "<a class=\"".$cfg["menu"]["level2"]["style"]."\" href=\"".$pathvars["fqdn"].$pathvars["virtual"]."/".$level1array["entry"]."/".$level2array["entry"].".html\">".$level2array["label"]."</a><br>";
+                       $ausgaben["punkte"] .= "<a class=\"".$cfg["menu"]["level2"]["style"]."\" href=\"".$cfg["menu"]["fqdn"].$pathvars["virtual"]."/".$level1array["entry"]."/".$level2array["entry"].".html\">".$level2array["label"]."</a><br>";
                     } else {
                        #$ausgaben["punkte"] .= "<a class=\"".$cfg["menu"]["level2"]["style"]."\" target=\"_blank\" href=\"".$level2array["exturl"]."\">".$level2array["label"]."</a><br>";
                        $ausgaben["punkte"] .= "<a class=\"".$cfg["menu"]["level2"]["style"]."\" href=\"".$level2array["exturl"]."\">".$level2array["label"]."</a><br>";
@@ -197,7 +197,7 @@
                         }
                         if ( $right == -1 ) {
                             if ( $level3array["entry"] != "" ) {
-                               $ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"absbottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" href=\"".$pathvars["fqdn"].$pathvars["virtual"]."/".$level1array["entry"]."/".$level2array["entry"]."/".$level3array["entry"].".html\">".$level3array["label"]."</a><br>";
+                               $ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"absbottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" href=\"".$cfg["menu"]["fqdn"].$pathvars["virtual"]."/".$level1array["entry"]."/".$level2array["entry"]."/".$level3array["entry"].".html\">".$level3array["label"]."</a><br>";
                             } else {
                                #$ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"absbottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" target=\"_blank\" href=\"".$level3array["exturl"]."\">".$level3array["label"]."</a><br>";
                                $ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"absbottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" href=\"".$level3array["exturl"]."\">".$level3array["label"]."</a><br>";

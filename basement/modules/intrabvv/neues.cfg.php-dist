@@ -43,21 +43,20 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Tabellen
-    $db_entries = "set_it";
-    $db_entries_key = "set_it";
-    $db_entries_order = "set_it";
+    $db_entries = "db_neues";
+    $db_entries_key = "nid";
+    $db_entries_order = "ndatum desc";
     $db_rows = "15";
 
     // Form Settings
-    $form_defaults["class"]["textfield"] = "class_name";
-    $form_defaults["class"]["textbox"] = "class_name";
-    $form_defaults["class"]["dropdown"] = "class_name";
-    $form_defaults["class"]["date"] = "class_name";
-    $form_defaults["class"]["int"] = "class_name";
+    $form_defaults["class"]["textfield"] = "textfield";
+    $form_defaults["class"]["textbox"] = "textbox";
+    $form_defaults["class"]["dropdown"] = "textfield";
+    $form_defaults["class"]["date"] = "textfield";
+    $form_defaults["class"]["int"] = "textfield";
 
-    $environment["basis"] = $pathvars["virtual"]."/path/to/neues";
-    $environment["name"] = "neues";
-    $environment["subdir"] = "intrabvv";
+    $environment["basis"] = $pathvars["virtual"]."/index";
+    $environment["name"] = "index";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

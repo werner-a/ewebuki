@@ -43,18 +43,187 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $cfg = array(
-        "subdir"    => "intrabvv",
-        "name"      => "listendruck",
-        "basis"     => $pathvars["virtual"]."/treffpunkt/adressen/listendruck",
-        "db"        => array(
-            "entries"  => "db_leer",
-            "language" => ""
-        ),
-        "multiwert"    => array(
-            "wert1"    => 0,
-            "wert2"    => "",
-        )
-    );
+           "subdir"    => "intrabvv",
+           "name"      => "listendruck",
+           "basis"     => $pathvars["virtual"]."/treffpunkt/adressen/listendruck",
+           "heute"     => date("d.m.Y"),
+           "title"     => array(
+                          "telint"        => array(
+                                             "move"           => 0,
+                                             "text"           => "Telefonverzeichnis"
+                                             ),
+                          "telext"        => array(
+                                             "move"           => -20,
+                                             "text"           => "Telefonverzeichnis"
+                                             ),
+                          "feldgesch"     => array(
+                                             "move"           => 7,
+                                             "text"           => "Feldgeschworene"
+                                             ),
+                          "kunden"        => array(
+                                             "move"           => 0,
+                                             "text"           => "Kundenverzeichnis"
+                                             ),
+                          "dststelle"     => array(
+                                             "move"           => 36,
+                                             "text"           => "Dienststellen"
+                                             ),
+                          "privat"        => array(
+                                             "move"           => -17,
+                                             "text"           => "Private Erreichbarkeit"
+                                             ),
+                          "geburtstag"    => array(
+                                             "move"           => 16,
+                                             "text"           => "Geburtstagsliste"
+                                             ),
+                          "namen"         => array(
+                                             "move"           => -4,
+                                             "text"           => "Namensverzeichnis"
+                                             )
+                          ),
+           "desc"      => array(
+                          "default"       => array(
+                                             "kopf1"          => "Listendruck",
+                                             "kopf2"          => "Adressen",
+                                             "anmerkung"      => "Alle Optionen sind optimal voreingestellt",
+                                             "beschreibung1"  => "Voransicht"
+                                             ),
+                          "telint"        => array(
+                                             "kopf1"          => "Telefonverzeichnis für den internen Gebrauch",
+                                             ),
+                          "telext"       => array(
+                                             "kopf1"          => "Telefonverzeichnis für Kunden und Partner",
+                                             ),
+                          "feldgesch"       => array(
+                                             "kopf1"          => "Feldgeschworene",
+                                             ),
+                          "kunden"       => array(
+                                             "kopf1"          => "Kundenverzeichnis",
+                                             ),
+                          "dststelle"       => array(
+                                             "kopf1"          => "Dienststellen",
+                                             ),
+                          "privat"       => array(
+                                             "kopf1"          => "Private Erreichbarkeit der Beschäftigten",
+                                             ),
+                          "namen"       => array(
+                                             "kopf1"          => "Namensverzeichnis",
+                                             ),
+                          "geburtstag"       => array(
+                                             "kopf1"          => "Geburtstage",
+                                             )
+                          ),
+           "colsize"   => array(
+                          "privat"       => array(
+                                            "abnamra"   => 100,
+                                            "abprivstr" => 100,
+                                            "abprivplz" => 36,
+                                            "abprivtel" => 100,
+                                            "abprivort" => 92,
+                                            "abprivmobil" => 50,
+                                            "abprivemail" => 50
+                                            )
+                          ),
+           "field"     => array(
+                          "telint"       => array(
+                                            "abnamra"      => array("Name", "checked", "required",""),
+                                            "abtitel"      => array("Titel", "checked", "",""),
+                                            "abnamvor"     => array("Vorname", "checked", "",""),
+                                            "abamtbezkurz" => array("Amtsbezeichnung", "checked", "",""),
+                                            "abnamkurz"    => array("NZ", "", "",""),
+                                            "abdienst"     => array("Dienstposten", "checked", "",""),
+                                            "abdstref"     => array("Ref.", "", "",""),
+                                            "abdstzinr"    => array("Zi.Nr.", "checked", "",""),
+                                            "abdsttel"     => array("Tel.", "checked", "required",""),
+                                            "abdstmobil"   => array("Mobil", "checked", "",""),
+                                            "abdstemail"   => array("E-Mail", "checked", "",""),
+                                            "abad"         => array("Außendienst", "checked", "required","")
+                                            ),
+                          "telext"       => array(
+                                            "abnamra"      => array("Name", "checked", "required",""),
+                                            "abtitel"      => array("Titel", "checked", "",""),
+                                            "abnamvor"     => array("Vorname", "checked", "",""),
+                                            "abdsttel"     => array("Tel.", "checked", "",""),
+                                            "abdstmobil"   => array("Mobil", "checked", "",""),
+                                            "abad"         => array("Außendienst", "checked", "required","")
+                                            ),
+                          "feldgesch"    => array(
+                                            "aknam"        => array("Name", "checked", "required",""),
+                                            "akvor"        => array("Vorname", "checked", "",""),
+                                            "akstr"        => array("Straße", "checked", "",""),
+                                            "akplz"        => array("PLZ", "checked", "",""),
+                                            "akort"        => array("Ort", "checked", "",""),
+                                            "aktel"        => array("Tel.", "checked", "",""),
+                                            "akfax"        => array("Fax", "checked", "",""),
+                                            "akmobil"      => array("Mobil", "checked", "",""),
+                                            "akinfos"      => array("Gmkg.", "checked", "",""),
+                                            ),
+                          "kunden"       => array(
+                                            "akfirma1"     => array("Firma 1", "checked", "required",""),
+                                            "akfirma2"     => array("Firma 2", "checked", "",""),
+                                            "aknam"        => array("Name", "checked", "required",""),
+                                            "akvor"        => array("Vorname", "checked", "",""),
+                                            "akstr"        => array("Straße", "checked", "",""),
+                                            "akort"        => array("Ort", "checked", "",""),
+                                            "akplz"        => array("PLZ", "checked", "",""),
+                                            "aktel"        => array("Tel.", "checked", "","Tel:"),
+                                            "akfax"        => array("Fax", "checked", "","Fax:"),
+                                            "akmobil"      => array("Mobil", "checked", "","Mobil:"),
+                                            "akemail"      => array("E-Mail", "checked", "","E-Mail:"),
+                                            "akinternet"   => array("Internet", "checked", "","Internet:"),
+                                            "akpartner"    => array("Ansprechpartner", "checked", "",""),
+                                            "akinfos"      => array("infos", "", "","Informationen:")
+                                            ),
+                          "dststelle"    => array(
+                                            "adleiter"     => array("Leiter", "checked", "",""),
+                                            "adststelle"   => array("Dienststelle", "checked", "required",""),
+                                            "adstr"        => array("Straße", "checked", "",""),
+                                            "adort"        => array("Ort", "checked", "",""),
+                                            "adplz"        => array("PLZ", "checked", "",""),
+                                            "adtelver"     => array("Tel.", "checked", "","Tel:"),
+                                            "adfax"        => array("Fax.", "checked", "","Fax:"),
+                                            "ademail"      => array("E-Mail", "checked", "","E-Mail:")
+                                            ),
+                          "privat"       => array(
+                                            "abnamra"      => array("Name", "checked", "required",""),
+                                            "abtitel"      => array("Titel", "checked", "",""),
+                                            "abnamvor"     => array("Vorname", "checked", "",""),
+                                            "abprivstr"    => array("Straße", "checked", "",""),
+                                            "abprivplz"    => array("PLZ", "checked", "",""),
+                                            "abprivort"    => array("Ort", "checked", "",""),
+                                            "abprivtel"    => array("Tel.", "checked", "",""),
+                                            "abprivmobil"  => array("Mobil", "checked", "",""),
+                                            "abprivemail"  => array("E-Mail", "checked", "","")
+                                            ),
+                          "namen"        => array(
+                                            "abnamra"      => array("Name", "checked", "required",""),
+                                            "abtitel"      => array("Titel", "checked", "",""),
+                                            "abnamvor"     => array("Vorname", "checked", "",""),
+                                            "abamtbezkurz" => array("Amtsbezeichnung", "checked", "",""),
+                                            "abnamkurz"    => array("Namenszeichen", "", "",""),
+                                            "abdienst"     => array("Dienstposten", "", "",""),
+                                            "abdstref"     => array("Ref.", "", "",""),
+                                            "abdstzinr"    => array("Zi.Nr.", "", "",""),
+                                            "abdsttel"     => array("Tel.", "", "",""),
+                                            "abdstmobil"   => array("Mobil", "", "",""),
+                                            "abdstemail"   => array("E-Mail", "", "",""),
+                                            "abad"         => array("Außendienst", "checked", "",""),
+                                            "leer"         => array("..........", "checked", "","")
+                                            ),
+                          "geburtstag"   => array(
+                                            "abnamra"      => array("Name", "checked", "required",""),
+                                            "abtitel"      => array("Titel", "checked", "",""),
+                                            "abnamvor"     => array("Vorname", "checked", "",""),
+                                            "abamtbezkurz" => array("Amtsbezeichnung", "checked", "",""),
+                                            "abprivgeb"    => array("Geburtstag", "checked", "",""),
+                                            "abdsttel"     => array("Tel.", "checked", "",""),
+                                            "abprivtel"    => array("Priv. Tel.", "checked", "",""),
+                                            "abad"         => array("Außendienst", "checked", "","")
+                                            )
+                         )
+           );
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

@@ -42,20 +42,38 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Tabellen
-    $db_entries = "set_it";
-    $db_entries_key = "set_it";
-    $db_entries_order = "setit, set_it";
-    $db_rows = "15";
+    $cfg = array(
+        "subdir"    => "intrabvv",
+        "name"      => "dienststellen",
+        "basis"     => $pathvars["virtual"]."/treffpunkt/adressen",
+        "function"  => array(
+                       "modify",
+                       "delete",
+                       "details",
+                       "list",
+                       "mask",
+                       "print",
+        ),
+        "db"        => array(
+            "entries"  => "db_adrd",
+            "key"      => "adid",
+            "order"    => "adsort, adststelle",
+            "rows"     => "15",
+        )
+    );
+
+
+    // Rechte
+    $cfg["right"]["adress"] = "adressverwaltung";
 
     // Form Settings
-    $form_defaults["class"]["textfield"] = "class_name";
-    $form_defaults["class"]["textbox"] = "class_name";
-    $form_defaults["class"]["dropdown"] = "class_name";
-    $form_defaults["class"]["date"] = "class_name";
-    $form_defaults["class"]["int"] = "class_name";
+    $form_defaults["class"]["textfield"] = "textfield";
+    $form_defaults["class"]["textbox"] = "textbox";
+    $form_defaults["class"]["dropdown"] = "textfield";
+    $form_defaults["class"]["date"] = "textfield";
+    $form_defaults["class"]["int"] = "textfield";
 
-    $environment["basis"] = $pathvars["virtual"]."/path/to/dienststellen";
+    $environment["basis"] = $pathvars["virtual"]."/treffpunkt/adressen/dienststellen";
     $environment["name"] = "dienststellen";
     $environment["subdir"] = "intrabvv";
 

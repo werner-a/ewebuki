@@ -4,23 +4,23 @@
     $Script_desc = "Usered-list.inc.php";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -43,11 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     $position = $environment["parameter"][1]+0;
-
-    // Suche
-    $ausgaben["form_aktion"] = $cfg["basis"]."/list,".$position.",search.html";
 
     // where bauen
     $where =" WHERE abpasswort!='' ";
@@ -65,17 +61,32 @@
     }
     $where .= $whereb;
 
-    /*
-    if ( $environment["parameter"][2] == "search" ) {
-      if ( $HTTP_POST_VARS["search"] != "" ) {
-          $search_value = $HTTP_POST_VARS["search"];
-      } else {
-          $search_value = $environment["parameter"][3];
-      }
-      $parameter = ",search,".$search_value;
-      $where = " WHERE bproject LIKE '%".$search_value."%' OR bsign LIKE '%".$search_value."%' OR bshort LIKE '%".$search_value."%' OR bdetail LIKE '%".$search_value."%'";
+    // Schnellsuche (mor1305)
+    // ***
+    $ausgaben["search"] = "";
+    if ( $HTTP_GET_VARS["search"] != "" ) {
+        $search_value = $HTTP_GET_VARS["search"];
+        $ausgaben["search"] = $search_value;
+        $ausgaben["result"] = "Ihre Schnellsuche nach \"".$search_value."\" hat ";
+        $search_value = explode(" ",$search_value);
+        // sql aus get vars erstellen
+        $suche = array("abnamkurz","abnamra","abnamvor");
+        $wherea = "";
+
+        foreach ( $search_value as $value1 ) {
+            if ( $value1 != "" ) {
+                if ($getvalues == "") $getvalues = "search=";
+                $getvalues .= $value1." ";
+                foreach ($suche as $value2) {
+                    if ($wherea != "") $wherea .= " or ";
+                    $wherea .= $value2. " LIKE '%" .$value1."%'";
+               }
+            }
+        }
+        $where .= " AND (".$wherea.")";
+    } else {
+        $ausgaben["result"] = "";
     }
-    */
 
 
     // Sql Query
@@ -83,7 +94,7 @@
     $sql = "SELECT abid, abbnet, abcnet, abnamra, abnamvor, abnamkurz, abdststelle, adkate, adststelle FROM ".$cfg["db"]["entries"]." INNER JOIN db_adrd ON abdststelle=adid".$where." ORDER by ".$cfg["db"]["order"];
 
     // Inhalt Selector erstellen und SQL modifizieren
-    $inhalt_selector = inhalt_selector( $sql, $position, $cfg["db"]["rows"], $parameter );
+    $inhalt_selector = inhalt_selector( $sql, $position, $cfg["db"]["rows"], $parameter, 1, 10, $getvalues);
     $ausgaben["inhalt_selector"] .= $inhalt_selector[0];
     $sql = $inhalt_selector[1];
     $ausgaben["gesamt"] = $inhalt_selector[2];
@@ -181,6 +192,9 @@
       $ausgaben["output"] .= "</tr>";
     }
     $ausgaben["output"] .= "</table>";
+
+    // wohin schicken
+    $ausgaben["form_aktion"] = $cfg["basis"]."/list.html";
 
     #$mapping["main"] = "210295197.list";
     $mapping["main"] = crc32($environment["ebene"]).".list";

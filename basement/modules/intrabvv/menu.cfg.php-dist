@@ -43,11 +43,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $cfg["menu"] = array(
-        "name"      => "setit",
-        "image"     => "setit",
+        "fqdn"      => $pathvars["webroot"],	// oder mit menu-ctrl.inc.php
+						// "http://www.bvv.bayern.de" (global)
+						// "http://".$specialvars["dyndb"].".bvv.bayern.de" (local)
+        "name"      => "menu",	
+        "image"     => "menu",
         "db"        => array(
-            "entries"  => "setit",
-            "language" => "setit"
+            "entries"  => "site_menu",
+            "language" => "site_menu_lang"
         ),
         "level1"    => array(
             "enable"   => -1,

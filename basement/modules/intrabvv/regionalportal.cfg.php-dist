@@ -47,9 +47,9 @@
         "name"      => "regionalportal",
         "basis"     => $pathvars["virtual"]."/treffpunkt/reginalportal",
         "db"        => array(
-            "entries"  => "set_it",
-            "key"      => "set_it",
-            "order"    => "set_i, set_it",
+            "entries"  => "db_adrd",
+            "key"      => "adid",
+            "order"    => "adstbfd, adsort, adststelle",
             "language" => ""
         ),
         "multiwert"    => array(

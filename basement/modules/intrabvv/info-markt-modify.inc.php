@@ -4,23 +4,23 @@
 // "info-markt modify";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -43,6 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // content umschaltung verhindern
+    $specialvars["dynlock"] = True;
+
     // warning ausgeben
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
@@ -52,7 +55,6 @@
             // spezielle default values setzen
             $form_values["ivon"] = "0000-01-01 00:00:00";
             $form_values["ibis"] = "0000-01-01 00:00:00";
-            $form_values["iauth_id"] = $HTTP_SESSION_VARS["uid"];
         } else {
             $form_values = $HTTP_POST_VARS;
         }
@@ -64,8 +66,12 @@
         $element = form_elements( $cfg["db"]["entries"], $form_values );
 
         // form elemente erweitern
+        $ausgaben["ibereich"] = $cfg["ebene"]["zwei"];
         $element["ibereich"] = str_replace("ibereich\"", "ibereich\" value=\"".$cfg["ebene"]["zwei"]."\"", $element["ibereich"]);
 
+
+
+        #$sql = "SELECT * FROM
         // ce editor bauen
         $ausgaben["tn"] = makece("modify", "itext", $form_values["itext"]);
 
@@ -90,6 +96,36 @@
             $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         }
+
+
+        //dropdown der kategorie erstellen (0210 mor)
+        $db -> selectDb($environment["fqdn"][0],FALSE);
+        $sql = "SELECT mid FROM site_menu WHERE entry = '".$cfg["ebene"]["zwei"]."'";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,$nop);
+        $sql = "SELECT entry,label FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid= site_menu_lang.mid WHERE refid = '".$data["mid"]."'";
+        $result = $db -> query($sql);
+        if ( $db->num_rows($result) == 0 ) {
+            $element["ikategorie"] = "";
+        } else {
+            #$break = strrchr($ausgaben["form_break"],"/");
+            #$break1 = strpos($break,".");
+            #$break2 = substr($break,1,$break1-1);
+            #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">KAT:".$break2."</font>".$debugging["char"];
+            $element["ikategorie"] = "<select name=\"ikategorie\">\n";
+            while ( $data1 = $db->fetch_array($result,$nop) ) {
+                if ($cfg["ebene"]["drei"] == $data1["entry"]) {
+                    $selected = "selected";
+                } else {
+                    $selected = "";
+                }
+                $element["ikategorie"] .= "<option value=\"".$data1["entry"]."\"".$selected.">".$data1["label"]."</option>";
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">SQL:".$data1["entry"]."</font>".$debugging["char"];
+            }
+            $element["ikategorie"] .= "</select>\n";
+        }
+        $db -> selectDb(DATABASE,FALSE);
+
 
         if ( $environment["parameter"][2] == "verify" ) {
 
@@ -117,10 +153,13 @@
                     $sqlb .= ", '".$$value."'";
                     #echo $$value.":".$value."<br>";
                 }
-                #$sqla .= ", iauth_id";
-                #$sqlb .= ", '".$HTTP_SESSION_VARS["uid"]."'";
+                $sqla .= ", iauth_id";
+                $sqlb .= ", '".$HTTP_SESSION_VARS["uid"]."'";
+                $sqla .= ", ifqdn0";
+                $sqlb .= ", '".$environment["fqdn"][0]."'";
 
                 $sql = "insert into ".$cfg["db"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                #echo $sql;
                 $result  = $db -> query($sql);
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 if ( $HTTP_POST_VARS["image"] == "add" || $HTTP_POST_VARS["upload"] > 0 ) {
@@ -141,7 +180,7 @@
         }
 
     } elseif ( $environment["parameter"][1] == "replace" ) {
-
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">HIER:".$db-> getDb()."</font>".$debugging["char"];
         if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$environment["parameter"][2]."'";
             $result = $db -> query($sql);
@@ -165,6 +204,7 @@
         $element = form_elements( $cfg["db"]["entries"], $form_values );
 
         // form elemente erweitern
+        $ausgaben["ibereich"] = $cfg["ebene"]["zwei"];
         $element["ibereich"] = str_replace("ibereich\"", "ibereich\" value=\"".$cfg["ebene"]["zwei"]."\"", $element["ibereich"]);
 
         // ce editor bauen
@@ -191,6 +231,31 @@
             $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         }
+
+        //dropdown der kategorie erstellen (0210 mor)
+        $db -> selectDb($environment["fqdn"][0],FALSE);
+        $sql = "SELECT mid FROM site_menu WHERE entry = '".$cfg["ebene"]["zwei"]."'";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,$nop);
+        $sql = "SELECT entry,label FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid= site_menu_lang.mid WHERE refid = '".$data["mid"]."'";
+        $result = $db -> query($sql);
+        if ( $db->num_rows($result) == 0 ) {
+            $element["ikategorie"] = "";
+            $form_values["ikategorie"] = "";
+        } else {
+            $element["ikategorie"] = "<select name=\"ikategorie\">\n";
+            while ( $data1 = $db->fetch_array($result,$nop) ) {
+                if ($form_values["ikategorie"] == $data1["entry"]) {
+                    $selected = "selected";
+                } else {
+                    $selected = "";
+                }
+                $element["ikategorie"] .= "<option value=\"".$data1["entry"]."\"".$selected.">".$data1["label"]."</option>";
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">SQL:".$data1["entry"]."</font>".$debugging["char"];
+            }
+            $element["ikategorie"] .= "</select>\n";
+        }
+        $db -> selectDb(DATABASE,FALSE);
 
         if ( $environment["parameter"][2] == "verify" ) {
 
@@ -222,6 +287,12 @@
                 #$sqlb .= ", '-1', '".$iparent."'";
                 $sqla .= ", iparent";
                 $sqlb .= ", '".$iparent."'";
+
+                $sqla .= ", iauth_id";
+                $sqlb .= ", '".$HTTP_SESSION_VARS["uid"]."'";
+
+                $sqla .= ", ifqdn0";
+                $sqlb .= ", '".$environment["fqdn"][0]."'";
 
                 $sql = "insert into ".$cfg["db"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 $result  = $db -> query($sql);
@@ -266,7 +337,10 @@
         // form elememte bauen
         $element = form_elements( $cfg["db"]["entries"], $form_values );
         // form elemente erweitern
+        $ausgaben["ibereich"] = $cfg["ebene"]["zwei"];
+        $element["ibereich"] = str_replace("ibereich\"", "ibereich\" value=\"".$cfg["ebene"]["zwei"]."\"", $element["ibereich"]);
         #$element["itext"] = $form_values["itext"];
+
 
         // ce editor bauen
         $ausgaben["tn"] = makece("modify", "itext", $form_values["itext"]);
@@ -275,6 +349,7 @@
         # automatik geht $mapping["main"] = "1943315524.modify";
         #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">ATTENTION: template overwrite -> ".$mapping["main"].".tem.html</font>".$debugging["char"];
         $mapping["navi"] = "leer";
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">ATTENTION: template overwrite -> 1943315524. ".$mapping["main"].".tem.html</font>".$debugging["char"];
 
         // wohin schicken
         $ausgaben["form_error"] = "";
@@ -291,6 +366,32 @@
             $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         }
+
+
+        //dropdown der kategorie erstellen (0210 mor)
+        $db -> selectDb($environment["fqdn"][0],FALSE);
+        $sql = "SELECT mid FROM site_menu WHERE entry = '".$cfg["ebene"]["zwei"]."'";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,$nop);
+        $sql = "SELECT entry,label FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid= site_menu_lang.mid WHERE refid = '".$data["mid"]."'";
+        $result = $db -> query($sql);
+        if ( $db->num_rows($result) == 0 ) {
+            $element["ikategorie"] = "";
+            $form_values["ikategorie"] = "";
+        } else {
+            $element["ikategorie"] = "<select name=\"ikategorie\">\n";
+            while ( $data1 = $db->fetch_array($result,$nop) ) {
+                if ($form_values["ikategorie"] == $data1["entry"]) {
+                    $selected = "selected";
+                } else {
+                    $selected = "";
+                }
+                $element["ikategorie"] .= "<option value=\"".$data1["entry"]."\"".$selected.">".$data1["label"]."</option>";
+#                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">SQL:".$data1["entry"]."</font>".$debugging["char"];
+            }
+            $element["ikategorie"] .= "</select>\n";
+        }
+        $db -> selectDb(DATABASE,FALSE);
 
         if ( $environment["parameter"][3] == "verify" ) {
 
@@ -326,6 +427,7 @@
                 }
 
                 $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$environment["parameter"][2]."'";
+                #echo $sql;
                 $result  = $db -> query($sql);
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 if ( $HTTP_POST_VARS["image"] == "add" || $HTTP_POST_VARS["upload"] > 0 ) {

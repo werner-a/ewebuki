@@ -4,23 +4,23 @@
 //  "anwender kann felder fuer listen waehlen";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -56,7 +56,7 @@
     $ausgaben["bildvorschau"] = $environment["parameter"][2].".png";
 
     // form eigenschaften
-    $ausgaben["form_methode"] = "GET";
+    $ausgaben["form_methode"] = "POST";
     $ausgaben["form_aktion"] = $cfg["basis"]."/print,".$environment["parameter"][2].".html";
     $ausgaben["form_break"] = $cfg["basis"].".html";
 
@@ -73,7 +73,7 @@
         }
         $i++;
         if ( $value[2] == "required" ) {
-            $$seite .= "<td><input type=\"hidden\" name=\"".$name."\" value=\"1\"><img src=\"".$pathvars["images"]."checked.png\" align=\"middle\" alt=\"\" width=\"21\" height=\"21\"></td><td>".$value[0]."</td>";
+            $$seite .= "<td><input type=\"hidden\" name=\"".$name."\" value=\"1\"><img src=\"".$pathvars["images"]."cms-cb1.png\" align=\"middle\" alt=\"\" width=\"21\" height=\"21\"></td><td>".$value[0]."</td>";
         } else {
             $$seite .= "<td><input type=\"checkbox\" name=\"".$name."\" value=\"1\" ".$value[1]."></td><td>".$value[0]."</td>";
         }
@@ -89,9 +89,10 @@
     // dropdown
     $selected = "";
     $ip_class = explode(".", $_SERVER["REMOTE_ADDR"]);
-
+    #$ip_class[1] = 208;
+    #$ip_class[2] = 69;
     // dropdown bei dststelle deaktiviert
-    if ( $environment["parameter"][2] != "dststelle" ) {
+    if ( $environment["parameter"][2] != "dststelle" && $environment["parameter"][2] != "privat" && $environment["parameter"][2] != "geburtstag") {
 
         // externe listen nur fuer va
         if ( $environment["parameter"][2] == "telext" ) {
@@ -113,7 +114,15 @@
         $ausgaben["dropdown"] .= "</select>";
 
     } else {
-        $ausgaben["dropdown"] .= "";
+        if ($environment["parameter"][2] == "privat" || $environment["parameter"][2] == "geburtstag"){
+            $sql = "SELECT adid, adkate, adststelle FROM db_adrd WHERE adbnet=".$ip_class[1]." AND adcnet=".$ip_class[2];
+            $result = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
+            $ausgaben["dropdown"] .= "<input type=\"hidden\" name=\"adid\" value=".$data["adid"].">";
+            $ausgaben["dropdown"] .= "<b>".$data["adkate"]." ".$data["adststelle"]."</b>";
+        } else {
+            $ausgaben["dropdown"] .= "";
+        }
     }
 
 

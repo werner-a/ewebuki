@@ -4,23 +4,23 @@
 // "Beschaeftigte details";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -104,6 +104,7 @@
         // ***
         if ( $dststelle["adkate"] != "VA" ) {
             $sql = "SELECT adstabt FROM db_adrd WHERE adbnet='".$field["abbnet"]."' AND adkate='BFD'";
+            $sql = "SELECT adstabt FROM db_adrd WHERE adbnet='".$field["abbnet"]."'";
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,$nop);
             #$ausgaben["abdstbfd"] = $data["adstbfd"];
@@ -175,8 +176,8 @@
 
 
         // navigation erstellen
-        $ausgaben["navigation"] .= "<a href=\"".$_SERVER["HTTP_REFERER"]."\"><img src=\"".$pathvars[images]."/left.gif\" border=\"0\" alt=\"Zurück\" title=\"Zurück\" width=\"24\" height=\"18\"></a>";
-        $ausgaben["navigation"] .= "<a href=\"".$cfg["basis"]."/print,".$environment["parameter"][1].".html\"><img src=\"".$pathvars["images"]."/druck.png\" border=\"0\" alt=\"Zurück\" title=\"Details drucken\" width=\"24\" height=\"18\"></a>";
+        $ausgaben["navigation"] .= "<a href=\"".$_SERVER["HTTP_REFERER"]."\"><img src=\"".$pathvars[images]."left.png\" border=\"0\" alt=\"Zurück\" title=\"Zurück\" width=\"24\" height=\"18\"></a>";
+        $ausgaben["navigation"] .= "<a href=\"".$cfg["basis"]."/print,".$environment["parameter"][1].".html\"><img src=\"".$pathvars["images"]."druck.png\" border=\"0\" alt=\"Zurück\" title=\"Details drucken\" width=\"24\" height=\"18\"></a>";
 
         // icon "bearbeiten" erstellen
         // wenn berechtigung vorhanden
@@ -184,12 +185,12 @@
         // icon schwarz für eigene dienststelle
         if ( $rechte[$cfg["right"]["adress"]] == -1 && $HTTP_SESSION_VARS["custom"] == $field["abdststelle"]) {
         #if ( $rechte[$cfg["right"]["adress"]] == -1 && ( $ip_class[1] == $field["abbnet"] &&  $ip_class[2] == $field["abcnet"] )) {
-            $ausgaben["navigation"] .= "<a href=\"".$cfg["basis"]."/modify,edit,".$environment[parameter][1].".html\"><img src=\"".$pathvars[images]."/edit.gif\" border=\"0\" alt=\"Bearbeiten\" title=\"Bearbeiten\" width=\"24\" height=\"18\"></a>";
+            $ausgaben["navigation"] .= "<a href=\"".$cfg["basis"]."/modify,edit,".$environment[parameter][1].".html\"><img src=\"".$pathvars[images]."edit.png\" border=\"0\" alt=\"Bearbeiten\" title=\"Bearbeiten\" width=\"24\" height=\"18\"></a>";
 
         // icon rot für andere dienststelle
         } elseif ( $rechte[$cfg["right"]["admin"]] == -1
                 && in_array($field["abdststelle"],$HTTP_SESSION_VARS["dstzugriff"]) ) {
-            $ausgaben["navigation"] .= "<a href=\"".$cfg["basis"]."/modify,edit,".$environment[parameter][1].".html\"><img src=\"".$pathvars[images]."/edita.gif\" border=\"0\" alt=\"Bearbeiten\" title=\"Fremde Beschäftigte bearbeiten\" width=\"24\" height=\"18\"></a>";
+            $ausgaben["navigation"] .= "<a href=\"".$cfg["basis"]."/modify,edit,".$environment[parameter][1].".html\"><img src=\"".$pathvars[images]."edita.png\" border=\"0\" alt=\"Bearbeiten\" title=\"Fremde Beschäftigte bearbeiten\" width=\"24\" height=\"18\"></a>";
         }
 
         // icon "recht hinzufügen" bzw. "recht bearbeiten" erstellen
@@ -201,16 +202,16 @@
             #if ( $ip_class[1] == $field["abbnet"] && $ip_class[2] == $field["abcnet"] ) {
             if ( $HTTP_SESSION_VARS["custom"] == $field["abdststelle"] ) {
                 if ( $field["abpasswort"] == "") {
-                    $ausgaben["navigation"]  .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,add,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."/addr.gif\" border=\"0\" alt=\"Rechte hinzufügen\" title=\"Rechte hinzufügen\" width=\"24\" height=\"18\"></a>";
+                    $ausgaben["navigation"]  .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,add,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."addr.png\" border=\"0\" alt=\"Rechte hinzufügen\" title=\"Rechte hinzufügen\" width=\"24\" height=\"18\"></a>";
                 } else {
-                    $ausgaben["navigation"] .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,edit,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."/editr.gif\" border=\"0\" alt=\"Rechte bearbeiten\" title=\"Rechte bearbeiten\" width=\"24\" height=\"18\"></a>";
+                    $ausgaben["navigation"] .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,edit,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."editr.png\" border=\"0\" alt=\"Rechte bearbeiten\" title=\"Rechte bearbeiten\" width=\"24\" height=\"18\"></a>";
                 }
             // icon rot für andere dienststelle
             } else {
                 if ( $field["abpasswort"] == "") {
-                    $ausgaben["navigation"] .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,add,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."/addra.gif\" border=\"0\" alt=\"Rechte hinzufügen\" title=\"Fremde Rechte hinzufügen\" width=\"24\" height=\"18\"></a>";
+                    $ausgaben["navigation"] .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,add,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."addra.png\" border=\"0\" alt=\"Rechte hinzufügen\" title=\"Fremde Rechte hinzufügen\" width=\"24\" height=\"18\"></a>";
                 } else {
-                    $ausgaben["navigation"] .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,edit,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."/editra.gif\" border=\"0\" alt=\"Rechte bearbeiten\" title=\"Fremde Rechte bearbeiten\" width=\"24\" height=\"18\"></a>";
+                    $ausgaben["navigation"] .= "<a href=\"".$pathvars["virtual"]."/admin/usered/modify,edit,".$field[$cfg["db"]["key"]].".html\"><img src=\"".$pathvars[images]."editra.png\" border=\"0\" alt=\"Rechte bearbeiten\" title=\"Fremde Rechte bearbeiten\" width=\"24\" height=\"18\"></a>";
                 }
             }
         }

@@ -4,23 +4,23 @@
   $Script_desc = "Hier kurze Beschreibung";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -45,16 +45,13 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
-    // was sind die lokalen inhalte ?
-    $thirdlevel = explode(".", $_SERVER["HTTP_HOST"], 2);
-
-    $pathvars["fqdn"] = "http://www.bvv.bayern.de";
+    #$pathvars["fqdn"] = "http://www.bvv.bayern.de";
     include $pathvars["addonroot"]."intrabvv/menu-global.cfg.php";
     include $pathvars["addonroot"]."intrabvv/menu.inc.php";
 
     if ( $ausgaben["globalmenu"] == "" ) $ausgaben["globalmenu"] = "Menu ist Leer";
 
-    if ( !strstr($thirdlevel[0], "intra") /* || $thirdlevel[0] == "intrabvv" */ ) {
+    if ( !strstr($environment["fqdn"][0], "intra") /* || $environment["fqdn"][0] == "intrabvv" */ ) {
 
         // über ip standort rausfinden
         $ip = $_SERVER["REMOTE_ADDR"];
@@ -71,25 +68,25 @@
         $data = $db -> fetch_array($result,1);
 
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "amt: ".$data["adkate"].$debugging["char"];
-        $localdb = "intra".$data["adakz"];
+        $specialvars["dyndb"] = "intra".$data["adakz"];
     } else {
 
         // amtsbezeichnung
-        $sql = "SELECT adakz, adkate, adststelle, adkurzbez FROM db_adrd WHERE adakz = ".substr($thirdlevel[0],5);
+        $sql = "SELECT adakz, adkate, adststelle, adkurzbez FROM db_adrd WHERE adakz = ".substr($environment["fqdn"][0],5);
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
 
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "amt: ".$data["adkate"].$debugging["char"];
-        $localdb = "intra".$data["adakz"];
+        $specialvars["dyndb"] = "intra".$data["adakz"];
 
     }
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "localdb: ".$localdb.$debugging["char"];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "localdb: ".$specialvars["dyndb"].$debugging["char"];
 
 
     // lokale db auswaehlen
-    if ( $db->selectDb($localdb,FALSE) == 1 ) {
+    if ( $db->selectDb($specialvars["dyndb"],FALSE) == 1 ) {
 
-        $pathvars["fqdn"] = "http://".$localdb.".bvv.bayern.de";
+        #$pathvars["fqdn"] = "http://".$specialvars["dyndb"].".bvv.bayern.de";
         include $pathvars["addonroot"]."intrabvv/menu-local.cfg.php";
         include $pathvars["addonroot"]."intrabvv/menu.inc.php";
 

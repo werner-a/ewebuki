@@ -4,23 +4,23 @@
   $Script_desc = "Neues Applikation";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -224,7 +224,10 @@
 
 
           $ausgaben["navigation"] .= "<a href=\"".$_SERVER["HTTP_REFERER"]."\"><img src=\"".$pathvars["images"]."left.png\" border=\"0\" alt=\"Zurück\" title=\"Zurück\" width=\"24\" height=\"18\"></a>";
-          $ausgaben["navigation"] .= "<a href=\"".$environment["basis"]."/modify,edit,".$environment["parameter"][1].".html\"><img src=\"".$pathvars["images"]."edit.png\" border=\"0\" alt=\"Bearbeiten\" title=\"Bearbeiten\" width=\"24\" height=\"18\"></a>";
+
+          if ( $rechte["sti"] == -1 ) {
+            $ausgaben["navigation"] .= "<a href=\"".$environment["basis"]."/modify,edit,".$environment["parameter"][1].".html\"><img src=\"".$pathvars["images"]."edit.png\" border=\"0\" alt=\"Bearbeiten\" title=\"Bearbeiten\" width=\"24\" height=\"18\"></a>";
+          }
           $mapping["main"] = crc32($environment["ebene"]).".details";
 
       //
@@ -287,7 +290,7 @@
           #$ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>";
           #$ausgaben["output"] .= "<td".$class.">Telefon</td>";
           #$ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>";
-          $ausgaben["output"] .= "<td".$class.">Aktion</td>";
+          $ausgaben["output"] .= "<td align=\"right\"".$class.">Aktion</td>";
           $ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>";
           $ausgaben["output"] .= "</tr><tr>";
           $class = " class=\"lines\"";
@@ -297,9 +300,9 @@
 
           $result = $db -> query($sql);
           $modify  = array (
-            "details"     => array("", "Details"),
-            "edit"        => array("modify,", "Editieren"), ###
-            "delete"      => array("modify,", "Löschen")
+            "edit"        => array("modify,", "Bearbeiten", "sti"), ###
+            "delete"      => array("modify,", "Löschen", "sti"),
+            "details"     => array("", "Details", ""),
           );
           $imgpath = $pathvars["images"];
 
@@ -323,12 +326,21 @@
 
               // ausgaben erweitern
               $entwicklerid = "";
-              if ( $field["nentwickler"] == "weam" ) {
+              if ( $field["nentwickler"] == "mei" ) {
+                  $entwicklerid = "92";
+                  $entwicklerart = "beschaeftigte";
+              } elseif ( $field["nentwickler"] == "mor" ) {
+                  $entwicklerid = "94";
+                  $entwicklerart = "beschaeftigte";
+              } elseif ( $field["nentwickler"] == "sche" ) {
+                  $entwicklerid = "97";
+                  $entwicklerart = "beschaeftigte";
+              } elseif ( $field["nentwickler"] == "wach" ) {
+                  $entwicklerid = "102";
+                  $entwicklerart = "beschaeftigte";
+              } elseif ( $field["nentwickler"] == "weam" ) {
                   $entwicklerid = "1";
                   $entwicklerart = "kunden";
-              } elseif ( $field["nentwickler"]  == "sche" ) {
-                  $entwicklerid = "";
-                  $entwicklerart = "beschaeftigte";
               }
               if ( $entwicklerid != "" ) $field["nentwickler"] = "<a href=\"".$pathvars["virtual"]."/treffpunkt/adressen/".$entwicklerart."/details,".$entwicklerid.".html\">".$field["nentwickler"]."</a>";
 
@@ -340,10 +352,15 @@
               #$ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>";
 
               $aktion = "";
+
               foreach($modify as $name => $value) {
-                  $aktion .= "<a href=\"".$environment["basis"]."/".$value[0].$name.",".$field[$db_entries_key].".html\"><img src=\"".$imgpath.$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
+                if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
+                        $aktion .= "<a href=\"".$environment["basis"]."/".$value[0].$name.",".$field[$db_entries_key].".html\"><img src=\"".$imgpath.$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
+                    } else {
+                        $aktion .= "<img src=\"".$imgpath."/pos.png\" alt=\"\" width=\"24\" height=\"18\">";
+                }
               }
-              $ausgaben["output"] .= "<td".$class.">".$aktion."</td>";
+              $ausgaben["output"] .= "<td align=\"right\"".$class.">".$aktion."</td>";
               $ausgaben["output"] .= "<td".$class.$size.">&nbsp;</td>";
 
 
@@ -355,8 +372,11 @@
 
           }
           $ausgaben["output"] .= "</table>";
-
-          $ausgaben["eintrag_neu"] = $environment["basis"]."/modify,add.html";
+          if ( $rechte["sti"] == -1 ) {
+            $ausgaben["eintrag_neu"] = "<a href=\"".$environment["basis"]."/modify,add.html\"><img src=\"".$pathvars["images"]."button-neuerbeitrag.png\" width=\"80\" height=\"18\" border=\"0\"></a>";
+          } else {
+            $ausgaben["eintrag_neu"] = "<img src=\"".$pathvars["images"]."/pos.png\" width=\"80\" height=\"18\" border=\"0\">";
+          }
           #$mapping["main"] = crc32($environment["ebene"]).".".$environment["name"];
           #$mapping["main"] = crc32($environment["ebene"]).".list";
           $mapping["main"] = "23692892.list";

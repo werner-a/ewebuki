@@ -4,23 +4,23 @@
 // "kunden-modify";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -55,9 +55,7 @@
     if ( $environment["parameter"][1] == "add"  && $rechte[$cfg["right"]["adress"]] == -1) {
 
         if ( count($HTTP_POST_VARS) == 0 ) {
-            // spezielle default values setzen
-            #$form_values["akfgstart"] = "01.01.1000";
-            #$form_values["akfggeb"] = "01.01.1000";
+
         } else {
             $form_values = $HTTP_POST_VARS;
         }
@@ -65,9 +63,12 @@
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
-
         // form elememte bauen
         $element = form_elements( $cfg["db"]["entries"], $form_values );
+
+        // form elemente löschen
+        $element["akfggeb"] = str_replace("value=\"1000-01-01\"","value=\"\"",$element["akfggeb"]);
+        $element["akfgstart"] = str_replace("value=\"1000-01-01\"","value=\"\"",$element["akfgstart"]);
 
         // form elemente erweitern
         $modify  = array ( "aktel", "akmobil", "akfax");
@@ -76,7 +77,6 @@
                 $element[$value] = str_replace($value."\"", $value."\" value=\"+49-\"", $element[$value]);
             }
         }
-
 
         // dropdown Kategorie erstellen (mor 0204)
         // ***
@@ -101,7 +101,6 @@
         }
         // +++
         // dropdown Kategorie erstellen (mor 0204)
-
 
 
         // Leere Ansprechpartner bauen (mor 0904)
@@ -150,6 +149,13 @@
                 $form_values["akfggeb"] = "";
             }
 
+            // Vorbelegung wieder entfernen mor(0610)
+            foreach($modify as $key => $value) {
+                if ( $form_values[$value] == "+49-" ) {
+                    $form_values[$value] = "";
+                }
+            }
+
             // Je nach Anrede required setzen (mor 2204)
             // ***
 
@@ -183,12 +189,16 @@
             form_errors( $form_options, $form_values );
             #echo $ausgaben["form_error"];
 
+
+
+
             // ohne fehler sql bauen und ausfuehren
             #if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] != "" || $HTTP_POST_VARS["add"] != "" ) ) {  // mit überflüssigen "submit"
             if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["image"] != "" || $HTTP_POST_VARS["add"] != "" ) ) {
 
                 if ($form_values["akfgstart"] == "0") $form_values["akfgstart"] = "";  // Lösung warum matcht regex ?
                 if ($form_values["akfggeb"] == "0") $form_values["akfggeb"] = ""; // Lösung warum matcht regex ?
+
 
                 $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "add", "add_x", "add_y","akfggeb","akfgstart" );
                 foreach ($form_values as $name => $value ) {
@@ -218,16 +228,18 @@
 
                 // Sql um spezielle Felder (feldgeschworener) erweitern
                 $change = array( "akfggeb", "akfgstart" );
-                foreach( $change as $value ) {
-                    if ($form_values[$value] != "") {#echo $form_values[$value];
-                        $$value = $form_values[$value];
-                        $$value = substr($$value,6,4)."-".substr($$value,3,2)."-".substr($$value,0,2);
-                        $sqla .= ", ".$value;
-                        $sqlb .= ", '".$$value."'";
+                if (in_array($form_values["akkate"],$feldarray)) {
+                    foreach( $change as $value ) {
+                        if ($form_values[$value] != "") {#echo $form_values[$value];
+                            $$value = $form_values[$value];
+                            $$value = substr($$value,6,4)."-".substr($$value,3,2)."-".substr($$value,0,2);
+                            $sqla .= ", ".$value;
+                            $sqlb .= ", '".$$value."'";
+                        }
                     }
-                    #echo $$value.":".$value."<br>";
-                }
+                } else {
 
+                }
 
 
                 $sql = "insert into ".$cfg["db"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
@@ -257,33 +269,43 @@
         }
     } elseif ( $environment["parameter"][1] == "edit" && $rechte[$cfg["right"]["adress"]] == -1) {
 
-
+        #echo "<pre>";
+        #print_r($HTTP_POST_VARS);
+        #echo "</pre>";
         if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$environment["parameter"][2]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,$nop);
+
         } else {
             $form_values = $HTTP_POST_VARS;
         }
 
-
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
-        // wenn kein recht vorhanden allgemeine felder auf readonly setzen
-        if ($form_values["akdst"] != $HTTP_SESSION_VARS["custom"]) {
-            $rechtarray = array ("akfirma1","akfirma2","aknam","akvor","akort","akstr","akplz","akpplz","akpfach","aktel","akfax","akemail","akinternet","akmobil","akfgstart","akfggeb");
-            foreach ( $rechtarray as $value) {
-                $form_options[$value]["foption"] = "readonly";
-            }
-        }
-        #echo "<pre>";
-        #print_r($form_options);
-        #echo "</pre>";
+        // wenn kein recht vorhanden allgemeine felder deaktivieren
+        #if ($form_values["akdst"] != $HTTP_SESSION_VARS["custom"]) {
+            #echo "nein";
+        #    $rechtarray = array ("akfirma1","akfirma2","aknam","akvor","akort","akstr","akplz","akpplz","akpfach","aktel","akfax","akemail","akinternet","akmobil","akfgstart","akfggeb");
+        #    foreach ( $rechtarray as $value) {
+        #        $form_options[$value]["foption"] = "readonly";
+        #    }
+        #}
+
         // form elememte bauen
         $element = form_elements( $cfg["db"]["entries"], $form_values );
 
+        // form elemente löschen
+        $element["akfggeb"] = str_replace("value=\"01.01.1000\"","value=\"\"",$element["akfggeb"]);
+        $element["akfgstart"] = str_replace("value=\"01.01.1000\"","value=\"\"",$element["akfgstart"]);
+        $element["akfggeb"] = str_replace("value=\"1000-01-01\"","value=\"\"",$element["akfggeb"]);
+        $element["akfgstart"] = str_replace("value=\"1000-01-01\"","value=\"\"",$element["akfgstart"]);
+#        echo "<pre>";
+#        print_r($form_values);
+#        echo "</pre>";
 
+        #echo $form_values["akkate"]."B";
         // dropdown erstellen (mor 0204)
         // ***
         $sql = "SELECT * FROM ".$cfg["db"]["entries_kago"]." ORDER BY kate";
@@ -292,8 +314,10 @@
         #$formularobject .= "<option value=\"\"></option>\n";
         while ( $data = $db->fetch_array($result,$nop) ) {
             if ($form_values["akkate"] == $data[0]) {
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "BUFFY in IF".$debugging["char"];
                 $selected = " selected";
             } else {
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "BUFFY out IF".$debugging["char"];
                 $selected = "";
             }
             $formularobject .= "<option value=\"".$data[0]."\"".$selected.">" .$data["kate"] ."</option>\n";
@@ -307,15 +331,19 @@
         // +++
         // dropdown erstellen (mor 0204)
 
+        // wenn kein feldgeschworener, elemente loeschen
+        if (!in_array($form_values["akkate"],$feldarray)) {
+            $element["akfgstart"] = "--";
+            $element["akfggeb"] = "--";
+        }
+
         // Ansprechpartner Form bauen mor(0804)
         // ***
-       # echo "<pre>";
-       # print_r($form_values);
-       # echo "</pre>";
+
         $ip_class = explode(".", $_SERVER["REMOTE_ADDR"]);
         #$ip_class[2] = 72;
         if ( count($HTTP_POST_VARS) == 0 ) {
-#            $sql = "SELECT * FROM ".$cfg["db"]["entries_ans"]." where eid=".$environment["parameter"][2]." AND abnet=".$ip_class[1]." AND acnet=".$ip_class[2]." ORDER BY kaid";
+            #$sql = "SELECT * FROM ".$cfg["db"]["entries_ans"]." where eid=".$environment["parameter"][2]." AND abnet=".$ip_class[1]." AND acnet=".$ip_class[2]." ORDER BY kaid";
             $sql = "SELECT * FROM ".$cfg["db"]["entries_ans"]." where eid=".$environment["parameter"][2]." AND kadst=".$HTTP_SESSION_VARS["custom"]." ORDER BY kaid";
             #echo $sql;
             $result = $db -> query($sql);
@@ -382,12 +410,6 @@
 
         if ( $environment["parameter"][3] == "verify" ) {
 
-            // wenn kein feldgeschworener beide daten auf leer setzen
-            if (!in_array($form_values["akkate"],$feldarray)) {
-                $form_values["akfgstart"] = "";
-                $form_values["akfggeb"] = "";
-            }
-
             // Je nach Anrede required setzen (mor 2204)
             // ***
             if ($form_values["akanrede"] == "Firma") {
@@ -402,19 +424,29 @@
             }
             // +++
             // Je nach Anrede required setzen (mor 2204)
-
+             #echo "<pre>";
+             #print_r($form_values);
+             #echo "</pre>";
 
             // form eingaben prüfen
             #bugfix#form_errors( $form_options, $HTTP_POST_VARS );
+
             form_errors( $form_options, $form_values );
 
             // ohne fehler sql bauen und ausfuehren
             if ( $ausgaben["form_error"] == "" /* && ( $HTTP_POST_VARS[submit] != "" || $HTTP_POST_VARS[image] != "" ) */ ){
-                #echo "fehler";
                 if ($form_values["akfgstart"] == "0") $form_values["akfgstart"] = "";
                 if ($form_values["akfggeb"] == "0") $form_values["akfggeb"] = "";
 
-                $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "add", "add_x", "add_y", "delete", "delete_x", "delete_y","akfggeb","akfgstart" );
+                $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "add", "add_x", "add_y", "delete", "delete_x", "delete_y");
+
+                if ($form_values["akfggeb"] == "") {
+                    array_push ($kick,"akfggeb");
+                }
+                if ($form_values["akfgstart"] == "") {
+                    array_push ($kick,"akfgstart");
+                }
+
                 foreach($form_values as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                         if ( $sqla != "" ) $sqla .= ", ";
@@ -432,7 +464,7 @@
 
                         $sqla .= ",".$value."='".$$value."'";
                     } else {
-                        $sqla .= ",".$value."= NULL";
+                        #$sqla .= ",".$value."= '1000-01-01'";
                     }
                     #$sqlb .= ", '".$$value."'";
                     #echo $$value.":".$value."<br>";
@@ -440,7 +472,6 @@
 
 
                 // Sql um spezielle Felder erweitern
-
                 $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$environment["parameter"][2]."'";
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "mainsql: ".$sql.$debugging["char"];
                 #echo $sql;
@@ -464,11 +495,13 @@
                     $sql = "INSERT INTO ".$cfg["db"]["entries_ans"]." (eid,abnet,acnet,kadst) VALUES (".$environment["parameter"][2].",".$eigen["adbnet"].",".$eigen["adcnet"].",".$HTTP_SESSION_VARS["custom"].")";
                     #echo $sql;
                     $result  = $db -> query($sql);
-                    header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html?referer=".$ausgaben["form_referer"]);
+#                    header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html?referer=".$ausgaben["form_referer"]);
+                    header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].".html?referer=".$ausgaben["form_referer"]);
                 } elseif ($HTTP_POST_VARS["delete"]) {
                     $sql = "DELETE FROM ".$cfg["db"]["entries_ans"]." WHERE kaid=".$HTTP_POST_VARS["delete"];
                     $result  = $db -> query($sql);
-                    header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html?referer=".$ausgaben["form_referer"]);
+#                    header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html?referer=".$ausgaben["form_referer"]);
+                    header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].".html?referer=".$ausgaben["form_referer"]);
                 }/*elseif ($HTTP_POST_VARS["edit"]) {
                     $sql = "UPDATE ".$cfg["db"]["entries_ans"]." SET kanam=\"".$HTTP_POST_VARS[$HTTP_POST_VARS["edit"].")kanam"]."\",kavor=\"".$HTTP_POST_VARS[$HTTP_POST_VARS["edit"].")kavor"]."\",katel=\"".$HTTP_POST_VARS[$HTTP_POST_VARS["edit"].")katel"]."\" WHERE kaid = ".$HTTP_POST_VARS["edit"];
                     $result  = $db -> query($sql);

@@ -4,23 +4,23 @@
 // "short description";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-    phpWEBkit - a easy website building kit
+    eWeBuKi - a easy website building kit
     Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
 
-    This script is a part of phpWEBkit
+    This script is a part of eWeBuKi
 
-    phpWEBkit is free software; you can redistribute it and/or modify
+    eWeBuKi is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    phpWEBkit is distributed in the hope that it will be useful,
+    eWeBuKi is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with phpWEBkit; If you did not, you may download a copy at:
+    along with eWeBuKi; If you did not, you may download a copy at:
 
     URL:  http://www.gnu.org/licenses/gpl.txt
 
@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // seiten raender
-    $pdf->ezSetMargins(220,180,50,40); // top, bottom, left, right
+    $pdf->ezSetMargins(220,110,50,40); // top, bottom, left, right
 
     // kopfdaten holen
     $result = $db -> query($cfg["db"]["sql"][1]);
@@ -105,7 +105,7 @@
     $foot = $pdf->openObject();
     $va = $data["adststelle"];
     $links = 40;
-    $start = 190;
+    $start = 100;
     #$rechts = 455;
 
     $pdf->line($links,$start-20,$rechts+117,$start-20);
@@ -113,16 +113,16 @@
 
     $text = "* diese Personen sind überwiegend im Außendienst tätig";
     $pdf->addText($links,$start-41,'8',$text);
-    $text = "<i>Hinweis:</i> Die <i><b>E-Mail Adresse</b></i> unserer Mitarbeiter setzt sich zusammen aus:";
-    $pdf->addText($links,$start-65,'10',$text);
-    $text = "<i><b>vorname.nachname".substr($data["ademail"],10)."</b></i>";
-    $pdf->addText($links,$start-77,'10',$text);
-    $text = "Nachrichten an Mitarbeiter, die überwiegend im Außendienst tätig sind, sollten an";
-    $pdf->addText($links,$start-101,'10',$text);
-    $text = $data["ademail"]." adressiert werden mit der Bitte um Weiterleitung";
-    $pdf->addText($links,$start-113,'10',$text);
-    $text = "an den gewünschten Empfänger.";
-    $pdf->addText($links,$start-125,'10',$text);
+    #$text = "<i>Hinweis:</i> Die <i><b>E-Mail Adresse</b></i> unserer Mitarbeiter setzt sich zusammen aus:";
+    #$pdf->addText($links,$start-65,'10',$text);
+    #$text = "<i><b>vorname.nachname".substr($data["ademail"],10)."</b></i>";
+    #$pdf->addText($links,$start-77,'10',$text);
+    #$text = "Nachrichten an Mitarbeiter, die überwiegend im Außendienst tätig sind, sollten an";
+    #$pdf->addText($links,$start-101,'10',$text);
+    #$text = $data["ademail"]." adressiert werden mit der Bitte um Weiterleitung";
+    #$pdf->addText($links,$start-113,'10',$text);
+    #$text = "an den gewünschten Empfänger.";
+    #$pdf->addText($links,$start-125,'10',$text);
 
     #$pdf->addText($links+$spalte,$start-65,'10',.' - 0 Vermittlung' );
 
@@ -140,7 +140,7 @@
     $pdf->ezColumnsStart(array( "num"=>2, "gap"=>20));
 
     // tabellenüberschrift und sql erstellen
-    foreach($HTTP_GET_VARS as $name => $value) {
+    foreach($HTTP_POST_VARS as $name => $value) {
         if ( !in_array($name,$kck_main) ) {
             $colum[$name] = $cfg["field"][$environment["parameter"][1]][$name][0];
             if ( $field != "" ) $field .= ",";
@@ -160,7 +160,7 @@
 
     // ueberschrift felder die im name_join array sind löschen
     foreach( $name_join as $name ) {
-        if ( $HTTP_GET_VARS [$name]) {
+        if ( $HTTP_POST_VARS [$name]) {
             unset ($colum[$name]);
         }
     }
@@ -266,13 +266,12 @@
     // ueberschrift
     $pdf->ezSetDy(-500);
     #$pdf->ezSetDy(-30);
-    $dy = $pdf->ezText('<b>'.$title_eins.'</b>',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
-    $dy = $pdf->ezText('',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
-    $pdf->ezSetDy(-5);
+
+
     #$pdf->addText(45,$dy-30,12,$title_right);
 
     // tabellenüberschrift
-    foreach($HTTP_GET_VARS as $name => $value) {
+    foreach($HTTP_POST_VARS as $name => $value) {
         if ( in_array($name,$tab_right) ) {
             $colum_right[$name] = $cfg["field"][$environment["parameter"][1]][$name][0];
             if ( $field_right != "" ) $field_right .= ",";
@@ -283,7 +282,7 @@
     // nicht benötigte überschriften löschen
     $name_join = array("abtitel", "abnamvor");
     foreach( $name_join as $name ) {
-        if ( $HTTP_GET_VARS [$name] && $HTTP_GET_VARS["abnamra"] ) {
+        if ( $HTTP_POST_VARS [$name] && $HTTP_POST_VARS["abnamra"] ) {
             $breite = $breite - $cfg["colsize"][$name];
             unset ($colum_right[$name]);
         }
@@ -293,23 +292,30 @@
 
     // tabelle erstellen
     #reset($name_join);
-    $cfg["db"]["sql"][4] = str_replace("!felder!",$field_right,$cfg["db"]["sql"][4]);
-    #echo $cfg["db"]["sql"][4];
-    $result = $db -> query($cfg["db"]["sql"][4]);
-    while ( $data = $db->fetch_array($result,1) ) {
-        // name zusammenfassen
-        $leer = "";
-        foreach ($name_join as $name) {
-            if (($data[$name]) && ($data[$name] != "") && ($data["abnamra"])) {
-                $leer = " ";
-                if ($name == "abamtbezkurz") $leer = ", ";
-                $data["abnamra"] .= $leer.$data[$name];
-                unset ($data[$name]);
+    if ($HTTP_POST_VARS["abdstmobil"]) {
+        $cfg["db"]["sql"][4] = str_replace("!felder!",$field_right,$cfg["db"]["sql"][4]);
+        #echo $cfg["db"]["sql"][4];
+        $result = $db -> query($cfg["db"]["sql"][4]);
+        while ( $data = $db->fetch_array($result,1) ) {
+            // name zusammenfassen
+            $leer = "";
+            foreach ($name_join as $name) {
+                if (($data[$name]) && ($data[$name] != "") && ($data["abnamra"])) {
+                    $leer = " ";
+                    if ($name == "abamtbezkurz") $leer = ", ";
+                    $data["abnamra"] .= $leer.$data[$name];
+                    unset ($data[$name]);
+                }
             }
+            $table_right[] = $data;
         }
-        $table_right[] = $data;
     }
-
+    if (is_array($table_right)) {
+        $dy = $pdf->ezText('<b>'.$title_eins.'</b>',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
+        $dy = $pdf->ezText('',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
+        $pdf->ezSetDy(-5);
+        $test = -30;
+    }
 
     // tabelle
     #$pdf->ezSetY($dy);
@@ -339,15 +345,16 @@
     // ***
 
     // ueberschrift
-
-    $pdf->ezSetDy(-30);
-    $dy = $pdf->ezText('<b>'.$title_zwei.'</b>',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
-    $dy = $pdf->ezText('',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
-    $pdf->ezSetDy(-5);
+#    if (is_array($table_left)) {
+    $pdf->ezSetDy($test);
+#        $dy = $pdf->ezText('<b>'.$title_zwei.'</b>',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
+#        $dy = $pdf->ezText('',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
+#        $pdf->ezSetDy(-5);
+#    }
     #$pdf->addText('',$dy-30,12,$title_left);
 
     // tabellenüberschrift
-    foreach($HTTP_GET_VARS as $name => $value) {
+    foreach($HTTP_POST_VARS as $name => $value) {
         if ( in_array($name,$tab_left) ) {
             $colum_left[$name] = $cfg["field"][$environment["parameter"][1]][$name][0];
             if ( $field_left != "" ) $field_left .= ",";
@@ -357,7 +364,7 @@
     // nicht benötigte überschriften löschen
     $name_join = array("abtitel", "abnamvor");
     foreach( $name_join as $name ) {
-        if ( $HTTP_GET_VARS [$name] && $HTTP_GET_VARS["abnamra"] ) {
+        if ( $HTTP_POST_VARS [$name] && $HTTP_POST_VARS["abnamra"] ) {
             $breite = $breite - $cfg["colsize"][$name];
             unset ($colum_left[$name]);
         }
@@ -386,6 +393,14 @@
             }
         }
         $table_left[] = $data;
+    }
+
+    // ueberschrift
+    if (is_array($table_left)) {
+    #$pdf->ezSetDy(-30);
+        $dy = $pdf->ezText('<b>'.$title_zwei.'</b>',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
+        $dy = $pdf->ezText('',10,array( "justification" => "left", "left" => -5 )); // "leading"=>20, "spacing"=>1
+        $pdf->ezSetDy(-5);
     }
 
     // tabelle
