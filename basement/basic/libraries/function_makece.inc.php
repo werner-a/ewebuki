@@ -147,10 +147,14 @@
                         "tab"   => array( "1", "Tabelle einfügen"),
                         "row"   => array( "1", "Zeile einfügen"),
                         "col"   => array( "1", "Spalte einfügen"),
+                        "up"    => array( "", "Zurück Link"),
+                        "m1"    => array( "", "Menü"),
+                        "m2"    => array( "", "Untermenü"),
+                        #"m3"    => array( "", "Menu Automatic"),
                         "int"   => array( "",  "Intelligenter Link"),
                       );
 
-        $ausgaben["ce_dropdown"]  = "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"st\" size=\"1\" onChange=\"INSst(this.options[this.selectedIndex].value,'".$ce_formname."','".$ce_name."')\">";
+        $ausgaben["ce_dropdown"]  = "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"st\" size=\"1\" onChange=\"INSst(this.options[this.selectedIndex].value,'".$ce_formname."','".$ce_name."');this.selectedIndex=0;\">";
         $ausgaben["ce_dropdown"] .= "<option value=\"\">TAG Select</option>";
         foreach( $cetag as $key => $value ) {
             if ( $value[0] == 1 ) {
