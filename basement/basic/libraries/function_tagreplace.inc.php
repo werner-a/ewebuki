@@ -274,6 +274,8 @@
                         } else {
                             $beschriftung = $tagwerte[1];
                         }
+                        $ausgaben["linka"] = "";
+                        $ausgaben["linkb"] = "";
                         if ( !strstr($imgwerte[0], "/") ) {
                             $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/".$imgwerte[0];
                             if ( file_exists($imgfile) ) {
@@ -294,9 +296,20 @@
                                     $imgsize = getimagesize($imgfile);
                                     $imgsize = " ".$imgsize[3];
                                 }
+                                if ( $imgwerte[3] != "" ) {
+
+                                    if ( is_numeric($imgwerte[3]) ) {
+                                        echo "check";
+                                    }
+
+                                    $imgnam = substr(strrchr($imgurl,"/"),1);
+                                    $imglnk = $pathvars["webroot"].$pathvars["virtual"]."/view,".$imgwerte[3].",".$imgnam.".html";
+                                    $linka = "<a href=\"".$imglnk."\">";
+                                    $linkb = "</a>";
+                                }
                             }
                         }
-                        $ausgabewert = "<img src=\"".$imgurl."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize.">";
+                        $ausgabewert = $linka."<img src=\"".$imgurl."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize.">".$linkb;
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
                         break;
                     case "[IMGB=":
@@ -304,19 +317,19 @@
                         $imgwerte = explode(";",$tagwerte[0]);
                         if ( $imgwerte[1] == "r" ) {
                             $ausgaben["align"] = " align=\"right\"";
-                            if ( $imgwerte[5] == "" ) {
+                            if ( $imgwerte[6] == "" ) {
                                 $lspace = "10";
                             } else {
-                                $lspace = $imgwerte[5];
+                                $lspace = $imgwerte[6];
                             }
                             $rspace = "0";
                         } elseif ( $imgwerte[1] == "l" ) {
                             $ausgaben["align"] = " align=\"left\"";
                             $lspace = "0";
-                            if ( $imgwerte[5] == "" ) {
+                            if ( $imgwerte[6] == "" ) {
                                 $rspace = "10";
                             } else {
-                                $rspace = $imgwerte[5];
+                                $rspace = $imgwerte[6];
                             }
                         } else {
                             $ausgaben["align"] = "";
@@ -328,21 +341,23 @@
                         } else {
                             $ausgaben["border"] = "";
                         }
-                        if ( $imgwerte[3] == "" ) {
+                        if ( $imgwerte[4] == "" ) {
                             $tspace = "0";
                         } else {
-                            $tspace = $imgwerte[3];
+                            $tspace = $imgwerte[4];
                         }
-                        if ( $imgwerte[4] == "" ) {
+                        if ( $imgwerte[5] == "" ) {
                             $bspace = "0";
                         } else {
-                            $bspace = $imgwerte[4];
+                            $bspace = $imgwerte[5];
                         }
                         if ( $tagwerte[1] == "" ) {
                             $beschriftung = $imgwerte[0];
                         } else {
                             $beschriftung = $tagwerte[1];
                         }
+                        $ausgaben["linka"] = "";
+                        $ausgaben["linkb"] = "";
                         if ( !strstr($imgwerte[0], "/") ) {
                             $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/".$imgwerte[0];
                             if ( file_exists($imgfile) ) {
@@ -363,7 +378,12 @@
                                     $imgsize = getimagesize($imgfile);
                                     $ausgaben["tabwidth"] = $imgsize[0];
                                     $ausgaben["imgsize"] = " ".$imgsize[3];
-
+                                }
+                                if ( $imgwerte[3] != "" ) {
+                                    $imgnam = substr(strrchr($ausgaben["imgurl"],"/"),1);
+                                    $imglnk = $pathvars["webroot"].$pathvars["virtual"]."/view,".$imgwerte[3].",".$imgnam.".html";
+                                    $ausgaben["linka"] = "<a href=\"".$imglnk."\">";
+                                    $ausgaben["linkb"] = "</a>";
                                 }
                             }
                         }
@@ -373,10 +393,10 @@
                         $ausgaben["alt"] = $beschriftung;
                         $ausgaben["beschriftung"] = $beschriftung;
 
-                        $ausgaben["tspace"] = "<img src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$tspace."\">";
-                        $ausgaben["lspace"] = "<img src=\"".$pathvars["images"]."pos.png\" width=\"".$lspace."\" height=\"1\">";
-                        $ausgaben["rspace"] = "<img src=\"".$pathvars["images"]."pos.png\" width=\"".$rspace."\" height=\"1\">";
-                        $ausgaben["bspace"] = "<img src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$bspace."\">";
+                        $ausgaben["tspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$tspace."\">";
+                        $ausgaben["lspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$lspace."\" height=\"1\">";
+                        $ausgaben["rspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$rspace."\" height=\"1\">";
+                        $ausgaben["bspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$bspace."\">";
                         $ausgabewert = str_replace(chr(13).chr(10),"",parser("imgb", ""));
 
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);

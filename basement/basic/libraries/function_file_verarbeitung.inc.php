@@ -97,6 +97,32 @@
                 }
             }
 
+            // grafiken testen (kein apfel fuer nen ei)
+            $images = array("gif"  => 1, "jpg"  => 2, "jpeg" => 2, "png"  => 3);
+            if ( $images[$dateiendung] != "" ) {
+                /*
+                1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP,
+                7 = TIFF(intel byte order), 8 = TIFF(motorola byte order),
+                9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
+                */
+                $imgsize = getimagesize($_FILES[$name]["tmp_name"]);
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type soll: ".$images[$dateiendung].$debugging["char"];
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type ist: ".$imgsize[2].$debugging["char"];
+                if ( $images[$dateiendung] != $imgsize[2] ) {
+                    $array["returncode"] = 8;
+                }
+            }
+
+            // pdf files testen (erster versuch)
+            if ( $dateiendung == "pdf" ) {
+                $fp = fopen($_FILES[$name]["tmp_name"], "r");
+                $buffer = fgets($fp, 4096);
+                if ( !strstr($buffer,"%PDF") ) {
+                    $array["returncode"] = 8;
+                }
+                fclose($fp);
+            }
+
             if ( $array["returncode"] == 0 ) {
                 $MySafeModeUid = getmyuid();
                 passthru ("chuid ".$_FILES[$name]["tmp_name"]." ".$MySafeModeUid);

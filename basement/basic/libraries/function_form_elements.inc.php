@@ -184,6 +184,7 @@
                 ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$form_defaults["class"]["date"]."\"";;
                 ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
                 ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
+                ( strstr($form_options[$fields["Field"]]["foption"], "hidden") ) ? $type = "hidden" : $type = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);

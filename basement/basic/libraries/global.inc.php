@@ -85,6 +85,7 @@
     require $pathvars["libraries"]."function_file_verarbeitung.inc.php"; // upload verarbeitung
     require $pathvars["libraries"]."function_makece.inc.php"; // content editor erstellen
     require $pathvars["libraries"]."function_parser.inc.php"; // parser funktion
+    require $pathvars["libraries"]."function_right_check.inc.php"; // rechte in bereichen pruefen
     require $pathvars["libraries"]."function_rparser.inc.php"; // parser funktion recursiv
 
     if ( $specialvars["postgres"] == "-1" ) {

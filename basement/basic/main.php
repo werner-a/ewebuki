@@ -216,6 +216,11 @@
         }
     }
 
+    // view funktion
+    if ( $environment["katid"] == "view" ) {
+        include $pathvars["libraries"]."view.inc.php";
+    }
+
     // steuerung der funktionen
     require $pathvars["config"]."addon.cfg.php";
 
