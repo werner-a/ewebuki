@@ -99,13 +99,14 @@
                 if ( strlen($level1array["label"]) > $cfg["menu"]["level1"]["length"] ) {
                     $level1array["label"] = substr($level1array["label"],0,$cfg["menu"]["level1"]["length"]-4)." ...";
                 }
-                $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
-                if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
 
                 // wo geht der href hin?
                 if ( $level1array["exturl"] == "" ) {
                     $href = $cfg["menu"]["base"]."/".$level1array["entry"].".html";
                     $target = "";
+
+                    $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
+                    if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
                 } else {
                     $href = $level1array["exturl"];
                     $target = $cfg["menu"]["level1"]["target"];
@@ -195,6 +196,17 @@
                     if ( $level2array["exturl"] == "" ) {
                         $href = $cfg["menu"]["base"]."/".$level1array["entry"]."/".$level2array["entry"].".html";
                         $target = "";
+
+                        $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
+                        if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
+
+                        // verhalten der naechsten ebene steuern
+                        if ( strstr($environment["ebene"],"/".$level1array["entry"]."/".$level2array["entry"]) || strstr($environment["kategorie"],$level2array["entry"]) ) {
+                            if ( $cfg["menu"]["level3"]["full"] == -1 ) $mandatory = "";
+                            if ( $cfg["menu"]["level3"]["dynamic"] == -1 ) $cfg["menu"]["level3"]["enable"] = -1;
+                        } else {
+                            if ( $cfg["menu"]["level3"]["dynamic"] == -1 ) $cfg["menu"]["level3"]["enable"] = 0;
+                        }
                     } else {
                         $href = $level2array["exturl"];
                         $target = $cfg["menu"]["level2"]["target"];
@@ -202,21 +214,7 @@
                     $marken = array("##target##", "##link##", "##label##");
                     $ersatz = array($target, $href, $level2array["label"]);
 
-
-                    if ( $level2array["exturl"] == "" ) {
-                        $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
-                        if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
-                        if ( strstr($environment["ebene"],"/".$level1array["entry"]."/".$level2array["entry"]) || strstr($environment["kategorie"],$level2array["entry"]) ) {
-                            if ( $cfg["menu"]["level3"]["full"] == -1 ) $mandatory = "";
-                            if ( $cfg["menu"]["level3"]["dynamic"] == -1 ) $cfg["menu"]["level3"]["enable"] = -1;
-                        } else {
-                            if ( $cfg["menu"]["level3"]["dynamic"] == -1 ) $cfg["menu"]["level3"]["enable"] = 0;
-                        }
-                    #   $ausgaben["punkte"] .= "<a class=\"".$cfg["menu"]["level2"]["style"]."\" href=\"".$cfg["menu"]["base"]."/".$level1array["entry"]."/".$level2array["entry"].".html\">".$level2array["label"]."</a><br>";
-                    }# else {
-                    #   $ausgaben["punkte"] .= "<a class=\"".$cfg["menu"]["level2"]["style"]."\" target=\"_blank\" href=\"".$level2array["exturl"]."\">".$level2array["label"]."</a><br>";
                     $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level2"]["link"]);
-                    #}
                 }
             }
 
@@ -279,12 +277,6 @@
                             $marken = array("##target##", "##link##", "##label##");
                             $ersatz = array($target, $href, $level3array["label"]);
 
-
-                            #if ( $level3array["exturl"] == "" ) {
-                            #   $ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" href=\"".$cfg["menu"]["base"]."/".$level1array["entry"]."/".$level2array["entry"]."/".$level3array["entry"].".html\">".$level3array["label"]."</a><br>";
-                            #} else {
-                            #   $ausgaben["punkte"] .= "<img src=\"../../images/".$environment["design"]."/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a class=\"".$cfg["menu"]["level3"]["style"]."\" target=\"_blank\" href=\"".$level3array["exturl"]."\">".$level3array["label"]."</a><br>";
-                            #}
                             $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level3"]["link"]);
                         }
                     }
