@@ -1,20 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
 <head>
-<meta NAME="author" CONTENT="Werner Ammon">
-<meta NAME="publisher" CONTENT="Chaos Networks">
-<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
-<meta NAME="audience" CONTENT="alle">
-<meta NAME="robots" CONTENT="index,follow">
-<meta NAME="language" CONTENT="de">
-<meta http-equiv="Content-Language" content="de">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>passed.modify</title>
-<link rel="stylesheet" href="../../css/business.css" type="text/css">
-<link href="../../css/net.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
 </head>
 <body bgcolor="#FFFFFF">
 <!--##begin-->
+<!--$Id$-->
+<script language="JavaScript">
+<!--
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+//-->
+</script>
 <form method="POST" action="!#ausgaben_form_aktion" name="modify">
   <table width="100%" border="0" cellspacing="0" cellpadding="2">
     <tr> 
@@ -24,58 +24,65 @@
       <td> 
         <table width="100%" border="0" cellspacing="0" cellpadding="2">
           <tr> 
-            <td>#(inhalt)</td>
+            <td colspan="2">#(inhalt)</td>
+          </tr>
+          <tr>
+            <td colspan="2"><font color="#FF0000">!#ausgaben_form_error</font></td>
           </tr>
           <tr> 
-            <td> 
-              <table border="0" cellpadding="4" cellspacing="0" width="100%">
+            <td width="50%"> 
+              <table border="0" cellspacing="0" cellpadding="0" width="100%">
                 <tr> 
-                  <td colspan="3"><font color="#FF0000">!#ausgaben_form_error</font></td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
                 </tr>
                 <tr> 
-                  <td colspan="2" valign="top"> 
-                    <table border="0" cellpadding="4" cellspacing="0" width="100%">
-                      <tr> 
-                        <td>#(oldpass)</td>
-                        <td>!#element_oldpass</td>
-                      </tr>
-                      <tr> 
-                        <td>#(newpass)</td>
-                        <td>!#element_newpass</td>
-                      </tr>
-                      <tr> 
-                        <td>#(chkpass)</td>
-                        <td>!#element_chkpass</td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td align="right" valign="top">&nbsp;</td>
+                  <td>#(oldpass)</td>
+                  <td>!#element_oldpass</td>
                 </tr>
+                <tr> 
+                  <td>#(newpass)</td>
+                  <td>!#element_newpass</td>
+                </tr>
+                <tr> 
+                  <td>#(chkpass)</td>
+                  <td>!#element_chkpass</td>
+                </tr>
+                <tr> 
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+            <td width="50%">&nbsp;</td>
+          </tr>
+          <tr align="right"> 
+            <td colspan="2"> 
+              <table border="0" cellspacing="0" cellpadding="0">
                 <tr> 
                   <td colspan="3"> 
-                    <script language="JavaScript">
-<!--
-  function resetForm(){
-     document.forms['modify'].reset();
-  }
-//-->
-</script>
-                    <input name="form_referer" type="hidden" id="form_referer" value="!#ausgaben_form_referer">
+                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
                   </td>
                 </tr>
                 <tr> 
                   <td> 
-                    <input type="submit" value="#(senden)" name="submit">
+                    <input name="send[]" type="submit" value="#(send)">
                   </td>
-                  <td colspan="2" align="right"><a href="!#ausgaben_form_break"> 
+                  <td align="center"> 
                     <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
-                    </a><a href="!#ausgaben_form_break">#(abbruch)</a> </td>
+                  </td>
+                  <td align="right"> 
+                    <input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+                  </td>
                 </tr>
               </table>
             </td>
           </tr>
           <tr> 
-            <td>!#ausgaben_output</td>
+            <td colspan="2"> 
+              <p>!#ausgaben_output<br>
+                !#ausgaben_inaccessible</p>
+            </td>
           </tr>
         </table>
       </td>
