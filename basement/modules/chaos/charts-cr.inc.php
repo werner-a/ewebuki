@@ -207,7 +207,8 @@
         $ausgaben["output"] .="<form action=\"".$cfg["basis"]."/cr,check.html\" method=\"post\" enctype=\"multipart/form-data\">";
         #$ausgaben[output] .="<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"200000000\">";
         $ausgaben["output"] .="<input type=\"text\" name=\"date\" value=\"".date("Y-m-d")."\"><br>";
-        $ausgaben["output"] .="<input type=\"text\" name=\"time\" value=\"".date("H:i:s")."\"><br>";
+        #$ausgaben["output"] .="<input type=\"text\" name=\"time\" value=\"".date("H:i:s")."\"><br>";
+        $ausgaben["output"] .="<input type=\"text\" name=\"time\" value=\"12:00:00\"><br>";
         $ausgaben["output"] .="<input type=\"file\" name=\"upload1\"><br>";
         $ausgaben["output"] .="<input type=\"file\" name=\"upload2\"><br>";
         $ausgaben["output"] .="<input type=\"file\" name=\"upload3\"><br>";
