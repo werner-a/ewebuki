@@ -45,7 +45,87 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    ### put your code here ###
+    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+
+        // page basics
+        // ***
+
+        // warnung ausgeben
+        if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
+
+        // path fuer die schaltflaechen anpassen
+        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+
+        // label bearbeitung aktivieren
+        if ( isset($HTTP_GET_VARS["edit"]) ) {
+            $specialvars["editlock"] = 0;
+        } else {
+            $specialvars["editlock"] = -1;
+        }
+
+        // +++
+        // page basics
+
+
+        // funktions bereich
+        // ***
+
+        ### put your code here ###
+
+        /* z.B. db query
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["entries"]."
+                 WHERE 1";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        while ( $data = $db -> fetch_array($result,1) ) {
+            $dataloop["list"][$data["id"]][0] = $data["field1"];
+            $dataloop["list"][$data["id"]][1] = $data["field2"];
+        }
+        */
+        // +++
+        // funktions bereich
+
+
+        // page basics
+        // ***
+
+        // fehlermeldungen
+        if ( $HTTP_GET_VARS["error"] != "" ) {
+            if ( $HTTP_GET_VARS["error"] == 1 ) {
+                $ausgaben["form_error"] = "#(error1)";
+            }
+        } else {
+            $ausgaben["form_error"] = "";
+        }
+
+        // navigation erstellen
+        $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add.html\">#(new)</a>";
+
+        // hidden values
+        #$ausgaben["form_hidden"] .= "";
+
+        // was anzeigen
+        #$mapping["main"] = crc32($environment["ebene"]).".list";
+        #$mapping["navi"] = "leer";
+
+        // unzugaengliche #(marken) sichtbar machen
+        if ( isset($HTTP_GET_VARS["edit"]) ) {
+            $ausgaben["inaccessible"] = "inaccessible values:<br />";
+            $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
+        } else {
+            $ausgaben["inaccessible"] = "";
+        }
+
+        // wohin schicken
+        #n/a
+
+        // +++
+        // page basics
+
+    } else {
+        header("Location: ".$pathvars["virtual"]."/");
+    }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
