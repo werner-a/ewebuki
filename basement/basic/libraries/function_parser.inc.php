@@ -68,9 +68,16 @@
 
         // variableninit
         global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben;
-
-        // file auf existenz ueberpruefen
-        $template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";
+        
+        // original template find
+        #$template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";        
+        if ( file_exists($pathvars["templates"].$parse_path.$parse_name.".tem.html") ) {
+          $template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";
+        } else { 
+          $template = $pathvars["fileroot"]."templates/default/".$parse_path.$parse_name.".tem.html";
+        }
+        
+        // file auf existenz ueberpruefen        
         if ( file_exists($template) == -1 ) {
             $fd = fopen($template,"r");
 

@@ -51,14 +51,27 @@
   function rparser($startfile, $default_template) {
     global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $mapping, $loopcheck;
     
-    // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
-    $template = $pathvars["templates"].$startfile;
+    // original template find
+    #$template = $pathvars["templates"].$startfile;
+    if ( file_exists($pathvars["templates"].$startfile) ) {
+      $template = $pathvars["templates"].$startfile;
+    } else { 
+      $template = $pathvars["fileroot"]."templates/default/".$startfile;
+    }
+    
+    // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.    
     if ( !file_exists($template) && $default_template != "" ) {               
         if ( $startfile == $loopcheck ) {        
           if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found. Loop detect!!!".$debugging["char"];
         } else {  
           if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found using: ".$default_template.$debugging["char"];
-          $template = $pathvars["templates"].$default_template;
+          // original template find
+          #$template = $pathvars["templates"].$default_template;
+          if ( file_exists($pathvars["templates"].$default_template) ) {
+            $template = $pathvars["templates"].$default_template;
+          } else { 
+            $template = $pathvars["fileroot"]."templates/default/".$default_template;
+          }
         }        
         $loopcheck = $startfile;
     } else {
