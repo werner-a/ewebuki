@@ -32,10 +32,10 @@
 
 
 # alter name geht weiterhin 
-phpwebkit -a htdocs
+phpwebkit -a eWeBuKi
 
 # ewebuki in einzelteilen
-htdocs basement index.php.auto-dist index.php.rand-dist robots.txt-dist .htaccess-dist
+eWeBuKi basement index.php.auto-dist index.php.rand-dist robots.txt-dist .htaccess-dist
 basic basement/basic
 conf basement/conf
 css basement/css
@@ -46,7 +46,7 @@ sql basement/sql
 file basement/file
 templates basement/templates
 
-# die kunden  module
+# die kunden module
 admin basement/modules/admin
 chaos basement/modules/chaos
 creative basement/modules/creative
@@ -55,8 +55,5 @@ koppe basement/modules/koppe
 
 # grundelemente auf einmal
 snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
-
-# test
-test -d eWeBuKi snapshot
 
 # EOF
