@@ -96,9 +96,9 @@
                 }
             }
 
-            // grafiken testen (kein apfel fuer nen ei)
+            // grafik formate testen
             $images = array("gif"  => 1, "jpg"  => 2, "jpeg" => 2, "png"  => 3);
-            if ( $images[$dateiendung] != "" ) {
+            if ( $images[$dateiendung] != "" && $array["returncode"] == 0 ) {
                 /*
                 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP,
                 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order),
@@ -112,8 +112,8 @@
                 }
             }
 
-            // pdf files testen (erster versuch)
-            if ( $dateiendung == "pdf" ) {
+            // pdf files testen
+            if ( $dateiendung == "pdf" && $array["returncode"] == 0 ) {
                 $fp = fopen($_FILES[$name]["tmp_name"], "r");
                 $buffer = fgets($fp, 4096);
                 if ( !strstr($buffer,"%PDF") ) {
