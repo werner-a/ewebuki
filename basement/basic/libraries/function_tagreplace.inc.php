@@ -46,7 +46,9 @@
     function tagreplace($replace) {
         global $pathvars, $environment, $ausgaben;
         // neues generelles tagreplace
-        while ( ereg("\[[A-Z1-2]{1,6}(\]|=)", $replace, $tag ) ) {
+        while ( preg_match("/\[[A-Z1-2]{1,6}(\]|=)/", $replace, $tag ) ) {
+        // fuck ereg -> is to slow!
+        #while ( ereg("\[[A-Z1-2]{1,6}(\]|=)", $replace, $tag ) ) {
             $opentag = $tag[0];
             if ( strstr($replace, $opentag) ){
                 // wo beginnt der tag
@@ -432,13 +434,14 @@
                         } else {
                             $cellpadding = " cellpadding=\"1\"";
                         }
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<table".$cellspacing.$cellpadding.$width.$align.$border.">".$tagwerte[1]."</table>",$replace);
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<table".$cellspacing.$cellpadding.$width.$align.$border.">".$tagwerte[1]."</table>\n",$replace);
+                        $replace = tagreplace($replace);
                         break;
                     case "[ROW]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<tr>".$tagwert_nocrlf."</tr>",$replace);
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<tr>".$tagwert_nocrlf."</tr>\n",$replace);
                         break;
                     case "[COL]":
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<td valign=\"top\">".$tagwert_nocrlf."</td>",$replace);
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<td valign=\"top\">".$tagwert_nocrlf."</td>\n",$replace);
                         break;
                     case "[COL=":
                         $tagwerte = explode("]",$tagwert_nocrlf,2);
@@ -497,7 +500,6 @@
                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ersetze marke ".$key." => ".$value.$debugging["char"];
             }
         }
-
         return $replace;
     }
 
