@@ -113,7 +113,7 @@
                 // lang management form elemente begin
                 // ***
                 $ausgaben["langtabelle"]  = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-                $ausgaben["langtabelle"] .= "<tr><td>#-(lang)</td><td>#-(label)</td><td>#-(exturl)</td><td>&nbsp;</td></tr>\n";
+                $ausgaben["langtabelle"] .= "<tr><td>Sprache</td><td>angezeigter Menutext</td><td>externer Link</td><td>&nbsp;</td></tr>\n";
                 $element_lang = form_elements( $db_entries_lang, $HTTP_POST_VARS );
                 $ausgaben["langtabelle"] .= "<tr>";
                 $ausgaben["langtabelle"] .= "<td>".$element_lang["lang"]."</td>";
@@ -217,7 +217,7 @@
                 // lang management form elemente begin
                 // ***
                 $ausgaben["langtabelle"]  = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-                $ausgaben["langtabelle"] .= "<tr><td>#-(lang)</td><td>#-(label)</td><td>#-(exturl)</td><td>&nbsp;</td></tr>\n";
+                $ausgaben["langtabelle"] .= "<tr><td>Sprache</td><td>angezeigter Menutext</td><td>externer Link</td><td>&nbsp;</td></tr>\n";
                 $sql = "SELECT * FROM ".$db_entries_lang." where mid=".$environment["parameter"][2]." ORDER by lang";
                 $result = $db -> query($sql);
                 while ( $lang = $db -> fetch_array($result,1) ) {
