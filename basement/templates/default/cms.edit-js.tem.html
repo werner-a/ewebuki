@@ -1,76 +1,113 @@
 <!--##begin-->
 <NOSCRIPT>
 Sie haben Javascript deaktiviert!<BR>
-Das einfügen von HTML Tags funktioniert nicht ohne Javascript. Bitte aktivieren Sie Javascript.
+Das einfügen von Tags funktioniert nicht ohne Javascript. Bitte aktivieren Sie Javascript.
 </NOSCRIPT>
 <SCRIPT language="JavaScript1.1">
 function chk(field,anzahl){
-	anzahl=5000;
-	laenge=eval('document.form.content.value.length');
-	/*
-	if (laenge>=anzahl){
-		alert('Ihre Eingabe im Feld "Text" ist '+laenge+' Zeichen lang.\nMaximal sind nur '+anzahl+' Zeichen erlaubt.\nKürzen Sie bitte Ihre Eingabe und wiederholen Sie den Vorgang.\n');
-	return false;
-	}
-	*/
+    /*
+    anzahl=5000;
+    laenge=eval('document.form.content.value.length');
+    if (laenge>=anzahl){
+        alert('Ihre Eingabe im Feld "Text" ist '+laenge+' Zeichen lang.\nMaximal sind nur '+anzahl+' Zeichen erlaubt.\nKürzen Sie bitte Ihre Eingabe und wiederholen Sie den Vorgang.\n');
+        return false;
+    }
+    */
 }
+
 function zaehler(field,anzahl){
-	/* anzahl=5000; */
-	laenge=eval('document.form.content.value.length');
-	/* document.all.Zeichen.innerHTML=anzahl-laenge-1; */
-	document.all.Zeichen.innerHTML=laenge+1;
+    /*
+    // anzahl=5000;
+    laenge=eval('document.form.content.value.length');
+    // document.all.Zeichen.innerHTML=anzahl-laenge-1;
+    document.all.Zeichen.innerHTML=laenge+1;
+    */
 }
+
 function INSst(st,form,field){
-	if (st=='b')
-		st='[B][\/B]';
-	else if (st=='i')
-		st='[I][\/I]';
-	else if (st=='bi')
-		st='[B][I][\/I][\/B]';
-	else if (st=='cent')
-		st='[CENTER][\/CENTER]';
-	else if (st=='q')
-		st='[QUOTE][\/QUOTE]';
-	else if (st=='c')
-		st='[CITE][\/CITE]';
-	else if (st=='ul')
-		st='[LIST]Element[*]Element[\/LIST]';
-	else if (st=='ol')
-		st='[LIST=1|a]Element[*]Element[\/LIST]';
-	else if (st=='img')
-		st='[IMG]Url,...[\/IMG]';
-	else if (st=='imgb')
-		st='[IMG=image.art\;l|r]alt[\/IMG]';
-	else if (st=='link')
-		st='[LINK]http:\/\/[\/LINK]';
-	else if (st=='linkb')
-		st='[LINK=http:\/\/]Text[\/LINK]';
-	else if (st=='e')
-		st='[EMAIL]Adresse[\/EMAIL]';
-	else if (st=='eb')
-		st='[EMAIL=Adresse]Text[\/EMAIL]';
-	else if (st=='h1')
-		st='[H1][\/H1]';
-	else if (st=='h2')
-		st='[H2][\/H2]';
-	else if (st=='hl')
-		st='[HL][\/HL]';
-	else if (st=='tab')
-		st='[TAB][ROW][COL]Text[\/COL][\/ROW][\/TAB]';	
-	else if (st=='row')
-		st='[ROW][\/ROW]';
-	else if (st=='col')
-		st='[COL]Text[\/COL]';
-	else if (st=='int')
-		st='#[link][opt. text]';
+
+    var myField = eval('document.'+form+'.'+field+'');
+    
+    //IE - markierten Text in den Tag einbauen
+    if (document.selection) {
+        myField.focus();
+        sel = document.selection.createRange();
+		selText = sel.text;        
+    }
+    //MOZILLA + NETSCAPE - markierten Text in den Tag einbauen
+    if (eval('document.'+form+'.'+field+'.selectionStart') || eval('document.'+form+'.'+field+'.selectionStart') == "0") {
+        var startPos = eval('document.'+form+'.'+field+'.selectionStart');
+        var endPos = eval('document.'+form+'.'+field+'.selectionEnd');
+        var chaineContent = eval('document.'+form+'.'+field+'.value');
+
+        selText = chaineContent.substring(startPos, endPos);
+    } else {
+        // selText = '';
+    }
+
+    if (st=='b')
+        st='[B]' + selText + '[\/B]';
+    else if (st=='i')
+        st='[I]' + selText + '[\/I]';
+    else if (st=='bi')
+        st='[B][I]' + selText + '[\/I][\/B]';
+    else if (st=='cent')
+        st='[CENTER]' + selText + '[\/CENTER]';
+    else if (st=='q')
+        st='[QUOTE]' + selText + '[\/QUOTE]';
+    else if (st=='c')
+        st='[CITE]' + selText + '[\/CITE]';
+    else if (st=='ul')
+        st='[LIST]' + selText + '[*]Element[\/LIST]';
+    else if (st=='ol')
+        st='[LIST=1|a]' + selText + '[*]Element[\/LIST]';
+    else if (st=='img')
+        st='[IMG]Url,...[\/IMG]';
+    else if (st=='imgb')
+        st='[IMG=image.art\;l|r]' + selText + '[\/IMG]';
+    else if (st=='link')
+        st='[LINK]http:\/\/[\/LINK]';
+    else if (st=='linkb')
+        st='[LINK=http:\/\/]' + selText + '[\/LINK]';
+    else if (st=='e')
+        st='[EMAIL]Adresse[\/EMAIL]';
+    else if (st=='eb')
+        st='[EMAIL=Adresse]' + selText + '[\/EMAIL]';
+    else if (st=='h1')
+        st='[H1]' + selText + '[\/H1]';
+    else if (st=='h2')
+        st='[H2]' + selText + '[\/H2]';
+    else if (st=='hl')
+        st='[HL][\/HL]';
+    else if (st=='tab')
+        st='[TAB][ROW][COL]' + selText + '[\/COL][\/ROW][\/TAB]';
+    else if (st=='row')
+        st='[ROW][\/ROW]';
+    else if (st=='col')
+        st='[COL]' + selText + '[\/COL]';
+    else if (st=='int')
+        st='#[link][' + selText + ']';
 !{extension}
-	else
-		st='';
-	standard='';
-	text=eval('document.'+form+'.'+field+'.value')+st;
-	eval('document.'+form+'.'+field+'.value=text');
-	eval('document.'+form+'.'+field+'.focus()');
-	eval('document.'+form+'.st.value=standard');
+    else
+        st='';
+		
+    //IE support
+    if (document.selection) {
+        myField.focus();
+        sel = document.selection.createRange();
+        sel.text = st;
+        eval('document.'+form+'.insert.focus()');
+    }
+    //MOZILLA + NETSCAPE support
+    else if (eval('document.'+form+'.'+field+'.selectionStart') || eval('document.'+form+'.'+field+'.selectionStart') == "0") {
+        // var startPos = eval('document.'+form+'.'+field+'.selectionStart');
+        // var endPos = eval('document.'+form+'.'+field+'.selectionEnd');
+        // var chaineContent = eval('document.'+form+'.'+field+'.value');
+
+        myField.value = chaineContent.substring(0, startPos) + st + chaineContent.substring(endPos, chaineContent.length);
+    } else {
+        myField.value += st;
+    }
 }
 </SCRIPT>
 <!--##end-->

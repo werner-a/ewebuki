@@ -7,47 +7,80 @@
 </head>
 <body bgcolor="#FFFFFF">
 <!--##begin-->
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table width="600" border="0" cellspacing="0" cellpadding="2">
   <tr> 
     <td bgcolor="#EC9379">#(ueberschrift)</td>
   </tr>
   <tr> 
-    <td> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="2">
-        <tr> 
-          <td>#(inhalt)</td>
-        </tr>
-        <tr> 
-          <td>
-            <form method="GET" action="!#ausgaben_form_aktion">
-              #(fieldlabel) 
-              <input name="search" type="text" class="textfield" value="!#ausgaben_search">
-              <input type="submit" name="Abschicken" value="#-(senden)">
-              <label> 
-              <input type="radio" name="what" value="1" !#ausgaben_1>
-              #-(filter1)</label> <label> 
-              <input type="radio" name="what" value="2" !#ausgaben_2>
-              #-(filter2).</label> <label> 
-              <input type="radio" name="what" value="3" !#ausgaben_3>
-              #-(filter3) </label> 
-            </form>
-            
-          </td>
-        </tr>
+    <td>#(inhalt)
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
           <td> 
-            <hr>
-            !#ausgaben_result !#ausgaben_output 
-            <hr>
+            <form style="margin:0; padding:0;" method="GET" action="!#ausgaben_form1_aktion">
+              <label> </label> #(fieldlabel) 
+              <input name="search" type="text" class="textfield" value="!#ausgaben_search">
+              <input type="submit" name="Abschicken" value="#(senden)">
+              !#ausgaben_filter 
+            </form>
+          </td>
+          <td align="right"> 
+            <form style="margin:0; padding:0;" name="form1" method="get" action="!#ausgaben_form2_aktion">
+              <select name="anzahl" onChange="submit()">
+                <option selected>Upload</option>
+                <option value="1">1 Datei</option>
+                <option value="2">2 Dateien</option>
+                <option value="3">3 Dateien</option>
+                <option value="4">4 Dateien</option>
+                <option value="5">5 Dateien</option>
+              </select>
+            </form>
+          </td>
+          <td align="right"><label></label></td>
+        </tr>
+      </table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td align="left" colspan="2">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td class="hervorgehoben-rot">!#ausgaben_form_error</td>
+          <td class="hervorgehoben-rot" align="right">!#ausgaben_send_image !#ausgaben_filemodify 
+            !#ausgaben_filedel</td>
+        </tr>
+        <tr> 
+          <td class="fkrcontent" colspan="2"><img src="../../images/business/bgcol.gif" width="100%" height="1">
+            <hr size="1" noshade>
           </td>
         </tr>
-        <tr>
-          <td>!#ausgaben_upload</td>
+        <tr> 
+          <td colspan="2">!#ausgaben_result</td>
+        </tr>
+      </table>
+      !#ausgaben_output<br>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td colspan="2"> 
+            <div align="right"></div>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2">
+            <hr size="1" noshade>
+          </td>
+        </tr>
+        <tr> 
+          <td valign="top">#(gesamt) !#ausgaben_gesamt</td>
+          <td align="right" valign="top">!#ausgaben_inhalt_selector</td>
+        </tr>
+        <tr> 
+        </tr>
+        <tr> 
+          <td valign="top" colspan="2"><br>
+            #(text1)</td>
         </tr>
       </table>
     </td>
   </tr>
 </table>
-<!--##end-->
-</body>
+<p>&nbsp;</p></body>
 </html>
