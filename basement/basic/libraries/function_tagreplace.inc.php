@@ -276,6 +276,16 @@
                         } else {
                             $border = "";
                         }
+                        if ($imgwerte[4] == "" ) {
+                            $vspace = "";
+                        } else {
+                            $vspace = "vspace=\"".$imgwerte[4]."\"";
+                        }
+                        if ($imgwerte[5] == "" ) {
+                            $hspace = "";
+                        } else {
+                            $hspace = "hspace=\"".$imgwerte[5]."\"";
+                        }                                                                      
                         if ( $tagwerte[1] == "" ) {
                             $beschriftung = $imgwerte[0];
                         } else {
@@ -317,7 +327,7 @@
                                 }
                             }
                         }
-                        $ausgabewert = $linka."<img src=\"".$imgurl."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize.">".$linkb;
+                        $ausgabewert = $linka."<img src=\"".$imgurl."\" ".$vspace.$hspace."alt=\"".$beschriftung."\"".$align.$border.$imgsize.">".$linkb;
                         $replace = str_replace($opentag.$tagwert.$endtag,$ausgabewert,$replace);
                         break;
                     case "[IMGB=":
