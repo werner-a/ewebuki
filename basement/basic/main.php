@@ -1,4 +1,4 @@
-<?php require "libraries/global.inc.php";
+<?php $t_start = array_sum(explode(' ', microtime())); require "libraries/global.inc.php";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $main_script_name = "$Id$";
     $main_script_desc = "haupt script";
@@ -260,8 +260,11 @@
         rparser("index.tem.html", $specialvars["default_template"].".tem.html");
     }
 
+    $exec_time = array_sum(explode(' ', microtime())) - $t_start;
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Execution Time: ".$exec_time." seconds".$debugging["char"];
+
     // entgueltige Debug Ausgabe zusammensetzen und ausgeben
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $main_script_name ++ ]".$debug_chr;
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $main_script_name ++ ]".$debugging["char"];
     if ( $debugging["html_enable"] ) echo $debugging["ausgabe"].$debugging["footer"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
