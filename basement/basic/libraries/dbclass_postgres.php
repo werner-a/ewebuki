@@ -63,15 +63,15 @@
         // used via $db->connect();
         function connect() {
             $user = $this->USER;
-            $pass = $this->PASS;           
-            $host = $this->HOST;            
+            $pass = $this->PASS;
+            $host = $this->HOST;
             if ( $host != "" ) {
                 $hoststring = "host=".$host." ";
             }
             $db   = $this->DB;
             $conn = @pg_connect($hoststring."dbname=".$db." user=".$user." password=".$pass);
             $return = false;
-            
+
             // error-handling first for connection, second for
             // db-finding
 
@@ -95,7 +95,7 @@
         // used vi $db->pconnect();
         function pconnect() {
             $user = $this->USER;
-            $pass = $this->PASS;           
+            $pass = $this->PASS;
             $host = $this->HOST;
             if ( $host != "" ) {
                 $hoststring = "host=".$host." ";
@@ -103,7 +103,7 @@
             $db   = $this->DB;
             $conn = @pg_pcconnect($hoststring."dbname=".$db." user=".$user." password=".$pass);
             $return = false;
-            
+
             // error-handling first for connection, second for
             // db-finding
 
@@ -292,6 +292,10 @@
                     break;
             }
             return $row;
+        }
+
+        function data_seek($result,$offset) {
+            pg_data_seek($result,$offset);
         }
 
         function free_result($result) {
