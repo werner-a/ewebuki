@@ -196,8 +196,8 @@
                 if ( $HTTP_POST_VARS["content"] == "" ) {
                     $sql = "DELETE FROM ". SITETEXT ."
                                   WHERE  label ='".$environment["parameter"][3]."'
-                                    AND  tname ='".$environment["parameter"][2]."'";
-                                    #tid='".$environment["parameter"][4]."'";
+                                    AND  tname ='".$environment["parameter"][2]."'
+                                    AND  lang = '".$environment["language"]."'";
                 } else {
                     $sql = "UPDATE ". SITETEXT ." set
                                     content = '".$content."',
@@ -206,8 +206,8 @@
                                     ebene = '".$HTTP_SESSION_VARS["ebene"]."',
                                     kategorie = '".$HTTP_SESSION_VARS["kategorie"]."'
                              WHERE  label = '".$environment["parameter"][3]."'
-                               AND  tname = '".$environment["parameter"][2]."'";
-                                    #tid='".$environment["parameter"][4]."'";
+                               AND  tname = '".$environment["parameter"][2]."'
+                               AND  lang = '".$environment["language"]."'";
                 }
             } else {
                 $sql = "INSERT INTO ". SITETEXT ."
