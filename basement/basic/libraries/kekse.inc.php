@@ -51,7 +51,7 @@
         $specialvars["rootname"] = $db->getDb();
     }
 
-    $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/index.html\">".$specialvars["rootname"]."</a>";
+    $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/\">".$specialvars["rootname"]."</a>";
 
     // special eintraege markieren
     #$special = array( "list", "details", "modify", "start" );
@@ -88,6 +88,14 @@
             $refid = $keksarray["mid"];
             // seitentitel und kekse zusammensetzen
             if ( $keksarray["entry"] != "" ) {
+
+                // navbar links
+                if ( $path == "" ) {
+                    $ausgaben["UP"] = $pathvars["virtual"]."/index.html";
+                } else {
+                    $ausgaben["UP"] = $pathvars["virtual"].$path.".html";
+                }
+
                 $path .= "/".$keksarray["entry"];
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
                 $specialvars["pagetitle"] .= " - ".$keksarray["label"];
@@ -98,8 +106,11 @@
             $specialvars["default_template"] = $keksarray["defaulttemplate"];
 
             // navbar erstellen
-            #$ausgaben["M1"] == "";
-            #$ausgaben["M2"] == "";
+            #$ausgaben["UP"] = "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
+            $ausgaben["M1"] = "";
+            $ausgaben["M2"] = "";
+            $ausgaben["M3"] = crc32($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
+
             if ( $path.".html" == $environment["ebene"]."/".$environment["kategorie"].".html" ) {
                 $sql = "SELECT site_menu.entry, site_menu.refid, site_menu.level, site_menu_lang.lang, site_menu_lang.label, site_menu_lang.exturl FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid = site_menu_lang.mid WHERE (((site_menu.refid)=".$keksarray["refid"].") AND ((site_menu_lang.lang)='".$environment["language"]."')) order by sort;";
                 $navbarresult  = $db -> query($sql);
@@ -117,6 +128,8 @@
                     if ( $right == -1 ) {
                         if ( $ausgaben["M1"] != "" ) $ausgaben["M1"] .= " &middot; ";
                         $ausgaben["M1"] .= "<a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
+
+                        $ausgaben["L1"] .= "&middot; <a class=\"menu_punkte\" href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
                     }
                 }
                 $sql = "SELECT site_menu.entry, site_menu.refid, site_menu.level, site_menu_lang.lang, site_menu_lang.label, site_menu_lang.exturl FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid = site_menu_lang.mid WHERE (((site_menu.refid)=".$keksarray["mid"].") AND ((site_menu_lang.lang)='".$environment["language"]."')) order by sort;";
@@ -135,6 +148,8 @@
                     if ( $right == -1 ) {
                         if ( $ausgaben["M2"] != "" ) $ausgaben["M2"] .= " &middot; ";
                         $ausgaben["M2"] .= "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
+
+                        $ausgaben["L2"] .= "&middot; <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a><br>";
                     }
                 }
             }
