@@ -182,7 +182,7 @@
                             foreach ( (array)$data as $name => $value ) {
                                 $work = str_replace("!{".$name."}",$value,$work);
                             }
-                            $work = ereg_replace("!\{[0-9a-ZA-Z]+\}","&nbsp;",$work);
+                            $work = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$work);
                             $block .= $work;
                         }
                         $line = $block.trim($line)."\n";
