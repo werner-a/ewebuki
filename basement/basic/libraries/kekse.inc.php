@@ -99,6 +99,7 @@
     $refid = 0;
     $kekscount = count($kekspath);
     $hitcounter = 0;
+    unset($path);
     foreach ($kekspath as $key => $value) {
         // makierte eintraege aendern
         #if ( strstr($value, "/") ) {
