@@ -67,11 +67,11 @@
             "archiv"   => $pathvars["filebase"]["arc"],
         ),
         "size"      => array(
-            "big"      => "600",
+            "big"      => "580",
             "medium"   => "250",
             "small"    => "150",
             "thumb"    => "96",
-            "max"      => "600", # leer bedeutet, orginal bleibt erhalten
+            "max"      => "580", # leer bedeutet, orginal bleibt erhalten
         ),
         "filter"    => array(
             "0"        => array("Meine", "Dienststelle", "Alle"),
