@@ -47,8 +47,8 @@
         global $pathvars, $environment, $ausgaben, $defaults;
 
         // cariage return + linefeed fix
-        $sear = array("\r\n[TA", "\r\n[RO", "\r\n[CO", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "/HR]\r\n", "AB]\r\n", "OW]\r\n", "OL]\r\n", );
-        $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "/HR]",     "AB]",     "OW]",     "OL]",);
+        $sear = array("\r\n[TA", "\r\n[RO", "\r\n[CO", "/H1]\r\n", "/H2]\r\n", "/H3]\r\n", "/H4]\r\n", "/H5]\r\n", "/H6]\r\n[", "/HR]\r\n", "AB]\r\n", "OW]\r\n", "OL]\r\n", "IV]\r\n",);
+        $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "/HR]",     "AB]",     "OW]",     "OL]",     "IV]",);
         $replace = str_replace($sear,$repl,$replace);
 
         // neues generelles tagreplace
@@ -423,7 +423,7 @@
                         $tagwerte = explode("]",$tagwert,2);
                         $divwerte = explode(";",$tagwerte[0]);
                         if ( $divwerte[0] != "" ) {
-                            $class = " class=\"".$divwerte[1]."\"";
+                            $class = " class=\"".$divwerte[0]."\"";
                         }
                         $replace = str_replace($opentag.$tagwert.$endtag,"<div".$class.">".$tagwerte[1]."</div>",$replace);
                         break;
