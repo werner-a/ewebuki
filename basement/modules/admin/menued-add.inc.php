@@ -137,14 +137,16 @@
             form_errors( $form_options, $HTTP_POST_VARS );
 
             // gibt es einen solchen entry bereits?
-            $sql = "SELECT entry
-                      FROM ".$cfg["db"]["menu"]["entries"]."
-                     WHERE refid = '".$HTTP_POST_VARS["refid"]."'
-                       AND entry = '".$HTTP_POST_VARS["entry"]."'";
-            $result = $db -> query($sql);
-            #$data = $db -> fetch_array($result,1);
-            $num_rows = $db -> num_rows($result);
-            if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
+            if ( $HTTP_POST_VARS["entry"] != "" ) {
+                $sql = "SELECT entry
+                        FROM ".$cfg["db"]["menu"]["entries"]."
+                        WHERE refid = '".$HTTP_POST_VARS["refid"]."'
+                        AND entry = '".$HTTP_POST_VARS["entry"]."'";
+                $result = $db -> query($sql);
+                #$data = $db -> fetch_array($result,1);
+                $num_rows = $db -> num_rows($result);
+                if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
+            }
 
             // entry hinzufuegen
             if ( $ausgaben["form_error"] == "" ) {
@@ -175,7 +177,12 @@
             // sprache hinzufuegen
             if ( $ausgaben["form_error"] == "" ) {
                 $lastid = $db -> lastid();
-                $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, label) VALUES ('".$lastid."', '".$HTTP_POST_VARS["lang"]."', '".$HTTP_POST_VARS["label"]."' )";
+                $sql = "INSERT INTO  ".$cfg["db"]["lang"]["entries"]."
+                                    ( mid, lang, label, exturl )
+                             VALUES ( '".$lastid."',
+                                      '".$HTTP_POST_VARS["lang"]."',
+                                      '".$HTTP_POST_VARS["label"]."',
+                                      '".$HTTP_POST_VARS["exturl"]."' )";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
