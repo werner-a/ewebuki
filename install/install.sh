@@ -5,7 +5,7 @@
 # (c) Stefan Krister
 #     stefan.krister@creative.chaos.de
 #
-# Last change: 17 Sep 2004
+# $Id$
 #
 
 function ask()
@@ -30,24 +30,18 @@ echo
 echo "eWeBuKi install script"
 echo
 
-if [ -d basement -a -f basement/basic/main.php ]
+which cvs >/dev/null 2>&1
+if [ ! $? ]
 then
-	#
-	# CVS-Struktur vorhanden
-	#
-	echo "Anscheinend gibt es bereits einen CVS Abzug."
-	ask "Soll dieser verwendet werden (ja/nein)? " "ja"
-	if [ "$answer" != "ja" ]
+	echo "cvs ist installiert - soll der aktuelle cvs-Inhalt von eWeBuKi abgezogen"
+	ask "werden? (ja/nein) " "ja"
+	if [ "$answer" = "ja" ]
 	then
 		echo "CVS wird aktuell Abgezogen ..."
 		cvs -z3 -d:pserver:anonymous@cvs.ewebuki.berlios.de:/cvsroot/ewebuki co snapshot > /dev/null
 	fi
 else
-	#
-	# CVS abziehen
-	#
-	echo "CVS wird Abgezogen ..."
-        cvs -z3 -d:pserver:anonymous@cvs.ewebuki.berlios.de:/cvsroot/ewebuki co snapshot > /dev/null
+	echo "cvs ist nicht installiert. Es wird der Inhalt des Archivs zur Installation benutzt."
 fi
 
 echo
