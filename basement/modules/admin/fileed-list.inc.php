@@ -52,8 +52,12 @@
             if ($file_art["fuid"] == $HTTP_SESSION_VARS["uid"]) {
                 $sql = "DELETE FROM site_file WHERE fid=".$value;
                 if ($file_art["ffart"] == "pdf") {
-                    #echo $pathvars["filebase"]["maindir"].$cfg["file"]["text"]."doc_".$value.".".$file_art["ffart"];
                     $error  = unlink($pathvars["filebase"]["maindir"].$cfg["file"]["text"]."doc_".$value.".".$file_art["ffart"]);
+                    if ($error == "1") {
+                        $result = $db -> query($sql);
+                    }
+                } elseif ($file_art["ffart"] == "zip") {
+                    $error  = unlink($pathvars["filebase"]["maindir"].$cfg["file"]["archiv"]."arc_".$value.".".$file_art["ffart"]);
                     if ($error == "1") {
                         $result = $db -> query($sql);
                     }
@@ -67,12 +71,13 @@
                         $result = $db -> query($sql);
                     }
                 }
+                unset ($HTTP_SESSION_VARS["images_memo"][$value]);
             } else {
                 $ausgaben["form_error"] .= "Fehler ! Es können nur eigene Dateien gelöscht werden<br>";
                 unset ($HTTP_SESSION_VARS["images_memo"][$environment["parameter"][2]]);
             }
         }
-        $HTTP_SESSION_VARS["images_memo"] = "";
+        #$HTTP_SESSION_VARS["images_memo"] = "";
 
     }
 
