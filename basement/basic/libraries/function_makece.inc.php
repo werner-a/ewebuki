@@ -47,8 +47,6 @@
         global $db, $pathvars, $ausgaben, $extension, $specialvars, $defaults;
         $ausgaben["ce_name"] = $ce_name;
 
-        $specialvars["editlock"] = -1;
-
         // vogelwilde regex die viel arbeit erspart hat
         preg_match_all("/_([0-9]*)\./",$ce_inhalt,$found);
         #$array = array_merge(explode(";",$fileid),$found[1]);
@@ -188,7 +186,7 @@
         $ausgaben["ce_dropdown"] .= "<option value=\"\">#(tagselect)</option>";
         foreach( $cetag as $key => $value ) {
             if ( $value[0] == 1 ) {
-                $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[1]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"23\" height=\"22\" border=\"0\" /></a> ";
+                $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[1]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
             }
             $ausgaben["ce_dropdown"] .= "<option value=\"".$key."\">".$value[1]."</option>";
             #ce_anker
@@ -198,11 +196,11 @@
 
         $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";
         $ausgaben["ce_upload"] .= "<option value=\"\">#(upload)</option>";
-        $ausgaben["ce_upload"] .= "<option value=\"1\">1 Datei</option>";
-        $ausgaben["ce_upload"] .= "<option value=\"2\">2 Dateien</option>";
-        $ausgaben["ce_upload"] .= "<option value=\"3\">3 Dateien</option>";
-        $ausgaben["ce_upload"] .= "<option value=\"4\">4 Dateien</option>";
-        $ausgaben["ce_upload"] .= "<option value=\"5\">5 Dateien</option>";
+        $ausgaben["ce_upload"] .= "<option value=\"1\">1 #(file)</option>";
+        $ausgaben["ce_upload"] .= "<option value=\"2\">2 #(files)</option>";
+        $ausgaben["ce_upload"] .= "<option value=\"3\">3 #(files)</option>";
+        $ausgaben["ce_upload"] .= "<option value=\"4\">4 #(files)</option>";
+        $ausgaben["ce_upload"] .= "<option value=\"5\">5 #(files)</option>";
         $ausgaben["ce_upload"] .= "</select>";
 
         $ausgaben["ce_inhalt"] = $ce_inhalt;
