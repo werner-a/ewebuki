@@ -151,7 +151,7 @@
                 } else {
                     #$line = $line."# (".$label.")&nbsp;<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
                     #$ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
-                    $ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<br />\n";
+                    if ( $ausgaben["inaccessible"] != "" ) $ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<br />\n";
                 }
             }
             }
