@@ -33,7 +33,7 @@ htdocs basement index.php.auto-dist index.php.rand-dist robots.txt-dist .htacces
 basic basement/basic
 conf basement/conf
 css basement/css
-doku basement/doku
+docu basement/docu
 images basement/images
 
 modules basement/modules README leer-sub.inc.php leer.cfg.php leer.inc.php
