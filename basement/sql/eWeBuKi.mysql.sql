@@ -1,19 +1,19 @@
-# phpMyAdmin MySQL-Dump
-# version 2.5.0
-# http://www.phpmyadmin.net/ (download page)
+# phpMyAdmin SQL Dump
+# version 2.5.3
+# http://www.phpmyadmin.net
 #
 # Host: localhost
-# Erstellungszeit: 25. August 2003 um 13:27
-# Server Version: 3.23.52
-# PHP-Version: 4.2.2
+# Erstellungszeit: 19. Januar 2004 um 15:59
+# Server Version: 3.23.55
+# PHP-Version: 4.3.1
+# 
 # Datenbank: `eWeBuKi`
+# 
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `auth_level`
-#
-# Erzeugt am: 25. August 2003 um 07:58
-# Aktualisiert am: 25. August 2003 um 09:41
 #
 
 CREATE TABLE `auth_level` (
@@ -29,13 +29,11 @@ CREATE TABLE `auth_level` (
 
 INSERT INTO `auth_level` VALUES (1, 'cms_edit', 'berechtigt zum bearbeiten der templates');
 INSERT INTO `auth_level` VALUES (2, 'cms_admin', 'berechtigt zur administration');
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `auth_right`
-#
-# Erzeugt am: 25. August 2003 um 07:58
-# Aktualisiert am: 25. August 2003 um 09:42
 #
 
 CREATE TABLE `auth_right` (
@@ -52,13 +50,11 @@ CREATE TABLE `auth_right` (
 
 INSERT INTO `auth_right` VALUES (1, 1, 1);
 INSERT INTO `auth_right` VALUES (2, 1, 2);
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `auth_user`
-#
-# Erzeugt am: 25. August 2003 um 10:45
-# Aktualisiert am: 25. August 2003 um 10:45
 #
 
 CREATE TABLE `auth_user` (
@@ -69,8 +65,8 @@ CREATE TABLE `auth_user` (
   `username` varchar(20) NOT NULL default '',
   `pass` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`uid`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `uid` (`uid`)
+  UNIQUE KEY `uid` (`uid`),
+  UNIQUE KEY `username` (`username`)
 ) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=2 ;
 
 #
@@ -78,13 +74,11 @@ CREATE TABLE `auth_user` (
 #
 
 INSERT INTO `auth_user` VALUES (1, '', '', '', 'ewebuki', 'JqXRXh15OlT8.');
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `site_file`
-#
-# Erzeugt am: 25. August 2003 um 12:15
-# Aktualisiert am: 25. August 2003 um 12:17
 #
 
 CREATE TABLE `site_file` (
@@ -107,13 +101,11 @@ CREATE TABLE `site_file` (
 #
 
 INSERT INTO `site_file` VALUES (1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo', '', '', NULL);
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `site_form`
-#
-# Erzeugt am: 25. August 2003 um 10:48
-# Aktualisiert am: 25. August 2003 um 13:17
 #
 
 CREATE TABLE `site_form` (
@@ -127,7 +119,7 @@ CREATE TABLE `site_form` (
   `frequired` enum('0','-1') NOT NULL default '0',
   `fcheck` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`fid`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) TYPE=MyISAM AUTO_INCREMENT=5 ;
 
 #
 # Daten für Tabelle `site_form`
@@ -136,13 +128,12 @@ CREATE TABLE `site_form` (
 INSERT INTO `site_form` VALUES (1, 'username', '210295197.modify', '0', '', '', NULL, '-1', '');
 INSERT INTO `site_form` VALUES (2, 'pass', '210295197.modify', '0', '', '', 'password', '-1', '');
 INSERT INTO `site_form` VALUES (3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', '');
+INSERT INTO `site_form` VALUES (4, 'fid', '-939795212.describe', '0', '', '', 'hidden', '-1', '');
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `site_form_lang`
-#
-# Erzeugt am: 25. August 2003 um 10:48
-# Aktualisiert am: 25. August 2003 um 13:18
 #
 
 CREATE TABLE `site_form_lang` (
@@ -163,13 +154,11 @@ CREATE TABLE `site_form_lang` (
 INSERT INTO `site_form_lang` VALUES (1, 1, 'ger', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.');
 INSERT INTO `site_form_lang` VALUES (2, 2, 'ger', NULL, '', 'Passworte nicht identisch oder leer.', '');
 INSERT INTO `site_form_lang` VALUES (3, 3, 'ger', NULL, '', 'Passworte nicht identisch oder leer.', '');
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `site_menu`
-#
-# Erzeugt am: 25. August 2003 um 07:58
-# Aktualisiert am: 25. August 2003 um 07:58
 #
 
 CREATE TABLE `site_menu` (
@@ -193,13 +182,11 @@ INSERT INTO `site_menu` VALUES (1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'defau
 INSERT INTO `site_menu` VALUES (2, 1, 'test1', NULL, 10, NULL, NULL, NULL, 'default1');
 INSERT INTO `site_menu` VALUES (3, 1, 'test2', NULL, 20, NULL, NULL, NULL, 'default1');
 INSERT INTO `site_menu` VALUES (4, 0, 'impressum', NULL, 20, NULL, NULL, NULL, 'default1');
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `site_menu_lang`
-#
-# Erzeugt am: 25. August 2003 um 07:58
-# Aktualisiert am: 25. August 2003 um 07:58
 #
 
 CREATE TABLE `site_menu_lang` (
@@ -219,13 +206,11 @@ INSERT INTO `site_menu_lang` VALUES (1, 1, 'ger', 'Demo', NULL);
 INSERT INTO `site_menu_lang` VALUES (2, 2, 'ger', 'Test 1', NULL);
 INSERT INTO `site_menu_lang` VALUES (3, 3, 'ger', 'Test 2', NULL);
 INSERT INTO `site_menu_lang` VALUES (4, 4, 'ger', 'Impressum', NULL);
+
 # --------------------------------------------------------
 
 #
 # Tabellenstruktur für Tabelle `site_text`
-#
-# Erzeugt am: 25. August 2003 um 12:21
-# Aktualisiert am: 25. August 2003 um 12:23
 #
 
 CREATE TABLE `site_text` (
@@ -239,7 +224,7 @@ CREATE TABLE `site_text` (
   `html` enum('-1','0') NOT NULL default '0',
   `content` text NOT NULL,
   PRIMARY KEY  (`tid`)
-) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=14 ;
+) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=29 ;
 
 #
 # Daten für Tabelle `site_text`
@@ -257,5 +242,19 @@ INSERT INTO `site_text` VALUES (9, 'ger', 'usered', '-1', 'auth.logout', '/image
 INSERT INTO `site_text` VALUES (10, 'ger', 'menued', '-1', 'auth.logout', '/images/business', 'po', '', 'MenuEd');
 INSERT INTO `site_text` VALUES (11, 'ger', 'ueberschrift', '-1', 'auth', '/images/business', 'po', '', 'Intern');
 INSERT INTO `site_text` VALUES (12, 'ger', 'ueberschrift', '-1', 'index', '/images/business', 'po', '', 'Menu');
-INSERT INTO `site_text` VALUES (13, 'ger', 'inhalt', '-1', 'demo', '', 'demo', '', 'Bilder im Content.\r\n\r\n[IMG=/file/picture/original/img_1.png]eWeBuKi Logo[/IMG]');
-
+INSERT INTO `site_text` VALUES (13, 'ger', 'inhalt', '-1', 'demo', '/images/business', 'bgco', '', 'Bilder im Content.\r\n\r\n[IMG=/file/picture/original/img_1.png]eWeBuKi Logo[/IMG]');
+INSERT INTO `site_text` VALUES (14, 'ger', 'senden', '-1', '-939795212.list', '/images/business', 'bgco', '', 'Go');
+INSERT INTO `site_text` VALUES (15, 'ger', 'fieldlabel', '-1', '-939795212.list', '/images/business', 'bgco', '', 'Suche');
+INSERT INTO `site_text` VALUES (16, 'ger', 'send_image', '-1', '-939795212.list', '/images/business', 'bgco', '', 'Zum Artikel');
+INSERT INTO `site_text` VALUES (17, 'ger', 'describe', '-1', '-939795212.list', '/images/business', 'bgco', '', 'Metadaten');
+INSERT INTO `site_text` VALUES (18, 'ger', 'delete1', '-1', '-939795212.list', '/images/business', 'bgco', '', 'Löschen');
+INSERT INTO `site_text` VALUES (19, 'ger', 'gesamt', '-1', '-939795212.list', '/images/business', 'bgco', '', 'Gesamt:');
+INSERT INTO `site_text` VALUES (20, 'ger', 'ffname', '-1', '-939795212.describe', '/images/business', 'po', '', 'Dateiname');
+INSERT INTO `site_text` VALUES (21, 'ger', 'fdesc', '-1', '-939795212.describe', '/images/business', 'po', '', 'Beschreibung');
+INSERT INTO `site_text` VALUES (22, 'ger', 'funder', '-1', '-939795212.describe', '/images/business', 'po', '', 'Beschriftung');
+INSERT INTO `site_text` VALUES (23, 'ger', 'fhit', '-1', '-939795212.describe', '/images/business', 'po', '', 'Schlagworte');
+INSERT INTO `site_text` VALUES (24, 'ger', 'upa', '-1', '-939795212.describe', '/images/business', 'po', '', 'Ersetzen durch');
+INSERT INTO `site_text` VALUES (25, 'ger', 'upb', '-1', '-939795212.describe', '/images/business', 'po', '', 'Die Endung der vorhandenen Datei\r\nmuß mit der Endung der neuen\r\nDatei identisch sein!');
+INSERT INTO `site_text` VALUES (26, 'ger', 'senden', '-1', '-939795212.describe', '/images/business', 'po', '', 'Eintragen');
+INSERT INTO `site_text` VALUES (27, 'ger', 'reset', '-1', '-939795212.describe', '/images/business', 'po', '', 'Zurücksetzen');
+INSERT INTO `site_text` VALUES (28, 'ger', 'abbruch', '-1', '-939795212.describe', '/images/business', 'po', '', 'Abbrechen');
