@@ -138,15 +138,20 @@
 
                 if ( $defaults["cms-tag"]["signal"] == "" ) {
                     $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";
-                    $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\" /></a>";
+                    $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\" />";
                 }
 
-                // wenn es kein button ist
-                if ( !strstr($line,"value=\"") && !strstr($line,"alt=\"") && !strstr($line,"title=\"") ) {
-                    $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"];
+                // wenn es kein value, alt, title und status in der zeile gibt
+                $vorher = substr($line,$labelbeg-10,10);;
+                if ( !strstr($vorher,"value=\"")
+                  && !strstr($vorher,"alt=\"")
+                  && !strstr($vorher,"title=\"")
+                  && !strstr($vorher,"status='") ) {
+                    $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>";
                 } else {
-                    #$line = $line." <a target=\"_top\" href=\"".$editurl.".html\"><img src=\"".$pathvars["images"]."cms-tag-".$signal.".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
-                    $line = $line." <a target=\"_top\" href=\"".$editurl.".html\">".$label."</a>";
+                    #$line = $line."# (".$label.")&nbsp;<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
+                    #$ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
+                    $ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<br />\n";
                 }
             }
             }
