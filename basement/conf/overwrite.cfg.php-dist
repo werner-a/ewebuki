@@ -50,6 +50,9 @@
   #$defaults["split"]["l1"] = " # ";
   #$defaults["split"]["l2"] = " - ";
 
+  // wo liegen die bilder fuer die editor schaltflachen?
+  #$defaults["cms-tag"]["path"] = $pathvars["images"];
+
   // tipp:
   // bei eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden
   // dann werden die bilder aus immer aus dem jeweiligen /images/design verzeichnis geladen.
