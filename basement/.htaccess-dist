@@ -1,3 +1,21 @@
-RewriteEngine  on
-RewriteBase    /
-RewriteRule    ^default		basic/main.php	[T=application/x-httpd-php]
+# don't forget to load mod_rewrite in apache-config!
+# $Id$
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # verzeichnisse und datien die nicht rewrited werden
+  RewriteRule ^basic.* - [L] 			
+  RewriteRule ^conf.* - [L] 			
+  RewriteRule ^css.* - [L] 			
+  RewriteRule ^file.* - [L] 			
+  RewriteRule ^images.* - [L] 			
+  RewriteRule ^modules.* - [L] 			
+  RewriteRule ^templates.* - [L] 			
+  
+  RewriteRule ^robots.txt - [L] 			
+  RewriteRule index.php - [L]
+
+  # der rest wird umgeleitet
+  RewriteRule ^.* basic/main.php [T=application/x-httpd-php]
+</IfModule>
