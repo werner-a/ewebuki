@@ -156,7 +156,7 @@
                     $file_id = $db->lastid();
 
                     $file_org = $cfg["file"]["maindir"].$cfg["file"]["new"].$file;
-                    $file_ext = strrchr($file,".");
+                    $file_ext = strtolower(strrchr($file,"."));
 
                     switch ($file_ext) {
                         case ".zip":
@@ -281,7 +281,7 @@
 
                     $file = $replace["name"];
                     $file_org = $cfg["file"]["maindir"].$cfg["file"]["new"].$file;
-                    $file_ext = strrchr($file,".");
+                    $file_ext = strtolower(strrchr($file,"."));
 
                     switch ($file_ext) {
                         case ".zip":
@@ -392,12 +392,13 @@
             imagecopyresized($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height, $src_width, $src_height);
         }
 
-        if ( strrchr($img_org,".") == ".jpg" ) {
+        $file_ext = strtolower(strrchr($img_org,"."));
+        if ( $file_ext == ".jpg" ) {
             imagejpeg($img_dst,$img_path."/".$img_name."_".$img_id.".jpg");
-        } elseif ( strrchr($img_org,".") == ".png" ) {
+        } elseif ( $file_ext == ".png" ) {
             imagepng($img_dst,$img_path."/".$img_name."_".$img_id.".png");
         } else {
-            echo "da ist der wurm drin";
+            echo "Bild vom Typ: ".$file_ext." kann nicht bearbeitet werden!";
         }
 
         // speicher freigeben
