@@ -53,12 +53,12 @@
 
     $pathvars["requested"] = explode("?", $_SERVER["REQUEST_URI"]);
     $pathvars["requested"] = $pathvars["requested"][0];
-    
-    // url ohne .html wird auf index.html gesetzt    
+
+    // url ohne .html wird auf index.html gesetzt
     if ( !strstr($pathvars["requested"],".html") ) {
        $pathvars["requested"] = $pathvars["requested"]."index.html"; ###
     }
-    
+
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "pathvars requested: ".$pathvars["requested"].$debugging["char"];
 
     $pathvars["level"] = explode("/", $pathvars["requested"]);
@@ -73,31 +73,31 @@
     // design detection
     if ( $pathvars["level"][1] != "" && is_dir($pathvars["fileroot"]."templates/".$pathvars["level"][1]) ) {
       $environment["design"] = $pathvars["level"][1];
-      $pathvars["virtual"] = "/".$environment["design"];       
+      $pathvars["virtual"] = "/".$environment["design"];
       $authcount++;
       $designsw = " (user)";
     } else {
       $environment["design"] = $specialvars["default_design"];
       $designsw = " (default)";
     }
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "design".$designsw.": ".$environment["design"].$debugging["char"]; 
-        
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "design".$designsw.": ".$environment["design"].$debugging["char"];
+
     // language detection
     for ( $i=1; $i<=2 ; $i++ ) {
       if ( in_array($pathvars["level"][$i],$specialvars["available_languages"]) ) {
         $position = $i;
         break;
       }
-    }              
-    if ( $position >= 1) {    
+    }
+    if ( $position >= 1) {
       $environment["language"] = $pathvars["level"][$position];
       $pathvars["virtual"] .= "/".$environment["language"];
       $langsw = " (user)";
-      $authcount++;        
+      $authcount++;
       if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang".$langsw.": ".$environment["language"].$debugging["char"];
-    } else {      
-      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "http accept lang: ".$_SERVER["HTTP_ACCEPT_LANGUAGE"].$debugging["char"];     
-      $http_accept_language = explode(",",$_SERVER["HTTP_ACCEPT_LANGUAGE"]);     
+    } else {
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "http accept lang: ".$_SERVER["HTTP_ACCEPT_LANGUAGE"].$debugging["char"];
+      $http_accept_language = explode(",",$_SERVER["HTTP_ACCEPT_LANGUAGE"]);
       foreach( $http_accept_language as $lang ) {
         if ( in_array($lang,$specialvars["available_languages"]) ) {
           $environment["language"] = $lang;
@@ -108,8 +108,8 @@
       if ( $environment["language"] == "" ) {
         $environment["language"] = $specialvars["default_language"];
         $langsw = " (default)";
-      }       
-      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang".$langsw.": ".$environment["language"].$debugging["char"];      
+      }
+      if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang".$langsw.": ".$environment["language"].$debugging["char"];
     }
 
     // host werte "www.xxx.yyy.de" in "www" und "xxx.yyy.de" array
@@ -117,7 +117,7 @@
 
     // virtual path auth korrektur und auth url init
     $ausgaben["auth_url"] = $pathvars["virtual"];
-    $authcount++;   
+    $authcount++;
     if ( strstr($pathvars["level"][$authcount],"auth" ) ) {
         $pathvars["virtual"] .= "/auth";
     }
@@ -239,7 +239,7 @@
     $db      = new DB_connect();
     $version = $db->getVERSION();
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db version: ".$version.$debugging["char"];
-    
+
     $connect = $db->connect();
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db connect: ".$connect.$debugging["char"];
 
@@ -247,7 +247,9 @@
     require $pathvars["config"]."auth.cfg.php";
     require $pathvars["libraries"]."auth.inc.php";
 
-    
+    // überschreiben von default werten
+    require $pathvars["config"]."overwrite.cfg.php";
+
     if ( $environment["katid"] == "cms") {
         include $pathvars["libraries"]."cms.inc.php";
     } elseif ($environment["katid"] == "fileed") {
@@ -268,21 +270,18 @@
         include $pathvars["libraries"]."view.inc.php";
     }
 
-    // überschreiben von default werten
-    require $pathvars["config"]."overwrite.cfg.php";        
-    
     // steuerung der funktionen
     require $pathvars["config"]."addon.cfg.php";
-    
+
     // webdesigner kann mit dieser datei das laden der templates beinflussen
     if ( file_exists($pathvars["templates"]."linking.inc.php") ) {
-      $linking_path = $pathvars["templates"];      
+      $linking_path = $pathvars["templates"];
       include $linking_path."linking.inc.php";
-    } elseif ( file_exists($pathvars["fileroot"]."templates/default/linking.inc.php") ) {  
-      $linking_path = $pathvars["fileroot"]."templates/default/";      
+    } elseif ( file_exists($pathvars["fileroot"]."templates/default/linking.inc.php") ) {
+      $linking_path = $pathvars["fileroot"]."templates/default/";
       include $linking_path."linking.inc.php";
     }
-           
+
     // rekursiven parser aufrufen
     if ( $HTTP_POST_VARS["print"] != "" || $HTTP_GET_VARS["print"] != "" ) {
         $debugging["html_enable"] = 0;
