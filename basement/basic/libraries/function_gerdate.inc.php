@@ -46,6 +46,8 @@
 
     function gerdate($art="", $value="") {
 
+        if ( $value == "" ) $aktuell = True;
+
         // gds -> german day short
         // gdl -> german day log
         // gms -> german month short
@@ -62,7 +64,7 @@
                 case "6": $tag="Sa, "; break;
             }
         } else {
-            if ( $value == "" ) $value=date("w");
+            if ( $aktuell == True ) $value=date("w");
             switch ($value) {
                 case "0": $tag="Sonntag, "; break;
                 case "1": $tag="Montag, "; break;
@@ -105,7 +107,7 @@
                 case 12: $monat="Dezember"; break;
             }
         } else {
-            if ( $value == "" ) $value=date("n");
+            if ( $aktuell == True ) $value=date("n");
             switch ($value) {
                 case 1: $monat="01."; break;
                 case 2: $monat="02."; break;
