@@ -150,7 +150,7 @@
                         <td align="right" width="574">#-(new_lang) !#element_new_lang 
                         </td>
                         <td width="30"> 
-                          <input name="add" type="image" src="../../images/business/add.gif" width="24" height="18" border="0" value="new">
+                          <input name="add[]" type="image" src="../../images/default/add.png" width="24" height="18" border="0" value="new">
                         </td>
                         <td width="4">&nbsp;</td>
                       </tr>
@@ -178,14 +178,16 @@
                 </tr>
                 <tr> 
                   <td> 
-                    <input name="image[]" type="image" value="Daten senden" src="../../images/business/send.gif">
+                    <input name="image[]" type="submit" value="#(senden)" src="../../images/default/send.png">
                   </td>
                   <td><img src="../../images/net/pos.gif" width="1" height="18" align="absbottom"></td>
-                  <td><a href="#" onClick="resetForm();return false"><img src="../../images/business/reset.gif" width="80" height="18" border="0" alt="Zurücksetzen"></a></td>
+                  <td>
+                    <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+                  </td>
                   <td><img src="../../images/net/pos.gif" width="1" height="18" align="absbottom"></td>
-                  <td><a href="!#ausgaben_form_break"><img src="../../images/business/break.gif" width="80" height="18" border="0" alt="Abbrechen"></a></td>
+                  <td><a href="!#ausgaben_form_break">#(abbrechen)</a></td>
                 </tr>
-              </table>
+              </table>	
             </td>
           </tr>
           <tr> 
