@@ -49,15 +49,20 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function rparser($startfile, $default_template) {
-    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $mapping;
-
+    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $mapping, $loopcheck;
     // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
     $template = $pathvars["templates"].$startfile;
-    if ( !file_exists($template) && $default_template != "" ) {
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found using: ".$default_template.$debugging["char"];
-        $template = $pathvars["templates"].$default_template;
+    if ( !file_exists($template) && $default_template != "" ) {               
+        if ( $startfile == $loopcheck ) {        
+          if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found. Loop detect!!!".$debugging["char"];
+        } else {  
+          if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found using: ".$default_template.$debugging["char"];
+          $template = $pathvars["templates"].$default_template;
+        }        
+        $loopcheck = $startfile;
+    } else {
+        unset($loopcheck);
     }
-
     if ( file_exists($template) ) {
       $fd = fopen($template, "r");
         while (!feof($fd)) {
