@@ -70,6 +70,16 @@
     } else {
         unset($dynamiccss);
     }
+    
+    // dynamic bg - db test/extension
+    $sql = "select dynamicbg from site_".$mt ;
+    $result = $db -> query($sql);
+    if ( $result ) {
+        #echo $db-> field_name($result,0);
+        $dynamicbg =  "site_".$mt.".dynamicbg,";
+    } else {
+        unset($dynamicbg);
+    }
 
     $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/index.html\">".$specialvars["rootname"]."</a>";
 
@@ -96,7 +106,7 @@
         #}
 
         $search = "like '".$value."%'";
-        $sql = "SELECT site_".$mt.".mid, site_".$mt.".refid,  site_".$mt.".entry, site_".$mt.".defaulttemplate, ".$dynamiccss." site_".$mt."_lang.label FROM site_".$mt." INNER JOIN site_".$mt."_lang ON site_".$mt.".mid = site_".$mt."_lang.mid WHERE site_".$mt.".entry ".$search." AND site_".$mt."_lang.lang='".$environment["language"]."' AND site_".$mt.".refid = '".$refid."' ;";
+        $sql = "SELECT site_".$mt.".mid, site_".$mt.".refid,  site_".$mt.".entry, site_".$mt.".defaulttemplate, ".$dynamiccss.$dynamicbg." site_".$mt."_lang.label FROM site_".$mt." INNER JOIN site_".$mt."_lang ON site_".$mt.".mid = site_".$mt."_lang.mid WHERE site_".$mt.".entry ".$search." AND site_".$mt."_lang.lang='".$environment["language"]."' AND site_".$mt.".refid = '".$refid."' ;";
         #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $keksresult = $db -> query($sql);
 
@@ -129,7 +139,12 @@
             if ( $keksarray["dynamiccss"] != "" ) {
                 $specialvars["dynamic_css"] = $keksarray["dynamiccss"];
             }
-
+            
+            // variables bg bild - erweiterung laut menueintrag setzen
+            if ( $keksarray["dynamicbg"] != "" ) {
+                $specialvars["dynamic_bg"] = $keksarray["dynamicbg"];
+            }          
+            
             // navbar erstellen
             #$ausgaben["UP"] = "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
             $ausgaben["M1"] = "";
