@@ -47,7 +47,7 @@
         global $image_ausgabe, $links_ausgabe;
         // tags entfernen
         $i = 0;
-        $preg = "\[[A-Z]{1,6}(\]|=)";
+        $preg = "\[[A-Z0-9]{1,6}(\]|=)";
         while ( preg_match("/$preg/",$text,$regs ) ) {
             $opentag = $regs[0];
             # echo $opentag;
@@ -90,6 +90,15 @@
                 }
                 */
                 switch ($opentag) {
+                    case "[IMGB=":
+                            if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
+                                $text = str_replace($opentag.$tagwert.$endtag,"",$text);
+                            continue;
+                            }
+                            $j++;
+                            $image[$j] = $tagwert;
+                            $text = str_replace($opentag.$tagwert.$endtag,"{BILD $j}",$text);
+                        break;
                     case "[IMG=":
                             if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
                                 $text = str_replace($opentag.$tagwert.$endtag,"",$text);

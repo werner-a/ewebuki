@@ -98,18 +98,19 @@
             // erlaubnis bei intrabvv speziell setzen
             global $HTTP_SESSION_VARS;
             $database = $db->getDb();
-            if ( is_array($HTTP_SESSION_VARS["katzugriff"]) ) {
-                if ( in_array("-1:".$database.":".$dbtname,$HTTP_SESSION_VARS["katzugriff"]) ) $erlaubnis = -1;
-            }
             if ( is_array($HTTP_SESSION_VARS["dbzugriff"]) ) {
-                if ( in_array($database,$HTTP_SESSION_VARS["dbzugriff"]) ) $erlaubnis = -1;
+                if ( in_array($database,$HTTP_SESSION_VARS["dbzugriff"]) ) $dbzugriff = -1;
+            }
+            if ( is_array($HTTP_SESSION_VARS["katzugriff"]) ) {
+                if ( in_array("-1:".$database.":".$dbtname,$HTTP_SESSION_VARS["katzugriff"]) ) $katzugriff = -1;
             }
 
             $replace = $row[1];
             // cms edit link einblenden
             if ( $rechte["cms_edit"] == -1
               /* || $rechte["administration"] == -1 && $rechte["sti"] == -1 ### loesung? */
-              || $rechte["administration"] == -1 && $erlaubnis == -1 ) {
+              || $rechte["administration"] == -1 && $dbzugriff == -1
+              || $katzugriff == -1 ) {
 
                 // konvertieren ?
                 if ( $specialvars["wysiwyg"] == "" && $row[0] == -1 ) {

@@ -133,12 +133,19 @@
     } else {
         $ausgaben["logout_meldung"] = "\"".$HTTP_SESSION_VARS["username"]."\"";
         $ausgaben["logout_rechte"] = "";
-        if ( $rechte[$cfg["right"]["menu"]] == -1 ) $ausgaben["logout_rechte"] .= "<br>#(desc)<br><br>";
-        if ( $rechte[$cfg["right"]["leveled"]] == -1 ) $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/leveled/list.html\">#(leveled)</a><br>";
-        if ( $rechte[$cfg["right"]["usered"]] == -1 ) $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/usered/list.html\">#(usered)</a><br>";
-        if ( $rechte[$cfg["right"]["menued"]] == -1 ) $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/menued/list.html\">#(menued)</a><br>";
-        if ( $rechte[$cfg["right"]["fileed"]] == -1 ) $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/fileed/list.html\">#(fileed)</a><br>";
-        if ( $rechte[$cfg["right"]["passed"]] == -1 ) $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/passed/modify.html\">#(passed)</a><br>";
+
+        $funktionen = array("leveled","usered","menued","fileed","passed");
+        foreach( $funktionen as $funktion ) {
+            $array = explode(";", $cfg["right"][$funktion]);
+            foreach( $array as $value) {
+                if ( $rechte[$value] == -1 || $value == "" ) {
+                    $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["virtual"]."/admin/".$funktion."/list.html\">#(".$funktion.")</a><br>";
+                    break;
+                }
+            }
+        }
+        if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = "<br>#(desc)<br><br>".$ausgaben["logout_rechte"];
+
         $ausgaben["auth"] = parser( "auth.logout", "");
     }
 

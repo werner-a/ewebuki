@@ -201,8 +201,10 @@
     require $pathvars["libraries"]."auth.inc.php";
 
 
-    if ( $environment["katid"] == "cms" ) {
+    if ( $environment["katid"] == "cms") {
         include $pathvars["libraries"]."cms.inc.php";
+    } elseif ($environment["katid"] == "fileed") {
+        #keine session variable ebene und kategorie erzeugen (mor 1909)
     } else {
         if ( strstr($_SERVER["REQUEST_URI"],"/auth/") ) {
             session_register("page");

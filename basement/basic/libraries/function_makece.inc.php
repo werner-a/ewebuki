@@ -63,12 +63,15 @@
 
         // wenn es thumbnails gibt, anzeigen
         if ( count($array) >= 1 ) {
+            $merken = $db -> getDb();
+            $db -> selectDB("intrabvv","");
             foreach ( $array as $value ) {
                 if ( $where != "" ) $where .= " OR ";
                 $where .= "fid = '".$value."'";
             }
             $sql = "SELECT * FROM site_file WHERE ".$where;
             $result = $db -> query($sql);
+            $db -> selectDB($merken,"");
             $extension= "";
 
             $tn = "<table><tr><td>";
@@ -101,10 +104,10 @@
                         $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\"></a></td></tr>";
                         $tn .= "</table>";
 
-                        $extension .= "else if (st=='imo".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/IMG]';";
-                        $extension .= "else if (st=='imb".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/IMG]';";
-                        $extension .= "else if (st=='imm".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/IMG]';";
-                        $extension .= "else if (st=='ims".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/IMG]';";
+                        $extension .= "else if (st=='imo".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
+                        $extension .= "else if (st=='imb".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
+                        $extension .= "else if (st=='imm".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
+                        $extension .= "else if (st=='ims".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
                 }
                 $i++;
                 $a = $i / 6;

@@ -88,6 +88,7 @@
                 // kompletten tag mit tagwert ersetzen
                 switch ($opentag) {
                     case "[B]":
+                        #$replace = str_replace($opentag.$tagwert.$endtag,"<span class=\"fkrcontentlead\">".$tagwert."</span>",$replace);
                         $replace = str_replace($opentag.$tagwert.$endtag,"<b>".$tagwert."</b>",$replace);
                         break;
                     case "[I]":

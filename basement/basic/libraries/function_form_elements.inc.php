@@ -168,6 +168,7 @@
                 $element[$fields["Field"]] = $formularobject;
             // datetime (timestamp)
             } elseif ( strstr($fields["Type"], "datetime")) {
+                $preg = "^([0-9]{4})\-([0-9]{2})\-([0-9]{2})";
                 #$formularobject = date("d.m.Y G:i:s");
                 #$element[$fields["Field"]] = $formularobject;
                 if ( $form_values[$fields["Field"]] == "" ) {
@@ -190,10 +191,16 @@
                 $element[$fields["Field"]] = $formularobject;
             // date
             } elseif ( strstr($fields["Type"], "date")) {
-                if ( substr($form_values[$fields["Field"]],2,1) != "." && $form_values[$fields["Field"]] != ""  ) {
+                $preg = "^([0-9]{4})\-([0-9]{2})\-([0-9]{2})";
+                if ( $form_values[$fields["Field"]] == "" ) {
+                    $form_values[$fields["Field"]] = $fields["Default"];
+                } elseif (preg_match_all("/$preg/",$form_values[$fields["Field"]],$regs)) {
+                #} elseif ( substr($form_values[$fields["Field"]],2,1) != "." ) {
                     $convert = $form_values[$fields["Field"]];
                     $form_values[$fields["Field"]] = substr($convert,8,2).".".substr($convert,5,2).".".substr($convert,0,4);
+
                 } else {
+
                 }
 
                 ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
