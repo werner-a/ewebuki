@@ -90,10 +90,26 @@
       }
     }
     if ( $position >= 1) {
+
+      // language converter
+      if ( is_array($specialvars["convert_languages"]) ) {
+        foreach ( $specialvars["convert_languages"] as $key => $value ) {
+          if ( $pathvars["level"][$position] == $key ) {
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang convert: ".$key."->".$value.$debugging["char"];
+            $pathvars["level"][$position] = $value;
+            $coverted = "converted ";
+            # noch zwei $pathvars umbauen, damit alles schoen umgeleitet wird!
+            $pathvars["requested"] = str_replace($key,$value,$pathvars["requested"]);
+            $pathvars["uri"] = str_replace($key,$value,$pathvars["uri"]);
+            break;
+          }
+        }
+      }
+
       $environment["language"] = $pathvars["level"][$position];
       $pathvars["virtual"] .= "/".$environment["language"];
-      $langsw = " (user)";
       $authcount++;
+      $langsw .= " (".$coverted."user)";
       if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "lang".$langsw.": ".$environment["language"].$debugging["char"];
     } else {
       if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "http accept lang: ".$_SERVER["HTTP_ACCEPT_LANGUAGE"].$debugging["char"];
