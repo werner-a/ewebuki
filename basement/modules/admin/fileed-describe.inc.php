@@ -414,10 +414,9 @@
             $dest_width = (int)(($max_size * $src_width) / $src_height );
         }
 
-        // leeres image erstellen
-        $img_dst = @imagecreatetruecolor($dest_width,$dest_height);
-        if ( $img_dst ) {
-            // groesse aendern
+        if ( function_exists(imagecreatetruecolor) ) {
+            // leeres image erstellen und groesse aendern
+            $img_dst = @imagecreatetruecolor($dest_width,$dest_height);
             imagecopyresampled($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height, $src_width, $src_height);
         } else {
             // gd < 2.0 fallback
