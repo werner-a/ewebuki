@@ -86,6 +86,12 @@
     $pathvars["filebase"]["pic"]["b"] = "big/";
     $pathvars["filebase"]["doc"] = "document/";
     $pathvars["filebase"]["arc"] = "archiv/";
+       
+    // default werte ueberschreiben
+    # man kann z.b. [H2] so umbauen, dass er als ueberschrift mit speziellem font und bild dargestellt wird
+    #$defaults["tag"]["h2"] = "<img src=\"".$pathvars["images"]."dot1.gif alt=\"\"".$imgsize."> <span class=\"fkrcontentlead\">";
+    #$defaults["tag"]["/h2"] = "</span>";    
+    
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
