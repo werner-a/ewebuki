@@ -56,7 +56,7 @@
         var $PASS           = DB_PASSWORD;
         var $ROOT_RUN       = "";
         var $DEBUG          = "";
-        var $VERSION        = "eWeBuKi mysql-driver v0.1.5";
+        var $VERSION        = "eWeBuKi mysql-driver v0.1.6";
 
         // connection to our db - change defines in config.php
         // this is a regular connect
@@ -68,20 +68,22 @@
             $host = $this->HOST;
             $db   = $this->DB;
             $conn = mysql_connect($host,$user,$pass);
-
+            $return = "success";
+            
             // error-handling first for connection, second for
             // db-finding
 
             if(!$conn) {
-                $this->error("Connection to $db on $host failed.");
+                if ( $host == "" ) $host = "localhost";
+                $return = $this->error("Connection to $db on $host failed.");
             }
 
             if($this->ROOT_RUN != "yes") {
-                $this->selectDb($this->DB,false);
+                $return = $this->selectDb($this->DB,True);
             }
 
             $this->CONN = $conn;
-            return true;
+            return $return;
         }
 
         // connection to our db - change defines in config.php
@@ -94,20 +96,23 @@
             $host = $this->HOST;
             $db   = $this->DB;
             $conn = mysql_pconnect($host,$user,$pass);
+            $return = true;
 
             // error-handling first for connection, second for
             // db-finding
 
             if(!$conn) {
-                $this->error("Connection to $db on $host failed.");
+                if ( $host == "" ) $host = "localhost";            
+                $return = $this->error("Connection to $db on $host failed.");
+                
             }
 
             if($this->ROOT_RUN != "yes") {
-                $this->selectDb($this->DB,false);
+                $return = $this->selectDb($this->DB,true);
             }
 
             $this->CONN = $conn;
-            return true;
+            return $return;
         }
 
         // this handles all errors
@@ -134,13 +139,14 @@
         }
 
         function selectDb($database,$err) {
-            $success = @mysql_select_db($database);
-            if($success) {
+            $return = @mysql_select_db($database);           
+            if ( $return ) {
                 $this->DB = $database;
-                return $success;
-            } else {
-                if ($err) {
-                    $this->error("Can't select database $database");
+                return $database;
+            } else {               
+                if ( $err ) {
+                    $return = $this->error("Can't select database $database");
+                    return $return;
                 }
             }
         }
