@@ -44,11 +44,11 @@
 
     // einstellungen uebersicht
     $environment[news_uebersicht_aktiv] = "-1"; # 0 / -1
-    $environment[news_uebersicht_katid] = "";
+    $environment[news_uebersicht_katid] = "index";
     $environment[news_uebersicht_pre_inh] = "inh_2";
     $environment[news_uebersicht_pre_len] = "120";
     $environment[news_scheme] = "ausgabe";  # quartal, ausgabe
-    $environment[news_ausgabe] = "2003-01";
+    $environment[news_ausgabe] = "2003-02";
 
     // konstanten fuer beitraege initialisieren
     define ('BEITRAG_KOPF', 'news_header');
