@@ -48,7 +48,7 @@
         $ausgaben["ce_name"] = $ce_name;
 
         // vogelwilde regex die viel arbeit erspart hat
-        preg_match_all("/_([0-9]*)./",$ce_inhalt,$found);
+        preg_match_all("/_([0-9]*)\./",$ce_inhalt,$found);
         #$array = array_merge(explode(";",$fileid),$found[1]);
 
         // file memo auslesen und zuruecksetzen
