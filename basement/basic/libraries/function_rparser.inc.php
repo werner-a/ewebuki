@@ -109,7 +109,7 @@
               // dynamic bg
               if ( strstr($line,"background=\"!#specialvars_dynamicbg\"") ) {
                 if ( $specialvars["dynamicbg"] != "" ) {
-                    $line=str_replace("background=\"!#specialvars_dynamicbg\"","background=\"../../images/".$environment["design"]."/\"".$specialvars["dynamicbg"],$line);                    
+                    $line=str_replace("background=\"!#specialvars_dynamicbg\"","background=\"/images/".$environment["design"]."/".$specialvars["dynamicbg"]."\"",$line);                    
                 } else {
                     $line=str_replace("background=\"!#specialvars_dynamicbg\"","",$line);                    
                 }
