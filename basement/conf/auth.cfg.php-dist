@@ -71,10 +71,9 @@
                           "file"        => "base.name",
                           ),                        
            "right"     => array(
-                          "menu"        => "cms_admin",
-                          "leveled"     => "cms_admin",
-                          "usered"      => "cms_admin",
-                          "menued"      => "cms_admin",
+                          "leveled"     => "cms_admin",		# ""              = jeder
+                          "usered"      => "cms_admin",		# "ein wert"      = nur dieses recht
+                          "menued"      => "cms_admin",		# "recht1;recht2" = beide rechte
                           "fileed"      => "cms_edit",
                           "passed"      => "cms_edit"
                           )
