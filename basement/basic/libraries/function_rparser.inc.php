@@ -49,7 +49,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function rparser($startfile, $default_template) {
-    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $mapping, $loopcheck;
+    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $dataloop, $mapping, $loopcheck;
 
     // original template find
     #$template = $pathvars["templates"].$startfile;
@@ -150,22 +150,45 @@
 
                 // !#element array pruefen und evtl. einsetzen
                 if ( strstr($line,"!#element_" ) ) {
-                    if ( is_array($element) ) {
-                        foreach($element as $name => $value) {
-                            #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
-                            $line=str_replace("!#element_$name",$value,$line);
-                        }
+                    foreach( (array)$element as $name => $value) {
+                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
+                        $line=str_replace("!#element_$name",$value,$line);
                     }
                 }
 
                 // !#lnk array pruefen und evtl. einsetzen
                 // $lnk wird in kekse.inc.php erstellt
                 if ( strstr($line,"!#lnk_" ) ) {
-                    if ( is_array($lnk) ) {
-                        foreach($lnk as $name => $value) {
-                            #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$lnk[$name]".$debugging["char"];
-                            $line=str_replace("!#lnk_$name",$value,$line);
+                    foreach( (array)$lnk as $name => $value) {
+                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$lnk[$name]".$debugging["char"];
+                        $line=str_replace("!#lnk_$name",$value,$line);
+                    }
+                }
+
+                // ##loop-??? -> ##cont bereich bearbeiten
+                // und inhalte aus $dataloop array einbauen
+                if ( strstr($line,"##loop") ) {
+                    $loop   = "1";
+                    $mark  = explode("-",strstr($line,"##loop"),3);
+                    $label  = $mark[1];
+                    $buffer = "";
+                } else {
+                    if ( strstr($line,"##cont") ) {
+                        $loop = "0";
+                        $block = "";
+                        $labelloop = $dataloop[$label];
+                        foreach ( (array) $labelloop as $data ) {
+                            $work = $buffer;
+                            foreach ( (array)$data as $name => $value ) {
+                                $work = str_replace("!{".$name."}",$value,$work);
+                            }
+                            $work = ereg_replace("!\{[0-9]+\}","&nbsp;",$work);
+                            $block .= $work;
                         }
+                        $line = $block.trim($line)."\n";
+                    } elseif ( $loop == "1" ) {
+                        $buffer .= trim($line)."\n";
+                        continue;
                     }
                 }
 
@@ -287,7 +310,7 @@
                   }
 
                   // gemerkten zeilen anfang ausgeben
-                  echo $lline;
+                  echo ltrim($lline);
                   // parser nochmal aufrufen um untertemplate mit dem namen: "$token".tem.html zu parsen
                   rparser($newstartfile, $default_template);
 
@@ -299,11 +322,11 @@
                   }
 
                   // gemerktes zeilen ende ausgeben
-                  echo $rline;
+                  echo rtrim($rline)."\n";
                 }
               } else {
                 // da keine marken fuer sub templates da waren zeile unveraendert ausgeben
-                echo $line;
+                echo trim($line)."\n";
               } # ende automatic "#{marke}"
             } # hier passiert alles bevor ##end
           } # ende zeile enthaelt kein ##begin
