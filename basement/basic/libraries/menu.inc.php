@@ -52,8 +52,9 @@
     if ( $cfg["menu"]["level1"]["full"] == "-1" ) $mandatory = "";
 
     $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
-                    ".$cfg["menu"]["db"]["entries"].".entry,
                     ".$cfg["menu"]["db"]["entries"].".refid,
+                    ".$cfg["menu"]["db"]["entries"].".entry,
+                    ".$cfg["menu"]["db"]["entries"].".picture,
                     ".$cfg["menu"]["db"]["entries"].".level,
                     ".$cfg["menu"]["db"]["entries"]."_lang.lang,
                     ".$cfg["menu"]["db"]["entries"]."_lang.label,
@@ -95,6 +96,7 @@
                 }
             }
             if ( $right == -1 ) {
+
                 // die boese schneide ab funktion
                 if ( strlen($level1array["label"]) > $cfg["menu"]["level1"]["length"] ) {
                     $level1array["label"] = substr($level1array["label"],0,$cfg["menu"]["level1"]["length"]-4)." ...";
@@ -111,8 +113,8 @@
                     $href = $level1array["exturl"];
                     $target = $cfg["menu"]["level1"]["target"];
                 }
-                $marken = array("##target##", "##link##", "##label##");
-                $ersatz = array($target, $href, $level1array["label"]);
+                $marken = array("##target##", "##link##", "##label##", "##picture##");
+                $ersatz = array($target, $href, $level1array["label"], $level1array["picture"]);
 
                 // multiple db support
                 if ( $cfg["menu"]["mdbsupp"] == -1 ) {
@@ -147,8 +149,9 @@
         // menupunkte level 2
         //
         $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
-                        ".$cfg["menu"]["db"]["entries"].".entry,
                         ".$cfg["menu"]["db"]["entries"].".refid,
+                        ".$cfg["menu"]["db"]["entries"].".entry,
+                        ".$cfg["menu"]["db"]["entries"].".picture,
                         ".$cfg["menu"]["db"]["entries"].".sort,
                         ".$cfg["menu"]["db"]["entries"].".level,
                         ".$cfg["menu"]["db"]["language"].".lang,
@@ -211,8 +214,8 @@
                         $href = $level2array["exturl"];
                         $target = $cfg["menu"]["level2"]["target"];
                     }
-                    $marken = array("##target##", "##link##", "##label##");
-                    $ersatz = array($target, $href, $level2array["label"]);
+                    $marken = array("##target##", "##link##", "##label##", "##picture##");
+                    $ersatz = array($target, $href, $level2array["label"], $level2array["picture"]);
 
                     $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level2"]["link"]);
                 }
@@ -223,8 +226,9 @@
             //
             if ( strstr($environment["ebene"],"/".$level1array["entry"]) || strstr($environment["kategorie"],$level1array["entry"]) ) {
                 $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
-                                ".$cfg["menu"]["db"]["entries"].".entry,
                                 ".$cfg["menu"]["db"]["entries"].".refid,
+                                ".$cfg["menu"]["db"]["entries"].".entry,
+                                ".$cfg["menu"]["db"]["entries"].".picture,
                                 ".$cfg["menu"]["db"]["entries"].".sort,
                                 ".$cfg["menu"]["db"]["entries"].".level,
                                 ".$cfg["menu"]["db"]["language"].".lang,
@@ -274,8 +278,8 @@
                                 $href = $level3array["exturl"];
                                 $target = $cfg["menu"]["level3"]["target"];
                             }
-                            $marken = array("##target##", "##link##", "##label##");
-                            $ersatz = array($target, $href, $level3array["label"]);
+                            $marken = array("##target##", "##link##", "##label##", "##picture##");
+                            $ersatz = array($target, $href, $level3array["label"], $level3array["picture"]);
 
                             $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level3"]["link"]);
                         }
