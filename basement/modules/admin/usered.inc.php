@@ -120,6 +120,8 @@
                       $b=mt_rand(1,128);
                       $mysalt = chr($a).chr($b);
                       $checked_password = crypt($checked_password, $mysalt);
+                      // da ich das passwort erstellt habe, klappt magic_quotes_gpc nicht
+                      $checked_password = addslashes($checked_password);
                   } else {
                       $ausgaben["form_error"] .= $form_options["pass"]["ferror"];
                   }
@@ -237,6 +239,9 @@
                       $b=mt_rand(1,128);
                       $mysalt = chr($a).chr($b);
                       $checked_password = crypt($checked_password, $mysalt);
+
+                      // da ich das passwort erstellt habe, klappt magic_quotes_gpc nicht
+                      $checked_password = addslashes($checked_password);
                   } elseif ( $HTTP_POST_VARS["newpass"] != "" )  {
                       $ausgaben["form_error"] .= $form_options["pass"]["ferror"];
                   }
