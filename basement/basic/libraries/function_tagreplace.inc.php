@@ -256,6 +256,8 @@
                                 if ( file_exists($imgfile) ) {
                                     $imgsize = getimagesize($imgfile);
                                     $imgsize = " ".$imgsize[3];
+                                } else {
+                                    $imgsize = "";
                                 }
                             }
                         }
@@ -303,6 +305,8 @@
                                 $imgsize = getimagesize($imgfile);
                                 $imgsize = " ".$imgsize[3];
                                 $imgurl = $pathvars["images"].$imgwerte[0];
+                            } else {
+                                $imgsize = "";
                             }
                         } else {
                             $imgurl = $imgwerte[0];
@@ -328,6 +332,8 @@
                                     $linka = "<a href=\"".$imglnk."\">";
                                     $linkb = "</a>";
                                 }
+                            } else {
+                                $imgsize = "";
                             }
                         }
                         $ausgabewert = $linka."<img src=\"".$imgurl."\"".$vspace.$hspace." alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
