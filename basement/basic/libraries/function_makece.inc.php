@@ -71,7 +71,7 @@
                 if ( $where != "" ) $where .= " OR ";
                 $where .= "fid = '".$value."'";
             }
-            $sql = "SELECT * FROM site_file WHERE ".$where;
+            $sql = "SELECT * FROM site_file WHERE ".$where." ORDER BY fdesc";
             $result = $db -> query($sql);
             if ( $merken != DATABASE ) {
                 $db -> selectDB($merken,"");
@@ -84,13 +84,20 @@
                 #                        "fart"  =>  $data["ffart"],
                 #                        "fdesc" =>  $data["fdesc"],
                 #                        );
+
                 switch ( $data["ffart"] ) {
                     case "pdf":
+                        // die boese schneide ab funktion
+                        if ( strlen($data["fdesc"]) > 10 ) {
+                            $fdesc = substr($data["fdesc"],0,10)." ...";
+                        } else {
+                            $fdesc = $data["fdesc"];
+                        }
                         #$tn .= "<a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img src=\"".$pathvars["images"]."pdf.png"."\"></a> ";
-                        $tn .= "<table align=\"left\">";
-                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">PDF</a></td></tr>";
+                        $tn .= "<table align=\"left\" width=\"96\">";
+                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$fdesc."</a></td></tr>";
 
-                        $tn .= "<tr><td><img src=\"".$pathvars["images"]."pdf.png"."\"></td></tr>";
+                        $tn .= "<tr><td><img src=\"".$pathvars["images"]."pdf.png\"></td></tr>";
                         $tn .= "</table>";
 
                         $extension .= "else if (st=='doc".$data["fid"]."')\nst='[LINK=/dateien/dokumente/doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
