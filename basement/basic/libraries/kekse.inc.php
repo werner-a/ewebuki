@@ -97,6 +97,8 @@
 
     // reset refid, um im "/" anzufangen
     $refid = 0;
+    $kekscount = count($kekspath);
+    $hitcounter = 0;
     foreach ($kekspath as $key => $value) {
         // makierte eintraege aendern
         #if ( strstr($value, "/") ) {
@@ -106,12 +108,24 @@
         #}
 
         $search = "like '".$value."%'";
-        $sql = "SELECT site_".$mt.".mid, site_".$mt.".refid,  site_".$mt.".entry, site_".$mt.".defaulttemplate, ".$dynamiccss.$dynamicbg." site_".$mt."_lang.label FROM site_".$mt." INNER JOIN site_".$mt."_lang ON site_".$mt.".mid = site_".$mt."_lang.mid WHERE site_".$mt.".entry ".$search." AND site_".$mt."_lang.lang='".$environment["language"]."' AND site_".$mt.".refid = '".$refid."' ;";
-        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $sql = "SELECT site_".$mt.".mid,
+                       site_".$mt.".refid,
+                       site_".$mt.".entry,
+                       site_".$mt.".defaulttemplate,
+                       ".$dynamiccss.$dynamicbg."
+                       site_".$mt."_lang.label
+                  FROM site_".$mt."
+            INNER JOIN site_".$mt."_lang
+                    ON site_".$mt.".mid = site_".$mt."_lang.mid
+                 WHERE site_".$mt.".entry ".$search."
+                   AND site_".$mt."_lang.lang='".$environment["language"]."'
+                   AND site_".$mt.".refid = '".$refid."';";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $keksresult = $db -> query($sql);
 
-
         if ( $db -> num_rows($keksresult) == 1 ) {
+
+            $hitcounter++;
             $keksarray  = $db -> fetch_array($keksresult,1);
 
             // refid setzen um richtigen eintrag zu finden
@@ -211,6 +225,27 @@
                     }
                 }
             }
+        }
+    }
+
+    // 404 error handling
+    if ( $specialvars["404"]["enable"] ) {
+        foreach( $specialvars["404"]["nochk"]["ebene"] as $value ) {
+           $nochk .= strstr($environment["ebene"],$value);
+        }
+        foreach( $specialvars["404"]["nochk"]["kategorie"] as $value ) {
+           $nochk .= strstr($environment["kategorie"],$value);
+        }
+        if ( $nochk == "" && $kekscount != $hitcounter ) {
+            $ausgaben["404seite"] = $environment["ebene"]."/".$environment["kategorie"].".html";
+            if ( $_SERVER["HTTP_REFERER"] ) {
+                $ausgaben["404referer"] = $_SERVER["HTTP_REFERER"];
+                $mapping["main"] = "404referer";
+            } else {
+                $mapping["main"] = "404";
+                #$ausgaben["404referer"] = "#(unbekannt)";
+            }
+
         }
     }
 
