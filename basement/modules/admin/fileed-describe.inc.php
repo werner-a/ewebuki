@@ -141,8 +141,8 @@
                     #print_r($HTTP_POST_VARS);
                     #echo "</pre>";
                 }
-            if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] ) ) {
-                $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "bnet", "cnet" );
+            if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["send"] != "" || $HTTP_POST_VARS["image"] ) ) {
+                $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y", "form_referer", "bnet", "cnet" );
                     foreach($form_values as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                          if ( $sqla != "" ) $sqla .= ",";
@@ -164,7 +164,6 @@
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
 
                 $sql = "insert into ".$cfg["db"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
-
                 $result  = $db -> query($sql);
                 if ( $result ) {
                     $file_id = $db->lastid();
@@ -374,7 +373,7 @@
             if ( $ausgaben["form_error"] == "" /* && ( $HTTP_POST_VARS[submit] != "" || $HTTP_POST_VARS[image] != "" ) */ ){
                 #echo "ja";
 
-                $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "add", "add_x", "add_y", "delete", "delete_x", "delete_y","akfggeb","akfgstart" );
+                $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y", "form_referer", "add", "add_x", "add_y", "delete", "delete_x", "delete_y","akfggeb","akfgstart" );
                 foreach($form_values as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                         if ( $sqla != "" ) $sqla .= ", ";

@@ -58,6 +58,14 @@
         $specialvars["editlock"] = -1;
     }
 
+    // NUR BIS ZUM UMBAU HIER!!! unzugaengliche #(marken) sichtbar machen
+    if ( isset($HTTP_GET_VARS["edit"]) ) {
+        $ausgaben["inaccessible"] = "inaccessible values:<br />";
+        #$ausgaben["inaccessible"] .= "# (error_?) #(error_?)<br />";
+    } else {
+        $ausgaben["inaccessible"] = "";
+    }
+
     // magic include loader
     if ( in_array($environment["kategorie"], $cfg["function"]) ) {
         include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
