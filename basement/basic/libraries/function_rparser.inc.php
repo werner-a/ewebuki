@@ -49,7 +49,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function rparser($startfile, $default_template) {
-    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $dataloop, $mapping, $loopcheck;
+    global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $dataloop, $hidedata, $mapping, $loopcheck;
 
     // original template find
     #$template = $pathvars["templates"].$startfile;
@@ -169,12 +169,12 @@
                 // und inhalte aus $dataloop array einbauen
                 if ( strstr($line,"##loop") ) {
                     $loop   = "1";
-                    $mark  = explode("-",strstr($line,"##loop"),3);
+                    $mark   = explode("-",strstr($line,"##loop"),3);
                     $label  = $mark[1];
                     $buffer = "";
                 } else {
                     if ( strstr($line,"##cont") ) {
-                        $loop = "0";
+                        $loop  = "0";
                         $block = "";
                         $labelloop = $dataloop[$label];
                         foreach ( (array) $labelloop as $data ) {
@@ -187,6 +187,32 @@
                         }
                         $line = $block.trim($line)."\n";
                     } elseif ( $loop == "1" ) {
+                        $buffer .= trim($line)."\n";
+                        continue;
+                    }
+                }
+
+                // ##hide-??? - ##show bereich bearbeiten
+                // nur wenn $hidedata["???"] verfuegbar ist einblenden
+                if ( strstr($line,"##hide") ) {
+                    $hide   = "1";
+                    $mark   = explode("-",strstr($line,"##hide"),3);
+                    $label  = $mark[1];
+                    $buffer = "";
+                    continue; // marke ebenfalls kicken!
+                } else {
+                    if ( strstr($line,"##show") ) {
+                        $hide  = "0";
+                        $block = "";
+                        if ( is_array($hidedata[$label]) ) {
+                            foreach ( $hidedata[$label] as $name => $value ) {
+                                $buffer = str_replace("!{".$name."}",$value,$buffer);
+                            }
+                            $block = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$buffer);
+                        }
+                        #$line = $block.trim($line)."\n";
+                        $line = $block; // marke ebenfalls kicken!
+                    } elseif ( $hide == "1" ) {
                         $buffer .= trim($line)."\n";
                         continue;
                     }
