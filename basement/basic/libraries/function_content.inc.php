@@ -106,6 +106,16 @@
             }
 
             $replace = $row[1];
+
+            // wenn content nicht in html ist und deaktiviert wurde
+            if ( $row[0] != -1 && $specialvars["denyhtml"] == -1 ) {
+                // html killer :)
+                $pattern = "<[\!\/a-zA-Z].{0,}>";
+                while ( preg_match("/".$pattern."/", $replace, $tag) ) {
+                    $replace = str_replace($tag[0]," - html gel&ouml;scht! -",$replace);
+                }
+            }
+
             // cms edit link einblenden
             if ( $rechte["cms_edit"] == -1
               /* || $rechte["administration"] == -1 && $rechte["sti"] == -1 ### loesung? */
