@@ -185,7 +185,14 @@
     }
 
     // was steht in den post vars
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $debugging["char"]."form (post):".$debugging["char"];
     foreach($HTTP_POST_VARS as $name => $value) {
+         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
+    }
+
+    // was steht in den get vars
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $debugging["char"]."form (get):".$debugging["char"];
+    foreach($HTTP_GET_VARS as $name => $value) {
          if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
     }
 
