@@ -132,12 +132,12 @@
 
           $sql = "SELECT id FROM ".$cfg["db"]["titel"]." WHERE titel = '".$value[1]."'";
           #echo $sql."<br>";
-          #$result  = $db -> query($sql);
+          $result  = $db -> query($sql);
           $titel["data"] = $db -> fetch_row($result);
           if ( $titel["data"][0]  == "" ) {
               $sql = "INSERT INTO ".$cfg["db"]["titel"]." ( titel ) VALUES ( '".addslashes($value[1])."' )";
               #echo $sql."<br>";
-              #$result  = $db -> query($sql);
+              $result  = $db -> query($sql);
               $titel["id"] = $db -> lastid();
           } else {
               $titel["id"] = $titel["data"][0];
@@ -145,12 +145,12 @@
 
           $sql = "SELECT id FROM ".$cfg["db"]["interpret"]." WHERE interpret = '".$value[2]."'";
           #echo $sql."<br>";
-          #$result  = $db -> query($sql);
+          $result  = $db -> query($sql);
           $interpret["data"] = $db -> fetch_row($result);
           if ( $interpret["data"][0]  == "" ) {
               $sql = "INSERT INTO ".$cfg["db"]["interpret"]." ( interpret ) VALUES ( '".addslashes($value[2])."' )";
               #echo $sql."<br>";
-              #$result  = $db -> query($sql);
+              $result  = $db -> query($sql);
               $interpret["id"] = $db -> lastid();
           } else {
               $interpret["id"] = $interpret["data"][0];
@@ -159,7 +159,7 @@
           $sql  = "INSERT INTO ".$cfg["db"]["platzierung"]." ( erstellt, newentry, platz, titelid, interpretid) VALUES ";
           $sql .= "( '".$erstellt."', '".$new."', '".$value[0]."', '".$titel["id"]."', '".$interpret["id"]."' )";
           #echo $sql."<br><br>";
-          #$result = $db -> query($sql);
+          $result = $db -> query($sql);
           $ausgaben["output"] .= $value[0]." - ".$value[1]." - ".$value[2];
           if ( in_array($value[0], $newentry) ) {
               $ausgaben["output"] .= " <b>(new)</b>";
