@@ -259,7 +259,8 @@
         }
 
         function data_seek($result,$offset) {
-            mysql_data_seek($result,$offset);
+            $success = mysql_data_seek($result,$offset);
+            return $success;
         }
 
         function free_result($result) {
