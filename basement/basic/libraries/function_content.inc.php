@@ -49,32 +49,37 @@
 
         if ( $specialvars["crc32"] == -1 ) {
             if ( $environment["ebene"] != "" && $tname == $environment["kategorie"] ) {
-                $dbtname = crc32($environment["ebene"]).".".$tname;
-                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 tname \"".$dbtname."\" forced!!!".$debugging["char"];
-            } else {
-                $dbtname = $tname;
+                $tname = crc32($environment["ebene"]).".".$tname;
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 tname \"".$tname."\" forced!!!".$debugging["char"];
             }
         } else {
             // ist das eine sub kategorie ?
             if ( $environment["subkatid"] != "" && $tname == $environment["katid"] ) {
-                $dbtname = $tname.".".$environment["subkatid"];
-                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sub tname \"".$dbtname."\" forced!!!".$debugging["char"];
+                $tname = $tname.".".$environment["subkatid"];
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sub tname \"".$tname."\" forced!!!".$debugging["char"];
                 #$dbtname = $tname;
-            } else {
-                $dbtname = $tname;
             }
         }
 
-        while ( strstr($line, "#(") ) {
+
+        while ( strpos($line, "#(") || strpos($line, "g(") ) {
 
             // wo beginnt die marke
-            $labelbeg=strpos($line,"#(");
+            $labelbeg = strpos($line,"#(");
+            $art = "#(";
+            $dbtname = $tname;
+            if ( $labelbeg === false ) {
+                $labelbeg = strpos($line,"g(");
+                $art = "g(";
+                $dbtname = "global";
+            }
+
             // wo endet die marke (wichtig der offset!)
-            $labelend=strpos($line,")",$labelbeg);
+            $labelend = strpos($line,")",$labelbeg);
             // wie lang ist die marke
-            $labellen=$labelend-$labelbeg;
+            $labellen = $labelend-$labelbeg;
             // token name extrahieren
-            $label=substr($line,$labelbeg+2,$labellen-2);
+            $label = substr($line,$labelbeg+2,$labellen-2);
 
             $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='".$dbtname."' AND lang='".$environment["language"]."' AND label='$label'";
             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -143,10 +148,10 @@
 
                 // wenn es kein value, alt, title und status in der zeile gibt
                 $vorher = substr($line,$labelbeg-20,20);
-                if ( !strstr($vorher,"value=\"")
-                  && !strstr($vorher,"alt=\"")
-                  && !strstr($vorher,"title=\"")
-                  && !strstr($vorher,"status='") ) {
+                if ( !strpos($vorher,"value=\"")
+                  && !strpos($vorher,"alt=\"")
+                  && !strpos($vorher,"title=\"")
+                  && !strpos($vorher,"status='") ) {
                     $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>";
                 } else {
                     #$line = $line."# (".$label.")&nbsp;<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
@@ -167,8 +172,8 @@
             }
 
             // marke ersetzen
-            if ( strstr($line,"#(") ) {
-                $line = str_replace("#(".$label.")",$replace,$line);
+            if ( strpos($line,$art) ) {
+                $line = str_replace($art.$label.")",$replace,$line);
             }
         }
         return($line);

@@ -97,15 +97,15 @@
                 #if ( $parse_print == 1  ) {
 
                 // alles vor ##begin und nach ##end wird nicht ausgegeben
-                if (strstr($parse_mod,"##begin")) {
+                if ( strpos($parse_mod,"##begin") !== false ) {
                     $parse_print="1";
                 } else {
-                    if (strstr($parse_mod,"##end")) {
+                    if ( strpos($parse_mod,"##end") !== false ) {
                         $$parse_print="0";
                     } elseif ($parse_print=="1") {
 
                     // !#ausgaben array pruefen und evtl. einsetzen
-                    if ( strstr($parse_mod,"!#ausgaben_" ) ) {
+                    if ( strpos($parse_mod,"!#ausgaben_" ) !== false ) {
                         foreach($ausgaben as $name => $value) {
                             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$ausgaben[$name]".$debugging["char"];
                             $parse_mod = str_replace("!#ausgaben_$name",$value,$parse_mod);
@@ -113,7 +113,7 @@
                     }
 
                     // !#element array pruefen und evtl. einsetzen
-                    if ( strstr($parse_mod,"!#element_" ) ) {
+                    if ( strpos($parse_mod,"!#element_" ) !== false ) {
                         if ( is_array($element) ) {
                             foreach($element as $name => $value) {
                                 #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
@@ -123,15 +123,15 @@
                     }
 
                     // hier wird automatisch die variable $marke eingespult
-                    while ( strstr ($parse_mod, "!{") ) {
+                    while ( strpos($parse_mod, "!{") !== false ) {
                         // wo beginnt die marke
-                        $markbeg=strpos($parse_mod,"!{");
+                        $markbeg = strpos($parse_mod,"!{");
                         // wo endet die marke
-                        $markend=strpos($parse_mod,"}",$markbeg); // loopfix
+                        $markend = strpos($parse_mod,"}",$markbeg); // loopfix
                         // wie lang ist die marke
-                        $marklen=$markend-$markbeg;
+                        $marklen = $markend-$markbeg;
                         // token name extrahieren
-                        $marke=substr($parse_mod,$markbeg+2,$marklen-2);
+                        $marke = substr($parse_mod,$markbeg+2,$marklen-2);
 
                         global $$marke;
                         $parse_mod = str_replace("!{".$marke."}",$$marke,$parse_mod);
@@ -140,12 +140,12 @@
                     // hier alles eintragen was einmal pro zeile passieren soll
 
                     // image path anpassen
-                    if ( strstr($parse_mod,"../../images/") ) {
+                    if ( strpos($parse_mod,"../../images/") !== false ) {
                         $parse_mod=str_replace("../../images/","/images/",$parse_mod);
                     }
 
                     // image language korrektur
-                    if ( strstr($parse_mod,"_".$specialvars["default_language"].".")
+                    if ( strpos($parse_mod,"_".$specialvars["default_language"].".") !== false
                         && $environment["language"] != $specialvars["default_language"]
                         && $environment["language"] != "" ) {
 
@@ -157,7 +157,7 @@
                     //                       template und marke aus der datenbank
                     //////////////////////////////////////////////////////////////////////////////////////////////
 
-                    if ( strstr($parse_mod,"#(") ) {
+                    if ( strpos($parse_mod,"#(") !== false || strpos($parse_mod,"g(") !== false ) {
                          // wie heisst das template
                          $tname = substr($startfile,0,strpos($startfile,".tem.html"));
                          $parse_mod = content($parse_mod, $parse_name);
@@ -168,7 +168,7 @@
                     $parse_out .= $parse_mod;
                 }
             }
-            if ( strstr ($parse_mod,"##end") ) $parse_print = 0;
+            if ( strpos($parse_mod,"##end") !== false ) $parse_print = 0;
         }
         // variable ausgabe variable erstellen
         $parse_vari = "$parse_name"."_out";
