@@ -48,7 +48,7 @@
     // content umschaltung verhindern
     $specialvars["dynlock"] = True;
 
-    if ( $rechte[$cfg["right"]["admin"]] == -1 ) {
+    if ( $rechte[$cfg["right"]] == -1 ) {
 
         if ( $cfg["db"]["change"] == -1 ) {
             // lokale db auswaehlen
@@ -93,7 +93,7 @@
             if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
 
-            if ( $environment["parameter"][1] == "add" && $rechte[$cfg["right"]["admin"]] == -1 ) {
+            if ( $environment["parameter"][1] == "add" && $rechte[$cfg["right"]] == -1 ) {
 
                 // form options holen
                 $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
@@ -195,7 +195,7 @@
                     }
                 }
 
-            } elseif ( $environment["parameter"][1] == "edit" && $rechte[$cfg["right"]["admin"]] == -1 ) {
+            } elseif ( $environment["parameter"][1] == "edit" && $rechte[$cfg["right"]] == -1 ) {
                 #echo $db->getDb();
                 if ( count($HTTP_POST_VARS) == 0 ) {
                     $sql = "SELECT * FROM ".$db_entries." WHERE ".$db_entries_key."='".$environment["parameter"][2]."'";
@@ -227,8 +227,8 @@
                     $ausgaben["langtabelle"] .= "<td>".str_replace("name=\"","name=\"".$lang["mlid"].")",$element_lang["label"])."</td>";
                     $ausgaben["langtabelle"] .= "<td>".str_replace("name=\"","name=\"".$lang["mlid"].")",$element_lang["exturl"])."</td>";
                     $ausgaben["langtabelle"] .= "<td>";
-                    $ausgaben["langtabelle"] .= "<input name=\"edit[]\" type=\"image\" src=\"".$pathvars["images"]."edit.png\" width=\"24\" height=\"18\" border=\"0\" value=\"".$lang["mlid"]."\">";
-                    $ausgaben["langtabelle"] .= "<input name=\"delete\" type=\"image\" src=\"".$pathvars["images"]."delete.png\" width=\"24\" height=\"18\" border=\"0\" value=\"".$lang["mlid"]."\">";
+                    $ausgaben["langtabelle"] .= "<input name=\"edit[".$lang["mlid"]."]\" type=\"image\" src=\"".$pathvars["images"]."edit.png\" width=\"24\" height=\"18\" border=\"0\">";
+                    $ausgaben["langtabelle"] .= "<input name=\"delete[".$lang["mlid"]."]\" type=\"image\" src=\"".$pathvars["images"]."delete.png\" width=\"24\" height=\"18\" border=\"0\">";
                     $ausgaben["langtabelle"] .= "</td></tr>";
                 }
                 $ausgaben["langtabelle"] .= "</table>";
@@ -266,11 +266,13 @@
                         $result  = $db -> query($sql);
                         header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html?referer=".$ausgaben["form_referer"]);
                     } elseif ( $HTTP_POST_VARS["edit"] ) {
-                        $sql = "update ".$db_entries_lang." set label='".$HTTP_POST_VARS[$HTTP_POST_VARS["edit"].")label"]."', exturl='".$HTTP_POST_VARS[$HTTP_POST_VARS["edit"].")exturl"]."' where mlid=".$HTTP_POST_VARS["edit"];
+                        $key = key($HTTP_POST_VARS["edit"]);
+                        $sql = "update ".$db_entries_lang." set label='".$HTTP_POST_VARS[$key.")label"]."', exturl='".$HTTP_POST_VARS[$key.")exturl"]."' where mlid=".$key;
                         $result  = $db -> query($sql);
                         header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html?referer=".$ausgaben["form_referer"]);
                     } elseif ( $HTTP_POST_VARS["delete"] ) {
-                        $sql = "delete from ".$db_entries_lang." where mlid=".$HTTP_POST_VARS["delete"];
+                        $key = key($HTTP_POST_VARS["delete"]);
+                        $sql = "delete from ".$db_entries_lang." where mlid=".$key;
                         $result  = $db -> query($sql);
                         header("Location: ".$environment["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html?referer=".$ausgaben["form_referer"]);
                     }
@@ -278,7 +280,7 @@
                     // lang management form elemente end
 
                     // ohne fehler sql bauen und ausfuehren
-                    if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] != "" ) ){
+                    if ( $ausgaben["form_error"] == "" && ( $HTTP_POST_VARS["submit"] != "" || $HTTP_POST_VARS["image"] ) ){
 
                         $kick = array( "PHPSESSID", "submit", "image", "image_x", "image_y", "form_referer", "new_lang", "entry" );
                         foreach($HTTP_POST_VARS as $name => $value) {
@@ -305,7 +307,7 @@
                     }
                 }
 
-            } elseif ( $environment["parameter"][1] == "delete" && $rechte[$cfg["right"]["admin"]] == -1 ) {
+            } elseif ( $environment["parameter"][1] == "delete" && $rechte[$cfg["right"]] == -1 ) {
 
                 // ausgaben variablen bauen
                 $sql = "SELECT * FROM ".$db_entries." WHERE ".$db_entries_key."='".$environment["parameter"][2]."'";
@@ -346,7 +348,7 @@
         //
         // reihenfolge aendern
         //
-        } elseif ( $environment["kategorie"] == "move"  && $rechte[$cfg["right"]["admin"]] == -1 ) {
+        } elseif ( $environment["kategorie"] == "move"  && $rechte[$cfg["right"]] == -1 ) {
 
             if ( $environment["parameter"][1] == "up" ) {
                 $sql = "UPDATE ".$db_entries." SET sort=sort-11 WHERE mid='".$environment["parameter"][2]."'";
@@ -363,7 +365,7 @@
         //
         // neu numerieren der sort reihenfolge
         //
-        } elseif ( $environment["kategorie"] == "renumber" && $rechte[$cfg["right"]["admin"]] == -1 ) {
+        } elseif ( $environment["kategorie"] == "renumber" && $rechte[$cfg["right"]] == -1 ) {
 
             #renumber($environment["parameter"][1], $environment["parameter"][2], $environment["parameter"][3]);
             renumber($db_entries, $environment["parameter"][2], $environment["parameter"][3]);
@@ -386,11 +388,11 @@
                 $menuresult  = $db -> query($sql);
 
                 $modify  = array (
-                    "add"       => array("modify,", "Hinzufügen", $cfg["right"]["admin"]),
-                    "edit"      => array("modify,", "Editieren", $cfg["right"]["admin"]),
-                    "delete"    => array("modify,", "Löschen", $cfg["right"]["admin"]),
-                    "up"        => array("move,", "Nach oben", $cfg["right"]["admin"]),
-                    "down"      => array("move,", "Nach unten", $cfg["right"]["admin"])
+                    "add"       => array("modify,", "Hinzufügen", $cfg["right"]),
+                    "edit"      => array("modify,", "Editieren", $cfg["right"]),
+                    "delete"    => array("modify,", "Löschen", $cfg["right"]),
+                    "up"        => array("move,", "Nach oben", $cfg["right"]),
+                    "down"      => array("move,", "Nach unten", $cfg["right"])
                 );
                 $imgpath = $pathvars["images"];
 
