@@ -42,19 +42,27 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  # [H1] tag wird zu einem kleinen rechteck aus einer punkt grafik und speziell css style formatierter schrift
+  // trennzeichen veraendern
+  #$defaults["split"]["title"] = " + ";
+  #$defaults["split"]["kekse"] = " + ";
+  #$defaults["split"]["m1"] = " # ";
+  #$defaults["split"]["m2"] = " - ";
+  #$defaults["split"]["l1"] = " # ";
+  #$defaults["split"]["l2"] = " - ";        
+  
+  // [H1] tag wird zu einem kleinen rechteck aus einer punkt grafik und speziell css style formatierter schrift
   #$defaults["tag"]["h1"] = "<img src=\"".$pathvars["images"]."pt.png\" height=\"7\" width=\"7\" alt=\"\"> <span class=\"spezial_h1\">";
   #$defaults["tag"]["/h1"] = "</span><br />";
   
-  # [H2] tag wird mit speziellem style formatiert
+  // [H2] tag wird mit speziellem style formatiert
   #$defaults["tag"]["h2"] = "<span class=\"special_h2\">";
   #$defaults["tag"]["/h2"] = "</span><br />";       
   
-  # [HL] die linie mit hl wird 300px lang und 1px hoch aus einer ein punkt grafik erstellt.
+  // [HL] die linie mit hl wird 300px lang und 1px hoch aus einer ein punkt grafik erstellt.
   #$defaults["tag"]["hl"] = "<img src=\"".$pathvars["images"]."pt.png\" height=\"1\" width=\"300\" vspace=\"2\" alt=\"\">";
   #$defaults["tag"]["/hl"] = "";
   
-  # [IN] ein initial kann rot, hervorgehoen und grosser dargestellt werden.
+  // [IN] ein initial kann rot, hervorgehoen und grosser dargestellt werden.
   #$defaults["tag"]["in"] = "<strong><font color=\"#990000\" size=\"4\"><em>";
   #$defaults["tag"]["/in"] = "</em></font></strong>";
 
