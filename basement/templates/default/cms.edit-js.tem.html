@@ -39,6 +39,7 @@ function INSst(st,form,field){
         var startPos = eval('document.'+form+'.'+field+'.selectionStart');
         var endPos = eval('document.'+form+'.'+field+'.selectionEnd');
         var chaineContent = eval('document.'+form+'.'+field+'.value');
+        var scrollTop=eval('document.'+form+'.'+field+'.scrollTop');
 
         selText = chaineContent.substring(startPos, endPos);
     } else {
@@ -105,9 +106,16 @@ function INSst(st,form,field){
         // var chaineContent = eval('document.'+form+'.'+field+'.value');
 
         myField.value = chaineContent.substring(0, startPos) + st + chaineContent.substring(endPos, chaineContent.length);
+        
+        // scrollen und cursor an die richtige stelle
+        document.eval(form+'.'+field).focus();        
+        var cPos=startPos+st.length;
+        document.eval(form+'.'+field).selectionStart=cPos;
+        document.eval(form+'.'+field).selectionEnd=cPos;                
+        document.eval(form+'.'+field).scrollTop=scrollTop;
     } else {
         myField.value += st;
-    }
+    }     
 }
 </SCRIPT>
 <!--##end-->
