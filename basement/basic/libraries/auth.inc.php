@@ -84,7 +84,7 @@
             session_start();
             session_unset();
             session_destroy();
-            $ausgaben["login_meldung"] = "Zugriff verweigert.";
+            $ausgaben["login_meldung"] = "#(denied)";
         }
     }
 
@@ -93,7 +93,7 @@
             session_start();
             session_unset();
             session_destroy();
-            $ausgaben["login_meldung"] = "Abgemeldet.";
+            $ausgaben["login_meldung"] = "#(logout)";
     }
 
     // session variablen nur holen wenn /auth/ in der url
@@ -129,7 +129,11 @@
     // daten fuer login, logout formular setzen
     if ( $HTTP_SESSION_VARS["auth"] != -1 ) {
         $ausgaben["login_meldung"] .= "";
-        $ausgaben["auth"] = parser( "auth.login", "");
+        if ( $cfg["hidden"]["set"] != True || $environment["kategorie"] == $cfg["hidden"]["kategorie"] ) {
+          $ausgaben["auth"] = parser( "auth.login", "");
+        } else {
+          $ausgaben["auth"] = "";
+        }
     } else {
         $ausgaben["logout_meldung"] = "\"".$HTTP_SESSION_VARS["username"]."\"";
         $ausgaben["logout_rechte"] = "";
