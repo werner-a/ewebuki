@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function makece($ce_formname, $ce_name, $ce_inhalt) {
-        global $db, $pathvars, $ausgaben, $extension, $specialvars;
+        global $db, $pathvars, $ausgaben, $extension, $specialvars, $defaults;
         $ausgaben["ce_name"] = $ce_name;
 
         $specialvars["editlock"] = -1;
