@@ -107,7 +107,8 @@
         #    $search = "= '".$value."'";
         #}
 
-        $search = "like '".$value."%'";
+        #$search = "like '".$value."%'"; // ich weiss nicht mehr warum
+        $search = "like '".$value."'";
         $sql = "SELECT site_".$mt.".mid,
                        site_".$mt.".refid,
                        site_".$mt.".entry,
