@@ -45,13 +45,22 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
+    // content umschaltung verhindern
+    $specialvars["dynlock"] = True;
+
+    if ( $cfg["db"]["change"] == -1 ) {
+        if ( $environment["fqdn"][0] == $specialvars["dyndb"] ) {
+            $db->selectDb($specialvars["dyndb"],FALSE);
+        }
+    }
+
     $mt = $db_entries;
     $mtl = $db_entries_lang;
     $refid = 0;
 
     function sitemap($refid) {
         global $environment, $db, $mt, $mtl, $pathvars, $specialvars, $rechte, $ast, $astpath;
-        $sql = "SELECT $mt.mid, $mt.entry, $mt.refid, $mt.level, $mt.sort, $mtl.lang, $mtl.label, $mtl.exturl FROM $mt INNER JOIN $mtl ON $mt.mid = $mtl.mid WHERE ((($mt.refid)=$refid) AND (($mtl.lang)='".$environment["language"]."')) order by sort, label;";
+        $sql = "SELECT $mt.mid, $mt.entry, $mt.refid, $mt.level, $mt.sort, $mtl.lang, $mtl.label, $mtl.exturl FROM $mt INNER JOIN $mtl ON $mt.mid = $mtl.mid WHERE ((($mt.refid)=$refid) AND (($mtl.lang)='".$environment["language"]."') AND (($mt.hide)<>'-1')) order by sort, label;";
         $menuresult  = $db -> query($sql);
 
         while ( $menuarray = $db -> fetch_array($menuresult,1) ) {
@@ -77,15 +86,12 @@
 
                 // ast ausruecken bzw. auf dem aktuellen wert setzen
                 } else {
-                    // aktuellen wert loeschen
-                    array_pop($ast);
-                    array_pop($astpath);
-
-                    // evtl. ast ausruecken
-                    if ( array_search($refid, $ast, TRUE) >= 1 ) {
-                      array_pop($ast);
-                      array_pop($astpath);
+                    $key = array_search($refid, $ast, TRUE);
+                    while ( array_key_exists( $key, $ast ) ) {
+                        array_pop($ast);
+                        array_pop($astpath);
                     }
+
                     // aktuellen wert setzen
                     $ast[] = $refid;
                     $astpath[] = $menuarray["entry"];
@@ -110,6 +116,11 @@
     $ausgaben["output"]  = "<table width=\"100%\">";
     $ausgaben["output"] .= sitemap($refid);
     $ausgaben["output"] .= "</table>";
+
+    if ( $cfg["db"]["change"] == -1 ) {
+        // globale db auswaehlen
+            $db -> selectDb(DATABASE,FALSE);
+    }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
 
