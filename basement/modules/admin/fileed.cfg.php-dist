@@ -52,7 +52,7 @@
             "key"      => "fid",
             "order"    => "fid",
             "sort"     => "DESC",
-            "rows"     => "15",
+            "rows"     => "18",
             "language" => "",
         ),
         "file"      => array(

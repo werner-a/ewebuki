@@ -50,7 +50,7 @@
 
     $cfg["db"]["change"] = 0;
     $cfg["fqdn0"] = "www";
-    $cfg["right"]["admin"] = "cms_admin";
+    $cfg["right"]["admin"] = "administration";
 
     // Form Settings
     $form_defaults["class"]["textfield"] = " class=\"class\"";
