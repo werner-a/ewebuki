@@ -140,6 +140,9 @@
                     case "[BR]":
                         $replace = str_replace($opentag.$tagwert.$endtag,"<br />",$replace);
                         break;
+                    case "[SP]":
+                        $replace = str_replace($opentag.$tagwert.$endtag,"&nbsp;",$replace);
+                        break;
                     case "[LIST]":
                         $tagwerte = explode("[*]",$tagwert);
                         $ausgabewert  = "<ul>";
