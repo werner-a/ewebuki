@@ -295,7 +295,8 @@
         }
 
         function data_seek($result,$offset) {
-            pg_data_seek($result,$offset);
+            $success = pg_result_seek($result,$offset);
+            return $success;
         }
 
         function free_result($result) {
