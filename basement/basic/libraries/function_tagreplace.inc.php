@@ -482,7 +482,18 @@
                         if ( $colwerte[1] != "" ) {
                             $width = " width=\"".$colwerte[1]."\"";
                         }
-                        $replace = str_replace($opentag.$tagwert.$endtag,"<td valign=\"top\"".$align.$width.">".$tagwerte[1]."</td>",$replace);
+                        if ( $colwerte[2] == "o" ) {
+                            $valign = " valign=\"top\"";
+                        } elseif ( $colwerte[2] == "m" ) {
+                            $valign = " valign=\"middle\"";
+                        } elseif ( $colwerte[2] == "u" ) {
+                            $valign = " valign=\"bottom\"";
+                        } elseif ( $colwerte[2] == "g" ) {
+                            $valign = " valign=\"baseline\"";
+                        } else {
+                            $valign = "\"top\"";
+                        }
+                        $replace = str_replace($opentag.$tagwert.$endtag,"<td".$align.$width.$valign.">".$tagwerte[1]."</td>",$replace);
                         break;
                     case "[H1]":
                         if ( $defaults["tag"]["h1"] == "" ) {
