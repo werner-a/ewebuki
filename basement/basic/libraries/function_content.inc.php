@@ -142,7 +142,7 @@
                 }
 
                 // wenn es kein value, alt, title und status in der zeile gibt
-                $vorher = substr($line,$labelbeg-10,10);;
+                $vorher = substr($line,$labelbeg-20,20);
                 if ( !strstr($vorher,"value=\"")
                   && !strstr($vorher,"alt=\"")
                   && !strstr($vorher,"title=\"")
