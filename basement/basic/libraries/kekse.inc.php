@@ -167,7 +167,21 @@
             $ausgaben["M3"] = crc32($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
 
             if ( $path.".html" == $environment["ebene"]."/".$environment["kategorie"].".html" ) {
-                $sql = "SELECT site_menu.entry, site_menu.refid, site_menu.level, site_menu_lang.lang, site_menu_lang.label, site_menu_lang.exturl FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid = site_menu_lang.mid WHERE (((site_menu.refid)=".$keksarray["refid"].") AND ((site_menu_lang.lang)='".$environment["language"]."')) order by sort, label;";
+                $sql = "SELECT  site_".$mt.".entry,
+                                site_".$mt.".refid,
+                                site_".$mt.".level,
+                                site_".$mt."_lang.lang,
+                                site_".$mt."_lang.label,
+                                site_".$mt."_lang.exturl
+                          FROM  site_".$mt."
+                    INNER JOIN  site_".$mt."_lang
+                            ON  site_".$mt.".mid = site_".$mt."_lang.mid
+                         WHERE (
+                               (site_".$mt.".refid=".$keksarray["refid"].")
+                           AND (site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL)
+                           AND (site_".$mt."_lang.lang='".$environment["language"]."')
+                               )
+                      ORDER BY  sort, label;";
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
@@ -197,7 +211,20 @@
                 $lnkcount = 0;
                 $lnk[$lnkcount] = $ausgaben["UP"];
 
-                $sql = "SELECT site_menu.entry, site_menu.refid, site_menu.level, site_menu_lang.lang, site_menu_lang.label, site_menu_lang.exturl FROM site_menu INNER JOIN site_menu_lang ON site_menu.mid = site_menu_lang.mid WHERE (((site_menu.refid)=".$keksarray["mid"].") AND ((site_menu_lang.lang)='".$environment["language"]."')) order by sort, label";
+                $sql = "SELECT  site_".$mt.".entry,
+                                site_".$mt.".refid,
+                                site_".$mt.".level,
+                                site_".$mt."_lang.lang,
+                                site_".$mt."_lang.label,
+                                site_".$mt."_lang.exturl
+                          FROM  site_".$mt."
+                    INNER JOIN  site_".$mt."_lang
+                            ON  site_".$mt.".mid = site_".$mt."_lang.mid
+                         WHERE (
+                               (site_".$mt.".refid=".$keksarray["mid"].")
+                           AND (site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL)
+                           AND (site_".$mt."_lang.lang='".$environment["language"]."'))
+                      ORDER BY  sort, label";
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
