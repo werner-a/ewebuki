@@ -24,3 +24,31 @@
 # character to interpose another module into the current module.  This
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
+
+# alias -a first-dir
+phpwebkit -a htdocs
+
+# regular first-dir/sdir sfile
+htdocs basement index.php.auto-dist index.php.rand-dist robots.txt-dist .htaccess-dist
+basic basement/basic
+conf basement/conf
+css basement/css
+doku basement/doku
+images basement/images
+
+modules basement/modules README leer-sub.inc.php leer.cfg.php leer.inc.php
+admin basement/modules/admin
+chaos basement/modules/chaos
+creative basement/modules/creative
+intrabvv basement/modules/intrabvv
+koppe basement/modules/koppe
+
+sql basement/sql
+file basement/file
+templates basement/templates
+
+# ampermod &first-dir
+
+# exmodule -a !first-dir/sdir first-dir
+
+# EOF
