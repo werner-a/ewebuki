@@ -90,7 +90,7 @@
         // ***
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
-            $ausgaben["inaccessible"] .= "# (?_error) #(?_error)<br />";
+            $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -102,64 +102,67 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify" ) {
+        if ( $environment["parameter"][2] == "verify"
+            && $HTTP_POST_VARS["send"] != "" ) {
 
             // form eigaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );
 
-            // ohne formular fehler sql bauen und ausfuehren
-            if ( $ausgaben["form_error"] == ""
-                && $HTTP_POST_VARS["send"] != "" ) {
+            // gibt es in der neuen ebene einen solchen entry?
+            $sql = "SELECT entry
+                      FROM ".$cfg["db"]["menu"]["entries"]."
+                     WHERE refid = '".$HTTP_POST_VARS["refid"]."'
+                       AND entry = '".$HTTP_POST_VARS["entry"]."'";
+            $result = $db -> query($sql);
+            #$data = $db -> fetch_array($result,1);
+            $num_rows = $db -> num_rows($result);
+            if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
 
-                // content tabellen aenderungen
-                // ***
+            // content tabellen aenderungen
+            if ( $ausgaben["form_error"] == "" ) {
                 $sql = "SELECT refid, entry FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
                 $result = $db -> query($sql);
                 $data = $db -> fetch_array($result,1);
-                #if ( $data["entry"] != $HTTP_POST_VARS["entry"] ) {
 
-                    // content aktuelle seite aendern (alle sprachen)
-                    $ebene = make_ebene($data["refid"]);
-                    if ( $ebene != "/" ) {
-                        $extend = crc32($ebene).".";
-                    } else {
-                        $ebene = "";
-                        $extend = "";
-                    }
-                    $old_tname = $extend.$data["entry"];
-                    #echo $ebene.":".$old_tname."<br>";
-                    $suchmuster = $ebene."/".$data["entry"];
+                // content aktuelle seite aendern (alle sprachen)
+                $ebene = make_ebene($data["refid"]);
+                if ( $ebene != "/" ) {
+                    $extend = crc32($ebene).".";
+                } else {
+                    $ebene = "";
+                    $extend = "";
+                }
+                $old_tname = $extend.$data["entry"];
+                #echo $ebene.":".$old_tname."<br>";
+                $suchmuster = $ebene."/".$data["entry"];
 
+                $ebene = make_ebene($HTTP_POST_VARS["refid"]);
+                if ( $ebene != "/" ) {
+                    $extend = crc32($ebene).".";
+                } else {
+                    $ebene = "";
+                    $extend = "";
+                }
+                $new_tname = $extend.$HTTP_POST_VARS["entry"];
+                #echo $ebene.":".$new_tname."<br>";
+                $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
 
-                    $ebene = make_ebene($HTTP_POST_VARS["refid"]);
-                    if ( $ebene != "/" ) {
-                        $extend = crc32($ebene).".";
-                    } else {
-                        $ebene = "";
-                        $extend = "";
-                    }
-                    $new_tname = $extend.$HTTP_POST_VARS["entry"];
-                    #echo $ebene.":".$new_tname."<br>";
-                    $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
+                $sql = "UPDATE ".$cfg["db"]["text"]["entries"]."
+                            SET tname = '".$new_tname."',
+                                ebene = '".$ebene."',
+                                kategorie = '".$HTTP_POST_VARS["entry"]."'
+                            WHERE tname = '".$old_tname."';";
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $result  = $db -> query($sql);
+                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
 
-                    $sql = "UPDATE ".$cfg["db"]["text"]["entries"]."
-                               SET tname = '".$new_tname."',
-                                   ebene = '".$ebene."',
-                                   kategorie = '".$HTTP_POST_VARS["entry"]."'
-                             WHERE tname = '".$old_tname."';";
-                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                    $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
-
-                    // content der unterpunkte aendern (alle sprachen)
-                    update_tname($environment["parameter"][1], $suchmuster, $ersatz);
-                #}
-                // +++
-                // content tabellen aenderungen
+                // content der unterpunkte aendern (alle sprachen)
+                update_tname($environment["parameter"][1], $suchmuster, $ersatz);
+            }
 
 
-                // menu tabellen aenderungen
-                // ***
+            // menu tabellen aenderungen
+            if ( $ausgaben["form_error"] == "" ) {
                 $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y", "form_referer",
                                "entry" );
                 foreach($HTTP_POST_VARS as $name => $value) {
@@ -179,14 +182,11 @@
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
                 if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+            }
 
-                // +++
-                // menu tabellen aenderungen
-
-                // wenn es keine fehlermeldungen gab, die uri $header laden
-                if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$header);
-                }
+            // wenn es keine fehlermeldungen gab, die uri $header laden
+            if ( $ausgaben["form_error"] == "" ) {
+                header("Location: ".$header);
             }
         }
     } else {

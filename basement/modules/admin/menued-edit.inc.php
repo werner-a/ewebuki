@@ -180,6 +180,7 @@
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
+            $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
             $ausgaben["inaccessible"] .= "# (error_lang_add) #(error_lang_add)<br />";
             $ausgaben["inaccessible"] .= "# (error_lang_delete) #(error_lang_delete)<br />";
         } else {
@@ -194,19 +195,17 @@
         // page basics
 
 
-        if ( $environment["parameter"][2] == "verify" ) {
+        if ( $environment["parameter"][2] == "verify"
+            &&  ( $HTTP_POST_VARS["send"] != ""
+                || $HTTP_POST_VARS["add"] != ""
+                || $HTTP_POST_VARS["delete"] != "" ) ) {
 
             // form eigaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );
 
-            // ohne formular fehler sql bauen und ausfuehren
-            if ( $ausgaben["form_error"] == ""
-                &&  ( $HTTP_POST_VARS["send"] != ""
-                   || $HTTP_POST_VARS["add"] != ""
-                   || $HTTP_POST_VARS["delete"] != "" ) ) {
+            // lang tabellen aenderungen
+            if ( $ausgaben["form_error"] == ""  ) {
 
-                // lang tabellen aenderungen
-                // ***
                 $header_link = $cfg["basis"]."/edit,".$environment["parameter"][1].".html"; #?referer=".$ausgaben["form_referer"]);
                 if ( $HTTP_POST_VARS["add"] ) {
                     $sql = "SELECT label
@@ -269,50 +268,66 @@
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
                 }
-                // +++
-                // lang tabellen aenderungen
+            }
 
 
-                // content tabellen aenderungen
-                // ***
-                $sql = "SELECT entry FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
+            // content tabellen aenderungen
+            if ( $ausgaben["form_error"] == "" ) {
+
+                $sql = "SELECT entry
+                          FROM ".$cfg["db"]["menu"]["entries"]."
+                         WHERE ".$cfg["db"]["menu"]["key"]." = '".$environment["parameter"][1]."'";
                 $result = $db -> query($sql);
                 $data = $db -> fetch_array($result,1);
+
+                // wurde der entry geaendert?
                 if ( $data["entry"] != $HTTP_POST_VARS["entry"] ) {
 
-                    // content aktuelle seite aendern (alle sprachen)
-                    $ebene = make_ebene($HTTP_POST_VARS["refid"]);
-                    if ( $ebene != "/" ) {
-                        $extend = crc32($ebene).".";
-                    } else {
-                        $ebene = "";
+                    // gibt den geaenderten entry bereits?
+                    $sql = "SELECT entry
+                            FROM ".$cfg["db"]["menu"]["entries"]."
+                            WHERE refid = '".$HTTP_POST_VARS["refid"]."'
+                            AND entry = '".$HTTP_POST_VARS["entry"]."'";
+                    $result1 = $db -> query($sql);
+                    #$data = $db -> fetch_array($result,1);
+                    $num_rows = $db -> num_rows($result1);
+                    if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
+
+                    if ( $ausgaben["form_error"] == ""  ) {
+                        // content aktuelle seite aendern (alle sprachen)
+                        $ebene = make_ebene($HTTP_POST_VARS["refid"]);
+                        if ( $ebene != "/" ) {
+                            $extend = crc32($ebene).".";
+                        } else {
+                            $ebene = "";
+                        }
+                        $old_tname = $extend.$data["entry"];
+                        #echo $ebene.":".$old_tname."<br>";
+                        $suchmuster = $ebene."/".$data["entry"];
+
+                        $new_tname = $extend.$HTTP_POST_VARS["entry"];
+                        #echo $ebene.":".$new_tname."<br>";
+                        $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
+
+                        $sql = "UPDATE ".$cfg["db"]["text"]["entries"]."
+                                SET tname = '".$new_tname."',
+                                    ebene = '".$ebene."',
+                                    kategorie = '".$HTTP_POST_VARS["entry"]."'
+                                WHERE tname = '".$old_tname."';";
+                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                        $result  = $db -> query($sql);
+                        if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+
+                        // content der unterpunkte aendern (alle sprachen)
+                        update_tname($environment["parameter"][1],/*$HTTP_POST_VARS["entry"]*/$suchmuster, $ersatz);
                     }
-                    $old_tname = $extend.$data["entry"];
-                    #echo $ebene.":".$old_tname."<br>";
-                    $suchmuster = $ebene."/".$data["entry"];
-
-                    $new_tname = $extend.$HTTP_POST_VARS["entry"];
-                    #echo $ebene.":".$new_tname."<br>";
-                    $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
-
-                    $sql = "UPDATE ".$cfg["db"]["text"]["entries"]."
-                               SET tname = '".$new_tname."',
-                                   ebene = '".$ebene."',
-                                   kategorie = '".$HTTP_POST_VARS["entry"]."'
-                             WHERE tname = '".$old_tname."';";
-                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                    $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-
-                    // content der unterpunkte aendern (alle sprachen)
-                    update_tname($environment["parameter"][1],/*$HTTP_POST_VARS["entry"]*/$suchmuster, $ersatz);
                 }
-                // +++
-                // content tabellen aenderungen
+            }
 
 
-                // menu tabellen aenderungen
-                // ***
+            // menu tabellen aenderungen
+            if ( $ausgaben["form_error"] == ""  ) {
+
                 $kick = array( "PHPSESSID", "send", "add", "delete", "image", "image_x", "image_y", "form_referer",
                                "new_lang", "lang", "label", "exturl",
                                "entry" );
@@ -336,14 +351,11 @@
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+            }
 
-                // +++
-                // menu tabellen aenderungen
-
-                // wenn es keine fehlermeldungen gab, die uri $header laden
-                if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$header);
-                }
+            // wenn es keine fehlermeldungen gab, die uri $header laden
+            if ( $ausgaben["form_error"] == "" ) {
+                header("Location: ".$header);
             }
         }
     } else {

@@ -61,7 +61,7 @@
         $element = form_elements( $cfg["db"]["menu"]["entries"], $form_values );
 
         // form elemente erweitern
-        $element = array_merge($element, form_elements( $cfg["db"]["lang"]["entries"], $array ));
+        $element = array_merge($element, form_elements( $cfg["db"]["lang"]["entries"], $form_values ));
         if ( $HTTP_POST_VARS["refid"] == "" ) {
             $value = $environment["parameter"][1];
         } else {
@@ -116,6 +116,7 @@
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
+            $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -127,17 +128,26 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][1] == "verify" ) {
+        if ( $environment["parameter"][1] == "verify"
+            && ( $HTTP_POST_VARS["send"] != ""
+                || $HTTP_POST_VARS["image"]
+                || $HTTP_POST_VARS["add"] ) ) {
 
             // form eigaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );
 
-            // ohne fehler sql bauen und ausfuehren
-            if ( $ausgaben["form_error"] == ""
-                && ( $HTTP_POST_VARS["send"] != ""
-                    || $HTTP_POST_VARS["image"]
-                    || $HTTP_POST_VARS["add"] ) ) {
+            // gibt es einen solchen entry bereits?
+            $sql = "SELECT entry
+                      FROM ".$cfg["db"]["menu"]["entries"]."
+                     WHERE refid = '".$HTTP_POST_VARS["refid"]."'
+                       AND entry = '".$HTTP_POST_VARS["entry"]."'";
+            $result = $db -> query($sql);
+            #$data = $db -> fetch_array($result,1);
+            $num_rows = $db -> num_rows($result);
+            if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
 
+            // entry hinzufuegen
+            if ( $ausgaben["form_error"] == "" ) {
                 $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y",
                                "add_x", "add_y", "add", "form_referer", "lang", "label",
                                "exturl", "new_lang", "entry");
@@ -160,27 +170,25 @@
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+            }
 
-                // lang management form elemente begin
-                // ***
-                if ( $ausgaben["form_error"] == "" ) {
-                    $lastid = $db -> lastid();
-                    $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, label) VALUES ('".$lastid."', '".$HTTP_POST_VARS["lang"]."', '".$HTTP_POST_VARS["label"]."' )";
-                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                    $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                }
-                // +++
-                // lang management form elemente end
-                if ( $HTTP_POST_VARS["add"] ) {
-                    $header = $cfg["basis"]."/edit,".$lastid.",verify.html";
-                } else {
-                    $header = $cfg["basis"]."/list.html";
-                }
+            // sprache hinzufuegen
+            if ( $ausgaben["form_error"] == "" ) {
+                $lastid = $db -> lastid();
+                $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, label) VALUES ('".$lastid."', '".$HTTP_POST_VARS["lang"]."', '".$HTTP_POST_VARS["label"]."' )";
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $result  = $db -> query($sql);
+                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+            }
 
-                if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$header);
-                }
+            // wohin schicken
+            if ( $HTTP_POST_VARS["add"] ) {
+                $header = $cfg["basis"]."/edit,".$lastid.",verify.html";
+            } else {
+                $header = $cfg["basis"]."/list.html";
+            }
+            if ( $ausgaben["form_error"] == "" ) {
+                header("Location: ".$header);
             }
         }
     }  else {
