@@ -103,8 +103,8 @@
             $salt = substr($data[$cfg["db"]["pass"]],0,2);
             $oldpass = crypt($HTTP_POST_VARS["oldpass"],$salt);
 
-            if ( $oldpass == $data[$cfg["db"]["pass"]] ) {
-                if ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] && $HTTP_POST_VARS["newpass"] != "" ) {
+            if ( $oldpass == $data[$cfg["db"]["pass"]] ) {               
+                if ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] && $HTTP_POST_VARS["newpass"] != "" ) {                   
                     $checked_password = $HTTP_POST_VARS["newpass"];
                     mt_srand((double)microtime()*1000000);
                     $a=mt_rand(1,128);
@@ -115,7 +115,7 @@
                     $ausgaben["form_error"] .= $form_options["abpasswort"]["ferror"];
                 }
             } else {
-                $ausgaben["form_error"] .= $form_options["abpasswort"]["ferror"]." alt";
+                $ausgaben["form_error"] .= $form_options["abpasswort"]["ferror"]."das alte passwort falsch";
             }
 
             // ohne fehler sql bauen und ausfuehren
@@ -134,7 +134,7 @@
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
                 if ( $checked_password != "" ) {
-                    $sqla .= "abpasswort='".$checked_password."'";
+                    $sqla .= "pass='".$checked_password."'";
                 }
                 $sql = "update ".$cfg["db"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
                 $result  = $db -> query($sql);
