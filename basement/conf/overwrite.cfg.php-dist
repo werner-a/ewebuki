@@ -58,6 +58,10 @@
   #$defaults["cms-tag"]["signal"] = "<img src=\"".$pathvars["images"]."/cms-tag-";
   #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\"></a>";
 
+  // eigene icons verwenden
+  #$defaults["icon"]["pdf"] = "<img src=\"".$pathvars["images"]."icon_pdf.png\">";
+  #$defaults["icon"]["zip"] = "<img src=\"".$pathvars["images"]."icon_zip.png\">";
+
   // [H1] tag wird zu einem kleinen rechteck aus einer punkt grafik und speziell css style formatierter schrift
   #$defaults["tag"]["h1"] = "<img src=\"/images/default/pt.png\" height=\"7\" width=\"7\" alt=\"\"> <span class=\"spezial_h1\">";
   #$defaults["tag"]["/h1"] = "</span><br />";
