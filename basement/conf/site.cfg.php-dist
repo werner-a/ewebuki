@@ -83,6 +83,7 @@
     $pathvars["filebase"]["pic"]["m"] = "medium/";
     $pathvars["filebase"]["pic"]["b"] = "big/";
     $pathvars["filebase"]["doc"] = "document/";
+    $pathvars["filebase"]["arc"] = "archiv/";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
