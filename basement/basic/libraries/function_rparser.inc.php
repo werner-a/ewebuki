@@ -189,7 +189,8 @@
                             }
                             $tetstring = str_replace($cutstring,"",$environment["ebene"]);
                             if ( $tetstring != "" ) {
-                                $startfile = crc32($tetstring).".".$token_name.".tem.html";
+                                #$prefix = "e";
+                                $startfile = $prefix.crc32($tetstring).".".$token_name.".tem.html";
                                 if ( !file_exists($pathvars["templates"].$startfile) ) {
                                   if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$startfile." crc32 template found for ebene (".$tetstring.")".$debugging["char"];
                                 } else {
