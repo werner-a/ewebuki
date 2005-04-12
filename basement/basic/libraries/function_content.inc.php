@@ -83,6 +83,8 @@
             // token name extrahieren
             $label = substr($line,$labelbeg+2,$labellen-2);
 
+            if ( strpos($label,",") !== false ) break; // javascript fix
+
             $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='".$dbtname."' AND lang='".$environment["language"]."' AND label='$label'";
             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result  = $db -> query($sql);
