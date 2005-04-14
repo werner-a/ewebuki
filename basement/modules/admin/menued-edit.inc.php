@@ -308,15 +308,16 @@
                         // content aktuelle seite aendern (alle sprachen)
                         $ebene = make_ebene($HTTP_POST_VARS["refid"]);
                         if ( $ebene != "/" ) {
-                            $extend = crc32($ebene).".";
+                            $crc32 = crc32($ebene).".";
                         } else {
+                            $crc32 = "";
                             $ebene = "";
                         }
-                        $old_tname = $extend.$data["entry"];
+                        $old_tname = $crc32.$data["entry"];
                         #echo $ebene.":".$old_tname."<br>";
                         $suchmuster = $ebene."/".$data["entry"];
 
-                        $new_tname = $extend.$HTTP_POST_VARS["entry"];
+                        $new_tname = $crc32.$HTTP_POST_VARS["entry"];
                         #echo $ebene.":".$new_tname."<br>";
                         $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
 
