@@ -14,8 +14,11 @@
   RewriteRule ^templates.* - [L] 			
   
   RewriteRule ^robots.txt - [L] 			
-  RewriteRule index.php - [L]
 
-  # der rest wird umgeleitet
+  # entweder aufruf über index.php
+  #RewriteRule ^index.php - [L]
+  #RewriteRule ^.+ basic/main.php [T=application/x-httpd-php]
+
+  # oder betrieb ohne index.php
   RewriteRule ^.* basic/main.php [T=application/x-httpd-php]
 </IfModule>
