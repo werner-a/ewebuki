@@ -4,7 +4,7 @@
   RewriteEngine On
   RewriteBase /
 
-  # verzeichnisse und datien die nicht rewrited werden
+  # unbedingt benötigte ausnahmen
   RewriteRule ^basic.* - [L] 			
   RewriteRule ^conf.* - [L] 			
   RewriteRule ^css.* - [L] 			
@@ -14,6 +14,9 @@
   RewriteRule ^templates.* - [L] 			
   
   RewriteRule ^robots.txt - [L] 			
+  
+  # zusaetzliche eigene ausnahmen
+  #RewriteRule ^my.* - [L] 			
 
   # entweder aufruf über index.php
   #RewriteRule ^index.php - [L]
