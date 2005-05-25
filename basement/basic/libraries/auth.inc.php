@@ -91,6 +91,21 @@
             $HTTP_SESSION_VARS["username"] = $AUTH[$cfg["db"]["user"]["name"]];
             session_register("custom");
             $HTTP_SESSION_VARS["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
+
+            // wenn content_right on dann katzugriff array bauen
+            if ( $specialvars["security"]["enable"] == -1 ) {
+                session_register("katzugriff");
+                $sql = "SELECT ".$cfg["db"]["special"]["contentkey"].",
+                               ".$cfg["db"]["special"]["dbasekey"].",
+                               ".$cfg["db"]["special"]["tnamekey"]."
+                          FROM ".$cfg["db"]["special"]["entries"]."
+                         WHERE ".$cfg["db"]["special"]["userkey"]."='".$HTTP_SESSION_VARS["uid"]."'";
+                $result = $db -> query($sql);
+                while ( $data = $db -> fetch_array($result,$nop) ) {
+                    $HTTP_SESSION_VARS["katzugriff"][] = $data["content"].":".$data["sdb"].":".$data["stname"];
+                }
+            }
+
             if ( $cfg["hidden"]["set"] == True ) {
                 $destination_src = $ausgaben["form_referer"];
             } else {
