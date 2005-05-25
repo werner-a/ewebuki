@@ -73,7 +73,7 @@
     $specialvars["404"]["enable"] = 0; // 404 fehlermeldungen aktivieren
     $specialvars["404"]["nochk"]["ebene"] = array("/cms","/admin"); // ebenen ohne 404 meldung
     $specialvars["404"]["nochk"]["kategorie"] = array("index","view"); // kategorien ohne 404 meldung
-    $specialvars["security"]["enable"] = ""; // spezial recht auf content bearbeitung
+    $specialvars["security"]["enable"] = 0; // spezial recht auf content bearbeitung
     $specialvars["security"]["nochk"] = array("auth.logout","index","auth"); // templates die nur admin aendern darf
     $specialvars["security"]["overwrite"] = "cms_admin"; // wer ist content admin
 
