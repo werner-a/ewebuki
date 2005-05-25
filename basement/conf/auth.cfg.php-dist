@@ -40,48 +40,56 @@
 
     URL: http://www.chaos.de
 */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
     $cfg = array(
-           "subdir"    => "",
-           "name"      => "",
-           "basis"     => $pathvars["virtual"]."",
-           "hidden"    => array(
-                          "set"        => False,
-                          "kategorie"  => "login",                          
-                          ),            
-           "db"        => array(
-                          "user"  => array(
-                                     "entries" => "auth_user",
-                                     "id"      => "uid",
-                                     "name"    => "username",
-                                     "pass"    => "pass",
-                                     "custom"  => ""
-                                     ),
-                          "right"  => array(
-                                     "entries"  => "auth_right",
-                                     "id"       => "",
-                                     "levelkey" => "lid",
-                                     "userkey"  => ""
-                                     ),
-                          "level"  => array(
-                                     "entries" => "auth_level",
-                                     "id"      => "lid",
-                                     ),
-                          ),
-           "custom"    => array(
-                          "load"        => 0,
-                          "path"        => "setit",
-                          "file"        => "base.name",
-                          ),                        
-           "menu"     => array(
-                          "leveled"     => array("list", "cms_admin"),    # ""              = jeder
-                          "usered"      => array("list", "cms_admin"),    # "ein wert"      = nur dieses recht
-                          "menued"      => array("list", "cms_admin"),    # "recht1;recht2" = beide rechte
-                          "fileed"      => array("list", "cms_edit"),
-                          "passed"      => array("modify","cms_edit"),
-                          )
+           "subdir" => "",
+             "name" => "",
+            "basis" => $pathvars["virtual"]."",
+           "hidden" => array(
+                     "set" => False,
+               "kategorie" => "login",
+                       ),
+               "db" => array(
+                    "user" => array(
+                          "entries" => "auth_user",
+                               "id" => "uid",
+                             "name" => "username",
+                             "pass" => "pass",
+                           "custom" => ""
+                              ),
+                   "right" => array(
+                          "entries" => "auth_right",
+                               "id" => "",
+                         "levelkey" => "lid",
+                          "userkey" => ""
+                              ),
+                   "level" => array(
+                          "entries" => "auth_level",
+                               "id" => "lid",
+                              ),
+                 "special" => array(
+                          "entries" => "auth_special",
+                          "userkey" => "suid",
+                       "contentkey" => "content",
+                         "dbasekey" => "sdb",
+                         "tnamekey" => "stname"
+                              ),
+                       ),
+           "custom" => array(
+                    "load" => 0,
+                    "path" => "setit",
+                    "file" => "base.name",
+                       ),
+             "menu" => array(
+                 "leveled" => array("list", "cms_admin"),    # ""              = jeder
+                  "usered" => array("list", "cms_admin"),    # "ein wert"      = nur dieses recht
+                  "menued" => array("list", "cms_admin"),    # "recht1;recht2" = beide rechte
+                  "fileed" => array("list", "cms_edit"),
+                  "passed" => array("modify","cms_edit"),
+                  "bloged" => array("list","cms_edit"),
+                       ),
     );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>
