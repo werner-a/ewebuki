@@ -112,7 +112,7 @@
                     $dbzugriff = -1;
                     $katzugriff = -1;
                 // sperre fuer bestimmte templates
-                } elseif ( in_array($tname,$specialvars["security"]["nochk"]) ) {
+                } elseif ( in_array($tname,(array)$specialvars["security"]["nochk"]) ) {
                     $katzugriff = FALSE;
                     $dbzugriff = FALSE;
                 // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
@@ -131,7 +131,7 @@
                 if ( $rechte[$specialvars["security"]["overwrite"]] == -1 ) {
                     $katzugriff = -1;
                 // sperre fuer bestimmte templates
-                } elseif ( in_array($tname,$specialvars["security"]["nochk"]) ) {
+                } elseif ( in_array($tname,(array)$specialvars["security"]["nochk"]) ) {
                     $katzugriff = FALSE;
                 // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
                 } else {
