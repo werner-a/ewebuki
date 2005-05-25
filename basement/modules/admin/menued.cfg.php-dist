@@ -61,6 +61,7 @@
                    "delete" => array("make_ebene"),
                      "sort" => array("sitemap", "renumber"),
                      "move" => array("sitemap", "make_ebene", "update_tname"),
+                   "rights" => array(""),
                        ),
                "db" => array(
                    "change" => 0,
@@ -99,7 +100,7 @@
                        "contentkey" => "content",
                          "dbasekey" => "sdb",
                          "tnamekey" => "stname"
-                ),
+                               ),
             "fqdn0" => "www",
             "right" => "cms_admin",
     );
