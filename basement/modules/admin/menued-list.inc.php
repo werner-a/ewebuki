@@ -53,6 +53,12 @@
             "down"      => array("sort,", "#(button_desc_down)", $cfg["right"]),
             "move"      => array("", "#(button_desc_move)", $cfg["right"]),
         );
+
+        // bei eingeschalteten content recht wird button hinzugefuegt
+        if ( $specialvars["security"]["enable"] == -1 ) {
+            $modify["rights"] = array("", "#(button_desc_right)", $cfg["right"]);
+        }
+
         $ausgaben["output"] .= sitemap(0, "menued", $modify);
 
         // fehlermeldungen
