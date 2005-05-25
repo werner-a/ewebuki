@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>usered.modify</title>
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<!--$Id$-->
+<form method="POST" action="!#ausgaben_form_aktion" name="modify">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr> 
+      <td bgcolor="#EC9379">#(ueberschrift)</td>
+    </tr>
+    <tr> 
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr> 
+            <td colspan="4">#(inhalt)</td>
+          </tr>
+          <tr> 
+            <td colspan="4"><font color="#FF0000">!#ausgaben_form_error</font></td>
+          </tr>
+          <tr> 
+            <td colspan="4">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                <tr> 
+                  <td>#(database)</td>
+                  <td>!#ausgaben_database</td>
+                </tr>
+                <tr> 
+                  <td>#(path)</td>
+                  <td>!#ausgaben_path</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td>&nbsp;</td>
+          </tr>
+          <tr> 
+            <td width="25%" align="right">!#element_actual</td>
+            <td width="25%">!#element_del</td>
+            <td width="25%" align="right">!#element_add</td>
+            <td width="25%">!#element_avail</td>
+          </tr>
+          <tr> 
+            <td colspan="4">&nbsp;</td>
+          </tr>
+          <tr align="right"> 
+            <td colspan="4"><a href="!#ausgaben_form_break"> </a>
+              <table border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td colspan="3">&nbsp; </td>
+                </tr>
+                <tr>
+                  <td align="right"><input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button"></td>
+                </tr>
+              </table>
+              
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="4">!#ausgaben_output<br>
+              !#ausgaben_inaccessible </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  </form>
+<!--##end-->
+<input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
+</body>
+</html>
