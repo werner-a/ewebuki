@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 2.6.0-pl2
+-- version 2.6.1
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 13. November 2004 um 20:13
+-- Erstellungszeit: 25. Mai 2005 um 18:18
 -- Server Version: 3.23.49
 -- PHP-Version: 4.1.2
 -- 
@@ -27,7 +27,7 @@ CREATE TABLE `auth_level` (
 -- Daten für Tabelle `auth_level`
 -- 
 
-REPLACE INTO `auth_level` VALUES (1, 'cms_edit', 'berechtigt zum bearbeiten der templates'),
+INSERT INTO `auth_level` VALUES (1, 'cms_edit', 'berechtigt zum bearbeiten der templates'),
 (2, 'cms_admin', 'berechtigt zur administration');
 
 -- --------------------------------------------------------
@@ -40,16 +40,38 @@ CREATE TABLE `auth_right` (
   `rid` int(11) NOT NULL auto_increment,
   `uid` int(11) NOT NULL default '0',
   `lid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`rid`),
-  UNIQUE KEY `rid` (`rid`)
+  PRIMARY KEY  (`rid`)
 ) TYPE=MyISAM AUTO_INCREMENT=3 ;
 
 -- 
 -- Daten für Tabelle `auth_right`
 -- 
 
-REPLACE INTO `auth_right` VALUES (1, 1, 1),
+INSERT INTO `auth_right` VALUES (1, 1, 1),
 (2, 1, 2);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `auth_special`
+-- 
+
+CREATE TABLE `auth_special` (
+  `sid` int(11) NOT NULL auto_increment,
+  `suid` int(11) NOT NULL default '0',
+  `content` int(11) default '0',
+  `sdb` varchar(20) NOT NULL default '',
+  `stname` varchar(50) NOT NULL default '',
+  `sebene` text,
+  `skategorie` text,
+  `sbeschreibung` text,
+  PRIMARY KEY  (`sid`)
+) TYPE=MyISAM AUTO_INCREMENT=5 ;
+
+-- 
+-- Daten für Tabelle `auth_special`
+-- 
+
 
 -- --------------------------------------------------------
 
@@ -65,7 +87,6 @@ CREATE TABLE `auth_user` (
   `username` varchar(20) NOT NULL default '',
   `pass` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`uid`),
-  UNIQUE KEY `uid` (`uid`),
   UNIQUE KEY `username` (`username`)
 ) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=2 ;
 
@@ -73,7 +94,7 @@ CREATE TABLE `auth_user` (
 -- Daten für Tabelle `auth_user`
 -- 
 
-REPLACE INTO `auth_user` VALUES (1, '', '', '', 'ewebuki', 'WFffxluy26Lew');
+INSERT INTO `auth_user` VALUES (1, '', '', '', 'ewebuki', 'WFffxluy26Lew');
 
 -- --------------------------------------------------------
 
@@ -100,7 +121,7 @@ CREATE TABLE `site_file` (
 -- Daten für Tabelle `site_file`
 -- 
 
-REPLACE INTO `site_file` VALUES (1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo', '', '', NULL);
+INSERT INTO `site_file` VALUES (1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo', '', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -125,7 +146,7 @@ CREATE TABLE `site_form` (
 -- Daten für Tabelle `site_form`
 -- 
 
-REPLACE INTO `site_form` VALUES (1, 'username', '210295197.modify', '0', '', '', NULL, '-1', ''),
+INSERT INTO `site_form` VALUES (1, 'username', '210295197.modify', '0', '', '', NULL, '-1', ''),
 (2, 'pass', '210295197.modify', '0', '', '', 'password', '-1', ''),
 (3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', ''),
 (4, 'fid', '-939795212.describe', '0', '', '', 'hidden', '-1', '');
@@ -151,7 +172,7 @@ CREATE TABLE `site_form_lang` (
 -- Daten für Tabelle `site_form_lang`
 -- 
 
-REPLACE INTO `site_form_lang` VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.'),
+INSERT INTO `site_form_lang` VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.'),
 (2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', ''),
 (3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '');
 
@@ -179,7 +200,7 @@ CREATE TABLE `site_menu` (
 -- Daten für Tabelle `site_menu`
 -- 
 
-REPLACE INTO `site_menu` VALUES (1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'default1'),
+INSERT INTO `site_menu` VALUES (1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'default1'),
 (2, 1, 'test1', NULL, 10, NULL, NULL, NULL, 'default1'),
 (3, 1, 'test2', NULL, 20, NULL, NULL, NULL, 'default1'),
 (4, 0, 'show', NULL, 20, NULL, NULL, NULL, 'default1'),
@@ -204,7 +225,7 @@ CREATE TABLE `site_menu_lang` (
 -- Daten für Tabelle `site_menu_lang`
 -- 
 
-REPLACE INTO `site_menu_lang` VALUES (1, 1, 'de', 'Demo', NULL),
+INSERT INTO `site_menu_lang` VALUES (1, 1, 'de', 'Demo', NULL),
 (2, 2, 'de', 'Test 1', NULL),
 (3, 3, 'de', 'Test 2', NULL),
 (4, 4, 'de', 'eWeBuKi Show', NULL),
@@ -232,7 +253,7 @@ CREATE TABLE `site_text` (
 -- Daten für Tabelle `site_text`
 -- 
 
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen'),
+INSERT INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen'),
 ('de', 'content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Inhalt'),
 ('de', 'entry', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Eintrag'),
 ('de', 'error_menu', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen des Menüeintrag'),
@@ -418,7 +439,6 @@ REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/adm
 ('de', 'send', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Abschicken'),
 ('de', 'reset', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Zurücksetzen'),
 ('de', 'abort', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Abbrechen'),
-('de', 'inhalt', '-1', 'impressum', '', 'impressum', '0', 'eWeBuKi - Copyright 2003, 2004\r\nby [EMAIL=w.ammon@chaos.de]Werner Ammon[/EMAIL]'),
 ('de', 'send_image', '-1', '-939795212.list', '', 'impressum', '0', 'zum Content Editor'),
 ('de', 'delete2', '-1', '-939795212.list', '', 'impressum', '0', 'Alle Löschen'),
 ('de', 'level', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bezeichnung'),
@@ -446,12 +466,13 @@ REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/adm
 ('de', 'username', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Login'),
 ('de', 'newpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Passwort'),
 ('de', 'chkpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Wiederholung'),
-('de', 'ueberschrift', '-1', 'index', '', 'index', '0', 'Menü'),
-('de', 'copyright', '-1', 'index', '', 'impressum', '0', 'eWeBuKi - Copyright 2003, 2004'),
+('de', 'ueberschrift', '-1', 'index', '', 'impressum', '0', 'Menu'),
+('de', 'copyright', '-1', 'index', '', 'index', '0', 'eWeBuKi - Copyright 2003-2005'),
 ('de', 'kekse', '-1', 'index', '', 'impressum', '0', 'Kekse'),
 ('de', 'ueberschrift', '-1', 'show', '', 'show', '0', 'eWeBuKi Show'),
 ('de', 'inhalt', '-1', 'show', '', 'show', '0', 'Tabellen Positionen:\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL]1,1\r\n\r\n\r\n[/COL]\r\n[COL=;;u]1,2\r\n[/COL]\r\n[COL=r]1,3[/COL]\r\n[/ROW][ROW]\r\n[COL=m]2,1[/COL]\r\n[COL=;;g]2,2[/COL]\r\n[COL=r;;m]2,3\r\n\r\n\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\nEasy Template Links:\r\n!#lnk_0\r\n!#lnk_1\r\n!#lnk_2\r\n!#lnk_3\r\n\r\nMenu oberhalb (M1,mit Bez.):\r\n[M1]nach oben[/M1]\r\n\r\nMenu oberhalb als Liste (M1=l,ohne Bez.);\r\n[M1=l][/M1]\r\n\r\nMenu gleiche Ebene (M2,mit Bez.)\r\n[M2]nach oben[/M2]\r\n\r\nMenu gleiche Ebene als Liste (M2=l,mit Bez.)\r\n[M2=l][/M2]\r\n\r\nTabellen Abstände (abstand text - tabelle 1)\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL=l;150]links oben\r\n[/COL]\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL=l;150]links oben\r\n[/COL]\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\nTabellen Abstände (abstand text - tabelle 2)\r\n\r\n[IN]I[/IN]nitial fuer Texte\r\n\r\n[H1][B][EM]Bold EM Tag[/EM][/B] im H1 Tag[/H1]\r\n\r\n\r\n\r\n\r\nText zwischen Linien:\r\n[HL][/HL]\r\nHier kommt der Text.\r\n[HL][/HL]\r\n\r\nWeit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie[IMG=/file/picture/small/img_1.png;l;;;20;;20]eWeBuKi Logo[/IMG] in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht – ein geradezu unorthographisches Leben.\r\n\r\nBei Bildern rechts gibt es Abstand Probleme:\r\n[IMGB=/file/picture/small/img_1.png;r;0;b]Logo[/IMGB]\r\n\r\n\r\n\r\n\r\n[IMGB=/file/picture/small/img_1.png;r]Logo[/IMGB]\r\n\r\n\r\n\r\n\r\nZeilenumbrüche müssen passen, sonst kleben die Bilder nebeneinander.\r\n\r\n[H1]ueberschrift h1[/H1]\r\n[H2]ueberschrift h2[/H2]\r\n[H3]ueberschrift h3[/H3]\r\n[H4]ueberschrift h4[/H4]\r\n[H5]ueberschrift h5[/H5]\r\n[H6]ueberschrift h6[/H6]\r\n\r\nAbsaetze mit css einstellen:\r\n[P]Im Absatz ist es Schoen[/P]\r\n\r\nDIV=class jeder css im Content:\r\n[DIV=anderst]Dieser Text ist schoener als der Rest[/DIV]'),
 ('de', 'ueberschrift', '-1', 'impressum', '', 'impressum', '0', 'Impressum'),
+('de', 'inhalt', '-1', 'impressum', '', 'impressum', '0', 'eWeBuKi - Copyright 2003-2005\r\nby [EMAIL=w.ammon@chaos.de]Werner Ammon[/EMAIL]\r\n\r\nWeitere Infoseiten:\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK]'),
 ('de', 'inhalt', '-1', 'werner', '', 'werner', '0', 'Sie können sich mit\r\n\r\nname: ewebuki\r\npass: ewebuki\r\n\r\nam System anmelden.\r\n\r\n[B]ACHTUNG:[/B] Passwort ändern nicht vergessen!'),
 ('de', 'ueberschrift', '-1', 'demo', '', 'demo', '0', 'Demoseite'),
 ('de', 'inhalt', '-1', 'demo', '', 'demo', '0', 'Hier könnte [B]Ihr[/B] Text stehen.'),
@@ -459,6 +480,5 @@ REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/adm
 ('de', 'ueberschrift', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Testseite 2'),
 ('de', 'inhalt', '-1', '1924484980.test1', '/demo', 'test1', '0', 'Hier könnte [B]Ihr[/B] Text stehen.'),
 ('de', 'inhalt', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Hier könnte [B]Ihr[/B] Text stehen.'),
-('de', 'ueberschrift', '-1', 'werner', '', 'werner', '0', 'Glückwunsch Ihr eWeBuKi läuft.'),
 ('de', 'ueberschrift', '-1', 'main', '', 'index', '0', 'Glückwunsch Ihr eWeBuKi läuft!'),
-('de', 'inhalt', '-1', 'main', '', 'index', '0', 'Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki\r\n\r\n[B]ACHTUNG:[/B] Passwort ändern nicht vergessen!');
+('de', 'inhalt', '-1', 'main', '', 'index', '0', 'Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki\r\n\r\n[B]ACHTUNG:[/B] Passwort ändern nicht vergessen!\r\n\r\nWeitere Infoseiten:\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK]');
