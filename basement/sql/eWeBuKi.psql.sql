@@ -115,9 +115,10 @@ CREATE TABLE site_menu (
 CREATE TABLE site_menu_lang (
     mlid serial NOT NULL,
     mid integer DEFAULT 0 NOT NULL,
-    lang character(3) DEFAULT 'ger'::bpchar NOT NULL,
+    lang character(3) DEFAULT 'de'::bpchar NOT NULL,
     label character varying(30) DEFAULT ''::character varying NOT NULL,
-    exturl character varying(128)
+    exturl character varying(128),
+    extend character varying(128)
 );
 
 
@@ -172,10 +173,10 @@ INSERT INTO site_menu VALUES (4, 0, 'impressum', NULL, 20, NULL, NULL, NULL, 'de
 -- Daten fuer site_menu_lang
 --
 
-INSERT INTO site_menu_lang VALUES (1, 1, 'ger', 'Demo', NULL);
-INSERT INTO site_menu_lang VALUES (2, 2, 'ger', 'Test 1', NULL);
-INSERT INTO site_menu_lang VALUES (3, 3, 'ger', 'Test 2', NULL);
-INSERT INTO site_menu_lang VALUES (4, 4, 'ger', 'Impressum', NULL);
+INSERT INTO site_menu_lang VALUES (1, 1, 'de', 'Demo', NULL);
+INSERT INTO site_menu_lang VALUES (2, 2, 'de', 'Test 1', NULL);
+INSERT INTO site_menu_lang VALUES (3, 3, 'de', 'Test 2', NULL);
+INSERT INTO site_menu_lang VALUES (4, 4, 'de', 'Impressum', NULL);
 
 
 --
@@ -413,147 +414,46 @@ INSERT INTO site_text VALUES ('de', 'ueberschrift', '-1', 'werner', '', 'werner'
 INSERT INTO site_text VALUES ('de', 'ueberschrift', '-1', 'main', '', 'index', '0', 'Glückwunsch Ihr eWeBuKi läuft!');
 INSERT INTO site_text VALUES ('de', 'inhalt', '-1', 'main', '', 'index', '0', 'Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki\r\n\r\n[B]ACHTUNG:[/B] Passwort ändern nicht vergessen!');
 
-
---
--- TOC entry 22 (OID 180673)
--- Name: auth_level_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
-
 ALTER TABLE ONLY auth_level
     ADD CONSTRAINT auth_level_pkey PRIMARY KEY (lid);
-
-
---
--- TOC entry 23 (OID 180683)
--- Name: auth_right_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
 
 ALTER TABLE ONLY auth_right
     ADD CONSTRAINT auth_right_pkey PRIMARY KEY (rid);
 
-
---
--- TOC entry 24 (OID 180696)
--- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
-
 ALTER TABLE ONLY auth_user
     ADD CONSTRAINT auth_user_pkey PRIMARY KEY (uid);
-
-
---
--- TOC entry 25 (OID 180714)
--- Name: site_file_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
 
 ALTER TABLE ONLY site_file
     ADD CONSTRAINT site_file_pkey PRIMARY KEY (fid);
 
-
---
--- TOC entry 26 (OID 180728)
--- Name: site_form_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
-
 ALTER TABLE ONLY site_form
     ADD CONSTRAINT site_form_pkey PRIMARY KEY (fid);
-
-
---
--- TOC entry 27 (OID 180743)
--- Name: site_form_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
 
 ALTER TABLE ONLY site_form_lang
     ADD CONSTRAINT site_form_lang_pkey PRIMARY KEY (flid);
 
-
---
--- TOC entry 28 (OID 180754)
--- Name: site_menu_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
-
 ALTER TABLE ONLY site_menu
     ADD CONSTRAINT site_menu_pkey PRIMARY KEY (mid);
 
-
---
--- TOC entry 29 (OID 180768)
--- Name: site_menu_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
-
 ALTER TABLE ONLY site_menu_lang
     ADD CONSTRAINT site_menu_lang_pkey PRIMARY KEY (mlid);
-
-
---
--- TOC entry 30 (OID 181955)
--- Name: site_text_pkey; Type: CONSTRAINT; Schema: public; Owner: mor
---
 
 ALTER TABLE ONLY site_text
     ADD CONSTRAINT site_text_pkey PRIMARY KEY (lang, label, tname);
 
 
---
--- TOC entry 14 (OID 180664)
--- Name: auth_level_lid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
+SELECT pg_catalog.setval('auth_level_lid_seq', (select case when max(lid)>0 then max(lid)+1 else 1 end from auth_level), false);
 
-SELECT pg_catalog.setval('auth_level_lid_seq', 1, false);
+SELECT pg_catalog.setval('auth_right_rid_seq', (select case when max(rid)>0 then max(rid)+1 else 1 end from auth_right), false);
 
+SELECT pg_catalog.setval('auth_user_uid_seq', (select case when max(uid)>0 then max(uid)+1 else 1 end from auth_user), false);
 
---
--- TOC entry 15 (OID 180676)
--- Name: auth_right_rid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
+SELECT pg_catalog.setval('site_file_fid_seq', (select case when max(fid)>0 then max(fid)+1 else 1 end from site_file), false);
 
-SELECT pg_catalog.setval('auth_right_rid_seq', 1, false);
+SELECT pg_catalog.setval('site_form_fid_seq', (select case when max(fid)>0 then max(fid)+1 else 1 end from site_form), false);
 
+SELECT pg_catalog.setval('site_form_lang_flid_seq', (select case when max(flid)>0 then max(flid)+1 else 1 end from site_form_lang), false);
 
---
--- TOC entry 16 (OID 180686)
--- Name: auth_user_uid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
+SELECT pg_catalog.setval('site_menu_mid_seq', (select case when max(mid)>0 then max(mid)+1 else 1 end from site_menu), false);
 
-SELECT pg_catalog.setval('auth_user_uid_seq', 1, false);
-
-
---
--- TOC entry 17 (OID 180699)
--- Name: site_file_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
-
-SELECT pg_catalog.setval('site_file_fid_seq', 1, false);
-
-
---
--- TOC entry 18 (OID 180716)
--- Name: site_form_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
-
-SELECT pg_catalog.setval('site_form_fid_seq', 1, false);
-
-
---
--- TOC entry 19 (OID 180730)
--- Name: site_form_lang_flid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
-
-SELECT pg_catalog.setval('site_form_lang_flid_seq', 1, false);
-
-
---
--- TOC entry 20 (OID 180745)
--- Name: site_menu_mid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
-
-SELECT pg_catalog.setval('site_menu_mid_seq', 1, false);
-
-
---
--- TOC entry 21 (OID 180760)
--- Name: site_menu_lang_mlid_seq; Type: SEQUENCE SET; Schema: public; Owner: mor
---
-
-SELECT pg_catalog.setval('site_menu_lang_mlid_seq', 1, false);
+SELECT pg_catalog.setval('site_menu_lang_mlid_seq', (select case when max(mlid)>0 then max(mlid)+1 else 1 end from site_menu_lang), false);
