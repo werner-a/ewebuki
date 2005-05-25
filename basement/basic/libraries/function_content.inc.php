@@ -104,14 +104,43 @@
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Language: Uuuuups no default language \"".$specialvars["default_language"]."\" for #(".$label.") in template \"".$dbtname."\" found. Giving up!".$debugging["char"];
             }
 
-            // erlaubnis bei intrabvv speziell setzen
             global $HTTP_SESSION_VARS;
             $database = $db->getDb();
             if ( is_array($HTTP_SESSION_VARS["dbzugriff"]) ) {
-                if ( in_array($database,$HTTP_SESSION_VARS["dbzugriff"]) ) $dbzugriff = -1;
-            }
-            if ( is_array($HTTP_SESSION_VARS["katzugriff"]) ) {
-                if ( in_array("-1:".$database.":".$dbtname,$HTTP_SESSION_VARS["katzugriff"]) ) $katzugriff = -1;
+                // admin darf alles in seiner db !!
+                if ( in_array($database,$HTTP_SESSION_VARS["dbzugriff"]) && $rechte[$specialvars["security"]["overwrite"]] == -1 ) {
+                    $dbzugriff = -1;
+                    $katzugriff = -1;
+                // sperre fuer bestimmte templates
+                } elseif ( in_array($tname,$specialvars["security"]["nochk"]) ) {
+                    $katzugriff = FALSE;
+                    $dbzugriff = FALSE;
+                // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
+                } else {
+                    if (right_check("-1",$environment["ebene"],$environment["kategorie"]) != "") {
+                        $dbzugriff = -1;
+                        $katzugriff = -1;
+                    } else {
+                        $katzugriff = FALSE;
+                        $dbzugriff = FALSE;
+                    }
+                }
+            } else {
+                $dbzugriff = -1;
+                // admin darf alles
+                if ( $rechte[$specialvars["security"]["overwrite"]] == -1 ) {
+                    $katzugriff = -1;
+                // sperre fuer bestimmte templates
+                } elseif ( in_array($tname,$specialvars["security"]["nochk"]) ) {
+                    $katzugriff = FALSE;
+                // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
+                } else {
+                    if (right_check("-1",$environment["ebene"],$environment["kategorie"]) != "") {
+                        $katzugriff = -1;
+                    } else {
+                        $katzugriff = FALSE;
+                    }
+                }
             }
 
             $replace = $row[1];
@@ -127,10 +156,10 @@
 
             // cms edit link einblenden
             if ( $specialvars["editlock"] == False ) {
-                if ( $rechte["cms_edit"] == -1
-                /* || $rechte["administration"] == -1 && $rechte["sti"] == -1 ### loesung? */
-                || $rechte["administration"] == -1 && $dbzugriff == -1
-                || $katzugriff == -1 ) {
+                // erlaubt wenn content_right nicht gesetzt und cms_edit = -1
+                if ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
+                  // erlaubt wenn content_right gesetzt katzugriff und nur im
+                  ( $specialvars["security"]["enable"] == -1 && $katzugriff == -1 && $dbzugriff == -1 )){
 
                     // konvertieren ?
                     if ( $specialvars["wysiwyg"] == "" && $row[0] == -1 ) {
