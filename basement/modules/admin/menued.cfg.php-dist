@@ -78,7 +78,6 @@
                      "text" => array(
                           "entries" => "site_text",
                                ),
-                       ),
                      "user" => array(
                           "entries" => "auth_user",
                               "key" => "uid",
@@ -101,6 +100,7 @@
                          "dbasekey" => "sdb",
                          "tnamekey" => "stname"
                                ),
+                       ),
             "fqdn0" => "www",
             "right" => "cms_admin",
     );
