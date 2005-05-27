@@ -95,5 +95,21 @@
         include $pathvars["addonroot"]."admin/passed.inc.php";
     }
 
+#    // customer modul beispiel "my" einfach
+#    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
+#       || ( $environment["ebene"] == "/my" ))
+#    {
+#        include $pathvars["addonroot"]."customer/leer.cfg.php";
+#        include $pathvars["addonroot"]."customer/leer.inc.php"; # einfaches modul
+#    }
+
+#    // customer modul beispiel "my" eweitert
+#    if (  ( $environment["ebene"] == "/dir" && $environment["kategorie"] == "my" )
+#       || ( $environment["ebene"] == "/dir/my" ))
+#    {
+#        include $pathvars["addonroot"]."customer/leer.cfg.php";
+#        include $pathvars["addonroot"]."customer/leer-ctrl.inc.php"; # erweitertes modul
+#    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
