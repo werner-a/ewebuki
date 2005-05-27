@@ -50,17 +50,40 @@
 
         ### put your code here ###
 
-        /* z.B. db query
+        /* z.B. db query */
+
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["entries"]."
+                  FROM ".$cfg["db"]["leer"]["entries"]."
                  WHERE 1";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+
+        // seiten umschalter
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["leer"]["rows"], $parameter, 1, 3, $getvalues );
+        $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
+        $sql = $inhalt_selector[1];
+        $ausgaben["anzahl"] = $inhalt_selector[2];
+
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
             $dataloop["list"][$data["id"]][0] = $data["field1"];
             $dataloop["list"][$data["id"]][1] = $data["field2"];
+
+            // tabellen farben wechseln
+            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
+                $cfg["color"]["set"] = $cfg["color"]["b"];
+            } else {
+                $cfg["color"]["set"] = $cfg["color"]["a"];
+            }
+            $dataloop["list"][$data["id"]]["color"] = $cfg["color"]["set"];
+
+            $dataloop["list"][$data["id"]]["field1"] = $data["field1"];
+
+            $dataloop["list"][$data["id"]]["editlink"] = $cfg["basis"]."/edit,".$data["id"].".html";
+            $dataloop["list"][$data["id"]]["edittitel"] = "#(edittitel)";
+
+            $dataloop["list"][$data["id"]]["deletelink"] = $cfg["basis"]."/delete,".$data["id"].".html";
+            $dataloop["list"][$data["id"]]["deletetitel"] = "#(deletetitel)";
         }
-        */
 
         // +++
         // funktions bereich
@@ -79,19 +102,22 @@
         }
 
         // navigation erstellen
-        $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add.html\">#(new)</a>";
+        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        #$mapping["main"] = crc32($environment["ebene"]).".list";
+        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
+        $mapping["main"] = crc32($cfg["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
+            $ausgaben["inaccessible"] .= "# (edittitel) #(edittitel)<br />";
+            $ausgaben["inaccessible"] .= "# (deletetitel) #(deletetitel)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }

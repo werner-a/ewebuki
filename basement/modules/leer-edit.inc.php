@@ -49,7 +49,10 @@
         // ***
 
         if ( count($HTTP_POST_VARS) == 0 ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["leer"]["entries"]." WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+            $sql = "SELECT *
+                      FROM ".$cfg["db"]["leer"]["entries"]."
+                     WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
         } else {
@@ -93,7 +96,7 @@
         $ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        #$mapping["main"] = crc32($environment["ebene"]).".edit"
+        $mapping["main"] = crc32($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

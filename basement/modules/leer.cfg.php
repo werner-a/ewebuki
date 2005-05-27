@@ -43,9 +43,9 @@
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
     $cfg = array(
-           "subdir" => "ordner",
+           "subdir" => "customer",
              "name" => "leer",
-            "basis" => $pathvars["virtual"]."/bereich/leer",
+            "basis" => $pathvars["virtual"]."/dir/my",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
          "function" => array(
                       "add" => "",
@@ -57,6 +57,7 @@
                           "entries" => "db_leer",
                               "key" => "id",
                             "order" => "sort, label",
+                            "rows"  => 4,
                      ),
               ),
             "right" => "",

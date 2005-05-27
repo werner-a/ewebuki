@@ -79,9 +79,10 @@
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,$nop);
+            $ausgaben["form_id1"] = $data["id"];
             $ausgaben["field1"] = $data["field1"];
             $ausgaben["field2"] = $data["field2"];
-            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"id\" value=\"".$data["id"]."\" />";
+
             // funktions bereich fuer erweiterungen
             // ***
 
@@ -98,7 +99,7 @@
                 $ausgaben["field3"] .= $array["field1"]." ";
                 $ausgaben["field3"] .= $array["field2"]."<br />";
             }
-            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"ids\" value=\"".$ids."\" />";
+            $ausgaben["form_id2"] = $ids;
             */
 
             // +++
@@ -116,7 +117,8 @@
             $ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
             // hidden values
-            #$ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"delete\" value=\"true\" />";
+            $ausgaben["form_hidden"] = "";
+            $ausgaben["form_delete"] = "true";
 
             // was anzeigen
             #$mapping["main"] = crc32($environment["ebene"]).".delete";
@@ -142,7 +144,8 @@
 
             // das loeschen wurde bestaetigt, loeschen!
             // ***
-            if ( $HTTP_POST_VARS["delete"] != "" ) {
+            if ( $HTTP_POST_VARS["delete"] != ""
+                && $HTTP_POST_VARS["send"] != "" ) {
 
                 // evtl. zusaetzlichen datensatz loeschen
                 if ( $HTTP_POST_VARS["verknuepfung"] != "" ) {
@@ -159,7 +162,8 @@
 
                 // datensatz loeschen
                 if ( $ausgaben["form_error"] == "" ) {
-                    $sql = "DELETE FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$value."';";
+                    $sql = "DELETE FROM ".$cfg["db"]["leer"]["entries"]."
+                                  WHERE ".$cfg["db"]["leer"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result)<br />");
