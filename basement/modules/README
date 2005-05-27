@@ -1,1 +1,4 @@
-place for own modules
+addon/ 		- original ewebuki addon modules
+admin/ 		- original ewebuki admin modules
+
+customer/ 	- ewebuki customer extensions
