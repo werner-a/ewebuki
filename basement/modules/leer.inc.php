@@ -47,6 +47,11 @@
 
     if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
 
+        ////////////////////////////////////////////////////////////////////
+        // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!
+        // z.B. $ausgaben["form_error"],$ausgaben["inaccessible"]
+        ////////////////////////////////////////////////////////////////////
+
         // page basics
         // ***
 
@@ -72,17 +77,17 @@
 
         ### put your code here ###
 
-        /* z.B. db query
+
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["entries"]."
+                  FROM ".$cfg["db"]["leer"]["entries"]."
                  WHERE 1";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
-            $dataloop["list"][$data["id"]][0] = $data["field1"];
-            $dataloop["list"][$data["id"]][1] = $data["field2"];
+            $dataloop["leer"][$data["id"]][0] = $data["field1"];
+            $dataloop["leer"][$data["id"]][1] = $data["field2"];
         }
-        */
+        $hidedata["leer"][0] = "enable";
         // +++
         // funktions bereich
 
@@ -100,7 +105,8 @@
         }
 
         // navigation erstellen
-        $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add.html\">#(new)</a>";
+        $ausgaben[""] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        #$mapping["navi"] = "leer";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
