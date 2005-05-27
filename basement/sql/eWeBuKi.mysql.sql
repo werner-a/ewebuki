@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 25. Mai 2005 um 18:18
+-- Erstellungszeit: 27. Mai 2005 um 22:17
 -- Server Version: 3.23.49
 -- PHP-Version: 4.1.2
 -- 
@@ -95,6 +95,26 @@ CREATE TABLE `auth_user` (
 -- 
 
 INSERT INTO `auth_user` VALUES (1, '', '', '', 'ewebuki', 'WFffxluy26Lew');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `db_leer`
+-- 
+
+CREATE TABLE `db_leer` (
+  `id` int(11) NOT NULL auto_increment,
+  `field1` varchar(255) NOT NULL default '',
+  `field2` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM AUTO_INCREMENT=3 ;
+
+-- 
+-- Daten für Tabelle `db_leer`
+-- 
+
+INSERT INTO `db_leer` VALUES (1, 'Erster Eintrag', 'Zweite Spalte'),
+(2, 'Zweiter Eintrag', 'Zweite Spalte');
 
 -- --------------------------------------------------------
 
