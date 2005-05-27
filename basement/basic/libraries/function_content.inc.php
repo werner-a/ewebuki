@@ -135,7 +135,7 @@
                     $katzugriff = FALSE;
                 // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
                 } else {
-                    if (right_check("-1",$environment["ebene"],$environment["kategorie"]) != "") {
+                    if (right_check("-1",$environment["ebene"],$environment["kategorie"],$database) != "") {
                         $katzugriff = -1;
                     } else {
                         $katzugriff = FALSE;

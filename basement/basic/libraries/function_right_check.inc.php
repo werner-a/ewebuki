@@ -47,8 +47,9 @@
     // $art = 0 - artikel
     // $art = 1 - content
 
-    function right_check($art, $ebene, $kategorie="") {
-        global $HTTP_SESSION_VARS,$database,$db;
+    function right_check($art, $ebene, $kategorie="",$database=DATABASE) {
+        global $HTTP_SESSION_VARS,$db;
+        
         $url = explode("/", $ebene."/".$kategorie);
         foreach ($url as $key => $value) {
             if ( $key > 0 ) $trenner = "/";
