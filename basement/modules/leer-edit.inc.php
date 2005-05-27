@@ -97,6 +97,7 @@
 
         // was anzeigen
         $mapping["main"] = crc32($environment["ebene"]).".modify";
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<font color=\"#FF0000\">ATTENTION: template overwrite -> ".$mapping["main"].".tem.html</font>".$debugging["char"];
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
