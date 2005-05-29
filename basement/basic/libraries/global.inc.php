@@ -48,6 +48,9 @@
     $pathvars["webimages"] = "/images/main"."/";                        # gilt nur fuer select seite
     $pathvars["webcss"]    = "/css"."/";                                # gilt nur fuer select seite
 
+    // site config
+    require "../conf/site.cfg.php";
+
     // berlios fix
     if ( $pathvars["fileroot"] == "" ) {
         $pathvars["fileroot"] = rtrim($_SERVER["DOCUMENT_ROOT"],"/")."/";
@@ -61,8 +64,6 @@
 
     $pathvars["templates"]  = $pathvars["fileroot"]."templates/main"."/";  # gilt nur fuer select seite
 
-    // site config
-    require $pathvars["config"]."site.cfg.php";
 
     // automatic db access
     foreach ( $access as $name => $value ) {
