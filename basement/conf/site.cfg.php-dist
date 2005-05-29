@@ -50,7 +50,7 @@
     $debugging["footer"] = "//-->"; // z.B //-->
 
     // zugangsdaten datenbank
-    // depends on: $_SERVER["SERVER_NAME"], UseCanonicalName On
+    // depends on: $_SERVER["SERVER_NAME"], http.conf: UseCanonicalName On/Off
     $access["0"]["name"] = "dev0";
     $access["0"]["host"] = "";
     $access["0"]["db"] = "eWeBuKi";
@@ -85,6 +85,14 @@
     // Eine Konvertierung zurück zu CMSTAG ist derzeit nicht möglich.
     $specialvars["wysiwyg"] = ""; // composite, epoz unterstuetzung aktivieren
     // ACHTUNG **************
+
+    // berliOS Fix **********
+    // Korrekte Einstellung fuer Berlios erzwingen.
+    #$pathvars["fileroot"] = "/home/groups/PROJEKTNAME/htdocs/";
+    // berliOS betreibt seine Server mit Virtual Host Unterstützung mittels Rewrite Engine
+    // DOCUMENT_ROOT wird dabei nicht auf das Directory des jeweiligen Projektes gesetzt
+    // eWeBuKi findet normalerweise anhand dieser Variable die Basis und scheitert.
+    // berliOS Fix **********
 
     // datei variablen
     $pathvars["filebase"]["maindir"] = $pathvars["fileroot"]."file/"; // pfad der dateien im filesystem
