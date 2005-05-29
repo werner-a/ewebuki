@@ -50,10 +50,13 @@
     $debugging["footer"] = "//-->"; // z.B //-->
 
     // zugangsdaten datenbank
-    define ('DB_HOST', '');
-    define ('DATABASE', 'eWeBuKi');
-    define ('DB_USER', 'changeme');
-    define ('DB_PASSWORD', 'changeme');
+    // depends on: $_SERVER["SERVER_NAME"], UseCanonicalName On
+    $access["0"]["name"] = "dev0";
+    $access["0"]["host"] = "";
+    $access["0"]["db"] = "eWeBuKi";
+    $access["0"]["user"] = "changeme";
+    $access["0"]["pass"] = "changeme";
+
     $specialvars["postgres"] = 0; // postgres als datenbank verwenden
 
     // content variablen
