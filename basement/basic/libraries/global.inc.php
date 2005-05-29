@@ -43,9 +43,6 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // site config
-    require $pathvars["config"]."site.cfg.php";
-
     // path config
     $pathvars["webroot"]   = "http://".$_SERVER["HTTP_HOST"];
     $pathvars["webimages"] = "/images/main"."/";                        # gilt nur fuer select seite
@@ -63,6 +60,9 @@
     $pathvars["config"]     = $pathvars["fileroot"]."conf"."/";
 
     $pathvars["templates"]  = $pathvars["fileroot"]."templates/main"."/";  # gilt nur fuer select seite
+
+    // site config
+    require $pathvars["config"]."site.cfg.php";
 
     // automatic db access
     foreach ( $access as $name => $value ) {

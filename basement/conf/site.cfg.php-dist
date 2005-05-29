@@ -51,7 +51,7 @@
 
     // zugangsdaten datenbank
     // depends on: $_SERVER["SERVER_NAME"], http.conf: UseCanonicalName On/Off
-    $access["0"]["name"] = "dev0";
+    $access["0"]["server"] = "dev0";
     $access["0"]["host"] = "";
     $access["0"]["db"] = "eWeBuKi";
     $access["0"]["user"] = "changeme";
