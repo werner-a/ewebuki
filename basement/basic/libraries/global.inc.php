@@ -64,6 +64,8 @@
 
     $pathvars["templates"]  = $pathvars["fileroot"]."templates/main"."/";  # gilt nur fuer select seite
 
+    // file config
+    require $pathvars["config"]."file.cfg.php";
 
     // automatic db access
     foreach ( (array)$access as $name => $value ) {
