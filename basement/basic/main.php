@@ -319,6 +319,15 @@
       include $linking_path."linking.inc.php";
     }
 
+    // template overwrite?
+    if ( $debugging["html_enable"] ) {
+        $main_auto = $environment["template"];
+        $main_new = str_replace(".".crc32($environment["ebene"]),"",crc32($environment["ebene"]).".".$mapping["main"].".tem.html");
+        if ( $main_auto != $main_new ) {
+            $debugging["ausgabe"] .= "<B>ATTENTION: template overwrite -> ".$mapping["main"].".tem.html</B>".$debugging["char"];
+        }
+    }
+
     // rekursiven parser aufrufen
     if ( $HTTP_POST_VARS["print"] != "" || $HTTP_GET_VARS["print"] != "" ) {
         $debugging["html_enable"] = 0;
