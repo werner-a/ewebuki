@@ -91,7 +91,8 @@
             /* z.B. evtl. verknuepfte datensatze holen
             $sql = "SELECT *
                       FROM ".$cfg["db"]["more"]["entries"]."
-                     WHERE $cfg["db"]["more"]["id"] ='".$environment["parameter"][1]."'";
+                     WHERE ".$cfg["db"]["more"]["key"]." ='".$environment["parameter"][1]."'";
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             while ( $data2 = $db -> fetch_array($result,$nop) ) {
                 if ( $ids != "" ) $ids .= ",";
@@ -128,7 +129,8 @@
             // ***
             if ( isset($HTTP_GET_VARS["edit"]) ) {
                 $ausgaben["inaccessible"] = "inaccessible values:<br />";
-                $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
+                $ausgaben["inaccessible"] .= "# (error_result1) #(error_result1)<br />";
+                $ausgaben["inaccessible"] .= "# (error_result2) #(error_result2)<br />";
             } else {
                 $ausgaben["inaccessible"] = "";
             }
@@ -148,14 +150,20 @@
                 && $HTTP_POST_VARS["send"] != "" ) {
 
                 // evtl. zusaetzlichen datensatz loeschen
-                if ( $HTTP_POST_VARS["verknuepfung"] != "" ) {
-
+                if ( $HTTP_POST_VARS["id2"] != "" ) {
                     // funktions bereich fuer erweiterungen
                     // ***
 
                     ### put your code here ###
 
-                    if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                    /* z.B. evtl. verknuepfte datensatze loeschen
+                    $sql = "DELETE FROM ".$cfg["db"]["more"]["entries"]."
+                                  WHERE ".$cfg["db"]["more"]["key"]." = '".$HTTP_POST_VARS["id2"]."'";
+                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                    $result  = $db -> query($sql);
+                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
+                    */
+
                     // +++
                     // funktions bereich fuer erweiterungen
                 }
@@ -166,7 +174,7 @@
                                   WHERE ".$cfg["db"]["leer"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result)<br />");
+                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
                 }
                 // +++
                 // ohne fehler menupunkte loeschen

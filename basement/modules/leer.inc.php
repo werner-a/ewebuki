@@ -105,7 +105,7 @@
         }
 
         // navigation erstellen
-        $ausgaben[""] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["add"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
         #$mapping["navi"] = "leer";
 
         // hidden values
