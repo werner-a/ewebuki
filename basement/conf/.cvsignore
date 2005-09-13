@@ -1,6 +1,7 @@
 addon.cfg.php
 auth.cfg.php
 conf.ppj
+file.cfg.php
 kekse.cfg.php
 menu.cfg.php
 site.cfg.php
