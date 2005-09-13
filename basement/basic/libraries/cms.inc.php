@@ -201,10 +201,15 @@
                 } else {
                     $sql = "UPDATE ". SITETEXT ." set
                                     content = '".$content."',
-                                    crc32 = '".$specialvars["crc32"]."',
-                                    html = '".$HTTP_POST_VARS["html"]."',
-                                    ebene = '".$HTTP_SESSION_VARS["ebene"]."',
-                                    kategorie = '".$HTTP_SESSION_VARS["kategorie"]."'
+                                      crc32 = '".$specialvars["crc32"]."',
+                                       html = '".$HTTP_POST_VARS["html"]."',
+                                      ebene = '".$HTTP_SESSION_VARS["ebene"]."',
+                                  kategorie = '".$HTTP_SESSION_VARS["kategorie"]."',
+                                    changed = '".date("Y-m-d H:i:s")."',
+                                  bysurname = '".$HTTP_SESSION_VARS["surname"]."',
+                                 byforename = '".$HTTP_SESSION_VARS["forename"]."',
+                                    byemail = '".$HTTP_SESSION_VARS["email"]."',
+                                    byalias = '".$HTTP_SESSION_VARS["alias"]."'
                              WHERE  label = '".$environment["parameter"][3]."'
                                AND  tname = '".$environment["parameter"][2]."'
                                AND  lang = '".$environment["language"]."'";
@@ -213,7 +218,8 @@
                 $sql = "INSERT INTO ". SITETEXT ."
                                     (lang, crc32, label,
                                      tname, ebene, kategorie,
-                                     html, content)
+                                     html, content,
+                                     changed, bysurname, byforename, byemail, byalias)
                              VALUES ( '".$environment["language"]."',
                                       '".$specialvars["crc32"]."',
                                       '".$environment["parameter"][3]."',
@@ -221,7 +227,12 @@
                                       '".$HTTP_SESSION_VARS["ebene"]."',
                                       '".$HTTP_SESSION_VARS["kategorie"]."',
                                       '".$HTTP_POST_VARS["html"]."',
-                                      '".$content."')";
+                                      '".$content."',
+                                      '".date("Y-m-d H:i:s")."',
+                                      '".$HTTP_SESSION_VARS["surname"]."',
+                                      '".$HTTP_SESSION_VARS["forename"]."',
+                                      '".$HTTP_SESSION_VARS["email"]."',
+                                      '".$HTTP_SESSION_VARS["alias"]."')";
             }
             $result  = $db -> query($sql);
             if ( !$result ) die($db -> error("DB ERROR: "));

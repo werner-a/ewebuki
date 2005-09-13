@@ -54,7 +54,10 @@
                     "user" => array(
                           "entries" => "auth_user",
                                "id" => "uid",
-                             "name" => "username",
+                            "alias" => "username",
+                         "forename" => "vorname",
+                          "surname" => "nachname",
+                            "email" => "email",
                              "pass" => "pass",
                            "custom" => ""
                               ),

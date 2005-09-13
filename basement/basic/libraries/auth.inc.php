@@ -62,8 +62,16 @@
 
     // login ueberpruefen
     if ( $HTTP_POST_VARS["login"] == "login" ) {
-        if ( $cfg["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["db"]["user"]["custom"];
-        $sql = "SELECT ".$cfg["db"]["user"]["id"].", ".$cfg["db"]["user"]["name"].", ".$cfg["db"]["user"]["pass"].$custom." FROM ".$cfg["db"]["user"]["entries"]." WHERE ".$cfg["db"]["user"]["name"]."='".$HTTP_POST_VARS["user"]."'";
+        if ( $cfg["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["db"]["user"]["custom"].",";
+        $sql = "SELECT ".$cfg["db"]["user"]["id"].",
+                       ".$cfg["db"]["user"]["surname"].",
+                       ".$cfg["db"]["user"]["forename"].",
+                       ".$cfg["db"]["user"]["email"].",
+                       ".$cfg["db"]["user"]["alias"].",
+                       ".$cfg["db"]["user"]["pass"]."
+                       ".$custom."
+                  FROM ".$cfg["db"]["user"]["entries"]."
+                 WHERE ".$cfg["db"]["user"]["alias"]."='".$HTTP_POST_VARS["user"]."'";
         $result  = $db -> query($sql);
         $AUTH = $db -> fetch_array($result,0);
 
@@ -88,7 +96,15 @@
             session_register("uid");
             $HTTP_SESSION_VARS["uid"] = $AUTH[$cfg["db"]["user"]["id"]];
             session_register("username");
-            $HTTP_SESSION_VARS["username"] = $AUTH[$cfg["db"]["user"]["name"]];
+            $HTTP_SESSION_VARS["username"] = $AUTH[$cfg["db"]["user"]["alias"]]; # old
+            session_register("surname");
+            $HTTP_SESSION_VARS["surname"] = $AUTH[$cfg["db"]["user"]["surname"]];
+            session_register("forename");
+            $HTTP_SESSION_VARS["forename"] = $AUTH[$cfg["db"]["user"]["forename"]];
+            session_register("email");
+            $HTTP_SESSION_VARS["email"] = $AUTH[$cfg["db"]["user"]["email"]];
+            session_register("alias");
+            $HTTP_SESSION_VARS["alias"] = $AUTH[$cfg["db"]["user"]["alias"]];
             session_register("custom");
             $HTTP_SESSION_VARS["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
 
