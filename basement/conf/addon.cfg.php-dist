@@ -95,6 +95,10 @@
         include $pathvars["addonroot"]."admin/passed.inc.php";
     }
 
+#    // addon: changed
+#    include $pathvars["addonroot"]."addon/changed.cfg.php";
+#    include $pathvars["addonroot"]."addon/changed.inc.php";
+
 #    // customer modul beispiel "my" einfach
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
 #       || ( $environment["ebene"] == "/my" ))
