@@ -61,7 +61,7 @@
                        ".$cfg["db"]["changed"]["changed"].",
                        ".$cfg["db"]["changed"]["surname"].",
                        ".$cfg["db"]["changed"]["forename"].",
-                       ".$cfg["db"]["changed"]["email"]."
+                       ".$cfg["db"]["changed"]["email"].",
                        ".$cfg["db"]["changed"]["alias"]."
                   FROM ".$cfg["db"]["changed"]["entries"]."
                  WHERE tname = '".$tname."'
