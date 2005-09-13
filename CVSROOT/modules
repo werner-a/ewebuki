@@ -41,13 +41,16 @@ conf basement/conf
 css basement/css
 docu basement/docu
 images basement/images
-modules basement/modules README leer-sub.inc.php leer.cfg.php leer.inc.php
+modules basement/modules README leer-add.inc.php leer.cfg.php leer-ctrl.inc.php leer-delete.inc.php leer-edit.inc.php leer.inc.php leer-list.inc.php
 sql basement/sql
 file basement/file
 templates basement/templates
 
-# die kunden module
+# ewebuki erweiterungen
+addon basement/modules/addon
 admin basement/modules/admin
+
+# alte kunden module
 chaos basement/modules/chaos
 creative basement/modules/creative
 intrabvv basement/modules/intrabvv
