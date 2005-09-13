@@ -62,7 +62,7 @@
 
     // login ueberpruefen
     if ( $HTTP_POST_VARS["login"] == "login" ) {
-        if ( $cfg["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["db"]["user"]["custom"].",";
+        if ( $cfg["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["db"]["user"]["custom"];
         $sql = "SELECT ".$cfg["db"]["user"]["id"].",
                        ".$cfg["db"]["user"]["surname"].",
                        ".$cfg["db"]["user"]["forename"].",
