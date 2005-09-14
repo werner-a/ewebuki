@@ -52,6 +52,11 @@
         // funktions bereich
         // ***
 
+        // lokale db auswaehlen
+        if ( $environment["fqdn"][0] == $specialvars["dyndb"] ) {
+            $db->selectDb($specialvars["dyndb"],FALSE);
+        }
+
         if ( $environment["ebene"] != ""  ) {
             $tname = crc32($environment["ebene"]).".".$environment["kategorie"];
         } else {
@@ -65,7 +70,7 @@
                        ".$cfg["db"]["changed"]["alias"]."
                   FROM ".$cfg["db"]["changed"]["entries"]."
                  WHERE tname = '".$tname."'
-                   AND label = '".$cfg["mainlabel"]."'";
+              ORDER BY ".$cfg["db"]["changed"]["changed"];
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
@@ -85,6 +90,9 @@
             $hidedata["changed"]["email"] = $changed[$lang][$cfg["db"]["changed"]["email"]];
             $hidedata["changed"]["alias"] = $changed[$lang][$cfg["db"]["changed"]["alias"]];
         }
+
+        // globale db auswaehlen
+        $db->selectDb(DATABASE,FALSE);
 
         // +++
         // funktions bereich

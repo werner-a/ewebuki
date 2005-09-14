@@ -43,10 +43,9 @@
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
     $cfg = array(
-        "mainlabel" => "inhalt",
            "format" => "d.m.Y H:i:s",
                "db" => array(
-                     "changed" => array(
+                  "changed" => array(
                              "lang" => "lang",
                           "entries" => site_text,
                           "changed" => "changed",
