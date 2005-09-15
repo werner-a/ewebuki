@@ -233,7 +233,7 @@
 
     // grundmapping main output
     if ( $specialvars["crc32"] == -1 ) {
-        if ( $environment["kategorie"] != "" && $environment["kategorie"] != "index" ) {
+        if ( $environment["kategorie"] != "" ) {
              $mapping["main"] = $environment["kategorie"];
         }
     } else {
@@ -351,7 +351,7 @@
         $ausgaben["seite"] = $array[0];
         rparser("frameset.head.tem.html", $specialvars["default_template"].".tem.html");
     } else {
-        rparser("index.tem.html", $specialvars["default_template"].".tem.html");
+        rparser("base.tem.html", $specialvars["default_template"].".tem.html");
     }
 
     $exec_time = array_sum(explode(' ', microtime())) - $t_start;
