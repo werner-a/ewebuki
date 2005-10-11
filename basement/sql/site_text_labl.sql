@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 2.6.1
+-- version 2.6.4-pl1
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 25. Mai 2005 um 18:12
--- Server Version: 3.23.49
--- PHP-Version: 4.1.2
+-- Erstellungszeit: 11. Oktober 2005 um 15:00
+-- Server Version: 4.0.24
+-- PHP-Version: 4.3.10-16
 -- 
 -- Datenbank: `eWeBuKi_mdelabl`
 -- 
@@ -14,219 +14,219 @@
 -- Daten für Tabelle `site_text`
 -- 
 
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Inhalt');
-REPLACE INTO `site_text` VALUES ('de', 'entry', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Eintrag');
-REPLACE INTO `site_text` VALUES ('de', 'error_menu', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen des Menüeintrag');
-REPLACE INTO `site_text` VALUES ('de', 'error_menu_lang', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen der Sprache(n)');
-REPLACE INTO `site_text` VALUES ('de', 'error_text', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen des/r Text/e');
-REPLACE INTO `site_text` VALUES ('de', 'inhalt', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Den Menüpunkt "!#ausgaben_entry" wirklich löschen?');
-REPLACE INTO `site_text` VALUES ('de', 'languages', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Sprachen');
-REPLACE INTO `site_text` VALUES ('de', 'no_content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Kein Inhalt');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Menü-Editor - Menüpunkt löschen');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'add', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Neue Sprache hinzufügen');
-REPLACE INTO `site_text` VALUES ('de', 'basic', '-1', '-555504947.edit-multi', '/admin/menued', 'add', '0', 'Allgemein');
-REPLACE INTO `site_text` VALUES ('de', 'delete', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Diese Sprache löschen');
-REPLACE INTO `site_text` VALUES ('de', 'entry', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Eintrag');
-REPLACE INTO `site_text` VALUES ('de', 'error_lang_add', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Diese Sprache ist bereits vorhanden.');
-REPLACE INTO `site_text` VALUES ('de', 'error_lang_delete', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Die Entwickler Sprache kann nicht gelöscht werden.');
-REPLACE INTO `site_text` VALUES ('de', 'error_result', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'DB Fehler: ');
-REPLACE INTO `site_text` VALUES ('de', 'extended', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Speziell');
-REPLACE INTO `site_text` VALUES ('de', 'exturl', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'externe Url');
-REPLACE INTO `site_text` VALUES ('de', 'hide', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Deaktiviert');
-REPLACE INTO `site_text` VALUES ('de', 'label', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Bezeichnung');
-REPLACE INTO `site_text` VALUES ('de', 'lang', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Sprache');
-REPLACE INTO `site_text` VALUES ('de', 'language', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Sprachen Verwaltung');
-REPLACE INTO `site_text` VALUES ('de', 'level', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'benötigter Level');
-REPLACE INTO `site_text` VALUES ('de', 'madatory', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Erzwungen');
-REPLACE INTO `site_text` VALUES ('de', 'new_lang', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Neue Sprache');
-REPLACE INTO `site_text` VALUES ('de', 'refid', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Ref. ID');
-REPLACE INTO `site_text` VALUES ('de', 'reset', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Zurücksetzen');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'sort', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Sortierung');
-REPLACE INTO `site_text` VALUES ('de', 'template', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Template');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Menü-Editor - Menüpunkt');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'add', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Neue Sprache hinzufügen');
-REPLACE INTO `site_text` VALUES ('de', 'basic', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Allgemein');
-REPLACE INTO `site_text` VALUES ('de', 'entry', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Eintrag');
-REPLACE INTO `site_text` VALUES ('de', 'error_lang_add', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Diese Sprache ist bereits vorhanden.');
-REPLACE INTO `site_text` VALUES ('de', 'error_lang_delete', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Die Entwickler Sprache kann nicht gelöscht werden.');
-REPLACE INTO `site_text` VALUES ('de', 'error_result', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'DB Fehler: ');
-REPLACE INTO `site_text` VALUES ('de', 'extended', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Speziell');
-REPLACE INTO `site_text` VALUES ('de', 'exturl', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'ext. Url');
-REPLACE INTO `site_text` VALUES ('de', 'hide', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Versteckt');
-REPLACE INTO `site_text` VALUES ('de', 'label', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Bezeichnung');
-REPLACE INTO `site_text` VALUES ('de', 'lang', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Sprache');
-REPLACE INTO `site_text` VALUES ('de', 'level', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'benötigter Level');
-REPLACE INTO `site_text` VALUES ('de', 'madatory', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Erzwungen');
-REPLACE INTO `site_text` VALUES ('de', 'new_lang', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Neue Sprache');
-REPLACE INTO `site_text` VALUES ('de', 'refid', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Ref ID.');
-REPLACE INTO `site_text` VALUES ('de', 'reset', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Zurücksetzen');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'sort', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Sortierung');
-REPLACE INTO `site_text` VALUES ('de', 'template', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Template');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Menü-Editor - Menüpunkt');
-REPLACE INTO `site_text` VALUES ('de', 'button_desc_add', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Unterpunkt hinzufügen');
-REPLACE INTO `site_text` VALUES ('de', 'button_desc_delete', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Löschen');
-REPLACE INTO `site_text` VALUES ('de', 'button_desc_down', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Sortierung - Nach unten');
-REPLACE INTO `site_text` VALUES ('de', 'button_desc_edit', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Bearbeiten');
-REPLACE INTO `site_text` VALUES ('de', 'button_desc_move', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Im Menü Baum verschieben');
-REPLACE INTO `site_text` VALUES ('de', 'button_desc_up', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Sortierung - Nach oben');
-REPLACE INTO `site_text` VALUES ('de', 'disabled', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Abgeschaltet');
-REPLACE INTO `site_text` VALUES ('de', 'enabled', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Eingeschaltet');
-REPLACE INTO `site_text` VALUES ('de', 'error1', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Menüpunkte mit Unterpunkten lassen sich nicht löschen.');
-REPLACE INTO `site_text` VALUES ('de', 'extern', '-1', '-555504947.list', '/admin/menued', 'list', '0', '(extern)');
-REPLACE INTO `site_text` VALUES ('de', 'inhalt', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Soll hier ein beschreibender Text rein?');
-REPLACE INTO `site_text` VALUES ('de', 'new', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Neuer Ast');
-REPLACE INTO `site_text` VALUES ('de', 'renumber', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Neu durchnummerieren');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Menu-Editor - Übersicht');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'entry', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Eintrag');
-REPLACE INTO `site_text` VALUES ('de', 'extern', '-1', '-555504947.move', '/admin/menued', 'move', '0', '(extern)');
-REPLACE INTO `site_text` VALUES ('de', 'reset', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Zurücksetzen');
-REPLACE INTO `site_text` VALUES ('de', 'root', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Ins Hauptmenü');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Menü-Editor - Menüpunkt verschieben');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'chkpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Wiederholung');
-REPLACE INTO `site_text` VALUES ('de', 'inhalt', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Passwort ändern');
-REPLACE INTO `site_text` VALUES ('de', 'newpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Neues');
-REPLACE INTO `site_text` VALUES ('de', 'oldpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Altes');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Passwort Editor');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', 'auth', '', 'index', '0', 'Überschrift');
-REPLACE INTO `site_text` VALUES ('de', 'desc', '-1', 'auth.logout', '', 'index', '0', 'Werkzeuge');
-REPLACE INTO `site_text` VALUES ('de', 'fileed', '-1', 'auth.logout', '', 'index', '0', 'Datei-Editor');
-REPLACE INTO `site_text` VALUES ('de', 'leveled', '-1', 'auth.logout', '', 'index', '0', 'Level-Editor');
-REPLACE INTO `site_text` VALUES ('de', 'menued', '-1', 'auth.logout', '', 'index', '0', 'Menü-Editor');
-REPLACE INTO `site_text` VALUES ('de', 'nachher', '-1', 'auth.logout', '', 'index', '0', 'ist angemeldet.');
-REPLACE INTO `site_text` VALUES ('de', 'passed', '-1', 'auth.logout', '', 'index', '0', 'Passwort-Editor');
-REPLACE INTO `site_text` VALUES ('de', 'usered', '-1', 'auth.logout', '', 'index', '0', 'User-Editor');
-REPLACE INTO `site_text` VALUES ('de', 'vorher', '-1', 'auth.logout', '', 'index', '0', 'Benutzer');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'add', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Datei einfügen');
-REPLACE INTO `site_text` VALUES ('de', 'b', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Fett');
-REPLACE INTO `site_text` VALUES ('de', 'big', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Grösser als der Rest');
-REPLACE INTO `site_text` VALUES ('de', 'br', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Erzwungener Umbruch');
-REPLACE INTO `site_text` VALUES ('de', 'cent', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zentriert');
-REPLACE INTO `site_text` VALUES ('de', 'center', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zentriert');
-REPLACE INTO `site_text` VALUES ('de', 'cite', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Logisch: cite');
-REPLACE INTO `site_text` VALUES ('de', 'col', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tabellenspalte');
-REPLACE INTO `site_text` VALUES ('de', 'db', '-1', 'cms.edit.cmstag', '', 'index', '0', 'DB');
-REPLACE INTO `site_text` VALUES ('de', 'div', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Bereich');
-REPLACE INTO `site_text` VALUES ('de', 'e', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Mail');
-REPLACE INTO `site_text` VALUES ('de', 'em', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Logisch: emphatisch');
-REPLACE INTO `site_text` VALUES ('de', 'email', '-1', 'cms.edit.cmstag', '', 'index', '0', 'eMail Link');
-REPLACE INTO `site_text` VALUES ('de', 'file', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Datei');
-REPLACE INTO `site_text` VALUES ('de', 'files', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Dateien');
-REPLACE INTO `site_text` VALUES ('de', 'h1', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Überschrift Klasse 1');
-REPLACE INTO `site_text` VALUES ('de', 'h2', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Überschrift Klasse 2');
-REPLACE INTO `site_text` VALUES ('de', 'hl', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Spezielle Trennlinie');
-REPLACE INTO `site_text` VALUES ('de', 'hr', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Trennlinie');
-REPLACE INTO `site_text` VALUES ('de', 'i', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Kursiv');
-REPLACE INTO `site_text` VALUES ('de', 'img', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Bild');
-REPLACE INTO `site_text` VALUES ('de', 'imgb', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Bild mit Rahmen');
-REPLACE INTO `site_text` VALUES ('de', 'in', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Initial');
-REPLACE INTO `site_text` VALUES ('de', 'label', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Marke');
-REPLACE INTO `site_text` VALUES ('de', 'language', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Sprache');
-REPLACE INTO `site_text` VALUES ('de', 'link', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Link');
-REPLACE INTO `site_text` VALUES ('de', 'list', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Liste');
-REPLACE INTO `site_text` VALUES ('de', 'm1', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Menü dieser Ebene');
-REPLACE INTO `site_text` VALUES ('de', 'm2', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Menü der Unterebene');
-REPLACE INTO `site_text` VALUES ('de', 'pre', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Vorformatiert');
-REPLACE INTO `site_text` VALUES ('de', 'quote', '-1', 'cms.edit.cmstag', '', 'index', '0', 'In Anführungszeichen');
-REPLACE INTO `site_text` VALUES ('de', 'row', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tabellenzeile');
-REPLACE INTO `site_text` VALUES ('de', 's', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Durchgestrichen');
-REPLACE INTO `site_text` VALUES ('de', 'save', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Speichern');
-REPLACE INTO `site_text` VALUES ('de', 'small', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Kleiner als der Rest');
-REPLACE INTO `site_text` VALUES ('de', 'sp', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Geschütztes Leerzeichen');
-REPLACE INTO `site_text` VALUES ('de', 'strong', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Logisch: strong');
-REPLACE INTO `site_text` VALUES ('de', 'sub', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tiefgestellt');
-REPLACE INTO `site_text` VALUES ('de', 'sup', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Hochgestellt');
-REPLACE INTO `site_text` VALUES ('de', 'tab', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tabelle');
-REPLACE INTO `site_text` VALUES ('de', 'tagselect', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tag auswählen');
-REPLACE INTO `site_text` VALUES ('de', 'template', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Template');
-REPLACE INTO `site_text` VALUES ('de', 'tt', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Dickengleich');
-REPLACE INTO `site_text` VALUES ('de', 'u', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Unterstrichen');
-REPLACE INTO `site_text` VALUES ('de', 'up', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zurück-Link');
-REPLACE INTO `site_text` VALUES ('de', 'upload', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Hinaufladen');
-REPLACE INTO `site_text` VALUES ('de', 'inhalt', '-1', '404', '', 'indi', '0', 'Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind.');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '404', '', 'indi', '0', 'Fehler 404 - Nicht gefunden.');
-REPLACE INTO `site_text` VALUES ('de', 'error_dupe', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Der Eintrag ist bereits vorhanden.');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '404referer', '', 'test3', '0', 'Fehler 404 - Nicht gefunden.');
-REPLACE INTO `site_text` VALUES ('de', 'inhalt', '-1', '404referer', '', 'test3', '0', 'Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.');
-REPLACE INTO `site_text` VALUES ('de', 'error_dupe', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Der Eintrag ist bereits vorhanden.');
-REPLACE INTO `site_text` VALUES ('de', 'error_dupe', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'In dieser Ebene existiert bereits ein Eintrag mit gleichem Namen.');
-REPLACE INTO `site_text` VALUES ('de', 'logout', '-1', 'auth.login', '', 'auth.login', '0', 'Abgemeldet');
-REPLACE INTO `site_text` VALUES ('de', 'denied', '-1', 'auth.login', '', 'auth.login', '0', 'Zugriff verweigert!');
-REPLACE INTO `site_text` VALUES ('de', 'picture', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'evt. Bild');
-REPLACE INTO `site_text` VALUES ('de', 'picture', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'evt. Bild');
-REPLACE INTO `site_text` VALUES ('de', 'reset', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Zurücksetzen');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-840786483.list', '/admin/menued', 'list', '0', 'Level-Editor - Übersicht');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-840786483.modify', '/admin/menued', 'edit', '0', 'Level-Editor - Bearbeiten');
-REPLACE INTO `site_text` VALUES ('de', 'level', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Bezeichnung');
-REPLACE INTO `site_text` VALUES ('de', 'description', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Beschreibung');
-REPLACE INTO `site_text` VALUES ('de', 'del', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'entfernen');
-REPLACE INTO `site_text` VALUES ('de', 'add', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'hinzufügen');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'reset', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Zurücksetzen');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Löschen');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'frage', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Wollen Sie den Level "!#ausgaben_level" wirklich löschen?');
-REPLACE INTO `site_text` VALUES ('de', 'level', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Bezeichnung');
-REPLACE INTO `site_text` VALUES ('de', 'user', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Mitglieder');
-REPLACE INTO `site_text` VALUES ('de', 'beschreibung', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Beschreibung');
-REPLACE INTO `site_text` VALUES ('de', 'edit', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Bearbeiten');
-REPLACE INTO `site_text` VALUES ('de', 'list', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Übersicht');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Level Editor - Eigenschaften');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Level-Editor - Löschen');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '210295197.list', '/admin/usered', 'list', '0', 'User-Editor - Übersicht');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '-939795212.list', '/admin', 'usered', '0', 'Datei-Editor - Übersicht');
-REPLACE INTO `site_text` VALUES ('de', 'search', '-1', '-939795212.list', '/admin', 'usered', '0', 'Suche');
-REPLACE INTO `site_text` VALUES ('de', 'gesamt', '-1', '-939795212.list', '/admin', 'usered', '0', 'Gesamt:');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-939795212.list', '/admin', 'usered', '0', 'Go');
-REPLACE INTO `site_text` VALUES ('de', 'describe', '-1', '-939795212.list', '/admin', 'usered', '0', 'Bearbeiten');
-REPLACE INTO `site_text` VALUES ('de', 'delete1', '-1', '-939795212.list', '/admin', 'usered', '0', 'Löschen');
-REPLACE INTO `site_text` VALUES ('de', 'ffname', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Dateiname');
-REPLACE INTO `site_text` VALUES ('de', 'fdesc', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Bildbeschreibung');
-REPLACE INTO `site_text` VALUES ('de', 'funder', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Bildunterschrift');
-REPLACE INTO `site_text` VALUES ('de', 'fhit', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Schlagworte');
-REPLACE INTO `site_text` VALUES ('de', 'upa', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Die aktuelle Datei durch');
-REPLACE INTO `site_text` VALUES ('de', 'upb', '-1', '-939795212.describe', '/admin', 'usered', '0', 'ersetzen.');
-REPLACE INTO `site_text` VALUES ('de', 'send', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'reset', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Zurücksetzen');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'send_image', '-1', '-939795212.list', '', 'impressum', '0', 'zum Content Editor');
-REPLACE INTO `site_text` VALUES ('de', 'delete2', '-1', '-939795212.list', '', 'impressum', '0', 'Alle Löschen');
-REPLACE INTO `site_text` VALUES ('de', 'level', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bezeichnung');
-REPLACE INTO `site_text` VALUES ('de', 'beschreibung', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Beschreibung');
-REPLACE INTO `site_text` VALUES ('de', 'modify', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bearbeiten');
-REPLACE INTO `site_text` VALUES ('de', 'edit', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bearbeiten');
-REPLACE INTO `site_text` VALUES ('de', 'delete', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Löschen');
-REPLACE INTO `site_text` VALUES ('de', 'details', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Eigenschaften');
-REPLACE INTO `site_text` VALUES ('de', 'senden', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Abschicken');
-REPLACE INTO `site_text` VALUES ('de', 'reset', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Zurücksetzen');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'User-Editor - Bearbeiten');
-REPLACE INTO `site_text` VALUES ('de', 'error_oldpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Das alte Passwort stimmt nicht!');
-REPLACE INTO `site_text` VALUES ('de', 'error_chkpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Das Neue Passwort und die Wiederholung stimmen nicht überein!');
-REPLACE INTO `site_text` VALUES ('de', 'nachname', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Nachname');
-REPLACE INTO `site_text` VALUES ('de', 'vorname', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Vorname');
-REPLACE INTO `site_text` VALUES ('de', 'email', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'eMail');
-REPLACE INTO `site_text` VALUES ('de', 'new', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Neuer Level');
-REPLACE INTO `site_text` VALUES ('de', 'new', '-1', '210295197.list', '/admin/usered', 'list', '0', 'Neuer User');
-REPLACE INTO `site_text` VALUES ('de', 'frage', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'Wollen Sie den User "!#ausgaben_username" wirklich löschen?');
-REPLACE INTO `site_text` VALUES ('de', 'delete', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'Delete');
-REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'Abbrechen');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'User-Editor - Löschen');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', '210295197.details', '/admin/usered', 'details', '0', 'User-Editor - Eigenschaften');
-REPLACE INTO `site_text` VALUES ('de', 'username', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Login');
-REPLACE INTO `site_text` VALUES ('de', 'newpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Passwort');
-REPLACE INTO `site_text` VALUES ('de', 'chkpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Wiederholung');
-REPLACE INTO `site_text` VALUES ('de', 'ueberschrift', '-1', 'index', '', 'impressum', '0', 'Menu');
-REPLACE INTO `site_text` VALUES ('de', 'copyright', '-1', 'index', '', 'index', '0', 'eWeBuKi - Copyright 2003-2005');
-REPLACE INTO `site_text` VALUES ('de', 'kekse', '-1', 'index', '', 'impressum', '0', 'Kekse');
+REPLACE INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Inhalt', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'entry', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Eintrag', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_menu', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen des Menüeintrag', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_menu_lang', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen der Sprache(n)', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_text', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen des/r Text/e', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'inhalt', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Den Menüpunkt "!#ausgaben_entry" wirklich löschen?', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'languages', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Sprachen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'no_content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Kein Inhalt', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Menü-Editor - Menüpunkt löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'add', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Neue Sprache hinzufügen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'basic', '-1', '-555504947.edit-multi', '/admin/menued', 'add', '0', 'Allgemein', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'delete', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Diese Sprache löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'entry', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Eintrag', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_lang_add', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Diese Sprache ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_lang_delete', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Die Entwickler Sprache kann nicht gelöscht werden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_result', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'DB Fehler: ', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'extended', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Speziell', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'exturl', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'externe Url', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'hide', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Deaktiviert', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'label', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Bezeichnung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'lang', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Sprache', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'language', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Sprachen Verwaltung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'level', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'benötigter Level', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'madatory', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Erzwungen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'new_lang', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Neue Sprache', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'refid', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Ref. ID', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'reset', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'sort', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Sortierung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'template', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Template', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Menü-Editor - Menüpunkt', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'add', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Neue Sprache hinzufügen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'basic', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Allgemein', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'entry', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Eintrag', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_lang_add', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Diese Sprache ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_lang_delete', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Die Entwickler Sprache kann nicht gelöscht werden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_result', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'DB Fehler: ', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'extended', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Speziell', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'exturl', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'ext. Url', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'hide', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Versteckt', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'label', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Bezeichnung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'lang', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Sprache', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'level', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'benötigter Level', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'madatory', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Erzwungen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'new_lang', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Neue Sprache', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'refid', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Ref ID.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'reset', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'sort', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Sortierung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'template', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Template', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Menü-Editor - Menüpunkt', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'button_desc_add', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Unterpunkt hinzufügen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'button_desc_delete', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'button_desc_down', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Sortierung - Nach unten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'button_desc_edit', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'button_desc_move', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Im Menü Baum verschieben', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'button_desc_up', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Sortierung - Nach oben', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'disabled', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Abgeschaltet', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'enabled', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Eingeschaltet', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error1', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Menüpunkte mit Unterpunkten lassen sich nicht löschen.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'extern', '-1', '-555504947.list', '/admin/menued', 'list', '0', '(extern)', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'inhalt', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Soll hier ein beschreibender Text rein?', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'new', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Neuer Ast', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'renumber', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Neu durchnummerieren', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-555504947.list', '/admin/menued', 'list', '0', 'Menu-Editor - Übersicht', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'entry', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Eintrag', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'extern', '-1', '-555504947.move', '/admin/menued', 'move', '0', '(extern)', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'reset', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'root', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Ins Hauptmenü', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'Menü-Editor - Menüpunkt verschieben', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'chkpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Wiederholung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'inhalt', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Passwort ändern', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'newpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Neues', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'oldpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Altes', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Passwort Editor', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', 'auth', '', 'index', '0', 'Überschrift', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'desc', '-1', 'auth.logout', '', 'index', '0', 'Werkzeuge', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'fileed', '-1', 'auth.logout', '', 'index', '0', 'Datei-Editor', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'leveled', '-1', 'auth.logout', '', 'index', '0', 'Level-Editor', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'menued', '-1', 'auth.logout', '', 'index', '0', 'Menü-Editor', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'nachher', '-1', 'auth.logout', '', 'index', '0', 'ist angemeldet.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'passed', '-1', 'auth.logout', '', 'index', '0', 'Passwort-Editor', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'usered', '-1', 'auth.logout', '', 'index', '0', 'User-Editor', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'vorher', '-1', 'auth.logout', '', 'index', '0', 'Benutzer', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'add', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Datei einfügen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'b', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Fett', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'big', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Grösser als der Rest', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'br', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Erzwungener Umbruch', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'cent', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zentriert', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'center', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zentriert', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'cite', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Logisch: cite', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'col', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tabellenspalte', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'db', '-1', 'cms.edit.cmstag', '', 'index', '0', 'DB', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'div', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Bereich', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'e', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Mail', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'em', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Logisch: emphatisch', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'email', '-1', 'cms.edit.cmstag', '', 'index', '0', 'eMail Link', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'file', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Datei', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'files', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Dateien', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'h1', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Überschrift Klasse 1', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'h2', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Überschrift Klasse 2', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'hl', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Spezielle Trennlinie', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'hr', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Trennlinie', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'i', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Kursiv', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'img', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Bild', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'imgb', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Bild mit Rahmen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'in', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Initial', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'label', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Marke', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'language', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Sprache', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'link', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Link', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'list', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Liste', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'm1', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Menü dieser Ebene', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'm2', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Menü der Unterebene', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'pre', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Vorformatiert', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'quote', '-1', 'cms.edit.cmstag', '', 'index', '0', 'In Anführungszeichen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'row', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tabellenzeile', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 's', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Durchgestrichen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'save', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Speichern', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'small', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Kleiner als der Rest', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'sp', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Geschütztes Leerzeichen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'strong', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Logisch: strong', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'sub', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tiefgestellt', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'sup', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Hochgestellt', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'tab', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tabelle', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'tagselect', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Tag auswählen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'template', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Template', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'tt', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Dickengleich', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'u', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Unterstrichen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'up', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zurück-Link', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'upload', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Hinaufladen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'inhalt', '-1', '404', '', 'indi', '0', 'Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '404', '', 'indi', '0', 'Fehler 404 - Nicht gefunden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_dupe', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Der Eintrag ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '404referer', '', 'test3', '0', 'Fehler 404 - Nicht gefunden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'inhalt', '-1', '404referer', '', 'test3', '0', 'Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_dupe', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Der Eintrag ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_dupe', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'In dieser Ebene existiert bereits ein Eintrag mit gleichem Namen.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'logout', '-1', 'auth.login', '', 'auth.login', '0', 'Abgemeldet', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'denied', '-1', 'auth.login', '', 'auth.login', '0', 'Zugriff verweigert!', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'picture', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'evt. Bild', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'picture', '-1', '-555504947.edit-single', '/admin/menued', 'edit', '0', 'evt. Bild', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'reset', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-840786483.list', '/admin/menued', 'list', '0', 'Level-Editor - Übersicht', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-840786483.modify', '/admin/menued', 'edit', '0', 'Level-Editor - Bearbeiten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'level', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Bezeichnung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'description', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Beschreibung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'del', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'entfernen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'add', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'hinzufügen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'reset', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '-840786483.modify', '/admin/leveled', 'modify', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'frage', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Wollen Sie den Level "!#ausgaben_level" wirklich löschen?', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'level', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Bezeichnung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'user', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Mitglieder', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'beschreibung', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Beschreibung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'edit', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'list', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Übersicht', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Level Editor - Eigenschaften', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Level-Editor - Löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '210295197.list', '/admin/usered', 'list', '0', 'User-Editor - Übersicht', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '-939795212.list', '/admin', 'usered', '0', 'Datei-Editor - Übersicht', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'search', '-1', '-939795212.list', '/admin', 'usered', '0', 'Suche', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'gesamt', '-1', '-939795212.list', '/admin', 'usered', '0', 'Gesamt:', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-939795212.list', '/admin', 'usered', '0', 'Go', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'describe', '-1', '-939795212.list', '/admin', 'usered', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'delete1', '-1', '-939795212.list', '/admin', 'usered', '0', 'Löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ffname', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Dateiname', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'fdesc', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Bildbeschreibung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'funder', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Bildunterschrift', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'fhit', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Schlagworte', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'upa', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Die aktuelle Datei durch', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'upb', '-1', '-939795212.describe', '/admin', 'usered', '0', 'ersetzen.', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'reset', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '-939795212.describe', '/admin', 'usered', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'send_image', '-1', '-939795212.list', '', 'impressum', '0', 'zum Content Editor', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'delete2', '-1', '-939795212.list', '', 'impressum', '0', 'Alle Löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'level', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bezeichnung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'beschreibung', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Beschreibung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'modify', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'edit', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'delete', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'details', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Eigenschaften', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'senden', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'reset', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'User-Editor - Bearbeiten', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_oldpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Das alte Passwort stimmt nicht!', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'error_chkpass', '-1', '852881080.modify', '/admin/passed', 'modify', '0', 'Das Neue Passwort und die Wiederholung stimmen nicht überein!', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'nachname', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Nachname', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'vorname', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Vorname', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'email', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'eMail', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'new', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Neuer Level', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'new', '-1', '210295197.list', '/admin/usered', 'list', '0', 'Neuer User', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'frage', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'Wollen Sie den User "!#ausgaben_username" wirklich löschen?', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'delete', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'Delete', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'abort', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '210295197.delete', '/admin/usered', 'modify', '0', 'User-Editor - Löschen', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', '210295197.details', '/admin/usered', 'details', '0', 'User-Editor - Eigenschaften', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'username', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Login', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'newpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Passwort', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'chkpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Wiederholung', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', 'base', '', 'impressum', '0', 'Menu', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'copyright', '-1', 'base', '', 'index', '0', 'eWeBuKi - Copyright 2003-2005', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'kekse', '-1', 'base', '', 'impressum', '0', 'Kekse', '0000-00-00 00:00:00', '', '', '', '');

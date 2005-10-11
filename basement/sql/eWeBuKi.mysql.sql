@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 2.6.1
+-- version 2.6.4-pl1
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 13. September 2005 um 16:15
+-- Erstellungszeit: 11. Oktober 2005 um 14:52
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-16
 -- 
@@ -491,9 +491,9 @@ INSERT INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/admi
 ('de', 'username', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Login', '0000-00-00 00:00:00', '', '', '', ''),
 ('de', 'newpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Passwort', '0000-00-00 00:00:00', '', '', '', ''),
 ('de', 'chkpass', '-1', '210295197.modify', '/admin/usered', 'modify', '0', 'Wiederholung', '0000-00-00 00:00:00', '', '', '', ''),
-('de', 'ueberschrift', '-1', 'index', '', 'impressum', '0', 'Menu', '0000-00-00 00:00:00', '', '', '', ''),
-('de', 'copyright', '-1', 'index', '', 'index', '0', 'eWeBuKi - Copyright 2003-2005', '0000-00-00 00:00:00', '', '', '', ''),
-('de', 'kekse', '-1', 'index', '', 'impressum', '0', 'Kekse', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'ueberschrift', '-1', 'base', '', 'impressum', '0', 'Menu', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'copyright', '-1', 'base', '', 'index', '0', 'eWeBuKi - Copyright 2003-2005', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'kekse', '-1', 'base', '', 'impressum', '0', 'Kekse', '0000-00-00 00:00:00', '', '', '', ''),
 ('de', 'ueberschrift', '-1', 'show', '', 'show', '0', 'eWeBuKi Show', '0000-00-00 00:00:00', '', '', '', ''),
 ('de', 'inhalt', '-1', 'show', '', 'show', '0', 'Tabellen Positionen:\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL]1,1\r\n\r\n\r\n[/COL]\r\n[COL=;;u]1,2\r\n[/COL]\r\n[COL=r]1,3[/COL]\r\n[/ROW][ROW]\r\n[COL=m]2,1[/COL]\r\n[COL=;;g]2,2[/COL]\r\n[COL=r;;m]2,3\r\n\r\n\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\nEasy Template Links:\r\n!#lnk_0\r\n!#lnk_1\r\n!#lnk_2\r\n!#lnk_3\r\n\r\nMenu oberhalb (M1,mit Bez.):\r\n[M1]nach oben[/M1]\r\n\r\nMenu oberhalb als Liste (M1=l,ohne Bez.);\r\n[M1=l][/M1]\r\n\r\nMenu gleiche Ebene (M2,mit Bez.)\r\n[M2]nach oben[/M2]\r\n\r\nMenu gleiche Ebene als Liste (M2=l,mit Bez.)\r\n[M2=l][/M2]\r\n\r\nTabellen Abstände (abstand text - tabelle 1)\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL=l;150]links oben\r\n[/COL]\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL=l;150]links oben\r\n[/COL]\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\nTabellen Abstände (abstand text - tabelle 2)\r\n\r\n[IN]I[/IN]nitial fuer Texte\r\n\r\n[H1][B][EM]Bold EM Tag[/EM][/B] im H1 Tag[/H1]\r\n\r\n\r\n\r\n\r\nText zwischen Linien:\r\n[HL][/HL]\r\nHier kommt der Text.\r\n[HL][/HL]\r\n\r\nWeit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie[IMG=/file/picture/small/img_1.png;l;;;20;;20]eWeBuKi Logo[/IMG] in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht – ein geradezu unorthographisches Leben.\r\n\r\nBei Bildern rechts gibt es Abstand Probleme:\r\n[IMGB=/file/picture/small/img_1.png;r;0;b]Logo[/IMGB]\r\n\r\n\r\n\r\n\r\n[IMGB=/file/picture/small/img_1.png;r]Logo[/IMGB]\r\n\r\n\r\n\r\n\r\nZeilenumbrüche müssen passen, sonst kleben die Bilder nebeneinander.\r\n\r\n[H1]ueberschrift h1[/H1]\r\n[H2]ueberschrift h2[/H2]\r\n[H3]ueberschrift h3[/H3]\r\n[H4]ueberschrift h4[/H4]\r\n[H5]ueberschrift h5[/H5]\r\n[H6]ueberschrift h6[/H6]\r\n\r\nAbsaetze mit css einstellen:\r\n[P]Im Absatz ist es Schoen[/P]\r\n\r\nDIV=class jeder css im Content:\r\n[DIV=anderst]Dieser Text ist schoener als der Rest[/DIV]', '0000-00-00 00:00:00', '', '', '', ''),
 ('de', 'ueberschrift', '-1', 'impressum', '', 'impressum', '0', 'Impressum', '0000-00-00 00:00:00', '', '', '', ''),
@@ -505,5 +505,5 @@ INSERT INTO `site_text` VALUES ('de', 'abort', '-1', '-555504947.delete', '/admi
 ('de', 'ueberschrift', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Testseite 2', '0000-00-00 00:00:00', '', '', '', ''),
 ('de', 'inhalt', '-1', '1924484980.test1', '/demo', 'test1', '0', 'Hier könnte [B]Ihr[/B] Text stehen.', '0000-00-00 00:00:00', '', '', '', ''),
 ('de', 'inhalt', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Hier könnte [B]Ihr[/B] Text stehen.', '0000-00-00 00:00:00', '', '', '', ''),
-('de', 'ueberschrift', '-1', 'main', '', 'index', '0', 'Glückwunsch Ihr eWeBuKi läuft!', '0000-00-00 00:00:00', '', '', '', ''),
-('de', 'inhalt', '-1', 'main', '', 'index', '0', 'Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki\r\n\r\n[B]ACHTUNG:[/B] Passwort ändern nicht vergessen!\r\n\r\nWeitere Infoseiten:\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK]', '0000-00-00 00:00:00', '', '', '', '');
+('de', 'ueberschrift', '-1', 'index', '', 'index', '0', 'Glückwunsch Ihr eWeBuKi läuft!', '0000-00-00 00:00:00', '', '', '', ''),
+('de', 'inhalt', '-1', 'index', '', 'index', '0', 'Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki\r\n\r\n[B]ACHTUNG:[/B] Passwort ändern nicht vergessen!\r\n\r\nWeitere Infoseiten:\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK]', '0000-00-00 00:00:00', '', '', '', '');
