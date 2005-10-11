@@ -2,7 +2,7 @@
 # $Id$
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
+  #RewriteBase /
 
   # unbedingt benötigte ausnahmen
   RewriteRule ^basic.* - [L] 			
@@ -23,5 +23,5 @@
   #RewriteRule ^.+ basic/main.php [T=application/x-httpd-php]
 
   # oder betrieb ohne index.php
-  RewriteRule ^.* basic/main.php [T=application/x-httpd-php]
+  RewriteRule ^.* ./basic/main.php [T=application/x-httpd-php]
 </IfModule>
