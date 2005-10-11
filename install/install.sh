@@ -46,8 +46,20 @@ fi
 
 echo
 echo "Die Dateien muessen nun in das Webroot verschoben werden."
-ask "Pfad zum Webroot?" "/var/www/htdocs/ewebuki"
+ask "Pfad zum Webroot?" "/var/www/htdocs"
 webroot=$answer
+
+echo
+echo "Wie lauetet das evtl. Unterverzeichnis im Webroot"
+echo "Ein leerer Wert installiert eWeBuki im Webroot."
+ask "Unterverzeichnis?" ""
+subdir=$answer
+
+if [ "$subdir" != "" ]
+then
+        webroot=$webroot"/"$subdir
+fi
+
 
 if [ ! -d $webroot ]
 then
@@ -185,6 +197,7 @@ sed  -e "s/access\[\"0\"]\[\"server\"] = \"dev0\";/access\[\"0\"]\[\"server\"] =
      -e "s/access\[\"0\"]\[\"db\"] = \"eWeBuKi\";/access\[\"0\"]\[\"db\"] = \"$database\";/" \
      -e "s/access\[\"0\"]\[\"user\"] = \"changeme\";/access\[\"0\"]\[\"user\"] = \"$username\";/" \
      -e "s/access\[\"0\"]\[\"pass\"] = \"changeme\";/access\[\"0\"]\[\"pass\"] = \"$userpass\";/" \
+     -e "s/specialvars\[\"subdir\"] = \"ewebuki\";/specialvars\[\"subdir\"] = \"$subdir\";/" \
      site.cfg.php.bak > site.cfg.php
 
 rm site.cfg.php.bak
