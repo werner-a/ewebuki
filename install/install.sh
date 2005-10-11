@@ -159,9 +159,9 @@ echo "ersten Start ändern wir also genau diese Files ..."
 
 cd $webroot
 
-mv index.php.auto-dist index.php
+#mv index.php.auto-dist index.php
 mv .htaccess-dist .htaccess
-echo "RewriteRule ^html basic/main.php [T =application/x-httpd-php]" >> .htaccess
+#echo "RewriteRule ^html basic/main.php [T =application/x-httpd-php]" >> .htaccess
 
 cd conf
 for datei in *.php-dist
