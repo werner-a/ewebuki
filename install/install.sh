@@ -136,6 +136,13 @@ cat basement/sql/eWeBuKi.mysql.sql >> setup.sql
 mysql $mysqlparams < setup.sql
 
 echo
+echo "eWeBuKi kann gleichzeitig auf verschieden Datenbanken zugreifen."
+echo "Es findet die richtigen Zugangsdaten anhand des Hostnamen."
+ask "Hostname?" "ewebuki.de"
+server=$answer
+
+
+echo
 echo "Jetzt braucht es noch einen Benutzer der auf die eWeBuKi-Datenbank"
 echo "$database zugreifen kann. Aus Sicherheitsgruenden wird diesem Benutzer"
 echo "nur die Rechte select, insert, update und delete gegeben."
@@ -174,9 +181,10 @@ done
 
 cp site.cfg.php site.cfg.php.bak
 
-sed  -e "s/define ('DATABASE', 'eWeBuKi');/define ('DATABASE', '$database');/" \
-     -e "s/define ('DB_USER', 'changeme');/define ('DB_USER', '$username');/" \
-     -e "s/define ('DB_PASSWORD', 'changeme');/define ('DB_PASSWORD', '$userpass');/" \
+sed  -e "s/access\[\"0\"]\[\"server\"] = \"dev0\";/access\[\"0\"]\[\"server\"] = \"$server\";/" \
+     -e "s/access\[\"0\"]\[\"db\"] = \"eWeBuKi\";/access\[\"0\"]\[\"db\"] = \"$database\";/" \
+     -e "s/access\[\"0\"]\[\"user\"] = \"changeme\";/access\[\"0\"]\[\"user\"] = \"$username\";/" \
+     -e "s/access\[\"0\"]\[\"pass\"] = \"changeme\";/access\[\"0\"]\[\"pass\"] = \"$userpass\";/" \
      site.cfg.php.bak > site.cfg.php
 
 rm site.cfg.php.bak
