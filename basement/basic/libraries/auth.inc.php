@@ -127,6 +127,10 @@
             } else {
                 $destination_src = $pathvars["requested"];
             }
+            // subdir support
+            if ( $pathvars["subdir"] != "" ) {
+                $destination_src = "/".$pathvars["subdir"].$destination_src;
+            }
             if ( $pathvars["virtual"] != "" ) {
                 $destination = str_replace($pathvars["virtual"],$pathvars["virtual"]."/auth",$destination_src);
             } else {

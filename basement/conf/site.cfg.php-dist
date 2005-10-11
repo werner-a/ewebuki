@@ -62,6 +62,7 @@
     // content variablen
     $specialvars["pagetitle"] = "eWeBuKi"; // globaler html seiten titel
     $specialvars["rootname"] = "Home"; // globaler root keks titel
+    $specialvars["subdir"] = "ewebuki"; // evtl. unterverzeichnis in dem ewebuki laeuft
     define ('SITETEXT','site_text'); // tabelle mit content
     $specialvars["available_languages"] = array("de","en"); // verfuegbare sprachen
     #$specialvars["convert_languages"] = array("ger" => "de","eng" => "en"); // sprachen konverter (setzen nur nach umbau)

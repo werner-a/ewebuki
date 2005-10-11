@@ -55,6 +55,11 @@
     $pathvars["requested"] = explode("?", $_SERVER["REQUEST_URI"]);
     $pathvars["requested"] = $pathvars["requested"][0];
 
+    // subdir support
+    if ( $pathvars["subdir"] != "" ) {
+        $pathvars["requested"] = str_replace($pathvars["subdir"]."/","",$pathvars["requested"]);
+    }
+
     // url ohne .html wird auf index.html gesetzt
     if ( !strstr($pathvars["requested"],".html") ) {
        $pathvars["requested"] = $pathvars["requested"]."index.html"; ###
@@ -230,6 +235,12 @@
     $pathvars["menuroot"]  = "http://".$_SERVER["HTTP_HOST"].$pathvars["virtual"];
     $pathvars["images"]    = "/images/".$environment["design"]."/";
     $pathvars["templates"] = $pathvars["fileroot"]."templates/".$environment["design"]."/";
+
+    // subdir support
+    if ( $pathvars["subdir"] != "" ) {
+        $pathvars["virtual"] = "/".$pathvars["subdir"].$pathvars["virtual"];
+        $pathvars["requested"] = "/".$pathvars["subdir"].$pathvars["requested"];
+    }
 
     // grundmapping main output
     if ( $specialvars["crc32"] == -1 ) {

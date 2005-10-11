@@ -56,6 +56,12 @@
         $pathvars["fileroot"] = rtrim($_SERVER["DOCUMENT_ROOT"],"/")."/";
     }
 
+    // subdir support
+    if ( $specialvars["subdir"] != "" ) {
+        $pathvars["subdir"] = trim($specialvars["subdir"],"/");
+        $pathvars["fileroot"] = $pathvars["fileroot"].$pathvars["subdir"]."/";
+    }
+
     $pathvars["basicroot"]  = $pathvars["fileroot"]."basic/";
     $pathvars["addonroot"]  = $pathvars["fileroot"]."modules/";
 
