@@ -133,6 +133,7 @@
                 $destination = "/auth".$destination_src;
             }
             header("Location: ".$destination);
+            exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgeführt wird.
         } else {
             session_start();
             session_unset();
