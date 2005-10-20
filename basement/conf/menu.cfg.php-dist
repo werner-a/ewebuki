@@ -40,54 +40,70 @@
 
     URL: http://www.chaos.de
 */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
     $cfg["menu"] = array(
-        "mdbsupp"   => 0, // multi db support enable
-        "mdbname"   => "www", // multi db support name (fqdn0)
-        "base"      => $pathvars["webroot"].$pathvars["virtual"], // z.B. "www.foobar.de"."/html/de/auth"
-        "name"      => "menu", // name der marke z.B. !#ausgaben_menu
-        "db"        => array(
-            "debug"    => 0,
-            "entries"  => "site_menu", // name der menu "struktur" datenbank
-            "language" => "site_menu_lang" // name der menu "sprach" datenbank
-        ),
-        // erste ebene
-        "level1"    => array(
-            "enable"   => -1,
-            "full"     => -1,
-            "force"    => 0,
-            "length"   => 24,
-            "target"   => "", // z.B. target=\"_blank\"
-            // tipp: mit eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden,
-            // die bilder werden dann immer aus dem jeweiligen /images/design verzeichnis geladen.
-            // ##target##, ##link##, ##label## werden automatisch durch die richtigen werte ersetzt.
-            "icona"    => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuopen.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
-            "iconb"    => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuclose.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
-            // tipp: mit class=\"menupunkt\" laesst sich das aussehen anpassen
-            //       ##picture## enthaelt den im menued unter bild vergebenen wert
-            "link"     => "<a ##target## href=\"##link##\">##label##</a><br>",
-        ),
-        // zweite ebene
-        "level2"    => array(
-            "enable"   => -1,
-            "full"     => -1,
-            "dynamic"  => -1,
-            "length"   => 28,
-            "target"   => "",
-            "link"     => "<a ##target## href=\"##link##\">##label##</a><br>",
-        ),
-        // dritte ebene
-        "level3"   => array(
-            "enable"   => -1,
-            "full"     => -1,
-            "dynamic"  => -1,
-            "length"   => 26,
-            "target"   => "",
-            "link"     => "<img src=\"/images/default/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a ##target## href=\"##link##\">##label##</a><br>",
+          "mdbsupp" => 0, // multi db support enable
+          "mdbname" => "www", // multi db support name (fqdn0)
+             "base" => $pathvars["webroot"].$pathvars["virtual"], // z.B. "www.foobar.de"."/html/de/auth"
+             "name" => "menu", // name der marke z.B. !#ausgaben_menu
+               "db" => array(
+                    "debug" => 0,
+                  "entries" => "site_menu", // name der menu "struktur" datenbank
+                 "language" => "site_menu_lang" // name der menu "sprach" datenbank
+                    ),
+    // css menu ohne template (kommentar zeichen entfernen)
+         #"generate" => -1,
 
-        )
+    // erste ebene
+           "level1" => array(
+                   "enable" => -1,
+                     "full" => -1,
+                    "force" => 0,
+                   "length" => 24,
+                   "target" => "", // z.B. target=\"_blank\"
+    // tipp: mit eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden,
+    //       die bilder werden dann immer aus dem jeweiligen /images/design verzeichnis geladen.
+    //       ##target##, ##link##, ##label## werden automatisch durch die richtigen werte ersetzt.
+                    "icona" => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuopen.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
+                    "iconb" => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuclose.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
+    // tipp: mit class=\"menupunkt\" laesst sich das aussehen anpassen
+    //       ##picture## enthaelt den im menued unter bild vergebenen wert
+                     "link" => "<a ##target## href=\"##link##\">##label##</a><br>",
+    // css menu ohne template (kommentar zeichen entfernen)
+                       #"on" => "<ul>\n",
+                     #"link" => "<li class=\"Level1\"><a ##target## href=\"##link##\">##label##</a></li>\n",
+                      #"off" => "</ul>",
+                    ),
+
+    // zweite ebene
+           "level2" => array(
+                   "enable" => -1,
+                     "full" => -1,
+                  "dynamic" => -1,
+                   "length" => 28,
+                   "target" => "",
+                     "link" => "<a ##target## href=\"##link##\">##label##</a><br>",
+    // css menu ohne template (kommentar zeichen entfernen)
+                       #"on" => "<ul>\n",
+                     #"link" => "<li class=\"Level2\"><a ##target## href=\"##link##\">##label##</a></li>\n",
+                      #"off" => "</ul>\n",
+                    ),
+
+    // dritte ebene
+           "level3" => array(
+                   "enable" => -1,
+                     "full" => -1,
+                  "dynamic" => -1,
+                   "length" => 26,
+                   "target" => "",
+                     "link" => "<img src=\"/images/default/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a ##target## href=\"##link##\">##label##</a><br>",
+    // css menu ohne template (kommentar zeichen entfernen)
+                      #"on" => "<ul>\n",
+                    #"link" => "<li class=\"Level3\"><a ##target## href=\"##link##\">##label##</a></li>\n",
+                     #"off" => "</ul>\n",
+                    )
     );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>
