@@ -45,6 +45,8 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
+    $ebene = split("/",$environment["ebene"]);
+
     //
     // menupunkte level 1
     //
@@ -83,6 +85,7 @@
     #    $mainmenuresult  = $db -> query($sql);
     }
 
+    if ( $cfg["menu"]["level1"]["enable"] == -1 ) $ausgaben[$cfg["menu"]["name"]] = $cfg["menu"]["level1"]["on"];
     while ( $level1array = $db -> fetch_array($level1result,1) ) {
         if ( $cfg["menu"]["level1"]["enable"] == -1 ) {
             if ( $level1array["level"] == "" ) {
@@ -108,7 +111,11 @@
                 if ( $level1array["exturl"] == "" ) {
                     $href = $cfg["menu"]["base"]."/".$level1array["entry"].".html";
                     $target = "";
-
+                    if ( "" == $ebene[1]
+                      && "" == $ebene[2]
+                      && $level1array["entry"] == $environment["kategorie"] ) {
+                        $target = "class=\"current\"";
+                    }
                     $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
                     if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
                 } else {
@@ -172,6 +179,7 @@
                        )
               ORDER BY sort, label;";
         $level2result = $db -> query($sql);
+        $level2rows = $db -> num_rows($level2result);
         if ( $cfg["menu"]["db"]["debug"] ) $debugging["ausgabe"] .= "level2sql: ".$sql.$debugging["char"];
         if ( $cfg["menu"]["db"]["debug"] ) $debugging["ausgabe"] .= "level2res: ".$level2result.$debugging["char"];
 
@@ -182,7 +190,11 @@
         #    $submenuresult  = $db -> query($sql);
         #}
 
-        $ausgaben["punkte"] = "";
+        if ( $level2rows > 0 ) {
+            $ausgaben["punkte"] = $cfg["menu"]["level2"]["on"];
+        } else {
+            $ausgaben["punkte"] = "";
+        }
         while ( $level2array = $db -> fetch_array($level2result,$nop) ) {
             if ( $cfg["menu"]["level2"]["enable"] == -1 ) {
                 if ( $level2array["level"] == "" ) {
@@ -203,7 +215,11 @@
                     if ( $level2array["exturl"] == "" ) {
                         $href = $cfg["menu"]["base"]."/".$level1array["entry"]."/".$level2array["entry"].".html";
                         $target = "";
-
+                        if ( $level1array["entry"] == $ebene[1]
+                          && "" == $ebene[2]
+                          && $level2array["entry"] == $environment["kategorie"] ) {
+                            $target = "class=\"current\"";
+                        }
                         $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
                         if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
 
@@ -251,6 +267,7 @@
                                )
                       ORDER BY  sort, label;";
                 $level3result = $db -> query($sql);
+                $level3rows = $db -> num_rows($level3result);
                 if ( $cfg["menu"]["db"]["debug"] ) $debugging["ausgabe"] .= "level3sql: ".$sql.$debugging["char"];
                 if ( $cfg["menu"]["db"]["debug"] ) $debugging["ausgabe"] .= "level3res: ".$level3result.$debugging["char"];
 
@@ -260,6 +277,7 @@
                 #    $submenuresult  = $db -> query($sql);
                 #}
 
+                if ( $level3rows > 0 ) $ausgaben["punkte"] .= $cfg["menu"]["level3"]["on"];
                 while ( $level3array = $db -> fetch_array($level3result,$nop) ) {
                     if ( $cfg["menu"]["level3"]["enable"] == -1 ) {
                         if ( $level3array["level"] == "" ) {
@@ -280,6 +298,11 @@
                             if ( $level3array["exturl"] == "" ) {
                                 $href = $cfg["menu"]["base"]."/".$level1array["entry"]."/".$level2array["entry"]."/".$level3array["entry"].".html";
                                 $target = "";
+                                if ( $level1array["entry"] == $ebene[1]
+                                  && $level2array["entry"] == $ebene[2]
+                                  && $level3array["entry"] == $environment["kategorie"] ) {
+                                    $target = "class=\"current\"";
+                                }
                             } else {
                                 $href = $level3array["exturl"];
                                 $target = $cfg["menu"]["level3"]["target"];
@@ -291,10 +314,19 @@
                         }
                     }
                 }
+                if ( $level3rows > 0 ) $ausgaben["punkte"] .= $cfg["menu"]["level3"]["off"];
             }
         }
-        if ( $cfg["menu"]["level1"]["enable"] == -1 && $parser == -1 ) $ausgaben[$cfg["menu"]["name"]] .= parser( $cfg["menu"]["name"], "", $parse_find, $parse_put);
+        if ( $level2rows > 0 ) $ausgaben["punkte"] .= $cfg["menu"]["level2"]["off"];
+        if ( $cfg["menu"]["level1"]["enable"] == -1 && $parser == -1 ) {
+            if ( $cfg["menu"]["generate"] == true ) {
+                $ausgaben[$cfg["menu"]["name"]] .= $ausgaben["ueberschrift"].$ausgaben["punkte"];
+            } else {
+                $ausgaben[$cfg["menu"]["name"]] .= parser( $cfg["menu"]["name"], "", $parse_find, $parse_put);
+            }
+        }
     }
+    $ausgaben[$cfg["menu"]["name"]] .= $cfg["menu"]["level1"]["off"];
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
