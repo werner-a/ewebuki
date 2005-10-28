@@ -60,8 +60,8 @@
         }
 
 
-        // php major version muss 4 sein!
-	if ( substr(PHP_VERSION,0,1) == 4 ) {
+        // php major version muss mindestens 4 sein!
+        if ( substr(PHP_VERSION,0,1) >= 4 ) {
 
             $destination = $document_root.$destination."/";
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "version: ".$_SERVER["SERVER_SOFTWARE"].$debugging["char"];
