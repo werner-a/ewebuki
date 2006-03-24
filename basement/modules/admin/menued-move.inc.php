@@ -67,7 +67,7 @@
         // page basics
 
 
-        $ausgaben["output"] .= sitemap($refid, "select", $environment["parameter"][1]);
+        $ausgaben["output"] .= sitemap(0, "select", $environment["parameter"][1]);
 
 
         // page basics
