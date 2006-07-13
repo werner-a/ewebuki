@@ -111,10 +111,11 @@
                 if ( $level1array["exturl"] == "" ) {
                     $href = $cfg["menu"]["base"]."/".$level1array["entry"].".html";
                     $target = "";
+		    $aktiv = "";
                     if ( "" == $ebene[1]
                       && "" == $ebene[2]
                       && $level1array["entry"] == $environment["kategorie"] ) {
-                        $target = "class=\"current\"";
+                        $aktiv = "aktiv";
                     }
                     $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
                     if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
@@ -122,8 +123,8 @@
                     $href = $level1array["exturl"];
                     $target = $cfg["menu"]["level1"]["target"];
                 }
-                $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##");
-                $ersatz = array($target, $href, $level1array["label"], $level1array["picture"], $level1array["extend"]);
+                $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##", "##aktiv##");
+                $ersatz = array($target, $href, $level1array["label"], $level1array["picture"], $level1array["extend"], $aktiv);
 
                 // multiple db support
                 if ( $cfg["menu"]["mdbsupp"] == -1 ) {
@@ -215,10 +216,11 @@
                     if ( $level2array["exturl"] == "" ) {
                         $href = $cfg["menu"]["base"]."/".$level1array["entry"]."/".$level2array["entry"].".html";
                         $target = "";
+                        $aktiv = "";
                         if ( $level1array["entry"] == $ebene[1]
                           && "" == $ebene[2]
                           && $level2array["entry"] == $environment["kategorie"] ) {
-                            $target = "class=\"current\"";
+			    $aktiv = "aktiv";
                         }
                         $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
                         if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
@@ -234,8 +236,8 @@
                         $href = $level2array["exturl"];
                         $target = $cfg["menu"]["level2"]["target"];
                     }
-                    $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##");
-                    $ersatz = array($target, $href, $level2array["label"], $level2array["picture"], $level2array["extend"]);
+                    $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##", "##aktiv##");
+                    $ersatz = array($target, $href, $level2array["label"], $level2array["picture"], $level2array["extend"], $aktiv);
 
                     $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level2"]["link"]);
                 }
@@ -298,17 +300,18 @@
                             if ( $level3array["exturl"] == "" ) {
                                 $href = $cfg["menu"]["base"]."/".$level1array["entry"]."/".$level2array["entry"]."/".$level3array["entry"].".html";
                                 $target = "";
+                                $aktiv = "";
                                 if ( $level1array["entry"] == $ebene[1]
                                   && $level2array["entry"] == $ebene[2]
                                   && $level3array["entry"] == $environment["kategorie"] ) {
-                                    $target = "class=\"current\"";
+			            $aktiv = "aktiv";
                                 }
                             } else {
                                 $href = $level3array["exturl"];
                                 $target = $cfg["menu"]["level3"]["target"];
                             }
-                            $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##");
-                            $ersatz = array($target, $href, $level3array["label"], $level3array["picture"], $level3array["extend"]);
+                            $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##", "##aktiv##");
+                            $ersatz = array($target, $href, $level3array["label"], $level3array["picture"], $level3array["extend"], $aktiv);
 
                             $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level3"]["link"]);
                         }
