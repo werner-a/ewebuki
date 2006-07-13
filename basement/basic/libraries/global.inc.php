@@ -49,7 +49,7 @@
     $pathvars["webcss"]    = "/css"."/";                                # gilt nur fuer select seite
 
     // site config
-    require "../conf/site.cfg.php";
+    require dirname(dirname(dirname(__FILE__)))."/conf/site.cfg.php";
 
     // berlios fix
     if ( $pathvars["fileroot"] == "" ) {
