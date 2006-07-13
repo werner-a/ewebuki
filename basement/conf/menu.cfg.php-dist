@@ -72,7 +72,7 @@
                      "link" => "<a ##target## href=\"##link##\">##label##</a><br>",
     // css menu ohne template (kommentar zeichen entfernen)
                        #"on" => "<ul>\n",
-                     #"link" => "<li class=\"Level1\"><a ##target## href=\"##link##\">##label##</a></li>\n",
+                     #"link" => "<li class=\"Level1##aktiv##\"><a ##target## href=\"##link##\">##label##</a></li>\n",
                       #"off" => "</ul>",
                     ),
 
@@ -86,7 +86,7 @@
                      "link" => "<a ##target## href=\"##link##\">##label##</a><br>",
     // css menu ohne template (kommentar zeichen entfernen)
                        #"on" => "<ul>\n",
-                     #"link" => "<li class=\"Level2\"><a ##target## href=\"##link##\">##label##</a></li>\n",
+                     #"link" => "<li class=\"Level2##aktiv##\"><a ##target## href=\"##link##\">##label##</a></li>\n",
                       #"off" => "</ul>\n",
                     ),
 
@@ -100,7 +100,7 @@
                      "link" => "<img src=\"/images/default/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a ##target## href=\"##link##\">##label##</a><br>",
     // css menu ohne template (kommentar zeichen entfernen)
                       #"on" => "<ul>\n",
-                    #"link" => "<li class=\"Level3\"><a ##target## href=\"##link##\">##label##</a></li>\n",
+                    #"link" => "<li class=\"Level3##aktiv##\"><a ##target## href=\"##link##\">##label##</a></li>\n",
                      #"off" => "</ul>\n",
                     )
     );
