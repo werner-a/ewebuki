@@ -48,7 +48,7 @@ function INSst(st,form,field){
     }
 
 	if (st=='list' && selText=='') {
-		selText='Element'; 
+		selText='Element';
 	}
 
     // physisch
@@ -119,7 +119,7 @@ function INSst(st,form,field){
 
     // erweiterte
     else if (st=='list')
-		st='[LIST=1|a]' + selText + '[*]Element[\/LIST]';
+        st='[LIST=1|a][*]' + selText + '[\/LIST]';
     else if (st=='img')
         st='[IMG=image,art\;l]' + selText + '[\/IMG]';
     else if (st=='imgb')
