@@ -61,6 +61,11 @@
   #$defaults["cms-tag"]["signal"] = "<img src=\"".$pathvars["images"]."/cms-tag-";
   #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\">";
 
+  // bild einfügen tag
+  #$defaults["cms-tag"]["grafik"] = "[IMGB=";
+  #$defaults["cms-tag"][",grafik"] = ";;0;b;";
+  #$defaults["cms-tag"]["/grafik"] = "[/IMGB]";
+
   // bilder fuer vor und zurueck
   #$defaults["select"]["none"] = "<img src=\"".$pathvars["images"]."pos.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"\" />" : NOP;
   #$defaults["select"]["prev"] = "<img src=\"".$pathvars["images"]."sel_left.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
