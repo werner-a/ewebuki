@@ -169,7 +169,7 @@
                             $tagwerte = explode("[*]",$tagwert);
                             $ausgabewert  = "<ul>";
                             while ( list ($key, $punkt) = each($tagwerte)) {
-                            $ausgabewert .= "<li>".$punkt."</li>";
+                            $ausgabewert .= "<li><span>".$punkt."</span></li>";
                             }
                             $ausgabewert .= "</ul>";
                             $replace = str_replace($opentag.$tagwert.$closetag,$ausgabewert,$replace);
@@ -181,7 +181,7 @@
                             if ( $listart == 1 ) {
                                 $ausgabewert  = "<ol>";
                                 while ( list ($key, $punkt) = each($tagwerte)) {
-                                    $ausgabewert .= "<li>".$punkt."</li>";
+                                    $ausgabewert .= "<li><span>".$punkt."</span></li>";
                                 }
                                 $ausgabewert .= "</ol>";
                             } elseif ( $listart == "DEF" ) {
@@ -201,7 +201,7 @@
                                     $ausgabewert  = "<ol type=\"".$listart."\">";
                                 }
                                 while ( list ($key, $punkt) = each($tagwerte)) {
-                                $ausgabewert .= "<li>".$punkt."</li>";
+                                $ausgabewert .= "<li><span>".$punkt."</span></li>";
                                 }
                                 if ( strlen($listart) > 1 ) {
                                     $ausgabewert .= "</ul>";
@@ -287,7 +287,7 @@
                                     }
                                 }
                             }
-                            $ausgabewert = "<img src=\"".$imgurl."\" alt=\"".$tagwert."\"".$imgsize." />";
+                            $ausgabewert = "<img src=\"".$imgurl."\" title=\"".$tagwert."\" alt=\"".$tagwert."\"".$imgsize." />";
                             $replace = str_replace($opentag.$tagwert.$closetag,$ausgabewert,$replace);
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
@@ -361,7 +361,7 @@
                                     $imgsize = "";
                                 }
                             }
-                            $ausgabewert = $linka."<img src=\"".$imgurl."\"".$vspace.$hspace." alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
+                            $ausgabewert = $linka."<img src=\"".$imgurl."\"".$vspace.$hspace." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
                             $replace = str_replace($opentag.$tagwert.$closetag,$ausgabewert,$replace);
                         }
                         break;
@@ -442,11 +442,10 @@
                         }
                         $ausgaben["alt"] = $beschriftung;
                         $ausgaben["beschriftung"] = $beschriftung;
-
-                        $ausgaben["tspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$tspace."\" />";
-                        $ausgaben["lspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$lspace."\" height=\"1\" />";
-                        $ausgaben["rspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"".$rspace."\" height=\"1\" />";
-                        $ausgaben["bspace"] = "<img border=\"0\" src=\"".$pathvars["images"]."pos.png\" width=\"1\" height=\"".$bspace."\" />";
+                        $ausgaben["tspace"] = $tspace;
+                        $ausgaben["lspace"] = $lspace;
+                        $ausgaben["rspace"] = $rspace;
+                        $ausgaben["bspace"] = $bspace;
                         $ausgabewert = str_replace(chr(13).chr(10),"",parser("imgb", ""));
 
                         $replace = str_replace($opentag.$tagwert.$closetag,$ausgabewert,$replace);
