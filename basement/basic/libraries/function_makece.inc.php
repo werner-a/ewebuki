@@ -133,10 +133,15 @@
                         $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" /></a></td></tr>";
                         $tn .= "</table>";
 
-                        $extension .= "else if (st=='imo".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
-                        $extension .= "else if (st=='imb".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
-                        $extension .= "else if (st=='imm".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
-                        $extension .= "else if (st=='ims".$data["fid"]."')\nst='[IMG=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"]."]".$data["funder"]."[/IMG]';";
+                        if ( $defaults["cms-tag"]["grafik"] == "" ) {
+                            $defaults["cms-tag"]["grafik"] = "[IMG=";
+                            $defaults["cms-tag"][",grafik"] = "";
+                            $defaults["cms-tag"]["/grafik"] = "[/IMG]";
+                        }
+                        $extension .= "else if (st=='imo".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                        $extension .= "else if (st=='imb".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                        $extension .= "else if (st=='imm".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                        $extension .= "else if (st=='ims".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
                 }
                 $i++;
                 $a = $i / 6;
