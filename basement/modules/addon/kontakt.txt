@@ -1,9 +1,19 @@
+#
+# Damit diese Modul funktioniert, müssen als erstes die Kommentare aus conf/addon.cfg.php entfernt werden.
+# Dannach beötigt man noch "kontakt" und "kontakt/danke" (hidden) im Menu.
+# Das File kontakt.sql in diesem Verzeichnis enthält die benötigte Tabelle.
+#
+# Durch anhängen von ?edit=1 an die Kontakt-Url können die Bezeichnung bearbeitet werden.
+#
 
+#
+# Bei älteren Versionen der ewebuki DB fehlt evtl. das Feld fdberror
+#
+ALTER TABLE `site_form_lang` ADD `fchkerror` VARCHAR( 255 ) NOT NULL AFTER `fdberror`
 
-
-
-# Mit diesen sql Befehlen wird die Prüfung der E-Mail aktiviert und Eingabefehler mit deutschen Meldungen versehen.
-
+#
+# Folgende sql Befehle aktivieren die Prüfung der E-Mail Adresse und die deutschen Fehlermeldungen.
+#
 INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
 VALUES
 ( '', 'e-mail', '0.kontakt', '0', '', '', NULL , '-1', 'PREG:^[a-zA-Z0-9][_a-zA-Z0-9-]*(\\.[_a-zA-Z0-9-]+)*@([a-zA-Z0-9-]+\\.)+([a-zA-Z]{2,5})$' ),
@@ -16,7 +26,6 @@ VALUES
 
 
 # flid und fid MÜSSEN an die obigen Datensätze angepasst werden!!!
-
 INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` )
 VALUES
 ( '5', '5', 'de', NULL , '', '', '', 'Die eMail Adresse entspricht nicht der Norm ''n.n@abc.top''' ),
