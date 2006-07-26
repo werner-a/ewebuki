@@ -47,11 +47,6 @@
              "name" => "kontakt",
             "basis" => $pathvars["virtual"]."/kontakt",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
-         "function" => array(
-                      "add" => "",
-                     "edit" => "",
-                   "delete" => "",
-                       ),
                "db" => array(
                   "entries" => "db_kontakt",
                       "key" => "kid",
