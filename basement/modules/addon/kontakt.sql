@@ -1,20 +1,21 @@
 -- phpMyAdmin SQL Dump
 -- version 2.6.4-pl3
 -- http://www.phpmyadmin.net
--- 
+--
 -- Host: localhost
 -- Erstellungszeit: 26. Juli 2006 um 10:02
 -- Server Version: 4.0.24
 -- PHP-Version: 5.1.4-0.0bpo1
--- 
+--
 -- Datenbank: `eWeBuKi`
--- 
+--
+-- "$Id$";
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `db_kontakt`
--- 
+--
 
 CREATE TABLE `db_kontakt` (
   `kid` int(11) NOT NULL default '0',
