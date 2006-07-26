@@ -61,7 +61,7 @@
                     "subj1" => "Neue Anfrage ",
                     "subj2" => "Ihre Anfrage",
                     "robot" => "Web Robot <robot@da.de>",
-                    "owner" => "BauSAN <info@da.de>",
+                    "owner" => "Firma <info@da.de>",
               ),
     );
 
