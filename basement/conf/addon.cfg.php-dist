@@ -55,7 +55,7 @@
     #include $pathvars["addonroot"].$specialvars["scriptbase"].".cfg.php";
     #include $pathvars["addonroot"].$specialvars["scriptbase"].".inc.php";
 
-    // leveled
+    // admin: leveled
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
        || ( $environment["ebene"] == "/admin/leveled" ))
     {
@@ -63,7 +63,7 @@
         include $pathvars["addonroot"]."admin/leveled.inc.php";
     }
 
-    // usered
+    // admin: usered
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "usered" )
        || ( $environment["ebene"] == "/admin/usered" ))
     {
@@ -71,7 +71,7 @@
         include $pathvars["addonroot"]."admin/usered.inc.php";
     }
 
-    // menued
+    // admin: menued
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued" )
        || ( $environment["ebene"] == "/admin/menued" ))
     {
@@ -79,7 +79,7 @@
         include $pathvars["addonroot"]."admin/menued-ctrl.inc.php";
     }
 
-    // fileed
+    // admin: fileed
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "fileed" )
        || ( $environment["ebene"] == "/admin/fileed" ))
     {
@@ -87,7 +87,7 @@
         include $pathvars["addonroot"]."admin/fileed-ctrl.inc.php";
     }
 
-    // passed
+    // admin: passed
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "passed" )
        || ( $environment["ebene"] == "/admin/passed" ))
     {
@@ -99,7 +99,15 @@
 #    include $pathvars["addonroot"]."addon/changed.cfg.php";
 #    include $pathvars["addonroot"]."addon/changed.inc.php";
 
-#    // customer modul beispiel "my" einfach
+#    // addon: kontakt
+#    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "kontakt" )
+#       || ( $environment["ebene"] == "/kontakt" ))
+#    {
+#        include $pathvars["addonroot"]."addon/kontakt.cfg.php";
+#        include $pathvars["addonroot"]."addon/kontakt.inc.php";
+#    }
+
+#    // customer: modul beispiel "my" einfach
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
 #       || ( $environment["ebene"] == "/my" ))
 #    {
@@ -107,7 +115,7 @@
 #        include $pathvars["addonroot"]."customer/leer.inc.php"; # einfaches modul
 #    }
 
-#    // customer modul beispiel "my" eweitert
+#    // customer: modul beispiel "my" eweitert
 #    if (  ( $environment["ebene"] == "/dir" && $environment["kategorie"] == "my" )
 #       || ( $environment["ebene"] == "/dir/my" ))
 #    {
