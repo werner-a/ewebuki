@@ -65,9 +65,5 @@
               ),
     );
 
-    // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich
-    // "/my" lauten. es funktioniert im beispiel nur ohne aenderung, da das
-    // einfache script $cfg["basis] nicht nutzt.
-
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>
