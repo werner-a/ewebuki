@@ -1,20 +1,22 @@
-# "$Id$";
-#
-# Damit diese Modul funktioniert, müssen als erstes die Kommentare aus conf/addon.cfg.php entfernt werden.
-# Dannach beötigt man noch "kontakt" und "kontakt/danke" (hidden) im Menu.
-# Das File kontakt.sql in diesem Verzeichnis enthält die benötigte Tabelle.
-#
-# Durch anhängen von ?edit=1 an die Kontakt-Url können die Bezeichnung bearbeitet werden.
-#
+-- "$Id$";
+--
+-- Damit diese Modul funktioniert, müssen als erstes die Kommentare aus conf/addon.cfg.php entfernt werden.
+-- Dannach beötigt man noch "kontakt" und "kontakt/danke" (hidden) im Menu.
+-- Das File kontakt.sql in diesem Verzeichnis enthält die benötigte Tabelle.
+--
+-- Durch anhängen von ?edit=1 an die Kontakt-Url können die Bezeichnung bearbeitet werden.
+--
 
-#
-# Bei älteren Versionen der ewebuki DB fehlt evtl. das Feld fdberror
-#
+--
+-- Bei älteren Versionen der ewebuki DB ist das fcheck feld zu kurz und es
+-- fehlt evtl. das Feld fdberror
+--
+ALTER TABLE `site_form` CHANGE `fcheck` `fcheck` TEXT NOT NULL
 ALTER TABLE `site_form_lang` ADD `fchkerror` VARCHAR( 255 ) NOT NULL AFTER `fdberror`
 
-#
-# Folgende sql Befehle aktivieren die Prüfung der E-Mail Adresse und die deutschen Fehlermeldungen.
-#
+--
+-- Folgende sql Befehle aktivieren die Prüfung der E-Mail Adresse und die deutschen Fehlermeldungen.
+--
 INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
 VALUES
 ( '', 'e-mail', '0.kontakt', '0', '', '', NULL , '-1', 'PREG:^[a-zA-Z0-9][_a-zA-Z0-9-]*(\\.[_a-zA-Z0-9-]+)*@([a-zA-Z0-9-]+\\.)+([a-zA-Z]{2,5})$' ),
@@ -26,10 +28,10 @@ VALUES
 ( '', 'mitteilung', '0.kontakt', '40', '', '', NULL , '-1', '' );
 
 
-# flid und fid MÜSSEN an die obigen Datensätze angepasst werden!!!
+-- flid und fid MÜSSEN an die obigen Datensätze angepasst werden!!!
 INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` )
 VALUES
-( '5', '5', 'de', NULL , '', '', '', 'Die eMail Adresse entspricht nicht der Norm ''n.n@abc.top''' ),
+( '5', '5', 'de', NULL , '', 'Bitte geben Sie eine E-Mail Adresse an.', '', 'Die eMail Adresse entspricht nicht der Norm ''name@domain.top''' ),
 ( '', '6', 'de', NULL , '', 'Bitte geben Sie einen Ansprechpartner an.', '', '' ),
 ( '', '7', 'de', NULL , '', 'Bitte geben Sie die Straße an.', '', '' ),
 ( '', '8', 'de', NULL , '', 'Bitte geben Sie die PLZ an.', '', '' ),
