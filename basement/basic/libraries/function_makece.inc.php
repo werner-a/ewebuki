@@ -130,7 +130,7 @@
                         $tn .= "<a href=\"#\" onclick=\"INSst('imm".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Mid</a> ";
                         $tn .= "<a href=\"#\" onclick=\"INSst('ims".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Sma</a></td></tr>";
 
-                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" /></a></td></tr>";
+                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" alt=\"id:".$data["fid"].", .".$data["ffart"]."\" title=\"id:".$data["fid"].", .".$data["ffart"]."\"></a></td></tr>";
                         $tn .= "</table>";
 
                         if ( $defaults["cms-tag"]["grafik"] == "" ) {
