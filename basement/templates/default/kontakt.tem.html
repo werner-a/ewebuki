@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<!--$Id$-->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>kontakt</title>
+<link rel="stylesheet" href="../../css/html.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<form method="POST" action="!#ausgaben_form_aktion" name="modify">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td valign="top"><img src="../../images/default/pos.png" width="20" height="1"></td>
+      <td width="100%"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td colspan="2">#(ueberschrift)</td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2"><font color="#FF0000">!#ausgaben_form_error</font></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2">#(inhalt)</td>
+          </tr>
+          <tr> 
+            <td valign="top">g(betreff)</td>
+            <td>!#element_betreff</td>
+          </tr>
+          <tr>
+            <td valign="top">g(firma)</td>
+            <td>!#element_firma</td>
+          </tr>
+          <tr>
+            <td valign="top">g(branche)</td>
+            <td>!#element_branche</td>
+          </tr>
+          <tr>
+            <td valign="top">g(ansprechpartner)</td>
+            <td>!#element_ansprechpartner *</td>
+          </tr>
+          <tr>
+            <td valign="top">g(strasse)</td>
+            <td>!#element_strasse *</td>
+          </tr>
+          <tr>
+            <td valign="top">g(plz) g(ort)</td>
+            <td>!#element_plz * !#element_ort *</td>
+          </tr>
+          <tr>
+            <td valign="top">g(telefon)</td>
+            <td>!#element_telefon *</td>
+          </tr>
+          <tr>
+            <td valign="top">g(fax)</td>
+            <td>!#element_fax</td>
+          </tr>
+          <tr>
+            <td valign="top">g(e-mail)</td>
+            <td>!#element_e-mail *</td>
+          </tr>
+          <tr>
+            <td valign="top">g(mitteilung)</td>
+            <td>!#element_mitteilung *</td>
+          </tr>
+          <tr>
+            <td valign="top">&nbsp;</td>
+            <td>#(zusatz)</td>
+          </tr>
+          <tr>
+            <td valign="top">&nbsp;</td>
+            <td align="right">
+<table border="0" cellspacing="0" cellpadding="0">
+                
+                <tr> 
+                  
+                  <td colspan="3"> 
+                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
+                  </td>
+                </tr>
+                
+                <tr> 
+                  
+                  <td> 
+                    <input name="send[]" type="submit" value="#(send)">
+                  </td>
+                  <td align="center"> 
+                    <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+                  </td>
+                  <td align="right"> 
+                    <input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+                  </td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td colspan="2" valign="top">!#ausgaben_output<br>
+                !#ausgaben_inaccessible </td>
+          </tr>
+        
+      </table></td>
+    </tr>
+  </table>
+</form>
+<!--##end-->
+</body>
+</html>
+
