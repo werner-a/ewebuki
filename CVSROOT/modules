@@ -41,22 +41,22 @@ conf basement/conf
 css basement/css
 docu basement/docu
 images basement/images
-modules basement/modules README leer-add.inc.php leer.cfg.php leer-ctrl.inc.php leer-delete.inc.php leer-edit.inc.php leer.inc.php leer-list.inc.php
+modules basement/modules basement/modules/addon basement/modules/admin basement/modules/basic basement/modules/customer README leer-add.inc.php leer.cfg.php leer-ctrl.inc.php leer-delete.inc.php leer-edit.inc.php leer.inc.php leer-list.inc.php
 sql basement/sql
 file basement/file
 templates basement/templates
 
 # ewebuki erweiterungen
-m-addon basement/modules/addon
-m-admin basement/modules/admin
-m-basic -a basement/modules/basic
-m-customer basement/modules/customer
+#addon basement/modules/addon
+#admin basement/modules/admin
+#basic basement/modules/basic
+#customer basement/modules/customer
 
 # alte kunden module
-m-chaos basement/modules/chaos
-m-creative basement/modules/creative
-m-intrabvv basement/modules/intrabvv
-m-koppe basement/modules/koppe
+chaos basement/modules/chaos
+creative basement/modules/creative
+intrabvv basement/modules/intrabvv
+koppe basement/modules/koppe
 
 # grundelemente auf einmal
 snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
