@@ -49,6 +49,8 @@ templates basement/templates
 # ewebuki erweiterungen
 addon basement/modules/addon
 admin basement/modules/admin
+basic basement/modules/basic
+customer basement/modules/customer
 
 # alte kunden module
 chaos basement/modules/chaos
