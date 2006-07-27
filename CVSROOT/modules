@@ -47,16 +47,16 @@ file basement/file
 templates basement/templates
 
 # ewebuki erweiterungen
-addon basement/modules/addon
-admin basement/modules/admin
-basic basement/modules/basic
-customer basement/modules/customer
+m-addon basement/modules/addon
+m-admin basement/modules/admin
+m-basic basement/modules/basic
+m-customer basement/modules/customer
 
 # alte kunden module
-chaos basement/modules/chaos
-creative basement/modules/creative
-intrabvv basement/modules/intrabvv
-koppe basement/modules/koppe
+m-chaos basement/modules/chaos
+m-creative basement/modules/creative
+m-intrabvv basement/modules/intrabvv
+m-koppe basement/modules/koppe
 
 # grundelemente auf einmal
 snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
