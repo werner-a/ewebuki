@@ -49,7 +49,7 @@ templates basement/templates
 # ewebuki erweiterungen
 m-addon basement/modules/addon
 m-admin basement/modules/admin
-m-basic basement/modules/basic
+m-basic -a basement/modules/basic
 m-customer basement/modules/customer
 
 # alte kunden module
