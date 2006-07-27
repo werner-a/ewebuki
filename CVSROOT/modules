@@ -63,5 +63,7 @@ koppe basement/modules/koppe
 # grundelemente auf einmal
 snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
 
-test &basic
+# webserver source
+website &basic &conf &css &docu &images &modules !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe &sql &file &templates
+
 # EOF
