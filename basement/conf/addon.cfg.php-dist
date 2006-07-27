@@ -95,6 +95,12 @@
         include $pathvars["addonroot"]."admin/passed.inc.php";
     }
 
+    // addon: view
+    if ( $environment["katid"] == "view" ) {
+        include $pathvars["addonroot"]."addon/view.inc.php";
+        include $pathvars["addonroot"]."addon/view.inc.php";
+    }
+
 #    // addon: changed
 #    include $pathvars["addonroot"]."addon/changed.cfg.php";
 #    include $pathvars["addonroot"]."addon/changed.inc.php";
