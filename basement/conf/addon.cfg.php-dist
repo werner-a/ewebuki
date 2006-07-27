@@ -55,6 +55,12 @@
     #include $pathvars["addonroot"].$specialvars["scriptbase"].".cfg.php";
     #include $pathvars["addonroot"].$specialvars["scriptbase"].".inc.php";
 
+    // basic: view
+    if ( $environment["katid"] == "view" ) {
+        include $pathvars["addonroot"]."addon/view.inc.php";
+        include $pathvars["addonroot"]."addon/view.inc.php";
+    }
+
     // admin: leveled
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
        || ( $environment["ebene"] == "/admin/leveled" ))
@@ -93,12 +99,6 @@
     {
         include $pathvars["addonroot"]."admin/passed.cfg.php";
         include $pathvars["addonroot"]."admin/passed.inc.php";
-    }
-
-    // addon: view
-    if ( $environment["katid"] == "view" ) {
-        include $pathvars["addonroot"]."addon/view.inc.php";
-        include $pathvars["addonroot"]."addon/view.inc.php";
     }
 
 #    // addon: changed
