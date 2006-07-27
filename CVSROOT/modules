@@ -64,6 +64,6 @@ koppe basement/modules/koppe
 snapshot -a !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe basement
 
 # webserver source
-website &basic &conf &css &docu &images &modules !basement/modules/chaos !basement/modules/creative !basement/modules/intrabvv !basement/modules/koppe &sql &file &templates
+website &basic &conf &css &docu &images &modules &sql &file &templates
 
 # EOF
