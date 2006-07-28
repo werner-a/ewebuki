@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -346,14 +346,17 @@
                                         $imgsize = getimagesize($imgfile);
                                         $imgsize = " ".$imgsize[3];
                                     }
+                                    if ( $imgwerte[7] != "" ) {
+                                        $bilderstrecke = ",".$imgwerte[7];
+                                    } else {
+                                        $bilderstrecke = "";
+                                    }
                                     if ( $imgwerte[3] != "" ) {
-
                                         if ( is_numeric($imgwerte[3]) ) {
                                             echo "check";
                                         }
-
                                         $imgnam = substr(strrchr($imgurl,"/"),1);
-                                        $imglnk = $pathvars["webroot"].$pathvars["virtual"]."/view,".$imgwerte[3].",".$imgnam.".html";
+                                        $imglnk = dirname($pathvars["requested"])."/".basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
                                         $linka = "<a href=\"".$imglnk."\">";
                                         $linkb = "</a>";
                                     }
@@ -432,9 +435,14 @@
                                     $ausgaben["tabwidth"] = $imgsize[0];
                                     $ausgaben["imgsize"] = " ".$imgsize[3];
                                 }
+                                if ( $imgwerte[7] != "" ) {
+                                    $bilderstrecke = ",".$imgwerte[7];
+                                } else {
+                                    $bilderstrecke = "";
+                                }
                                 if ( $imgwerte[3] != "" ) {
                                     $imgnam = substr(strrchr($ausgaben["imgurl"],"/"),1);
-                                    $imglnk = $pathvars["webroot"].$pathvars["virtual"]."/view,".$imgwerte[3].",".$imgnam.".html";
+                                    $imglnk = dirname($pathvars["requested"])."/".basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
                                     $ausgaben["linka"] = "<a href=\"".$imglnk."\">";
                                     $ausgaben["linkb"] = "</a>";
                                 }
