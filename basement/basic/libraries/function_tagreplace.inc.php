@@ -356,7 +356,8 @@
                                             echo "check";
                                         }
                                         $imgnam = substr(strrchr($imgurl,"/"),1);
-                                        $imglnk = dirname($pathvars["requested"])."/".basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
+                                        if ( substr( $pathvars["requested"], 0, 1 ) == '/') $path = substr( $pathvars["requested"], 1 );
+                                        $imglnk = dirname($path)."/".basename($path,".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
                                         $linka = "<a href=\"".$imglnk."\">";
                                         $linkb = "</a>";
                                     }
@@ -442,7 +443,8 @@
                                 }
                                 if ( $imgwerte[3] != "" ) {
                                     $imgnam = substr(strrchr($ausgaben["imgurl"],"/"),1);
-                                    $imglnk = dirname($pathvars["requested"])."/".basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
+                                    if ( substr( $pathvars["requested"], 0, 1 ) == '/') $path = substr( $pathvars["requested"], 1 );
+                                    $imglnk = dirname($path)."/".basename($path,".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
                                     $ausgaben["linka"] = "<a href=\"".$imglnk."\">";
                                     $ausgaben["linkb"] = "</a>";
                                 }
