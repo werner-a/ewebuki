@@ -355,9 +355,17 @@
                                         if ( is_numeric($imgwerte[3]) ) {
                                             echo "check";
                                         }
-                                        $imgnam = substr(strrchr($imgurl,"/"),1);
-                                        if ( substr( $pathvars["requested"], 0, 1 ) == '/') $path = substr( $pathvars["requested"], 1 );
-                                        $imglnk = dirname($path)."/".basename($path,".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
+
+                                        if ( strpos($imgurl,$pathvars["filebase"]["pic"]["root"]) === false ) {
+                                            $opt = explode("/",$imgurl);
+                                            $imgid = $opt[3];
+                                        } else {
+                                            $opt = split("[_.]",$imgurl);
+                                            $imgid = $opt[1];
+                                        }
+                                        $path = dirname($pathvars["requested"]);
+                                        if ( substr( $path, -1 ) != '/') $path = $path."/";
+                                        $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
                                         $linka = "<a href=\"".$imglnk."\">";
                                         $linkb = "</a>";
                                     }
@@ -442,9 +450,19 @@
                                     $bilderstrecke = "";
                                 }
                                 if ( $imgwerte[3] != "" ) {
-                                    $imgnam = substr(strrchr($ausgaben["imgurl"],"/"),1);
+
+                                    #$imgnam = substr(strrchr($ausgaben["imgurl"],"/"),1);
+                                    if ( strpos($imgurl,$pathvars["filebase"]["pic"]["root"]) === false ) {
+                                        $opt = explode("/",$imgurl);
+                                        $imgid = $opt[3];
+                                    } else {
+                                        $opt = split("[_.]",$imgurl);
+                                        $imgid = $opt[1];
+                                    }
                                     if ( substr( $pathvars["requested"], 0, 1 ) == '/') $path = substr( $pathvars["requested"], 1 );
-                                    $imglnk = dirname($path)."/".basename($path,".html")."/view,".$imgwerte[3].",".$imgnam.$bilderstrecke.".html";
+                                    $path = dirname($pathvars["requested"]);
+                                    if ( substr( $path, -1 ) != '/') $path = $path."/";
+                                    $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
                                     $ausgaben["linka"] = "<a href=\"".$imglnk."\">";
                                     $ausgaben["linkb"] = "</a>";
                                 }
