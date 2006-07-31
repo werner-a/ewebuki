@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -47,9 +47,9 @@
         global $db, $pathvars, $ausgaben, $extension, $specialvars, $defaults;
         $ausgaben["ce_name"] = $ce_name;
 
-        // vogelwilde regex die viel arbeit erspart hat
-        preg_match_all("/_([0-9]*)\./",$ce_inhalt,$found);
-        #$array = array_merge(explode(";",$fileid),$found[1]);
+        // vogelwilde regex die alte & neue file links findet
+        // und viel arbeit erspart
+        preg_match_all("/[_\/]([0-9]*)[.\/]/",$ce_inhalt,$found);
 
         // file memo auslesen und zuruecksetzen
         global $HTTP_SESSION_VARS;
@@ -125,10 +125,10 @@
                         $imgsize = " ".$imgsize[3];
                         #$tn .= "<a href=\"#\" onclick=\"INSst('imb".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img src=\"/dateien/bilder/thumbnail/tn_".$data["fid"].".".$data["ffart"]."\"></a> ";
                         $tn .= "<table align=\"left\">";
-                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Org</a> ";
-                        $tn .= "<a href=\"#\" onclick=\"INSst('imb".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Big</a> ";
-                        $tn .= "<a href=\"#\" onclick=\"INSst('imm".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Mid</a> ";
-                        $tn .= "<a href=\"#\" onclick=\"INSst('ims".$data["fid"]."','".$ce_formname."','".$ce_name."')\">Sma</a></td></tr>";
+                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Original (original)\">O</a> ";
+                        $tn .= "<a href=\"#\" onclick=\"INSst('imb".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Gross (big)\">B</a> ";
+                        $tn .= "<a href=\"#\" onclick=\"INSst('imm".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Gross (middle)\">M</a> ";
+                        $tn .= "<a href=\"#\" onclick=\"INSst('ims".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Gross (small)\">S</a></td></tr>";
 
                         $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" alt=\"id:".$data["fid"].", .".$data["ffart"]."\" title=\"id:".$data["fid"].", .".$data["ffart"]."\"></a></td></tr>";
                         $tn .= "</table>";
@@ -138,10 +138,17 @@
                             $defaults["cms-tag"][",grafik"] = "";
                             $defaults["cms-tag"]["/grafik"] = "[/IMG]";
                         }
-                        $extension .= "else if (st=='imo".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                        $extension .= "else if (st=='imb".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                        $extension .= "else if (st=='imm".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                        $extension .= "else if (st=='ims".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                        if ( $pathvars["filebase"]["realname"] == True ) {
+                            $extension .= "else if (st=='imo".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."o/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $extension .= "else if (st=='imb".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."b/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $extension .= "else if (st=='imm".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."m/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $extension .= "else if (st=='ims".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."s/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                        } else {
+                            $extension .= "else if (st=='imo".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $extension .= "else if (st=='imb".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $extension .= "else if (st=='imm".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $extension .= "else if (st=='ims".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                        }
                 }
                 $i++;
                 $a = $i / 6;

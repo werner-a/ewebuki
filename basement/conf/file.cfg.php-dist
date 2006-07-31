@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -44,6 +44,7 @@
 
     $pathvars["filebase"]["maindir"] = $pathvars["fileroot"]."file/"; // pfad der dateien im filesystem
     $pathvars["filebase"]["webdir"] = "/file/"; // pfad der dateien auf dem webserver
+    $pathvars["filebase"]["realname"] = True; // requires mod_rewrite siehe .htaccess
     $pathvars["filebase"]["new"] = "new/";
     $pathvars["filebase"]["pic"]["root"] = "picture/";
     $pathvars["filebase"]["pic"]["tn"] = "thumbnail/";
