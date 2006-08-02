@@ -450,7 +450,6 @@
                                     $bilderstrecke = "";
                                 }
                                 if ( $imgwerte[3] != "" ) {
-
                                     #$imgnam = substr(strrchr($ausgaben["imgurl"],"/"),1);
                                     if ( strpos($imgurl,$pathvars["filebase"]["pic"]["root"]) === false ) {
                                         $opt = explode("/",$imgurl);
