@@ -273,7 +273,13 @@
                             } else {
                                 $imgurl = $tagwert;
                                 if ( !strstr($tagwert, "http") ) {
-                                    if ( strstr($tagwert[0], $pathvars["filebase"]["webdir"]) ) {
+                                    if ( strpos($tagwert,$pathvars["filebase"]["pic"]["root"]) === false ) {
+                                        $opt = explode("/",$tagwert);
+                                        $imgfile = $pathvars["filebase"]["maindir"]
+                                                   .$pathvars["filebase"]["pic"]["root"]
+                                                   .$pathvars["filebase"]["pic"][$opt[4]]
+                                                   ."img_".$opt[3].".".$opt[2];
+                                    } elseif ( strstr($tagwert, $pathvars["filebase"]["webdir"]) ) {
                                         $imgfile = str_replace($pathvars["filebase"]["webdir"],"",$tagwert);
                                         $imgfile = $pathvars["filebase"]["maindir"].$imgfile;
                                     } else {
@@ -336,7 +342,13 @@
                             } else {
                                 $imgurl = $imgwerte[0];
                                 if ( !strstr($imgwerte[0], "http") ) {
-                                    if ( strstr($imgwerte[0], $pathvars["filebase"]["webdir"]) ) {
+                                    if ( strpos($imgwerte[0],$pathvars["filebase"]["pic"]["root"]) === false ) {
+                                        $opt = explode("/",$imgwerte[0]);
+                                        $imgfile = $pathvars["filebase"]["maindir"]
+                                                .$pathvars["filebase"]["pic"]["root"]
+                                                .$pathvars["filebase"]["pic"][$opt[4]]
+                                                ."img_".$opt[3].".".$opt[2];
+                                    } elseif ( strstr($imgwerte[0], $pathvars["filebase"]["webdir"]) ) {
                                         $imgfile = str_replace($pathvars["filebase"]["webdir"],"",$imgwerte[0]);
                                         $imgfile = $pathvars["filebase"]["maindir"].$imgfile;
                                     } else {
@@ -352,10 +364,6 @@
                                         $bilderstrecke = "";
                                     }
                                     if ( $imgwerte[3] != "" ) {
-                                        if ( is_numeric($imgwerte[3]) ) {
-                                            echo "check";
-                                        }
-
                                         if ( strpos($imgurl,$pathvars["filebase"]["pic"]["root"]) === false ) {
                                             $opt = explode("/",$imgurl);
                                             $imgid = $opt[3];
@@ -381,7 +389,7 @@
                         $tagwerte = explode("]",$tagwert,2);
                         $imgwerte = explode(";",$tagwerte[0]);
                         if ( $imgwerte[1] == "r" ) {
-                            $ausgaben["align"] = " align=\"right\"";
+                            $ausgaben["align"] = "right";
                             if ( $imgwerte[6] == "" ) {
                                 $lspace = "10";
                             } else {
@@ -389,7 +397,7 @@
                             }
                             $rspace = "0";
                         } elseif ( $imgwerte[1] == "l" ) {
-                            $ausgaben["align"] = " align=\"left\"";
+                            $ausgaben["align"] = "left";
                             $lspace = "0";
                             if ( $imgwerte[6] == "" ) {
                                 $rspace = "10";
@@ -423,19 +431,24 @@
                         }
                         $ausgaben["linka"] = "";
                         $ausgaben["linkb"] = "";
-                        if ( !strstr($imgwerte[0], "/") ) {
+                        if ( strpos($imgwerte[0],"/") === false ) {
                             $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/".$imgwerte[0];
                             if ( file_exists($imgfile) ) {
                                 $imgsize = getimagesize($imgfile);
-                                $imgsize = " ".$imgsize[3];
+                                $ausgaben["imgsize"] = " ".$imgsize[3];
                                 $ausgaben["imgurl"] = $pathvars["images"].$imgwerte[0];
                             }
                         } else {
-                            $ausgaben["imgurl"] = $imgwerte[0];
-                            if ( !strstr($imgwerte[0], "http") ) {
-                                if ( strstr($imgwerte[0], $pathvars["filebase"]["webdir"]) ) {
-                                    $imgfile = str_replace($pathvars["filebase"]["webdir"],"",$imgwerte[0]);
-                                    $imgfile = $pathvars["filebase"]["maindir"].$imgfile;
+                            $imgurl = $imgwerte[0];
+                            if ( strpos($imgurl,"http") === false ) {
+                                if ( strpos($imgwerte[0],$pathvars["filebase"]["pic"]["root"]) === false ) {
+                                    $opt = explode("/",$imgurl);
+                                    $imgfile = $pathvars["filebase"]["maindir"]
+                                               .$pathvars["filebase"]["pic"]["root"]
+                                               .$pathvars["filebase"]["pic"][$opt[4]]
+                                               ."img_".$opt[3].".".$opt[2];
+                                } elseif ( strpos($imgurl,$pathvars["filebase"]["webdir"]) !== false ) {
+                                    $imgfile = $pathvars["filebase"]["maindir"].str_replace($pathvars["filebase"]["webdir"],"",$imgurl);
                                 } else {
                                     $imgfile = $pathvars["fileroot"].$imgwerte[0];
                                 }
@@ -443,6 +456,9 @@
                                     $imgsize = getimagesize($imgfile);
                                     $ausgaben["tabwidth"] = $imgsize[0];
                                     $ausgaben["imgsize"] = " ".$imgsize[3];
+                                } else {
+                                    $ausgaben["tabwidth"] = "";
+                                    $ausgaben["imgsize"] = "";
                                 }
                                 if ( $imgwerte[7] != "" ) {
                                     $bilderstrecke = ",".$imgwerte[7];
@@ -450,7 +466,6 @@
                                     $bilderstrecke = "";
                                 }
                                 if ( $imgwerte[3] != "" ) {
-                                    #$imgnam = substr(strrchr($ausgaben["imgurl"],"/"),1);
                                     if ( strpos($imgurl,$pathvars["filebase"]["pic"]["root"]) === false ) {
                                         $opt = explode("/",$imgurl);
                                         $imgid = $opt[3];
@@ -464,8 +479,12 @@
                                     $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
                                     $ausgaben["linka"] = "<a href=\"".$imglnk."\">";
                                     $ausgaben["linkb"] = "</a>";
+                                } else {
+                                    $ausgaben["linka"] = "";
+                                    $ausgaben["linkb"] = "";
                                 }
                             }
+                            $ausgaben["imgurl"] = $imgurl;
                         }
                         $ausgaben["alt"] = $beschriftung;
                         $ausgaben["beschriftung"] = $beschriftung;
@@ -474,7 +493,6 @@
                         $ausgaben["rspace"] = $rspace;
                         $ausgaben["bspace"] = $bspace;
                         $ausgabewert = str_replace(chr(13).chr(10),"",parser("imgb", ""));
-
                         $replace = str_replace($opentag.$tagwert.$closetag,$ausgabewert,$replace);
                         break;
                     case "[/DIV]":
