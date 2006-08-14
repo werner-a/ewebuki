@@ -17,24 +17,24 @@ ALTER TABLE `site_form_lang` ADD `fchkerror` VARCHAR( 255 ) NOT NULL AFTER `fdbe
 --
 -- Folgende sql Befehle aktivieren die Prüfung der E-Mail Adresse und die deutschen Fehlermeldungen.
 --
-INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
-VALUES
-( '', 'e-mail', '0.kontakt', '0', '', '', NULL , '-1', 'PREG:^[a-zA-Z0-9][_a-zA-Z0-9-]*(\\.[_a-zA-Z0-9-]+)*@([a-zA-Z0-9-]+\\.)+([a-zA-Z]{2,5})$' ),
-( '', 'ansprechpartner', '0.kontakt', '0', '', '', NULL , '-1', '' ),
-( '', 'strasse', '0.kontakt', '0', '', '', NULL , '-1', '' ),
-( '', 'plz', '0.kontakt', '5', '', '', NULL , '-1', '' ),
-( '', 'ort', '0.kontakt', '0', '', '', NULL , '-1', '' ),
-( '', 'telefon', '0.kontakt', '0', '', '', NULL , '-1', '' ),
-( '', 'mitteilung', '0.kontakt', '40', '', '', NULL , '-1', '' );
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` ) VALUES ( '', 'e-mail', '0.kontakt', '0', '', '', NULL , '-1', 'PREG:^[a-zA-Z0-9][_a-zA-Z0-9-]*(\\.[_a-zA-Z0-9-]+)*@([a-zA-Z0-9-]+\\.)+([a-zA-Z]{2,5})$' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` ) VALUES ( '', LAST_INSERT_ID(), 'de', NULL , '', 'Bitte geben Sie eine E-Mail Adresse an.', '', 'Die eMail Adresse entspricht nicht der Norm ''name@domain.top''' );
 
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` ) VALUES ( '', 'ansprechpartner', '0.kontakt', '0', '', '', NULL , '-1', '' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` ) VALUES ( '', LAST_INSERT_ID(), 'de', NULL , '', 'Bitte geben Sie einen Ansprechpartner an.', '', '' );
 
--- flid und fid MÜSSEN an die obigen Datensätze angepasst werden!!!
-INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` )
-VALUES
-( '5', '5', 'de', NULL , '', 'Bitte geben Sie eine E-Mail Adresse an.', '', 'Die eMail Adresse entspricht nicht der Norm ''name@domain.top''' ),
-( '', '6', 'de', NULL , '', 'Bitte geben Sie einen Ansprechpartner an.', '', '' ),
-( '', '7', 'de', NULL , '', 'Bitte geben Sie die Straße an.', '', '' ),
-( '', '8', 'de', NULL , '', 'Bitte geben Sie die PLZ an.', '', '' ),
-( '', '9', 'de', NULL , '', 'Bitte geben Sie den Ort an.', '', '' ),
-( '', '10', 'de', NULL , '', 'Bitte geben Sie eine Telefonnummer an.', '', '' ),
-( '', '11', 'de', NULL , '', 'Bitte geben Sie eine Mitteilung ein.', '', '' );
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` ) VALUES ( '', 'strasse', '0.kontakt', '0', '', '', NULL , '-1', '' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` ) VALUES ( '', LAST_INSERT_ID(), 'de', NULL , '', 'Bitte geben Sie die Straße an.', '', '' );
+
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` ) VALUES ( '', 'plz', '0.kontakt', '5', '', '', NULL , '-1', '' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` ) VALUES ( '', LAST_INSERT_ID(), 'de', NULL , '', 'Bitte geben Sie die PLZ an.', '', '' );
+
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` ) VALUES ( '', 'ort', '0.kontakt', '0', '', '', NULL , '-1', '' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` ) VALUES ( '', LAST_INSERT_ID(), 'de', NULL , '', 'Bitte geben Sie den Ort an.', '', '' );
+
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` ) VALUES ( '', 'telefon', '0.kontakt', '0', '', '', NULL , '-1', '' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` ) VALUES ( '', LAST_INSERT_ID(), 'de', NULL , '', 'Bitte geben Sie eine Telefonnummer an.', '', '' );
+
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` ) VALUES ( '', 'mitteilung', '0.kontakt', '40', '', '', NULL , '-1', '' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` ) VALUES ( '', LAST_INSERT_ID(), 'de', NULL , '', 'Bitte geben Sie eine Mitteilung ein.', '', '' );
+--
