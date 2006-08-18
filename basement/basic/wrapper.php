@@ -65,7 +65,7 @@
         $path["img"] = $path["img"]."img_";
     }
 
-    $path["pdf"] = $pathvars["filebase"]["doc"]."doc_";
+    $path["doc"] = $pathvars["filebase"]["doc"]."doc_";
     $path["arc"] = $pathvars["filebase"]["arc"]."arc_";
 
 
@@ -83,9 +83,29 @@
             $type ="image/png";
             $filepath = $path["img"];
             break;
+        case "odp":
+            $type ="application/odp";
+            $filepath = $path["doc"];
+            break;
+        case "ods":
+            $type ="application/ods";
+            $filepath = $path["doc"];
+            break;
+        case "odt":
+            $type ="application/odt";
+            $filepath = $path["doc"];
+            break;
         case "pdf":
             $type ="application/pdf";
-            $filepath = $path["pdf"];
+            $filepath = $path["doc"];
+            break;
+        case "bz2":
+            $type ="application/bz2";
+            $filepath = $path["arc"];
+            break;
+        case "gz":
+            $type ="application/gz";
+            $filepath = $path["arc"];
             break;
         case "zip":
             $type ="application/zip";
