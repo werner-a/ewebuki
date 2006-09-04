@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
 
         // funktions bereich fuer erweiterungen
         // ***

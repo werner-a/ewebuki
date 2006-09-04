@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
 
         ////////////////////////////////////////////////////////////////////
         // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!
