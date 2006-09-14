@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+<title>fileed.describe</title>
+<link rel="stylesheet" href="../../css/net.css" type="text/css">
+</head>
+<body bgcolor="#ffffff">
+<!--##begin-->
+<!--$Id$-->
+<script language="JavaScript">
+<!--
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+//-->
+</script>
+<form style="margin:0; padding:0;" name="modify" method="post" action="!#ausgaben_form_aktion" enctype="multipart/form-data" onreset="return confirm('Wollen Sie wircklich alle Felder zurücksetzen?')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr>
+      <td bgcolor="#EC9379">#(ueberschrift)</td>
+    </tr>
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr>
+            <td>#(inhalt)</td>
+          </tr>
+          <tr>
+            <td>
+              <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                  <td colspan="2"><font color="#FF0000">!#ausgaben_form_error</font></td>
+                </tr>
+                <tr>
+                  <td valign="top">
+                    <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                      <tr>
+                        <td>#(ffname)</td>
+                        <td>!#element_ffname</td>
+                      </tr>
+                      <tr>
+                        <td>#(fdesc)</td>
+                        <td>!#element_fdesc</td>
+                      </tr>
+                      <tr>
+                        <td>#(funder)</td>
+                        <td>!#element_funder</td>
+                      </tr>
+                      <tr>
+                        <td>#(fhit)</td>
+                        <td>!#element_fhit</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">!#element_upload </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">!#element_fid</td>
+                      </tr>
+                    </table></td>
+                  <td align="right" valign="top"><img src="!#ausgaben_thumbnail"></td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp; </td>
+                </tr>
+                <tr align="right">
+                  <td colspan="2"> 
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td colspan="3">
+                          <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input name="send[]" type="submit" value="#(send)">
+                        </td>
+                        <td align="center">
+                          <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+                        </td>
+                        <td align="right">
+                          <input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>!#ausgaben_output<br>
+              !#ausgaben_inaccessible</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+<!--##end-->
+</body>
+</html>
