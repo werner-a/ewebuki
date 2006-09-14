@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -46,19 +46,20 @@
 
     function file_verarbeitung($destination, $name, $limit, $valid, $root = "") {
 
-        global $debugging;
+        global $pathvars, $debugging;
 
-        // document root selbstaendig setzen und abschliesenden / korrigieren
-        if ( $root == "" ) {
-            if ( substr($_SERVER["DOCUMENT_ROOT"],-1,1) == "/" ) {
-                $document_root = substr($_SERVER["DOCUMENT_ROOT"],0,-1);
-            } else {
-                $document_root = $_SERVER["DOCUMENT_ROOT"];
-            }
-        } else {
+        // hauptverzeichnis kann geaendert werden (wird von fileed-describe genutzt)
+        if ( $root != "" ) {
             $document_root = $root;
+        } else {
+            $document_root = $pathvars["fileroot"];
         }
 
+        // historisch: bei $root fehlte der "/" evtl.
+        $document_root = rtrim($document_root,"/")."/";
+
+        // historisch: $destination beginnt oder endet evtl. mit einem "/"
+        $destination = trim($destination,"/");
 
         // php major version muss mindestens 4 sein!
         if ( substr(PHP_VERSION,0,1) >= 4 ) {
@@ -89,15 +90,17 @@
                     $array["returncode"] = 10;
                 } elseif ( $_FILES[$name]["size"] >= $limit ) {
                     $array["returncode"] = 7;
-                } elseif ( !in_array($dateiendung, $valid) ) {
+                } elseif ( !in_array($dateiendung, $valid) && !array_key_exists($dateiendung, $valid) ) {
                     $array["returncode"] = 8;
                 } elseif ( file_exists($destination.$_FILES[$name]["name"]) ) {
                     $array["returncode"] = 9;
                 }
             }
 
-            // grafik formate testen
+
             $images = array("gif"  => 1, "jpg"  => 2, "jpeg" => 2, "png"  => 3);
+            $weitere = array("pdf" => "%PDF", "zip" => "PK", "odt" => "PK", "ods" => "PK", "odp" => "PK", "bz2" => "BZ", "gz" => chr(hexdec("1F")).chr(hexdec("8B")).chr(hexdec("08")).chr(hexdec("08")));
+            // grafik formate testen
             if ( $images[$dateiendung] != "" && $array["returncode"] == 0 ) {
                 /*
                 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP,
@@ -110,17 +113,20 @@
                 if ( $images[$dateiendung] != $imgsize[2] ) {
                     $array["returncode"] = 8;
                 }
-            }
-
-            // pdf files testen
-            if ( $dateiendung == "pdf" && $array["returncode"] == 0 ) {
+            // weitere formate testen
+            } elseif ( $weitere[$dateiendung] != "" && $array["returncode"] == 0 ) {
                 $fp = fopen($_FILES[$name]["tmp_name"], "r");
-                $buffer = fgets($fp, 4096);
-                if ( !strstr($buffer,"%PDF") ) {
+                $buffer = fgets($fp, 5);
+                if ( strpos($buffer,$weitere[$dateiendung]) === false ) {
                     $array["returncode"] = 8;
                 }
+                unset($buffer);
                 fclose($fp);
+            // sonstiges ablehnen
+            } else {
+                $array["returncode"] = 8;
             }
+
 
             if ( $array["returncode"] == 0 ) {
                 $MySafeModeUid = getmyuid();
@@ -136,6 +142,30 @@
         return $array;
     }
 
+    function file_error($error) {
+        if ( $error == 0 ) {
+            $meldung .= "There is no error, the file uploaded with success.";
+        } elseif ( $error == 1 ) {
+            $meldung .= "The uploaded file exceeds the upload_max_filesize directive ( ".get_cfg_var(upload_max_filesize)." ) in php.ini.";
+        } elseif ( $error == 2 ) {
+            $meldung .= "The uploaded file exceeds the MAX_FILE_SIZE ( ".$HTTP_POST_VARS["MAX_FILE_SIZE"]."kb ) directive that was specified in the html form.";
+        } elseif ( $error == 3 ) {
+            $meldung .= "The uploaded file was only partially uploaded.";
+        } elseif ( $error == 4 ) {
+            $meldung .= "No file was uploaded.";
+        } elseif ( $error == 7 ) {
+            $meldung .= "File Size to big.";
+        } elseif ( $error == 8 ) {
+            $meldung .= "File Type not valid.";
+        } elseif ( $error == 9 ) {
+            $meldung .= "File Name already exists.";
+        } elseif ( $error == 10 ) {
+            $meldung .= "Unknown Error. Maybe post_max_size directive ( ".get_cfg_var(post_max_size)." ) in php.ini. Please do not try again.";
+        } elseif ( $error == 11 ) {
+            $meldung .= "Sorry, you need minimal PHP/4.x.x to handle uploads!";
+        }
+        return $meldung;
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
