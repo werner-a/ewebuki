@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -40,48 +40,91 @@
 
     URL: http://www.chaos.de
 */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
     // content umschaltung verhindern
     $specialvars["dynlock"] = True;
 
     $cfg = array(
-        "subdir"    => "admin",
-        "name"      => "fileed",
-        "basis"     => $pathvars["virtual"]."/admin/fileed",
-        "iconpath"  => "", # leer: /images/default/; automatik: $pathvars["images"]
-        "function"  => array("describe", "list", "note", "preview", "select"),
-        "db"        => array(
-            "entries"  => "site_file",
-            "key"      => "fid",
-            "order"    => "fid",
-            "sort"     => "DESC",
-            "rows"     => "10",   # pro seite
-            "line"     => "5",    # pro zeile  (rows / line) gib zeilen
-            "language" => "",
-        ),
-        "filetyp"   => array("jpg", "png", "pdf", "zip"),
-        "filesize"  => "5000000",
-        "file"      => array(
-            "maindir"  => $pathvars["filebase"]["maindir"],
-            "webdir"   => $pathvars["filebase"]["webdir"],
-            "new"      => $pathvars["filebase"]["new"],
-            "picture"  => $pathvars["filebase"]["pic"]["root"],
-            "text"     => $pathvars["filebase"]["doc"],
-            "archiv"   => $pathvars["filebase"]["arc"],
-        ),
-        "size"      => array(
-            "big"      => "580",
-            "medium"   => "250",
-            "small"    => "150",
-            "thumb"    => "96",
-            "max"      => "580", # leer bedeutet, orginal bleibt erhalten
-        ),
-        "filter"    => array(
-            "0"        => array("Meine", "Gruppe", "Alle"),
-            "1"        => array("Bilder", "PDF", "Archive"),
-        ),
+           "subdir" => "admin",
+             "name" => "fileed",
+            "basis" => $pathvars["virtual"]."/admin/fileed",
+         "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
+         #"function" => array("describe", "list", "note", "preview", "select"),
+         "function" => array(
+                     "list" => "", # array( "function_name" ),
+                      "add" => array( "thumbnail", "resize", "arrange" ),
+                     "edit" => array( "resize", "arrange" ),
+                   "delete" => "",
+                   "upload" => "",
+                       ),
+               "db" => array(
+                     "file" => array(
+                          "entries" => "site_file",
+                              "key" => "fid",
+                            "order" => "fid DESC",
+                             "rows" => "10",   # pro seite
+                             "line" => "5",    # pro zeile  (rows / line)
+                          "newline" => "<br clear=\"all\" />",
+                               ),
+                     "lang" => array(
+                            #"entries" => "site_file_lang",
+                               ),
+                       ),
+         "filesize" => "5000000",
+          #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "bz2", "gz"),
+          "filetyp" => array( "gif" => "img",
+                              "jpg" => "img",
+                             "jpeg" => "img",
+                              "png" => "img",
+                              "pdf" => "pdf",
+                              "zip" => "arc",
+                              "bz2" => "arc",
+                               "gz" => "arc",
+                              "odt" => "odf",
+                              "ods" => "odf",
+                              "odp" => "odf",
+                       ),
+          "fileopt" => array(
+                      "img" => array(
+                             "name" => "img",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"],
+                           "tnpath" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                        "thumbnail" => "set"
+                               ),
+                      "pdf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "pdf_big.png"
+                              ),
+                      "arc" => array(
+                             "name" => "arc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "zip_icon.jpg"
+                               ),
+                      "odf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "odf_icon.png"
+                               ),
+                       ),
+             "size" => array(
+                        "b" => "580",
+                        "m" => "250",
+                        "s" => "150",
+                       "tn" => "96",
+                      "max" => "580", # leer bedeutet, orginal bleibt erhalten
+    #to be implemeted "may" => "",    # wenn gesetzt, wird auch höhe geaendert
+                       ),
+           "filter" => array(
+                        "0" => array("Meine", "Gruppe", "Alle"),
+                        "1" => array("Bilder", "Dokumente", "Archive"),
+                       ),
+            "right" => "cms_admin",
     );
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>

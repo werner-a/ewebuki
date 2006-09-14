@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   $script["name"] = "$Id$";
-  $Script["desc"] = "datei manager ctrl";
+  $Script["desc"] = "fileed - kontroll funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -58,26 +58,14 @@
         $specialvars["editlock"] = -1;
     }
 
-    // NUR BIS ZUM UMBAU HIER!!! unzugaengliche #(marken) sichtbar machen
-    if ( isset($HTTP_GET_VARS["edit"]) ) {
-        $ausgaben["inaccessible"] = "inaccessible values:<br />";
-        $ausgaben["inaccessible"] .= "# (send_image) #(send_image)<br />";
-        $ausgaben["inaccessible"] .= "# (describe) #(describe)<br />";
-        $ausgaben["inaccessible"] .= "# (delete1) #(delete1)<br />";
-        $ausgaben["inaccessible"] .= "# (delete2) #(delete2)<br />";
-        #$ausgaben["inaccessible"] .= "# (error_?) #(error_?)<br />";
-    } else {
-        $ausgaben["inaccessible"] = "";
-    }
+    // include function loader
+    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
 
     // magic include loader
-    if ( in_array($environment["kategorie"], $cfg["function"]) ) {
+    if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
         include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
-    #} else {
-    #    // welches include ansonsten laden
-    #    include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
-    #    // welches template anzeigen
-    #    $mapping["main"] = "xxxxxxx.list";
+    } else {
+        include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
     }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
