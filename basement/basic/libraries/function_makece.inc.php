@@ -86,7 +86,7 @@
                 #                        );
 
                 switch ( $data["ffart"] ) {
-                    case "pdf":
+                    case "pdf": case "odt":  case "ods": case "odp":
                         // die boese schneide ab funktion
                         if ( strlen($data["fdesc"]) > 10 ) {
                             $fdesc = substr($data["fdesc"],0,10)." ...";
@@ -107,7 +107,7 @@
                             $extension .= "else if (st=='doc".$data["fid"]."')\nst='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["doc"]."doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                         }
                         break;
-                    case "zip":
+                    case "zip": case "bz2": case "gz":
                         // die boese schneide ab funktion
                         if ( strlen($data["fdesc"]) > 10 ) {
                             $fdesc = substr($data["fdesc"],0,10)." ...";
