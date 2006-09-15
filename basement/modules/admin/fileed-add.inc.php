@@ -57,7 +57,7 @@
         #}
 
         // form options holen
-        $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+        $form_options = form_options(crc32($environment["ebene"]).".modify";
 
         // form elememte bauen
         $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
