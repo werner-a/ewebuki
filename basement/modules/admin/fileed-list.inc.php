@@ -275,9 +275,25 @@
             $dataloop["list"][$data["fid"]]["color"] = $cfg["color"]["set"];
 
             #$dataloop["list"][$data["fid"]]["href"] = "list/view,o,".$data["fid"].".html";
-            $dataloop["list"][$data["fid"]]["href"] = "edit,".$data["fid"].".html";
+            $dataloop["list"][$data["fid"]]["ehref"] = "edit,".$data["fid"].".html";
 
-            $dataloop["list"][$data["fid"]]["src"] = $pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"];
+            $type = $cfg["filetyp"][$data["ffart"]];
+            $dataloop["list"][$data["fid"]]["dhref"] = $pathvars["filebase"]["webdir"].
+                                                       $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].
+                                                       $cfg["fileopt"][$type]["name"]."_".
+                                                       $data["fid"].".".$data["ffart"];
+            if ( $data["ffart"] == "pdf" ) {
+                $dataloop["list"][$data["fid"]]["dtarget"] = "_blank";
+            } else {
+                $dataloop["list"][$data["fid"]]["dtarget"] = "";
+            }
+
+
+            $dataloop["list"][$data["fid"]]["src"] = $pathvars["filebase"]["webdir"].
+                                                     $pathvars["filebase"]["pic"]["root"].
+                                                     $pathvars["filebase"]["pic"]["tn"]."tn_".
+                                                     $data["fid"].".".$data["ffart"];
+
             $dataloop["list"][$data["fid"]]["alt"] = $data["ffname"];
             $dataloop["list"][$data["fid"]]["title"] = $data["ffname"];
 
