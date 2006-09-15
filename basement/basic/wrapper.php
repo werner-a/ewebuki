@@ -117,7 +117,7 @@
 
 
     // filenamen zusammensetzen
-    $file = $fileroot.$pathvars["filebase"]["maindir"].$filepath.$value[3].".".$value[2];
+    $file = $pathvars["filebase"]["maindir"].$filepath.$value[3].".".$value[2];
 
     if ( $value[6] == "d" ) {
         echo $type."<br>";
