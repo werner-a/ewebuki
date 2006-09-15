@@ -44,9 +44,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     # http://dev2/file/jpg/6/o/filename.extension
 
-    $fileroot = dirname(dirname(__FILE__))."/";
+    $pathvars["fileroot"] = dirname(dirname(__FILE__))."/";
 
-    require $fileroot."conf/file.cfg.php";
+    require $pathvars["fileroot"]."conf/file.cfg.php";
     $value = explode("/",$_SERVER["REQUEST_URI"]);
 
     if ( $value[6] == "d" ) {
