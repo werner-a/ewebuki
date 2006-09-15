@@ -214,7 +214,7 @@
                 // speicher des quellbild freigeben
                 imagedestroy($img_src);
             } else {
-                rename($source, $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.$extension);
+                rename($source, $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
             }
 
 

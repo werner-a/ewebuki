@@ -84,7 +84,20 @@
         // form elemente erweitern
         #$element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
         #$element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
-        $ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280";
+        #$ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280";
+
+        $type = $cfg["filetyp"][$form_values["ffart"]];
+        if ( $type == "img" ) {
+            $path = $cfg["fileopt"][$type]["path"]."original/";
+            $filename = "img_".$form_values["fid"].".".$form_values["ffart"];
+        } else {
+            $path = $cfg["fileopt"][$type]["tnpath"].ltrim($cfg["iconpath"],"/");
+            $filename = $cfg["fileopt"][$type]["thumbnail"];
+        }
+        $ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$path.$filename."&size=280";
+
+
+
 
         if ( $HTTP_SESSION_VARS["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
             $element["upload"] = "#(upa)<br><input type=\"file\" name=\"upload\"><br>#(upb)";
