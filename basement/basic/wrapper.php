@@ -46,8 +46,13 @@
 
     $pathvars["fileroot"] = dirname(dirname(__FILE__))."/";
 
+    require $pathvars["fileroot"]."conf/site.cfg.php";
     require $pathvars["fileroot"]."conf/file.cfg.php";
-    $value = explode("/",$_SERVER["REQUEST_URI"]);
+
+    // subdir support
+    $value = str_replace( $specialvars["subdir"]."/", "", $_SERVER["REQUEST_URI"] );
+
+    $value = explode("/",$value);
 
     if ( $value[6] == "d" ) {
         echo "<pre>";
