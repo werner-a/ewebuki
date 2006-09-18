@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -247,7 +247,7 @@
                 $HTTP_SESSION_VARS["return"] = str_replace("save,", "edit,", $pathvars["requested"]);
 
                 if ( $HTTP_POST_VARS["upload"] > 0 ) {
-                    header("Location: ".$pathvars["virtual"]."/admin/fileed/select.html?anzahl=".$HTTP_POST_VARS["upload"]);
+                    header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$HTTP_POST_VARS["upload"]);
                 } else {
                     header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
                 }
