@@ -78,7 +78,7 @@
             }
             $extension= "";
 
-            $tn = "<table><tr><td>";
+            $tn = "\n\n<table width=\"100%\"><tr><td>";
             while ( $data = $db -> fetch_array($result, NOP) ) {
                 #$file[$data["fid"]] = array(
                 #                        "fart"  =>  $data["ffart"],
@@ -88,16 +88,16 @@
                 switch ( $data["ffart"] ) {
                     case "pdf": case "odt":  case "ods": case "odp":
                         // die boese schneide ab funktion
-                        if ( strlen($data["fdesc"]) > 10 ) {
-                            $fdesc = substr($data["fdesc"],0,10)." ...";
+                        if ( strlen($data["funder"]) > 6 ) {
+                            $funder = substr($data["funder"],0,5)." ...";
                         } else {
-                            $fdesc = $data["fdesc"];
+                            $funder = $data["funder"];
                         }
                         #$tn .= "<a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img src=\"".$pathvars["images"]."pdf.png"."\"></a> ";
-                        $tn .= "<table align=\"left\" width=\"96\">";
-                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$fdesc."</a></td></tr>";
+                        $tn .= "\n<table align=\"left\" width=\"96\">";
+                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$funder."</a></td></tr>";
 
-                        if ( $defaults["icon"]["pdf"] == "" ) $defaults["icon"]["pdf"] = "<img src=\"/images/default/icon_pdf.png\" />";
+                        if ( $defaults["icon"]["pdf"] == "" ) $defaults["icon"]["pdf"] = "<img src=\"/images/default/icon_pdf.png\" width=\"64\" height=\"64\" title=\"".$data["funder"]."\"/>";
                         $tn .= "<tr><td>".$defaults["icon"]["pdf"]."</td></tr>";
                         $tn .= "</table>";
 
@@ -109,16 +109,16 @@
                         break;
                     case "zip": case "bz2": case "gz":
                         // die boese schneide ab funktion
-                        if ( strlen($data["fdesc"]) > 10 ) {
-                            $fdesc = substr($data["fdesc"],0,10)." ...";
+                        if ( strlen($data["funder"]) > 7 ) {
+                            $funder = substr($data["funder"],0,6)." ...";
                         } else {
-                            $fdesc = $data["fdesc"];
+                            $funder = $data["funder"];
                         }
                         #$tn .= "<a href=\"#\" onclick=\"INSst('doc".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img src=\"".$pathvars["images"]."pdf.png"."\"></a> ";
-                        $tn .= "<table align=\"left\" width=\"96\">";
-                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('arc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$fdesc."</a></td></tr>";
+                        $tn .= "\n<table align=\"left\" width=\"96\">";
+                        $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('arc".$data["fid"]."','".$ce_formname."','".$ce_name."')\">".$funder."</a></td></tr>";
 
-                        if ( $defaults["icon"]["zip"] == "" ) $defaults["icon"]["zip"] = "<img src=\"/images/default/icon_zip.png\" />";
+                        if ( $defaults["icon"]["zip"] == "" ) $defaults["icon"]["zip"] = "<img src=\"/images/default/icon_zip.png\" width=\"64\" height=\"64\" title=\"".$data["funder"]."\"/>";
                         $tn .= "<tr><td>".$defaults["icon"]["zip"]."</td></tr>";
                         $tn .= "</table>";
 
@@ -132,7 +132,7 @@
                         $imgsize = getimagesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]);
                         $imgsize = " ".$imgsize[3];
                         #$tn .= "<a href=\"#\" onclick=\"INSst('imb".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img src=\"/dateien/bilder/thumbnail/tn_".$data["fid"].".".$data["ffart"]."\"></a> ";
-                        $tn .= "<table align=\"left\">";
+                        $tn .= "\n<table align=\"left\" width=\"96\">";
                         $tn .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Original (original)\">O</a> ";
                         $tn .= "<a href=\"#\" onclick=\"INSst('imb".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Gross (big)\">B</a> ";
                         $tn .= "<a href=\"#\" onclick=\"INSst('imm".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Gross (middle)\">M</a> ";
