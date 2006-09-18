@@ -44,6 +44,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $image["file"] = $HTTP_GET_VARS["path"];
+
+    if ( !file_exists($image["file"]) ) {
+        die("can't find source file: ".$image["file"]);
+    }
+
     $image["size"] = getimagesize($image["file"]);
 
     switch ( $image["size"][2] ) {
@@ -66,8 +71,7 @@
             echo imagepng($img_dst);
             break;
         default:
-            echo "Source is not a valid Image (jpg, png)";
-            exit();
+            die("source is not a valid image (gif, jpg, png)");
     }
 
     imagedestroy($img_src);
