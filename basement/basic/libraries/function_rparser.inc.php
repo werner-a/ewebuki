@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -248,7 +248,10 @@
       //////////////////////////////////////////////////////////////////////////////////////////////
       if ( $pathvars["subdir"] != "" ) {
         $line = str_replace("/images/","/".$pathvars["subdir"]."/images/",$line);
-        $line = str_replace("/file/","/".$pathvars["subdir"]."/file/",$line);
+        // pfade im content und im filesystem (magic.php) nicht aendern!
+        if ( strpos($line,"=".$pathvars["filebase"]["webdir"]) === false && strpos($line,$pathvars["filebase"]["maindir"]) === false ) {
+            $line = str_replace($pathvars["filebase"]["webdir"],"/".$pathvars["subdir"].$pathvars["filebase"]["webdir"],$line);
+        }
       }
 
       //////////////////////////////////////////////////////////////////////////////////////////////
