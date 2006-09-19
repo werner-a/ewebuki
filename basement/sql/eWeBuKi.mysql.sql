@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 19. September 2006 um 14:45
+-- Erstellungszeit: 19. September 2006 um 16:27
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-16
 -- 
@@ -141,7 +141,7 @@ CREATE TABLE `site_file` (
 -- Daten für Tabelle `site_file`
 -- 
 
-INSERT INTO `site_file` (`fid`, `frefid`, `fuid`, `fdid`, `ftname`, `ffname`, `ffart`, `fdesc`, `funder`, `fhit`, `fdel`) VALUES (1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo', '', '', NULL);
+INSERT INTO `site_file` (`fid`, `frefid`, `fuid`, `fdid`, `ftname`, `ffname`, `ffart`, `fdesc`, `funder`, `fhit`, `fdel`) VALUES (1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo Beschreibung', 'eWeBuKi Logo Unterschift', '', NULL);
 
 -- --------------------------------------------------------
 
