@@ -61,13 +61,13 @@
 
         function thumbnail() {
 
-            global $HTTP_SESSION_VARS, $cfg, $pathvars, $file;
+            global $_SESSION, $cfg, $pathvars, $file;
 
             $thumbnail = "";
             $dp = opendir($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]);
             while ( $file = readdir($dp) ) {
                 $info  = explode( "_", $file, 2 );
-                if ( $info[0] == $HTTP_SESSION_VARS["uid"] ) {
+                if ( $info[0] == $_SESSION["uid"] ) {
                     $extension = strtolower(substr(strrchr($info[1],"."),1));
                     $type = $cfg["filetyp"][$extension];
                     if ( $type == "img" ) {

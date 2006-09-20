@@ -48,16 +48,16 @@
     // $art = 1 - content
 
     function right_check($art, $ebene, $kategorie="",$database=DATABASE) {
-        global $HTTP_SESSION_VARS,$db;
-        
+        global $_SESSION,$db;
+
         $url = explode("/", $ebene."/".$kategorie);
         foreach ($url as $key => $value) {
             if ( $key > 0 ) $trenner = "/";
             $chkurl .= $trenner.$value;
             if ( $url[$key+1] == "" ) break;
             $stname = crc32($chkurl).".".$url[$key+1];
-            if ( is_array($HTTP_SESSION_VARS["katzugriff"]) ) {
-                if ( in_array($art.":".$database.":".$stname,$HTTP_SESSION_VARS["katzugriff"]) ) {
+            if ( is_array($_SESSION["katzugriff"]) ) {
+                if ( in_array($art.":".$database.":".$stname,$_SESSION["katzugriff"]) ) {
                     $berechtigt = $stname;
                     break;
                 }

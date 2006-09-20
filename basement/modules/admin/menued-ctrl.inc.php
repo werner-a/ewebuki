@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -60,12 +60,12 @@
 
     // lokale db auswaehlen
     if ( $cfg["db"]["change"] == -1 ) {
-        if ( $environment["fqdn"][0] == $specialvars["dyndb"] && in_array($specialvars["dyndb"],$HTTP_SESSION_VARS["dbzugriff"]) ) {
+        if ( $environment["fqdn"][0] == $specialvars["dyndb"] && in_array($specialvars["dyndb"],$_SESSION["dbzugriff"]) ) {
             $db->selectDb($specialvars["dyndb"],FALSE);
-        } elseif ( $environment["fqdn"][0] == $cfg["fqdn0"] && $HTTP_SESSION_VARS["sti"] == -1 ) {
+        } elseif ( $environment["fqdn"][0] == $cfg["fqdn0"] && $_SESSION["sti"] == -1 ) {
             ### loesung?
         } else {
-            $sql = "SELECT adakz FROM db_adrd where adid='".$HTTP_SESSION_VARS["custom"]."'";
+            $sql = "SELECT adakz FROM db_adrd where adid='".$_SESSION["custom"]."'";
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,$nop);
             $db->selectDb("intra".$data["adakz"],FALSE);

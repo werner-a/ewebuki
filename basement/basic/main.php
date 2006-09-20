@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -298,18 +298,13 @@
     // überschreiben von default werten
     require $pathvars["config"]."overwrite.cfg.php";
 
-    if ( $environment["katid"] == "cms") {
+    if ( $environment["ebene"] == "/cms") {
         include $pathvars["libraries"]."cms.inc.php";
-    } elseif ($environment["katid"] == "fileed") {
-        #keine session variable ebene und kategorie erzeugen (mor 1909)
     } else {
         if ( strstr($_SERVER["REQUEST_URI"],"/auth/") ) {
-            session_register("page");
-            $HTTP_SESSION_VARS["page"] = $_SERVER["REQUEST_URI"];
-            session_register("ebene");
-            $HTTP_SESSION_VARS["ebene"] = $environment["ebene"];
-            session_register("kategorie");
-            $HTTP_SESSION_VARS["kategorie"] = $environment["kategorie"];
+            $_SESSION["page"] = $_SERVER["REQUEST_URI"];
+            $_SESSION["ebene"] = $environment["ebene"];
+            $_SESSION["kategorie"] = $environment["kategorie"];
         }
     }
 

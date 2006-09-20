@@ -66,15 +66,12 @@
       #|| $rechte["administration"] == -1 && $rechte["sti"] == -1 ) { ### loesung?
       || $rechte["administration"] == -1 || $erlaubnis == -1 ) {
 
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$_SESSION["ebene"].$debugging["char"];
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$_SESSION["kategorie"].$debugging["char"];
+
         $db->selectDb($database,FALSE);
 
         if ( $environment["kategorie"] == "edit" ) {
-
-            session_register("ebene");
-            session_register("kategorie");
-
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$HTTP_SESSION_VARS["ebene"].$debugging["char"];
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$HTTP_SESSION_VARS["kategorie"].$debugging["char"];
 
             $ausgaben["ce_tem_db"]      = "#(db): ".$environment["parameter"][1];
             $ausgaben["ce_tem_name"]    = "#(template): ".$environment["parameter"][2];
@@ -161,11 +158,8 @@
 
        } elseif ( $environment["kategorie"] == "save" ) {
 
-            session_register("ebene");
-            session_register("kategorie");
-
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$HTTP_SESSION_VARS["ebene"].$debugging["char"];
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$HTTP_SESSION_VARS["kategorie"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$_SESSION["ebene"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$_SESSION["kategorie"].$debugging["char"];
 
             // referer im form mit hidden element mitschleppen
             if ( $HTTP_GET_VARS["referer"] != "" ) {
@@ -240,11 +234,8 @@
 
             if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["upload"] > 0 ) {
 
-                session_register("referer");
-                $HTTP_SESSION_VARS["referer"] = $ausgaben["form_referer"];
-
-                session_register("return");
-                $HTTP_SESSION_VARS["return"] = str_replace("save,", "edit,", $pathvars["requested"]);
+                $_SESSION["referer"] = $ausgaben["form_referer"];
+                $_SESSION["return"] = str_replace("save,", "edit,", $pathvars["requested"]);
 
                 if ( $HTTP_POST_VARS["upload"] > 0 ) {
                     header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$HTTP_POST_VARS["upload"]);

@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -91,34 +91,27 @@
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "FM = ".$CRYPT_PASS.$debugging["char"];
 
         if ( $AUTH[$cfg["db"]["user"]["id"]] != "" && $AUTH[$cfg["db"]["user"]["pass"]] == $CRYPT_PASS ) {
-            session_register("auth");
-            $HTTP_SESSION_VARS["auth"] = -1;
-            session_register("uid");
-            $HTTP_SESSION_VARS["uid"] = $AUTH[$cfg["db"]["user"]["id"]];
-            session_register("username");
-            $HTTP_SESSION_VARS["username"] = $AUTH[$cfg["db"]["user"]["alias"]]; # old
-            session_register("surname");
-            $HTTP_SESSION_VARS["surname"] = $AUTH[$cfg["db"]["user"]["surname"]];
-            session_register("forename");
-            $HTTP_SESSION_VARS["forename"] = $AUTH[$cfg["db"]["user"]["forename"]];
-            session_register("email");
-            $HTTP_SESSION_VARS["email"] = $AUTH[$cfg["db"]["user"]["email"]];
-            session_register("alias");
-            $HTTP_SESSION_VARS["alias"] = $AUTH[$cfg["db"]["user"]["alias"]];
-            session_register("custom");
-            $HTTP_SESSION_VARS["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
+
+            session_start();
+            $_SESSION["auth"] = -1;
+            $_SESSION["uid"] = $AUTH[$cfg["db"]["user"]["id"]];
+            $_SESSION["username"] = $AUTH[$cfg["db"]["user"]["alias"]]; # old
+            $_SESSION["surname"] = $AUTH[$cfg["db"]["user"]["surname"]];
+            $_SESSION["forename"] = $AUTH[$cfg["db"]["user"]["forename"]];
+            $_SESSION["email"] = $AUTH[$cfg["db"]["user"]["email"]];
+            $_SESSION["alias"] = $AUTH[$cfg["db"]["user"]["alias"]];
+            $_SESSION["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
 
             // wenn content_right on dann katzugriff array bauen
             if ( $specialvars["security"]["enable"] == -1 ) {
-                session_register("katzugriff");
                 $sql = "SELECT ".$cfg["db"]["special"]["contentkey"].",
                                ".$cfg["db"]["special"]["dbasekey"].",
                                ".$cfg["db"]["special"]["tnamekey"]."
                           FROM ".$cfg["db"]["special"]["entries"]."
-                         WHERE ".$cfg["db"]["special"]["userkey"]."='".$HTTP_SESSION_VARS["uid"]."'";
+                         WHERE ".$cfg["db"]["special"]["userkey"]."='".$_SESSION["uid"]."'";
                 $result = $db -> query($sql);
                 while ( $data = $db -> fetch_array($result,$nop) ) {
-                    $HTTP_SESSION_VARS["katzugriff"][] = $data["content"].":".$data["sdb"].":".$data["stname"];
+                    $_SESSION["katzugriff"][] = $data["content"].":".$data["sdb"].":".$data["stname"];
                 }
             }
 
@@ -136,7 +129,10 @@
             exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgeführt wird.
         } else {
             session_start();
-            session_unset();
+            $_SESSION = array();
+            if (isset($_COOKIE[session_name()])) {
+                setcookie(session_name(), '', time()-42000, '/');
+            }
             session_destroy();
             $ausgaben["login_meldung"] = "#(denied)";
         }
@@ -145,7 +141,10 @@
     // logout durchfuehren und session loeschen
     if ( $HTTP_POST_VARS["logout"] == "logout" ) {
         session_start();
-        session_unset();
+        $_SESSION = array();
+        if (isset($_COOKIE[session_name()])) {
+            setcookie(session_name(), '', time()-42000, '/');
+        }
         session_destroy();
         $ausgaben["login_meldung"] = "#(logout)";
     }
@@ -153,21 +152,20 @@
     // session variablen nur holen wenn /auth/ in der url
     if ( strstr($_SERVER["REQUEST_URI"],"/auth/") ) {
 
-        session_register("auth");
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "auth = ".$HTTP_SESSION_VARS["auth"].$debugging["char"];
+        session_start();
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "auth = ".$_SESSION["auth"].$debugging["char"];
 
         // bei ungueltiger session auth aus der url nehmen
-        if ( $HTTP_SESSION_VARS["auth"] != -1 ) {
+        if ( $_SESSION["auth"] != -1 ) {
             header("Location: ".$ausgaben["auth_url"]);
         }
 
-        session_register("uid");
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "uid = ".$HTTP_SESSION_VARS["uid"].$debugging["char"];
-        if ( $HTTP_SESSION_VARS["uid"] != "" ) {
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "uid = ".$_SESSION["uid"].$debugging["char"];
+        if ( $_SESSION["uid"] != "" ) {
             $sql = "SELECT level FROM ".$cfg["db"]["level"]["entries"]."
                     INNER JOIN ".$cfg["db"]["right"]["entries"]."
                     ON ".$cfg["db"]["level"]["entries"].".".$cfg["db"]["level"]["id"]." = ".$cfg["db"]["right"]["entries"].".".$cfg["db"]["right"]["levelkey"]."
-                    WHERE ".$cfg["db"]["right"]["entries"].".uid = ".$HTTP_SESSION_VARS["uid"];
+                    WHERE ".$cfg["db"]["right"]["entries"].".uid = ".$_SESSION["uid"];
             $result  = $db -> query($sql);
             while ( $row = $db -> fetch_row($result) ) {
                 $rechte[$row[0]] = -1;
@@ -184,7 +182,7 @@
     if ( $cfg["hidden"]["set"] == True ) $specialvars["404"]["nochk"]["kategorie"][] =  $cfg["hidden"]["kategorie"];
 
     // daten fuer login, logout formular setzen
-    if ( $HTTP_SESSION_VARS["auth"] != -1 ) {
+    if ( $_SESSION["auth"] != -1 ) {
         $ausgaben["login_meldung"] .= "";
         if ( $cfg["hidden"]["set"] != True || $environment["kategorie"] == $cfg["hidden"]["kategorie"] ) {
           $ausgaben["auth"] = parser( "auth.login", "");
@@ -192,7 +190,7 @@
           $ausgaben["auth"] = "";
         }
     } else {
-        $ausgaben["logout_meldung"] = "\"".$HTTP_SESSION_VARS["username"]."\"";
+        $ausgaben["logout_meldung"] = "\"".$_SESSION["username"]."\"";
         $ausgaben["logout_rechte"] = "";
 
         foreach( $cfg["menu"] as $funktion => $werte) {

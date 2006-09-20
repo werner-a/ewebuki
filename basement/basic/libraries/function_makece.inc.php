@@ -52,11 +52,10 @@
         preg_match_all("/[_\/]([0-9]*)[.\/]/",$ce_inhalt,$found);
 
         // file memo auslesen und zuruecksetzen
-        global $HTTP_SESSION_VARS;
-        session_register("images_memo");
-        if ( is_array($HTTP_SESSION_VARS["images_memo"]) ) {
-            $array = array_merge($HTTP_SESSION_VARS["images_memo"],$found[1]);
-            unset($HTTP_SESSION_VARS["images_memo"]);
+        global $_SESSION;
+        if ( is_array($_SESSION["images_memo"]) ) {
+            $array = array_merge($_SESSION["images_memo"],$found[1]);
+            unset($_SESSION["images_memo"]);
         } else {
             $array = $found[1];
         }

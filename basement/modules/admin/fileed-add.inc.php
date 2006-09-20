@@ -67,7 +67,7 @@
         #$element["extension2"] = "";
         $element["upload"] = "";
         $element["fid"] = "";
-        $element["ffname"] = str_replace("ffname\"", "ffname\" value=\"".str_replace($HTTP_SESSION_VARS["uid"]."_","",$file)."\"", $element["ffname"]);
+        $element["ffname"] = str_replace("ffname\"", "ffname\" value=\"".str_replace($_SESSION["uid"]."_","",$file)."\"", $element["ffname"]);
 
 
         // +++
@@ -155,9 +155,9 @@
                 $sqla .= ", ffart";
                 $sqlb .= ", '".strtolower(substr(strrchr($file,"."),1))."'";
                 $sqla .= ", fuid";
-                $sqlb .= ", '".$HTTP_SESSION_VARS["uid"]."'";
+                $sqlb .= ", '".$_SESSION["uid"]."'";
                 $sqla .= ", fdid";
-                $sqlb .= ", '".$HTTP_SESSION_VARS["custom"]."'";
+                $sqlb .= ", '".$_SESSION["custom"]."'";
 
 
                 $sql = "insert into ".$cfg["db"]["file"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";

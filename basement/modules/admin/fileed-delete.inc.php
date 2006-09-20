@@ -48,8 +48,8 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        if ( count($HTTP_SESSION_VARS["images_memo"]) > 0 ) {
-            $environment["parameter"][1] = current($HTTP_SESSION_VARS["images_memo"]);
+        if ( count($_SESSION["images_memo"]) > 0 ) {
+            $environment["parameter"][1] = current($_SESSION["images_memo"]);
         } else  {
             header("Location: ".$cfg["basis"]."/list.html");
         }
@@ -202,7 +202,7 @@
                             $ausgaben["form_error"] = "error delete file";
                         }
                     }
-                    unset ($HTTP_SESSION_VARS["images_memo"][$id]);
+                    unset ($_SESSION["images_memo"][$id]);
                 }
 
                 // datensatz loeschen
@@ -230,11 +230,11 @@
 
     /*
     if ( $environment["parameter"][1] == "delete" ) {
-        foreach ($HTTP_SESSION_VARS["images_memo"] as $key => $value) {
+        foreach ($_SESSION["images_memo"] as $key => $value) {
             $sql = "SELECT ffart,fuid FROM site_file WHERE fid =".$value;
             $result = $db -> query($sql);
             $file_art = $db -> fetch_array($result,$nop);
-            if ($file_art["fuid"] == $HTTP_SESSION_VARS["uid"]) {
+            if ($file_art["fuid"] == $_SESSION["uid"]) {
                 $sql = "DELETE FROM site_file WHERE fid=".$value;
                 if ($file_art["ffart"] == "pdf") {
                     $error  = unlink($pathvars["filebase"]["maindir"].$cfg["file"]["text"]."doc_".$value.".".$file_art["ffart"]);
@@ -256,13 +256,13 @@
                         $result = $db -> query($sql);
                     #}
                 }
-                unset ($HTTP_SESSION_VARS["images_memo"][$value]);
+                unset ($_SESSION["images_memo"][$value]);
             } else {
                 $ausgaben["form_error"] .= "Fehler ! Es können nur eigene Dateien gelöscht werden<br>";
-                unset ($HTTP_SESSION_VARS["images_memo"][$environment["parameter"][2]]);
+                unset ($_SESSION["images_memo"][$environment["parameter"][2]]);
             }
         }
-        #$HTTP_SESSION_VARS["images_memo"] = "";
+        #$_SESSION["images_memo"] = "";
 
     }
     */

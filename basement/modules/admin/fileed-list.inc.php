@@ -55,16 +55,15 @@
 
 
         // array images_memo aufbauen
-        session_register("images_memo");
         if ($environment["parameter"][2]) {
-            if (is_array($HTTP_SESSION_VARS["images_memo"])) {
-                if (in_array($environment["parameter"][2],$HTTP_SESSION_VARS["images_memo"])) {
-                    unset ($HTTP_SESSION_VARS["images_memo"][$environment["parameter"][2]]);
+            if (is_array($_SESSION["images_memo"])) {
+                if (in_array($environment["parameter"][2],$_SESSION["images_memo"])) {
+                    unset ($_SESSION["images_memo"][$environment["parameter"][2]]);
                 } else {
-                    $HTTP_SESSION_VARS["images_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
+                    $_SESSION["images_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
                 }
             } else {
-                $HTTP_SESSION_VARS["images_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
+                $_SESSION["images_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
             }
         }
         if ( $HTTP_GET_VARS["search"] != "" ) {
@@ -76,14 +75,14 @@
 
 
 
-        session_register("return");
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Session (return): ".$HTTP_SESSION_VARS["return"].$debugging["char"];
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "UID: ".$HTTP_SESSION_VARS["uid"].$debugging["char"];
-        $ausgaben["images_aktion"] = $HTTP_SESSION_VARS["return"];
+
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Session (return): ".$_SESSION["return"].$debugging["char"];
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "UID: ".$_SESSION["uid"].$debugging["char"];
+        $ausgaben["images_aktion"] = $_SESSION["return"];
 
 
-        if ($HTTP_SESSION_VARS["return"]) {
-            $ausgaben["send_image"] = "<a href=".$HTTP_SESSION_VARS["return"]."?referer=".$HTTP_SESSION_VARS["referer"].">#(send_image)</a>";
+        if ($_SESSION["return"]) {
+            $ausgaben["send_image"] = "<a href=".$_SESSION["return"]."?referer=".$_SESSION["referer"].">#(send_image)</a>";
         } else {
             $ausgaben["send_image"] = "";
         }
@@ -93,7 +92,7 @@
 
 
         // funktions auswahl wenn markierte files
-        $anzahl = count($HTTP_SESSION_VARS["images_memo"]);
+        $anzahl = count($_SESSION["images_memo"]);
         switch ($anzahl) {
             case 0:
                 $ausgaben["filemodify"] = "";
@@ -117,12 +116,11 @@
         foreach( $cfg["filter"] as $key => $value ) {
             unset($filter);
             $ausgaben["filter"] .= " ";
-            session_register("filter".$key);
             if ( $HTTP_GET_VARS["filter".$key] != "" ) {
                 $filter[$HTTP_GET_VARS["filter".$key]] = " selected";
-                $HTTP_SESSION_VARS["filter".$key] = $HTTP_GET_VARS["filter".$key];
+                $_SESSION["filter".$key] = $HTTP_GET_VARS["filter".$key];
             } else {
-                $filter[$HTTP_SESSION_VARS["filter".$key]] = " selected";
+                $filter[$_SESSION["filter".$key]] = " selected";
             }
             $ausgaben["filter"]  .= "<select name=\"filter".$key."\" onChange=\"submit()\">";
             foreach ( $value as $num => $label ) {
@@ -135,12 +133,11 @@
 
 
         // art der anzeige
-        session_register("art");
         if ( $HTTP_GET_VARS["art"] != "") {
             $art = $HTTP_GET_VARS["art"];
-            $HTTP_SESSION_VARS["art"] = $HTTP_GET_VARS["art"];
+            $_SESSION["art"] = $HTTP_GET_VARS["art"];
         } else {
-            $art = $HTTP_SESSION_VARS["art"];
+            $art = $_SESSION["art"];
         }
 
         switch ( $art ) {
@@ -180,28 +177,28 @@
 
 
         // sql erweitern
-        switch ( $HTTP_SESSION_VARS["filter0"] ) {
+        switch ( $_SESSION["filter0"] ) {
             case 2:
                 $whereb = "";
                 $getvalues .= "&what=3";
                 break;
             case 1:
-                $whereb = " fdid = '".$HTTP_SESSION_VARS["custom"]."' AND";
+                $whereb = " fdid = '".$_SESSION["custom"]."' AND";
                 $getvalues .= "&what=2";
                 break;
             default:
-            $whereb = " fuid = '".$HTTP_SESSION_VARS["uid"]."' AND";
+            $whereb = " fuid = '".$_SESSION["uid"]."' AND";
         }
 
-        switch ( $HTTP_SESSION_VARS["filter1"] ) {
+        switch ( $_SESSION["filter1"] ) {
             case 2:
                 $whereb .= " ffart in ('zip','bz2','gz')";
-                $getvalues .= "&art=".$HTTP_SESSION_VARS["filter1"];
+                $getvalues .= "&art=".$_SESSION["filter1"];
                 $hidedata["other"] = array();
                 break;
             case 1:
                 $whereb .= " ffart in ('pdf','odt','ods','odp')";
-                $getvalues .= "&art=".$HTTP_SESSION_VARS["filter1"];
+                $getvalues .= "&art=".$_SESSION["filter1"];
                 $hidedata["other"] = array();
                 break;
             default:
@@ -251,8 +248,8 @@
 
         while ( $data = $db -> fetch_array($result,1) ) {
 
-            if (is_array($HTTP_SESSION_VARS["images_memo"])) {
-                if (in_array($data["fid"],$HTTP_SESSION_VARS["images_memo"])) {
+            if (is_array($_SESSION["images_memo"])) {
+                if (in_array($data["fid"],$_SESSION["images_memo"])) {
                     $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb1.png\"></a>";
                 } else {
                     $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb0.png\"></a>";

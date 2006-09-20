@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -61,10 +61,10 @@
     // warning ausgeben
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
-    if ( $HTTP_SESSION_VARS["auth"] == -1 ) {
+    if ( $_SESSION["auth"] == -1 ) {
 
         if ( count($HTTP_POST_VARS) == 0 ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
+            $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$_SESSION["uid"]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,$nop);
         } else {
@@ -118,7 +118,7 @@
             // altes salt aus der user tabelle holen
             $sql = "SELECT ".$cfg["db"]["pass"]."
                       FROM ".$cfg["db"]["entries"]."
-                     WHERE ".$cfg["db"]["key"]."='".$HTTP_SESSION_VARS["uid"]."'";
+                     WHERE ".$cfg["db"]["key"]."='".$_SESSION["uid"]."'";
             $result  = $db -> query($sql);
             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             $data = $db -> fetch_array($result,0);
@@ -152,7 +152,7 @@
             if ( $ausgaben["form_error"] == "" ) {
                 $sql = "UPDATE auth_user
                            SET ".$cfg["db"]["pass"]." = '".$checked_password."'
-                         WHERE ".$cfg["db"]["key"]." = ".$HTTP_SESSION_VARS["uid"];
+                         WHERE ".$cfg["db"]["key"]." = ".$_SESSION["uid"];
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");

@@ -49,8 +49,8 @@
         // ***
 
         if ( $environment["parameter"][1] == "" ) {
-            if ( count($HTTP_SESSION_VARS["images_memo"]) > 0 ) {
-                $environment["parameter"][1] = current($HTTP_SESSION_VARS["images_memo"]);
+            if ( count($_SESSION["images_memo"]) > 0 ) {
+                $environment["parameter"][1] = current($_SESSION["images_memo"]);
             } else {
                 header("Location: ".$cfg["basis"]."/list.html");
             }
@@ -99,7 +99,7 @@
 
 
 
-        if ( $HTTP_SESSION_VARS["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
+        if ( $_SESSION["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
             $element["upload"] = "#(upa)<br><input type=\"file\" name=\"upload\"><br>#(upb)";
         } else {
             $element["upload"] = "";
@@ -208,7 +208,7 @@
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
 
-                unset ($HTTP_SESSION_VARS["images_memo"][$environment["parameter"][1]]);
+                unset ($_SESSION["images_memo"][$environment["parameter"][1]]);
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
