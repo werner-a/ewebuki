@@ -53,13 +53,12 @@
     }
 
     // erlaubnis bei intrabvv speziell setzen
-    #global $HTTP_SESSION_VARS;
     $database = $environment["parameter"][1];
-    if ( is_array($HTTP_SESSION_VARS["katzugriff"]) ) {
-        if ( in_array("-1:".$database.":".$environment["parameter"][2],$HTTP_SESSION_VARS["katzugriff"]) ) $erlaubnis = -1;
+    if ( is_array($_SESSION["katzugriff"]) ) {
+        if ( in_array("-1:".$database.":".$environment["parameter"][2],$_SESSION["katzugriff"]) ) $erlaubnis = -1;
     }
-    if ( is_array($HTTP_SESSION_VARS["dbzugriff"]) ) {
-        if ( in_array($database,$HTTP_SESSION_VARS["dbzugriff"]) ) $erlaubnis = -1;
+    if ( is_array($_SESSION["dbzugriff"]) ) {
+        if ( in_array($database,$_SESSION["dbzugriff"]) ) $erlaubnis = -1;
     }
 
     if ( $rechte["cms_edit"] == -1
@@ -137,7 +136,7 @@
 
             // navigation erstellen
             $ausgaben["form_hidden"] = $data["html"];
-            $ausgaben["form_abbrechen"] = $HTTP_SESSION_VARS["page"];
+            $ausgaben["form_abbrechen"] = $_SESSION["page"];
 
             // was anzeigen
             $mapping["main"] = $template;
@@ -197,13 +196,13 @@
                                     content = '".$content."',
                                       crc32 = '".$specialvars["crc32"]."',
                                        html = '".$HTTP_POST_VARS["html"]."',
-                                      ebene = '".$HTTP_SESSION_VARS["ebene"]."',
-                                  kategorie = '".$HTTP_SESSION_VARS["kategorie"]."',
+                                      ebene = '".$_SESSION["ebene"]."',
+                                  kategorie = '".$_SESSION["kategorie"]."',
                                     changed = '".date("Y-m-d H:i:s")."',
-                                  bysurname = '".$HTTP_SESSION_VARS["surname"]."',
-                                 byforename = '".$HTTP_SESSION_VARS["forename"]."',
-                                    byemail = '".$HTTP_SESSION_VARS["email"]."',
-                                    byalias = '".$HTTP_SESSION_VARS["alias"]."'
+                                  bysurname = '".$_SESSION["surname"]."',
+                                 byforename = '".$_SESSION["forename"]."',
+                                    byemail = '".$_SESSION["email"]."',
+                                    byalias = '".$_SESSION["alias"]."'
                              WHERE  label = '".$environment["parameter"][3]."'
                                AND  tname = '".$environment["parameter"][2]."'
                                AND  lang = '".$environment["language"]."'";
@@ -218,15 +217,15 @@
                                       '".$specialvars["crc32"]."',
                                       '".$environment["parameter"][3]."',
                                       '".$environment["parameter"][2]."',
-                                      '".$HTTP_SESSION_VARS["ebene"]."',
-                                      '".$HTTP_SESSION_VARS["kategorie"]."',
+                                      '".$_SESSION["ebene"]."',
+                                      '".$_SESSION["kategorie"]."',
                                       '".$HTTP_POST_VARS["html"]."',
                                       '".$content."',
                                       '".date("Y-m-d H:i:s")."',
-                                      '".$HTTP_SESSION_VARS["surname"]."',
-                                      '".$HTTP_SESSION_VARS["forename"]."',
-                                      '".$HTTP_SESSION_VARS["email"]."',
-                                      '".$HTTP_SESSION_VARS["alias"]."')";
+                                      '".$_SESSION["surname"]."',
+                                      '".$_SESSION["forename"]."',
+                                      '".$_SESSION["email"]."',
+                                      '".$_SESSION["alias"]."')";
             }
             $result  = $db -> query($sql);
             if ( !$result ) die($db -> error("DB ERROR: "));
