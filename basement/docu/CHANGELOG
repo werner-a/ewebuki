@@ -8,6 +8,11 @@ weitere infos im cvs http://cvs.berlios.de/cgi-bin/viewcvs.cgi/ewebuki/basement/
 
 
 
+--- 20. sep 2006
+
+session_register(), $_SESSION umbau
+
+
 --- 18. sep 2006
 
 subdir support endlich komplett
@@ -57,7 +62,7 @@ datenbank feld site_form_lang  "fchkerror" varchar 255 fehlte in der master db
 
 sql:
 
-ALTER TABLE `site_form_lang` ADD `fchkerror` VARCHAR( 255 ) NOT NULL AFTER `fdberror`
+ALTER TABLE `site_form_lang` ADD `fchkerror` VARCHAR( 255 ) NOT NULL AFTER `fdberror`;
 
 
 --- 31. jul 2006 03
@@ -66,7 +71,7 @@ datenbank feld site_form fcheck sollte text sein!
 
 sql:
 
-ALTER TABLE `site_form` CHANGE `fcheck` `fcheck` TEXT NOT NULL
+ALTER TABLE `site_form` CHANGE `fcheck` `fcheck` TEXT NOT NULL;
 
 
 --- 31. jul 2006 02
@@ -79,9 +84,9 @@ case-sensitiv: '|^[a-z_\.\-0-9]+$|'
 sql:
 
 INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
-VALUES ( NULL , 'entry', '-555504947.edit', '0', '', '', NULL , '0', 'PREG:^[a-z_\.\-0-9]+$' );
-INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror` )
-VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', '' );
+VALUES ( NULL , 'entry', '-555504947.edit', '0', '', '', NULL , '-1', 'PREG:^[a-z_\.\-0-9]+$' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fckerror` )
+VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', 'Ungültige Zeichen im Feld Eintrag.' );
 
 
 --- 31. jul 2006 02
