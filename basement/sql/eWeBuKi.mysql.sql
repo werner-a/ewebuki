@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 19. September 2006 um 16:27
+-- Erstellungszeit: 20. September 2006 um 18:34
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-16
 -- 
@@ -170,7 +170,7 @@ INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`,
 (2, 'pass', '210295197.modify', '0', '', '', 'password', '-1', ''),
 (3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', ''),
 (4, 'fid', '-939795212.modify', '0', '', '', 'hidden', '-1', ''),
-(5, 'entry', '-555504947.edit', '0', '', '', NULL, '0', 'PREG:^[a-z_.-0-9]+$'),
+(5, 'entry', '-555504947.edit', '0', '', '', NULL, '-1', 'PREG:^[a-z_.-0-9]+$'),
 (6, 'fdesc', '-939795212.modify', '25', '', '', NULL, '0', ''),
 (7, 'funder', '-939795212.modify', '30', '', '', NULL, '0', ''),
 (8, 'fhit', '-939795212.modify', '30', '', '', NULL, '0', '');
@@ -200,7 +200,7 @@ CREATE TABLE `site_form_lang` (
 INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fpgenum`, `fwerte`, `ferror`, `fdberror`, `fchkerror`) VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', ''),
 (2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
 (3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
-(5, 5, 'de', NULL, '', '', '', '');
+(5, 5, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
 
 -- --------------------------------------------------------
 
