@@ -49,13 +49,13 @@
 
         // vogelwilde regex die alte & neue file links findet
         // und viel arbeit erspart
-        preg_match_all("/[_\/]([0-9]*)[.\/]/",$ce_inhalt,$found);
+        preg_match_all("/[_\/]([0-9]+)[.\/]/",$ce_inhalt,$found);
 
         // file memo auslesen und zuruecksetzen
         global $_SESSION;
-        if ( is_array($_SESSION["images_memo"]) ) {
-            $array = array_merge($_SESSION["images_memo"],$found[1]);
-            unset($_SESSION["images_memo"]);
+        if ( is_array($_SESSION["file_memo"]) ) {
+            $array = array_merge($_SESSION["file_memo"],$found[1]);
+            unset($_SESSION["file_memo"]);
         } else {
             $array = $found[1];
         }
