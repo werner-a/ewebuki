@@ -49,8 +49,8 @@
         // ***
 
         if ( $environment["parameter"][1] == "" ) {
-            if ( count($_SESSION["images_memo"]) > 0 ) {
-                $environment["parameter"][1] = current($_SESSION["images_memo"]);
+            if ( count($_SESSION["file_memo"]) > 0 ) {
+                $environment["parameter"][1] = current($_SESSION["file_memo"]);
             } else {
                 header("Location: ".$cfg["basis"]."/list.html");
             }
@@ -208,7 +208,7 @@
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
 
-                unset ($_SESSION["images_memo"][$environment["parameter"][1]]);
+                unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

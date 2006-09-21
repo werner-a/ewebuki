@@ -48,8 +48,8 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        if ( count($_SESSION["images_memo"]) > 0 ) {
-            $environment["parameter"][1] = current($_SESSION["images_memo"]);
+        if ( count($_SESSION["file_memo"]) > 0 ) {
+            $environment["parameter"][1] = current($_SESSION["file_memo"]);
         } else  {
             header("Location: ".$cfg["basis"]."/list.html");
         }
@@ -202,7 +202,7 @@
                             $ausgaben["form_error"] = "error delete file";
                         }
                     }
-                    unset ($_SESSION["images_memo"][$id]);
+                    unset ($_SESSION["file_memo"][$id]);
                 }
 
                 // datensatz loeschen
@@ -226,46 +226,6 @@
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
-
-
-    /*
-    if ( $environment["parameter"][1] == "delete" ) {
-        foreach ($_SESSION["images_memo"] as $key => $value) {
-            $sql = "SELECT ffart,fuid FROM site_file WHERE fid =".$value;
-            $result = $db -> query($sql);
-            $file_art = $db -> fetch_array($result,$nop);
-            if ($file_art["fuid"] == $_SESSION["uid"]) {
-                $sql = "DELETE FROM site_file WHERE fid=".$value;
-                if ($file_art["ffart"] == "pdf") {
-                    $error  = unlink($pathvars["filebase"]["maindir"].$cfg["file"]["text"]."doc_".$value.".".$file_art["ffart"]);
-                    if ($error == "1") {
-                        $result = $db -> query($sql);
-                    }
-                } elseif ($file_art["ffart"] == "zip") {
-                    $error  = unlink($pathvars["filebase"]["maindir"].$cfg["file"]["archiv"]."arc_".$value.".".$file_art["ffart"]);
-                    if ($error == "1") {
-                        $result = $db -> query($sql);
-                    }
-                } else {
-                    $error  = unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$value.".".$file_art["ffart"]);
-                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$value.".".$file_art["ffart"]);
-                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$value.".".$file_art["ffart"]);
-                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$value.".".$file_art["ffart"]);
-                    $error .= unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$value.".".$file_art["ffart"]);
-                    #if ($error == "11111") {
-                        $result = $db -> query($sql);
-                    #}
-                }
-                unset ($_SESSION["images_memo"][$value]);
-            } else {
-                $ausgaben["form_error"] .= "Fehler ! Es können nur eigene Dateien gelöscht werden<br>";
-                unset ($_SESSION["images_memo"][$environment["parameter"][2]]);
-            }
-        }
-        #$_SESSION["images_memo"] = "";
-
-    }
-    */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
