@@ -52,63 +52,18 @@
         $position = $environment["parameter"][1]+0;
 
 
-
-
-        // array images_memo aufbauen
-        if ($environment["parameter"][2]) {
-            if (is_array($_SESSION["images_memo"])) {
-                if (in_array($environment["parameter"][2],$_SESSION["images_memo"])) {
-                    unset ($_SESSION["images_memo"][$environment["parameter"][2]]);
+        // array file_memo aufbauen
+        if ( $environment["parameter"][2] ) {
+            if (is_array($_SESSION["file_memo"])) {
+                if (in_array($environment["parameter"][2],$_SESSION["file_memo"])) {
+                    unset ($_SESSION["file_memo"][$environment["parameter"][2]]);
                 } else {
-                    $_SESSION["images_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
+                    $_SESSION["file_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
                 }
             } else {
-                $_SESSION["images_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
+                $_SESSION["file_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
             }
         }
-        if ( $HTTP_GET_VARS["search"] != "" ) {
-            $anhang = "?".$getvalues;
-        } else {
-            $anhang = "";
-        }
-
-
-
-
-
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Session (return): ".$_SESSION["return"].$debugging["char"];
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "UID: ".$_SESSION["uid"].$debugging["char"];
-        $ausgaben["images_aktion"] = $_SESSION["return"];
-
-
-        if ($_SESSION["return"]) {
-            $ausgaben["send_image"] = "<a href=".$_SESSION["return"]."?referer=".$_SESSION["referer"].">#(send_image)</a>";
-        } else {
-            $ausgaben["send_image"] = "";
-        }
-
-
-
-
-
-        // funktions auswahl wenn markierte files
-        $anzahl = count($_SESSION["images_memo"]);
-        switch ($anzahl) {
-            case 0:
-                $ausgaben["filemodify"] = "";
-                $ausgaben["filedel"]    = "";
-                break;
-
-            case 1:
-                $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/edit.html\">#(describe)</a>";
-                $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/delete.html\">#(delete1)</a>";
-                break;
-
-            default:
-                $ausgaben["filemodify"] = "<a href=\"".$cfg["basis"]."/edit.html\">#(describe)</a>";
-                $ausgaben["filedel"]    = "<a href=\"".$cfg["basis"]."/delete.html\">#(delete2)</a>";
-        }
-
 
 
 
@@ -128,6 +83,30 @@
             }
             $ausgaben["filter"] .= "</select>";
         }
+
+
+
+
+        // content editor link erstellen (neu)
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_edit): ".$_SESSION["cms_last_edit"].$debugging["char"];
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_referer): ".$_SESSION["cms_last_referer"].$debugging["char"];
+        if ( isset($_SESSION["cms_last_edit"]) ) {
+            // abrechen im cms editor soll zur ursrungseite springen und nicht in den fileed
+            $_SESSION["page"] = $_SESSION["cms_last_referer"];
+            $ausgaben["cmslink"] = "<a href=\"".$_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"]."\">#(cmslink)</a>";
+        } else {
+            $ausgaben["cmslink"] = "";
+        }
+
+        // bearbeiten- und loeschen link erstellen (neu)
+        if ( count($_SESSION["file_memo"]) >= 1 ) {
+            $ausgaben["fileedit"] = "<a href=\"".$cfg["basis"]."/edit.html\">#(fileedit)</a>";
+            $ausgaben["filedelete"] = "<a href=\"".$cfg["basis"]."/delete.html\">#(filedelete)</a>";
+        } else {
+            $ausgaben["fileedit"] = "";
+            $ausgaben["filedelete"] = "";
+        }
+
 
 
 
@@ -152,9 +131,9 @@
 
 
 
-
         // Suche
         if ( $HTTP_GET_VARS["search"] != "" ) {
+            $anhang = "?".$getvalues;
             $search_value = $HTTP_GET_VARS["search"];
             $ausgaben["search"] = $search_value;
             $ausgaben["result"] = "Ihre Schnellsuche nach \"".$search_value."\" hat ";
@@ -172,6 +151,9 @@
                 }
             }
         }
+
+
+
 
 
 
@@ -248,8 +230,8 @@
 
         while ( $data = $db -> fetch_array($result,1) ) {
 
-            if (is_array($_SESSION["images_memo"])) {
-                if (in_array($data["fid"],$_SESSION["images_memo"])) {
+            if (is_array($_SESSION["file_memo"])) {
+                if (in_array($data["fid"],$_SESSION["file_memo"])) {
                     $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb1.png\"></a>";
                 } else {
                     $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb0.png\"></a>";
