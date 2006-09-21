@@ -7,6 +7,28 @@ weitere infos im cvs http://cvs.berlios.de/cgi-bin/viewcvs.cgi/ewebuki/basement/
 --- v?.?.?-???? - ??. mon year num
 
 
+--- 21. sep 2006
+
+neu struktur $_SESSION[] array:
+
+$_SESSION["images_memo"]  wird zu   $SESSION["file_memo"]
+
+$_SESSION["return"]       wird zu   $SESSION["cms_last_edit"]
+$_SESSION["referer"]      wird zu   $SESSION["cms_last_referer"]
+
+
+neue label bezeichnungen:
+
+UPDATE `site_text` SET `ebene` = '/admin/fileed', `kategorie` = 'list' WHERE `lang` = 'de' AND `tname` = '-939795212.list';
+
+UPDATE `site_text` SET `label` = 'cmslink' WHERE `lang` = 'de' AND `label` = 'send_image' AND `tname` = '-939795212.list' LIMIT 1;
+
+UPDATE `site_text` SET `label` = 'fileedit' WHERE `lang` = 'de' AND `label` = 'describe' AND `tname` = '-939795212.list' LIMIT 1;
+UPDATE `site_text` SET `label` = 'filedelete' WHERE `lang` = 'de' AND `label` = 'delete1' AND `tname` = '-939795212.list' LIMIT 1;
+DELETE FROM `site_text` WHERE `lang` = 'de' AND `label` = 'delete2' AND `tname` = '-939795212.list' LIMIT 1;
+
+templates aktualisieren!
+
 
 --- 20. sep 2006
 
