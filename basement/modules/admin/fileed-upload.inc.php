@@ -139,6 +139,7 @@
 
                 if ( $ausgaben["form_error"] == "" ) {
                     header("Location: ".$cfg["basis"]."/add,".$environment["parameter"][1].".html");
+                    exit(); ### laut guenther wird es gebraucht, warum?
                 } else {
                     $ausgaben["form_error"] .= "<br><br><a href=\"".$cfg["basis"]."/add,".$environment["parameter"][1].".html\">Trotzdem weiter</a>";
                     #$mapping["main"] = "default1";
