@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 20. September 2006 um 18:34
+-- Erstellungszeit: 21. September 2006 um 20:14
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-16
 -- 
@@ -454,12 +454,12 @@ INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`
 ('de', 'ueberschrift', '-1', '-840786483.details', '/admin/leveled', 'details', '0', 'Level Editor - Eigenschaften', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'ueberschrift', '-1', '-840786483.delete', '/admin/leveled', 'modify', '0', 'Level-Editor - Löschen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'ueberschrift', '-1', '210295197.list', '/admin/usered', 'list', '0', 'User-Editor - Übersicht', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '-939795212.list', '/admin', 'usered', '0', 'Datei-Editor - Übersicht', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'search', '-1', '-939795212.list', '/admin', 'usered', '0', 'Suche', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'gesamt', '-1', '-939795212.list', '/admin', 'usered', '0', 'Gesamt:', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'send', '-1', '-939795212.list', '/admin', 'usered', '0', 'Go', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'describe', '-1', '-939795212.list', '/admin', 'usered', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'delete1', '-1', '-939795212.list', '/admin', 'usered', '0', 'Löschen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'ueberschrift', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Datei-Editor - Übersicht', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'search', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Suche', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'gesamt', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Gesamt:', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'send', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Go', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'fileedit', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'filedelete', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Löschen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'ffname', '-1', '-939795212.modify', '/admin', 'usered', '0', 'Dateiname', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'fdesc', '-1', '-939795212.modify', '/admin', 'usered', '0', 'Bildbeschreibung', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'funder', '-1', '-939795212.modify', '/admin', 'usered', '0', 'Bildunterschrift', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
@@ -469,8 +469,7 @@ INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`
 ('de', 'send', '-1', '-939795212.modify', '/admin', 'usered', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'reset', '-1', '-939795212.modify', '/admin', 'usered', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'abort', '-1', '-939795212.modify', '/admin', 'usered', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'send_image', '-1', '-939795212.list', '', 'impressum', '0', 'zum Content Editor', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'delete2', '-1', '-939795212.list', '', 'impressum', '0', 'Alle Löschen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'cmslink', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'zum Content Editor', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'level', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bezeichnung', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'beschreibung', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Beschreibung', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'modify', '-1', '-840786483.list', '/admin/leveled', 'list', '0', 'Bearbeiten', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
