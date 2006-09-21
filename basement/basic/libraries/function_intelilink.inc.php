@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,31 +43,36 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-    function intelilink($replace) {
-        while ( strstr($replace,"#[") ) {
+    function intelilink( $replace ) {
+        while ( strstr( $replace, "#[" ) ) {
             // wo beginnt die marke
-            $linkbeg=strpos($replace,"#[");
-            // wo endet die marke
-            $linkend=strpos($replace,"]",$linkbeg);
-            // wie lang ist die marke
-            $linklen=$linkend-$linkbeg;
-            // link token name extrahieren
-            $link_url=substr($replace,$linkbeg+2,$linklen-2);
-            // ende auf ][ untersuchen
-            $linktext=substr($replace,$linkend);
-            if ( strstr($linktext, "][") ) {
-                // ohne die erste ]
-                $linktext = substr($replace,$linkend+1);
-                $linktextbeg = $linkend+1;
-                $linktextend = strpos($linktext,"]");
-                $link_text   = substr($replace,$linktextbeg+1,$linktextend-1);
-                // wie sieht needle aus
-                $link_needle = "#[".$link_url."][".$link_text."]";
-            } else {
-                $link_text   = $link_url;
+            $linkbeg = strpos( $replace, "#[" );
+            // gibt es einen link text?
+            $textbeg = strpos( $replace, "][", $linkbeg );
+            if ( $textbeg === false ) {
+                // nein, wo endet die marke
+                $linkend = strpos( $replace, "]", $linkbeg );
+                // wie lang ist die marke
+                $linklen = $linkend-$linkbeg;
+                // link extrahieren
+                $link_url = substr( $replace, $linkbeg+2, $linklen-2 );
+                // link text setzen
+                $link_text = $link_url;
                 // wie sieht needle aus
                 $link_needle = "#[".$link_url."]";
+            } else {
+                // nein, wo endet die marke
+                $linkend = $textbeg;
+                // wie lang ist die marke
+                $linklen = $linkend-$linkbeg;
+                // link extrahieren
+                $link_url = substr( $replace, $linkbeg+2, $linklen-2 );
+                // link text extrahieren
+                $rest = substr($replace,$textbeg+2);
+                $textend = strpos( $rest, "]" );
+                $link_text = substr( $rest, 0, $textend );
+                // wie sieht needle aus
+                $link_needle = "#[".$link_url."][".$link_text."]";
             }
             // den link token entsprechend umbauen
             if ( strstr($link_url,"@") && !strstr($link_url,"ftp://") && !strstr($link_url,"html://")) {
@@ -81,7 +86,6 @@
         }
         return $replace;
     }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
