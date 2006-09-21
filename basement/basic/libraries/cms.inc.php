@@ -72,6 +72,8 @@
 
         if ( $environment["kategorie"] == "edit" ) {
 
+            if ( isset($_SESSION["cms_last_edit"]) ) unset($_SESSION["cms_last_edit"]);
+
             $ausgaben["ce_tem_db"]      = "#(db): ".$environment["parameter"][1];
             $ausgaben["ce_tem_name"]    = "#(template): ".$environment["parameter"][2];
             $ausgaben["ce_tem_label"]   = "#(label): ".$environment["parameter"][3];
@@ -128,6 +130,7 @@
             // referer im form mit hidden element mitschleppen
             if ( $HTTP_GET_VARS["referer"] != "" ) {
                 $ausgaben["form_referer"] = $HTTP_GET_VARS["referer"];
+                $ausgaben["form_break"] = $HTTP_GET_VARS["referer"];
             } elseif ( $HTTP_POST_VARS["form_referer"] == "" ) {
                 $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
             } else {
@@ -233,8 +236,8 @@
 
             if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["upload"] > 0 ) {
 
-                $_SESSION["referer"] = $ausgaben["form_referer"];
-                $_SESSION["return"] = str_replace("save,", "edit,", $pathvars["requested"]);
+                $_SESSION["cms_last_edit"] = str_replace("save,", "edit,", $pathvars["requested"]);
+                $_SESSION["cms_last_referer"] = $ausgaben["form_referer"];
 
                 if ( $HTTP_POST_VARS["upload"] > 0 ) {
                     header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$HTTP_POST_VARS["upload"]);
