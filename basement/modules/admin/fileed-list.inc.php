@@ -52,19 +52,24 @@
         $position = $environment["parameter"][1]+0;
 
 
-        // array file_memo aufbauen
+
+        // file_memo verwalten (neu)
         if ( $environment["parameter"][2] ) {
-            if (is_array($_SESSION["file_memo"])) {
-                if (in_array($environment["parameter"][2],$_SESSION["file_memo"])) {
-                    unset ($_SESSION["file_memo"][$environment["parameter"][2]]);
+
+            $key = $environment["parameter"][2];
+            $wert = $environment["parameter"][2];
+
+            if ( is_array($_SESSION["file_memo"]) ) {
+                if ( in_array($key, $_SESSION["file_memo"] ) ) {
+                    unset ( $_SESSION["file_memo"][$key] );
                 } else {
-                    $_SESSION["file_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
+                    $_SESSION["file_memo"][$key] = $wert;
                 }
             } else {
-                $_SESSION["file_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
+                $_SESSION["file_memo"][$key] = $wert;
             }
         }
-
+        $debugging["ausgabe"] .= "<pre>".print_r($_SESSION,True)."</pre>";
 
 
         // filter selektoren erstellen
