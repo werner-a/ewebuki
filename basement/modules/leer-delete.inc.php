@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -176,8 +176,6 @@
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
                 }
-                // +++
-                // ohne fehler menupunkte loeschen
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
