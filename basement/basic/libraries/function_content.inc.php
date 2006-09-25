@@ -104,7 +104,6 @@
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Language: Uuuuups no default language \"".$specialvars["default_language"]."\" for #(".$label.") in template \"".$dbtname."\" found. Giving up!".$debugging["char"];
             }
 
-            global $_SESSION;
             $database = $db->getDb();
             if ( is_array($_SESSION["dbzugriff"]) ) {
                 // admin darf alles in seiner db !!

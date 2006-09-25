@@ -125,6 +125,7 @@
             } else {
                 $destination = "/auth".$destination_src;
             }
+            session_write_close();
             header("Location: ".$destination);
             exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgeführt wird.
         } else {

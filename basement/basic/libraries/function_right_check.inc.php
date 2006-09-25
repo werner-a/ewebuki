@@ -48,7 +48,7 @@
     // $art = 1 - content
 
     function right_check($art, $ebene, $kategorie="",$database=DATABASE) {
-        global $_SESSION,$db;
+        global $db;
 
         $url = explode("/", $ebene."/".$kategorie);
         foreach ($url as $key => $value) {
