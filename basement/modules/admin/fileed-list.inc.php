@@ -48,7 +48,7 @@
         // funktions bereich ( aufbau )
         // ***
 
-        // file_memo verwalten (neu)
+        // file_memo verwalten
         if ( $environment["parameter"][2] ) {
             $key = $environment["parameter"][2];
             $wert = $environment["parameter"][2];
@@ -64,7 +64,7 @@
         }
         $debugging["ausgabe"] .= "<pre>".print_r($_SESSION["file_memo"],True)."</pre>";
 
-        // auswahllisten erstellen (neu)
+        // auswahllisten erstellen
         foreach( $cfg["filter"] as $set => $data ) {
             if ( $HTTP_GET_VARS["filter".$set] != "" ) {
                 $_SESSION["fileed_filter".$set] = $HTTP_GET_VARS["filter".$set];
@@ -76,7 +76,7 @@
             }
         }
 
-        // content editor link erstellen (neu)
+        // content editor link erstellen
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_edit): ".$_SESSION["cms_last_edit"].$debugging["char"];
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_referer): ".$_SESSION["cms_last_referer"].$debugging["char"];
         if ( isset($_SESSION["cms_last_edit"]) ) {
@@ -87,7 +87,7 @@
             $ausgaben["cmslink"] = "";
         }
 
-        // bearbeiten- und loeschen link erstellen (neu)
+        // bearbeiten- und loeschen link erstellen
         if ( count($_SESSION["file_memo"]) >= 1 ) {
             $ausgaben["fileedit"] = "<a href=\"".$cfg["basis"]."/edit.html\">#(fileedit)</a>";
             $ausgaben["filedelete"] = "<a href=\"".$cfg["basis"]."/delete.html\">#(filedelete)</a>";
@@ -107,7 +107,7 @@
         // where init
         $part = array();
 
-        // suche verarbeiten (neu)
+        // suche verarbeiten
         if ( isset($HTTP_GET_VARS["search"]) ) {
             $_SESSION["fileed_search"] = $HTTP_GET_VARS["search"];
         } elseif ( isset($HTTP_GET_VARS["search"]) && $HTTP_GET_VARS["search"] == "" ) {
@@ -115,7 +115,7 @@
         }
         if ( $_SESSION["fileed_search"] ) {
             $ausgaben["search"] = $_SESSION["fileed_search"];
-            $ausgaben["result"] = "Ihre Schnellsuche nach \"".$_SESSION["fileed_search"]."\" hat ";
+            $ausgaben["result"] = "#(answera) \"".$_SESSION["fileed_search"]."\" #(answerb) ";
             $array1 = explode( " ", $_SESSION["fileed_search"] );
             $array2 = array( "ffname", "fdesc", "fhit" );
 
@@ -197,11 +197,13 @@
         $result = $db -> query($sql); $i = 0;
 
         if ( $db->num_rows($result) == 0 ) {
-            $ausgaben["result"] .= " keine Einträge gefunden.";
+            #$ausgaben["result"] .= " keine Einträge gefunden.";
+            $ausgaben["result"] .= " #(answerc_no)";
         } else {
             // nur erweitern wenn bereits was drin steht
             if ( $ausgaben["result"] ) {
-                $ausgaben["result"] .= " folgende Einträge gefunden.";
+                #$ausgaben["result"] .= " folgende Einträge gefunden.";
+                $ausgaben["result"] .= " #(answerc_yes)";
             } else {
                 $ausgaben["result"]  = "";
             }
@@ -297,8 +299,18 @@
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
-            $ausgaben["inaccessible"] .= "# (edittitel) #(edittitel)<br />";
-            $ausgaben["inaccessible"] .= "# (deletetitel) #(deletetitel)<br />";
+
+            $ausgaben["inaccessible"] .= "# (cmslink) #(cmslink)<br />";
+            $ausgaben["inaccessible"] .= "# (fileedit) #(fileedit)<br />";
+            $ausgaben["inaccessible"] .= "# (filedelete) #(filedelete)<br />";
+
+            $ausgaben["inaccessible"] .= "# (answera) #(answera)<br />";
+            $ausgaben["inaccessible"] .= "# (answerb) #(answerb)<br />";
+            $ausgaben["inaccessible"] .= "# (answerc_no) #(answerc_no)<br />";
+            $ausgaben["inaccessible"] .= "# (answerc_yes) #(answerc_yes)<br />";
+
+            $ausgaben["inaccessible"] .= "# (prev) #(next)<br />";
+            $ausgaben["inaccessible"] .= "# (next) #(prev)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
