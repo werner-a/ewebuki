@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 21. September 2006 um 20:14
+-- Erstellungszeit: 26. September 2006 um 12:55
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-16
 -- 
@@ -520,4 +520,10 @@ INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`
 ('de', 'ueberschrift', '-1', '1924484980.test1', '/demo', 'test1', '0', 'Testseite 1', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'inhalt', '-1', '1924484980.test1', '/demo', 'test1', '0', 'Hier könnte [B]Ihr[/B] Text stehen.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'ueberschrift', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Testseite 2', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Hier könnte [B]Ihr[/B] Text stehen.\r\n\r\n[LINK=demo3.html]404 Fehler mit Referer[/LINK]\r\n\r\nUm die zweite 404 Fehlermeldung (Referer unbekannt) sichtbar zu machen,\r\nin der Eingabezeile der obigen 404 Fehlermeldung einfach Enter drücken. ', '0000-00-00 00:00:00', '', '', '', 'ewebuki');
+('de', 'inhalt', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Hier könnte [B]Ihr[/B] Text stehen.\r\n\r\n[LINK=demo3.html]404 Fehler mit Referer[/LINK]\r\n\r\nUm die zweite 404 Fehlermeldung (Referer unbekannt) sichtbar zu machen,\r\nin der Eingabezeile der obigen 404 Fehlermeldung einfach Enter drücken. ', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'answera', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Ihre Schnellsuche nach', '2006-09-26 12:18:44', '', '', '', 'ewebuki'),
+('de', 'answerb', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'hat', '2006-09-26 12:18:58', '', '', '', 'ewebuki'),
+('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Einträge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
+('de', 'answerc_yes', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'folgende Einträge gefunden.', '2006-09-26 12:20:01', '', '', '', 'ewebuki'),
+('de', 'next', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Vorherige Seite', '2006-09-26 12:22:25', '', '', '', 'ewebuki'),
+('de', 'prev', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Nexte Seite', '2006-09-26 12:22:35', '', '', '', 'ewebuki');

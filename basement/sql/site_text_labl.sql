@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 21. September 2006 um 20:17
+-- Erstellungszeit: 26. September 2006 um 12:57
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-16
 -- 
@@ -238,4 +238,10 @@ REPLACE INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie
 ('de', 'send', '-1', '-939795212.upload', '/admin/menued', 'list', '0', 'Abschicken', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'reset', '-1', '-939795212.upload', '/admin/menued', 'edit', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'abort', '-1', '-939795212.upload', '/admin/menued', 'edit', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '-939795212.modify', '/admin/menued', 'add', '0', 'Datei-Editor - Datei Eigenschaften bearbeiten', '0000-00-00 00:00:00', '', '', '', 'ewebuki');
+('de', 'ueberschrift', '-1', '-939795212.modify', '/admin/menued', 'add', '0', 'Datei-Editor - Datei Eigenschaften bearbeiten', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'answera', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Ihre Schnellsuche nach', '2006-09-26 12:18:44', '', '', '', 'ewebuki'),
+('de', 'answerb', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'hat', '2006-09-26 12:18:58', '', '', '', 'ewebuki'),
+('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Einträge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
+('de', 'answerc_yes', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'folgende Einträge gefunden.', '2006-09-26 12:20:01', '', '', '', 'ewebuki'),
+('de', 'next', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Vorherige Seite', '2006-09-26 12:22:25', '', '', '', 'ewebuki'),
+('de', 'prev', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Nexte Seite', '2006-09-26 12:22:35', '', '', '', 'ewebuki');
