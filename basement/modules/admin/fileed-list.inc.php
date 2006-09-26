@@ -45,21 +45,14 @@
 
     if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
 
-        // funktions bereich
+        // funktions bereich ( aufbau )
         // ***
-
-        $ausgaben["search"] = "";
-        $position = $environment["parameter"][1]+0;
-
-
 
         // file_memo verwalten (neu)
         if ( $environment["parameter"][2] ) {
-
             $key = $environment["parameter"][2];
             $wert = $environment["parameter"][2];
-
-            if ( is_array($_SESSION["file_memo"]) ) {
+            if ( is_array( $_SESSION["file_memo"] ) ) {
                 if ( in_array($key, $_SESSION["file_memo"] ) ) {
                     unset ( $_SESSION["file_memo"][$key] );
                 } else {
@@ -69,28 +62,19 @@
                 $_SESSION["file_memo"][$key] = $wert;
             }
         }
-        $debugging["ausgabe"] .= "<pre>".print_r($_SESSION,True)."</pre>";
+        $debugging["ausgabe"] .= "<pre>".print_r($_SESSION["file_memo"],True)."</pre>";
 
-
-        // filter selektoren erstellen
-        foreach( $cfg["filter"] as $key => $value ) {
-            unset($filter);
-            $ausgaben["filter"] .= " ";
-            if ( $HTTP_GET_VARS["filter".$key] != "" ) {
-                $filter[$HTTP_GET_VARS["filter".$key]] = " selected";
-                $_SESSION["filter".$key] = $HTTP_GET_VARS["filter".$key];
-            } else {
-                $filter[$_SESSION["filter".$key]] = " selected";
+        // auswahllisten erstellen (neu)
+        foreach( $cfg["filter"] as $set => $data ) {
+            if ( $HTTP_GET_VARS["filter".$set] != "" ) {
+                $_SESSION["fileed_filter".$set] = $HTTP_GET_VARS["filter".$set];
             }
-            $ausgaben["filter"]  .= "<select name=\"filter".$key."\" onChange=\"submit()\">";
-            foreach ( $value as $num => $label ) {
-                $ausgaben["filter"] .= "<option value=\"".$num."\"".$filter[$num].">".$label."</option>";
+            $dataloop["filter".$set][$_SESSION["fileed_filter".$set]]["select"] =  " selected";
+            foreach ( $data as $key => $value ) {
+                $dataloop["filter".$set][$key]["value"] = $key;
+                $dataloop["filter".$set][$key]["label"] = $value;
             }
-            $ausgaben["filter"] .= "</select>";
         }
-
-
-
 
         // content editor link erstellen (neu)
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_edit): ".$_SESSION["cms_last_edit"].$debugging["char"];
@@ -112,102 +96,89 @@
             $ausgaben["filedelete"] = "";
         }
 
+        // +++
+        // funktions bereich ( aufbau )
 
 
 
+        // funktions bereich ( auswertung )
+        // ***
 
-        // art der anzeige
-        if ( $HTTP_GET_VARS["art"] != "") {
-            $art = $HTTP_GET_VARS["art"];
-            $_SESSION["art"] = $HTTP_GET_VARS["art"];
-        } else {
-            $art = $_SESSION["art"];
+        // where init
+        $part = array();
+
+        // suche verarbeiten (neu)
+        if ( isset($HTTP_GET_VARS["search"]) ) {
+            $_SESSION["fileed_search"] = $HTTP_GET_VARS["search"];
+        } elseif ( isset($HTTP_GET_VARS["search"]) && $HTTP_GET_VARS["search"] == "" ) {
+            unset($_SESSION["fileed_search"]);
         }
+        if ( $_SESSION["fileed_search"] ) {
+            $ausgaben["search"] = $_SESSION["fileed_search"];
+            $ausgaben["result"] = "Ihre Schnellsuche nach \"".$_SESSION["fileed_search"]."\" hat ";
+            $array1 = explode( " ", $_SESSION["fileed_search"] );
+            $array2 = array( "ffname", "fdesc", "fhit" );
 
-        switch ( $art ) {
-            case "pdf": case "pdt": case "ods": case "odp":
-                $ausgaben["4"] = " checked";
-                $art = "'pdf','pdt','ods','odp'";
-                break;
-            default:
-                $art = "'gif', 'jpg','png'";
-                $ausgaben["5"] = " checked";
-        }
-
-
-
-        // Suche
-        if ( $HTTP_GET_VARS["search"] != "" ) {
-            $anhang = "?".$getvalues;
-            $search_value = $HTTP_GET_VARS["search"];
-            $ausgaben["search"] = $search_value;
-            $ausgaben["result"] = "Ihre Schnellsuche nach \"".$search_value."\" hat ";
-            $search_value = explode(" ",$search_value);
-            $suche = array("ffname","fdesc","fhit");
-            $wherea = "";
-            foreach ( $search_value as $value1 ) {
+            foreach ( $array1 as $value1 ) {
                 if ( $value1 != "" ) {
-                    if ($getvalues == "") $getvalues = "search=";
-                    $getvalues .= $value1." ";
-                    foreach ($suche as $value2) {
-                        if ($wherea != "") $wherea .= " or ";
-                        $wherea .= $value2. " LIKE '%" .$value1."%'";
+                    foreach ( $array2 as $value2 ) {
+                        if ( $part["search"] != "" ) $part["search"] .= " or ";
+                        $part["search"] .= $value2. " LIKE '%".$value1."%'";
                     }
                 }
             }
+            if ( $part["search"] != "" ) $part["search"] = "(".$part["search"].")";
+
+        } else {
+            $ausgaben["search"] = "";
         }
 
-
-
-
-
-
-
-        // sql erweitern
-        switch ( $_SESSION["filter0"] ) {
+        // auswahlliste 1 verarbeiten
+        switch ( $_SESSION["fileed_filter0"] ) {
             case 2:
-                $whereb = "";
-                $getvalues .= "&what=3";
+                #$part["auswahl1"] = "";
                 break;
             case 1:
-                $whereb = " fdid = '".$_SESSION["custom"]."' AND";
-                $getvalues .= "&what=2";
+                $part["auswahl1"] = " fdid = '".$_SESSION["custom"]."'";
                 break;
             default:
-            $whereb = " fuid = '".$_SESSION["uid"]."' AND";
+                $part["auswahl1"] = " fuid = '".$_SESSION["uid"]."'";
         }
 
-        switch ( $_SESSION["filter1"] ) {
+        // auswahlliste 2 verarbeiten
+        switch ( $_SESSION["fileed_filter1"] ) {
             case 2:
-                $whereb .= " ffart in ('zip','bz2','gz')";
-                $getvalues .= "&art=".$_SESSION["filter1"];
+                $part["auswahl2"] = " ffart in ('zip','bz2','gz')";
                 $hidedata["other"] = array();
                 break;
             case 1:
-                $whereb .= " ffart in ('pdf','odt','ods','odp')";
-                $getvalues .= "&art=".$_SESSION["filter1"];
+                $part["auswahl2"] = " ffart in ('pdf','odt','ods','odp')";
                 $hidedata["other"] = array();
                 break;
             default:
-                $whereb .= " ffart in ('gif','jpg','png')";
+                $part["auswahl2"] = " ffart in ('gif','jpg','png')";
                 $hidedata["images"] = array();
-
-
         }
-        // gibt es beide
-        if ($wherea && $whereb) $trenner = " AND ";
-        // ist wherea da, klammern setzen
-        if ($wherea) $wherea = "(".$wherea.")";
-        // where zusammensetzen
-        if ($wherea || $whereb) $where = " WHERE ".$wherea.$trenner.$whereb;
+
+        // where build
+        if ( count($where) >= 2 ) $binder = " AND ";
+        foreach ( $part as $value ) {
+            if ( $condition == "" ) {
+                $where = " WHERE ".$value;
+            } else {
+                $where .= $binder.$value;
+            }
+        }
+
+        // +++
+        // funktions bereich ( auswertung )
 
 
 
+        // funktions bereich
+        // ***
 
-        ### put your code here ###
-
-        /* z.B. db query */
-
+        // db query
         $sql = "SELECT *
                   FROM ".$cfg["db"]["file"]["entries"]."
                   ".$where."
@@ -215,7 +186,10 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["file"]["rows"], $parameter, 1, 3, $getvalues );
+        if ( $environment["parameter"][1] != "" ) {
+            $_SESSION["fileed_position"] = $environment["parameter"][1];
+        }
+        $inhalt_selector = inhalt_selector( $sql, $_SESSION["fileed_position"], $cfg["db"]["file"]["rows"], Null, 1, 3, Null );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0];
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
@@ -233,22 +207,18 @@
             }
         }
 
+        if ( $getvalues != "" ) $getvalues = "?".$getvalues;
         while ( $data = $db -> fetch_array($result,1) ) {
 
             if (is_array($_SESSION["file_memo"])) {
                 if (in_array($data["fid"],$_SESSION["file_memo"])) {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb1.png\"></a>";
+                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb1.png\"></a>";
                 } else {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb0.png\"></a>";
+                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb0.png\"></a>";
                 }
             } else {
-                $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$anhang."><img width=\"13\" height\"13\" border=\"0\" src=".$cfg["iconpath"]."cms-cb0.png border=0></a>";
+                $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=".$cfg["iconpath"]."cms-cb0.png border=0></a>";
             }
-
-
-            # -> $cfg["db"]["file"]["key"] "fid"
-            #$dataloop["list"][$data["fid"]][0] = $data["field1"];
-            #$dataloop["list"][$data["fid"]][1] = $data["field2"];
 
             // tabellen farben wechseln
             if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
@@ -258,7 +228,6 @@
             }
             $dataloop["list"][$data["fid"]]["color"] = $cfg["color"]["set"];
 
-            #$dataloop["list"][$data["fid"]]["href"] = "list/view,o,".$data["fid"].".html";
             $dataloop["list"][$data["fid"]]["ehref"] = "edit,".$data["fid"].".html";
 
             $type = $cfg["filetyp"][$data["ffart"]];
@@ -295,14 +264,7 @@
             } else {
                 $dataloop["list"][$data["fid"]]["newline"] = "";
             }
-
-            #$dataloop["list"][$data["fid"]]["editlink"] = $cfg["basis"]."/edit,".$data["fid"].".html";
-            #$dataloop["list"][$data["fid"]]["edittitel"] = "#(edittitel)";
-
-            #$dataloop["list"][$data["fid"]]["deletelink"] = $cfg["basis"]."/delete,".$data["fid"].".html";
-            #$dataloop["list"][$data["fid"]]["deletetitel"] = "#(deletetitel)";
         }
-
 
         // +++
         // funktions bereich
