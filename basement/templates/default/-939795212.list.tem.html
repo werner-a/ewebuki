@@ -21,7 +21,16 @@
               <label> </label> #(search)
               <input name="search" type="text" class="textfield" value="!#ausgaben_search">
               <input type="submit" name="Abschicken" value="#(send)">
-              !#ausgaben_filter
+              <select name="filter0" onChange="submit()">
+                <!--##loop-filter0-->
+                <option value="!{value}"!{select}>!{label}</option>
+                <!--##cont-->
+              </select>
+              <select name="filter1" onChange="submit()">
+                <!--##loop-filter1-->
+                <option value="!{value}"!{select}>!{label}</option>
+                <!--##cont-->
+              </select>
             </form>
           </td>
           <td align="right">
@@ -61,7 +70,8 @@
         <!--##loop-list-->
         <table width="96" border="0" align="left" cellpadding="2" cellspacing="2">
           <tr>
-          <td align="left" valign="bottom" width="96" height="100">
+          <td align="left" width="96" valign="bottom" height="100">
+          <img src="../../images/default/pos.png" width="96" height="0">
           <a href="!{ehref}"><img src="!{src}" alt="!{alt}" title="!{title} bearbeiten" border="0" !{size}></a>
           </td>
           <tr>
