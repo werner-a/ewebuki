@@ -7,6 +7,22 @@ weitere infos im cvs http://cvs.berlios.de/cgi-bin/viewcvs.cgi/ewebuki/basement/
 --- v?.?.?-???? - ??. mon year num
 
 
+--- 26. sep 2006
+
+fileed list hat release status erreicht
+
+hier die neuen marken
+
+sql:
+
+INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'answera', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Ihre Schnellsuche nach', '2006-09-26 12:18:44', '', '', '', 'ewebuki'),
+('de', 'answerb', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'hat', '2006-09-26 12:18:58', '', '', '', 'ewebuki'),
+('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Einträge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
+('de', 'answerc_yes', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'folgende Einträge gefunden.', '2006-09-26 12:20:01', '', '', '', 'ewebuki'),
+('de', 'next', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Vorherige Seite', '2006-09-26 12:22:25', '', '', '', 'ewebuki'),
+('de', 'prev', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Nexte Seite', '2006-09-26 12:22:35', '', '', '', 'ewebuki');
+
+
 --- 21. sep 2006
 
 neu struktur $_SESSION[] array:
@@ -18,6 +34,8 @@ $_SESSION["referer"]      wird zu   $SESSION["cms_last_referer"]
 
 
 neue label bezeichnungen:
+
+sql:
 
 UPDATE `site_text` SET `ebene` = '/admin/fileed', `kategorie` = 'list' WHERE `lang` = 'de' AND `tname` = '-939795212.list';
 
@@ -61,6 +79,8 @@ modules/admin ->
  fileed-select.inc.php (sinnlos, jetzt teil von fileed-upload.inc.php)
 
 -- datenbank aenderungen
+
+sql:
 
 beschreibung wird zum text file ->
 ALTER TABLE `site_file` CHANGE `fdesc` `fdesc` TEXT NOT NULL;
