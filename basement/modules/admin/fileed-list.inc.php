@@ -66,8 +66,8 @@
 
         // auswahllisten erstellen
         $set = array(); $data = array();
-        $_SESSION["fileed_filter0"] = 0;
-        $_SESSION["fileed_filter1"] = 0;
+        $_SESSION["fileed_filter0"] = $_SESSION["fileed_filter0"] + 0;
+        $_SESSION["fileed_filter1"] = $_SESSION["fileed_filter1"] + 0;
         foreach( $cfg["filter"] as $set => $data ) {
             if ( $HTTP_GET_VARS["filter".$set] != "" ) {
                 $_SESSION["fileed_filter".$set] = $HTTP_GET_VARS["filter".$set];
