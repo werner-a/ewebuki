@@ -65,6 +65,9 @@
         $debugging["ausgabe"] .= "<pre>".print_r($_SESSION["file_memo"],True)."</pre>";
 
         // auswahllisten erstellen
+        $set = array(); $data = array();
+        $_SESSION["fileed_filter0"] = 0;
+        $_SESSION["fileed_filter1"] = 0;
         foreach( $cfg["filter"] as $set => $data ) {
             if ( $HTTP_GET_VARS["filter".$set] != "" ) {
                 $_SESSION["fileed_filter".$set] = $HTTP_GET_VARS["filter".$set];
@@ -74,6 +77,7 @@
                 $dataloop["filter".$set][$key]["value"] = $key;
                 $dataloop["filter".$set][$key]["label"] = $value;
             }
+            $debugging["ausgabe"] .= "<pre>".print_r($dataloop["filter".$set],True)."</pre>";
         }
 
         // content editor link erstellen
