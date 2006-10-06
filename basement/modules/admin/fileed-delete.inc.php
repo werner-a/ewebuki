@@ -52,17 +52,22 @@
             $environment["parameter"][1] = current($_SESSION["file_memo"]);
         } else  {
             header("Location: ".$cfg["basis"]."/list.html");
+            exit();
         }
 
         ### put your code here ###
 
-        /* z.B. evtl. auf verknuepften datensatz pruefen
-        $sql = "SELECT ".$cfg["db"]["menu"]["key"]."
-                  FROM ".$cfg["db"]["menu"]["entries"]."
-                 WHERE refid='".$environment["parameter"][1]."'";
+        // wird die datei im content verwendet?
+        $old = "_".$environment["parameter"][1].".";
+        $new = "/".$environment["parameter"][1]."/";
+        #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
+        $sql = "SELECT *
+                    FROM ".$cfg["db"]["content"]["entries"]."
+                    WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
+                    OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
-        */
 
         // +++
         // funktions bereich fuer erweiterungen
@@ -89,11 +94,18 @@
             #$ausgaben["field1"] = $data["field1"];
             #$ausgaben["field2"] = $data["field2"];
             $ausgaben["ffname"] = $data["ffname"];
+            $ausgaben["ffart"] = $data["ffart"];
 
             // funktions bereich fuer erweiterungen
             // ***
 
             ### put your code here ###
+
+            if ( $_SESSION["uid"] != $data["fuid"] && in_array( $environment["kategorie"], $cfg["restrict"]) ) { # nur eigene dateien duerfen gelöscht werden
+                header("Location: ".$cfg["basis"]."/list.html?error=2");
+                exit();
+            }
+
 
             /* z.B. evtl. verknuepfte datensatze holen
             $sql = "SELECT *

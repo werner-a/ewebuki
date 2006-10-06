@@ -70,6 +70,10 @@
                      "lang" => array(
                             #"entries" => "site_file_lang",
                                ),
+                  "content" => array(
+                          "entries" => "site_text",
+                          "content" => "content",
+                               ),
                        ),
          "filesize" => "5000000",
           #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "bz2", "gz"),
@@ -124,6 +128,7 @@
                         "1" => array("Bilder", "Dokumente", "Archive"),
                        ),
             "right" => "cms_admin",
+            "restrict" => array(), # z.B. array("delete", "edit")
     );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////

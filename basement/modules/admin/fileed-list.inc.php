@@ -284,6 +284,8 @@
         if ( $HTTP_GET_VARS["error"] != "" ) {
             if ( $HTTP_GET_VARS["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
+            } else {
+                $ausgaben["form_error"] = "#(error2)";
             }
         } else {
             $ausgaben["form_error"] = "";
@@ -304,6 +306,7 @@
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
+            $ausgaben["inaccessible"] .= "# (error2) #(error2)<br />";
 
             $ausgaben["inaccessible"] .= "# (cmslink) #(cmslink)<br />";
             $ausgaben["inaccessible"] .= "# (fileedit) #(fileedit)<br />";

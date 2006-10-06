@@ -97,16 +97,38 @@
         $ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$path.$filename."&size=280";
 
 
-
-
-        if ( $_SESSION["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
+        if ( $_SESSION["uid"] == $form_values["fuid"] || !in_array( $environment["kategorie"], $cfg["restrict"]) ) { # nur eigene dateien duerfen ersetzt werden
+            $ausgaben["form_error"] = "";
             $element["upload"] = "#(upa)<br><input type=\"file\" name=\"upload\"><br>#(upb)";
         } else {
+            $ausgaben["form_error"] = "#(error_edit)";
             $element["upload"] = "";
             $element["fdesc"] = str_replace(">"," readonly>",$element["fdesc"]);
             $element["fhit"] = str_replace(">"," readonly>",$element["fhit"]);
             $element["funder"] = str_replace(">"," readonly>",$element["funder"]);
         }
+
+
+        // wo im content wird die datei verwendet
+        $old = "_".$environment["parameter"][1].".";
+        $new = "/".$environment["parameter"][1]."/";
+        #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
+        $sql = "SELECT *
+                    FROM ".$cfg["db"]["content"]["entries"]."
+                    WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
+                    OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        while ( $data2 = $db -> fetch_array($result,$nop) ) {
+            if ( $ids != "" ) $ids .= ",";
+            $ebene = $data2["ebene"]."/";
+            $kategorie = $data2["kategorie"].".html";
+            $url = $pathvars["menuroot"].$ebene.$kategorie;
+            $label = $ebene.$kategorie;
+            $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
+        }
+        if ( $ausgaben["reference"] == "" ) $ausgaben["reference"] = "---";
+
 
         // +++
         // page basics
@@ -125,7 +147,7 @@
         // ***
 
         // fehlermeldungen
-        $ausgaben["form_error"] = "";
+        #$ausgaben["form_error"] = ""; siehe edit sperre!
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
@@ -141,6 +163,7 @@
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
+            $ausgaben["inaccessible"] .= "# (error_edit) #(error_edit)<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
