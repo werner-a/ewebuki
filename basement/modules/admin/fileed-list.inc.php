@@ -113,6 +113,7 @@
 
         // suche verarbeiten
         if ( isset($HTTP_GET_VARS["search"]) ) {
+            $_SESSION["fileed_position"] = 0;
             $_SESSION["fileed_search"] = $HTTP_GET_VARS["search"];
         } elseif ( isset($HTTP_GET_VARS["search"]) && $HTTP_GET_VARS["search"] == "" ) {
             unset($_SESSION["fileed_search"]);
