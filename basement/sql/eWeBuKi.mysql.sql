@@ -3,11 +3,11 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 26. September 2006 um 12:55
+-- Erstellungszeit: 06. Oktober 2006 um 20:55
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-16
 -- 
--- Datenbank: `eWeBuKi_mdecvs`
+-- Datenbank: `ewebuki_mdecvs`
 -- 
 
 -- --------------------------------------------------------
@@ -66,7 +66,7 @@ CREATE TABLE `auth_special` (
   `skategorie` text,
   `sbeschreibung` text,
   PRIMARY KEY  (`sid`)
-) TYPE=MyISAM AUTO_INCREMENT=5 ;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- 
 -- Daten für Tabelle `auth_special`
@@ -526,4 +526,8 @@ INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`
 ('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Einträge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
 ('de', 'answerc_yes', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'folgende Einträge gefunden.', '2006-09-26 12:20:01', '', '', '', 'ewebuki'),
 ('de', 'next', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Vorherige Seite', '2006-09-26 12:22:25', '', '', '', 'ewebuki'),
-('de', 'prev', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Nexte Seite', '2006-09-26 12:22:35', '', '', '', 'ewebuki');
+('de', 'prev', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Nexte Seite', '2006-09-26 12:22:35', '', '', '', 'ewebuki'),
+('de', 'error1', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild wird bereits verwendet - Bearbeiten zeigt wo.', '2006-10-06 20:07:05', '', '', '', 'ewebuki'),
+('de', 'error2', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild kann nur vom Eigentümer gelöscht werden.', '2006-10-06 20:22:05', '', '', '', 'ewebuki'),
+('de', 'error_edit', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Bild kann nur vom Eigentümer bearbeitet werden.', '2006-10-06 20:44:19', '', '', '', 'ewebuki'),
+('de', 'references', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Ist enthalten in:', '2006-10-06 19:59:07', '', '', '', 'ewebuki');

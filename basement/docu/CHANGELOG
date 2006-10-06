@@ -7,6 +7,25 @@ weitere infos im cvs http://cvs.berlios.de/cgi-bin/viewcvs.cgi/ewebuki/basement/
 --- v?.?.?-???? - ??. mon year num
 
 
+
+--- 06. okt 2006
+
+fileed: beschränkung von löschen und bearbeiten auf userid ist einstellbar.
+(siehe restrict in der konfig datei)
+
+fileed: vor dem löschen von dateien wird der content geprüft.
+(noch nicht multi db fähig)
+
+neue label sind notwendig
+
+sql:
+
+INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'error1', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild wird bereits verwendet - Bearbeiten zeigt wo.', '2006-10-06 20:07:05', '', '', '', 'ewebuki'),
+('de', 'error2', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild kann nur vom Eigentümer gelöscht werden.', '2006-10-06 20:22:05', '', '', '', 'ewebuki'),
+('de', 'error_edit', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Bild kann nur vom Eigentümer bearbeitet werden.', '2006-10-06 20:44:19', '', '', '', 'ewebuki'),
+('de', 'references', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Ist enthalten in:', '2006-10-06 19:59:07', '', '', '', 'ewebuki');
+
+
 --- 26. sep 2006
 
 fileed list hat release status erreicht
