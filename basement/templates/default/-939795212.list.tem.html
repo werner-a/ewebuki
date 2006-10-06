@@ -9,97 +9,99 @@
 <!--##begin-->
 <!--$Id$-->
 <table width="600" border="0" cellspacing="0" cellpadding="2">
-  <tr>
-    <td bgcolor="#EC9379">#(ueberschrift)</td>
-  </tr>
-  <tr>
-    <td>#(inhalt)
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td>
+    <tr>
+        <td bgcolor="#EC9379">#(ueberschrift)</td>
+    </tr>
+    <tr>
+        <td>#(inhalt)
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
             <form style="margin:0; padding:0;" method="GET" action="!#ausgaben_form1_aktion">
-              <label> </label> #(search)
-              <input name="search" type="text" class="textfield" value="!#ausgaben_search">
-              <input type="submit" name="Abschicken" value="#(send)">
-              <select name="filter0" onChange="submit()">
-                <!--##loop-filter0-->
-                <option value="!{value}"!{select}>!{label}</option>
-                <!--##cont-->
-              </select>
-              <select name="filter1" onChange="submit()">
-                <!--##loop-filter1-->
-                <option value="!{value}"!{select}>!{label}</option>
-                <!--##cont-->
-              </select>
-            </form>
-          </td>
-          <td align="right">
+                            <label> </label>
+                             #(search)
+                            <input name="search" type="text" class="textfield" value="!#ausgaben_search">
+                            <input type="submit" name="Abschicken" value="#(send)">
+                            <select name="filter0" onChange="submit()">
+                                <!--##loop-filter0-->
+                                <option value="!{value}"!{select}>!{label}</option>
+                                <!--##cont-->
+                            </select>
+                            <select name="filter1" onChange="submit()">
+                                <!--##loop-filter1-->
+                                <option value="!{value}"!{select}>!{label}</option>
+                                <!--##cont-->
+                            </select>
+            </form></td>
+                    <td align="right">
             <form style="margin:0; padding:0;" name="form1" method="get" action="!#ausgaben_form2_aktion">
-              <select name="anzahl" onChange="submit()">
-                <option selected>Upload</option>
-                <option value="1">1 Datei</option>
-                <option value="2">2 Dateien</option>
-                <option value="3">3 Dateien</option>
-                <option value="4">4 Dateien</option>
-                <option value="5">5 Dateien</option>
-              </select>
-            </form>
-          </td>
-          <td align="right"><label></label></td>
-        </tr>
-      </table>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td align="left" colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
-          <td>!#ausgaben_form_error</td>
-          <td align="right">!#ausgaben_cmslink !#ausgaben_fileedit !#ausgaben_filedelete</td>
-        </tr>
-        <tr>
-          <td class="fkrcontent" colspan="2">
+                            <select name="anzahl" onChange="submit()">
+                                <option selected>Upload</option>
+                                <option value="1">1 Datei</option>
+                                <option value="2">2 Dateien</option>
+                                <option value="3">3 Dateien</option>
+                                <option value="4">4 Dateien</option>
+                                <option value="5">5 Dateien</option>
+                            </select>
+            </form></td>
+                    <td align="right"><label></label></td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td align="left" colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>!#ausgaben_form_error</td>
+                </tr>
+                <tr>
+                    <td align="right">!#ausgaben_cmslink !#ausgaben_fileedit !#ausgaben_filedelete</td>
+                </tr>
+                <tr>
+                    <td class="fkrcontent" colspan="2">
             <hr size="1" noshade>
           </td>
-        </tr>
-        <tr>
-          <td colspan="2">!#ausgaben_result</td>
-        </tr>
+                </tr>
+                <tr>
+                    <td colspan="2">!#ausgaben_result</td>
+                </tr>
 
-        <tr><td colspan="2">
-        <!--##hide-images-->
-        <!--##loop-list-->
+                <tr>
+                    <td colspan="2">
+                        <!--##hide-images-->
+                        <!--##loop-list-->
         <table width="96" border="0" align="left" cellpadding="2" cellspacing="2">
-          <tr>
-          <td align="left" width="96" valign="bottom" height="100">
+                            <tr>
+                                <td align="left" width="96" valign="bottom" height="100">
           <img src="../../images/default/pos.png" width="96" height="0">
           <a href="!{ehref}"><img src="!{src}" alt="!{alt}" title="!{title} bearbeiten" border="0" !{size}></a>
           </td>
-          <tr>
-            <td width="96">
+                            <tr>
+                                <td width="96">
             !{cb}
             <a title="Vorschau Original (original)" href="!{ohref}">O</a>
             <a title="Vorschau Gross (big)" href="!{bhref}">B</a>
             <a title="Vorschau Mittel (middle)" href="!{mhref}">M</a>
             <a title="Vorschau Klein (small)" href="!{shref}">S</a>
             </td>
-          </tr>
-        </table>
-        !{newline}
-        <!--##cont-->
-        <!--##show-->
+                            </tr>
+                        </table>
+                        !{newline}
+                        <!--##cont-->
+                        <!--##show-->
         </td>
-        </tr>
+                </tr>
 
-        <!--##hide-other-->
-        <!--##loop-list-->
-        <tr bgcolor="!{color}">
-          <td width="60">!{cb} <a href="!{ehref}"><img src="../../images/default/details.png" border=0></td>
-          <td width="%"><a title="!{title} bearbeiten" href="!{ehref}">!{title}</a> [ <a title="Herunterladen (download)" href="!{dhref}" target="!{dtarget}">D</a> ]</td>
-        </tr>
-        <!--##cont-->
-        <!--##show-->
+                <!--##hide-other-->
+                <!--##loop-list-->
+                <tr bgcolor="!{color}">
+                    <td width="60">!{cb} <a href="!{ehref}"><img src="../../images/default/details.png" border=0></td>
+                    <td width="%"><a title="!{title} bearbeiten" href="!{ehref}">!{title}</a> [ <a title="Herunterladen (download)" href="!{dhref}" target="!{dtarget}">D</a> ]</td>
+                </tr>
+                <!--##cont-->
+                <!--##show-->
 
-        <!--
+                <!--
         <tr bgcolor="!{color}">
           <td width="100%">other: !{field1}</td>
           <td align="right" nowrap><a href="!{editlink}"><img src="../../images/default/edit.png" alt="!{edittitel}" title="!{edittitel}" border="0" height="18" width="24"></a><a href="!{deletelink}"><img src="../../images/default/delete.png" alt="!{deletetitel}" title="!{deletetitel}" border="0" height="18" width="24"></a></td>
@@ -107,33 +109,31 @@
         -->
 
 
-      </table>
-      !#ausgaben_output<br>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td colspan="2">
-            <div align="right"></div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
+            </table>
+            !#ausgaben_output
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td colspan="2">
+            <div align="right"></div></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
             <hr size="1" noshade>
           </td>
+                </tr>
+                <tr>
+                    <td valign="top">#(gesamt) !#ausgaben_anzahl</td>
+                    <td align="right" valign="top">!#ausgaben_inhalt_selector</td>
+                </tr>
+                <tr>
         </tr>
-        <tr>
-          <td valign="top">#(gesamt) !#ausgaben_anzahl</td>
-          <td align="right" valign="top">!#ausgaben_inhalt_selector</td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-          <td valign="top" colspan="2"><br>
+                <tr>
+                    <td valign="top" colspan="2"><br>
             #(text1)<br>
             !#ausgaben_inaccessible </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+                </tr>
+      </table></td>
+    </tr>
 </table>
 <!--##end-->
 </body>
