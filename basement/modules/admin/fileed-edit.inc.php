@@ -110,12 +110,12 @@
 
 
         // wo im content wird die datei verwendet
-        $old = "_".$environment["parameter"][1].".";
+        $old = "\_".$environment["parameter"][1].".";
         $new = "/".$environment["parameter"][1]."/";
         #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
         $sql = "SELECT *
-                    FROM ".$cfg["db"]["content"]["entries"]."
-                    WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
+                  FROM ".$cfg["db"]["content"]["entries"]."
+                 WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
                     OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
