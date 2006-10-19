@@ -237,7 +237,7 @@
 
     // subdir support
     if ( $pathvars["subdir"] != "" ) {
-        $pathvars["images"] = $pathvars["subdir"].$pathvars["images"];
+        $pathvars["menuroot"] = $pathvars["subdir"].$pathvars["menuroot"];
         $pathvars["virtual"] = $pathvars["subdir"].$pathvars["virtual"];
         $pathvars["requested"] = $pathvars["subdir"].$pathvars["requested"];
 
