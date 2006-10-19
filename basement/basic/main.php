@@ -231,13 +231,12 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg (alt) subkatid: ".$environment["subkatid"].$debugging["char"];
 
     // die drei design abhaengigen variablen werden angepasst
-    $pathvars["menuroot"]  = "http://".$_SERVER["HTTP_HOST"].$pathvars["virtual"];
+    $pathvars["menuroot"]  = "http://".$_SERVER["HTTP_HOST"].$pathvars["subdir"].$pathvars["virtual"];
     $pathvars["images"]    = "/images/".$environment["design"]."/";
     $pathvars["templates"] = $pathvars["fileroot"]."templates/".$environment["design"]."/";
 
     // subdir support
     if ( $pathvars["subdir"] != "" ) {
-        $pathvars["menuroot"] = $pathvars["subdir"].$pathvars["menuroot"];
         $pathvars["virtual"] = $pathvars["subdir"].$pathvars["virtual"];
         $pathvars["requested"] = $pathvars["subdir"].$pathvars["requested"];
 
