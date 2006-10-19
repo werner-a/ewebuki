@@ -58,8 +58,9 @@
 
     // subdir support
     if ( $specialvars["subdir"] != "" ) {
-        $pathvars["subdir"] = trim($specialvars["subdir"],"/");
-        $pathvars["fileroot"] = $pathvars["fileroot"].$pathvars["subdir"]."/";
+        $specialvars["subdir"] = trim($specialvars["subdir"],"/");
+        $pathvars["subdir"] = "/".$specialvars["subdir"];
+        $pathvars["fileroot"] = $pathvars["fileroot"].$specialvars["subdir"]."/";
     }
 
     $pathvars["basicroot"]  = $pathvars["fileroot"]."basic/";

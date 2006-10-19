@@ -57,7 +57,7 @@
 
     // subdir support
     if ( $pathvars["subdir"] != "" ) {
-        $pathvars["requested"] = str_replace($pathvars["subdir"]."/","",$pathvars["requested"]);
+        $pathvars["requested"] = str_replace($pathvars["subdir"],"",$pathvars["requested"]);
     }
 
     // url ohne .html wird auf index.html gesetzt
@@ -237,9 +237,11 @@
 
     // subdir support
     if ( $pathvars["subdir"] != "" ) {
-        $pathvars["virtual"] = "/".$pathvars["subdir"].$pathvars["virtual"];
-        $pathvars["requested"] = "/".$pathvars["subdir"].$pathvars["requested"];
-        $ausgaben["auth_url"] = "/".$pathvars["subdir"].$ausgaben["auth_url"];
+        $pathvars["images"] = $pathvars["subdir"].$pathvars["images"];
+        $pathvars["virtual"] = $pathvars["subdir"].$pathvars["virtual"];
+        $pathvars["requested"] = $pathvars["subdir"].$pathvars["requested"];
+
+        $ausgaben["auth_url"] = $pathvars["subdir"].$ausgaben["auth_url"];
     }
 
     // grundmapping main output
