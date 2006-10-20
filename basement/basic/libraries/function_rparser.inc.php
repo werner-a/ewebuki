@@ -96,14 +96,15 @@
 
               // style path korrektur + dynamic style
               if ( strpos($line,"../../css/") !== false ) {
+                $oldstyle=""; $newstyle="";
                 if ( substr($specialvars["dynamiccss"],0,1) == "_" ) {
-                    $stylename = $environment["design"].$specialvars["dynamiccss"];
+                    $oldstyle=$environment["design"];
+                    $newstyle=$environment["design"].$specialvars["dynamiccss"];
                 } elseif ( $specialvars["dynamiccss"] != "" ) {
-                    $stylename = $specialvars["dynamiccss"];
-                } else {
-                    $stylename = $environment["design"];
+                    $oldstyle=$environment["design"];
+                    $newstyle=$specialvars["dynamiccss"];
                 }
-                $line=str_replace("../../css/",$pathvars["subdir"].$pathvars["webcss"],$line);
+                $line=str_replace("../../css/".$oldstyle,$pathvars["subdir"].$pathvars["webcss"].$newstyle,$line);
               }
 
               // dynamic bg
