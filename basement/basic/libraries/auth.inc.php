@@ -52,13 +52,18 @@
 
     // referer im form mit hidden element mitschleppen
     if ( $HTTP_POST_VARS["form_referer"] == "" ) {
-        $path = split("/",$_SERVER["HTTP_REFERER"],4);
-        $ausgaben["form_referer"] = "/".$path[3];
+        $a = 4;
+        if ( $pathvars["subdir"] != "" ) $a++;
+        $path = split("/",$_SERVER["HTTP_REFERER"],$a);
+        $ausgaben["form_referer"] = "/".$path[--$a];
         $ausgaben["form_break"] = $ausgaben["form_referer"];
     } else {
         $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
         $ausgaben["form_break"] = $ausgaben["form_referer"];
     }
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "referer = ".$_SERVER["HTTP_REFERER"].$debugging["char"];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path = ".$path[$a].$debugging["char"];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form_referer = ".$ausgaben["form_referer"].$debugging["char"];
 
     // login ueberpruefen
     if ( $HTTP_POST_VARS["login"] == "login" ) {
@@ -115,20 +120,25 @@
                 }
             }
 
+            // referer oder aktuelle seite
             if ( $cfg["hidden"]["set"] == True ) {
-                $destination_src = $pathvars["subdir"].$ausgaben["form_referer"];
+                $destination_src = $ausgaben["form_referer"];
             } else {
                 $destination_src = $pathvars["requested"];
             }
 
-            if ( $pathvars["virtual"] == "" ) {
-                $destination = "/auth".$destination_src;
+            // replace with virtual path
+            if ( $pathvars["virtual_depth"] != 1 ) {
+                $pos = strpos($destination_src, $in);
+                $destination = substr($destination_src, 0, $pos ) .
+                               $pathvars["virtual"]."/auth" .
+                               substr($destination_src, $pos+strlen($pathvars["virtual"]));
             } else {
-                $destination = str_replace($pathvars["virtual"],$pathvars["virtual"]."/auth",$destination_src);
+                $destination = "/auth".$destination_src;
             }
 
             session_write_close();
-            header("Location: ".$destination);
+            header("Location: ".$pathvars["subdir"].$destination);
             exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgeführt wird.
         } else {
             session_start();

@@ -186,7 +186,7 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg template (auto): ".$template_link.$debugging["char"];
 
     // auth url complete
-    $ausgaben["auth_url"] = $ausgaben["auth_url"].$environment["ebene"]."/".$environment["allparameter"].".html";
+    $ausgaben["auth_url"] = $pathvars["subdir"].$ausgaben["auth_url"].$environment["ebene"]."/".$environment["allparameter"].".html";
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "auth url: ".$ausgaben["auth_url"].$debugging["char"];
 
     // print url
@@ -234,14 +234,6 @@
     $pathvars["menuroot"]  = "http://".$_SERVER["HTTP_HOST"].$pathvars["subdir"].$pathvars["virtual"];
     $pathvars["images"]    = "/images/".$environment["design"]."/";
     $pathvars["templates"] = $pathvars["fileroot"]."templates/".$environment["design"]."/";
-
-    // subdir support
-    if ( $pathvars["subdir"] != "" ) {
-        $pathvars["virtual"] = $pathvars["subdir"].$pathvars["virtual"];
-        $pathvars["requested"] = $pathvars["subdir"].$pathvars["requested"];
-
-        $ausgaben["auth_url"] = $pathvars["subdir"].$ausgaben["auth_url"];
-    }
 
     // grundmapping main output
     if ( $specialvars["crc32"] == -1 ) {
@@ -295,6 +287,10 @@
     // login verwalten ( muss erste funktion nach datenbank connect sein !!!)
     require $pathvars["config"]."auth.cfg.php";
     require $pathvars["libraries"]."auth.inc.php";
+
+    // subdir support
+    $pathvars["virtual"] = $pathvars["subdir"].$pathvars["virtual"];
+    $pathvars["requested"] = $pathvars["subdir"].$pathvars["requested"];
 
     // überschreiben von default werten
     require $pathvars["config"]."overwrite.cfg.php";
