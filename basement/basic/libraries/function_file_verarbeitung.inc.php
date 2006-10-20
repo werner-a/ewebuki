@@ -72,11 +72,20 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file mime type: ".$_FILES[$name]["type"].$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file size: ".$_FILES[$name]["size"].$debugging["char"];
 
-            // dateiendung erkennen
-            $path_parts = pathinfo($_FILES[$name]["name"]);
-            $dateiendung = strtolower($path_parts["extension"]);
+            // find file basename, extension
+            $file_extension = strtolower(substr(strrchr($_FILES[$name]["name"],"."),1));
+            $file_basename = basename($_FILES[$name]["name"],".".$file_extension);
 
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file extension: ".$dateiendung.$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file basename: ".$file_basename.$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file extension: ".$file_extension.$debugging["char"];
+
+            // i don't want jpeg files
+            if ( $file_extension == "jpeg" ) $file_extension = "jpg";
+
+            // internal file name
+            $file_name = $file_basename.".".$file_extension;
+
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "internal file name: ".$file_name.$debugging["char"];
 
             // php minor version auf oder >= 2 pruefen
             if ( substr(strstr($_SERVER["SERVER_SOFTWARE"],"PHP"),6,1) >= 2 ) {
@@ -90,9 +99,9 @@
                     $array["returncode"] = 10;
                 } elseif ( $_FILES[$name]["size"] >= $limit ) {
                     $array["returncode"] = 7;
-                } elseif ( !in_array($dateiendung, $valid) && !array_key_exists($dateiendung, $valid) ) {
+                } elseif ( !in_array($file_extension, $valid) && !array_key_exists($file_extension, $valid) ) {
                     $array["returncode"] = 8;
-                } elseif ( file_exists($destination.$_FILES[$name]["name"]) ) {
+                } elseif ( file_exists($destination.$file_name) ) {
                     $array["returncode"] = 9;
                 }
             }
@@ -101,23 +110,23 @@
             $images = array("gif"  => 1, "jpg"  => 2, "jpeg" => 2, "png"  => 3);
             $weitere = array("pdf" => "%PDF", "zip" => "PK", "odt" => "PK", "ods" => "PK", "odp" => "PK", "bz2" => "BZ", "gz" => chr(hexdec("1F")).chr(hexdec("8B")).chr(hexdec("08")).chr(hexdec("08")));
             // grafik formate testen
-            if ( $images[$dateiendung] != "" && $array["returncode"] == 0 ) {
+            if ( $images[$file_extension] != "" && $array["returncode"] == 0 ) {
                 /*
                 1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP,
                 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order),
                 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
                 */
                 $imgsize = getimagesize($_FILES[$name]["tmp_name"]);
-                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type soll: ".$images[$dateiendung].$debugging["char"];
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type soll: ".$images[$file_extension].$debugging["char"];
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type ist: ".$imgsize[2].$debugging["char"];
-                if ( $images[$dateiendung] != $imgsize[2] ) {
+                if ( $images[$file_extension] != $imgsize[2] ) {
                     $array["returncode"] = 8;
                 }
             // weitere formate testen
-            } elseif ( $weitere[$dateiendung] != "" && $array["returncode"] == 0 ) {
+            } elseif ( $weitere[$file_extension] != "" && $array["returncode"] == 0 ) {
                 $fp = fopen($_FILES[$name]["tmp_name"], "r");
                 $buffer = fgets($fp, 5);
-                if ( strpos($buffer,$weitere[$dateiendung]) === false ) {
+                if ( strpos($buffer,$weitere[$file_extension]) === false ) {
                     $array["returncode"] = 8;
                 }
                 unset($buffer);
@@ -131,10 +140,10 @@
             if ( $array["returncode"] == 0 ) {
                 $MySafeModeUid = getmyuid();
                 passthru ("chuid ".$_FILES[$name]["tmp_name"]." ".$MySafeModeUid);
-                move_uploaded_file ($_FILES[$name]["tmp_name"], $destination.$_FILES[$name]["name"]);
-                @chmod($destination.$_FILES[$name]["name"],0660);
+                move_uploaded_file ($_FILES[$name]["tmp_name"], $destination.$file_name);
+                @chmod($destination.$file_name,0664);
             }
-            $array["name"] = $_FILES[$name]["name"];
+            $array["name"] = $file_name;
 
         } else {
             $array["returncode"] = 11;
