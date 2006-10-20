@@ -159,9 +159,6 @@
                 case "jpg":
                     imagejpeg($img_dst,$img_path."/".$img_name."_".$img_id.".jpg");
                     break;
-                case "jpeg":
-                    imagejpeg($img_dst,$img_path."/".$img_name."_".$img_id.".jpeg");
-                    break;
                 case "png":
                     imagepng($img_dst,$img_path."/".$img_name."_".$img_id.".png");
                     break;
@@ -190,7 +187,7 @@
                     case "gif":
                         $img_src = @imagecreatefromgif($source);
                         break;
-                    case "jpg": case "jpeg":
+                    case "jpg":
                         $img_src = @imagecreatefromjpeg($source);
                         break;
                     case "png":
