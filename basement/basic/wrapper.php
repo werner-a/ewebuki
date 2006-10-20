@@ -50,6 +50,7 @@
     require $pathvars["fileroot"]."conf/file.cfg.php";
 
     // subdir support
+    $specialvars["subdir"] = trim(dirname(dirname($_SERVER["SCRIPT_NAME"])),"/");
     if ( $specialvars["subdir"] != "" ) {
         $value = str_replace( $specialvars["subdir"]."/", "", $_SERVER["REQUEST_URI"] );
     } else {
