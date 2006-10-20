@@ -1,11 +1,18 @@
 ================================================================================
-eWeBuKi changelog -
+eWeBuKi changelog
 
 weitere infos im cvs http://cvs.berlios.de/cgi-bin/viewcvs.cgi/ewebuki/basement/
+
+$Id$
 ================================================================================
 
 --- v?.?.?-???? - ??. mon year num
 
+
+--- 20. okt 2006
+
+ewebuki findet sein subdir jetzt anhand einer environment variable
+der parameter $specialvars["subdir"] in der site.cfg.php wird ignoriert.
 
 
 --- 06. okt 2006
