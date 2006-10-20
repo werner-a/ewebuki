@@ -89,9 +89,9 @@
               $begin="0";
             } elseif ($begin=="1") {
 
-              // image path korrektur
+              // image path korrektur (subdir support siehe weiter unten)
               if ( strpos($line,"../../images/") !== false ) {
-                $line=str_replace("../../images/",$pathvars["subdir"]."/images/",$line);
+                $line=str_replace("../../images/","/images/",$line);
               }
 
               // style path korrektur + dynamic style
@@ -245,11 +245,12 @@
               }
 
       //////////////////////////////////////////////////////////////////////////////////////////////
-      // subdir support restliche images
+      // subdir support images
       //////////////////////////////////////////////////////////////////////////////////////////////
       if ( $pathvars["subdir"] != "" ) {
+        // images in templates + funktionen
         $line = str_replace("/images/",$pathvars["subdir"]."/images/",$line);
-        // pfade im content und im filesystem (magic.php) nicht aendern!
+        // images im content aber nur bei der ausgabe (nicht im cms editor und im filesystem (magic.php))
         if ( strpos($line,"=".$pathvars["filebase"]["webdir"]) === false && strpos($line,$pathvars["filebase"]["maindir"]) === false ) {
             $line = str_replace($pathvars["filebase"]["webdir"],$pathvars["subdir"].$pathvars["filebase"]["webdir"],$line);
         }
