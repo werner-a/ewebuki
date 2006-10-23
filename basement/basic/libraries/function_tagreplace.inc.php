@@ -146,15 +146,16 @@
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
                             $pwerte = explode(";",$tagwerte[0]);
-                            if ( $pwerte[1] == "id" ) {
+                            $extrawerte = explode(":",$pwerte[0]);
+                            if ( $extrawerte[1] != "" ) $pwerte[0] = $extrawerte[1];
+                            if ( $extrawerte[0] == "id" ) {
                                 $art = "id";
                             } else {
                                 $art = "class";
                             }
+                            $attrib = "";
                             if ( $pwerte[0] != "" ) {
                                 $attrib = " ".$art."=\"".$pwerte[0]."\"";
-                            } else {
-                                $attrib = "";
                             }
                             $replace = str_replace($opentag.$tagwert.$closetag,"<p".$attrib.">".$tagwerte[1]."</p>",$replace);
                         }
@@ -315,12 +316,20 @@
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
                             $imgwerte = explode(";",$tagwerte[0]);
+                            $extrawerte = explode(":",$imgwerte[1]);
+                            if ( $extrawerte[1] != "" ) $imgwerte[1] = $extrawerte[1];
+                            if ( $extrawerte[0] == "id" ) {
+                                $art = "id";
+                            } else {
+                                $art = "class";
+                            }
+                            $align = ""; $attrib = "";
                             if ( $imgwerte[1] == "r" ) {
                                 $align = " align=\"right\"";
                             } elseif ( $imgwerte[1] == "l" ) {
                                 $align = " align=\"left\"";
-                            } else {
-                                $align = "";
+                            } elseif ( $imgwerte[1] != "" ) {
+                                $attrib = " ".$art."=\"".$imgwerte[1]."\"";
                             }
                             if ( $imgwerte[2] == "0" ) {
                                 $border = " border=\"0\"";
@@ -398,13 +407,17 @@
                                     $imgsize = "";
                                 }
                             }
-                            $ausgabewert = $linka."<img src=\"".$imgurl."\"".$vspace.$hspace." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
+                            $ausgabewert = $linka."<img src=\"".$imgurl."\"".$attrib.$vspace.$hspace." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
                             $replace = str_replace($opentag.$tagwert.$closetag,$ausgabewert,$replace);
                         }
                         break;
                     case "[/IMGB]":
                         $tagwerte = explode("]",$tagwert,2);
                         $imgwerte = explode(";",$tagwerte[0]);
+                        $extrawerte = explode(":",$imgwerte[1]);
+                        if ( $extrawerte[1] != "" ) $imgwerte[1] = $extrawerte[1];
+                        $ausgaben["align"] = ""; $lspace = ""; $rspace = ""; $ausgaben["imgstyle"] = "";
+                        // "id" or "class" wird im template gesetzt (!#ausgaben_imgstyle)
                         if ( $imgwerte[1] == "r" ) {
                             $ausgaben["align"] = "right";
                             if ( $imgwerte[6] == "" ) {
@@ -421,8 +434,8 @@
                             } else {
                                 $rspace = $imgwerte[6];
                             }
-                        } else {
-                            $ausgaben["align"] = "";
+                        } elseif ( $imgwerte[1] != "" ) {
+                            $ausgaben["imgstyle"] = $imgwerte[1];
                         }
                         if ( $imgwerte[2] == "0" ) {
                             $ausgaben["border"] = " border=\"0\"";
@@ -519,11 +532,14 @@
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
                             $divwerte = explode(";",$tagwerte[0]);
-                            if ( $divwerte[1] == "id" ) {
+                            $extrawerte = explode(":",$divwerte[0]);
+                            if ( $extrawerte[1] != "" ) $divwerte[0] = $extrawerte[1];
+                            if ( $extrawerte[0] == "id" ) {
                                 $art = "id";
                             } else {
                                 $art = "class";
                             }
+                            $attrib = "";
                             if ( $divwerte[0] != "" ) {
                                 $attrib = " ".$art."=\"".$divwerte[0]."\"";
                             }
