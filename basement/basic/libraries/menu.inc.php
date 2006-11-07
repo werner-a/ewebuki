@@ -246,7 +246,8 @@
             //
             // menupunkte level 3
             //
-            if ( strstr($environment["ebene"],"/".$level1array["entry"]) || strstr($environment["kategorie"],$level1array["entry"]) ) {
+            #if ( strstr($environment["ebene"],"/".$level1array["entry"]) || strstr($environment["kategorie"],$level1array["entry"]) ) {
+            if ( strpos($environment["ebene"]."/".$environment["kategorie"],$level1array["entry"]."/".$level2array["entry"]) !== false ) {
                 if ( $cfg["menu"]["level3"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
                 $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
                                 ".$cfg["menu"]["db"]["entries"].".refid,
