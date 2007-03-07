@@ -135,7 +135,7 @@ sql:
 
 INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
 VALUES ( NULL , 'entry', '-555504947.edit', '0', '', '', NULL , '-1', 'PREG:^[a-z_\.\-0-9]+$' );
-INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fckerror` )
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` )
 VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', '', 'Ungültige Zeichen im Feld Eintrag.' );
 
 
