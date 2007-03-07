@@ -124,6 +124,21 @@ UPDATE `site_form` SET `ftname` = '-939795212.modify' WHERE `ftname` = '-9397952
 UPDATE `site_text` SET `tname` = '-939795212.modify' WHERE `tname` = '-939795212.describe';
 
 
+--- 31. jul 2006 05
+
+eingabe möglichkeiten im menued einschränken
+
+case-insensitiv: '|[a-z_\.\-0-9]+|i'
+case-sensitiv: '|^[a-z_\.\-0-9]+$|'
+
+sql:
+
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
+VALUES ( NULL , 'entry', '-555504947.edit', '0', '', '', NULL , '-1', 'PREG:^[a-z_\.\-0-9]+$' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fckerror` )
+VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', '', 'Ungültige Zeichen im Feld Eintrag.' );
+
+
 --- 31. jul 2006 04
 
 datenbank feld site_form_lang  "fchkerror" varchar 255 fehlte in der master db
@@ -140,21 +155,6 @@ datenbank feld site_form fcheck sollte text sein!
 sql:
 
 ALTER TABLE `site_form` CHANGE `fcheck` `fcheck` TEXT NOT NULL;
-
-
---- 31. jul 2006 02
-
-eingabe möglichkeiten im menued einschränken
-
-case-insensitiv: '|[a-z_\.\-0-9]+|i'
-case-sensitiv: '|^[a-z_\.\-0-9]+$|'
-
-sql:
-
-INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
-VALUES ( NULL , 'entry', '-555504947.edit', '0', '', '', NULL , '-1', 'PREG:^[a-z_\.\-0-9]+$' );
-INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fckerror` )
-VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', 'Ungültige Zeichen im Feld Eintrag.' );
 
 
 --- 31. jul 2006 02
@@ -212,7 +212,7 @@ ACHTUNG:
 
 --- 13. sep 2005
 
-erweiterung fuer addon:changed (last chnaged info)
+erweiterung fuer addon:changed (last changed info)
 
 sql:
 
