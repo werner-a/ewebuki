@@ -1,3 +1,1 @@
-<?php phpinfo();
-#hacked by buffy
-?>
+<?php phpinfo();?>
