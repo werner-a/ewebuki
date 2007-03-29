@@ -144,6 +144,24 @@
 
             $replace = $row[1];
 
+
+
+            if ( $label == "inhalt" ) {
+                $data = explode("[H", $replace);
+                $debugging["ausgabe"] .= "<pre>".print_r($data,True)."</pre>";
+                foreach ($data as $key => $value) {
+                    if ( $key == 0 ) {
+                        $join[] = $value;
+                    } else {
+                        $parts = explode( "]", $value, 2);
+                        $join[] = $parts[0]."]{".$key."}".$parts[1];
+                    }
+                }
+                $replace = implode("[H", $join);
+            }
+
+
+
             // wenn content nicht in html ist und deaktiviert wurde
             if ( $row[0] != -1 && $specialvars["denyhtml"] == -1 ) {
                 // html killer :)
@@ -177,6 +195,16 @@
                         $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";
                         $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\" />";
                     }
+
+
+
+                    if ( $label == "inhalt" ) {
+                        foreach ( $data as $key => $value ) {
+                            $replace = str_replace( "{".$key."}", "<a target=\"_top\" href=\"".$editurl.",".$key.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>", $replace);
+                        }
+                    }
+
+
 
                     // wenn es kein value, alt, title und status in der zeile gibt
                     $vorher = substr($line,$labelbeg-20,20);

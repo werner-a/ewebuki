@@ -77,13 +77,42 @@
             $ausgaben["ce_tem_db"]      = "#(db): ".$environment["parameter"][1];
             $ausgaben["ce_tem_name"]    = "#(template): ".$environment["parameter"][2];
             $ausgaben["ce_tem_label"]   = "#(label): ".$environment["parameter"][3];
+            # $environment["parameter"][4] -> abschnitt bearbeiten -> war: datensatz in db gefunden
             $ausgaben["ce_tem_convert"] = "#(convert): ".$environment["parameter"][5];
             $ausgaben["ce_tem_lang"]    = "#(language): ".$environment["language"];
 
             $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='".$environment["parameter"][2]."' AND lang='".$environment["language"]."' AND label='".$environment["parameter"][3]."'";
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result, $nop);
-            $found = $db -> num_rows($result);
+            #$found = $db -> num_rows($result);
+
+
+
+            $alldata = explode("[H", $data["content"]);
+            if ( $environment["parameter"][4] != "" ) {
+                $data["content"] = "[H".$alldata[$environment["parameter"][4]];
+            }
+
+
+
+            /*
+            / wenn preview gedrueckt wird, hidedata erzeugen und $data["content"] aendern
+            /
+            / so funktioniert das ganze nicht
+            / (es wird nie gespeichert -> "edit" anstatt "save" in der aktion url)
+            / der extra parameter in der aktion url und
+            / die if abfrage die den save verhindert
+            / hat mir nicht gefallen!
+            */
+            if ( $HTTP_POST_VARS["PREVIEW"]  ){
+                $hidedata["preview"]["content"] = "#(preview)";
+                $preview = intelilink($HTTP_POST_VARS["content"]);
+                $preview = tagreplace($preview);
+                $hidedata["preview"]["content"] .= nlreplace($preview);
+                $data["content"] = $HTTP_POST_VARS["content"];
+            }
+
+
 
             // convert tag 2 html
             switch ( $environment["parameter"][5] ) {
@@ -156,9 +185,11 @@
             }
 
             // wohin schicken
-            $ausgaben["form_aktion"] = $pathvars["virtual"]."/cms/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$found.".html";
+            $ausgaben["form_aktion"] = $pathvars["virtual"]."/cms/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
+            //                                                   ------
 
-       } elseif ( $environment["kategorie"] == "save" ) {
+        } elseif ( $environment["kategorie"] == "save" ) {
+        //         -----------------------------------
 
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$_SESSION["ebene"].$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$_SESSION["kategorie"].$debugging["char"];
@@ -172,7 +203,23 @@
                 $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
             }
 
-            $content = $HTTP_POST_VARS["content"];
+
+            $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='".$environment["parameter"][2]."' AND lang='".$environment["language"]."' AND label='".$environment["parameter"][3]."'";
+            $result  = $db -> query($sql);
+            $data = $db -> fetch_array($result, $nop);
+            $content_exist = $db -> num_rows($result);
+
+
+
+            if ( $environment["parameter"][4] != "" ) {
+                $alldata = explode("[H", $data["content"]);
+                $alldata[$environment["parameter"][4]] = str_replace("[H", "", $HTTP_POST_VARS["content"]);
+                $content = implode("[H", $alldata);
+            } else {
+                $content = $HTTP_POST_VARS["content"];
+            }
+
+
 
             // html killer :)
             if ( $specialvars["denyhtml"] == -1 ) {
@@ -188,7 +235,7 @@
             }
 
 
-            if ( $environment["parameter"][4] == 1 ) {
+            if ( $content_exist == 1 ) {
                 if ( $HTTP_POST_VARS["content"] == "" ) {
                     $sql = "DELETE FROM ". SITETEXT ."
                                   WHERE  label ='".$environment["parameter"][3]."'
