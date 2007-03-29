@@ -61,6 +61,10 @@
   #$defaults["cms-tag"]["signal"] = "<img src=\"".$pathvars["images"]."/cms-tag-";
   #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\">";
 
+  // einstellung fuer die sections aendern
+  #$defaults["section"]["label"] = "inhalt";
+  #$defaults["section"]["tag"] = "[H";
+
   // bild einfügen tag
   #$defaults["cms-tag"]["grafik"] = "[IMGB=";
   #$defaults["cms-tag"][",grafik"] = ";;0;b;";

@@ -73,6 +73,7 @@
     $specialvars["crc32"] = -1; // ablage des content mit crc32.tname
     $specialvars["denyhtml"] = -1; // html im content verbieten
     $specialvars["denyspace"] = -1; // leerzeichen im content verbieten
+    $specialvars["nosections"] = 0; // bearbeiten marke pro absatz verhindern
     $specialvars["404"]["enable"] = 0; // 404 fehlermeldungen aktivieren
     $specialvars["404"]["nochk"]["ebene"] = array("/cms","/admin"); // ebenen ohne 404 meldung
     $specialvars["404"]["nochk"]["kategorie"] = array("index","view"); // kategorien ohne 404 meldung
