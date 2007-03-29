@@ -9,6 +9,14 @@ $Id$
 --- v?.?.?-???? - ??. mon year num
 
 
+--- 29. mar 2007
+
+ewebuki teilt jetzt den hauptbereich (default = inhalt) einer seite in sektionen.
+ein tag (default = [H) dient dabei als Trenner. laestiges scrollen bei
+viel content auf einer seite ist damit nicht mehr noetig. marke und tag sind 
+natuerlich einstellbar siehe: site.cfg.php, overwrite.cfg.php
+
+
 --- 20. okt 2006
 
 ewebuki findet sein subdir jetzt anhand einer environment variable
