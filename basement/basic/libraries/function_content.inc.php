@@ -146,10 +146,12 @@
 
 
 
-            if ( $label == "inhalt" ) {
-                $data = explode("[H", $replace);
-                $debugging["ausgabe"] .= "<pre>".print_r($data,True)."</pre>";
-                foreach ($data as $key => $value) {
+            if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
+            if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
+
+            if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
+                $allcontent = explode($defaults["section"]["tag"], $replace);
+                foreach ($allcontent as $key => $value) {
                     if ( $key == 0 ) {
                         $join[] = $value;
                     } else {
@@ -157,7 +159,7 @@
                         $join[] = $parts[0]."]{".$key."}".$parts[1];
                     }
                 }
-                $replace = implode("[H", $join);
+                $replace = implode($defaults["section"]["tag"], $join);
             }
 
 
@@ -198,8 +200,8 @@
 
 
 
-                    if ( $label == "inhalt" ) {
-                        foreach ( $data as $key => $value ) {
+                    if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
+                        foreach ( $allcontent as $key => $value ) {
                             $replace = str_replace( "{".$key."}", "<a target=\"_top\" href=\"".$editurl.",".$key.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>", $replace);
                         }
                     }

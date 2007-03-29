@@ -88,9 +88,9 @@
 
 
 
-            $alldata = explode("[H", $data["content"]);
+            $alldata = explode($defaults["section"]["tag"], $data["content"]);
             if ( $environment["parameter"][4] != "" ) {
-                $data["content"] = "[H".$alldata[$environment["parameter"][4]];
+                $data["content"] = $defaults["section"]["tag"].$alldata[$environment["parameter"][4]];
             }
 
 
@@ -212,17 +212,17 @@
 
 
             if ( $environment["parameter"][4] != "" ) {
-                $allcontent = explode("[H", $data["content"]);
+                $allcontent = explode($defaults["section"]["tag"], $data["content"]);
                 foreach ($allcontent as $key => $value) {
                     if ( $key == $environment["parameter"][4] ) {
-                        $length = 2;
-                        if ( substr($HTTP_POST_VARS["content"],0,$length) == "[H" ) {
-                            $content .= "[H".substr($HTTP_POST_VARS["content"],$length);
+                        $length = strlen( $defaults["section"]["tag"] );
+                        if ( substr($HTTP_POST_VARS["content"],0,$length) == $defaults["section"]["tag"] ) {
+                            $content .= $defaults["section"]["tag"].substr($HTTP_POST_VARS["content"],$length);
                         } else {
                             $content .= $HTTP_POST_VARS["content"];
                         }
                     } elseif ( $key > 0 ) {
-                        $content .= "[H".$value;
+                        $content .= $defaults["section"]["tag"].$value;
                     } else {
                         $content .= $value;
                     }
