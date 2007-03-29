@@ -212,9 +212,21 @@
 
 
             if ( $environment["parameter"][4] != "" ) {
-                $alldata = explode("[H", $data["content"]);
-                $alldata[$environment["parameter"][4]] = str_replace("[H", "", $HTTP_POST_VARS["content"]);
-                $content = implode("[H", $alldata);
+                $allcontent = explode("[H", $data["content"]);
+                foreach ($allcontent as $key => $value) {
+                    if ( $key == $environment["parameter"][4] ) {
+                        $length = 2;
+                        if ( substr($HTTP_POST_VARS["content"],0,$length) == "[H" ) {
+                            $content .= "[H".substr($HTTP_POST_VARS["content"],$length);
+                        } else {
+                            $content .= $HTTP_POST_VARS["content"];
+                        }
+                    } elseif ( $key > 0 ) {
+                        $content .= "[H".$value;
+                    } else {
+                        $content .= $value;
+                    }
+                }
             } else {
                 $content = $HTTP_POST_VARS["content"];
             }
