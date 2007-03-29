@@ -144,26 +144,6 @@
 
             $replace = $row[1];
 
-
-
-            if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
-            if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
-
-            if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
-                $allcontent = explode($defaults["section"]["tag"], $replace);
-                foreach ($allcontent as $key => $value) {
-                    if ( $key == 0 ) {
-                        $join[] = $value;
-                    } else {
-                        $parts = explode( "]", $value, 2);
-                        $join[] = $parts[0]."]{".$key."}".$parts[1];
-                    }
-                }
-                $replace = implode($defaults["section"]["tag"], $join);
-            }
-
-
-
             // wenn content nicht in html ist und deaktiviert wurde
             if ( $row[0] != -1 && $specialvars["denyhtml"] == -1 ) {
                 // html killer :)
@@ -179,6 +159,28 @@
                 if ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
                   // erlaubt wenn content_right gesetzt katzugriff und nur im
                   ( $specialvars["security"]["enable"] == -1 && $katzugriff == -1 && $dbzugriff == -1 )){
+
+
+
+
+                    if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
+                    if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
+
+                    if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
+                        $allcontent = explode($defaults["section"]["tag"], $replace);
+                        foreach ($allcontent as $key => $value) {
+                            if ( $key == 0 ) {
+                                $join[] = $value;
+                            } else {
+                                $parts = explode( "]", $value, 2);
+                                $join[] = $parts[0]."]{".$key."}".$parts[1];
+                            }
+                        }
+                        $replace = implode($defaults["section"]["tag"], $join);
+                    }
+
+
+
 
                     // konvertieren ?
                     if ( $specialvars["wysiwyg"] == "" && $row[0] == -1 ) {
