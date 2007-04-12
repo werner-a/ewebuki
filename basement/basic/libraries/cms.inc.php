@@ -212,8 +212,8 @@
 
 
             if ( $environment["parameter"][4] != "" ) {
-                $allcontent = explode($defaults["section"]["tag"], $data["content"]);
-		$content = "";
+                $allcontent = explode($defaults["section"]["tag"], addslashes($data["content"]) );
+                $content = "";
                 foreach ($allcontent as $key => $value) {
                     if ( $key == $environment["parameter"][4] ) {
                         $length = strlen( $defaults["section"]["tag"] );
