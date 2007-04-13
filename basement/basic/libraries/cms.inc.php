@@ -249,7 +249,7 @@
 
 
             if ( $content_exist == 1 ) {
-                if ( $HTTP_POST_VARS["content"] == "" ) {
+                if ( $environment["parameter"][4] == "" && $HTTP_POST_VARS["content"] == "" ) {
                     $sql = "DELETE FROM ". SITETEXT ."
                                   WHERE  label ='".$environment["parameter"][3]."'
                                     AND  tname ='".$environment["parameter"][2]."'
