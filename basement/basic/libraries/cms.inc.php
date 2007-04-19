@@ -72,7 +72,24 @@
 
         if ( $environment["kategorie"] == "edit" ) {
 
-            if ( isset($_SESSION["cms_last_edit"]) ) unset($_SESSION["cms_last_edit"]);
+
+
+            $debugging["ausgabe"] .= "e: ".$_SESSION["ebene"]."<br>";
+            $debugging["ausgabe"] .= "el: ".$_SESSION["cms_last_ebene"]."<br>";
+            $debugging["ausgabe"] .= "k: ".$_SESSION["kategorie"]."<br>";
+            $debugging["ausgabe"] .= "kl: ".$_SESSION["cms_last_kategorie"]."<br>";
+
+            if ( isset($_SESSION["cms_last_edit"]) ) {
+                unset($_SESSION["cms_last_edit"]);
+
+                $_SESSION["ebene"] = $_SESSION["cms_last_ebene"];
+                unset($_SESSION["cms_last_ebene"]);
+
+                $_SESSION["kategorie"] = $_SESSION["cms_last_kategorie"];
+                unset($_SESSION["cms_last_kategorie"]);
+            }
+
+
 
             $ausgaben["ce_tem_db"]      = "#(db): ".$environment["parameter"][1];
             $ausgaben["ce_tem_name"]    = "#(template): ".$environment["parameter"][2];
@@ -298,6 +315,8 @@
 
                 $_SESSION["cms_last_edit"] = str_replace("save,", "edit,", $pathvars["requested"]);
                 $_SESSION["cms_last_referer"] = $ausgaben["form_referer"];
+                $_SESSION["cms_last_ebene"] = $_SESSION["ebene"];
+                $_SESSION["cms_last_kategorie"] = $_SESSION["kategorie"];
 
                 if ( $HTTP_POST_VARS["upload"] > 0 ) {
                     header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$HTTP_POST_VARS["upload"]);
