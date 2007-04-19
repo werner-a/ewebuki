@@ -99,10 +99,23 @@
             $ausgaben["ce_tem_convert"] = "#(convert): ".$environment["parameter"][5];
             $ausgaben["ce_tem_lang"]    = "#(language): ".$environment["language"];
 
-            $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='".$environment["parameter"][2]."' AND lang='".$environment["language"]."' AND label='".$environment["parameter"][3]."'";
+            $sql = "SELECT html, content, changed, byalias FROM ". SITETEXT ." WHERE tname='".$environment["parameter"][2]."' AND lang='".$environment["language"]."' AND label='".$environment["parameter"][3]."'";
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result, $nop);
             #$found = $db -> num_rows($result);
+
+
+
+            if ( strstr($data["byalias"],"!") ) {
+                $ausgaben["ce_tem_name"] .= " (lock by ".substr($data["byalias"],1)." @ ".$data["changed"].")";
+            } else {
+                $sql = "UPDATE ". SITETEXT ." set
+                             byalias = '!".$_SESSION["alias"]."'
+                         WHERE tname = '".$environment["parameter"][2]."'
+                           AND  lang = '".$environment["language"]."'
+                           AND label = '".$environment["parameter"][3]."'";
+                $result  = $db -> query($sql);
+            }
 
 
 
