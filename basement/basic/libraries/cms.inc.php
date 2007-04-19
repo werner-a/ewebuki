@@ -73,21 +73,22 @@
         if ( $environment["kategorie"] == "edit" ) {
 
 
+            $debugging["ausgabe"] .= "<br>last edit: ".$_SESSION["cms_last_edit"]."<br><br>";
+            $debugging["ausgabe"] .= "last ebene    : ".$_SESSION["cms_last_ebene"]."<br>";
+            $debugging["ausgabe"] .= "last kategorie: ".$_SESSION["cms_last_kategorie"]."<br>";
 
-            $debugging["ausgabe"] .= "e: ".$_SESSION["ebene"]."<br>";
-            $debugging["ausgabe"] .= "el: ".$_SESSION["cms_last_ebene"]."<br>";
-            $debugging["ausgabe"] .= "k: ".$_SESSION["kategorie"]."<br>";
-            $debugging["ausgabe"] .= "kl: ".$_SESSION["cms_last_kategorie"]."<br>";
-
-            if ( isset($_SESSION["cms_last_edit"]) ) {
+            if ( isset($_SESSION["cms_last_edit"]) && $_GET["referer"] != "" ) {
                 unset($_SESSION["cms_last_edit"]);
 
                 $_SESSION["ebene"] = $_SESSION["cms_last_ebene"];
-                unset($_SESSION["cms_last_ebene"]);
-
                 $_SESSION["kategorie"] = $_SESSION["cms_last_kategorie"];
+
+                unset($_SESSION["cms_last_ebene"]);
                 unset($_SESSION["cms_last_kategorie"]);
             }
+
+            $debugging["ausgabe"] .= "<br>neue ebene    : ".$_SESSION["ebene"]."<br>";
+            $debugging["ausgabe"] .= "neue kategorie: ".$_SESSION["kategorie"]."<br>";
 
 
 
