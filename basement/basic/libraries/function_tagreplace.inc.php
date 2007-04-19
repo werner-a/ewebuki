@@ -280,6 +280,7 @@
                         }
                         break;
                     case "[/IMG]":
+                        $imgsize = ""; $imgurl = "";
                         if ( $sign == "]" ) {
                             if ( !strstr($tagwert, "/") ) {
                                 $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/".$tagwert;
