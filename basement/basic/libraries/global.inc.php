@@ -44,7 +44,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // path config
-    $pathvars["webroot"]   = "http://".$_SERVER["HTTP_HOST"];
+    if ( $_SERVER["HTTPS"] == "on" ) {
+        $pathvars["protocol"] = "https";
+    } else {
+        $pathvars["protocol"] = "http";
+    }
+    $pathvars["webroot"] = $pathvars["protocol"]."://".$_SERVER["HTTP_HOST"];
     $pathvars["webimages"] = "/images/main"."/";                        # gilt nur fuer select seite
     $pathvars["webcss"]    = "/css"."/";                                # gilt nur fuer select seite
 
