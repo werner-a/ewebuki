@@ -62,21 +62,21 @@
 
 
     // dynamic style - db test/extension
-    $sql = "select dynamiccss from site_".$mt ;
+    $sql = "select dynamiccss from ".$cfg["db"]["menu"]["entries"];
     $result = $db -> query($sql);
     if ( $result ) {
         #echo $db-> field_name($result,0);
-        $dynamiccss =  "site_".$mt.".dynamiccss,";
+        $dynamiccss = $cfg["db"]["menu"]["entries"].".dynamiccss,";
     } else {
         unset($dynamiccss);
     }
 
     // dynamic bg - db test/extension
-    $sql = "select dynamicbg from site_".$mt ;
+    $sql = "select dynamicbg from ".$cfg["db"]["menu"]["entries"];
     $result = $db -> query($sql);
     if ( $result ) {
         #echo $db-> field_name($result,0);
-        $dynamicbg =  "site_".$mt.".dynamicbg,";
+        $dynamicbg = $cfg["db"]["menu"]["entries"].".dynamicbg,";
     } else {
         unset($dynamicbg);
     }
@@ -99,6 +99,8 @@
     $refid = 0;
     $kekscount = count($kekspath);
     $hitcounter = 0;
+    $ausgaben["UP"] = $cfg["menuroot"];
+    $lnk[0] = $cfg["menuroot"];
     unset($path);
     foreach ($kekspath as $key => $value) {
         // makierte eintraege aendern
@@ -110,30 +112,30 @@
 
         #$search = "like '".$value."%'"; // ich weiss nicht mehr warum
         $search = "like '".$value."'";
-        $sql = "SELECT site_".$mt.".mid,
-                       site_".$mt.".refid,
-                       site_".$mt.".entry,
-                       site_".$mt.".level,
-                       site_".$mt.".defaulttemplate,
+        $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
+                       ".$cfg["db"]["menu"]["entries"].".refid,
+                       ".$cfg["db"]["menu"]["entries"].".entry,
+                       ".$cfg["db"]["menu"]["entries"].".level,
+                       ".$cfg["db"]["menu"]["entries"].".defaulttemplate,
                        ".$dynamiccss.$dynamicbg."
-                       site_".$mt."_lang.label
-                  FROM site_".$mt."
-            INNER JOIN site_".$mt."_lang
-                    ON site_".$mt.".mid = site_".$mt."_lang.mid
-                 WHERE site_".$mt.".entry ".$search."
-                   AND site_".$mt.".refid = '".$refid."'
-                   AND site_".$mt."_lang.lang='".$environment["language"]."';";
+                       ".$cfg["db"]["lang"]["entries"].".label
+                  FROM ".$cfg["db"]["menu"]["entries"]."
+            INNER JOIN ".$cfg["db"]["lang"]["entries"]."
+                    ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                 WHERE ".$cfg["db"]["menu"]["entries"].".entry ".$search."
+                   AND ".$cfg["db"]["menu"]["entries"].".refid = '".$refid."'
+                   AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
 
-#                   AND ( site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL )
+#                   AND ( ".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL )
 
-#                 WHERE site_".$mt.".entry ".$search."
-#                   AND site_".$mt."_lang.lang='".$environment["language"]."'
-#                   AND site_".$mt.".refid = '".$refid."';";
+#                 WHERE ".$cfg["db"]["menu"]["entries"].".entry ".$search."
+#                   AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."'
+#                   AND ".$cfg["db"]["menu"]["entries"].".refid = '".$refid."';";
 
 #                 WHERE (
-#                       (site_".$mt.".refid=".$keksarray["refid"].")
-#                   AND (site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL)
-#                   AND (site_".$mt."_lang.lang='".$environment["language"]."')
+#                       (".$cfg["db"]["menu"]["entries"].".refid=".$keksarray["refid"].")
+#                   AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
+#                   AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
 #                       )
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -185,21 +187,21 @@
             $ausgaben["M3"] = crc32($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
 
             if ( $path.".html" == $environment["ebene"]."/".$environment["kategorie"].".html" ) {
-                $sql = "SELECT  site_".$mt.".entry,
-                                site_".$mt.".refid,
-                                site_".$mt.".level,
-                                site_".$mt."_lang.lang,
-                                site_".$mt."_lang.label,
-                                site_".$mt."_lang.exturl
-                          FROM  site_".$mt."
-                    INNER JOIN  site_".$mt."_lang
-                            ON  site_".$mt.".mid = site_".$mt."_lang.mid
+                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".entry,
+                                ".$cfg["db"]["menu"]["entries"].".refid,
+                                ".$cfg["db"]["menu"]["entries"].".level,
+                                ".$cfg["db"]["lang"]["entries"].".lang,
+                                ".$cfg["db"]["lang"]["entries"].".label,
+                                ".$cfg["db"]["lang"]["entries"].".exturl
+                          FROM  ".$cfg["db"]["menu"]["entries"]."
+                    INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
+                            ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
                          WHERE (
-                               (site_".$mt.".refid=".$keksarray["refid"].")
-                           AND (site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL)
-                           AND (site_".$mt."_lang.lang='".$environment["language"]."')
+                               (".$cfg["db"]["menu"]["entries"].".refid=".$keksarray["refid"].")
+                           AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
+                           AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
                                )
-                      ORDER BY  sort, label;";
+                      ORDER BY  ".$cfg["db"]["menu"]["order"].";";
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
@@ -229,20 +231,20 @@
                 $lnkcount = 0;
                 $lnk[$lnkcount] = $ausgaben["UP"];
 
-                $sql = "SELECT  site_".$mt.".entry,
-                                site_".$mt.".refid,
-                                site_".$mt.".level,
-                                site_".$mt."_lang.lang,
-                                site_".$mt."_lang.label,
-                                site_".$mt."_lang.exturl
-                          FROM  site_".$mt."
-                    INNER JOIN  site_".$mt."_lang
-                            ON  site_".$mt.".mid = site_".$mt."_lang.mid
+                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".entry,
+                                ".$cfg["db"]["menu"]["entries"].".refid,
+                                ".$cfg["db"]["menu"]["entries"].".level,
+                                ".$cfg["db"]["lang"]["entries"].".lang,
+                                ".$cfg["db"]["lang"]["entries"].".label,
+                                ".$cfg["db"]["lang"]["entries"].".exturl
+                          FROM  ".$cfg["db"]["menu"]["entries"]."
+                    INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
+                            ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
                          WHERE (
-                               (site_".$mt.".refid=".$keksarray["mid"].")
-                           AND (site_".$mt.".hide <> '-1' OR site_".$mt.".hide is NULL)
-                           AND (site_".$mt."_lang.lang='".$environment["language"]."'))
-                      ORDER BY  sort, label";
+                               (".$cfg["db"]["menu"]["entries"].".refid=".$keksarray["mid"].")
+                           AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
+                           AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."'))
+                      ORDER BY  ".$cfg["db"]["menu"]["order"].";";
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
