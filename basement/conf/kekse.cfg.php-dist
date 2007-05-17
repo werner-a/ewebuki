@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -40,10 +40,21 @@
 
     URL: http://www.chaos.de
 */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    // menu tabelle
-    $mt = "menu";
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
+
+    $cfg = array(
+         "menuroot" => "", // !#lnk_0,!#ausgaben_UP [UP][/UP]; "" zeigt nach $pathvars["menuroot"]
+               "db" => array(
+                    "menu" => array(
+                          "entries" => "site_menu",
+                            "order" => "sort, label",
+                               ),
+                    "lang" => array(
+                          "entries" => "site_menu_lang",
+                               ),
+                       ),
+
+    );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
