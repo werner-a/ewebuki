@@ -150,7 +150,7 @@
 
             // ohne fehler sql bauen und ausfuehren
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "UPDATE auth_user
+                $sql = "UPDATE ".$cfg["db"]["entries"]."
                            SET ".$cfg["db"]["pass"]." = '".$checked_password."'
                          WHERE ".$cfg["db"]["key"]." = ".$_SESSION["uid"];
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
