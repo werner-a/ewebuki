@@ -232,7 +232,9 @@
                 // neues generelles tagreplace
                 $replace = tagreplace($replace);
                 // newlines nach br wandeln (muss zuletzt gemacht werden)
-                $replace = nlreplace($replace);
+                if ( $specialvars["newbrmode"] != True ) {
+                    $replace = nlreplace($replace);
+                }
             }
 
             // marke ersetzen
