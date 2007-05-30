@@ -191,7 +191,8 @@
                             $tagwerte = explode("[*]",$tagwert);
                             $ausgabewert  = "<ul>";
                             while ( list ($key, $punkt) = each($tagwerte)) {
-                            $ausgabewert .= "<li><span>".$punkt."</span></li>";
+                                if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
+                                $ausgabewert .= "<li><span>".$punkt."</span></li>";
                             }
                             $ausgabewert .= "</ul>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
@@ -203,12 +204,14 @@
                             if ( $listart == 1 ) {
                                 $ausgabewert  = "<ol>";
                                 while ( list ($key, $punkt) = each($tagwerte)) {
+                                    if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
                                     $ausgabewert .= "<li><span>".$punkt."</span></li>";
                                 }
                                 $ausgabewert .= "</ol>";
                             } elseif ( $listart == "DEF" ) {
                                 $ausgabewert = "<dl>";
                                 while ( list ($key, $punkt) = each($tagwerte)) {
+                                    if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
                                     if ( $key % 2 != 0 ) {
                                         $ausgabewert .= "<dd>".$punkt."</dd>";
                                     } else {
@@ -223,7 +226,8 @@
                                     $ausgabewert  = "<ol type=\"".$listart."\">";
                                 }
                                 while ( list ($key, $punkt) = each($tagwerte)) {
-                                $ausgabewert .= "<li><span>".$punkt."</span></li>";
+                                    if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
+                                    $ausgabewert .= "<li><span>".$punkt."</span></li>";
                                 }
                                 if ( strlen($listart) > 1 ) {
                                     $ausgabewert .= "</ul>";
@@ -591,6 +595,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<tr>".$tagwert."</tr>",$replace);
                         break;
                     case "[/COL]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         if ( $sign == "]" ) {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"<td valign=\"top\">".$tagwert."</td>",$replace);
                         } else {
@@ -624,6 +629,7 @@
                         }
                         break;
                     case "[/H1]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         if ( $defaults["tag"]["h1"] == "" ) {
                           $defaults["tag"]["h1"] = "<h1>";
                           $defaults["tag"]["/h1"] = "</h1>";
@@ -631,6 +637,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h1"].$tagwert.$defaults["tag"]["/h1"],$replace);
                         break;
                     case "[/H2]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         if ( $defaults["tag"]["h2"] == "" ) {
                           $defaults["tag"]["h2"] = "<h2>";
                           $defaults["tag"]["/h2"] = "</h2>";
@@ -638,6 +645,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h2"].$tagwert.$defaults["tag"]["/h2"],$replace);
                         break;
                     case "[/H3]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         if ( $defaults["tag"]["h3"] == "" ) {
                           $defaults["tag"]["h3"] = "<h3>";
                           $defaults["tag"]["/h3"] = "</h3>";
@@ -645,6 +653,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h3"].$tagwert.$defaults["tag"]["/h3"],$replace);
                         break;
                     case "[/H4]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         if ( $defaults["tag"]["h4"] == "" ) {
                           $defaults["tag"]["h4"] = "<h4>";
                           $defaults["tag"]["/h4"] = "</h4>";
@@ -652,6 +661,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h4"].$tagwert.$defaults["tag"]["/h4"],$replace);
                         break;
                     case "[/H5]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         if ( $defaults["tag"]["h5"] == "" ) {
                           $defaults["tag"]["h5"] = "<h5>";
                           $defaults["tag"]["/h5"] = "</h5>";
@@ -659,6 +669,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h5"].$tagwert.$defaults["tag"]["/h5"],$replace);
                         break;
                     case "[/H6]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         if ( $defaults["tag"]["h6"] == "" ) {
                           $defaults["tag"]["h6"] = "<h6>";
                           $defaults["tag"]["/h6"] = "</h6>";
