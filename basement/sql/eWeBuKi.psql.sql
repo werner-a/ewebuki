@@ -224,6 +224,29 @@ INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl, extend) VALUES (3, 3
 INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl, extend) VALUES (4, 4, 'de   ', 'eWeBuKi Show', NULL, NULL);
 INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl, extend) VALUES (5, 5, 'de   ', 'Impressum', NULL, NULL);
 
+--
+-- Daten für Tabelle `site_form`                                                                                                      --
+--
+
+
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (1, 'username', '210295197.modify', '0', '', '', NULL, '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (2, 'pass', '210295197.modify', '0', '', '', 'password', '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (4, 'fid', '-939795212.modify', '0', '', '', 'hidden', '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (5, 'entry', '-555504947.edit', '0', '', '', NULL, '-1', 'PREG:^[a-z_.-0-9]+$');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (6, 'fdesc', '-939795212.modify', '25', '', '', NULL, '0', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (7, 'funder', '-939795212.modify', '30', '', '', NULL, '0', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (8, 'fhit', '-939795212.modify', '30', '', '', NULL, '0', '');
+
+--
+-- Daten für Tabelle `site_form`                                                                                                      --
+--
+
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (5, 5, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+
 -- 
 -- Daten für Tabelle `site_text`
 -- 
