@@ -162,9 +162,9 @@ CREATE TABLE site_menu_lang (
     extend character varying(128)
 );
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('site_menu_lang', 'mlid'), 5, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('site_menu_lang', 'mlid'), 6, false);
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('site_menu', 'mid'), 5, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('site_menu', 'mid'), 6, false);
 
 -- 
 -- Tabellenstruktur für Tabelle `site_text`
