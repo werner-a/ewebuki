@@ -90,16 +90,13 @@
             } elseif ($begin=="1") {
 
               // style path korrektur + dynamic style
-              if ( strpos($line,"../../css/") !== false ) {
-                $oldstyle=""; $newstyle="";
-                if ( substr($specialvars["dynamiccss"],0,1) == "_" ) {
-                    $oldstyle=$environment["design"];
-                    $newstyle=$environment["design"].$specialvars["dynamiccss"];
-                } elseif ( $specialvars["dynamiccss"] != "" ) {
-                    $oldstyle=$environment["design"];
-                    $newstyle=$specialvars["dynamiccss"];
+              if ( strpos($line,"css/".$environment["design"]."/") !== false ) {
+                if ( $specialvars["dynamiccss"] != "" ) {
+                    $line = str_replace("_default","_".$specialvars["dynamiccss"],$line);
                 }
-                $line=str_replace("../../css/".$oldstyle,$pathvars["subdir"].$pathvars["webcss"].$newstyle,$line);
+                $line = str_replace("../../css/",$pathvars["subdir"]."/css/",$line);
+              } elseif ( strpos($line,"../../css/") !== false ) {
+                $line = str_replace("../../css/",$pathvars["subdir"]."/css/",$line);
               }
 
               // image path korrektur (subdir support siehe weiter unten)

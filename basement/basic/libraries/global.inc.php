@@ -51,7 +51,7 @@
     }
     $pathvars["webroot"] = $pathvars["protocol"]."://".$_SERVER["HTTP_HOST"];
     $pathvars["webimages"] = "/images/main"."/";                        # gilt nur fuer select seite
-    $pathvars["webcss"]    = "/css"."/";                                # gilt nur fuer select seite
+    $pathvars["webcss"]    = "/css/main/"."/";                          # gilt nur fuer select seite
 
     // site config
     require dirname(dirname(dirname(__FILE__)))."/conf/site.cfg.php";
