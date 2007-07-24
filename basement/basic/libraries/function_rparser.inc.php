@@ -89,11 +89,6 @@
               $begin="0";
             } elseif ($begin=="1") {
 
-              // image path korrektur (subdir support siehe weiter unten)
-              if ( strpos($line,"../../images/") !== false ) {
-                $line=str_replace("../../images/","/images/",$line);
-              }
-
               // style path korrektur + dynamic style
               if ( strpos($line,"../../css/") !== false ) {
                 $oldstyle=""; $newstyle="";
@@ -105,6 +100,16 @@
                     $newstyle=$specialvars["dynamiccss"];
                 }
                 $line=str_replace("../../css/".$oldstyle,$pathvars["subdir"].$pathvars["webcss"].$newstyle,$line);
+              }
+
+              // image path korrektur (subdir support siehe weiter unten)
+              if ( strpos($line,"../../images/") !== false ) {
+                $line=str_replace("../../images/","/images/",$line);
+              }
+
+              // js path korrektur
+              if ( strpos($line,"../../js/") !== false ) {
+                $line=str_replace("../../js/",$pathvars["subdir"]."/js/",$line);
               }
 
               // dynamic bg
