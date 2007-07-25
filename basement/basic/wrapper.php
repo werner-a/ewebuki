@@ -138,10 +138,10 @@
     if ( $value[6] == "d" ) {
         echo $file."<br>";
     } else {
-        $f = fopen($file, 'r');
-        $datei = fread($f, filesize ($file));
-        fclose ($f);
-        echo $datei;
+        $handle = fopen($file, 'r');
+        $contents = fread($handle, filesize ($file));
+        fclose ($handle);
+        echo $contents;    
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
