@@ -107,7 +107,7 @@
 
 
             if ( strstr($data["byalias"],"!") ) {
-                $ausgaben["ce_tem_name"] .= " (lock by ".substr($data["byalias"],1)." @ ".$data["changed"].")";
+                $ausgaben["ce_tem_label"] .= " (lock by ".substr($data["byalias"],1)." @ ".$data["changed"].")";
             } else {
                 $sql = "UPDATE ". SITETEXT ." set
                              byalias = '!".$_SESSION["alias"]."'
