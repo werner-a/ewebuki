@@ -195,6 +195,9 @@
         // page basics
 
 
+        #$fixed_entry = str_replace(" ", "", $HTTP_POST_VARS["entry"]);
+        $fixed_entry = preg_replace("/[^A-Za-z_.-0-9]/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
+
         if ( $environment["parameter"][2] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["add"] != ""
@@ -227,7 +230,7 @@
                             $extenda = "extend, ";
                             $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
                         }
-                        $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, ".$extenda."label) VALUES ('".$environment["parameter"][1]."', '".$HTTP_POST_VARS["new_lang"]."', ".$extendb."'".$HTTP_POST_VARS["entry"]."' )";
+                        $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, ".$extenda."label) VALUES ('".$environment["parameter"][1]."', '".$HTTP_POST_VARS["new_lang"]."', ".$extendb."'".$fixed_entry."' )";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -292,17 +295,16 @@
                 $data = $db -> fetch_array($result,1);
 
                 // wurde der entry geaendert?
-                if ( $data["entry"] != $HTTP_POST_VARS["entry"] ) {
+                if ( $data["entry"] != $fixed_entry ) {
 
                     // gibt den geaenderten entry bereits?
                     $sql = "SELECT entry
                             FROM ".$cfg["db"]["menu"]["entries"]."
                             WHERE refid = '".$HTTP_POST_VARS["refid"]."'
-                            AND entry = '".$HTTP_POST_VARS["entry"]."'";
+                            AND entry = '".$fixed_entry."'";
                     $result1 = $db -> query($sql);
-                    #$data = $db -> fetch_array($result,1);
-                    $num_rows = $db -> num_rows($result1);
-                    if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
+                    $test = $db -> fetch_array($result,1);
+                    if ( $test["entry"] == $fixed_entry ) $ausgaben["form_error"] .= "#(error_dupe)";
 
                     if ( $ausgaben["form_error"] == ""  ) {
                         // content aktuelle seite aendern (alle sprachen)
@@ -317,21 +319,21 @@
                         #echo $ebene.":".$old_tname."<br>";
                         $suchmuster = $ebene."/".$data["entry"];
 
-                        $new_tname = $crc32.$HTTP_POST_VARS["entry"];
+                        $new_tname = $crc32.$fixed_entry;
                         #echo $ebene.":".$new_tname."<br>";
-                        $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
+                        $ersatz = $ebene."/".$fixed_entry;
 
                         $sql = "UPDATE ".$cfg["db"]["text"]["entries"]."
                                 SET tname = '".$new_tname."',
                                     ebene = '".$ebene."',
-                                    kategorie = '".$HTTP_POST_VARS["entry"]."'
+                                    kategorie = '".$fixed_entry."'
                                 WHERE tname = '".$old_tname."';";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
 
                         // content der unterpunkte aendern (alle sprachen)
-                        update_tname($environment["parameter"][1],/*$HTTP_POST_VARS["entry"]*/$suchmuster, $ersatz);
+                        update_tname($environment["parameter"][1], $suchmuster, $ersatz);
                     }
                 }
             }
@@ -351,9 +353,10 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                $entry = strtolower($HTTP_POST_VARS["entry"]);
-                $entry = str_replace(" ", "", $entry);
-                $sqla .= ", entry='".$entry."'";
+                #$entry = strtolower($HTTP_POST_VARS["entry"]); // wird jetzt mit einer regex erledigt
+                #$entry = str_replace(" ", "", $entry); // siehe $fixed_entry
+                $sqla .= ", entry='".$fixed_entry."'";
+
                 #$ldate = $HTTP_POST_VARS["ldate"];
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";

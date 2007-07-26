@@ -128,6 +128,10 @@
         // +++
         // page basics
 
+
+        #$fixed_entry = str_replace(" ", "", $HTTP_POST_VARS["entry"]);
+        $fixed_entry = preg_replace("/[^A-Za-z_.-0-9]/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
+
         if ( $environment["parameter"][1] == "verify"
             && ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["image"]
@@ -137,15 +141,14 @@
             form_errors( $form_options, $HTTP_POST_VARS );
 
             // gibt es einen solchen entry bereits?
-            if ( $HTTP_POST_VARS["entry"] != "" ) {
+            if ( $fixed_entry != "" ) {
                 $sql = "SELECT entry
                         FROM ".$cfg["db"]["menu"]["entries"]."
                         WHERE refid = '".$HTTP_POST_VARS["refid"]."'
-                        AND entry = '".$HTTP_POST_VARS["entry"]."'";
+                        AND entry = '".$fixed_entry."'";
                 $result = $db -> query($sql);
-                #$data = $db -> fetch_array($result,1);
-                $num_rows = $db -> num_rows($result);
-                if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
+                $test = $db -> fetch_array($result,1);
+                if ( $test["entry"] == $fixed_entry ) $ausgaben["form_error"] .= "#(error_dupe)";
             }
 
             // entry hinzufuegen
@@ -163,10 +166,10 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                $entry = strtolower($HTTP_POST_VARS["entry"]);
-                $entry = str_replace(" ", "", $entry);
+                #$entry = strtolower($HTTP_POST_VARS["entry"]); // wird jetzt mit einer regex erledigt
+                #$entry = str_replace(" ", "", $entry); // siehe $fixed_entry
                 $sqla .= ", entry";
-                $sqlb .= ", '".$entry."'";
+                $sqlb .= ", '".$fixed_entry."'";
 
                 $sql = "insert into ".$cfg["db"]["menu"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
