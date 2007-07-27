@@ -138,10 +138,14 @@
     if ( $value[6] == "d" ) {
         echo $file."<br>";
     } else {
-        $handle = fopen($file, 'r');
-        $contents = fread($handle, filesize ($file));
-        fclose ($handle);
-        echo $contents;    
+        if (($fh = fopen($file, 'rb')) === false) exit;
+        while (!feof($fh)) {
+            echo fread($fh, (1*(1024*1024)));
+            flush();
+            @ob_flush();
+        }
+        fclose($fh);
+        exit;
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
