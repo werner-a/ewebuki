@@ -111,7 +111,7 @@
                 if ( $level1array["exturl"] == "" ) {
                     $href = $cfg["menu"]["base"]."/".$level1array["entry"].".html";
                     $target = "";
-		    $aktiv = "";
+                    $aktiv = "";
                     if ( "" == $ebene[1]
                       && "" == $ebene[2]
                       && $level1array["entry"] == $environment["kategorie"] ) {
@@ -149,6 +149,15 @@
                     if ( $cfg["menu"]["level2"]["dynamic"] == -1 ) $cfg["menu"]["level2"]["enable"] = 0;
                 }
                 $ausgaben["ueberschrift"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["link"]);
+                if ( $cfg["menu"]["level1"]["link2"] == "" ) {
+                    $ausgaben["ueberschrift"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["link"]);
+                } else {
+                    if ( $aktiv == "" ) {
+                        $ausgaben["ueberschrift"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["link1"]);
+                    } else {
+                        $ausgaben["ueberschrift"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["link2"]);
+                    }
+                }
             }
         } else {
             $ausgaben["ordner"] = "";
@@ -220,7 +229,7 @@
                         if ( $level1array["entry"] == $ebene[1]
                           && "" == $ebene[2]
                           && $level2array["entry"] == $environment["kategorie"] ) {
-			    $aktiv = "aktiv";
+                            $aktiv = "aktiv";
                         }
                         $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
                         if ( $cfg["menu"]["level1"]["force"] == -1 ) $mandatory = "";
@@ -305,7 +314,7 @@
                                 if ( $level1array["entry"] == $ebene[1]
                                   && $level2array["entry"] == $ebene[2]
                                   && $level3array["entry"] == $environment["kategorie"] ) {
-			            $aktiv = "aktiv";
+                                    $aktiv = "aktiv";
                                 }
                             } else {
                                 $href = $level3array["exturl"];
