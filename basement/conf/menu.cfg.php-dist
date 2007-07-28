@@ -73,6 +73,9 @@
     // css menu ohne template (kommentar zeichen entfernen)
                        #"on" => "<ul>\n",
                      #"link" => "<li class=\"Level1##aktiv##\"><a ##target## href=\"##link##\">##label##</a></li>\n",
+    // verschidene links - werden fuer das neue stylesheet design benötigt
+                    #"link1" => "<li><a ##target## href=\"##link##\">##label##</a></li>\n",
+                    #"link2" => "<li class=\"##aktiv##\">##label##</li>\n",
                       #"off" => "</ul>",
                     ),
 

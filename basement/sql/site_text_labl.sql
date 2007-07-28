@@ -1,11 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 2.8.2.1
+-- version 2.10.2
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Erstellungszeit: 06. Oktober 2006 um 20:55
+-- Erstellungszeit: 28. Juli 2007 um 13:51
 -- Server Version: 4.0.24
--- PHP-Version: 4.3.10-16
+-- PHP-Version: 4.3.10-22
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
 -- 
 -- Datenbank: `ewebuki_mdelabl`
 -- 
@@ -14,7 +17,8 @@
 -- Daten für Tabelle `site_text`
 -- 
 
-REPLACE INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+REPLACE INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES 
+('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Inhalt', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'entry', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Eintrag', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'error_menu', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen des Menüeintrag', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
@@ -151,11 +155,9 @@ REPLACE INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie
 ('de', 'u', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Unterstrichen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'up', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zurück-Link', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'upload', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Hinaufladen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', '404', '', 'indi', '0', 'Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '404', '', 'indi', '0', 'Fehler 404 - Nicht gefunden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'inhalt', '-1', '404', '', 'fehlt', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind[/P].', '2007-07-28 13:22:15', 'Ammon', 'Werner', 'chaot@chaos.de', 'chaot'),
 ('de', 'error_dupe', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Der Eintrag ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '404referer', '', 'test3', '0', 'Fehler 404 - Nicht gefunden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', '404referer', '', 'test3', '0', 'Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'inhalt', '-1', '404referer', '', 'fehlt', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.[/P]', '2007-07-28 13:21:52', 'Ammon', 'Werner', 'chaot@chaos.de', 'chaot'),
 ('de', 'error_dupe', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Der Eintrag ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'error_dupe', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'In dieser Ebene existiert bereits ein Eintrag mit gleichem Namen.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'logout', '-1', 'auth.login', '', 'auth.login', '0', 'Abgemeldet', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),

@@ -9,26 +9,35 @@ $Id$
 --- v?.?.?-???? - ??. mon year num
 
 
+--- 28. juli 2007
+
+neues design stylesheet, welches demnaechst default ersetzt. um es
+schon vorab zu verwenden, einfach "stylesheet" als ["default_design"]
+in sie site.cfg.php eintragen. damit auch das menu mitspielt,
+menu.cfg.php auf generate stellen und die kommentar zeilen vor link1
+und link2 in der ersten ebene entfernen.
+
+
 --- 26. juli 2007
 
 achtung unbedingt menued aktualisieren! wird der entry mit
 großbuchstaben ergaenzt/geaendert und enthaelt site_form keinen
 eintrag der das verhindert, wird der content nicht mehr gefunden.
 
-die neue version verhindert das und filtert grundsaetzlich mit 
+die neue version verhindert das und filtert grundsaetzlich mit
 /[^A-Za-z_.-0-9]/. will man die zeichen noch weiter einschraenken ist
 mit folgenden fcheck eintraegen möglich:
 
 -> PREG:^[a-z_.-0-9]+$
 
-INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`) 
+INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
  VALUES ('entry', '-555504947.add', '0', '-1', 'PREG:^[a-z_.-0-9]+$');
-INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`) 
+INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
  VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungültige Zeichen im Feld Eintrag.');
 
-INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`) 
+INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
  VALUES ('entry', '-555504947.edit', '0', '-1', 'PREG:^[a-z_.-0-9]+$');
-INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`) 
+INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
  VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungültige Zeichen im Feld Eintrag.');
 
 
@@ -38,7 +47,7 @@ das css verzeichnis enthaelt jetzt ebenfalls unterordner mit den
 design namen. es wird empfohlen die dateien zu verschieben!
 
 das dynamic css handling funtioniert nur noch in diesen
-unterverzeichnissen. neu: alle *_default.css werden nun mit den 
+unterverzeichnissen. neu: alle *_default.css werden nun mit den
 werten aus dynamic css ergänzt.
 
 es gibt ein js verzeichnis für javascript dateien, welches auch

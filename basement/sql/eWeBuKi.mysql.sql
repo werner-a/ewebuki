@@ -1,20 +1,21 @@
 -- phpMyAdmin SQL Dump
--- version 2.8.2.1
+-- version 2.10.2
 -- http://www.phpmyadmin.net
--- 
+--
 -- Host: localhost
--- Erstellungszeit: 06. Oktober 2006 um 20:55
+-- Erstellungszeit: 28. Juli 2007 um 13:46
 -- Server Version: 4.0.24
--- PHP-Version: 4.3.10-16
--- 
--- Datenbank: `ewebuki_mdecvs`
--- 
+-- PHP-Version: 4.3.10-22
+
+--
+-- Datenbank: `ewebuki_mdesvn`
+--
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `auth_level`
--- 
+--
 
 CREATE TABLE `auth_level` (
   `lid` int(11) NOT NULL auto_increment,
@@ -23,18 +24,19 @@ CREATE TABLE `auth_level` (
   PRIMARY KEY  (`lid`)
 ) TYPE=MyISAM AUTO_INCREMENT=3 ;
 
--- 
+--
 -- Daten für Tabelle `auth_level`
--- 
+--
 
-INSERT INTO `auth_level` (`lid`, `level`, `beschreibung`) VALUES (1, 'cms_edit', 'berechtigt zum bearbeiten der templates'),
+INSERT INTO `auth_level` (`lid`, `level`, `beschreibung`) VALUES
+(1, 'cms_edit', 'berechtigt zum bearbeiten der templates'),
 (2, 'cms_admin', 'berechtigt zur administration');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `auth_right`
--- 
+--
 
 CREATE TABLE `auth_right` (
   `rid` int(11) NOT NULL auto_increment,
@@ -43,18 +45,19 @@ CREATE TABLE `auth_right` (
   PRIMARY KEY  (`rid`)
 ) TYPE=MyISAM AUTO_INCREMENT=3 ;
 
--- 
+--
 -- Daten für Tabelle `auth_right`
--- 
+--
 
-INSERT INTO `auth_right` (`rid`, `uid`, `lid`) VALUES (1, 1, 1),
+INSERT INTO `auth_right` (`rid`, `uid`, `lid`) VALUES
+(1, 1, 1),
 (2, 1, 2);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `auth_special`
--- 
+--
 
 CREATE TABLE `auth_special` (
   `sid` int(11) NOT NULL auto_increment,
@@ -68,16 +71,16 @@ CREATE TABLE `auth_special` (
   PRIMARY KEY  (`sid`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Daten für Tabelle `auth_special`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `auth_user`
--- 
+--
 
 CREATE TABLE `auth_user` (
   `uid` int(11) NOT NULL auto_increment,
@@ -90,17 +93,18 @@ CREATE TABLE `auth_user` (
   UNIQUE KEY `username` (`username`)
 ) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=2 ;
 
--- 
+--
 -- Daten für Tabelle `auth_user`
--- 
+--
 
-INSERT INTO `auth_user` (`uid`, `nachname`, `vorname`, `email`, `username`, `pass`) VALUES (1, '', '', '', 'ewebuki', 'WFffxluy26Lew');
+INSERT INTO `auth_user` (`uid`, `nachname`, `vorname`, `email`, `username`, `pass`) VALUES
+(1, '', '', '', 'ewebuki', 'WFffxluy26Lew');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `db_leer`
--- 
+--
 
 CREATE TABLE `db_leer` (
   `id` int(11) NOT NULL auto_increment,
@@ -109,18 +113,19 @@ CREATE TABLE `db_leer` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM AUTO_INCREMENT=3 ;
 
--- 
+--
 -- Daten für Tabelle `db_leer`
--- 
+--
 
-INSERT INTO `db_leer` (`id`, `field1`, `field2`) VALUES (1, 'Erster Eintrag', 'Zweite Spalte'),
+INSERT INTO `db_leer` (`id`, `field1`, `field2`) VALUES
+(1, 'Erster Eintrag', 'Zweite Spalte'),
 (2, 'Zweiter Eintrag', 'Zweite Spalte');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `site_file`
--- 
+--
 
 CREATE TABLE `site_file` (
   `fid` int(11) NOT NULL auto_increment,
@@ -137,17 +142,18 @@ CREATE TABLE `site_file` (
   PRIMARY KEY  (`fid`)
 ) TYPE=MyISAM AUTO_INCREMENT=2 ;
 
--- 
+--
 -- Daten für Tabelle `site_file`
--- 
+--
 
-INSERT INTO `site_file` (`fid`, `frefid`, `fuid`, `fdid`, `ftname`, `ffname`, `ffart`, `fdesc`, `funder`, `fhit`, `fdel`) VALUES (1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo Beschreibung', 'eWeBuKi Logo Unterschift', '', NULL);
+INSERT INTO `site_file` (`fid`, `frefid`, `fuid`, `fdid`, `ftname`, `ffname`, `ffart`, `fdesc`, `funder`, `fhit`, `fdel`) VALUES
+(1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo Beschreibung', 'eWeBuKi Logo Unterschift', '', NULL);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `site_form`
--- 
+--
 
 CREATE TABLE `site_form` (
   `fid` int(11) NOT NULL auto_increment,
@@ -162,11 +168,12 @@ CREATE TABLE `site_form` (
   PRIMARY KEY  (`fid`)
 ) TYPE=MyISAM AUTO_INCREMENT=9 ;
 
--- 
+--
 -- Daten für Tabelle `site_form`
--- 
+--
 
-INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES (1, 'username', '210295197.modify', '0', '', '', NULL, '-1', ''),
+INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES
+(1, 'username', '210295197.modify', '0', '', '', NULL, '-1', ''),
 (2, 'pass', '210295197.modify', '0', '', '', 'password', '-1', ''),
 (3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', ''),
 (4, 'fid', '-939795212.modify', '0', '', '', 'hidden', '-1', ''),
@@ -177,9 +184,9 @@ INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`,
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `site_form_lang`
--- 
+--
 
 CREATE TABLE `site_form_lang` (
   `flid` int(11) NOT NULL auto_increment,
@@ -193,20 +200,21 @@ CREATE TABLE `site_form_lang` (
   PRIMARY KEY  (`flid`)
 ) TYPE=MyISAM AUTO_INCREMENT=6 ;
 
--- 
+--
 -- Daten für Tabelle `site_form_lang`
--- 
+--
 
-INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fpgenum`, `fwerte`, `ferror`, `fdberror`, `fchkerror`) VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', ''),
+INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fpgenum`, `fwerte`, `ferror`, `fdberror`, `fchkerror`) VALUES
+(1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', ''),
 (2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
 (3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
 (5, 5, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `site_menu`
--- 
+--
 
 CREATE TABLE `site_menu` (
   `mid` int(10) NOT NULL auto_increment,
@@ -220,23 +228,23 @@ CREATE TABLE `site_menu` (
   `defaulttemplate` enum('default1','default2','default3','default4') NOT NULL default 'default1',
   PRIMARY KEY  (`mid`),
   UNIQUE KEY `DUPE` (`refid`,`entry`)
-) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=6 ;
+) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=5 ;
 
--- 
+--
 -- Daten für Tabelle `site_menu`
--- 
+--
 
-INSERT INTO `site_menu` (`mid`, `refid`, `entry`, `picture`, `sort`, `hide`, `level`, `mandatory`, `defaulttemplate`) VALUES (1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'default1'),
-(2, 1, 'test1', NULL, 10, NULL, NULL, NULL, 'default1'),
-(3, 1, 'test2', NULL, 20, NULL, NULL, NULL, 'default1'),
-(4, 0, 'show', NULL, 20, NULL, NULL, NULL, 'default1'),
-(5, 0, 'impressum', NULL, 30, NULL, NULL, NULL, 'default1');
+INSERT INTO `site_menu` (`mid`, `refid`, `entry`, `picture`, `sort`, `hide`, `level`, `mandatory`, `defaulttemplate`) VALUES
+(1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'default1'),
+(2, 0, 'show', NULL, 20, NULL, NULL, NULL, 'default1'),
+(3, 0, 'fehler', NULL, 30, NULL, NULL, NULL, 'default1'),
+(4, 0, 'impressum', NULL, 40, NULL, NULL, NULL, 'default1');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `site_menu_lang`
--- 
+--
 
 CREATE TABLE `site_menu_lang` (
   `mlid` int(10) NOT NULL auto_increment,
@@ -245,23 +253,23 @@ CREATE TABLE `site_menu_lang` (
   `label` varchar(30) NOT NULL default '',
   `exturl` varchar(128) default NULL,
   PRIMARY KEY  (`mlid`)
-) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=6 ;
+) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=5 ;
 
--- 
+--
 -- Daten für Tabelle `site_menu_lang`
--- 
+--
 
-INSERT INTO `site_menu_lang` (`mlid`, `mid`, `lang`, `label`, `exturl`) VALUES (1, 1, 'de', 'Demo', NULL),
-(2, 2, 'de', 'Test 1', NULL),
-(3, 3, 'de', 'Test 2', NULL),
-(4, 4, 'de', 'eWeBuKi Show', NULL),
-(5, 5, 'de', 'Impressum', NULL);
+INSERT INTO `site_menu_lang` (`mlid`, `mid`, `lang`, `label`, `exturl`) VALUES
+(1, 1, 'de', 'Demo', NULL),
+(2, 2, 'de', 'eWeBuKi Show', NULL),
+(3, 3, 'de', '404', NULL),
+(4, 4, 'de', 'Impressum', NULL);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Tabellenstruktur für Tabelle `site_text`
--- 
+--
 
 CREATE TABLE `site_text` (
   `lang` varchar(5) NOT NULL default 'de',
@@ -280,11 +288,12 @@ CREATE TABLE `site_text` (
   PRIMARY KEY  (`lang`,`label`,`tname`)
 ) TYPE=MyISAM PACK_KEYS=1;
 
--- 
+--
 -- Daten für Tabelle `site_text`
--- 
+--
 
-INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES
+('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Inhalt', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'entry', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Eintrag', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'error_menu', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Fehler beim löschen des Menüeintrag', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
@@ -421,11 +430,9 @@ INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`
 ('de', 'u', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Unterstrichen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'up', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Zurück-Link', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'upload', '-1', 'cms.edit.cmstag', '', 'index', '0', 'Hinaufladen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', '404', '', 'indi', '0', 'Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '404', '', 'indi', '0', 'Fehler 404 - Nicht gefunden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'inhalt', '-1', '404', '', 'fehlt', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind[/P].', '2007-07-28 13:22:15', 'Ammon', 'Werner', 'chaot@chaos.de', 'chaot'),
 ('de', 'error_dupe', '-1', '-555504947.edit-single', '/admin/menued', 'add', '0', 'Der Eintrag ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '404referer', '', 'test3', '0', 'Fehler 404 - Nicht gefunden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', '404referer', '', 'test3', '0', 'Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
+('de', 'inhalt', '-1', '404referer', '', 'fehlt', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.[/P]', '2007-07-28 13:21:52', 'Ammon', 'Werner', 'chaot@chaos.de', 'chaot'),
 ('de', 'error_dupe', '-1', '-555504947.edit-multi', '/admin/menued', 'edit', '0', 'Der Eintrag ist bereits vorhanden.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'error_dupe', '-1', '-555504947.move', '/admin/menued', 'move', '0', 'In dieser Ebene existiert bereits ein Eintrag mit gleichem Namen.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'logout', '-1', 'auth.login', '', 'auth.login', '0', 'Abgemeldet', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
@@ -509,18 +516,6 @@ INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`
 ('de', 'reset', '-1', '-939795212.upload', '/admin/menued', 'edit', '0', 'Zurücksetzen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'abort', '-1', '-939795212.upload', '/admin/menued', 'edit', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'ueberschrift', '-1', '-939795212.modify', '/admin/menued', 'add', '0', 'Datei-Editor - Datei Eigenschaften bearbeiten', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', 'demo', '', 'demo', '0', 'Demoseite', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', 'demo', '', 'demo', '0', 'Hier könnte [B]Ihr[/B] Text stehen.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', 'impressum', '', 'impressum', '0', 'Impressum', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', 'impressum', '', 'impressum', '0', 'eWeBuKi - Copyright 2003-2006\r\nby [EMAIL=w.ammon(at)chaos.de]Werner Ammon[/EMAIL]\r\n\r\nWeitere Infoseiten:\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK]', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', 'index', '', 'index', '0', 'Glückwunsch Ihr eWeBuKi läuft!', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', 'index', '', 'index', '0', 'Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki\r\n\r\n[B]ACHTUNG:[/B] Passwort ändern nicht vergessen!\r\n\r\nWeitere Infoseiten:\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK]', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', 'show', '', 'show', '0', 'eWeBuKi Show', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', 'show', '', 'show', '0', 'Tabellen Positionen:\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL]1,1\r\n\r\n\r\n[/COL]\r\n[COL=;;u]1,2\r\n[/COL]\r\n[COL=r]1,3[/COL]\r\n[/ROW][ROW]\r\n[COL=m]2,1[/COL]\r\n[COL=;;g]2,2[/COL]\r\n[COL=r;;m]2,3\r\n\r\n\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\nEasy Template Links:\r\n!#lnk_0\r\n!#lnk_1\r\n!#lnk_2\r\n!#lnk_3\r\n\r\nMenu oberhalb (M1,mit Bez.):\r\n[M1]nach oben[/M1]\r\n\r\nMenu oberhalb als Liste (M1=l,ohne Bez.);\r\n[M1=l][/M1]\r\n\r\nMenu gleiche Ebene (M2,mit Bez.)\r\n[M2]nach oben[/M2]\r\n\r\nMenu gleiche Ebene als Liste (M2=l,mit Bez.)\r\n[M2=l][/M2]\r\n\r\nTabellen Abstände (abstand text - tabelle 1)\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL=l;150]links oben\r\n[/COL]\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL=l;150]links oben\r\n[/COL]\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\nTabellen Abstände (abstand text - tabelle 2)\r\n\r\n[IN]I[/IN]nitial fuer Texte\r\n\r\n[H1][B][EM]Bold EM Tag[/EM][/B] im H1 Tag[/H1]\r\n\r\n\r\n\r\n\r\nText zwischen Linien:\r\n[HL][/HL]\r\nHier kommt der Text.\r\n[HL][/HL]\r\n\r\nWeit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie[IMG=/file/picture/small/img_1.png;l;;;20;;20]eWeBuKi Logo[/IMG] in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht – ein geradezu unorthographisches Leben.\r\n\r\nBei Bildern rechts gibt es Abstand Probleme:\r\n[IMGB=/file/picture/small/img_1.png;r;0;b]Logo[/IMGB]\r\n\r\n\r\n\r\n\r\n[IMGB=/file/picture/small/img_1.png;r]Logo[/IMGB]\r\n\r\n\r\n\r\n\r\nZeilenumbrüche müssen passen, sonst kleben die Bilder nebeneinander.\r\n\r\n[H1]ueberschrift h1[/H1]\r\n[H2]ueberschrift h2[/H2]\r\n[H3]ueberschrift h3[/H3]\r\n[H4]ueberschrift h4[/H4]\r\n[H5]ueberschrift h5[/H5]\r\n[H6]ueberschrift h6[/H6]\r\n\r\nAbsaetze mit css einstellen:\r\n[P]Im Absatz ist es Schoen[/P]\r\n\r\nDIV=class jeder css im Content:\r\n[DIV=anderst]Dieser Text ist schoener als der Rest[/DIV]', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '1924484980.test1', '/demo', 'test1', '0', 'Testseite 1', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', '1924484980.test1', '/demo', 'test1', '0', 'Hier könnte [B]Ihr[/B] Text stehen.', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'ueberschrift', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Testseite 2', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
-('de', 'inhalt', '-1', '1924484980.test2', '/demo', 'test2', '0', 'Hier könnte [B]Ihr[/B] Text stehen.\r\n\r\n[LINK=demo3.html]404 Fehler mit Referer[/LINK]\r\n\r\nUm die zweite 404 Fehlermeldung (Referer unbekannt) sichtbar zu machen,\r\nin der Eingabezeile der obigen 404 Fehlermeldung einfach Enter drücken. ', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'answera', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Ihre Schnellsuche nach', '2006-09-26 12:18:44', '', '', '', 'ewebuki'),
 ('de', 'answerb', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'hat', '2006-09-26 12:18:58', '', '', '', 'ewebuki'),
 ('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Einträge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
@@ -530,4 +525,9 @@ INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`
 ('de', 'error1', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild wird bereits verwendet - Bearbeiten zeigt wo.', '2006-10-06 20:07:05', '', '', '', 'ewebuki'),
 ('de', 'error2', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild kann nur vom Eigentümer gelöscht werden.', '2006-10-06 20:22:05', '', '', '', 'ewebuki'),
 ('de', 'error_edit', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Bild kann nur vom Eigentümer bearbeitet werden.', '2006-10-06 20:44:19', '', '', '', 'ewebuki'),
-('de', 'references', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Ist enthalten in:', '2006-10-06 19:59:07', '', '', '', 'ewebuki');
+('de', 'references', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Ist enthalten in:', '2006-10-06 19:59:07', '', '', '', 'ewebuki'),
+('de', 'inhalt', '-1', 'demo', '', 'demo', '0', '[H1]Erstes Kapitel[/H1]\r\n\r\n[H2]Erster Absatz[/H2]\r\n\r\n[P]Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht – ein geradezu unorthographisches Leben.[/P]\r\n\r\n\r\n[H2]Zweiter Absatz[/H2]\r\n\r\n\r\n[P]Eines Tages aber beschloß eine kleine Zeile Blindtext, ihr Name war Lorem Ipsum, hinaus zu gehen in die weite Grammatik. Der große Oxmox riet ihr davon ab, da es dort wimmele von bösen Kommata, wilden Fragezeichen und hinterhältigen Semikoli, doch das Blindtextchen ließ sich nicht beirren. Es packte seine sieben Versalien, schob sich sein Initial in den Gürtel und machte sich auf den Weg.[/P]\r\n\r\n\r\n[H1]Zweites Kapitel[/H1]\r\n\r\n[H2]Erster Absatz[/H2]\r\n\r\n[P]Als es die ersten Hügel des Kursivgebirges erklommen hatte, warf es einen letzten Blick zurück auf die Skyline seiner Heimatstadt Buchstabhausen, die Headline von Alphabetdorf und die Subline seiner eigenen Straße, der Zeilengasse. Wehmütig lief ihm eine rethorische Frage über die Wange, dann setzte es seinen Weg fort.[/P]\r\n\r\n[P=box]Unterwegs traf es eine Copy. Die Copy warnte das Blindtextchen, da, wo sie herkäme wäre sie zigmal umgeschrieben worden und alles, was von ihrem Ursprung noch übrig wäre, sei das Wort "und" und das Blindtextchen solle umkehren und wieder in sein eigenes, sicheres Land zurückkehren.[/P]\r\n\r\n[H2]Dritter Absatz[/H2]\r\n\r\n[P]Doch alles Gutzureden konnte es nicht überzeugen und so dauerte es nicht lange, bis ihm ein paar heimtückische Werbetexter auflauerten, es mit Longe und Parole betrunken machten und es dann in ihre Agentur schleppten, wo sie es für ihre Projekte wieder und wieder mißbrauchten. Und wenn es nicht umgeschrieben wurde, dann benutzen Sie es immernoch.[/P]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki'),
+('de', 'inhalt', '-1', 'fehler', '', 'fehler', '0', '[H1]404 Test[/H1]\r\n\r\n\r\n[P]Hiermit wird die 404 Fehlerseite angezeigt.\r\n\r\n[LINK=fehlt.html]404 Fehler mit Referer[/LINK]\r\n\r\nUm die zweite 404 Fehlermeldung (Referer unbekannt) sichtbar zu machen,\r\nin der Eingabezeile der obigen 404 Fehlermeldung einfach Enter drücken.[/P]', '2007-07-28 13:43:45', 'Ammon', 'Werner', 'chaot@chaos.de', 'chaot'),
+('de', 'inhalt', '-1', 'impressum', '', 'impressum', '0', '[H1]Impressum[/H1]\r\n\r\n\r\n[P]eWeBuKi - Copyright 2003-2007\r\nby [EMAIL=w.ammon(at)chaos.de]Werner Ammon[/EMAIL][/P]\r\n\r\n\r\n[H2]Weitere Infoseiten:[/H2]\r\n\r\n\r\n[P][LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK][/P]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki'),
+('de', 'inhalt', '-1', 'index', '', 'index', '0', '[H1]Glückwunsch Ihr eWeBuKi läuft![/H1]\r\n\r\n[P]Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki[/P]\r\n\r\n[P=box][B]ACHTUNG:[/B] Passwort ändern nicht vergessen![/P]\r\n\r\n[P]Weitere Infoseiten:\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK]\r\n[LINK=http://www.chaos.de/ewebuki.html]www.chaos.de/ewebuki.html[/LINK][/P]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki'),
+('de', 'inhalt', '-1', 'show', '', 'show', '0', '[H1]eWeBuKi Show[/H1]\r\n\r\n\r\n[H2]Tabellen Positionen[/H2]\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL]1,1[/COL]\r\n[COL=;;u]1,2[/COL]\r\n[COL=r]1,3\r\n\r\n\r\n[/COL]\r\n[/ROW][ROW]\r\n[COL=m]2,1[/COL]\r\n[COL=;;g]2,2[/COL]\r\n[COL=r;;m]2,3\r\n\r\n\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\n[H2]Easy Template Links[/H2]\r\n\r\n[P]!#lnk_1\r\n!#lnk_2\r\n!#lnk_3[/P]\r\n\r\n[H2]Menu oberhalb (M1,mit Bez.)[/H2]\r\n[M1]nach oben[/M1]\r\n\r\n[H2]Menu oberhalb als Liste (M1=l,ohne Bez.)[/H2]\r\n[M1=l][/M1]\r\n\r\n[H2]Menu gleiche Ebene (M2,mit Bez.)[/H2]\r\n[M2]nach oben[/M2]\r\n\r\n[H2]Menu gleiche Ebene als Liste (M2=l,mit Bez.)[/H2]\r\n[M2=l][/M2]\r\n\r\n\r\n\r\n[H2]Tabellen Abstände[/H2]\r\n[P]Tabellen Abstände (abstand text - tabelle 1)[/P]\r\n\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n\r\n[COL=l;150]links oben\r\n[/COL]\r\n\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n\r\n[/ROW]\r\n[/TAB]\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n\r\n[COL=l;150]links oben\r\n[/COL]\r\n\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\n[P]Tabellen Abstände (abstand text - tabelle 2)[/P]\r\n\r\n[IN]I[/IN]nitial fuer Texte\r\n\r\n[H1][B][EM]Bold EM Tag[/EM][/B] im H1 Tag[/H1]\r\n\r\nText zwischen Linien:\r\n[HL][/HL]\r\nHier kommt der Text.\r\n[HL][/HL]\r\n\r\n[H2]Bilder im Text[/H2]\r\n\r\n[P][IMG=/file/picture/small/img_1.png;l;;;20;;20]eWeBuKi Logo[/IMG]Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht – ein geradezu unorthographisches Leben.[/P]\r\n\r\n[H2]Mehrere Bilder rechts[/H2]\r\n\r\n[P]Bei mehreren Bildern rechts gibt es Abstand Probleme. Um das zu umgehen muss der Umlauf mit dem Tag BR=a angehalten werden.[/P]\r\n\r\n[IMGB=/file/picture/small/img_1.png;r;0;b]Logo[/IMGB]Text neben Bild 1[BR=a][/BR]\r\n\r\n[IMGB=/file/picture/small/img_1.png;r]Logo[/IMGB]Text neben Bild 2[BR=a][/BR]\r\n\r\n[P]Nicht nur Bilder sondern auch Text kann mit diesem Trick unter das Bild geschoben werden.[/P]\r\n[H1]ueberschrift h1[/H1]\r\n[H2]ueberschrift h2[/H2]\r\n[H3]ueberschrift h3[/H3]\r\n[H4]ueberschrift h4[/H4]\r\n[H5]ueberschrift h5[/H5]\r\n[H6]ueberschrift h6[/H6]\r\n\r\nAbsaetze mit css einstellen:\r\n[P]Im Absatz ist es Schoen[/P]\r\n\r\nDIV=class jeder css im Content:\r\n[DIV=anderst]Dieser Text ist schoener als der Rest[/DIV]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
