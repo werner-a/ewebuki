@@ -1,0 +1,63 @@
+<!--##begin-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="author" content="Werner Ammon (chaos.de)" />
+    <meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" />
+    <title>!#specialvars_pagetitle</title>
+</head>
+<body>
+    <div id="page">
+
+
+        <div id="head">
+            <div id="logo">
+                <h1><a href="!#pathvars_menuroot/index.html" title="eWeBuKi - !#environment_katid !#environment_subkatid"><span class="dark">eWeBuKi</span> Stylesheet</a></h1>
+            </div>
+            <div id="finder">
+                <form method="post" action="?">
+                    <div class="search_form">
+                    <p>Finder: <input type="text" name="search" class="search" /> <input type="submit" value="Go" class="submit" /></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div id="navi">
+            <ul>
+                !#ausgaben_menu
+            </ul>
+        </div>
+
+
+        <div id="info">
+            <div id="date">
+                <p>!#date</p>
+            </div>
+            <div id="kekse">
+                <p>#(kekse) !#environment_kekse</p>
+            </div>
+        </div>
+
+
+        <div id="left">
+            #{main}
+        </div>
+
+        <div id="right">
+            #{auth}
+        </div>
+
+        <div id="foot">
+            <p>
+            <!--##hide-changed-->
+            Letzte &Auml;nderung !{changed} von <a href="mailto:!{email}">!{alias}</a> (!{forename} !{surname})
+            <!--##show-->
+            - #(copyright)</p>
+        </div>
+    </div>
+</body>
+</html>
+<!--##end-->

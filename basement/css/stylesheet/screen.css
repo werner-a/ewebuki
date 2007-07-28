@@ -1,0 +1,259 @@
+/* project: eWeBuKi stylesheet template
+   based on a design from: luka cvrk (www.solucija.com) */
+
+
+
+/*----------------------
+  default styles
+  ----------------------*/
+
+
+body, p, form, ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+ul, ol {
+    list-style : none;
+}
+
+body {
+    font: 0.9em Tahoma, sans-serif;
+    line-height: 1.5em;
+    background: #fff;
+    color: #454545;
+}
+
+a {
+    color: #E0691A;
+    background: inherit;
+}
+
+a:hover {
+    color: #6C757A;
+    background: inherit;
+}
+
+h1 a, h2 a {
+    text-decoration: none;
+}
+
+h1 a:hover, h2 a:hover {
+    color: #FF6600;
+    background: inherit;
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  id styles
+  ----------------------*/
+
+#page {
+    width: 780px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+
+#head {
+    height: 55px;
+    color: #808080;
+    background: #eee url(/images/stylesheet/web.png) no-repeat left top;
+    margin: 3px 0;
+    padding: 10px 0 0 0;
+    border-bottom: 1px solid #ccc;
+}
+
+
+    #logo {
+        float: left;
+        width: 49%;
+        letter-spacing: -1px;
+        padding: 10px 0 0 0;
+    }
+
+        #logo h1 {
+            font: normal 2.1em Arial, Sans-Serif;
+            letter-spacing: -1px;
+            margin: 0;
+            padding: 7px 0 0 8px;
+        }
+
+
+    #finder {
+        float: right;
+        width: 49%;
+        padding: 10px 0 0 0;
+    }
+
+
+#navi {
+    clear: both;
+    height: 30px;
+    color: #FFF;
+    background: #FF9148;
+    font-size: 1em;
+    margin: 0 0 0 0px;
+}
+
+    #navi li {
+        float: left;
+        color: #FFEADC;
+        background: #FF9148;
+        margin: 0;
+        padding: 5px 12px 5px 12px;
+    }
+
+    #navi li.aktiv {
+        color: #fff;
+        background: #E0691A url(/images/stylesheet/bar.gif) no-repeat center top;
+        font-weight: bold;
+        padding: 5px 10px 6px 10px;
+    }
+
+    #navi li a {
+        color: #FFF;
+        background: inherit;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    #navi li a:hover {
+        color: #E0691A;
+        background: inherit;
+    }
+
+#info {
+    clear: both;
+    height: 20px;
+    color: #808080;
+    background: #eee;
+    margin: 5px 0 5px 0;
+    padding: 0 5px 0 5px;
+}
+
+    #date {
+        float: left;
+        width: 49%;
+    }
+
+    #kekse {
+        float: right;
+        text-align: right;
+        width: 49%;
+    }
+
+#left a, #right a {
+    color: #414141;
+/*     background: #FFF; */
+}
+
+#left {
+    float: left;
+    width: 80%;
+    margin: 0px 0 10px 0;
+}
+
+    #left h1 {
+        clear: both;
+        color: #FFF;
+        background: #A9C0CE url(/images/stylesheet/corner.gif) no-repeat top right;
+        font: bold 1em Tahoma, Sans-Serif;
+        margin: 0 0 0px 0;
+        padding: 7px 0 7px 5px;
+    }
+
+    #left h2 {
+        font: bold 1em Tahoma, Sans-Serif;
+    }
+
+    #left p {
+        margin: 5px 5px 5px 5px;
+    }
+
+    #left .box {
+        background: #eee;
+        margin: 5px 20px 5px 10px;
+        padding: 5px 10px 5px 5px;
+    }
+
+#right {
+    float: right;
+    width: 19.4%;
+    margin: 0 0 10px 0;
+}
+
+    #right h3 {
+        color: #FFF;
+        background: #6C757A url(/images/stylesheet/corner.gif) no-repeat top right;
+        font: bold 1em Tahoma, Arial, Sans-Serif;
+        margin: 0 0 3px 0;
+        padding: 7px 0 7px 5px;
+    }
+
+#foot {
+    clear: both;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    line-height: 1.8em;
+    margin: 0;
+    padding: 10px 0 10px 0;
+}
+
+    #foot a {
+        color: #808080;
+        background: #fff;
+    }
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  class styles
+  ----------------------*/
+
+.search_form {
+    background: #fff url(/images/stylesheet/searchbg.png) no-repeat right;
+    float: right;
+}
+
+.search_field {
+    background: #eee;
+    height: 20px;
+    color: #808080;
+    clear: both;
+    float: left;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+input.search {
+    width: 192px;
+    border: 0;
+    color: #E0691A;
+    background: #FFF url(/images/stylesheet/input.png) no-repeat;
+    font-weight: bold;
+    padding: 4px;
+}
+
+input.submit {
+    width: 25px;
+    border: 0;
+    color: #FFF;
+    background: #E0691A url(/images/stylesheet/submit.png) no-repeat;
+    font: bold 1em Arial, Sans-Serif;
+    margin: 0 15px 1px 0;
+    padding: 4px 0;
+}
+
+.dark {
+    color: #737373;
+    background: inherit;
+    font-weight: bold;
+}
+
+/* ---------------------*/
