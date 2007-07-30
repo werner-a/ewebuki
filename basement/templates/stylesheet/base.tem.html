@@ -13,11 +13,12 @@
 
         <div id="head">
             <div id="logo">
-                <h1><a href="!#pathvars_menuroot/index.html" title="eWeBuKi - !#environment_katid !#environment_subkatid"><span class="dark">eWeBuKi</span> Stylesheet</a></h1>
+                <h1><a href="!#pathvars_menuroot/index.html" title="eWeBuKi - !#environment_ebene !#environment_kategorie"><span class="dark">eWeBuKi</span> Stylesheet</a></h1>
             </div>
             <div id="finder">
-                <form method="post" action="?">
+                <form method="post" action="!#pathvars_menuroot/search.html">
                     <div class="search_form">
+                    <input type="hidden" name="requested" value="!#pathvars_requested" />
                     <p>Finder: <input type="text" name="search" class="search" /> <input type="submit" value="Go" class="submit" /></p>
                     </div>
                 </form>
