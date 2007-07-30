@@ -146,51 +146,46 @@
                 // !#ausgaben array pruefen und evtl. einsetzen
                 if ( strpos($line,"!#ausgaben_" ) !== false ) {
                     foreach($ausgaben as $name => $value) {
-                        $line = str_replace("!#ausgaben_$name", $value, $line, &$count);
-                        if ( $count > 0 ) {
-                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (ausgaben): ".$name.$debugging["char"];
-                        }
+// php5 only
+//                         $line = str_replace("!#ausgaben_$name", $value, $line, &$count);
+//                         if ( $count > 0 ) {
+//                             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (ausgaben): ".$name.$debugging["char"];
+//                         }
+                        $line = str_replace("!#ausgaben_$name", $value, $line);
+                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (ausgaben): ".$name.$debugging["char"];
                     }
                 }
 
                 // !#element array pruefen und evtl. einsetzen
                 if ( strpos($line,"!#element_" ) !== false ) {
                     foreach( (array)$element as $name => $value) {
-                        $line = str_replace("!#element_$name", $value, $line, &$count);
-                        if ( $count > 0 ) {
-                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (element): ".$name." : ".$element[$name].$debugging["char"];
-                        }
+                        $line = str_replace("!#element_$name", $value, $line);
+                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (element): ".$name." : ".$element[$name].$debugging["char"];
                     }
                 }
 
                 // !#environment array pruefen und evtl. einsetzen
                 if ( strpos($line,"!#environment_" ) !== false ) {
                     foreach( (array)$environment as $name => $value) {
-                        $line = str_replace("!#environment_$name", $value, $line, &$count);
-                        if ( $count > 0 ) {
-                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (environment): ".$name." : ".$environment[$name].$debugging["char"];
-                        }
+                        $line = str_replace("!#environment_$name", $value, $line);
+                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (environment): ".$name." : ".$environment[$name].$debugging["char"];
                     }
                 }
 
                 // !#pathvars array pruefen und evtl. einsetzen
                 if ( strpos($line,"!#pathvars_" ) !== false ) {
                     foreach( (array)$pathvars as $name => $value) {
-                        $line = str_replace("!#pathvars_$name", $value, $line, &$count);
-                        if ( $count > 0 ) {
-                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (pathvars): ".$name." : ".$pathvars[$name].$debugging["char"];
-                        }
-                    }
+                        $line = str_replace("!#pathvars_$name", $value, $line);
+                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (pathvars): ".$name." : ".$pathvars[$name].$debugging["char"];
+                   }
                 }
 
                 // !#lnk array pruefen und evtl. einsetzen
                 // $lnk wird in kekse.inc.php erstellt
                 if ( strpos($line,"!#lnk_" )  !== false ) {
                     foreach( (array)$lnk as $name => $value) {
-                        $line = str_replace("!#lnk_$name", $value, $line, &$count);
-                        if ( $count > 0 ) {
-                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (lnk): ".$name." : ".$lnk[$name].$debugging["char"];
-                        }
+                        $line = str_replace("!#lnk_$name", $value, $line);
+                        #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (lnk): ".$name." : ".$lnk[$name].$debugging["char"];
                     }
                 }
 
