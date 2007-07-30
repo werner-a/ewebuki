@@ -92,11 +92,11 @@
                 header("Location: ".$pathvars["virtual"].$data["ebene"]."/".$data["kategorie"].".html");
             } else {
                 $ausgaben["result"] = "#(found_something)";
-                // [H1]Treffer Ihrer Suche nach "!#ausgaben_search"[/H1]
                 while ( $data = $db -> fetch_array($result,1) ) {
                     #$dataloop["leer"][$data["id"]][1] = $data["field1"];
-                    $dataloop["result"][$data["label"]."_".$data["tname"]]["found_in"] = $data["ebene"].$data["kategorie"].".html";
-                    $dataloop["result"][$data["label"]."_".$data["tname"]]["content"] = $data["content"];
+                    $dataloop["result"][$data["label"]."_".$data["tname"]]["found_in"] = $data["ebene"]."/".$data["kategorie"].".html";
+                    $dataloop["result"][$data["label"]."_".$data["tname"]]["url"] = $pathvars["virtual"].$data["ebene"]."/".$data["kategorie"].".html";
+                    $dataloop["result"][$data["label"]."_".$data["tname"]]["content"] = tagremove($data["content"]);
                 }
                 $hidedata["result"][0] = "enable";
             }
