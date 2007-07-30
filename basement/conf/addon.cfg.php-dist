@@ -113,6 +113,14 @@
 #        include $pathvars["addonroot"]."addon/kontakt.inc.php";
 #    }
 
+#    // addon: search
+#    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "search" )
+#       || ( $environment["ebene"] == "/search" ))
+#    {
+#        include $pathvars["addonroot"]."addon/search.cfg.php";
+#        include $pathvars["addonroot"]."addon/search.inc.php";
+#    }
+
 #    // customer: modul beispiel "my" einfach
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
 #       || ( $environment["ebene"] == "/my" ))
