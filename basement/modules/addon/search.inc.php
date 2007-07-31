@@ -75,12 +75,16 @@
         // funktions bereich
         // ***
 
-        $ausgaben["search"] = $HTTP_POST_VARS["search"];
+        $sanitized["search"] = preg_replace("/[^A-Za-z0-9_ .,-]+/", "", $HTTP_POST_VARS["search"]);
+        $sanitized["requested"] = preg_replace("/[^A-Za-z0-9_.-]+/", "", $HTTP_POST_VARS["requested"]);
+        // txt2regex [^A-Za-z_.-0-9]+, [a-z_.-0-9]+
 
-        if ( $HTTP_POST_VARS["search"] != "" ) {
+        $ausgaben["search"] = $sanitized["search"];
+
+        if ( $sanitized["search"] != "" ) {
             $sql = "SELECT *
                     FROM ".$cfg["db"]["text"]["entries"]."
-                    WHERE ".$cfg["db"]["text"]["where"]." LIKE '%".$HTTP_POST_VARS["search"]."%'";;
+                    WHERE ".$cfg["db"]["text"]["where"]." LIKE '%".$sanitized["search"]."%'";;
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $hits = $db -> num_rows($result);
@@ -94,14 +98,36 @@
                 $ausgaben["result"] = "#(found_something)";
                 while ( $data = $db -> fetch_array($result,1) ) {
                     #$dataloop["leer"][$data["id"]][1] = $data["field1"];
+
+                    $content = tagremove($data["content"]);
+
+                    $p = strpos($content, $sanitized["search"]);
+                    $l = strlen($content);
+
+                    $b = 120;
+                    $h = $b / 2;
+                    if ( $b >= $l ) {
+                        $s = 0;
+                    } elseif ( $p >= ($h) ) {
+                        $s = $p-$h;
+                    } elseif ( $p == 0 ) {
+                        $s = $p;
+                    } else {
+                        $s = $h-$p;
+                    }
+
+                    $found = substr($content, $s, $b);
+                    $found = "... ".$found." ..."." ( $l / $b / $p / $s )";
+
+
                     $dataloop["result"][$data["label"]."_".$data["tname"]]["found_in"] = $data["ebene"]."/".$data["kategorie"].".html";
                     $dataloop["result"][$data["label"]."_".$data["tname"]]["url"] = $pathvars["virtual"].$data["ebene"]."/".$data["kategorie"].".html";
-                    $dataloop["result"][$data["label"]."_".$data["tname"]]["content"] = tagremove($data["content"]);
+                    $dataloop["result"][$data["label"]."_".$data["tname"]]["content"] = $found;
                 }
                 $hidedata["result"][0] = "enable";
             }
         } else {
-            header("Location: ".$HTTP_POST_VARS["requested"]);
+            header("Location: ".$sanitized["requested"]);
         }
 
         // +++
