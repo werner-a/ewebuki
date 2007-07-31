@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>bloged.delete</title>
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<!--$Id: -555504947.delete.tem.html,v 1.6 2004/11/05 20:29:29 chaot Exp $-->
+<form name="delete" method="post" action="!#ausgaben_form_aktion">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr> 
+      <td bgcolor="#EC9379">#(ueberschrift)</td>
+    </tr>
+    <tr> 
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr> 
+            <td>#(inhalt)</td>
+          </tr>
+          <tr> 
+            <td><font color="#FF0000"><img src="../../images/net/pos.gif" width="1" height="1">!#ausgaben_form_error</font></td>
+          </tr>
+          <tr> 
+            <td>#(teaser)</td>
+          </tr>
+          <tr> 
+            <td>!#ausgaben_teaser</td>
+          </tr>
+          <tr> 
+            <td>#(entry)</td>
+          </tr>
+          <tr> 
+            <td>!#ausgaben_entry</td>
+          </tr>
+          <tr> 
+            <td>&nbsp;</td>
+          </tr>
+          <tr> 
+            <td align="right"> 
+              <table border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td colspan="3"> 
+                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
+                    <input name="id1" type="hidden" value="!#ausgaben_form_id1">
+                    <input name="id2" type="hidden" value="!#ausgaben_form_id2">
+                    <input name="delete" type="hidden" value="!#ausgaben_form_delete">
+                  </td>
+                </tr>
+                <tr> 
+                  <td> 
+                    <input name="send[]" type="submit" value="#(send)">
+                  </td>
+                  <td>&nbsp;</td>
+                  <td align="right"> 
+                    <input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td>!#ausgaben_output<br>
+              !#ausgaben_inaccessible</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+<!--##end-->
+</body>
+</html>
