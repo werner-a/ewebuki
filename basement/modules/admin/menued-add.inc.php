@@ -130,7 +130,7 @@
 
 
         #$fixed_entry = str_replace(" ", "", $HTTP_POST_VARS["entry"]);
-        $fixed_entry = preg_replace("/[^A-Za-z_.-0-9]/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
+        $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
 
         if ( $environment["parameter"][1] == "verify"
             && ( $HTTP_POST_VARS["send"] != ""
