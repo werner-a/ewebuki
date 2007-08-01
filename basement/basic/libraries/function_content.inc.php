@@ -153,6 +153,21 @@
                 }
             }
 
+            // eWeBuKi Tag Schutz part 1
+            if ( strpos( $replace, "[/E]") !== false ) {
+                $preg = "|\[E\](.*)\[/E\]|Us";
+                preg_match_all($preg, $replace, $match, PREG_PATTERN_ORDER );
+
+                $debugging["ausgabe"] .= "<pre>".print_r($match,True)."</pre>";
+                foreach ( $match as $key => $value ) {
+
+                    #$debugging["ausgabe"] .= "<pre>value:\n".print_r($value,True)."</pre>";
+                    $ewebuki[] = array( "key" => $key, "value" => $value[0][$key] );
+                    $replace = str_replace($value[1][$key], "versteckt".$key, $replace);
+                }
+                #$debugging["ausgabe"] .= "<pre>".print_r($ewebuki,True)."</pre>";
+            }
+
             // cms edit link einblenden
             if ( $specialvars["editlock"] == False ) {
                 // erlaubt wenn content_right nicht gesetzt und cms_edit = -1
@@ -235,6 +250,15 @@
                 if ( $specialvars["newbrmode"] != True ) {
                     $replace = nlreplace($replace);
                 }
+
+                // eWeBuKi Tag Schutz part 2
+                if ( strpos( $replace, "versteckt") !== false ) {
+                    foreach ( $ewebuki as $value ) {
+                        $replace = str_replace("versteckt".$value["key"], "<pre>".$value["value"]."</pre>", $replace);
+                    }
+                }
+
+
             }
 
             // marke ersetzen
