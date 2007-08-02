@@ -53,8 +53,8 @@
             $replace = str_replace($sear,$repl,$replace);
         }
 
-        $preg = "\[\/[!A-Z0-9]{1,6}\]";
-        while ( preg_match("/$preg/", $replace, $match ) ) {
+        $preg = "|\[\/[!A-Z0-9]{1,6}\]|";
+        while ( preg_match($preg, $replace, $match ) ) {
 
             $closetag = $match[0];
             if ( strstr($replace, $closetag) ) {
@@ -94,6 +94,9 @@
 
                 // kompletten tag mit tagwert ersetzen
                 switch ($closetag) {
+                    case "[/E]":
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,"<pre>".$tagwert."</pre>",$replace);
+                        break;
                     case "[/!]":
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<!--".$tagwert."-->",$replace);
                         break;
