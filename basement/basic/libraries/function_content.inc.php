@@ -157,10 +157,13 @@
             if ( strpos( $replace, "[/E]") !== false ) {
                 $preg = "|\[E\](.*)\[/E\]|Us";
                 preg_match_all($preg, $replace, $match, PREG_PATTERN_ORDER );
-                $mark = array( "[/", "[", "#(" );
-                $hide = array( "++", "**", "#)" );
+                $mark_l = array( "[/", "["  );
+                $hide_l = array( "++", "**" );
+                $mark_o = array( "#(",  "#{" );
+                $hide_o = array( "-1-", "-2-" );
                 foreach ( $match[0] as $key => $value ) {
-                    $escape = str_replace( $mark, $hide, $match[1][$key]);
+                    $escape = str_replace( $mark_l, $hide_l, $match[1][$key]);
+                    $escape = str_replace( $mark_o, $hide_o, $escape);
                     $replace = str_replace( $value, "[E]".$escape."[/E]", $replace);
                 }
             }
@@ -245,7 +248,7 @@
                 $replace = tagreplace($replace);
 
                 // eWeBuKi tag schutz part 2
-                $replace = str_replace( $hide, $mark, $replace);
+                $replace = str_replace( $hide_l, $mark_l, $replace);
 
                 // newlines nach br wandeln (muss zuletzt gemacht werden)
                 if ( $specialvars["newbrmode"] != True ) {
