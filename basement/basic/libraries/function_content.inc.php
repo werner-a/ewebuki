@@ -153,28 +153,16 @@
                 }
             }
 
-//             // eWeBuKi Tag Schutz part 1
-//             if ( strpos( $replace, "[/E]") !== false ) {
-//                 $preg = "|\[E\](.*)\[/E\]|Us";
-//                 preg_match_all($preg, $replace, $match, PREG_PATTERN_ORDER );
-//                 #$debugging["ausgabe"] .= "<pre>".print_r($match,True)."</pre>";
-//                 foreach ( $match[0] as $key => $value ) {
-//                     $ewebuki[] = array( "key" => $key, "value" => $match[1][$key] );
-//                     $replace = str_replace( $value, "versteckt".$key, $replace);
-//                 }
-//                 $debugging["ausgabe"] .= "<pre>".print_r($ewebuki,True)."</pre>";
-//             }
-
-            // eWeBuKi Tag Schutz part 1
+            // eWeBuKi tag schutz part 1 (siehe part 2)
             if ( strpos( $replace, "[/E]") !== false ) {
                 $preg = "|\[E\](.*)\[/E\]|Us";
                 preg_match_all($preg, $replace, $match, PREG_PATTERN_ORDER );
-                #$debugging["ausgabe"] .= "<pre>".print_r($match,True)."</pre>";
+                $mark = array( "[/", "[", "#(" );
+                $hide = array( "++", "**", "#)" );
                 foreach ( $match[0] as $key => $value ) {
-                    $escape = str_replace( "[/", "##", $match[1][$key]);
+                    $escape = str_replace( $mark, $hide, $match[1][$key]);
                     $replace = str_replace( $value, "[E]".$escape."[/E]", $replace);
                 }
-                #$debugging["ausgabe"] .= "<pre>".print_r($ewebuki,True)."</pre>";
             }
 
             // cms edit link einblenden
@@ -256,26 +244,13 @@
                 // neues generelles tagreplace
                 $replace = tagreplace($replace);
 
-                if ( strpos( $replace, "wech") !== false ) {
-                    $debugging["ausgabe"] .= "<pre>".print_r($eWeBuKi,True)."</pre>";
-/*                    foreach ( $eWeBuKi as $key => $value ) {
-                        $line = str_replace("wech".$key, "<pre>".$replace."</pre>", $replace);
-                    }*/
-                }
+                // eWeBuKi tag schutz part 2
+                $replace = str_replace( $hide, $mark, $replace);
 
                 // newlines nach br wandeln (muss zuletzt gemacht werden)
                 if ( $specialvars["newbrmode"] != True ) {
                     $replace = nlreplace($replace);
                 }
-
-//                 // eWeBuKi Tag Schutz part 2
-//                 if ( strpos( $replace, "versteckt") !== false ) {
-//                     foreach ( $ewebuki as $value ) {
-//                         $replace = str_replace("versteckt".$value["key"], "<textarea cols=\"80\" rows=\"4\">".$value["value"]."</textarea>", $replace);
-//                     }
-//                 }
-
-                $replace = str_replace( "##", "[/", $replace);
 
             }
 
