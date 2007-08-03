@@ -382,9 +382,10 @@
                   echo rtrim($rline)."\n";
                 }
               } else {
-                // eWeBuKi tag schutz part 3
-                $line = str_replace( "-1-", "#(", $line );
-                $line = str_replace( "-2-", "#{", $line );
+                // eWeBuKi tag schutz part 4
+                $mark_o = array( "#(", "g(", "#{" );
+                $hide_o = array( "-1-", "-2-", "-3-" );
+                $line = str_replace( $hide_o, $mark_o, $line );
 
                 // da keine marken fuer sub templates da waren zeile unveraendert ausgeben
                 echo trim($line)."\n";

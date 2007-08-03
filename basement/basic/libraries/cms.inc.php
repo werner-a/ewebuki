@@ -167,6 +167,11 @@
                     $data["html"] = 0;
             }
 
+            // eWeBuKi tag schutz part 3
+            $mark_o = array( "#(", "g(", "#{" );
+            $hide_o = array( "-1-", "-2-", "-3-" );
+            $data["content"] = str_replace( $mark_o, $hide_o, $data["content"]);
+
             if ( $data["html"] == "-1" ) {
                 $ausgaben["ce_name"] = "content";
                 $ausgaben["ce_inhalt"] = $data["content"];

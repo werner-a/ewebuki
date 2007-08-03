@@ -153,14 +153,14 @@
                 }
             }
 
-            // eWeBuKi tag schutz part 1 (siehe part 2)
+            // eWeBuKi tag schutz part 1 (siehe part 2 (weiter unten), part 3 (cms.in.php), part 4 (function_rparser.inc.php))
             if ( strpos( $replace, "[/E]") !== false ) {
                 $preg = "|\[E\](.*)\[/E\]|Us";
                 preg_match_all($preg, $replace, $match, PREG_PATTERN_ORDER );
                 $mark_l = array( "[/", "["  );
                 $hide_l = array( "++", "**" );
-                $mark_o = array( "#(",  "#{" );
-                $hide_o = array( "-1-", "-2-" );
+                $mark_o = array( "#(", "g(", "#{" );
+                $hide_o = array( "-1-", "-2-", "-3-" );
                 foreach ( $match[0] as $key => $value ) {
                     $escape = str_replace( $mark_l, $hide_l, $match[1][$key]);
                     $escape = str_replace( $mark_o, $hide_o, $escape);
