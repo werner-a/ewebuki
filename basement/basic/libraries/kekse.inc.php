@@ -51,7 +51,6 @@
         $specialvars["rootname"] = $db->getDb();
     }
 
-
     // altes verhalten wiederherstellen
     $defaults["split"]["title"] == "" ? $defaults["split"]["title"] = " - " : NOP;
     $defaults["split"]["kekse"] == "" ? $defaults["split"]["kekse"] = " - " : NOP;
@@ -60,12 +59,10 @@
     $defaults["split"]["l1"] == "" ? $defaults["split"]["l1"] = " &middot; " : NOP ;
     $defaults["split"]["l2"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;
 
-
     // dynamic style - db test/extension
     $sql = "select dynamiccss from ".$cfg["db"]["menu"]["entries"];
     $result = $db -> query($sql);
     if ( $result ) {
-        #echo $db-> field_name($result,0);
         $dynamiccss = $cfg["db"]["menu"]["entries"].".dynamiccss,";
     } else {
         unset($dynamiccss);
@@ -75,24 +72,16 @@
     $sql = "select dynamicbg from ".$cfg["db"]["menu"]["entries"];
     $result = $db -> query($sql);
     if ( $result ) {
-        #echo $db-> field_name($result,0);
         $dynamicbg = $cfg["db"]["menu"]["entries"].".dynamicbg,";
     } else {
         unset($dynamicbg);
     }
 
+    // link zum webroot
     $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/index.html\">".$specialvars["rootname"]."</a>";
 
-    // special eintraege markieren
-    #$special = array( "list", "details", "modify", "start" );
-    #if ( in_array($environment["kategorie"], $special) ) {
-    #    $sign = "%";
-    #} else {
-        $sign = "/";
-    #}
-
     // kekspath splitten und fuer jede ebene die beschreibung holen
-    $kekspath = substr( $environment["ebene"].$sign.$environment["kategorie"], 1);
+    $kekspath = substr( $environment["ebene"]."/".$environment["kategorie"], 1);
     $kekspath = explode('/', $kekspath);
 
     // reset refid, um im "/" anzufangen
@@ -103,14 +92,6 @@
     $lnk[0] = $cfg["menuroot"];
     unset($path);
     foreach ($kekspath as $key => $value) {
-        // makierte eintraege aendern
-        #if ( strstr($value, "/") ) {
-        #    $search = "like '".substr($value, 0, strpos($value, "/"))."%'";
-        #} else {
-        #    $search = "= '".$value."'";
-        #}
-
-        #$search = "like '".$value."%'"; // ich weiss nicht mehr warum
         $search = "like '".$value."'";
         $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
                        ".$cfg["db"]["menu"]["entries"].".refid,
@@ -126,23 +107,10 @@
                    AND ".$cfg["db"]["menu"]["entries"].".refid = '".$refid."'
                    AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
 
-#                   AND ( ".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL )
-
-#                 WHERE ".$cfg["db"]["menu"]["entries"].".entry ".$search."
-#                   AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."'
-#                   AND ".$cfg["db"]["menu"]["entries"].".refid = '".$refid."';";
-
-#                 WHERE (
-#                       (".$cfg["db"]["menu"]["entries"].".refid=".$keksarray["refid"].")
-#                   AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
-#                   AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
-#                       )
-
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $keksresult = $db -> query($sql);
 
         if ( $db -> num_rows($keksresult) == 1 ) {
-
             $keksarray  = $db -> fetch_array($keksresult,1);
 
             if ( $keksarray["level"] != "" && $rechte[$keksarray["level"]] != -1 ) break;
@@ -151,6 +119,7 @@
 
             // refid setzen um richtigen eintrag zu finden
             $refid = $keksarray["mid"];
+
             // seitentitel und kekse zusammensetzen
             if ( $keksarray["entry"] != "" ) {
 
@@ -181,7 +150,6 @@
             }
 
             // navbar erstellen
-            #$ausgaben["UP"] = "<a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
             $ausgaben["M1"] = "";
             $ausgaben["M2"] = "";
             $ausgaben["M3"] = crc32($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
