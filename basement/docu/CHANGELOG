@@ -9,6 +9,49 @@ $Id$
 --- v?.?.?-???? - ??. mon year num
 
 
+
+--- 05. august 2007 02
+
+neue tags:
+
+[E]    - innhalb dieses tag wird eWeBuKi code nicht interpretiert
+[M0]   - eintraege im menu oberhalb
+[PREV] - eintrag im menu vorher
+[NEXT] - eintrag im menu nachher
+
+
+--- 05. august 2007 01
+
+ACHTUNG! -> struktur aenderungen: addon.cfg umbenannt,
+menu.inc + cfg verschoben, kekse.inc + cfg verschoben/umbenannt
+
+$pathvars["addonroot"] -> $pathvars["moduleroot"]
+
+unbedingt alle customer scripte auf $pathvars["addonroot"]
+pruefen!!! - den alten wert gibt es nicht mehr.
+
+
+addon.cfg.php-dist -> module.cfg.php-dist
+basic/libraries/menu.inc.php -> modules/basic/menu.inc.php
+basic/libraries/kekse.inc.php -> modules/basic/path.inc.php
+
+conf/menu.cfg.php-dist -> modules/basic/menu.cfg.php-dist
+conf/kekse.cfg.php-dist -> modules/basic/path.cfg.php-dist
+
+befehle:
+
+cp -a conf/modules.cfg.php-dist conf/modules.cfg.php
+cp -a modules/basic/path.cfg.php-dist modules/basic/path.cfg.php
+
+mv conf/menu.cfg.php modules/basic/menu.cfg.php
+mv conf/kekse.cfg.php modules/basic/path.cfg.php
+
+sonstiges:
+
+erweitern der conf/modules.cfg.php um eigene module.
+siehe conv/addon.cfg.php - dannach conv/addon.cfg.php loeschen
+
+
 --- 28. juli 2007
 
 neues design stylesheet, welches demnaechst default ersetzt. um es
