@@ -1,23 +1,21 @@
 -- phpMyAdmin SQL Dump
 -- version 2.10.2
 -- http://www.phpmyadmin.net
--- 
+--
 -- Host: localhost
 -- Erstellungszeit: 28. Juli 2007 um 13:51
 -- Server Version: 4.0.24
 -- PHP-Version: 4.3.10-22
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
--- 
+--
 -- Datenbank: `ewebuki_mdelabl`
--- 
+--
 
--- 
+--
 -- Daten für Tabelle `site_text`
--- 
+--
 
-REPLACE INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES 
+REPLACE INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES
 ('de', 'abort', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Abbrechen', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'content', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Inhalt', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
 ('de', 'entry', '-1', '-555504947.delete', '/admin/menued', 'delete', '0', 'Eintrag', '0000-00-00 00:00:00', '', '', '', 'ewebuki'),
