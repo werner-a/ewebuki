@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -159,8 +159,8 @@
                 preg_match_all($preg, $replace, $match, PREG_PATTERN_ORDER );
                 $mark_l = array( "[/", "["  );
                 $hide_l = array( "++", "**" );
-                $mark_o = array( "#(", "g(", "#{" );
-                $hide_o = array( "-1-", "-2-", "-3-" );
+                $mark_o = array( "#(", "g(", "#{", "!#" );
+                $hide_o = array( "-1-", "-2-", "-3-", "-4-" );
                 foreach ( $match[0] as $key => $value ) {
                     $escape = str_replace( $mark_l, $hide_l, $match[1][$key]);
                     $escape = str_replace( $mark_o, $hide_o, $escape);

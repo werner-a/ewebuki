@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -702,9 +702,23 @@
                           $defaults["tag"]["/in"] = "</em>";
                         }
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["in"].$tagwert.$defaults["tag"]["/in"],$replace);
+                    case "[/M0]":
+                        if ( $sign == "]" ) {
+                            $m0 = $ausgaben["M0"];
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$m0,$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $m0werte = explode(";",$tagwerte[0]);
+                            if ( $m0werte[0] == "l" ) {
+                                $m0 = $ausgaben["L0"];
+                            } else {
+                                $m0 = $ausgaben["M0"];
+                            }
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$m0,$replace);
+                        }
+                        break;
                     case "[/M1]":
                         if ( $sign == "]" ) {
-
                             if ( $tagwert == "" ) {
                                 $label = " .. ";
                             } else {
@@ -797,6 +811,12 @@
                         }
                         $up = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>";
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$up,$replace);
+                        break;
+                    case "[/PREV]":
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgaben["prev"],$replace);
+                        break;
+                    case "[/NEXT]":
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgaben["next"],$replace);
                         break;
                     case "[/M3]":
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgaben["M3"],$replace);

@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -168,8 +168,8 @@
             }
 
             // eWeBuKi tag schutz part 3
-            $mark_o = array( "#(", "g(", "#{" );
-            $hide_o = array( "-1-", "-2-", "-3-" );
+            $mark_o = array( "#(", "g(", "#{", "!#" );
+            $hide_o = array( "-1-", "-2-", "-3-", "-4-" );
             $data["content"] = str_replace( $mark_o, $hide_o, $data["content"]);
 
             if ( $data["html"] == "-1" ) {
