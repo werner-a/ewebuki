@@ -59,13 +59,13 @@
     }
 
     // include function loader
-    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
+    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
 
     // magic include loader
     if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
-        include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
+        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
     } else {
-        include $pathvars["addonroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
+        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
     }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
