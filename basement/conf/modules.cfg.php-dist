@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -42,99 +42,94 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // dist menu - 2 ebenen dynamisch
-    include $pathvars["config"]."menu.cfg.php";
-    include $pathvars["libraries"]."menu.inc.php";
+    // basic: menu
+    include $pathvars["moduleroot"]."basic/menu.cfg.php";
+    include $pathvars["moduleroot"]."basic/menu.inc.php";
 
-    // kekse erstellen
-    include $pathvars["config"]."kekse.cfg.php";
-    include $pathvars["libraries"]."kekse.inc.php";
-
-    // dynamisches dist menu 3 ebenen
-    #$specialvars["scriptbase"] = "intrabvv/globalmenu";
-    #include $pathvars["addonroot"].$specialvars["scriptbase"].".cfg.php";
-    #include $pathvars["addonroot"].$specialvars["scriptbase"].".inc.php";
+    // basic: path
+    include $pathvars["moduleroot"]."basic/path.cfg.php";
+    include $pathvars["moduleroot"]."basic/path.inc.php";
 
     // basic: view
     if ( $environment["kategorie"] == "view" ) {
-        include $pathvars["addonroot"]."basic/view.cfg.php";
-        include $pathvars["addonroot"]."basic/view.inc.php";
+        include $pathvars["moduleroot"]."basic/view.cfg.php";
+        include $pathvars["moduleroot"]."basic/view.inc.php";
     }
 
     // admin: leveled
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
        || ( $environment["ebene"] == "/admin/leveled" ))
     {
-        include $pathvars["addonroot"]."admin/leveled.cfg.php";
-        include $pathvars["addonroot"]."admin/leveled.inc.php";
+        include $pathvars["moduleroot"]."admin/leveled.cfg.php";
+        include $pathvars["moduleroot"]."admin/leveled.inc.php";
     }
 
     // admin: usered
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "usered" )
        || ( $environment["ebene"] == "/admin/usered" ))
     {
-        include $pathvars["addonroot"]."admin/usered.cfg.php";
-        include $pathvars["addonroot"]."admin/usered.inc.php";
+        include $pathvars["moduleroot"]."admin/usered.cfg.php";
+        include $pathvars["moduleroot"]."admin/usered.inc.php";
     }
 
     // admin: menued
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued" )
        || ( $environment["ebene"] == "/admin/menued" ))
     {
-        include $pathvars["addonroot"]."admin/menued.cfg.php";
-        include $pathvars["addonroot"]."admin/menued-ctrl.inc.php";
+        include $pathvars["moduleroot"]."admin/menued.cfg.php";
+        include $pathvars["moduleroot"]."admin/menued-ctrl.inc.php";
     }
 
     // admin: fileed
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "fileed" )
        || ( $environment["ebene"] == "/admin/fileed" ))
     {
-        include $pathvars["addonroot"]."admin/fileed.cfg.php";
-        include $pathvars["addonroot"]."admin/fileed-ctrl.inc.php";
+        include $pathvars["moduleroot"]."admin/fileed.cfg.php";
+        include $pathvars["moduleroot"]."admin/fileed-ctrl.inc.php";
     }
 
     // admin: passed
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "passed" )
        || ( $environment["ebene"] == "/admin/passed" ))
     {
-        include $pathvars["addonroot"]."admin/passed.cfg.php";
-        include $pathvars["addonroot"]."admin/passed.inc.php";
+        include $pathvars["moduleroot"]."admin/passed.cfg.php";
+        include $pathvars["moduleroot"]."admin/passed.inc.php";
     }
 
 #    // addon: changed
-#    include $pathvars["addonroot"]."addon/changed.cfg.php";
-#    include $pathvars["addonroot"]."addon/changed.inc.php";
+#    include $pathvars["moduleroot"]."addon/changed.cfg.php";
+#    include $pathvars["moduleroot"]."addon/changed.inc.php";
 
 #    // addon: kontakt
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "kontakt" )
 #       || ( $environment["ebene"] == "/kontakt" ))
 #    {
-#        include $pathvars["addonroot"]."addon/kontakt.cfg.php";
-#        include $pathvars["addonroot"]."addon/kontakt.inc.php";
+#        include $pathvars["moduleroot"]."addon/kontakt.cfg.php";
+#        include $pathvars["moduleroot"]."addon/kontakt.inc.php";
 #    }
 
 #    // addon: search
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "search" )
 #       || ( $environment["ebene"] == "/search" ))
 #    {
-#        include $pathvars["addonroot"]."addon/search.cfg.php";
-#        include $pathvars["addonroot"]."addon/search.inc.php";
+#        include $pathvars["moduleroot"]."addon/search.cfg.php";
+#        include $pathvars["moduleroot"]."addon/search.inc.php";
 #    }
 
 #    // customer: modul beispiel "my" einfach
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
 #       || ( $environment["ebene"] == "/my" ))
 #    {
-#        include $pathvars["addonroot"]."customer/leer.cfg.php";
-#        include $pathvars["addonroot"]."customer/leer.inc.php"; # einfaches modul
+#        include $pathvars["moduleroot"]."customer/leer.cfg.php";
+#        include $pathvars["moduleroot"]."customer/leer.inc.php"; # einfaches modul
 #    }
 
 #    // customer: modul beispiel "my" eweitert
 #    if (  ( $environment["ebene"] == "/dir" && $environment["kategorie"] == "my" )
 #       || ( $environment["ebene"] == "/dir/my" ))
 #    {
-#        include $pathvars["addonroot"]."customer/leer.cfg.php";
-#        include $pathvars["addonroot"]."customer/leer-ctrl.inc.php"; # erweitertes modul
+#        include $pathvars["moduleroot"]."customer/leer.cfg.php";
+#        include $pathvars["moduleroot"]."customer/leer-ctrl.inc.php"; # erweitertes modul
 #    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
