@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -185,7 +185,7 @@
             }
             // load customer addon
             if ( $cfg["custom"]["load"] == -1 ) {
-                include $pathvars["addonroot"].$cfg["custom"]["path"]."/".$cfg["custom"]["file"].".inc.php";
+                include $pathvars["moduleroot"].$cfg["custom"]["path"]."/".$cfg["custom"]["file"].".inc.php";
             }
         }
         $specialvars["phpsessid"] = "?PHPSESSID=".session_id();
