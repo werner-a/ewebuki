@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $script_name = "$Id$";
-    $Script_desc = "kekse erstellen";
+    $Script_desc = "erstellt 'kekse', [UP], [M0], [M1], [M2], [PREV], [NEXT], !#lnk* + 404 handling";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -54,8 +54,10 @@
     // altes verhalten wiederherstellen
     $defaults["split"]["title"] == "" ? $defaults["split"]["title"] = " - " : NOP;
     $defaults["split"]["kekse"] == "" ? $defaults["split"]["kekse"] = " - " : NOP;
+    $defaults["split"]["m1"] == "" ? $defaults["split"]["m0"] = " &middot; " : NOP ;
     $defaults["split"]["m1"] == "" ? $defaults["split"]["m1"] = " &middot; " : NOP ;
     $defaults["split"]["m2"] == "" ? $defaults["split"]["m2"] = " &middot; " : NOP ;
+    $defaults["split"]["l0"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;
     $defaults["split"]["l1"] == "" ? $defaults["split"]["l1"] = " &middot; " : NOP ;
     $defaults["split"]["l2"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;
 
@@ -84,18 +86,27 @@
     $kekspath = substr( $environment["ebene"]."/".$environment["kategorie"], 1);
     $kekspath = explode('/', $kekspath);
 
-    // reset refid, um im "/" anzufangen
-    $refid = 0;
-    $kekscount = count($kekspath);
-    $hitcounter = 0;
+    // navi tags und marken
     $ausgaben["UP"] = $cfg["menuroot"];
     $lnk[0] = $cfg["menuroot"];
+
+    // 404 error handling
+    $count_url = count($kekspath);
+    $count_menu = 0;
+
+    $actid = 0;
     unset($path);
+
+    $ausgaben["M0"] = "";
+    $ausgaben["M1"] = "";
+    $ausgaben["M2"] = "";
+
     foreach ($kekspath as $key => $value) {
         $search = "like '".$value."'";
         $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
                        ".$cfg["db"]["menu"]["entries"].".refid,
                        ".$cfg["db"]["menu"]["entries"].".entry,
+                       ".$cfg["db"]["menu"]["entries"].".sort,
                        ".$cfg["db"]["menu"]["entries"].".level,
                        ".$cfg["db"]["menu"]["entries"].".defaulttemplate,
                        ".$dynamiccss.$dynamicbg."
@@ -104,59 +115,84 @@
             INNER JOIN ".$cfg["db"]["lang"]["entries"]."
                     ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
                  WHERE ".$cfg["db"]["menu"]["entries"].".entry ".$search."
-                   AND ".$cfg["db"]["menu"]["entries"].".refid = '".$refid."'
+                   AND ".$cfg["db"]["menu"]["entries"].".refid = '".$actid."'
                    AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
+        #if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        if ( $db -> num_rows($result) == 1 ) {
+            $data = $db -> fetch_array($result,1);
+            if ( $data["level"] != "" && $rechte[$data["level"]] != -1 ) break;
 
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $keksresult = $db -> query($sql);
-
-        if ( $db -> num_rows($keksresult) == 1 ) {
-            $keksarray  = $db -> fetch_array($keksresult,1);
-
-            if ( $keksarray["level"] != "" && $rechte[$keksarray["level"]] != -1 ) break;
-
-            $hitcounter++;
+            // gefundene eintraege
+            $count_menu++;
 
             // refid setzen um richtigen eintrag zu finden
-            $refid = $keksarray["mid"];
+            $refid = $actid;
+            $actid = $data["mid"];
 
-            // seitentitel und kekse zusammensetzen
-            if ( $keksarray["entry"] != "" ) {
+            // prev + next handling
+            // ***
+            #echo "other: ".$data["mid"]." - ".$data["refid"]." - ".$data["sort"]." - ".$data["entry"]." - ".$data["label"]."<br />";
+            $tet = $data["sort"] + 10;
+            $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
+                        ".$cfg["db"]["menu"]["entries"].".refid,
+                        ".$cfg["db"]["menu"]["entries"].".entry,
+                        ".$cfg["db"]["menu"]["entries"].".sort,
+                        ".$cfg["db"]["menu"]["entries"].".level,
+                        ".$cfg["db"]["menu"]["entries"].".defaulttemplate,
+                        ".$dynamiccss.$dynamicbg."
+                        ".$cfg["db"]["lang"]["entries"].".label
+                   FROM ".$cfg["db"]["menu"]["entries"]."
+             INNER JOIN ".$cfg["db"]["lang"]["entries"]."
+                     ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                  WHERE ".$cfg["db"]["menu"]["entries"].".sort = ".$tet."
+                    AND ".$cfg["db"]["menu"]["entries"].".refid = '".$data["refid"]."'
+                    AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
+            $result = $db -> query($sql);
+            if ( $db -> num_rows($result) == 1 ) {
+                $data2 = $db -> fetch_array($result,1);
+                $upper[] = array( "entry" => $data2["entry"], "label" => $data2["label"] );
+            }
+            //
+            // prev + next handling
 
-                // navbar links
-                if ( $path == "" ) {
-                    $ausgaben["UP"] = $pathvars["virtual"]."/index.html";
-                } else {
-                    $ausgaben["UP"] = $pathvars["virtual"].$path.".html";
-                }
-
-                $path .= "/".$keksarray["entry"];
-                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
-                $specialvars["pagetitle"] .= $defaults["split"]["title"].$keksarray["label"];
-                $environment["kekse"] .= $defaults["split"]["kekse"]."<a href=\"".$pathvars["virtual"].$path.".html\">".$keksarray["label"]."</a>";
+            // navbar links
+            if ( $path == "" ) {
+                $ausgaben["UP"] = $pathvars["virtual"]."/index.html";
+            } else {
+                $ausgaben["UP"] = $pathvars["virtual"].$path.".html";
             }
 
+            // seitentitel und kekse zusammensetzen
+            $path .= "/".$data["entry"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
+            $specialvars["pagetitle"] .= $defaults["split"]["title"].$data["label"];
+            $environment["kekse"] .= $defaults["split"]["kekse"]."<a href=\"".$pathvars["virtual"].$path.".html\">".$data["label"]."</a>";
+
             // variables template laut menueintrag setzen
-            $specialvars["default_template"] = $keksarray["defaulttemplate"];
+            $specialvars["default_template"] = $data["defaulttemplate"];
 
             // variables css file - erweiterung laut menueintrag setzen
-            if ( $keksarray["dynamiccss"] != "" ) {
-                $specialvars["dynamiccss"] = $keksarray["dynamiccss"];
+            if ( $data["dynamiccss"] != "" ) {
+                $specialvars["dynamiccss"] = $data["dynamiccss"];
             }
 
             // variables bg bild - erweiterung laut menueintrag setzen
-            if ( $keksarray["dynamicbg"] != "" ) {
-                $specialvars["dynamicbg"] = $keksarray["dynamicbg"];
+            if ( $data["dynamicbg"] != "" ) {
+                $specialvars["dynamicbg"] = $data["dynamicbg"];
             }
 
-            // navbar erstellen
-            $ausgaben["M1"] = "";
-            $ausgaben["M2"] = "";
+
+            // content navigation erstellen
+            // ***
             $ausgaben["M3"] = crc32($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
 
-            if ( $path.".html" == $environment["ebene"]."/".$environment["kategorie"].".html" ) {
-                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".entry,
+            // M0 -> ebene darueber
+            if ( $path == $environment["ebene"] ) {
+                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
                                 ".$cfg["db"]["menu"]["entries"].".refid,
+                                ".$cfg["db"]["menu"]["entries"].".entry,
+                                ".$cfg["db"]["menu"]["entries"].".sort,
                                 ".$cfg["db"]["menu"]["entries"].".level,
                                 ".$cfg["db"]["lang"]["entries"].".lang,
                                 ".$cfg["db"]["lang"]["entries"].".label,
@@ -165,7 +201,53 @@
                     INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
                             ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
                          WHERE (
-                               (".$cfg["db"]["menu"]["entries"].".refid=".$keksarray["refid"].")
+                               (".$cfg["db"]["menu"]["entries"].".refid=".$refid.")
+                           AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
+                           AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
+                               )
+                      ORDER BY  ".$cfg["db"]["menu"]["order"].";";
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $navbarresult  = $db -> query($sql);
+                while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
+
+                    if ( $navbararray["level"] == "" ) {
+                        $right = -1;
+                    } else {
+                        if ( $rechte[$navbararray["level"]] == -1 ) {
+                            $right = -1;
+                        } else {
+                            $right = 0;
+                        }
+                    }
+
+                    if ( $right == -1 ) {
+                        if ( $ausgaben["M0"] != "" ) $ausgaben["M0"] .= $defaults["split"]["m0"];
+                        if ( $navbararray["exturl"] == "" ) {
+                            $link1url = "../".$navbararray["entry"].".html";
+                        } else {
+                            $link1url = $navbararray["exturl"];
+                        }
+                        $lower[$navbararray["mid"]] = $navbararray;
+                        $ausgaben["M0"] .= "<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a>";
+                        $ausgaben["L0"] .= $defaults["split"]["l0"]."<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a><br />";
+                    }
+                }
+            }
+
+            // M1 -> gleiche ebene
+            if ( $path.".html" == $environment["ebene"]."/".$environment["kategorie"].".html" ) {
+                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".refid,
+                                ".$cfg["db"]["menu"]["entries"].".entry,
+                                ".$cfg["db"]["menu"]["entries"].".sort,
+                                ".$cfg["db"]["menu"]["entries"].".level,
+                                ".$cfg["db"]["lang"]["entries"].".lang,
+                                ".$cfg["db"]["lang"]["entries"].".label,
+                                ".$cfg["db"]["lang"]["entries"].".exturl
+                          FROM  ".$cfg["db"]["menu"]["entries"]."
+                    INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
+                            ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                         WHERE (
+                               (".$cfg["db"]["menu"]["entries"].".refid=".$data["refid"].")
                            AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
                            AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
                                )
@@ -188,10 +270,28 @@
                             $link1url = "./".$navbararray["entry"].".html";
                         } else {
                             $link1url = $navbararray["exturl"];
-
                         }
                         $ausgaben["M1"] .= "<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a>";
                         $ausgaben["L1"] .= $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"".$link1url."\">".$navbararray["label"]."</a><br />";
+
+                        // prev + next handling
+                        // ***
+                        if ( $navbararray["sort"] == $data["sort"] - 10 ) {
+                            $prev = "<a href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
+                        }
+                        if ( $navbararray["entry"] == $environment["kategorie"] ) {
+                            if ( $prev == "" ) {
+                                $prev = "<a href=\"../".$lower[$navbararray["refid"]]["entry"].".html\">".$lower[$navbararray["refid"]]["label"]."</a>";
+                            }
+                            #echo sprintf("<pre>%s</pre>",print_r($lower[$navbararray["refid"]],True));
+                            #echo sprintf("<pre>%s</pre>",print_r($lower,True));
+                            #echo $navbararray["refid"];
+                        }
+                        if ( $navbararray["sort"] == $data["sort"] + 10 ) {
+                            $next = "<a href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";$navbararray["entry"];
+                        }
+                        // +++
+                        // prev + next handling
                     }
                 }
 
@@ -199,8 +299,10 @@
                 $lnkcount = 0;
                 $lnk[$lnkcount] = $ausgaben["UP"];
 
+                // M2 -> ebene darunter (unterpunkte)
                 $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".entry,
                                 ".$cfg["db"]["menu"]["entries"].".refid,
+                                ".$cfg["db"]["menu"]["entries"].".sort,
                                 ".$cfg["db"]["menu"]["entries"].".level,
                                 ".$cfg["db"]["lang"]["entries"].".lang,
                                 ".$cfg["db"]["lang"]["entries"].".label,
@@ -209,7 +311,7 @@
                     INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
                             ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
                          WHERE (
-                               (".$cfg["db"]["menu"]["entries"].".refid=".$keksarray["mid"].")
+                               (".$cfg["db"]["menu"]["entries"].".refid=".$data["mid"].")
                            AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
                            AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."'))
                       ORDER BY  ".$cfg["db"]["menu"]["order"].";";
@@ -238,13 +340,93 @@
                         // $lnk_* mit links belegen
                         $lnkcount++;
                         $lnk[$lnkcount] = $link2url;
+
+                        // prev + next handling
+                        // ***
+                        if ( $navbararray["sort"] == 10 ) {
+                            $next = "<a href=\"".$pathvars["virtual"].$path."/".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
+                        }
+                        // +++
+                        // prev + next handling
                     }
                 }
+
+                // prev + next handling
+                // ***
+                function prev_child_find( $mid ) {
+                    global $db, $environment, $cfg, $children;
+                    // gibts unterpunkte?
+                    $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
+                                ".$cfg["db"]["menu"]["entries"].".refid,
+                                ".$cfg["db"]["menu"]["entries"].".entry,
+                                ".$cfg["db"]["menu"]["entries"].".sort,
+                                ".$cfg["db"]["menu"]["entries"].".level,
+                                ".$cfg["db"]["lang"]["entries"].".label
+                            FROM ".$cfg["db"]["menu"]["entries"]."
+                        INNER JOIN ".$cfg["db"]["lang"]["entries"]."
+                                ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                            WHERE ".$cfg["db"]["menu"]["entries"].".refid = '".$mid."'
+                            AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."'
+                    ORDER BY SORT DESC;";
+                    $result = $db -> query($sql);
+                    if ( $db -> num_rows($result) > 0 ) {
+                        $data3 = $db -> fetch_array($result,1);
+                        $children[] = array( "mid" => $data3["mid"], "entry" => $data3["entry"], "label" => $data3["label"] );
+                        $prev = prev_child_find( $data3["mid"] );
+                        return $prev;
+                    } else {
+                        #echo sprintf("<pre>%s</pre>",print_r($children,True));
+                        foreach ( $children as $entry ) {
+                            $path .= "/".$entry["entry"];
+                        }
+                        $prev = "<a href=\".".$path.".html\">".$entry["label"]."</a>";
+                        return $prev;
+                    }
+                }
+                // eintrag vorher suchen
+                $sort = $data["sort"] - 10;
+                $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
+                            ".$cfg["db"]["menu"]["entries"].".refid,
+                            ".$cfg["db"]["menu"]["entries"].".entry,
+                            ".$cfg["db"]["menu"]["entries"].".sort,
+                            ".$cfg["db"]["menu"]["entries"].".level,
+                            ".$cfg["db"]["lang"]["entries"].".label
+                       FROM ".$cfg["db"]["menu"]["entries"]."
+                 INNER JOIN ".$cfg["db"]["lang"]["entries"]."
+                         ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                      WHERE ".$cfg["db"]["menu"]["entries"].".sort = ".$sort."
+                        AND ".$cfg["db"]["menu"]["entries"].".refid = '".$data["refid"]."'
+                        AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
+                $result = $db -> query($sql);
+                if ( $db -> num_rows($result) == 1 ) {
+                    $data2 = $db -> fetch_array($result,1);
+                    $children[] = array( "entry" => $data2["entry"], "label" => $data2["label"] );
+                    $prev = prev_child_find( $data2["mid"] );
+                }
+                if ( $next == "" ) {
+                    $last = @end($upper);
+                    $tiefe = $count_menu - count($upper);
+                    for ( $i=0 ; $i < $tiefe ; $i++ ) {
+                        $last["entry"] = "../".$last["entry"];
+                    }
+                    $next = $next = "<a href=\"".$last["entry"].".html\">".$last["label"]."</a>";
+                }
+                #$next = "<a href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";$navbararray["entry"];
+                #echo "prev:".$prev." - next:".$next;
+                $ausgaben["prev"] = $prev;
+                $ausgaben["next"] = $next;
+                // +++
+                // prev + next handling
+
             }
+            // +++
+            // content navigation erstellen
         }
     }
 
+
     // 404 error handling
+    // ***
     if ( $specialvars["404"]["enable"] ) {
         foreach( $specialvars["404"]["nochk"]["ebene"] as $value ) {
            $nochk .= strstr($environment["ebene"],$value);
@@ -252,7 +434,7 @@
         foreach( $specialvars["404"]["nochk"]["kategorie"] as $value ) {
            $nochk .= strstr($environment["kategorie"],$value);
         }
-        if ( $nochk == "" && $kekscount != $hitcounter ) {
+        if ( $nochk == "" && $count_url != $count_menu ) {
             $ausgaben["404seite"] = $environment["ebene"]."/".$environment["kategorie"].".html";
             if ( $_SERVER["HTTP_REFERER"] ) {
                 $ausgaben["404referer"] = $_SERVER["HTTP_REFERER"];
@@ -266,6 +448,9 @@
 
         }
     }
+    // +++
+    // 404 error handling
+
 
     // zurück zur haupdatenbank
     $db -> selectDb(DATABASE,FALSE);
