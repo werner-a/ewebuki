@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -69,7 +69,7 @@
     }
 
     $pathvars["basicroot"]  = $pathvars["fileroot"]."basic/";
-    $pathvars["addonroot"]  = $pathvars["fileroot"]."modules/";
+    $pathvars["moduleroot"]  = $pathvars["fileroot"]."modules/";
 
     $pathvars["libraries"]  = $pathvars["basicroot"]."libraries"."/";
     $pathvars["config"]     = $pathvars["fileroot"]."conf"."/";

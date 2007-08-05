@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -306,7 +306,7 @@
     }
 
     // steuerung der funktionen
-    require $pathvars["config"]."addon.cfg.php";
+    require $pathvars["config"]."modules.cfg.php";
 
     // webdesigner kann mit dieser datei das laden der templates beinflussen
     if ( file_exists($pathvars["templates"]."linking.inc.php") ) {
