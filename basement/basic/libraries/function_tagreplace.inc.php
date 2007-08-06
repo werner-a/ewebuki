@@ -682,6 +682,9 @@
                         }
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);
                         break;
+                    case "[/HS]":
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwert,$replace);
+                        break;
                     case "[/HR]":
                         if ( $defaults["tag"]["hr"] == "" ) {
                           $defaults["tag"]["hr"] = "<hr />";
