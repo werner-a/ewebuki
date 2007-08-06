@@ -541,7 +541,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         break;
                     case "[/DIV]":
-                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
+                        if ( $specialvars["newbrmode"] == True && strpos( $specialvars["newbrblock"], "DIV") === false ) $tagwert = nlreplace($tagwert);
                         if ( $sign == "]" ) {
                             $ausgabewert = "<div>".$tagwert."</div>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
