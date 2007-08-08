@@ -119,10 +119,29 @@
 
 
 
+            // eWeBuKi tag schutz - sections 1
+            if ( strpos( $data["content"], "[/E]") !== false ) {
+                $preg = "|\[E\](.*)\[/E\]|Us";
+                preg_match_all($preg, $data["content"], $match, PREG_PATTERN_ORDER );
+                $mark = $defaults["section"]["tag"];
+                $hide = "++";
+                foreach ( $match[0] as $key => $value ) {
+                    $escape = str_replace( $mark, $hide, $match[1][$key]);
+                    $data["content"] = str_replace( $value, "[E]".$escape."[/E]", $data["content"]);
+                }
+            }
+
+
+
             $alldata = explode($defaults["section"]["tag"], $data["content"]);
             if ( $environment["parameter"][4] != "" ) {
                 $data["content"] = $defaults["section"]["tag"].$alldata[$environment["parameter"][4]];
             }
+
+
+
+            // eWeBuKi tag schutz - sections 2
+            $data["content"] = str_replace( $hide, $mark, $data["content"]);
 
 
 
@@ -248,6 +267,19 @@
 
 
             if ( $environment["parameter"][4] != "" ) {
+
+                // eWeBuKi tag schutz - sections 1
+                if ( strpos( $data["content"], "[/E]") !== false ) {
+                    $preg = "|\[E\](.*)\[/E\]|Us";
+                    preg_match_all($preg, $data["content"], $match, PREG_PATTERN_ORDER );
+                    $mark = $defaults["section"]["tag"];
+                    $hide = "++";
+                    foreach ( $match[0] as $key => $value ) {
+                        $escape = str_replace( $mark, $hide, $match[1][$key]);
+                        $data["content"] = str_replace( $value, "[E]".$escape."[/E]", $data["content"]);
+                    }
+                }
+
                 $allcontent = explode($defaults["section"]["tag"], addslashes($data["content"]) );
                 $content = "";
                 foreach ($allcontent as $key => $value) {
@@ -263,6 +295,10 @@
                     } else {
                         $content .= $value;
                     }
+
+                // eWeBuKi tag schutz - sections 2
+                $content = str_replace( $hide, $mark, $content );
+
                 }
             } else {
                 $content = $HTTP_POST_VARS["content"];
