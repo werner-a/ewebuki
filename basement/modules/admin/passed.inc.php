@@ -58,9 +58,6 @@
         $specialvars["editlock"] = -1;
     }
 
-    // warning ausgeben
-    if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
-
     if ( $_SESSION["auth"] == -1 ) {
 
         if ( count($HTTP_POST_VARS) == 0 ) {
