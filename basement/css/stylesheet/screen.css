@@ -89,50 +89,48 @@ h1 a:hover, h2 a:hover {
         padding: 10px 0 0 0;
     }
 
-
 #navi {
-    clear: both;
-    height: 30px;
-    color: #FFF;
-    background: #FF9148;
-    font-size: 1em;
-    margin: 0 0 0 0px;
+        clear: both;
+        background: #FF9148;
+        font-weight: bold;
 }
 
-    #navi li {
+    #list li {
         float: left;
         color: #FFEADC;
         background: #FF9148;
-        margin: 0;
         padding: 5px 12px 5px 12px;
     }
 
-    #navi li.aktiv {
+    #list li.aktiv {
         color: #fff;
         background: #E0691A url(/images/stylesheet/bar.gif) no-repeat center top;
-        font-weight: bold;
         padding: 5px 10px 6px 10px;
     }
 
-    #navi li a {
+    #list li a {
         color: #FFF;
         background: inherit;
-        font-weight: bold;
         text-decoration: none;
     }
 
-    #navi li a:hover {
+    #list li a:hover {
         color: #E0691A;
         background: inherit;
     }
 
+    #lock {
+        padding: 5px 12px 5px 12px;
+    }
+
+
 #info {
     clear: both;
-    height: 20px;
+    height: 1.4em;
     color: #808080;
     background: #eee;
     margin: 5px 0 5px 0;
-    padding: 0 5px 0 5px;
+    padding: 2px 5px 2px 5px;
 }
 
     #date {
@@ -254,6 +252,107 @@ input.submit {
     color: #737373;
     background: inherit;
     font-weight: bold;
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  eEd - eWeBuKi styles
+  ----------------------*/
+
+#eEd {
+    background: #EFEFEF;
+    width: 100%;
+/*     border: 1px dotted #333; */
+}
+
+    #eEd label {
+        float: left;
+        clear: both;
+        display: block;
+        width: 150px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+    }
+
+    #eEd input, textarea, select {
+        float: left;
+        display: block;
+        width: 250px;
+        border: 1px solid #333;
+        background:#F4F4F4;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 1px;
+    }
+
+    #eEd .hidden {
+        border: 0px;
+    }
+
+    #eEd .first {
+        margin-left: 160px !important;
+        margin-left: 80px; /*to fix IE6 position*/
+        width: 120px;
+        clear:both;
+    }
+
+    #eEd .next {
+        margin-left: 10px !important;
+        margin-left: 7px; /*to fix IE6 position*/
+        width: 100px;
+    }
+
+    /*clearing all floats and fix Firefox and IE backgroundcolor-bug */
+    div.clearer {
+        clear: both;
+        font-size: 1px;
+        line-height: 1px;
+        display: block;
+        height: 1px;
+    }
+
+/* ---------------------*/
+
+
+
+
+
+
+/*----------------------
+  cms edit test
+  ----------------------*/
+
+.buttag {
+    border: 1px solid #ddd;
+    padding: .5ex 1ex;
+    background-color: #fff;
+    text-decoration: none;
+    cursor: default;
+}
+
+.butoth {
+    border: 1px solid #ddd;
+    border-style: solid;
+    margin: 0 0 0 0;
+    padding: 0.2ex 0.2ex 0.2ex 0.2ex;
+    background-color: #fff;
+    text-decoration: none;
+/*     font: 0.9em Tahoma, sans-serif; */
+/*     cursor: default; */
+}
+
+.field {
+    width: 100%;
+    border: 1px solid #ddd;
+/*     margin: 0 0 1ex 0; */
+/*     padding: .5ex 1ex; */
+    background-color: #eee;
+    text-decoration: none;
 }
 
 /* ---------------------*/

@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>passed.modify</title>
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
+<style type="text/css" media="screen">
+
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<!--$Id: 852881080.modify.tem.html 270 2004-11-08 21:47:05Z chaot $-->
+<script language="JavaScript">
+<!--
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+//-->
+</script>
+<form method="POST" action="!#ausgaben_form_aktion" name="modify" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <div class="elements">
+        <label for="oldpass">#(oldpass)</label>
+        !#element_oldpass
+        <label for="newpass">#(newpass)</label>
+        !#element_newpass
+        <label for="chkpass">#(chkpass)</label>
+        !#element_chkpass
+        <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="button" name="absenden" value="Senden" class="first" />
+        <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)" class="next" />
+        <input type="button" name="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+    </div>
+</form>
+<!--##end-->
+</body>
+</html>
