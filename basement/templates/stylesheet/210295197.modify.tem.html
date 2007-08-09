@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Language" content="de">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>usered.modify</title>
+        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
+    </head>
+    <body>
+<!--##begin-->
+<!--$Id: 210295197.modify.tem.html 278 2004-11-09 02:35:36Z chaot $-->
+        <script language="JavaScript">
+        <!--
+        function resetForm(){
+            document.forms['modify'].reset;
+        }
+//-->
+        </script>
+        <form method="POST" action="!#ausgaben_form_aktion" name="modify" id="eEd">
+            <h1>#(ueberschrift)</h1>
+            <p>#(inhalt)</p>
+            <p>!#ausgaben_form_error</p>
+            <div class="elements">
+
+                <fieldset>
+                    <label for="username">#(username)</label>
+                    !#element_username
+                    <label for="nachname">#(nachname)</label>
+                    !#element_nachname
+                    <label for="vorname">#(vorname)</label>
+                    !#element_vorname
+                    <label for="email">#(email)</label>
+                    !#element_email
+                    <label for="newpass">#(newpass)</label>
+                    !#element_newpass
+                    <label for="chkpass">#(chkpass)</label>
+                    !#element_chkpass
+                </fieldset>
+
+                <fieldset>
+                    <legend>#(avail)</legend>
+
+                    <label></label>
+                    <select name="avail[]" size="10" multiple>
+                    <!--##loop-avail-->
+                        <option value="!{id}"!{sel}>!{level}</option>
+                    <!--##cont-->
+                    </select>
+                    <label></label>
+                    <input type="submit" value="#(add)" name="add"/>
+                </fieldset>
+
+                <fieldset>
+                    <legend>#(actual)</legend>
+
+                    <label></label>
+                    <select name="actual[]" size="10" multiple>
+                    <!--##loop-actual-->
+                        <option value="!{id}"!{sel}>!{level}</option>
+                    <!--##cont-->
+                    </select>
+                    <label></label>
+                    <input type="submit" value="#(del)" name="del"/>
+                </fieldset>
+
+                <fieldset>
+                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
+                    <input type="submit" name="send" value="g(send)" class="first" />
+                    <input type="reset" name="reset" value="g(reset)" class="next" onClick="resetForm()" />
+                    <input type="button" name="cancel" value="g(abort)" onClick="location='!#ausgaben_form_break'" class="next" />
+                </fieldset>
+
+                <div class="clearer">&nbsp;</div>
+
+            </div>
+
+            <p>!#ausgaben_output</p>
+            <p>!#ausgaben_inaccessible</p>
+        </form>
+<!--##end-->
+    </body>
+</html>

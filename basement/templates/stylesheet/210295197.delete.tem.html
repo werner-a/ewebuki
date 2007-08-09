@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Language" content="de">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>usered.delete</title>
+        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
+    </head>
+    <body>
+<!--##begin-->
+<!--$Id: 210295197.delete.tem.html 277 2004-11-09 02:09:40Z chaot $-->
+        <form method="POST" action="!#ausgaben_form_aktion" name="modify" id="eEd">
+            <h1>#(ueberschrift)</h1>
+            <p>#(inhalt)</p>
+            <p>!#ausgaben_form_error</p>
+            <div class="elements">
+
+                <p>#(frage)</p>
+
+                <!--##hide-right-->
+                <fieldset>
+                    <legend>#(right)</legend>
+                    <ul>
+                        <!--##loop-right-->
+                        <li>!{level}</li>
+                        <!--##cont-->
+                    </ul>
+                </fieldset>
+                <!--##show-->
+
+                <!--##hide-special-->
+                <fieldset>
+                    <legend>#(special)</legend>
+                    <ul>
+                        <!--##loop-special-->
+                        <li>!{tname}</li>
+                        <!--##cont-->
+                    </ul>
+                </fieldset>
+                <!--##show-->
+
+                <fieldset>
+                    <input type="submit" name="delete" value="g(delete)" class="first" />
+                    <input type="button" name="cancel" value="g(abort)" onClick="location='!#ausgaben_form_break'" class="next" />
+                </fieldset>
+
+                <div class="clearer">&nbsp;</div>
+
+            </div>
+
+            <p>!#ausgaben_output</p>
+            <p>!#ausgaben_inaccessible</p>
+
+        </form>
+<!--##end-->
+    </body>
+</html>

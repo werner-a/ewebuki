@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -40,14 +40,58 @@
 
     URL: http://www.chaos.de
 */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    // Tabellen
-    $data_entries = "auth_user"; # tabellen name
-    $data_rows = "10";
+    $cfg = array(
+           "subdir" => "admin",
+             "name" => "usered",
+            "basis" => $pathvars["virtual"]."/admin/usered", # crc = -1468826685 *
+         "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
+            "color" => array(
+                        "a" => "#eee",
+                        "b" => "#fff",
+                       ),
+         "function" => array(
+                  "details" => "",
+                      "add" => "",
+                     "edit" => "",
+                   "delete" => "",
+                       ),
+               "db" => array(
+                     "user" => array(
+                          "entries" => "auth_user",
+                              "key" => "uid",
+                            "login" => "username",
+                         "forename" => "vorname",
+                          "surname" => "nachname",
+                            "email" => "email",
+                            "order" => "username, nachname, vorname",
+                            "rows"  => 10,
+                     ),
+                    "right" => array(
+                          "entries" => "auth_right",
+                              "key" => "rid",
+                             "user" => "uid",
+                            "level" => "lid",
+                     ),
+                    "level" => array(
+                          "entries" => "auth_level",
+                              "key" => "lid",
+                            "level" => "level",
+                     ),
+                  "special" => array(
+                          "entries" => "auth_special",
+                              "key" => "lid",
+                             "user" => "suid",
+                            "tname" => "stname",
+                     ),
+              ),
+            "right" => "cms_admin",
+    );
 
-    $environment["basis"] = $pathvars["virtual"]."/admin/usered";
-    $environment["name"] = "usered";
+    // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich
+    // "/my" lauten. es funktioniert im beispiel nur ohne aenderung, da das
+    // einfache script $cfg["basis] nicht nutzt.
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>

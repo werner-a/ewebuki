@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Language" content="de">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>usered.list</title>
+        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
+    </head>
+    <body>
+<!--##begin-->
+<!--$Id: 210295197.list.tem.html 277 2004-11-09 02:09:40Z chaot $-->
+        <h1>#(ueberschrift)</h1>
+        <p>#(inhalt)</p>
+        <p><a href="!#ausgaben_link_new">#(new)</a></p>
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+            <thead>
+                <tr>
+                    <th align="left">#(login)</th>
+                    <th align="left">#(surname)</th>
+                    <th align="left">#(forename)</th>
+                    <th align="left">#(edit)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--##loop-user-->
+                <tr bgcolor="!{color}">
+                    <td>!{login}</td>
+                    <td>!{surname}</td>
+                    <td>!{forename}</td>
+                    <td>
+                        <a href="!{edit}">
+                            <img width="24" height="18" border="0" title="Editieren" alt="Editieren" src="../../images/default/edit.png"/>
+                        </a>
+                        <a href="!{delete}">
+                            <img width="24" height="18" border="0" title="Löschen" alt="Löschen" src="../../images/default/delete.png"/>
+                        </a>
+                        <a href="!{details}">
+                            <img width="24" height="18" border="0" title="Details" alt="Details" src="../../images/default/details.png"/>
+                        </a>
+                    </td>
+                </tr>
+                <!--##cont-->
+            </tbody>
+        </table>
+        <p>#(anzahl)!#ausgaben_anzahl !#ausgaben_inhalt_selector</p>
+
+        <p>!#ausgaben_output</p>
+        <p>!#ausgaben_inaccessible</p>
+<!--##end-->
+    </body>
+</html>

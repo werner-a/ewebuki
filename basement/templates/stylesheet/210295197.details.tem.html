@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Language" content="de">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>usered.details</title>
+        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
+    </head>
+    <body>
+<!--##begin-->
+        <h1>#(ueberschrift)</h1>
+        <p>#(inhalt)</p>
+
+        <div id="eEd">
+            <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                <tr>
+                    <th>#(login)</th>
+                    <td>!#ausgaben_login</td>
+                </tr>
+                <tr>
+                    <th>#(surname)</th>
+                    <td>!#ausgaben_surname</td>
+                </tr>
+                <tr>
+                    <th>#(forename)</th>
+                    <td>!#ausgaben_forename</td>
+                </tr>
+                <tr>
+                    <th>#(email)</th>
+                    <td>!#ausgaben_email</td>
+                </tr>
+                <tr>
+                    <th>#(level)</th>
+                    <td>!#ausgaben_level</td>
+                </tr>
+            </table>
+
+            <p>
+                <a href="!#ausgaben_back"><img width="24" height="18" border="0" title="Zurück" alt="Zurück" src="../../images/default/left.png"/></a>
+                <a href="!#ausgaben_edit"><img width="24" height="18" border="0" title="Bearbeiten" alt="Bearbeiten" src="../../images/default/edit.png"/></a>
+            </p>
+        </div>
+
+        <p>!#ausgaben_output</p>
+        <p>!#ausgaben_inaccessible</p>
+<!--##end-->
+    </body>
+</html>
