@@ -308,6 +308,25 @@
     // steuerung der funktionen
     require $pathvars["config"]."modules.cfg.php";
 
+    // label check
+    if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( $HTTP_GET_VARS["edit"] == "" ) {
+            $tname = $mapping["main"];
+        } else {
+            $tname = crc32($environment["ebene"]).".".$HTTP_GET_VARS["edit"];
+        }
+        $sql = "SELECT * FROM ". SITETEXT ."
+                WHERE tname='".$tname."'
+                AND lang='".$environment["language"]."'";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        $ausgaben["inaccessible"] .= "---<br />label check:<br />";
+        while ( $data = $db -> fetch_array($result,1) ) {
+            $ausgaben["inaccessible"] .= "# (".$data["label"].") #(".$data["label"].")<br />";
+        }
+        $ausgaben["inaccessible"] .= "---<br />label automatic:<br />";
+    }
+
     // webdesigner kann mit dieser datei das laden der templates beinflussen
     if ( file_exists($pathvars["templates"]."linking.inc.php") ) {
       $linking_path = $pathvars["templates"];
