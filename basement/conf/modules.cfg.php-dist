@@ -61,7 +61,7 @@
        || ( $environment["ebene"] == "/admin/leveled" ))
     {
         include $pathvars["moduleroot"]."admin/leveled.cfg.php";
-        include $pathvars["moduleroot"]."admin/leveled.inc.php";
+        include $pathvars["moduleroot"]."admin/leveled-ctrl.inc.php";
     }
 
     // admin: usered
@@ -69,7 +69,7 @@
        || ( $environment["ebene"] == "/admin/usered" ))
     {
         include $pathvars["moduleroot"]."admin/usered.cfg.php";
-        include $pathvars["moduleroot"]."admin/usered.inc.php";
+        include $pathvars["moduleroot"]."admin/usered-ctrl.inc.php";
     }
 
     // admin: menued
