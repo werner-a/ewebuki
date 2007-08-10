@@ -1,10 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
+  $script["name"] = "$Id: leer-ctrl.inc.php 646 2007-08-05 15:22:01Z chaot $";
+  $Script["desc"] = "leer - kontroll funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -42,47 +43,32 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // content umschaltung verhindern
-    $specialvars["dynlock"] = True;
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    $cfg = array(
-        "subdir"    => "admin",
-        "name"      => "leveled",
-        "basis"     => $pathvars["virtual"]."/admin/leveled",
-        "iconpath"  => "", # leer: /images/default/; automatik: $pathvars["images"]
-         "function" => array(
-                      "add" => "",
-                     "edit" => "",
-                   "delete" => "",
-                  "details" => "",
-                       ),
-        "color"     => array(
-                       "a" => "#cccccc",
-                       "b" => "#999999",
-        ),
+    // warnung ausgeben
+    if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
-        "db"        => array(
-                "user"        => array(
-                    "entries"       => "auth_user",
-                    "key"           => "uid",
-                    "order"         => "username",
-                ),
-                "right"        => array(
-                    "entries"       => "auth_right",
-                    "key"           => "rid",
-                    "user"          => "uid",
-                    "level"         => "lid",
-                ),
-                "level"        => array(
-                    "entries"       => "auth_level",
-                    "key"           => "lid",
-                    "desc"          => "beschreibung",
-                    "order"         => "level",
-                    "rows"          => 10
-                ),
-        ),
-        "right"     => "",
-    );
+    // path fuer die schaltflaechen anpassen
+    if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+
+    // label bearbeitung aktivieren
+    if ( isset($HTTP_GET_VARS["edit"]) ) {
+        $specialvars["editlock"] = 0;
+    } else {
+        $specialvars["editlock"] = -1;
+    }
+
+    // include function loader
+    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
+
+    // magic include loader
+    if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
+        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
+    } else {
+        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
+    }
+
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
