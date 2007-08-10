@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>leveled.details</title>
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<!--$Id: -840786483.details.tem.html 262 2004-11-08 19:29:28Z chaot $-->
+
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
+
+<div id="eEd">
+<table>
+    <tr>
+        <th align="left">#(level)</th><td>!#ausgaben_level</td>
+    </tr>
+    <tr>
+        <th align="left">#(beschreibung)</th><td>!#ausgaben_beschreibung</td>
+    </tr>
+    <!--##hide-members-->
+    <tr>
+        <th align="left">#(user)</th>
+        <td>
+        <!--##loop-members-->
+        "!{name}"
+        <!--##cont-->
+        </td>
+    </tr>
+    <!--##show-->
+    <tr>
+        <td><a href="!#ausgaben_link_edit"><img src=/images/default/edit.png border="0" alt="#(edit)" title="#(edit)" width="24" height="18"></a> <a href="!#ausgaben_link_list"><img src=/images/default/left.png border="0" alt="#(list)" title="#(list)" width="24" height="18"></a></td>
+    </tr>
+</table>
+</div>
+!#ausgaben_output
+!#ausgaben_inaccessible
+<!--##end-->
+</body>
+</html>

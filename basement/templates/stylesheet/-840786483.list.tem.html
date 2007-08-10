@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>leveled.list</title>
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<!--$Id: -840786483.list.tem.html 262 2004-11-08 19:29:28Z chaot $-->
+<p><h1>#(ueberschrift)</h1></p>
+<p>#(inhalt)</p>
+<p><a href="!#ausgaben_link_new">#(new)</a></p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr>
+        <th align="left">#(level)</th>
+        <th align="left">#(beschreibung)</th>
+        <th align="left">#(modify)</td>
+    </tr>
+    <!--##loop-list-->
+    <tr bgcolor="!{color}">
+        <td>!{bezeichnung}</td>
+        <td>!{beschreibung}</td>
+        <td>
+            <a href="!{editlink}"><img src=/images/default/edit.png border="0" alt="!{edittitel}" title="" width="24" height="18"></a>
+            <a href="!{deletelink}"><img src=/images/default/delete.png border="0" alt="!{deletetitel}" title="" width="24" height="18"></a>
+            <a href="!{detaillink}"><img src=/images/default/details.png border="0" alt="!{detailtitel}" title="" width="24" height="18"></a>
+        </td>
+    </tr>
+    <!--##cont-->
+</table>
+<p style=float:left>#(anzahl)!#ausgaben_anzahl</p>
+<p style=float:right>!#ausgaben_inhalt_selector</p>
+!#ausgaben_inaccessible
+<!--##end-->
+</body>
+</html>
