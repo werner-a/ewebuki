@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
+<title>leer.list</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen">
+</head>
+<body>
+<!--##begin-->
+<!--$Id: 852881080.modify.tem.html 270 2004-11-08 21:47:05Z chaot $-->
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
+<p>!#ausgaben_form_error</p>
+<p><a href="!#ausgaben_link_new">g(new)</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <thead>
+        <tr>
+            <th align="left">#(field1)</th>
+            <th align="left">g(modcol)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--##loop-list-->
+        <tr bgcolor="!{color}">
+            <td>!{field1}</td>
+            <td align="right" nowrap>
+                <a href="!{edit}">
+                    <img border="0" height="18" width="24" src="../../images/default/edit.png" alt="g(edit)" title="g(edit)">
+                </a>
+                <a href="!{delete}">
+                    <img border="0" height="18" width="24" src="../../images/default/delete.png" alt="g(delete)" title="g(delete)">
+                </a>
+            </td>
+        </tr>
+        <!--##cont-->
+    </tbody>
+</table>
+<p></p>!#ausgaben_anzahl !#ausgaben_inhalt_selector</p>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<!--##end-->
+</body>
+</html>
