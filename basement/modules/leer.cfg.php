@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -42,11 +42,18 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
+    // 404 fuer die module ebene deaktivieren
+    $specialvars["404"]["nochk"]["ebene"][] = "/dir";
+
     $cfg = array(
            "subdir" => "customer",
              "name" => "leer",
             "basis" => $pathvars["virtual"]."/dir/my", # crc = -1468826685 *
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
+            "color" => array(
+                        "a" => "#eee",
+                        "b" => "#fff",
+                       ),
          "function" => array(
                       "add" => "",
                      "edit" => "",

@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -78,11 +78,9 @@
 
             $dataloop["list"][$data["id"]]["field1"] = $data["field1"];
 
-            $dataloop["list"][$data["id"]]["editlink"] = $cfg["basis"]."/edit,".$data["id"].".html";
-            $dataloop["list"][$data["id"]]["edittitel"] = "#(edittitel)";
+            $dataloop["list"][$data["id"]]["edit"] = $cfg["basis"]."/edit,".$data["id"].".html";
 
-            $dataloop["list"][$data["id"]]["deletelink"] = $cfg["basis"]."/delete,".$data["id"].".html";
-            $dataloop["list"][$data["id"]]["deletetitel"] = "#(deletetitel)";
+            $dataloop["list"][$data["id"]]["delete"] = $cfg["basis"]."/delete,".$data["id"].".html";
         }
 
         // +++
