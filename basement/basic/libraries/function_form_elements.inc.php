@@ -128,8 +128,9 @@
                     // hack: bei nicht auf "checked" gesetzten check boxen
                     // bleibt der post/get value leer
                     // der required check versagt, das feld kann nicht geaendert werden
-                    $formularobject  = "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"\">\n";
-                    $formularobject .= "<input type=\"checkbox\" name=\"".$fields["Field"].$extend."\" value=\"".$options[0]."\"".$checked.">\n";
+                    $formularobject  = "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"\" class=\"hidden\" />\n";
+                    $formularobject .= "<label for=\"".$fields["Field"]."\">".$options[0]."</label>\n";
+                    $formularobject .= "<input type=\"checkbox\" name=\"".$fields["Field"].$extend."\" value=\"".$options[0]."\"".$checked." />\n";
                 } elseif ( count($options) >= 4 ) {
                     ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "1";
                     ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["dropdown"]["class"]."\"";
@@ -158,7 +159,7 @@
                     // hack: bei nicht auf "checked" gesetzten radio buttons
                     // bleibt der post/get value leer
                     // der required check versagt!
-                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".$form_values[$fields["Field"]]."\">\n";
+                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".$form_values[$fields["Field"]]."\" class=\"hidden\" />\n";
                     foreach( $options as $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
                             $checked = " checked";
@@ -171,7 +172,8 @@
                         } else {                           #
                             $label_wert = $value;          #
                         }                                  #
-                        $formularobject .= "<input type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$checked.">".$label_wert." \n";
+                        $formularobject .= "<label for=\"".$fields["Field"]."\">".$label_wert."</label>\n";
+                        $formularobject .= "<input type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$checked." />\n";
                     }
                     $element[$fields["Field"].$extend] = $formularobject;
                 }
