@@ -42,9 +42,6 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    // 404 fuer die module ebene deaktivieren
-    $specialvars["404"]["nochk"]["ebene"][] = "/dir";
-
     $cfg = array(
            "subdir" => "customer",
              "name" => "leer",
