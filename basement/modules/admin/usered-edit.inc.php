@@ -188,8 +188,7 @@
 
                 // Sql um spezielle Felder erweitern
                 if ( $checked_password != "" ) {
-                    $sqla .= ", pass";
-                    $sqlb .= ", '".$checked_password."'";
+                    $sqla .= ", pass='".$checked_password."'";
                 }
 
                 $sql = "UPDATE ".$cfg["db"]["user"]["entries"]." SET ".$sqla." WHERE uid='".$environment["parameter"][1]."'";
