@@ -194,6 +194,13 @@
     // da hidden menu aktiviert ist, 404 fuer diese kategorie ausschalten
     if ( $cfg["hidden"]["set"] == True ) $specialvars["404"]["nochk"]["kategorie"][] =  $cfg["hidden"]["kategorie"];
 
+    // label bearbeitung aktivieren
+    if ( isset($HTTP_GET_VARS["edit"]) ) {
+        $specialvars["editlock"] = 0;
+    } else {
+        $specialvars["editlock"] = -1;
+    }
+
     // daten fuer login, logout formular setzen
     if ( $_SESSION["auth"] != -1 ) {
         $ausgaben["login_meldung"] .= "";
@@ -219,6 +226,8 @@
 
         $ausgaben["auth"] = parser( "auth.logout", "");
     }
+
+    $specialvars["editlock"] = 0;
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
 
