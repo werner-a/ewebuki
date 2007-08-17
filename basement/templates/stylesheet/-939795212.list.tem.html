@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>fileed.list</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -939795212.list.tem.html 519 2006-10-06 19:09:10Z chaot $-->
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
+<p id="show_searchswitch" style="display:none;"><a href="#" onclick="searchswitch('eEd')">Suche ein-/ausblenden</a></p>
+
+<div id="eEd" style="display:block;">
+
+    <form method="get" action="!#ausgaben_form1_aktion">
+        <div class="elements">
+            <label>#(search) </label><input name="search" type="text" class="textfield" value="!#ausgaben_search" />
+            <label>#(group) </label>
+                <select name="filter0" onchange="submit()">
+                    <!--##loop-filter0-->
+                    <option value="!{value}"!{select}>!{label}</option>
+                    <!--##cont-->
+                </select>
+
+            <label>#(type) </label>
+                <select name="filter1" onchange="submit()">
+                    <!--##loop-filter1-->
+                    <option value="!{value}"!{select}>!{label}</option>
+                    <!--##cont-->
+                </select>
+            <label></label><input type="submit" name="Abschicken" value="#(send)" />
+            <div class="clearer">&nbsp;</div>
+        </div>
+    </form>
+
+    <form method="get" action="!#ausgaben_form2_aktion">
+        <div class="elements">
+            <label>#(upload) </label>
+                <select name="anzahl" onchange="submit()">
+                    <option selected>Upload</option>
+                    <option value="1">1 Datei</option>
+                    <option value="2">2 Dateien</option>
+                    <option value="3">3 Dateien</option>
+                    <option value="4">4 Dateien</option>
+                    <option value="5">5 Dateien</option>
+                </select>
+
+            <div class="clearer">&nbsp;</div>
+        </div>
+    </form>
+
+</div>
+
+<p>!#ausgaben_form_error</p>
+<p>!#ausgaben_cmslink !#ausgaben_fileedit !#ausgaben_filedelete</p>
+<p>!#ausgaben_result</p>
+
+<!--##hide-images-->
+<ul>
+<!--##loop-list-->
+    <li class="fileed" style="">
+        <a href="!{ehref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} bearbeiten" !{size}></a>
+        <p>
+            !{cb}
+            <a title="Vorschau Original (original)" href="!{ohref}">O</a>
+            <a title="Vorschau Gross (big)" href="!{bhref}">B</a>
+            <a title="Vorschau Mittel (middle)" href="!{mhref}">M</a>
+            <a title="Vorschau Klein (small)" href="!{shref}">S</a>
+        </p>
+    </li>
+<!--##cont-->
+</ul>
+<div class="clearer"></div>
+<!--##show-->
+
+<!--##hide-other-->
+<ul>
+<!--##loop-list-->
+    <li style="background:!{color};">
+        !{cb}&nbsp;
+        <a title="!{title} bearbeiten" href="!{ehref}">
+            <img src="../../images/default/details.png">
+        </a>&nbsp;
+        <a title="!{title} bearbeiten" href="!{ehref}">
+            !{title}
+        </a> [ <a title="Herunterladen (download)" href="!{dhref}" target="!{dtarget}">D</a> ]
+    </li>
+<!--##cont-->
+</ul>
+<!--##show-->
+
+<p style="float:left">#(anzahl)!#ausgaben_anzahl</p>
+<p style="float:right">!#ausgaben_inhalt_selector</p>
+<div style="clear:both"></div>
+
+<p>!#ausgaben_output</p>
+<p>#(text1)</p>
+<p>!#ausgaben_inaccessible</p>
+
+<script type="text/javascript">
+    function searchswitch(id){
+        var searchfield=document.getElementById(id) //Reference content for this header
+        if (searchfield.style.display=="block")
+            var display="none"
+        else{
+            var display="block"
+        }
+        searchfield.style.display = display
+    }
+
+    searchswitch('show_searchswitch');
+    searchswitch('eEd');
+</script>
+
+<!--##end-->
+</body>
+</html>

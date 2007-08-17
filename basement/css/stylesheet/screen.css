@@ -398,3 +398,26 @@ input.submit {
 }
 
 /* ---------------------*/
+
+
+/*----------------------
+  Liste im FileEd
+  ----------------------*/
+.fileed{
+    border:1px solid silver;
+    float:left;
+    height:130px;
+    margin:5px;
+    width:102px;
+    text-align:center;padding:3px;
+    -moz-border-radius:5px;
+}
+
+.fileed div, .fileed a.pic{
+    display:block;
+    height:100px;
+    margin:0 auto;
+    width:96px;
+}
+
+/* ---------------------*/
