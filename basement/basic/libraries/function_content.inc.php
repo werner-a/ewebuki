@@ -212,14 +212,14 @@
 
                     if ( $defaults["cms-tag"]["signal"] == "" ) {
                         $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";
-                        $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\" />";
+                        $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" />";
                     }
 
 
 
                     if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
                         foreach ( $allcontent as $key => $value ) {
-                            $replace = str_replace( "{".$key."}", "<a target=\"_top\" href=\"".$editurl.",".$key.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>", $replace);
+                            $replace = str_replace( "{".$key."}", "<a href=\"".$editurl.",".$key.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>", $replace);
                         }
                     }
 
@@ -231,10 +231,8 @@
                       && !strpos($vorher,"alt=\"")
                       && !strpos($vorher,"title=\"")
                       && !strpos($vorher,"status='") ) {
-                        $replace .= " <a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>";
+                        $replace .= " <a href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>";
                     } else {
-                        #$line = $line."# (".$label.")&nbsp;<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
-                        #$ausgaben["inaccessible"] .= "# (".$label.")&nbsp;#(".$label.")<a target=\"_top\" href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a><br />\n";
                         $ausgaben["inaccessible"] .= $bez.$label.")&nbsp;".$art.$label.")<br />\n";
                     }
                 }
