@@ -49,9 +49,9 @@
         // ***
 
         if ( count($_POST) == 0 ) {
-            $sql = "SELECT *".
-                    " FROM ".$cfg["db"]["user"]["entries"].
-                   " WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
+            $sql = "SELECT *
+                      FROM ".$cfg["db"]["user"]["entries"]."
+                     WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
@@ -60,7 +60,7 @@
         }
 
         // form options holen
-        $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+        $form_options = form_options(crc32($environment["ebene"]).".modify");
 
         // form elememte bauen
         $element = form_elements( $cfg["db"]["user"]["entries"], $form_values );
@@ -79,17 +79,19 @@
 
         // level management form form elemente begin
         // ***
-        $sql = "SELECT auth_level.lid, auth_level.level, auth_right.uid, auth_right.rid".
-                " FROM auth_level".
-           " LEFT JOIN auth_right ON auth_level.lid = auth_right.lid and auth_right.uid = ".$environment["parameter"][1].
-            " ORDER BY level";
+        $sql = "SELECT auth_level.lid, auth_level.level, auth_right.uid, auth_right.rid
+                  FROM auth_level
+             LEFT JOIN auth_right ON auth_level.lid = auth_right.lid and auth_right.uid = ".$environment["parameter"][1]."
+              ORDER BY level";
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
+            // unterscheidung, ob recht schon vergeben ist oder noch zu vergeben ist
             if ( $all["uid"] == $environment["parameter"][1] ) {
                 $loop_label = "actual";
             } else {
                 $loop_label = "avail";
             }
+            // wurde das element schon angewaehlt
             $sel = "";
             if ( is_array($form_values[$loop_label]) && in_array($all["lid"],$form_values[$loop_label]) ) $sel = ' selected="true"';
             $hidedata[$loop_label][0] = -1;

@@ -1,51 +1,50 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Language" content="de">
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <title>usered.list</title>
-        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
-    </head>
-    <body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>usered.list</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+</head>
+<body>
 <!--##begin-->
 <!--$Id: 210295197.list.tem.html 277 2004-11-09 02:09:40Z chaot $-->
-        <h1>#(ueberschrift)</h1>
-        <p>#(inhalt)</p>
-        <p><a href="!#ausgaben_link_new">#(new)</a></p>
-        <table width="100%" border="0" cellspacing="0" cellpadding="2">
-            <thead>
-                <tr>
-                    <th align="left">#(login)</th>
-                    <th align="left">#(surname)</th>
-                    <th align="left">#(forename)</th>
-                    <th align="left">#(edit)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!--##loop-user-->
-                <tr bgcolor="!{color}">
-                    <td>!{login}</td>
-                    <td>!{surname}</td>
-                    <td>!{forename}</td>
-                    <td>
-                        <a href="!{edit}">
-                            <img width="24" height="18" border="0" title="Editieren" alt="Editieren" src="../../images/default/edit.png"/>
-                        </a>
-                        <a href="!{delete}">
-                            <img width="24" height="18" border="0" title="Löschen" alt="Löschen" src="../../images/default/delete.png"/>
-                        </a>
-                        <a href="!{details}">
-                            <img width="24" height="18" border="0" title="Details" alt="Details" src="../../images/default/details.png"/>
-                        </a>
-                    </td>
-                </tr>
-                <!--##cont-->
-            </tbody>
-        </table>
-        <p>#(anzahl)!#ausgaben_anzahl !#ausgaben_inhalt_selector</p>
-
-        <p>!#ausgaben_output</p>
-        <p>!#ausgaben_inaccessible</p>
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
+<p>!#ausgaben_form_error</p>
+<p><a href="!#ausgaben_link_new">g(new)</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <thead>
+        <tr>
+            <th align="left">#(login)</th>
+            <th align="left">#(surname)</th>
+            <th align="left">#(forename)</th>
+            <th align="left">g(modcol)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--##loop-user-->
+        <tr style="background:!{color};">
+            <td>!{login}</td>
+            <td>!{surname}</td>
+            <td>!{forename}</td>
+            <td align="right" style="white-space:nowrap">
+                <a href="!{edit}">
+                    <img height="18" width="24" src="../../images/default/edit.png" alt="g(edit)" title="g(edit)" />
+                </a>
+                <a href="!{delete}">
+                    <img height="18" width="24" src="../../images/default/delete.png" alt="g(delete)" title="g(delete)" />
+                </a>
+                <a href="!{details}">
+                    <img height="18" width="24" src="../../images/default/details.png" alt="g(details)" title="g(details)" />
+                </a>
+            </td>
+        </tr>
+        <!--##cont-->
+    </tbody>
+</table>
+<p>!#ausgaben_anzahl !#ausgaben_inhalt_selector</p>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
 <!--##end-->
     </body>
 </html>

@@ -43,14 +43,14 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["right"]] == -1 || !$rechte ) {
 
         // funktions bereich
         // ***
 
-        $sql = "SELECT *".
-                " FROM ".$cfg["db"]["user"]["entries"].
-            " ORDER BY ".$cfg["db"]["user"]["order"];
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["user"]["entries"]."
+              ORDER BY ".$cfg["db"]["user"]["order"];
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
@@ -107,8 +107,6 @@
         if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
-            $ausgaben["inaccessible"] .= "# (edittitel) #(edittitel)<br />";
-            $ausgaben["inaccessible"] .= "# (deletetitel) #(deletetitel)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }

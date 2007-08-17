@@ -1,57 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Language" content="de">
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <title>usered.delete</title>
-        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
-    </head>
-    <body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>usered.delete</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+</head>
+<body>
 <!--##begin-->
 <!--$Id: 210295197.delete.tem.html 277 2004-11-09 02:09:40Z chaot $-->
-        <form method="POST" action="!#ausgaben_form_aktion" name="modify" id="eEd">
-            <h1>#(ueberschrift)</h1>
-            <p>#(inhalt)</p>
-            <p>!#ausgaben_form_error</p>
-            <div class="elements">
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <p>#(frage)</p>
 
-                <p>#(frage)</p>
+    <h2>#(right)</h2>
+    <p>!#ausgaben_rights</p>
 
-                <!--##hide-right-->
-                <fieldset>
-                    <legend>#(right)</legend>
-                    <ul>
-                        <!--##loop-right-->
-                        <li>!{level}</li>
-                        <!--##cont-->
-                    </ul>
-                </fieldset>
-                <!--##show-->
+    <h2>#(special)</h2>
+    <p>!#ausgaben_special</p>
 
-                <!--##hide-special-->
-                <fieldset>
-                    <legend>#(special)</legend>
-                    <ul>
-                        <!--##loop-special-->
-                        <li>!{tname}</li>
-                        <!--##cont-->
-                    </ul>
-                </fieldset>
-                <!--##show-->
-
-                <fieldset>
-                    <input type="submit" name="delete" value="g(delete)" class="first" />
-                    <input type="button" name="cancel" value="g(abort)" onClick="location='!#ausgaben_form_break'" class="next" />
-                </fieldset>
-
-                <div class="clearer">&nbsp;</div>
-
-            </div>
-
-            <p>!#ausgaben_output</p>
-            <p>!#ausgaben_inaccessible</p>
-
-        </form>
+    <div class="elements">
+        <input type="submit" name="delete" value="g(delete)" class="first" />
+        <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </div>
+</form>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
 <!--##end-->
     </body>
 </html>

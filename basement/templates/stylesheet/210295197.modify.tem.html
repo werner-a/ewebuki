@@ -1,82 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Language" content="de">
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <title>usered.modify</title>
-        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
-    </head>
-    <body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>usered.modify</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+</head>
+<body>
 <!--##begin-->
 <!--$Id: 210295197.modify.tem.html 278 2004-11-09 02:35:36Z chaot $-->
-        <script language="JavaScript">
-        <!--
-        function resetForm(){
-            document.forms['modify'].reset;
-        }
+<script type="text/javascript">
+<!--
+  function resetForm(){
+     document.forms[0].reset();
+  }
 //-->
-        </script>
-        <form method="POST" action="!#ausgaben_form_aktion" name="modify" id="eEd">
-            <h1>#(ueberschrift)</h1>
-            <p>#(inhalt)</p>
-            <p>!#ausgaben_form_error</p>
-            <div class="elements">
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <div class="elements">
 
-                <fieldset>
-                    <label for="username">#(username)</label>
-                    !#element_username
-                    <label for="nachname">#(nachname)</label>
-                    !#element_nachname
-                    <label for="vorname">#(vorname)</label>
-                    !#element_vorname
-                    <label for="email">#(email)</label>
-                    !#element_email
-                    <label for="newpass">#(newpass)</label>
-                    !#element_newpass
-                    <label for="chkpass">#(chkpass)</label>
-                    !#element_chkpass
-                </fieldset>
+        <label for="username">#(username)</label>
+        !#element_username
+        <label for="nachname">#(nachname)</label>
+        !#element_nachname
+        <label for="vorname">#(vorname)</label>
+        !#element_vorname
+        <label for="email">#(email)</label>
+        !#element_email
+        <label for="newpass">#(newpass)</label>
+        !#element_newpass
+        <label for="chkpass">#(chkpass)</label>
+        !#element_chkpass
 
-                <fieldset>
-                    <legend>#(avail)</legend>
+        <label></label>
+        <select name="avail[]" size="10" multiple="multiple">
+        <!--##loop-avail-->
+            <option value="!{id}"!{sel}>!{level}</option>
+        <!--##cont-->
+        </select>
+        <label></label>
+        <input type="submit" value="#(add)" name="add"/>
 
-                    <label></label>
-                    <select name="avail[]" size="10" multiple>
-                    <!--##loop-avail-->
-                        <option value="!{id}"!{sel}>!{level}</option>
-                    <!--##cont-->
-                    </select>
-                    <label></label>
-                    <input type="submit" value="#(add)" name="add"/>
-                </fieldset>
+        <label></label>
+        <select name="actual[]" size="10" multiple="multiple">
+        <!--##loop-actual-->
+            <option value="!{id}"!{sel}>!{level}</option>
+        <!--##cont-->
+        </select>
+        <label></label>
+        <input type="submit" value="#(del)" name="del"/>
 
-                <fieldset>
-                    <legend>#(actual)</legend>
+        <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" class="next" onclick="resetForm()" />
+        <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
 
-                    <label></label>
-                    <select name="actual[]" size="10" multiple>
-                    <!--##loop-actual-->
-                        <option value="!{id}"!{sel}>!{level}</option>
-                    <!--##cont-->
-                    </select>
-                    <label></label>
-                    <input type="submit" value="#(del)" name="del"/>
-                </fieldset>
+        <div class="clearer">&nbsp;</div>
 
-                <fieldset>
-                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
-                    <input type="submit" name="send" value="g(send)" class="first" />
-                    <input type="reset" name="reset" value="g(reset)" class="next" onClick="resetForm()" />
-                    <input type="button" name="cancel" value="g(abort)" onClick="location='!#ausgaben_form_break'" class="next" />
-                </fieldset>
+        <p>!#ausgaben_output</p>
+        <p>!#ausgaben_inaccessible</p>
 
-                <div class="clearer">&nbsp;</div>
-
-            </div>
-
-            <p>!#ausgaben_output</p>
-            <p>!#ausgaben_inaccessible</p>
-        </form>
+    </div>
+</form>
 <!--##end-->
     </body>
 </html>

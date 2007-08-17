@@ -43,18 +43,18 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["right"]] == -1 ) {
 
         // funktions bereich fuer erweiterungen
         // ***
 
         // datensatz holen
-        $sql ="SELECT *".
-                " FROM ".$cfg["db"]["user"]["entries"].
-                " WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
+        $sql ="SELECT *
+                 FROM ".$cfg["db"]["user"]["entries"]."
+                WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
-        $data = $db -> fetch_array($result,$nop);
+        $data = $db -> fetch_array($result,1);
 
         // ausgaben belegen
         foreach($data as $name => $value) {
@@ -66,30 +66,36 @@
 
         // evtl. zusaetzlichen datensatz anzeigen
         // rechte
-        $sql = "SELECT *".
-                " FROM ".$cfg["db"]["right"]["entries"].
-                " JOIN ".$cfg["db"]["level"]["entries"].
-                  " ON (".$cfg["db"]["level"]["entries"].".".$cfg["db"]["right"]["level"]."=".$cfg["db"]["right"]["entries"].".".$cfg["db"]["level"]["key"].")".
-               " WHERE ".$cfg["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["right"]["entries"]."
+                  JOIN ".$cfg["db"]["level"]["entries"]."
+                    ON (".$cfg["db"]["level"]["entries"].".".$cfg["db"]["right"]["level"]."=".$cfg["db"]["right"]["entries"].".".$cfg["db"]["level"]["key"].")
+                 WHERE ".$cfg["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
+        $ausgaben["rights"] = "---";
         if ( $db->num_rows($result) > 0 ){
             $hidedata["right"][] = -1;
-            while ( $data = $db -> fetch_array($result,$nop) ) {
-                $dataloop["right"][]["level"] = $data[$cfg["db"]["level"]["level"]];
+            $ausgaben["rights"] = "";
+            while ( $data = $db -> fetch_array($result,1) ) {
+                if ( $ausgaben["rights"] != "" ) $ausgaben["rights"] .= ", ";
+                $ausgaben["rights"] .= $data[$cfg["db"]["level"]["level"]];
             }
         }
 
         // spezial-rechte
-        $sql = "SELECT *".
-                " FROM ".$cfg["db"]["special"]["entries"].
-               " WHERE ".$cfg["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["special"]["entries"]."
+                 WHERE ".$cfg["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
+        $ausgaben["special"] = "---";
         if ( $db->num_rows($result) > 0 ){
             $hidedata["special"][] = -1;
-            while ( $data = $db -> fetch_array($result,$nop) ) {
-                $dataloop["special"][]["tname"] = $data[$cfg["db"]["special"]["tname"]];
+            $ausgaben["special"] = "";
+            while ( $data = $db -> fetch_array($result,1) ) {
+                if ( $ausgaben["special"] != "" ) $ausgaben["special"] .= "<br />";
+                $ausgaben["special"] .= $data[$cfg["db"]["special"]["tname"]];
             }
         }
 
@@ -139,18 +145,18 @@
         if ( $_POST["delete"] != "" ) {
 
             // evtl. zusaetzlichen datensatz loeschen
-            $sql = "DELETE FROM ".$cfg["db"]["right"]["entries"].
-                        " WHERE ".$cfg["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
+            $sql = "DELETE FROM ".$cfg["db"]["right"]["entries"]."
+                          WHERE ".$cfg["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
             if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
 
-            $sql = "DELETE FROM ".$cfg["db"]["special"]["entries"].
-                        " WHERE ".$cfg["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
+            $sql = "DELETE FROM ".$cfg["db"]["special"]["entries"]."
+                          WHERE ".$cfg["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
             if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
 
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "DELETE FROM ".$cfg["db"]["user"]["entries"].
-                            " WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."';";
+                $sql = "DELETE FROM ".$cfg["db"]["user"]["entries"]."
+                              WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."';";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");

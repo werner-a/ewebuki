@@ -1,48 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Language" content="de">
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <title>usered.details</title>
-        <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css">
-    </head>
-    <body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>usered.details</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+</head>
+<body>
 <!--##begin-->
-        <h1>#(ueberschrift)</h1>
-        <p>#(inhalt)</p>
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
 
-        <div id="eEd">
-            <table width="100%" border="0" cellspacing="0" cellpadding="2">
-                <tr>
-                    <th>#(login)</th>
-                    <td>!#ausgaben_login</td>
-                </tr>
-                <tr>
-                    <th>#(surname)</th>
-                    <td>!#ausgaben_surname</td>
-                </tr>
-                <tr>
-                    <th>#(forename)</th>
-                    <td>!#ausgaben_forename</td>
-                </tr>
-                <tr>
-                    <th>#(email)</th>
-                    <td>!#ausgaben_email</td>
-                </tr>
-                <tr>
-                    <th>#(level)</th>
-                    <td>!#ausgaben_level</td>
-                </tr>
-            </table>
+<h2>#(login)</h2>
+<p>!#ausgaben_login</p>
+<h2>#(surname)</h2>
+<p>!#ausgaben_surname</p>
+<h2>#(forename)</h2>
+<p>!#ausgaben_forename</p>
+<h2>#(email)</h2>
+<p>!#ausgaben_email</p>
+<h2>#(level)</h2>
+<p>!#ausgaben_level</p>
 
-            <p>
-                <a href="!#ausgaben_back"><img width="24" height="18" border="0" title="Zurück" alt="Zurück" src="../../images/default/left.png"/></a>
-                <a href="!#ausgaben_edit"><img width="24" height="18" border="0" title="Bearbeiten" alt="Bearbeiten" src="../../images/default/edit.png"/></a>
-            </p>
-        </div>
+<p>
+    <a href="!#ausgaben_edit">
+        <img height="18" width="24" src="../../images/default/edit.png" alt="g(edit)" title="g(edit)" />
+    </a>
+    <a href="!#ausgaben_back">
+        <img height="18" width="24" src="../../images/default/left.png" alt="g(back)" title="g(back)" />
+    </a>
+</p>
 
-        <p>!#ausgaben_output</p>
-        <p>!#ausgaben_inaccessible</p>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
 <!--##end-->
-    </body>
+</body>
 </html>

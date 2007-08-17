@@ -50,9 +50,9 @@
         // funktions bereich
         // ***
 
-        $sql = "SELECT *".
-                " FROM ".$cfg["db"]["user"]["entries"].
-               " WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["user"]["entries"]."
+                 WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -64,11 +64,11 @@
 
         // level management form form elemente begin
         // ***
-        $sql = "SELECT auth_right.lid, auth_level.level".
-                " FROM auth_level".
-          " INNER JOIN auth_right ON auth_level.lid = auth_right.lid".
-               " WHERE auth_right.uid = ".$environment["parameter"][1].
-            " ORDER BY level";
+        $sql = "SELECT auth_right.lid, auth_level.level
+                  FROM auth_level
+            INNER JOIN auth_right ON auth_level.lid = auth_right.lid
+                 WHERE auth_right.uid = ".$environment["parameter"][1]."
+              ORDER BY level";
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
             if ( isset($ausgaben["level"]) ) $ausgaben["level"] .= ", ";

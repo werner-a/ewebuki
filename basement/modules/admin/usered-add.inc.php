@@ -51,7 +51,7 @@
         $form_values = $_POST;
 
         // form options holen
-        $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+        $form_options = form_options(crc32($environment["ebene"]).".modify");
 
         // form elememte bauen
         $element = form_elements( $cfg["db"]["user"]["entries"], $form_values );
@@ -70,9 +70,9 @@
 
         // level management form form elemente begin
         // ***
-        $sql = "SELECT lid, level".
-                " FROM auth_level".
-            " ORDER BY level";
+        $sql = "SELECT lid, level
+                  FROM auth_level
+              ORDER BY level";
         $result = $db -> query($sql);
         if ( $db->num_rows($result) > 0 ) $hidedata["avail"][] = -1;
         while ( $all = $db -> fetch_array($result,1) ) {
