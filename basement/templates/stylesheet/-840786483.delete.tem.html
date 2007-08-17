@@ -7,7 +7,7 @@
 </head>
 <!--##begin-->
 <!--$Id: -840786483.delete.tem.html 264 2004-11-08 19:33:51Z chaot $-->
-<form id="eEd" name="navi" method="post" action="!#ausgaben_form_aktion">
+<form  method="post" action="!#ausgaben_form_aktion" name="navi" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <h2>#(frage)</h2>
@@ -15,11 +15,9 @@
         <h2>#(members)</h2>
         !#ausgaben_members
     <!--##show-->
-    <p>
-        <input class="first" type="submit" value="g(send)" name="send[]"  >
-        <input class="next" type="button" value="g(abort)" name="button" onClick="location='!#ausgaben_form_break'" >
-    </p>
-    <p>!#ausgaben_output</p>
+    <input class="first" type="submit" value="g(send)" name="send[]"  >
+    <input class="next" type="button" value="g(abort)" name="button" onClick="location='!#ausgaben_form_break'" >
+    <p>!#ausgaben_output </p>
     <p>!#ausgaben_inaccessible</p>
 </form>
 <!--##end-->
