@@ -12,10 +12,10 @@
      document.forms['modify'].reset();
   }
 </SCRIPT>
-<form id="eEd" method="POST" action="!#ausgaben_form_aktion" name="modify">
+<form method="POST" action="!#ausgaben_form_aktion" name="modify" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
-    <font color="#FF0000">!#ausgaben_form_error</font>
+    <p>!#ausgaben_form_error</p>
     <div>
         <label for="level">#(level)</label>!#element_level
         <label for="description">#(description)</label>!#element_beschreibung
@@ -42,11 +42,14 @@
     </div>
     <div class=clearer></div>
     <div>
-        <input class="first" name="send[]" type="submit" value="#(send)"><input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+        <input class="first" name="send[]" type="submit" value="#(send)">
+        <input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
         <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
     </div>
 </form>
-!#ausgaben_inaccessible
+<div class=clearer></div>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
 <!--##end-->
 </body>
 </html>
