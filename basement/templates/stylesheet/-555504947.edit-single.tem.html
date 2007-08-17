@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-15">
+<title>menued.edit-sigle</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen">
+</head>
+<!--##begin-->
+<!--$Id: -555504947.edit-single.tem.html 254 2004-11-08 14:43:42Z chaot $-->
+<SCRIPT>
+  function resetForm(){
+     document.forms['edit'].reset();
+  }
+</SCRIPT>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" onreset="return confirm('Wollen Sie wircklich alle Felder zur�cksetzen?')">
+    <h1>#(ueberschrift)</h1>
+    <p>!#ausgaben_form_error</p>
+    <h3>#(basic)</h3>
+    <label for="template">#(template)</label>!#element_defaulttemplate
+    <label for="entry">#(entry)</label>!#element_entry
+    <label for="label">#(label)</label>!#element_label
+    <label for="lang">#(lang)</label>!#element_lang
+    <label for="label">#(exturl)</label>!#element_exturl
+    <div class="clearer"></div>
+    <h3>#(extended)</h3>
+    <label for="template">#(refid)</label>!#element_refid
+    <label for="entry">#(picture)</label>!#element_picture
+    <label for="sort">#(sort)</label>!#element_sort
+    <label for="hide">#(hide)</label>!#element_hide
+    <label for="level">#(level)</label>!#element_level
+    <label for="mandatory">#(madatory)</label>!#element_mandatory
+    <div class="clearer"></div>
+    <div>
+        #(lang)
+        #(new_lang)
+        !#element_new_lang
+        <input name="add[]2" type="submit" title="#(add)" alt="#(add)" value="new"> 
+    </div>
+    <div class="clearer"></div>
+    <input name="form_referer" class="hidden" type="hidden" value="!#ausgaben_form_referer">
+    <input class="first" name="send[]" type="submit" value="#(send)"><input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+    <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+    <div class="clearer"></div>
+</form>
+<div class="clearer"></div>
+<div>
+!#ausgaben_output
+!#ausgaben_inaccessible
+</div><div class="clearer"></div>
+<!--##end-->
