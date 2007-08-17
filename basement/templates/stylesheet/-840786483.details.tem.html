@@ -8,23 +8,17 @@
 <!--##begin-->
 <!--$Id: -840786483.details.tem.html 262 2004-11-08 19:29:28Z chaot $-->
 <h1>#(ueberschrift)</h1>
-<p>#(inhalt)</p>
+
 <div id="eEd">
-<dl>
-    <dt><b>#(level)</b>
-        <dd>!#ausgaben_level</dd>
-    </dt>
-    <dt><b>#(beschreibung)</b>
-        <dd>!#ausgaben_beschreibung</dd>
-    </dt>
-    <!--##hide-members-->
-    <dt><b>#(user)</b>
-    <!--##loop-members-->
-        <dd>!{name}</dd>
-    <!--##cont-->
-    </dt>
-    <!--##show-->
-</dl>
+<p>#(inhalt)</p>
+<h2>#(level)</h2>
+<p>!#ausgaben_level</p>
+<h2>#(beschreibung)</h2>
+<p>!#ausgaben_beschreibung</p>
+<!--##hide-members-->
+<h2>#(user)</h2>
+<p>!#ausgaben_members</p>
+<!--##show-->
 <p>
     <a href="!#ausgaben_link_edit"><img src=../../images/default/edit.png border="0" alt="g(edit)" title="g(edit)" width="24" height="18"></a>
     <a href="!#ausgaben_link_list"><img src=../../images/default/left.png border="0" alt="g(back)" title="g(back)" width="24" height="18"></a>
