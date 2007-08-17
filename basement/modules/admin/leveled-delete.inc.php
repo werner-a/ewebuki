@@ -64,7 +64,8 @@
                 WHERE ".$cfg["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         while ( $members = $db -> fetch_array($result,1) ) {
-            $dataloop["members"][]["name"] = $members["username"];
+            ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
+            $ausgaben["members"] .= $trenner.$members["username"];
         }
         if ( $db -> num_rows($result) > 0 ) $hidedata["members"]["enabled"] = "on";
         // +++
