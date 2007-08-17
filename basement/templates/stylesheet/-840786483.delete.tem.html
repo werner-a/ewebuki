@@ -1,30 +1,27 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
 <title>leveled.delete</title>
-<link rel="stylesheet" href="../../css/default.css" type="text/css">
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen">
 </head>
-<body bgcolor="#FFFFFF">
 <!--##begin-->
 <!--$Id: -840786483.delete.tem.html 264 2004-11-08 19:33:51Z chaot $-->
 <form id="eEd" name="navi" method="post" action="!#ausgaben_form_aktion">
-<h1>#(ueberschrift)</h1>
-<p>#(inhalt)</p>
-<p>#(frage)</p>
-<!--##hide-members-->
-<h2>#(members)</h2>
-<!--##show-->
-<!--##loop-members-->
-    <p>!{name}</p>
-<!--##cont-->
-
-<input class="first" name="send[]" type="submit" value="g(send)">
-<input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
-
-<br><p>!#ausgaben_output<br>
-!#ausgaben_inaccessible</p>
-  </form>
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <h2>#(frage)</h2>
+    <!--##hide-members-->
+        <h2>#(members)</h2>
+        !#ausgaben_members
+    <!--##show-->
+    <p>
+        <input class="first" type="submit" value="g(send)" name="send[]"  >
+        <input class="next" type="button" value="g(abort)" name="button" onClick="location='!#ausgaben_form_break'" >
+    </p>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
 <!--##end-->
 </body>
 </html>
