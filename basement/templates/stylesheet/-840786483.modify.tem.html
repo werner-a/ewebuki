@@ -12,7 +12,7 @@
      document.forms['modify'].reset();
   }
 </SCRIPT>
-<form method="POST" action="!#ausgaben_form_aktion" name="modify" id="eEd">
+<form name="modify" method="POST" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
@@ -41,11 +41,10 @@
         </select>
     </div>
     <div class=clearer></div>
-    <div>
-        <input class="first" name="send[]" type="submit" value="#(send)">
-        <input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
-        <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
-    </div>
+    <input class="first" name="send[]" type="submit" value="#(send)">
+    <input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+    <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+    <div class=clearer></div>
 </form>
 <div class=clearer></div>
 <p>!#ausgaben_output</p>
