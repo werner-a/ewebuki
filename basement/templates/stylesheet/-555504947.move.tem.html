@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>menued.move</title>
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
+</head>
+<body bgcolor="#ffffff">
+<!--##begin-->
+<!--$Id: -555504947.move.tem.html 242 2004-11-05 20:29:29Z chaot $-->
+<SCRIPT>
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+</SCRIPT>
+<form name="modify" method="post" action="!#ausgaben_form_aktion" onreset="return confirm('Wollen Sie wircklich alle Felder zurücksetzen?')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr> 
+      <td bgcolor="#EC9379">#(ueberschrift)</td>
+    </tr>
+    <tr> 
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2"><img src="../../images/net/pos.gif" width="1" height="1">!#ausgaben_form_error</td>
+          </tr>
+          <tr> 
+            <td valign="top" width="50%">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="90">#(entry)</td>
+                  <td width="166">!#element_entry</td>
+                </tr>
+              </table>
+            </td>
+            <td valign="top" width="50%">&nbsp; </td>
+          </tr>
+          <tr> 
+            <td valign="top" colspan="2">!#ausgaben_output</td>
+          </tr>
+          <tr> 
+            <td valign="top" colspan="2" align="right"> 
+              <table border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td colspan="5"> 
+                    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
+                  </td>
+                </tr>
+                <tr> 
+                  <td> 
+                    <input name="send[]" type="submit" value="#(send)" src="../../images/default/send.png">
+                  </td>
+                  <td align="center"> 
+                    <input type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+                  </td>
+                  <td align="right"> 
+                    <input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2">!#ausgaben_inaccessible</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  </form>
+<!--##end-->
+</body>
+</html>
