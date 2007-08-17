@@ -42,52 +42,6 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-
-           // form otions holen
-            $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
-
-            // form elememte bauen
-            $element = form_elements( $cfg["db"]["level"]["entries"], $HTTP_POST_VARS );
-
-            // form elemente erweitern
-            #n/a
-
-            // fehlermeldungen
-            $ausgaben["form_error"] = "";
-
-            // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["basis"]."/modify,add,verify.html";
-            $ausgaben["form_break"] = $cfg["basis"]."/list.html";
-
-            if ( $environment["parameter"][2] == "verify"
-                && $HTTP_POST_VARS["send"] != "" ) {
-
-                // form eingaben prüfen
-                form_errors( $form_options, $HTTP_POST_VARS );
-
-                // form eingaben prüfen erweitern
-                #n/a
-
-                // usern mit neuem level versehen
-                if ( $ausgaben["form_error"] == "" ) {
-                    if ( is_array($HTTP_POST_VARS["avail"]) ) {
-                        $lid = $db -> lastid();
-                        foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
-                            $sql = "INSERT INTO auth_right (lid, uid) VALUES ('".$lid."', '".$value."')";
-                            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                            $db -> query($sql);
-                            if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                        }
-                    }
-                }
-
-                // wohin schicken
-                if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/list.html");
-                }
-            }
-*/
 
   if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
 
@@ -115,11 +69,11 @@
 
         // funktions bereich fuer erweiterungen
         // ***
-        
+
         // user holen und mit dataloop ausgeben
         $sql = "SELECT uid, username
-                    FROM ".$cfg["db"]["user"]["entries"]."
-                ORDER BY ".$cfg["db"]["user"]["order"];
+                  FROM ".$cfg["db"]["user"]["entries"]."
+              ORDER BY ".$cfg["db"]["user"]["order"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
             $dataloop["avail"][] = array(
