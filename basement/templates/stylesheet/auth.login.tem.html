@@ -1,17 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>auth.login</title>
 </head>
-<body bgcolor="#FFFFFF">
+<body>
 <!--##begin-->
-!#ausgaben_login_meldung
-<form name="login" method="post" action="!#ausgaben_auth_url">
-    <input style="width:50;font-size:9px" type="text" name="user"><br />
-    <input style="width:50;font-size:9px" type="password" name="pass"><br />
-    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
-    <input type="submit" name="login" value="login">
+<p>!#ausgaben_login_meldung</p>
+<form method="post" action="!#ausgaben_auth_url">
+    <div>
+        <input type="text" name="user" style="width:50;font-size:9px" />
+        <input type="password" name="pass" style="width:50;font-size:9px" />
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" />
+        <input type="submit" name="login" value="login" />
+    </div>
 </form>
 <!--##end-->
 </body>
