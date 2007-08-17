@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: leer-list.inc.php 503 2006-09-22 06:16:23Z chaot $";
-// "leer - list funktion";
+// "$Id: leveled-list.inc.php 503 2006-09-22 06:16:23Z chaot $";
+// "leveled - list funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -51,7 +51,7 @@
         /* db query */
         $sql = "SELECT *
                   FROM ".$cfg["db"]["level"]["entries"]."
-                  ORDER BY ".$cfg["db"]["level"]["order"];
+              ORDER BY ".$cfg["db"]["level"]["order"];
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
