@@ -10,11 +10,11 @@
 <!--$Id: -939795212.list.tem.html 519 2006-10-06 19:09:10Z chaot $-->
 <h1>#(ueberschrift)</h1>
 <p>#(inhalt)</p>
-<p id="show_searchswitch" style="display:none;"><a href="#" onclick="searchswitch('eEd')">Suche ein-/ausblenden</a></p>
 
-<div id="eEd" style="display:block;">
+<p id="search_switch" style="display:none;"><a href="#" onclick="searchswitch('search_field')">Suche ein-/ausblenden</a></p>
 
-    <form method="get" action="!#ausgaben_form1_aktion">
+<div id="search_field" style="display:block;">
+    <form method="get" action="!#ausgaben_form1_aktion" id="eEd">
         <div class="elements">
             <label>#(search) </label><input name="search" type="text" class="textfield" value="!#ausgaben_search" />
             <label>#(group) </label>
@@ -35,7 +35,7 @@
         </div>
     </form>
 
-    <form method="get" action="!#ausgaben_form2_aktion">
+    <form method="get" action="!#ausgaben_form2_aktion" id="eEd">
         <div class="elements">
             <label>#(upload) </label>
                 <select name="anzahl" onchange="submit()">
@@ -58,9 +58,9 @@
 <p>!#ausgaben_result</p>
 
 <!--##hide-images-->
-<ul>
+<ul id="eEd">
 <!--##loop-list-->
-    <li class="fileed" style="">
+    <li class="thumbs">
         <a href="!{ehref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} bearbeiten" !{size}></a>
         <p>
             !{cb}
@@ -76,7 +76,7 @@
 <!--##show-->
 
 <!--##hide-other-->
-<ul>
+<ul id="eEd">
 <!--##loop-list-->
     <li style="background:!{color};">
         !{cb}&nbsp;
@@ -110,8 +110,8 @@
         searchfield.style.display = display
     }
 
-    searchswitch('show_searchswitch');
-    searchswitch('eEd');
+    searchswitch('search_switch');
+    searchswitch('search_field');
 </script>
 
 <!--##end-->

@@ -349,6 +349,23 @@ input.submit {
         width: 100px;
     }
 
+    #eEd .thumbs {
+        border: 1px solid silver;
+        float: left;
+        height: 130px;
+        margin: 5px;
+        width: 102px;
+        text-align: center;
+        padding: 3px;
+        -moz-border-radius: 5px;
+}
+    #eEd .thumbs a.pic {
+        display: block;
+        height: 100px;
+        margin: 0 auto;
+        width: 96px;
+}
+
     /*clearing all floats and fix Firefox and IE backgroundcolor-bug */
     div.clearer {
         clear: both;
@@ -395,29 +412,6 @@ input.submit {
 /*     padding: .5ex 1ex; */
     background-color: #eee;
     text-decoration: none;
-}
-
-/* ---------------------*/
-
-
-/*----------------------
-  Liste im FileEd
-  ----------------------*/
-.fileed{
-    border:1px solid silver;
-    float:left;
-    height:130px;
-    margin:5px;
-    width:102px;
-    text-align:center;padding:3px;
-    -moz-border-radius:5px;
-}
-
-.fileed div, .fileed a.pic{
-    display:block;
-    height:100px;
-    margin:0 auto;
-    width:96px;
 }
 
 /* ---------------------*/
