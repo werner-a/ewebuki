@@ -139,7 +139,7 @@ div.clearer {
   fileed special
   ----------------------*/
 
-ul.thumbs {
+li.thumbs {
         border: 1px solid silver;
         float: left;
         height: 130px;
@@ -150,7 +150,7 @@ ul.thumbs {
         -moz-border-radius: 5px;
 }
 
-ul.thumbs a.pic {
+li.thumbs a.pic {
         display: block;
         height: 100px;
         margin: 0 auto;
