@@ -39,25 +39,23 @@
         <label for="chkpass">#(chkpass)
             !#element_chkpass
         </label>
+        <label>#(actual)
+            <select name="actual[]" size="10" multiple="multiple">
+                <!--##loop-actual-->
+                <option value="!{id}"!{sel}>!{level}</option>
+                <!--##cont-->
+            </select>
+        </label>
+        <label>#(avail)
+            <select name="avail[]" size="10" multiple="multiple">
+                <!--##loop-avail-->
+                <option value="!{id}"!{sel}>!{level}</option>
+                <!--##cont-->
+            </select>
+        </label>
     </fieldset>
-    <label></label>
-    <select name="avail[]" size="10" multiple="multiple">
-    <!--##loop-avail-->
-        <option value="!{id}"!{sel}>!{level}</option>
-    <!--##cont-->
-    </select>
-    <label></label>
-    <input type="submit" value="#(add)" name="add"/>
-
-    <label></label>
-    <select name="actual[]" size="10" multiple="multiple">
-    <!--##loop-actual-->
-        <option value="!{id}"!{sel}>!{level}</option>
-    <!--##cont-->
-    </select>
-    <label></label>
     <input type="submit" value="#(del)" name="del"/>
-
+    <input type="submit" value="#(add)" name="add"/>
     <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
     <div class="clearer">&nbsp;</div>
     <input type="submit" name="send" value="g(send)" class="first" />
