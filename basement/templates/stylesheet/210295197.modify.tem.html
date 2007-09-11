@@ -19,51 +19,55 @@
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <div class="elements">
+    <div class="clearer">&nbsp;</div>
+    <fieldset class="float">
+        <label for="username">#(username)
+            !#element_username
+        </label>
+        <label for="nachname">#(nachname)
+            !#element_nachname
+        </label>
+        <label for="vorname">#(vorname)
+            !#element_vorname
+        </label>
+        <label for="email">#(email)
+            !#element_email
+        </label>
+        <label for="newpass">#(newpass)
+            !#element_newpass
+        </label>
+        <label for="chkpass">#(chkpass)
+            !#element_chkpass
+        </label>
+    </fieldset>
+    <label></label>
+    <select name="avail[]" size="10" multiple="multiple">
+    <!--##loop-avail-->
+        <option value="!{id}"!{sel}>!{level}</option>
+    <!--##cont-->
+    </select>
+    <label></label>
+    <input type="submit" value="#(add)" name="add"/>
 
-        <label for="username">#(username)</label>
-        !#element_username
-        <label for="nachname">#(nachname)</label>
-        !#element_nachname
-        <label for="vorname">#(vorname)</label>
-        !#element_vorname
-        <label for="email">#(email)</label>
-        !#element_email
-        <label for="newpass">#(newpass)</label>
-        !#element_newpass
-        <label for="chkpass">#(chkpass)</label>
-        !#element_chkpass
+    <label></label>
+    <select name="actual[]" size="10" multiple="multiple">
+    <!--##loop-actual-->
+        <option value="!{id}"!{sel}>!{level}</option>
+    <!--##cont-->
+    </select>
+    <label></label>
+    <input type="submit" value="#(del)" name="del"/>
 
-        <label></label>
-        <select name="avail[]" size="10" multiple="multiple">
-        <!--##loop-avail-->
-            <option value="!{id}"!{sel}>!{level}</option>
-        <!--##cont-->
-        </select>
-        <label></label>
-        <input type="submit" value="#(add)" name="add"/>
+    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
+    <div class="clearer">&nbsp;</div>
+    <input type="submit" name="send" value="g(send)" class="first" />
+    <input type="reset" name="reset" value="g(reset)" class="next" onclick="resetForm()" />
+    <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
 
-        <label></label>
-        <select name="actual[]" size="10" multiple="multiple">
-        <!--##loop-actual-->
-            <option value="!{id}"!{sel}>!{level}</option>
-        <!--##cont-->
-        </select>
-        <label></label>
-        <input type="submit" value="#(del)" name="del"/>
+    <div class="clearer">&nbsp;</div>
 
-        <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
-        <div class="clearer">&nbsp;</div>
-        <input type="submit" name="send" value="g(send)" class="first" />
-        <input type="reset" name="reset" value="g(reset)" class="next" onclick="resetForm()" />
-        <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
-
-        <div class="clearer">&nbsp;</div>
-
-        <p>!#ausgaben_output</p>
-        <p>!#ausgaben_inaccessible</p>
-
-    </div>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
 </form>
 <!--##end-->
     </body>
