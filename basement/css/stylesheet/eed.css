@@ -16,8 +16,7 @@
 }
 
 #eEd ul {
-
-    color: #FFFFFF;
+/*     color: #FFFFFF; */
 }
 
 
@@ -114,13 +113,13 @@
         width: 100px;
     }
 
-    #eEd fieldset {
+    #eEd fieldset.float {
         border:none;
         margin:10px;
         padding:0;
     }
 
-    #eEd .float label {
+    #eEd fieldset.float label {
         clear:none;
         float:left;
         margin:0;
@@ -128,7 +127,7 @@
         width:200px;
     }
 
-    #eEd .float input, #eEd .float textarea, #eEd .float select {
+    #eEd fieldset.float input, #eEd fieldset.float textarea, #eEd fieldset.float select {
         margin-top:0;
         width:200px;
     }
@@ -158,14 +157,14 @@ div.clearer {
   menued special
   ----------------------*/
 
-ul.menued {
+#eEd ul.menued {
     padding: 0pt 0pt 0pt 20pt;
 }
-li.menued {
+#eEd li.menued {
     border-top: 1px solid #ddd;
     list-style : none;
 }
-li.menued a{
+#eEd li.menued a{
     text-decoration:none;
 }
 
@@ -177,7 +176,7 @@ li.menued a{
   fileed special
   ----------------------*/
 
-li.thumbs {
+#eEd li.thumbs {
         border: 1px solid silver;
         float: left;
         height: 130px;
@@ -188,7 +187,7 @@ li.thumbs {
         -moz-border-radius: 5px;
 }
 
-li.thumbs a.pic {
+#eEd li.thumbs a.pic {
         display: block;
         height: 100px;
         margin: 0 auto;
