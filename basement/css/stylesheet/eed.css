@@ -15,11 +15,6 @@
     border: 1px dotted #333;
 }
 
-#eEd ul {
-/*     color: #FFFFFF; */
-}
-
-
 #eEd label {
     float: left;
     display: block;
@@ -50,6 +45,48 @@
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 10px;
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  global modifiers
+  ----------------------*/
+
+    #eEd .hidden {
+        border: 0px;
+    }
+
+    #eEd .first {
+        margin-left: 160px !important;
+        margin-left: 80px; /*to fix IE6 position*/
+        width: 120px;
+        clear:both;
+    }
+
+    #eEd .next {
+        margin-left: 10px !important;
+        margin-left: 7px; /*to fix IE6 position*/
+        width: 100px;
+    }
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  spezial reset
+  ----------------------*/
+
+/*clearing all floats and fix Firefox and IE backgroundcolor-bug */
+div.clearer {
+    clear: both;
+    font-size: 1px;
+    line-height: 1px;
+    display: block;
+    height: 1px;
 }
 
 /* ---------------------*/
@@ -93,25 +130,8 @@
 
 
 /*----------------------
-  global modifiers
+  floating input, 2lines
   ----------------------*/
-
-    #eEd .hidden {
-        border: 0px;
-    }
-
-    #eEd .first {
-        margin-left: 160px !important;
-        margin-left: 80px; /*to fix IE6 position*/
-        width: 120px;
-        clear:both;
-    }
-
-    #eEd .next {
-        margin-left: 10px !important;
-        margin-left: 7px; /*to fix IE6 position*/
-        width: 100px;
-    }
 
     #eEd fieldset.float {
         border:none;
@@ -131,23 +151,6 @@
         margin-top:0;
         width:200px;
     }
-
-/* ---------------------*/
-
-
-
-/*----------------------
-  spezial reset
-  ----------------------*/
-
-/*clearing all floats and fix Firefox and IE backgroundcolor-bug */
-div.clearer {
-    clear: both;
-    font-size: 1px;
-    line-height: 1px;
-    display: block;
-    height: 1px;
-}
 
 /* ---------------------*/
 
@@ -195,7 +198,6 @@ li.thumbs a.pic {
 }
 
 /* ---------------------*/
-
 
 
 
