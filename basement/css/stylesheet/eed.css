@@ -176,7 +176,7 @@ div.clearer {
   fileed special
   ----------------------*/
 
-#eEd li.thumbs {
+li.thumbs {
         border: 1px solid silver;
         float: left;
         height: 130px;
@@ -187,7 +187,7 @@ div.clearer {
         -moz-border-radius: 5px;
 }
 
-#eEd li.thumbs a.pic {
+li.thumbs a.pic {
         display: block;
         height: 100px;
         margin: 0 auto;
