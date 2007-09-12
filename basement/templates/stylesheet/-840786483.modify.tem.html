@@ -16,14 +16,13 @@
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <div class="clearer">&nbsp;</div>
+    <div class=clearer></div>
     <fieldset class="float">
-        <label for="level">#(level)
-            !#element_level
-        </label>
-        <label for="description">#(description)
-            !#element_beschreibung
-        </label>
+        <label for="level">#(level)</label>!#element_level
+        <label for="description">#(description)</label>!#element_beschreibung
+    </fieldset>
+    <div class=clearer></div>
+    <fieldset class="float">
         <!--##hide-edit-->
         <label>#(actual)
             <select name="actual[]" size="10" multiple>
