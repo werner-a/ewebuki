@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>usered.list</title>
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen">
 </head>
 <body>
 <!--##begin-->
@@ -28,21 +29,16 @@
             <td>!{surname}</td>
             <td>!{forename}</td>
             <td align="right" style="white-space:nowrap">
-                <a href="!{edit}">
-                    <img height="18" width="24" src="../../images/default/edit.png" alt="g(edit)" title="g(edit)" />
-                </a>
-                <a href="!{delete}">
-                    <img height="18" width="24" src="../../images/default/delete.png" alt="g(delete)" title="g(delete)" />
-                </a>
-                <a href="!{details}">
-                    <img height="18" width="24" src="../../images/default/details.png" alt="g(details)" title="g(details)" />
-                </a>
+                <a href="!{edit}"><img height="18" width="24" src="../../images/default/edit.png" alt="g(edit)" title="g(edit)" /></a>
+                <a href="!{delete}"><img height="18" width="24" src="../../images/default/delete.png" alt="g(delete)" title="g(delete)" /></a>
+                <a href="!{details}"><img height="18" width="24" src="../../images/default/details.png" alt="g(details)" title="g(details)" /></a>
             </td>
         </tr>
         <!--##cont-->
     </tbody>
 </table>
-<p>!#ausgaben_anzahl !#ausgaben_inhalt_selector</p>
+<p style=float:left>#(anzahl)!#ausgaben_anzahl</p>
+<p style=float:right>!#ausgaben_inhalt_selector</p>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
 <!--##end-->

@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>usered.modify</title>
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen">
 </head>
 <body>
 <!--##begin-->
@@ -45,7 +46,7 @@
                 <option value="!{id}"!{sel}>!{level}</option>
                 <!--##cont-->
             </select>
-            <input type="submit" value="#(del)" name="del"/>
+            <input type="submit" name="del[]" value="#(del)" />
         </label>
         <label>#(avail)
             <select name="avail[]" size="10" multiple="multiple">
@@ -53,19 +54,14 @@
                 <option value="!{id}"!{sel}>!{level}</option>
                 <!--##cont-->
             </select>
-            <input type="submit" value="#(add)" name="add"/>
+            <input type="submit" name="add[]" value="#(add)" />
         </label>
     </fieldset>
-    <fieldset>
         <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
-        <div class="clearer">&nbsp;</div>
-        <input type="submit" name="send" value="g(send)" class="next" />
-        <input type="reset" name="reset" value="g(reset)" class="next" onclick="resetForm()" />
-        <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
-    </fieldset>
-
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" onclick="resetForm()" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
     <div class="clearer">&nbsp;</div>
-
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>

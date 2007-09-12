@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>usered.delete</title>
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen">
 </head>
 <body>
 <!--##begin-->
@@ -13,21 +14,16 @@
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <p>#(frage)</p>
-
     <h2>#(right)</h2>
     <p>!#ausgaben_rights</p>
-
     <h2>#(special)</h2>
     <p>!#ausgaben_special</p>
-
-    <div class="elements">
-        <input type="submit" name="delete" value="g(delete)" class="first" />
-        <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
-        <div class="clearer">&nbsp;</div>
-    </div>
+    <input type="submit" name="delete" value="g(delete)" class="first" />
+    <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+    <div class="clearer">&nbsp;</div>
 </form>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
 <!--##end-->
-    </body>
+</body>
 </html>

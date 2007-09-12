@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>leer.delete</title>
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen">
 </head>
 <body>
 <!--##begin-->
@@ -16,18 +17,16 @@
     <p>!#ausgaben_field1</p>
     <p>#(field2)</p>
     <p>!#ausgaben_field2</p>
-    <div class="elements">
-        <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
-        <input name="id1" type="hidden" value="!#ausgaben_form_id1" class="hidden" />
-        <input name="id2" type="hidden" value="!#ausgaben_form_id2" class="hidden" />
-        <input name="delete" type="hidden" value="!#ausgaben_form_delete" class="hidden" />
-        <div class="clearer">&nbsp;</div>
-        <input type="submit" name="send" value="g(send)" class="first" />
-        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
-        <div class="clearer">&nbsp;</div>
-        <p>!#ausgaben_output</p>
-        <p>!#ausgaben_inaccessible</p>
-    </div>
+    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
+    <input name="id1" type="hidden" value="!#ausgaben_form_id1" class="hidden" />
+    <input name="id2" type="hidden" value="!#ausgaben_form_id2" class="hidden" />
+    <input name="delete" type="hidden" value="!#ausgaben_form_delete" class="hidden" />
+    <div class="clearer">&nbsp;</div>
+    <input type="submit" name="send[]" value="g(send)" class="first" />
+    <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+    <div class="clearer">&nbsp;</div>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
 </form>
 <!--##end-->
 </body>
