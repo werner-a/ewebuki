@@ -42,7 +42,14 @@
     clear: both;
     display: block;
     width: 100%;
-    padding-left: 10px;
+    padding-left: 40px;
+}
+
+#eEd h2 {
+    float: left;
+    clear: both;
+    display: block;
+    padding-left: 40px;
 }
 
 #eEd fieldset{
