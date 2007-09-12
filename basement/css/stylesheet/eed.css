@@ -42,9 +42,14 @@
     clear: both;
     display: block;
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
     padding-left: 10px;
+}
+
+#eEd fieldset{
+    border:none;
+    border:none;
+    margin:10px;
+    padding:0 0 0 20px;
 }
 
 /* ---------------------*/
@@ -56,7 +61,7 @@
   ----------------------*/
 
     #eEd .hidden {
-        border: 0px;
+        display:none;
     }
 
     #eEd .first {
@@ -135,15 +140,12 @@ div.clearer {
 
     #eEd fieldset.float {
         border:none;
-        margin:10px;
-        padding:0;
     }
 
     #eEd fieldset.float label {
         clear:none;
         float:left;
         margin:0;
-        padding-left:20px;
         width:200px;
     }
 
