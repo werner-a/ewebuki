@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
 <title>leveled.modify</title>
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen">
 </head>
 <!--##begin-->
 <!--$Id: -840786483.modify.tem.html 262 2004-11-08 19:29:28Z chaot $-->
@@ -16,11 +17,10 @@
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <div class=clearer></div>
-    <fieldset class="float">
-        <label for="level">#(level)</label>!#element_level
-        <label for="description">#(description)</label>!#element_beschreibung
-    </fieldset>
+    <label for="level">#(level)</label>
+    !#element_level
+    <label for="description">#(description)</label>
+    !#element_beschreibung
     <div class=clearer></div>
     <fieldset class="float">
         <!--##hide-edit-->
@@ -44,13 +44,11 @@
             <!--##show-->
         </label>
     </fieldset>
-    <fieldset>
-        <input class="next" name="send[]" type="submit" value="#(send)">
-        <input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
-        <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
-    </fieldset>
+    <input type="submit" name="send[]" value="#(send)" class="first">
+    <input type="reset" name="reset" value="#(reset)" class="next">
+    <input type="button" name="button[]" value="#(abort)" onClick="location='!#ausgaben_form_break'" class="next">
+    <div class=clearer></div>
 </form>
-<div class=clearer></div>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
 <!--##end-->
