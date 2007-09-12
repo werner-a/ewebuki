@@ -100,7 +100,7 @@
                 "level" => $all["level"],
                 "sel" => $sel
             );
-        } 
+        }
         // +++
         // level management form form elemente end
 
@@ -168,7 +168,7 @@
                     $checked_password = crypt($checked_password, $mysalt);
                     // da ich das passwort erstellt habe, klappt magic_quotes_gpc nicht
                     $checked_password = addslashes($checked_password);
-                } else {
+                } elseif ( $_POST["newpass"] != "" && $_POST["chkpass"] != "" ) {
                     $ausgaben["form_error"] .= $form_options["pass"]["ferror"];
                 }
 
