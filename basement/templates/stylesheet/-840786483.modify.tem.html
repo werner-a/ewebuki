@@ -12,39 +12,44 @@
      document.forms['modify'].reset();
   }
 </SCRIPT>
-<form name="modify" method="POST" action="!#ausgaben_form_aktion" id="eEd">
+<form method="POST" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <div>
-        <label for="level">#(level)</label>!#element_level
-        <label for="description">#(description)</label>!#element_beschreibung
-    </div>
-    <div class="elements">
+    <div class="clearer">&nbsp;</div>
+    <fieldset class="float">
+        <label for="level">#(level)
+            !#element_level
+        </label>
+        <label for="description">#(description)
+            !#element_beschreibung
+        </label>
         <!--##hide-edit-->
-        <label>#(actual)</label>
-        <label><input class="next" type="submit" name="del[]" value="#(del)"></label>
-        <select name="actual[]" size="10" multiple>
-        <!--##loop-actual-->
-            <option value="!{value}">!{username}</option>
-        <!--##cont-->
-        </select>
+        <label>#(actual)
+            <select name="actual[]" size="10" multiple>
+            <!--##loop-actual-->
+                <option value="!{value}">!{username}</option>
+            <!--##cont-->
+            </select>
+            <input type="submit" name="del[]" value="#(del)">
+        </label>
         <!--##show-->
-        <label>#(avail)</label>
-        <!--##hide-edit-->
-        <label><input class="next" type="submit" name="add[]" value="#(add)"></label>
-        <!--##show-->
-        <select name="avail[]" size="10" multiple>
-        <!--##loop-avail-->
-            <option value="!{value}">!{username}</option>
-        <!--##cont-->
-        </select>
-    </div>
-    <div class=clearer></div>
-    <input class="first" name="send[]" type="submit" value="#(send)">
-    <input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
-    <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
-    <div class=clearer></div>
+        <label>#(avail)
+            <select name="avail[]" size="10" multiple>
+            <!--##loop-avail-->
+                <option value="!{value}">!{username}</option>
+            <!--##cont-->
+            </select>
+            <!--##hide-edit-->
+            <input type="submit" name="add[]" value="#(add)">
+            <!--##show-->
+        </label>
+    </fieldset>
+    <fieldset>
+        <input class="next" name="send[]" type="submit" value="#(send)">
+        <input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
+        <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+    </fieldset>
 </form>
 <div class=clearer></div>
 <p>!#ausgaben_output</p>
