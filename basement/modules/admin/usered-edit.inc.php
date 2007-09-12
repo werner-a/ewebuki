@@ -159,17 +159,19 @@
                 // ***
 
                 // form eingaben prüfen erweitern
-                if ( $_POST["newpass"] != "" && $_POST["newpass"] == $_POST["chkpass"] ) {
-                    $checked_password = $_POST["newpass"];
-                    mt_srand((double)microtime()*1000000);
-                    $a=mt_rand(1,128);
-                    $b=mt_rand(1,128);
-                    $mysalt = chr($a).chr($b);
-                    $checked_password = crypt($checked_password, $mysalt);
-                    // da ich das passwort erstellt habe, klappt magic_quotes_gpc nicht
-                    $checked_password = addslashes($checked_password);
-                } elseif ( $_POST["newpass"] != "" && $_POST["chkpass"] != "" ) {
-                    $ausgaben["form_error"] .= $form_options["pass"]["ferror"];
+                if ( $_POST["newpass"] != "" || $_POST["chkpass"] != "" ) {
+                    if ( $_POST["newpass"] == $_POST["chkpass"] ) {
+                        $checked_password = $_POST["newpass"];
+                        mt_srand((double)microtime()*1000000);
+                        $a=mt_rand(1,128);
+                        $b=mt_rand(1,128);
+                        $mysalt = chr($a).chr($b);
+                        $checked_password = crypt($checked_password, $mysalt);
+                        // da ich das passwort erstellt habe, klappt magic_quotes_gpc nicht
+                        $checked_password = addslashes($checked_password);
+                    }else{
+                        $ausgaben["form_error"] .= $form_options["pass"]["ferror"];
+                    }
                 }
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
