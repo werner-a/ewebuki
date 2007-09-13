@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "leer - list funktion";
+  $script["name"] = "$Id: leer.inc.php 503 2006-09-22 06:16:23Z chaot $";
+  $Script["desc"] = "leer - details funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -37,52 +37,55 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
+
     if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+
+        ////////////////////////////////////////////////////////////////////
+        // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!
+        // z.B. $ausgaben["form_error"],$ausgaben["inaccessible"]
+        ////////////////////////////////////////////////////////////////////
+
+        // page basics
+        // ***
+
+        // warnung ausgeben
+        if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
+
+        // path fuer die schaltflaechen anpassen
+        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+
+        // label bearbeitung aktivieren
+        if ( isset($HTTP_GET_VARS["edit"]) ) {
+            $specialvars["editlock"] = 0;
+        } else {
+            $specialvars["editlock"] = -1;
+        }
+
+        // +++
+        // page basics
+
 
         // funktions bereich
         // ***
 
         ### put your code here ###
 
-        /* z.B. db query */
-
         $sql = "SELECT *
                   FROM ".$cfg["db"]["leer"]["entries"]."
-                 WHERE 1";
+                 WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-
-        // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["leer"]["rows"], $parameter, 1, 3, $getvalues );
-        $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
-        $sql = $inhalt_selector[1];
-        $ausgaben["anzahl"] = $inhalt_selector[2];
-
         $result = $db -> query($sql);
-        while ( $data = $db -> fetch_array($result,1) ) {
-            $dataloop["list"][$data["id"]][0] = $data["field1"];
-            $dataloop["list"][$data["id"]][1] = $data["field2"];
+        $data = $db -> fetch_array($result,1);
+        $ausgaben["field1"] = $data["field1"];
+        $ausgaben["field2"] = $data["field2"];
 
-            // tabellen farben wechseln
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
-            } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
-            }
-
-            $dataloop["list"][$data["id"]] = array(
-                                   "color" => $cfg["color"]["set"],
-                                  "field1" => $data["field1"],
-                                    "edit" => $cfg["basis"]."/edit,".$data["id"].".html",
-                                  "delete" => $cfg["basis"]."/delete,".$data["id"].".html",
-                                 "details" => $cfg["basis"]."/details,".$data["id"].".html",
-            );
-        }
         // +++
         // funktions bereich
 
@@ -100,22 +103,21 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
+        $ausgaben["link_edit"] = $cfg["basis"]."/edit,".$environment["parameter"][1].".html";
+        $ausgaben["link_list"] = $cfg["basis"]."/list.html";
+        #$mapping["navi"] = "leer";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        $mapping["main"] = crc32($cfg["path"]).".list";
+        #$mapping["main"] = crc32($environment["ebene"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
-            $ausgaben["inaccessible"] .= "# (edittitel) #(edittitel)<br />";
-            $ausgaben["inaccessible"] .= "# (deletetitel) #(deletetitel)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -129,6 +131,8 @@
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
+
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

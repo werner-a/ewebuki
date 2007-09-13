@@ -55,6 +55,7 @@
                       "add" => "",
                      "edit" => "",
                    "delete" => "",
+                  "details" => "",
                        ),
                "db" => array(
                      "leer" => array(
