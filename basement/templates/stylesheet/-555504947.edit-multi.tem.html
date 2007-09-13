@@ -1,11 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html>
 <head>
 <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <title>menued.edit-multi</title>
 <link rel="stylesheet" href="../../css/default.css" type="text/css">
 </head>
-<body bgcolor="#ffffff">
 <!--##begin-->
 <!--$Id: -555504947.edit-multi.tem.html 254 2004-11-08 14:43:42Z chaot $-->
 <SCRIPT>
@@ -13,68 +12,53 @@
      document.forms['edit'].reset();
   }
 </SCRIPT>
-<form id="eEd" name="edit" method="post" action="!#ausgaben_form_aktion" onreset="return confirm('Wollen Sie wircklich alle Felder zur�cksetzen?')">
-<h1>#(ueberschrift)</h1>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" onreset="return confirm('Wollen Sie wirklich alle Felder zur�cksetzen?')">
+    <h1>#(ueberschrift)</h1>
+    <p>!#ausgaben_form_error</p>
+    <h2>#(basic)</h2>
+    <label for="template">#(template)</label>
+    !#element_defaulttemplate
+    <label for="entry">#(entry)</label>
+    !#element_entry
+    <h2>#(extended)</h2>
 
-<font color="#FF0000">!#ausgaben_form_error</font>
+    <fieldset class="cbra">
+        <label for="hide">#(hide)</label>
+        !#element_hide
+    </fieldset>
 
-<h3>#(basic)</h3>
-<h2>#(template)</h2>
-<p>!#element_defaulttemplate</p>
-<h2>#(entry)</h2>
-<p>!#element_entry</p>
+    <fieldset class="cbra">
+        <label for="mandatory">#(madatory)</label>
+        !#element_mandatory
+    </fieldset>
 
-<h3>#(extended)</h3>
-<h2>#(refid)</h2>
-<p>!#element_refid</p>
-<h2>#(picture)</h2>
-<p>!#element_picture</p>
-<h2>#(sort)</h2>
-<p>!#element_sort</p>
-<h2>#(hide)</h2>
-<p>!#element_hide</p>
-<h2>#(level)</h2>
-<p>!#element_level</p>
-<h2>#(madatory)</h2>
-<p>!#element_mandatory</p>
+    <div class="clearer">&nbsp;</div>
+    <fieldset class="float">
+        <label for="template">#(refid)!#element_refid</label>
+        <label for="entry">#(picture)!#element_picture</label>
+        <label for="sort">#(sort)!#element_sort</label>
+        <label for="level">#(level)</label>!#element_level
+    </fieldset>
 
-<div>
-    <input name="form_referer" class="hidden" type="hidden" value="!#ausgaben_form_referer">
-    <input class="first" name="send[]" type="submit" value="#(send)"><input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
-    <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
-</div>
-<div class="clearer"></div>
-        <table width="" border="0" cellspacing="0" cellpadding="2">
+    <label for="mandatory">#(new_lang)</label>
+    !#element_new_lang
+    <input type="submit" name="add[]" value="new" alt="#(add)" title="#(add)" class="first">
 
-          <tr> 
-            <td valign="top" colspan="2">&nbsp;</td>
-          </tr>
-          <tr> 
-            <td valign="top" colspan="2">#(language)</td>
-          </tr>
-          <tr> 
-            <td valign="top" colspan="2">!#ausgaben_langtabelle</td>
-          </tr>
-          <tr> 
-            <td valign="bottom" colspan="2">&nbsp;</td>
-          </tr>
-          <tr> 
-            <td valign="bottom"> 
-              <table border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td>#(new_lang)&nbsp;</td>
-                  <td>!#element_new_lang</td>
-                  <td> 
-                    <input name="add[]22" type="submit" title="#(add)" alt="#(add)" value="new">
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+    <h2>#(language)</h2>
+    <div class="clearer"></div>
+    !#ausgaben_langtabelle
+
+    <div class="clearer"></div>
+    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+    <input type="submit" name="send[]"  value="g(send)" class="first" />
+    <input type="reset" name="reset" value="g(reset)" class="next" />
+    <input type="button" name="abort" value="g(abort)" onClick="location='!#ausgaben_form_break'"  class="next" >
+    <div class="clearer"></div>
 </form>
+<div class="clearer"></div>
 !#ausgaben_output
 !#ausgaben_inaccessible
+</div><div class="clearer"></div>
 <!--##end-->
 </body>
 </html>
