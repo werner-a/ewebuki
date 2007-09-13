@@ -6,8 +6,9 @@
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen" />
 </head>
+<body>
 <!--##begin-->
-<!--$Id: -840786483.delete.tem.html 264 2004-11-08 19:33:51Z chaot $-->
+<!--$Id$-->
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
@@ -17,7 +18,6 @@
     <h2>#(members)</h2>
     <p>!#ausgaben_members</p>
     <!--##show-->
-    <div class="clearer">&nbsp;</div>
     <fieldset>
         <input type="submit" name="send[]" value="g(send)" class="first" />
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />

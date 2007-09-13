@@ -10,10 +10,12 @@
 <!--##begin-->
 <p>!#ausgaben_login_meldung</p>
 <form method="post" action="!#ausgaben_auth_url">
-    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" />
-    <input type="text" name="user" style="width:50;font-size:9px" />
-    <input type="password" name="pass" style="width:50;font-size:9px" />
-    <input type="submit" name="login" value="login" />
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" />
+        <input type="text" name="user" style="width:50;font-size:9px" />
+        <input type="password" name="pass" style="width:50;font-size:9px" />
+        <input type="submit" name="login" value="login" />
+    </fieldset>
 </form>
 <!--##end-->
 </body>

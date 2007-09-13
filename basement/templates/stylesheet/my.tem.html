@@ -12,18 +12,24 @@
 <h1>#(ueberschrift)</h1>
 <p>#(inhalt)</p>
 <!--##hide-leer-->
-<table width="100%" border="1" cellpadding="0" cellspacing="0">
-    <tr>
-        <td nowrap class="menu_ueberschrift" colspan="2">#(data)</td>
-    </tr>
-    <!--##loop-leer-->
-    <tr>
-        <td align="left" valign="top">!{0}</td>
-        <td align="left" valign="top">!{1}</td>
-    </tr>
-    <!--##cont-->
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <thead>
+        <tr>
+            <th align="left">#(field1)</th>
+            <th align="left">#(field2)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--##loop-leer-->
+        <tr>
+            <td>!{0}</td>
+            <td>!{1}</td>
+        </tr>
+        <!--##cont-->
+    </tbody>
 </table>
 <p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
 <!--##show-->
 <!--##end-->
 </body>

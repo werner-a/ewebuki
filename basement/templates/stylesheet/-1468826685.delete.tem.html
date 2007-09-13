@@ -8,7 +8,7 @@
 </head>
 <body>
 <!--##begin-->
-<!--$Id: -1468826685.delete.tem.html 354 2005-05-27 20:02:23Z chaot $-->
+<!--$Id$-->
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
@@ -17,14 +17,16 @@
     <p>!#ausgaben_field1</p>
     <p>#(field2)</p>
     <p>!#ausgaben_field2</p>
-    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
-    <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
-    <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
-    <input type="hidden" name="delete" value="!#ausgaben_form_delete" class="hidden" />
-    <div class="clearer">&nbsp;</div>
-    <input type="submit" name="send[]" value="g(send)" class="first" />
-    <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
-    <div class="clearer">&nbsp;</div>
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
+        <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
+        <input type="hidden" name="delete" value="!#ausgaben_form_delete" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>

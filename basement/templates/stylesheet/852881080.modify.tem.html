@@ -8,8 +8,8 @@
 </head>
 <body>
 <!--##begin-->
-<!--$Id: 852881080.modify.tem.html 270 2004-11-08 21:47:05Z chaot $-->
-<script language="JavaScript">
+<!--$Id$-->
+<script type="text/javascript">
 <!--
   function resetForm(){
      document.forms['modify'].reset();
@@ -20,18 +20,20 @@
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <label for="oldpass">#(oldpass)</label>
-    !#element_oldpass
-    <label for="newpass">#(newpass)</label>
-    !#element_newpass
-    <label for="chkpass">#(chkpass)</label>
-    !#element_chkpass
-    <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
-    <div class="clearer">&nbsp;</div>
-    <input type="submit" name="send" value="g(send)" class="first" />
-    <input type="reset" name="reset" value="g(reset)" class="next" />
-    <input type="button" name="abort" value="g(abort)" onClick="location='!#ausgaben_form_break'" class="next" />
-    <div class="clearer">&nbsp;</div>
+    <fieldset>
+        <label for="oldpass">#(oldpass)</label>
+        !#element_oldpass
+        <label for="newpass">#(newpass)</label>
+        !#element_newpass
+        <label for="chkpass">#(chkpass)</label>
+        !#element_chkpass
+        <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>

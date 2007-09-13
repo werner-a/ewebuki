@@ -8,19 +8,21 @@
 </head>
 <body>
 <!--##begin-->
-<!--$Id: -939795212.delete.tem.html 519 2006-10-06 19:09:10Z chaot $-->
+<!--$Id$-->
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
-    <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
-    <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
-    <input name="delete" type="hidden" value="!#ausgaben_form_delete" class="hidden" />
-    <div class="clearer">&nbsp;</div>
-    <input type="submit" name="send[]" value="g(send)" class="first" />
-    <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
-    <div class="clearer">&nbsp;</div>
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
+        <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
+        <input name="delete" type="hidden" value="!#ausgaben_form_delete" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>

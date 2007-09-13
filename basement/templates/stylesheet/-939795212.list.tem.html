@@ -15,29 +15,31 @@
     <div class="clearer">&nbsp;</div>
     <div id="search_field" style="display:block;">
         <form method="get" action="!#ausgaben_form1_aktion">
-            <div class="elements">
-                <label>#(search) </label><input name="search" type="text" class="textfield" value="!#ausgaben_search" />
-                <label>#(group) </label>
-                    <select name="filter0" onchange="submit()">
-                        <!--##loop-filter0-->
-                        <option value="!{value}"!{select}>!{label}</option>
-                        <!--##cont-->
-                    </select>
-                <label>#(type) </label>
-                    <select name="filter1" onchange="submit()">
-                        <!--##loop-filter1-->
-                        <option value="!{value}"!{select}>!{label}</option>
-                        <!--##cont-->
-                    </select>
-                <label></label><input type="submit" name="Abschicken" value="#(send)" />
+            <fieldset>
+                <label for="search">#(search)</label>
+                <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+                <label for="filter0">#(group)</label>
+                <select name="filter0" onchange="submit()">
+                    <!--##loop-filter0-->
+                    <option value="!{value}"!{select}>!{label}</option>
+                    <!--##cont-->
+                </select>
+                <label for="filter1">#(type)</label>
+                <select name="filter1" onchange="submit()">
+                    <!--##loop-filter1-->
+                    <option value="!{value}"!{select}>!{label}</option>
+                    <!--##cont-->
+                </select>
+                <label for="send"></label>
+                <input type="submit" name="send[]" value="#(send)" />
                 <div class="clearer">&nbsp;</div>
-            </div>
+            </fieldset>
         </form>
         <form method="get" action="!#ausgaben_form2_aktion">
-            <div class="elements">
-                <label>#(upload)</label>
+            <fieldset>
+                <label for="anzahl">#(upload)</label>
                     <select name="anzahl" onchange="submit()">
-                        <option selected>Upload</option>
+                        <option selected="selected">Upload</option>
                         <option value="1">1 Datei</option>
                         <option value="2">2 Dateien</option>
                         <option value="3">3 Dateien</option>
@@ -45,25 +47,24 @@
                         <option value="5">5 Dateien</option>
                     </select>
                 <div class="clearer">&nbsp;</div>
-            </div>
+            </fieldset>
         </form>
     <p>!#ausgaben_result</p>
     </div>
 </div>
-
 <p>!#ausgaben_form_error</p>
 <p>!#ausgaben_cmslink !#ausgaben_fileedit !#ausgaben_filedelete</p>
 <!--##hide-images-->
 <ul>
 <!--##loop-list-->
     <li class="thumbs">
-        <a href="!{ehref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} bearbeiten" !{size}></a>
+        <a href="!{ehref}" class="pic"><img src="!{src}" !{size} alt="!{alt}" title="!{title} g(edit)" /></a>
         <p>
             !{cb}
-            <a title="Vorschau Original (original)" href="!{ohref}">O</a>
-            <a title="Vorschau Gross (big)" href="!{bhref}">B</a>
-            <a title="Vorschau Mittel (middle)" href="!{mhref}">M</a>
-            <a title="Vorschau Klein (small)" href="!{shref}">S</a>
+            <a href="!{ohref}" title="Vorschau Original (original)">O</a>
+            <a href="!{bhref}" title="Vorschau Gross (big)">B</a>
+            <a href="!{mhref}" title="Vorschau Mittel (middle)">M</a>
+            <a href="!{shref}" title="Vorschau Klein (small)" >S</a>
         </p>
     </li>
 <!--##cont-->
@@ -75,11 +76,11 @@
     <li style="background:!{color};">
         !{cb}&nbsp;
         <a title="!{title} bearbeiten" href="!{ehref}">
-            <img src="../../images/default/details.png">
+            <img src="../../images/default/details.png" alt="g(details)" />
         </a>&nbsp;
         <a title="!{title} bearbeiten" href="!{ehref}">
             !{title}
-        </a> [ <a title="Herunterladen (download)" href="!{dhref}" target="!{dtarget}">D</a> ]
+        </a> [ <a title="Herunterladen (download)" href="!{dhref}">D</a> ]
     </li>
 <!--##cont-->
 </ul>

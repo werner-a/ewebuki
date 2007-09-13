@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>default</title>
@@ -8,14 +8,15 @@
 </head>
 <body>
 <!--##begin-->
-<!--$Id: viewer.tem.html 516 2006-10-06 09:14:47Z chaot $-->
+<!--$Id$-->
 <h1>#(ueberschrift)</h1>
 <p><a href="!#ausgaben_referer">g(back)</a></p>
 <p>#(inhalt)</p>
 <!--##hide-navi-->
 <p><a href="!#ausgaben_zurueck">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_vor">g(next)</a></p>
 <!--##show-->
-<p><a href="!#ausgaben_vor"><img src="!#ausgaben_imgurl" border="0" title="!#ausgaben_beschriftung" alt="!#ausgaben_beschriftung" !#ausgaben_imgsize></a></p>
+<p><a href="!#ausgaben_vor"><img src="!#ausgaben_imgurl" title="!#ausgaben_beschriftung" alt="!#ausgaben_beschriftung" /></a></p>
+<!-- !#ausgaben_imgsize -->
 <!--##hide-leer-->
 <table width="200" border="1" cellpadding="0" cellspacing="0">
     <tr>
