@@ -77,7 +77,7 @@
             $refid = $array["refid"];
             $kategorie = $array["entry"];
             $ausgaben["entry"] = $kategorie;
-            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"mid\" value=\"".$array["mid"]."\" />";
+            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"mid\" value=\"".$array["mid"]."\" class=\"hidden\"/>";
             // +++
             // menupunkt holen
 
@@ -93,7 +93,7 @@
                 $ausgaben["languages"] .= $array["lang"]." ";
                 $ausgaben["languages"] .= $array["label"]."<br />";
             }
-            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"mlids\" value=\"".$mlids."\" />";
+            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"mlids\" value=\"".$mlids."\" class=\"hidden\"/>";
             // +++
             // bezeichnungen holen (alle sprachen)
 
@@ -113,7 +113,7 @@
                                         .substr($array["content"],0,20)." ...<br />";
             }
             if ( $ausgaben["content"] == "" ) $ausgaben["content"] = "#(no_content)";
-            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"tname\" value=\"".$tname."\" />";
+            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"tname\" value=\"".$tname."\" class=\"hidden\"/>";
             // +++
             // content holen (alle sprachen)
 
@@ -128,7 +128,7 @@
             $ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
             // hidden values
-            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"delete\" value=\"true\" />";
+            $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"delete\" value=\"true\" class=\"hidden\"/>";
 
             // was anzeigen
             $mapping["main"] = crc32($environment["ebene"]).".delete";
