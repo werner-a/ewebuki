@@ -3,17 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>auth.login</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen" />
 </head>
 <body>
 <!--##begin-->
 <p>!#ausgaben_login_meldung</p>
 <form method="post" action="!#ausgaben_auth_url">
-    <div>
-        <input type="text" name="user" style="width:50;font-size:9px" />
-        <input type="password" name="pass" style="width:50;font-size:9px" />
-        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" />
-        <input type="submit" name="login" value="login" />
-    </div>
+    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" />
+    <input type="text" name="user" style="width:50;font-size:9px" />
+    <input type="password" name="pass" style="width:50;font-size:9px" />
+    <input type="submit" name="login" value="login" />
 </form>
 <!--##end-->
 </body>
