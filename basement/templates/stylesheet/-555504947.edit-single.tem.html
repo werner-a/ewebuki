@@ -13,46 +13,50 @@
   }
 </SCRIPT>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd" onreset="return confirm('Wollen Sie wirklich alle Felder zur�cksetzen?')">
-<h1>#(ueberschrift)</h1>
-<p>!#ausgaben_form_error</p>
-<h2>#(basic)</h2>
-<div class="clearer">&nbsp;</div>
-<fieldset class="float">
-    <label for="entry">#(entry)!#element_entry</label>
-    <label for="label">#(label)!#element_label</label>
-    <label for="lang">#(lang)!#element_lang</label>
-    <label for="label">#(exturl)!#element_exturl</label>
-</fieldset>
+    <h1>#(ueberschrift)</h1>
+    <p>!#ausgaben_form_error</p>
+    <h2>#(basic)</h2>
+    <label for="template">#(template)</label>
+    !#element_defaulttemplate
+    <label for="entry">#(entry)</label>
+    !#element_entry
+    <label for="label">#(label)</label>
+    !#element_label
+    <label for="label">#(exturl)</label>
+    !#element_exturl
+    <label for="lang">#(lang)</label>
+    !#element_lang
+    <h2>#(extended)</h2>
 
-<label for="template">#(template)</label>
-!#element_defaulttemplate
+    <fieldset class="cbra">
+        <label for="hide">#(hide)</label>
+        !#element_hide
+    </fieldset>
 
-<h2>#(extended)</h2>
-<div class="clearer">&nbsp;</div>
-<fieldset class="float">
-    <label for="template">#(refid)!#element_refid</label>
-    <label for="entry">#(picture)!#element_picture</label>
-    <label for="sort">#(sort)!#element_sort</label>
-    <label for="hide">#(hide)!#element_hide</label>
-    <label for="level">#(level)</label>!#element_level
-    <label for="mandatory">#(madatory)</label>!#element_mandatory
-</fieldset>
+    <fieldset class="cbra">
+        <label for="mandatory">#(madatory)</label>
+        !#element_mandatory
+    </fieldset>
 
-<div class="clearer">&nbsp;</div>
-<fieldset class="float">
-<h3>#(lang)</h3>
-<label for="mandatory">#(new_lang)</label>!#element_new_lang<input name="add[]2" type="submit" title="#(add)" alt="#(add)" value="new">
+    <div class="clearer">&nbsp;</div>
+    <fieldset class="float">
+        <label for="template">#(refid)!#element_refid</label>
+        <label for="entry">#(picture)!#element_picture</label>
+        <label for="sort">#(sort)!#element_sort</label>
+        <label for="level">#(level)</label>!#element_level
+    </fieldset>
 
-<div class="clearer">&nbsp;</div>
-</fieldset>
+    <h2>#(lang)</h2>
+    <label for="mandatory">#(new_lang)</label>
+    !#element_new_lang
+    <input type="submit" name="add[]" value="new" alt="#(add)" title="#(add)" class="first">
+    </fieldset>
+
     <div class="clearer"></div>
-    <div>
-
-    </div>
-    <div class="clearer"></div>
-    <input name="form_referer" class="hidden" type="hidden" value="!#ausgaben_form_referer">
-    <input class="first" name="send[]" type="submit" value="#(send)"><input class="next" type="reset" name="Zur&uuml;cksetzen" value="#(reset)">
-    <input class="next" type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button">
+    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+    <input type="submit" name="send[]"  value="g(send)" class="first" />
+    <input type="reset" name="reset" value="g(reset)" class="next" />
+    <input type="button" name="abort" value="g(abort)" onClick="location='!#ausgaben_form_break'"  class="next" >
     <div class="clearer"></div>
 </form>
 <div class="clearer"></div>
