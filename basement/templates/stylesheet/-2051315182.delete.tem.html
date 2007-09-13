@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>bloged.delete</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -555504947.delete.tem.html,v 1.6 2004/11/05 20:29:29 chaot Exp $-->
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <p>#(name)</p>
+    <p>!#ausgaben_name</p>
+    <p>#(entry)</p>
+    <p>!#ausgaben_content</p>
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
+        <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
+        <input type="hidden" name="delete" value="!#ausgaben_form_delete" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+        <p>!#ausgaben_output</p>
+        <p>!#ausgaben_inaccessible</p>
+    </fieldset>
+</form>
+<!--##end-->
+</body>
+</html>
