@@ -53,6 +53,7 @@
 }
 
 #eEd fieldset{
+    clear: both;
     border:none;
     margin:10px;
     padding:0;
