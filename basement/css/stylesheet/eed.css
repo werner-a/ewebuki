@@ -55,7 +55,7 @@
 #eEd fieldset{
     border:none;
     margin:10px;
-    padding:0 0 0 20px;
+    padding:0;
 }
 
 /* ---------------------*/
@@ -144,9 +144,9 @@ div.clearer {
   floating input, 2lines
   ----------------------*/
 
-/*     #eEd fieldset.float { */
-/*         border:none; */
-/*     } */
+    #eEd fieldset.float {
+        padding-left: 20px;
+    }
 
     #eEd fieldset.float label {
         clear: none;
