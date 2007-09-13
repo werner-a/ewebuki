@@ -69,15 +69,15 @@
                 $cfg["color"]["set"] = $cfg["color"]["a"];
             }
             $dataloop["list"][] = array(
-                    "color"         => $cfg["color"]["set"],
-                    "bezeichnung"   => $data[$cfg["db"]["level"]["order"]],
-                    "beschreibung"  => $data[$cfg["db"]["level"]["desc"]],
-                    "editlink"      => $cfg["basis"]."/edit,".$data[$cfg["db"]["level"]["key"]].".html",
-                    "edittitel"     => "#(edittitel)",
-                    "deletelink"    => $cfg["basis"]."/delete,".$data[$cfg["db"]["level"]["key"]].".html",
-                    "deletetitel"   => "#(deletetitel)",
-                    "detaillink"    => $cfg["basis"]."/details,".$data[$cfg["db"]["level"]["key"]].".html",
-                    "detailtitel"   => "#(detailtitel)",
+                        "color" => $cfg["color"]["set"],
+                  "bezeichnung" => $data[$cfg["db"]["level"]["order"]],
+                 "beschreibung" => $data[$cfg["db"]["level"]["desc"]],
+                     "editlink" => $cfg["basis"]."/edit,".$data[$cfg["db"]["level"]["key"]].".html",
+                    "edittitel" => "#(edittitel)",
+                   "deletelink" => $cfg["basis"]."/delete,".$data[$cfg["db"]["level"]["key"]].".html",
+                  "deletetitel" => "#(deletetitel)",
+                   "detaillink" => $cfg["basis"]."/details,".$data[$cfg["db"]["level"]["key"]].".html",
+                  "detailtitel" => "#(detailtitel)",
             );
         }
 

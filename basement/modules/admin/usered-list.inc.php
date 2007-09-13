@@ -70,13 +70,13 @@
             }
 
             $dataloop["user"][] = array(
-                   "login" => $data[$cfg["db"]["user"]["login"]],
-                "forename" => $data[$cfg["db"]["user"]["forename"]],
-                 "surname" => $data[$cfg["db"]["user"]["surname"]],
-                    "edit" => $cfg["basis"]."/edit,".$data[$cfg["db"]["user"]["key"]].".html",
-                  "delete" => $cfg["basis"]."/delete,".$data[$cfg["db"]["user"]["key"]].".html",
-                 "details" => $cfg["basis"]."/details,".$data[$cfg["db"]["user"]["key"]].".html",
-                   "color" => $cfg["color"]["set"]
+                        "login" => $data[$cfg["db"]["user"]["login"]],
+                     "forename" => $data[$cfg["db"]["user"]["forename"]],
+                      "surname" => $data[$cfg["db"]["user"]["surname"]],
+                         "edit" => $cfg["basis"]."/edit,".$data[$cfg["db"]["user"]["key"]].".html",
+                       "delete" => $cfg["basis"]."/delete,".$data[$cfg["db"]["user"]["key"]].".html",
+                      "details" => $cfg["basis"]."/details,".$data[$cfg["db"]["user"]["key"]].".html",
+                        "color" => $cfg["color"]["set"]
             );
         }
 
