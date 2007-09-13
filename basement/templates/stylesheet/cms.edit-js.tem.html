@@ -1,0 +1,85 @@
+<!--$Id: cms.edit-js.tem.html 406 2006-07-25 11:46:50Z chaot $-->
+<!--##begin-->
+<NOSCRIPT>
+Sie haben Javascript deaktiviert!<BR>
+Das einfügen von Tags funktioniert nicht ohne Javascript. Bitte aktivieren Sie Javascript.
+</NOSCRIPT>
+<SCRIPT language="JavaScript1.1">
+function chk(field,anzahl){
+    /*
+    anzahl=5000;
+    laenge=eval('document.form.content.value.length');
+    if (laenge>=anzahl){
+        alert('Ihre Eingabe im Feld "Text" ist '+laenge+' Zeichen lang.\nMaximal sind nur '+anzahl+' Zeichen erlaubt.\nKürzen Sie bitte Ihre Eingabe und wiederholen Sie den Vorgang.\n');
+        return false;
+    }
+    */
+}
+
+function zaehler(field,anzahl){
+    /*
+    // anzahl=5000;
+    laenge=eval('document.form.content.value.length');
+    // document.all.Zeichen.innerHTML=anzahl-laenge-1;
+    document.all.Zeichen.innerHTML=laenge+1;
+    */
+}
+
+function INSst(st,form,field){
+
+    var myField = eval('document.'+form+'.'+field+'');
+
+    //IE - markierten Text in den Tag einbauen
+    if (document.selection) {
+        myField.focus();
+        sel = document.selection.createRange();
+        selText = sel.text;
+    }
+    //MOZILLA + NETSCAPE - markierten Text in den Tag einbauen
+    if (eval('document.'+form+'.'+field+'.selectionStart') || eval('document.'+form+'.'+field+'.selectionStart') == "0") {
+        var startPos = eval('document.'+form+'.'+field+'.selectionStart');
+        var endPos = eval('document.'+form+'.'+field+'.selectionEnd');
+        var chaineContent = eval('document.'+form+'.'+field+'.value');
+        var scrollTop=eval('document.'+form+'.'+field+'.scrollTop');
+
+        selText = chaineContent.substring(startPos, endPos);
+    } else {
+        // selText = '';
+    }
+
+    if (st=='list' && selText=='') {
+        selText='Element';
+    }
+
+!#ausgaben_js
+!#ausgaben_extension
+    else
+        st='';
+
+    //IE support
+    if (document.selection) {
+        myField.focus();
+        sel = document.selection.createRange();
+        sel.text = st;
+        eval('document.'+form+'.insert.focus()');
+    }
+    //MOZILLA + NETSCAPE support
+    else if (eval('document.'+form+'.'+field+'.selectionStart') || eval('document.'+form+'.'+field+'.selectionStart') == "0") {
+        // var startPos = eval('document.'+form+'.'+field+'.selectionStart');
+        // var endPos = eval('document.'+form+'.'+field+'.selectionEnd');
+        // var chaineContent = eval('document.'+form+'.'+field+'.value');
+
+        myField.value = chaineContent.substring(0, startPos) + st + chaineContent.substring(endPos, chaineContent.length);
+
+        // scrollen und cursor an die richtige stelle
+        document.eval(form+'.'+field).focus();
+        var cPos=startPos+st.length;
+        document.eval(form+'.'+field).selectionStart=cPos;
+        document.eval(form+'.'+field).selectionEnd=cPos;
+        document.eval(form+'.'+field).scrollTop=scrollTop;
+    } else {
+        myField.value += st;
+    }
+}
+</SCRIPT>
+<!--##end-->
