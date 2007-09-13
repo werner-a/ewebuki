@@ -118,6 +118,11 @@
             }
 
 
+            // funktion_content.inc.php zeile 181,182 reicht nicht (mehr)
+            // eine funktion die nicht aufgerufen wird füllt auch die variablen nicht
+            if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
+            if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
+
 
             // eWeBuKi tag schutz - sections 1
             if ( strpos( $data["content"], "[/E]") !== false ) {
