@@ -12,29 +12,45 @@
      document.forms['edit'].reset();
   }
 </SCRIPT>
-<form method="post" action="!#ausgaben_form_aktion" id="eEd" onreset="return confirm('Wollen Sie wircklich alle Felder zur�cksetzen?')">
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" onreset="return confirm('Wollen Sie wirklich alle Felder zur�cksetzen?')">
     <h1>#(ueberschrift)</h1>
     <p>!#ausgaben_form_error</p>
-    <h3>#(basic)</h3>
-    <label for="template">#(template)</label>!#element_defaulttemplate
-    <label for="entry">#(entry)</label>!#element_entry
-    <label for="label">#(label)</label>!#element_label
-    <label for="lang">#(lang)</label>!#element_lang
-    <label for="label">#(exturl)</label>!#element_exturl
-    <div class="clearer"></div>
-    <h3>#(extended)</h3>
-    <label for="template">#(refid)</label>!#element_refid
-    <label for="entry">#(picture)</label>!#element_picture
-    <label for="sort">#(sort)</label>!#element_sort
-    <label for="hide">#(hide)</label>!#element_hide
-    <label for="level">#(level)</label>!#element_level
-    <label for="mandatory">#(madatory)</label>!#element_mandatory
+<fieldset class="float">
+<h3>#(basic)</h3>
+
+    <label for="template">#(template)!#element_defaulttemplate</label>
+    <label for="entry">#(entry)!#element_entry</label>
+
+<div class="clearer">&nbsp;</div>
+
+    <label for="label">#(label)!#element_label</label>
+    <label for="lang">#(lang)!#element_lang</label>
+    <label for="label">#(exturl)!#element_exturl</label>
+
+
+</fieldset>
+
+<fieldset class="float">
+<h3>#(extended)</h3>
+    <label for="template">#(refid)!#element_refid</label>
+    <label for="entry">#(picture)!#element_picture</label>
+
+<label for="sort">#(sort)!#element_sort</label>
+<label for="hide">#(hide)!#element_hide</label>
+
+<label for="level">#(level)</label>!#element_level
+<label for="mandatory">#(madatory)</label>!#element_mandatory
+
+
+</fieldset>
+<fieldset class="float">
+<h3>#(lang)</h3>
+<label for="mandatory">#(new_lang)</label>!#element_new_lang<input name="add[]2" type="submit" title="#(add)" alt="#(add)" value="new"> 
+
+</fieldset>
     <div class="clearer"></div>
     <div>
-        #(lang)
-        #(new_lang)
-        !#element_new_lang
-        <input name="add[]2" type="submit" title="#(add)" alt="#(add)" value="new"> 
+
     </div>
     <div class="clearer"></div>
     <input name="form_referer" class="hidden" type="hidden" value="!#ausgaben_form_referer">
