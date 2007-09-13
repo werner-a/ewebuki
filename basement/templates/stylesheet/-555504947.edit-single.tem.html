@@ -13,40 +13,37 @@
   }
 </SCRIPT>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd" onreset="return confirm('Wollen Sie wirklich alle Felder zur�cksetzen?')">
-    <h1>#(ueberschrift)</h1>
-    <p>!#ausgaben_form_error</p>
-<fieldset class="float">
-<h3>#(basic)</h3>
-
-    <label for="template">#(template)!#element_defaulttemplate</label>
-    <label for="entry">#(entry)!#element_entry</label>
-
+<h1>#(ueberschrift)</h1>
+<p>!#ausgaben_form_error</p>
+<h2>#(basic)</h2>
 <div class="clearer">&nbsp;</div>
-
+<fieldset class="float">
+    <label for="entry">#(entry)!#element_entry</label>
     <label for="label">#(label)!#element_label</label>
     <label for="lang">#(lang)!#element_lang</label>
     <label for="label">#(exturl)!#element_exturl</label>
-
-
 </fieldset>
 
+<label for="template">#(template)</label>
+!#element_defaulttemplate
+
+<h2>#(extended)</h2>
+<div class="clearer">&nbsp;</div>
 <fieldset class="float">
-<h3>#(extended)</h3>
     <label for="template">#(refid)!#element_refid</label>
     <label for="entry">#(picture)!#element_picture</label>
-
-<label for="sort">#(sort)!#element_sort</label>
-<label for="hide">#(hide)!#element_hide</label>
-
-<label for="level">#(level)</label>!#element_level
-<label for="mandatory">#(madatory)</label>!#element_mandatory
-
-
+    <label for="sort">#(sort)!#element_sort</label>
+    <label for="hide">#(hide)!#element_hide</label>
+    <label for="level">#(level)</label>!#element_level
+    <label for="mandatory">#(madatory)</label>!#element_mandatory
 </fieldset>
+
+<div class="clearer">&nbsp;</div>
 <fieldset class="float">
 <h3>#(lang)</h3>
-<label for="mandatory">#(new_lang)</label>!#element_new_lang<input name="add[]2" type="submit" title="#(add)" alt="#(add)" value="new"> 
+<label for="mandatory">#(new_lang)</label>!#element_new_lang<input name="add[]2" type="submit" title="#(add)" alt="#(add)" value="new">
 
+<div class="clearer">&nbsp;</div>
 </fieldset>
     <div class="clearer"></div>
     <div>
