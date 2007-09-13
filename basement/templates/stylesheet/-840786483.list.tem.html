@@ -17,7 +17,7 @@
         <tr>
             <th align="left">#(level)</th>
             <th align="left">#(beschreibung)</th>
-            <th align="left">g(modcol)</td>
+            <th align="right">g(modcol)</th>
         </tr>
     </thead>
     <tbody>
@@ -25,17 +25,17 @@
         <tr style="background:!{color}">
             <td>!{bezeichnung}</td>
             <td>!{beschreibung}</td>
-            <td style="white-space:nowrap">
-                <a href="!{editlink}"><img src=../../images/default/edit.png width="24" height="18" alt="g(edit)" title="g(edit)"  /></a>
-                <a href="!{deletelink}"><img src=../../images/default/delete.png width="24" height="18" alt="g(delete)" title="g(delete)" /></a>
-                <a href="!{detaillink}"><img src=../../images/default/details.png width="24" height="18" alt="g(details)" title="g(details)" /></a>
+            <td align="right" style="white-space:nowrap">
+                <a href="!{editlink}"><img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)"  /></a>
+                <a href="!{deletelink}"><img src="../../images/default/delete.png" width="24" height="18" alt="g(delete)" title="g(delete)" /></a>
+                <a href="!{detaillink}"><img src="../../images/default/details.png" width="24" height="18" alt="g(details)" title="g(details)" /></a>
             </td>
         </tr>
         <!--##cont-->
     </tbody>
 </table>
-<p style=float:left>#(anzahl)!#ausgaben_anzahl</p>
-<p style=float:right>!#ausgaben_inhalt_selector</p>
+<p style="float:left">#(anzahl)!#ausgaben_anzahl</p>
+<p style="float:right">!#ausgaben_inhalt_selector</p>
 <div style="clear:both"></div>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
