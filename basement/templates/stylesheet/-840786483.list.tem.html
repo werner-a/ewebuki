@@ -6,28 +6,33 @@
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen" />
 </head>
+<body>
 <!--##begin-->
 <!--$Id: -840786483.list.tem.html 262 2004-11-08 19:29:28Z chaot $-->
 <h1>#(ueberschrift)</h1>
 <p>#(inhalt)</p>
 <p><a href="!#ausgaben_link_new">#(new)</a></p>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
-    <tr>
-        <th align="left">#(level)</th>
-        <th align="left">#(beschreibung)</th>
-        <th align="right">g(modcol)</td>
-    </tr>
-    <!--##loop-list-->
-    <tr bgcolor="!{color}">
-        <td>!{bezeichnung}</td>
-        <td>!{beschreibung}</td>
-        <td align="right" style="white-space:nowrap">
-            <a href="!{editlink}"><img src=../../images/default/edit.png border="0" alt="g(edit)" title="g(edit)" width="24" height="18" /></a>
-            <a href="!{deletelink}"><img src=../../images/default/delete.png border="0" alt="g(delete)" title="g(delete)" width="24" height="18" /></a>
-            <a href="!{detaillink}"><img src=../../images/default/details.png border="0" alt="g(details)" title="g(details)" width="24" height="18" /></a>
-        </td>
-    </tr>
-    <!--##cont-->
+    <thead>
+        <tr>
+            <th align="left">#(level)</th>
+            <th align="left">#(beschreibung)</th>
+            <th align="right">g(modcol)</td>
+        </tr>
+    </thead>
+    <tbody>
+        <!--##loop-list-->
+        <tr style="background:!{color}">
+            <td>!{bezeichnung}</td>
+            <td>!{beschreibung}</td>
+            <td align="right" style="white-space:nowrap">
+                <a href="!{editlink}"><img src=../../images/default/edit.png width="24" height="18" alt="g(edit)" title="g(edit)"  /></a>
+                <a href="!{deletelink}"><img src=../../images/default/delete.png width="24" height="18" alt="g(delete)" title="g(delete)" /></a>
+                <a href="!{detaillink}"><img src=../../images/default/details.png width="24" height="18" alt="g(details)" title="g(details)" /></a>
+            </td>
+        </tr>
+        <!--##cont-->
+    </tbody>
 </table>
 <p style=float:left>#(anzahl)!#ausgaben_anzahl</p>
 <p style=float:right>!#ausgaben_inhalt_selector</p>
