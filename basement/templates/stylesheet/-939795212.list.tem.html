@@ -14,7 +14,6 @@
     <p id="search_switch" style="display:none;"><a href="#" onclick="searchswitch('search_field')">Suche ein-/ausblenden</a></p>
     <div class="clearer">&nbsp;</div>
     <div id="search_field" style="display:block;">
-        <p>!#ausgaben_form_error</p>
         <form method="get" action="!#ausgaben_form1_aktion">
             <div class="elements">
                 <label>#(search) </label><input name="search" type="text" class="textfield" value="!#ausgaben_search" />
@@ -52,6 +51,7 @@
     </div>
 </div>
 
+<p>!#ausgaben_form_error</p>
 <p>!#ausgaben_cmslink !#ausgaben_fileedit !#ausgaben_filedelete</p>
 <!--##hide-images-->
 <ul>
@@ -92,8 +92,6 @@
 <p>#(text1)</p>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
-
-
 <script type="text/javascript">
     function searchswitch(id){
         var searchfield=document.getElementById(id) //Reference content for this header
@@ -108,7 +106,6 @@
     searchswitch('search_switch');
     searchswitch('search_field');
 </script>
-
 <!--##end-->
 </body>
 </html>
