@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function makece($ce_formname, $ce_name, $ce_inhalt) {
-        global $debugging, $db, $pathvars, $ausgaben, $extension, $specialvars, $defaults;
+        global $debugging, $db, $pathvars, $ausgaben, $specialvars, $defaults;
         $ausgaben["ce_name"] = $ce_name;
 
         // vogelwilde regex die alte & neue file links findet
@@ -75,8 +75,8 @@
             if ( $merken != DATABASE ) {
                 $db -> selectDB($merken,"");
             }
-            $extension= "";
 
+            $ausgaben["extension"] = ""; $sp = "    ";
             #$tn = "\n<table width=\"100%\"><tr><td>";
             $tn2 ="<br clear=\"all\" /><br />";
             while ( $data = $db -> fetch_array($result, NOP) ) {
@@ -103,9 +103,9 @@
                         $tnd .= "</table>";
 
                         if ( $pathvars["filebase"]["realname"] == True ) {
-                            $extension .= "else if (st=='doc".$data["fid"]."')\nst='[LINK=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
+                            $ausgaben["extension"] .= $sp."else if (st=='doc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
                         } else {
-                            $extension .= "else if (st=='doc".$data["fid"]."')\nst='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["doc"]."doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
+                            $ausgaben["extension"] .= $sp."else if (st=='doc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["doc"]."doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                         }
                         break;
                     case "zip": case "bz2": case "gz":
@@ -125,9 +125,9 @@
                         $tnd .= "</table>";
 
                         if ( $pathvars["filebase"]["realname"] == True ) {
-                            $extension .= "else if (st=='arc".$data["fid"]."')\nst='[LINK=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
+                            $ausgaben["extension"] .= $sp."else if (st=='arc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
                         } else {
-                            $extension .= "else if (st=='arc".$data["fid"]."')\nst='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["arc"]."arc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
+                            $ausgaben["extension"] .= $sp."else if (st=='arc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["arc"]."arc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                         }
                         break;
                     default:
@@ -149,15 +149,15 @@
                             $defaults["cms-tag"]["/grafik"] = "[/IMG]";
                         }
                         if ( $pathvars["filebase"]["realname"] == True ) {
-                            $extension .= "else if (st=='imo".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."o/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                            $extension .= "else if (st=='imb".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."b/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                            $extension .= "else if (st=='imm".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."m/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                            $extension .= "else if (st=='ims".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."s/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='imo".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."o/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='imb".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."b/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='imm".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."m/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='ims".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."s/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
                         } else {
-                            $extension .= "else if (st=='imo".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                            $extension .= "else if (st=='imb".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                            $extension .= "else if (st=='imm".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                            $extension .= "else if (st=='ims".$data["fid"]."')\nst='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='imo".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='imb".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='imm".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            $ausgaben["extension"] .= $sp."else if (st=='ims".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
                         }
                         $i++;
                         $a = $i / 6;
@@ -173,76 +173,136 @@
 
         $danei ='[TAB=l;300]\n[ROW]\n[COL]1,1[\/COL]\n[COL]1,2[\/COL]\n[COL]1,3[\/COL]\n[\/ROW][ROW]\n[COL]2,1[\/COL]\n[COL]2,2[\/COL]\n[COL]2,3[\/COL]\n[\/ROW]\n[\/TAB]';
 
-        $extension .= "else if (st=='tabb')\nst='".$danei."';";
+        $ausgaben["extension"] .= $sp."else if (st=='tabb')\n".$sp.$sp."st='".$danei."';";
         $tn .= "<br clear=\"all\" /><a href=\"#\" onclick=\"INSst('tabb','".$ce_formname."','".$ce_name."')\">Tabellen Beispiel</a>";
 
 
-        $ausgaben["ce_script"] = parser("cms.edit-js","");
-        $cetag = array( // physisch
-                        "b"      => array( "1", "1", "#(b)"),
-                        "i"      => array( "1",  "1", "#(i)"),
-                        "tt"     => array( "1",  "",  "#(tt)"),
-                        "u"      => array( "1",  "",  "#(u)"),
-                        "s"      => array( "1",  "",  "#(s)"),
-                        "st"     => array( "0",  "",  "#(st)"),
-                        "big"    => array( "1",  "",  "#(big)"),
-                        "small"  => array( "1",  "",  "#(small)"),
-                        "sup"    => array( "1",  "",  "#(sup)"),
-                        "sub"    => array( "1",  "",  "#(sub)"),
+        $cetag = array( // position (T=top, B=bottom), no select, links, rechts, disable
+                        // block-elemente
+                        "h1"     => array( "T" ),
+                        "h2"     => array( "T" ),
+                        "h3"     => array( "T" ),
+                        "h4"     => array( "" ),
+                        "h5"     => array( "" ),
+                        "h6"     => array( "" ),
+                        "p"      => array( "T" ),
+                        "pre"    => array( "" ),
+                        "div"    => array( "", False, "=wert]" ),
+                        "list"   => array( "", False, "=1|a][*]" ),
+                        "hr"     => array( "", True ),
+                        "tab"    => array( "", False, "][ROW][COL]", "[\/COL][\/ROW]" ),
+                        "row"    => array( "" ),
+                        "col"    => array( "", True ),
+                        "center" => array( "" ),
 
-                        // logisch
-                        "em"     => array( "1",  "",  "#(em)"),
-                        "strong" => array( "1",  "",  "#(strong)"),
-                        "cite"   => array( "1",  "",  "#(cite)"),
+                        // inline-elemente - logisch
+                        "br"     => array( "", True ),
+                        "img"    => array( "", False, "=image.typ;l]" ),
+                        "link"   => array( "T", False, "=http:\/\/]"),
 
-                        // allgemein
-                        "div"    => array( "1",  "", "#(div)"),
-                        "center" => array( "1",  "1", "#(center)"),
-                        "quote"  => array( "1",  "",  "#(quote)"),
-                        "pre"    => array( "1",  "",  "#(pre)"),
+                        // inline-elemente - logische auszeichnugen
+                        "em"     => array( "" ),
+                        "strong" => array( "" ),
+                        "cite"   => array( "" ),
 
-                        // ueberschrrift, absatz, umbruch, trennlinie
-                        "h1"     => array( "1",  "1", "#(h1)"),
-                        "h2"     => array( "1",  "1", "#(h2)"),
-                        "p"      => array( "1",  "1", "#(p)"),
-                        "hr"     => array( "1",  "", "#(hr)"),
-                        "sp"     => array( "1",  "",  "#(sp)"),
-                        "br"     => array( "1",  "",  "#(br)"),
+                        // inline-elemente - physische auszeichnungen
+                        "b"      => array( "T" ),
+                        "i"      => array( "T" ),
+                        "tt"     => array( "" ),
+                        "u"      => array( "" ),
+                        "s"      => array( "" ),
+                        "st"     => array( "" ),
+                        "big"    => array( "" ),
+                        "small"  => array( "" ),
+                        "sub"    => array( "" ),
+                        "sup"    => array( "" ),
 
-                        // spezielle
-                        "hl"     => array( "1",  "1", "#(hl)"),
-                        "in"     => array( "1",  "",  "#(in)"),
-                        "m1"     => array( "1",  "",  "#(m1)"),
-                        "m2"     => array( "1",  "",  "#(m2)"),
-                        "up"     => array( "1",  "",  "#(up)"),
+                        // ewebuki spezial
+                        "e"      => array( "B" ),
+                        "!"      => array( "" ),
+                        "ank"    => array( "" ),
+                        "email"  => array( "", False, "=Adresse]" ),
+                        "hs"     => array( "" ),
+                        "hl"     => array( "", True ),
+                        "imgb"   => array( "", False, "=image.typ;l|r;0;b;20;20;10" ),
+                        "in"     => array( "" ),
+                        "m0"     => array( "B" ),
+                        "m1"     => array( "B" ),
+                        "m2"     => array( "B" ),
+                        "up"     => array( "B" ),
+                        "prev"   => array( "B", True ),
+                        "next"   => array( "B", True ),
+                        "quote"  => array( "" ),
+                        "sp"     => array( "", True ),
 
-                        // erweiterte
-                        "list"   => array( "1",  "1", "#(list)"),
-                        "img"    => array( "1",  "",  "#(img)"),
-                        "imgb"   => array( "1",  "",  "#(imgb)"),
-                        "link"   => array( "1",  "1", "#(link)"),
-                        "email"  => array( "1",  "1", "#(email)"),
-                        "tab"    => array( "1",  "1", "#(tab)"),
-                        "row"    => array( "1",  "1", "#(row)"),
-                        "col"    => array( "1",  "1", "#(col)"),
-
-                        // alt
-                        "int"    => array( "",   "",  "#(int)"),
+                        // deprecated (automatic don't work)
+                        "int"    => array( "", "", "", "", "-1" ),
                       );
 
         $ausgaben["ce_dropdown"]  = "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"st\" size=\"1\" onChange=\"INSst(this.options[this.selectedIndex].value,'".$ce_formname."','".$ce_name."');this.selectedIndex=0;\">";
         $ausgaben["ce_dropdown"] .= "<option value=\"\">#(tagselect)</option>";
+
+        #$debugging["ausgabe"] .= "<pre>".print_r($cetag,True)."</pre>";
+
+        $cms_old_mode = False;
         foreach( $cetag as $key => $value ) {
-            if ( $value[1] == 1 ) {
-                $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[2]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[2]."\" title=\"".$value[2]."\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
+
+//             else if (st=='b')
+//                 st='[B]' + selText + '[\/B]';
+
+
+            // js code erstellen
+            if ( $ausgaben["js"] == "" ) {
+                $c = "if";
+            } else {
+                $c = "else if";
             }
-            if ( $value[0] == 1 ) {
-                $ausgaben["ce_dropdown"] .= "<option value=\"".$key."\">".$value[2]."</option>\n";
+
+            if ( $value[1] == False ) {
+                $s = "' + selText + '";
+            } else {
+                $s = "";
+            }
+
+            if ( $value[2] != "" ) {
+                $l = $value[2];
+            } else {
+                $l = "]";
+            }
+
+            $ausgaben["js"] .= "    ".$c." (st=='".$key."')\n";
+            $ausgaben["js"] .= "        st='[".strtoupper($key).$l.$s.$value[3]."[\/".strtoupper($key)."]'\n";
+
+
+            // buttons bauen
+            if ( $value[0] == "T" ) {
+                if ( $cms_old_mode == True ) {
+                    #$ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[2]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[2]."\" title=\"".$value[2]."\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
+                    $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='#(".$key.")';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"#(".$key.")\" title=\"#(".$key.")\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
+                } else {
+                    $ausgaben["ce_button"] .= "<a class=\"buttag\" href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" alt=\"#(".$key.")\" title=\"#(".$key.")\" onMouseOver=\"status='#(".$key.")';return true;\" onMouseOut=\"status='';return true;\">".strtoupper($key)."</a>\n ";
+                }
+            } elseif ( $value[0] == "B" ) {
+                $ausgaben["ce_bottom_button"] .= "<a class=\"buttag\" href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" alt=\"#(".$key.")\" title=\"#(".$key.")\" onMouseOver=\"status='#(".$key.")';return true;\" onMouseOut=\"status='';return true;\">".strtoupper($key)."</a>\n ";
+            }
+
+            // dropdown bauen
+            if ( $value[4] == "" ) {
+                $ausgaben["ce_dropdown"] .= "<option value=\"".$key."\">".strtoupper($key)." #(".$key.")</option>\n";
             }
             #ce_anker
         }
         $ausgaben["ce_dropdown"] .= "</select>";
-        $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$defaults["cms-tag"]["path"]."cms-tag-imgb.png\" title=\"#(add)\" width=\"23\" height=\"22\">";
+
+        // script in seite parsen
+        #echo "<pre>".$ausgaben["js"]."</pre>";
+        $ausgaben["ce_script"] = parser("cms.edit-js","");
+
+        if ( $cms_old_mode == True ) {
+            $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$defaults["cms-tag"]["path"]."cms-tag-imgb.png\" title=\"#(add)\" width=\"23\" height=\"22\">";
+        } else {
+            $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"submit\" class=\"butoth\" value=\"FILE\" title=\"#(add)\">";
+        }
 
         $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";
         $ausgaben["ce_upload"] .= "<option value=\"\">#(upload)</option>";
