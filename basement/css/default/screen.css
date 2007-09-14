@@ -67,7 +67,7 @@ h1 a:hover, h2 a:hover {
 #head {
     height: 55px;
     color: #808080;
-    background: #eee url(/images/stylesheet/web.png) no-repeat left top;
+    background: #eee url(/images/default/web.png) no-repeat left top;
     margin: 3px 0;
     padding: 10px 0 0 0;
     border-bottom: 1px solid #ccc;
@@ -110,7 +110,7 @@ h1 a:hover, h2 a:hover {
 
     #list li.aktiv {
         color: #fff;
-        background: #E0691A url(/images/stylesheet/bar.gif) no-repeat center top;
+        background: #E0691A url(/images/default/bar.gif) no-repeat center top;
         padding: 5px 10px 6px 10px;
     }
 
@@ -164,7 +164,7 @@ h1 a:hover, h2 a:hover {
     #left h1 {
         clear: both;
         color: #FFF;
-        background: #A9C0CE url(/images/stylesheet/corner.gif) no-repeat top right;
+        background: #A9C0CE url(/images/default/corner.gif) no-repeat top right;
         font: bold 1em Tahoma, Sans-Serif;
         margin: 0 0 0px 0;
         padding: 7px 0 7px 5px;
@@ -192,7 +192,7 @@ h1 a:hover, h2 a:hover {
 
     #right h3 {
         color: #FFF;
-        background: #6C757A url(/images/stylesheet/corner.gif) no-repeat top right;
+        background: #6C757A url(/images/default/corner.gif) no-repeat top right;
         font: bold 1em Tahoma, Arial, Sans-Serif;
         margin: 0 0 3px 0;
         padding: 7px 0 7px 5px;
@@ -221,7 +221,7 @@ h1 a:hover, h2 a:hover {
   ----------------------*/
 
 .search_form {
-    background: #fff url(/images/stylesheet/searchbg.png) no-repeat right;
+    background: #fff url(/images/default/searchbg.png) no-repeat right;
     float: right;
 }
 
@@ -239,7 +239,7 @@ input.search {
     width: 192px;
     border: 0;
     color: #E0691A;
-    background: #FFF url(/images/stylesheet/input.png) no-repeat;
+    background: #FFF url(/images/default/input.png) no-repeat;
     font-weight: bold;
     padding: 4px;
 }
@@ -248,7 +248,7 @@ input.submit {
     width: 25px;
     border: 0;
     color: #FFF;
-    background: #E0691A url(/images/stylesheet/submit.png) no-repeat;
+    background: #E0691A url(/images/default/submit.png) no-repeat;
     font: bold 1em Arial, Sans-Serif;
     margin: 0 15px 1px 0;
     padding: 4px 0;
@@ -275,7 +275,7 @@ input.submit {
 }
 .imgb p a {
     padding-left:20px;
-    background: url(/images/net/filefind.png) no-repeat;
+    background: url(/images/default/filefind.png) no-repeat;
 }
 
 /* ---------------------*/
