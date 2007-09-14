@@ -8,25 +8,27 @@
 </head>
 <!--##begin-->
 <!--$Id$-->
-<SCRIPT>
+<script type="text/javascript">
   function resetForm(){
      document.forms['edit'].reset();
   }
-</SCRIPT>
+</script>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd" onreset="return confirm('Wollen Sie wirklich alle Felder zur�cksetzen?')">
     <h1>#(ueberschrift)</h1>
     <p>!#ausgaben_form_error</p>
     <h2>#(basic)</h2>
-    <label for="template">#(template)</label>
-    !#element_defaulttemplate
-    <label for="entry">#(entry)</label>
-    !#element_entry
-    <label for="label">#(label)</label>
-    !#element_label
-    <label for="label">#(exturl)</label>
-    !#element_exturl
-    <label for="lang">#(lang)</label>
-    !#element_lang
+    <fieldset>
+        <label for="template">#(template)</label>
+        !#element_defaulttemplate
+        <label for="entry">#(entry)</label>
+        !#element_entry
+        <label for="label">#(label)</label>
+        !#element_label
+        <label for="label">#(exturl)</label>
+        !#element_exturl
+        <label for="lang">#(lang)</label>
+        !#element_lang
+    </fieldset>
     <h2>#(extended)</h2>
 
     <fieldset class="cbra">
