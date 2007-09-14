@@ -260,4 +260,22 @@ input.submit {
     font-weight: bold;
 }
 
+.imgb div {
+    margin:0 !important;
+}
+.imgb div img {
+    border:0;
+    float:left;
+}
+.imgb p {
+    margin:0 !important;
+    clear:left;
+    padding-left:2px;
+    border:1px solid silver;
+}
+.imgb p a {
+    padding-left:20px;
+    background: url(/images/net/filefind.png) no-repeat;
+}
+
 /* ---------------------*/

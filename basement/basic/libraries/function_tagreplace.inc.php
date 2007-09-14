@@ -604,10 +604,11 @@
                         $imgwerte = explode(";",$tagwerte[0]);
                         $extrawerte = explode(":",$imgwerte[1]);
                         if ( $extrawerte[1] != "" ) $imgwerte[1] = $extrawerte[1];
-                        $ausgaben["align"] = ""; $lspace = ""; $rspace = ""; $ausgaben["imgstyle"] = "";
+                        $ausgaben["align"] = ""; $lspace = ""; $rspace = ""; $ausgaben["imgstyle"] = "";$ausgaben["float"] = "";
                         // "id" or "class" wird im template gesetzt (!#ausgaben_imgstyle)
                         if ( $imgwerte[1] == "r" ) {
                             $ausgaben["align"] = "right";
+                            $ausgaben["float"] = "float:right;";
                             if ( $imgwerte[6] == "" ) {
                                 $lspace = "10";
                             } else {
@@ -616,6 +617,7 @@
                             $rspace = "0";
                         } elseif ( $imgwerte[1] == "l" ) {
                             $ausgaben["align"] = "left";
+                            $ausgaben["float"] = "float:left;";
                             $lspace = "0";
                             if ( $imgwerte[6] == "" ) {
                                 $rspace = "10";
