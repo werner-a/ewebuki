@@ -127,7 +127,7 @@
                         "0" => array("Meine", "Gruppe", "Alle"),
                         "1" => array("Bilder", "Dokumente", "Archive"),
                        ),
-            "right" => "cms_admin",
+            "right" => "cms_edit",
             "restrict" => array(), # z.B. array("delete", "edit")
     );
 
