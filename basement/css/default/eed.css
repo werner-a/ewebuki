@@ -31,6 +31,7 @@ a img{
   ----------------------*/
 
 #eEd {
+    float: left;
     background: #EFEFEF;
     width: 100%;
     border: 1px dotted #333;
