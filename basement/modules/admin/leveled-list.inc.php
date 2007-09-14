@@ -112,8 +112,6 @@
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
-            $ausgaben["inaccessible"] .= "# (edittitel) #(edittitel)<br />";
-            $ausgaben["inaccessible"] .= "# (deletetitel) #(deletetitel)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
