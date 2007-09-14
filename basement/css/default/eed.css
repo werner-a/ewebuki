@@ -6,6 +6,27 @@
 
 
 /*----------------------
+  alien styles
+  ----------------------*/
+/*
+body, p, form, ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+ul, ol {
+    list-style : none;
+}
+
+a img{
+    border:0px;
+}
+*/
+/* ---------------------*/
+
+
+
+/*----------------------
   default styles
   ----------------------*/
 
