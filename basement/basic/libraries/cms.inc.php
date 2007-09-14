@@ -61,6 +61,13 @@
         if ( in_array($database,$_SESSION["dbzugriff"]) ) $erlaubnis = -1;
     }
 
+
+    // funktion_content.inc.php zeile 181,182 reicht nicht (mehr)
+    // eine funktion die nicht aufgerufen wird füllt auch die variablen nicht
+    if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
+    if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
+
+
     if ( $rechte["cms_edit"] == -1
       #|| $rechte["administration"] == -1 && $rechte["sti"] == -1 ) { ### loesung?
       || $rechte["administration"] == -1 || $erlaubnis == -1 ) {
@@ -116,12 +123,6 @@
                            AND label = '".$environment["parameter"][3]."'";
                 $result  = $db -> query($sql);
             }
-
-
-            // funktion_content.inc.php zeile 181,182 reicht nicht (mehr)
-            // eine funktion die nicht aufgerufen wird füllt auch die variablen nicht
-            if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
-            if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
 
 
             // eWeBuKi tag schutz - sections 1
