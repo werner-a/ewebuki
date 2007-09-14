@@ -72,7 +72,7 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add,0.html\">#(new)</a>";
+        $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add,0.html\">g(new)</a>";
 
         // was anzeigen
         $mapping["main"] = crc32($environment["ebene"]).".list";
