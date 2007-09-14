@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -53,7 +53,7 @@
                  "language" => "site_menu_lang" // name der menu "sprach" datenbank
                     ),
     // css menu ohne template (kommentar zeichen entfernen)
-         #"generate" => -1,
+         "generate" => -1,
 
     // erste ebene
            "level1" => array(
@@ -65,28 +65,28 @@
     // tipp: mit eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden,
     //       die bilder werden dann immer aus dem jeweiligen /images/design verzeichnis geladen.
     //       ##target##, ##link##, ##label## werden automatisch durch die richtigen werte ersetzt.
-                    "icona" => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuopen.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
-                    "iconb" => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuclose.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
+                    #"icona" => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuopen.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
+                    #"iconb" => "<a ##target## href=\"##link##\"><img src=\"/images/default/menuclose.png\" width=\"16\" height=\"16\" align=\"bottom\" border=\"0\" alt=\"##label##\"></a>",
     // tipp: mit class=\"menupunkt\" laesst sich das aussehen anpassen
     //       ##picture## enthaelt den im menued unter bild vergebenen wert
-                     "link" => "<a ##target## href=\"##link##\">##label##</a><br>",
+                     #"link" => "<a ##target## href=\"##link##\">##label##</a><br>",
     // css menu ohne template (kommentar zeichen entfernen)
-                       #"on" => "<ul>\n",
+                       "on" => "<ul>\n",
                      #"link" => "<li class=\"Level1##aktiv##\"><a ##target## href=\"##link##\">##label##</a></li>\n",
     // verschidene links - werden fuer das neue stylesheet design benötigt
-                    #"link1" => "<li><a ##target## href=\"##link##\">##label##</a></li>\n",
-                    #"link2" => "<li class=\"##aktiv##\">##label##</li>\n",
-                      #"off" => "</ul>",
+                    "link1" => "<li><a ##target## href=\"##link##\">##label##</a></li>\n",
+                    "link2" => "<li class=\"##aktiv##\">##label##</li>\n",
+                      "off" => "</ul>",
                     ),
 
     // zweite ebene
            "level2" => array(
-                   "enable" => -1,
+                   "enable" => 0,
                      "full" => -1,
                   "dynamic" => -1,
                    "length" => 28,
                    "target" => "",
-                     "link" => "<a ##target## href=\"##link##\">##label##</a><br>",
+                     #"link" => "<a ##target## href=\"##link##\">##label##</a><br>",
     // css menu ohne template (kommentar zeichen entfernen)
                        #"on" => "<ul>\n",
                      #"link" => "<li class=\"Level2##aktiv##\"><a ##target## href=\"##link##\">##label##</a></li>\n",
@@ -95,12 +95,12 @@
 
     // dritte ebene
            "level3" => array(
-                   "enable" => -1,
+                   "enable" => 0,
                      "full" => -1,
                   "dynamic" => -1,
                    "length" => 26,
                    "target" => "",
-                     "link" => "<img src=\"/images/default/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a ##target## href=\"##link##\">##label##</a><br>",
+                     #"link" => "<img src=\"/images/default/menu.png\" width=\"2\" height=\"12\" align=\"bottom\"> <a ##target## href=\"##link##\">##label##</a><br>",
     // css menu ohne template (kommentar zeichen entfernen)
                       #"on" => "<ul>\n",
                     #"link" => "<li class=\"Level3##aktiv##\"><a ##target## href=\"##link##\">##label##</a></li>\n",
