@@ -1,11 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-15">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 <title>menued.edit-sigle</title>
 <link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen" />
 </head>
+<body>
 <!--##begin-->
 <!--$Id$-->
 <script type="text/javascript">
@@ -50,16 +51,18 @@
     </fieldset>
 
     <h2>#(lang)</h2>
-    <label for="mandatory">#(new_lang)</label>
-    !#element_new_lang
-    <input type="submit" name="add[]" value="new" alt="#(add)" title="#(add)" class="first">
+    <fieldset>
+        <label for="mandatory">#(new_lang)</label>
+        !#element_new_lang
 
-    <div class="clearer"></div>
-    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
-    <input type="submit" name="send[]"  value="g(send)" class="first" />
-    <input type="reset" name="reset" value="g(reset)" class="next" />
-    <input type="button" name="abort" value="g(abort)" onClick="location='!#ausgaben_form_break'"  class="next" >
-    <div class="clearer"></div>
+        <input type="submit" name="add[]" value="new" alt="#(add)" title="#(add)" class="first" />
+        <div class="clearer"></div>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <input type="submit" name="send[]"  value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'"  class="next" />
+        <div class="clearer"></div>
+    </fieldset>
 </form>
 <div class="clearer"></div>
 <div>
@@ -67,3 +70,5 @@
 !#ausgaben_inaccessible
 </div><div class="clearer"></div>
 <!--##end-->
+</body>
+</html>
