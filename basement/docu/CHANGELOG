@@ -17,7 +17,7 @@ eWeBuKi hat ein neues default design
 aus "default" wird "historic"
 aus "stylesheet" wird "default"
 
-um die *ed mi css informationen zu versorgen, einfach den eed.css
+um die *ed mit css informationen zu versorgen, einfach den eed.css
 aus default ins eigene design css verzeichnis kopieren und diese
 datei einbinden. je nach design ist es nötig, die alien section
 im eed.css teiweise oder ganz zu verwenden.
