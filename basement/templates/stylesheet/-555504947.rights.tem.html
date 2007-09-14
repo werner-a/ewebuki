@@ -1,79 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>usered.modify</title>
-<link rel="stylesheet" href="../../css/default.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>menued.rights</title>
+<link rel="stylesheet" href="../../css/stylesheet/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/stylesheet/eed.css" type="text/css" media="screen" />
 </head>
-<body bgcolor="#FFFFFF">
+<body>
 <!--##begin-->
 <!--$Id$-->
-<form method="POST" action="!#ausgaben_form_aktion" name="modify">
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
-    <tr> 
-      <td bgcolor="#EC9379">#(ueberschrift)</td>
-    </tr>
-    <tr> 
-      <td> 
-        <table width="100%" border="0" cellspacing="0" cellpadding="2">
-          <tr> 
-            <td colspan="4">#(inhalt)</td>
-          </tr>
-          <tr> 
-            <td colspan="4"><font color="#FF0000">!#ausgaben_form_error</font></td>
-          </tr>
-          <tr> 
-            <td colspan="4">&nbsp;</td>
-          </tr>
-          <tr>
-            <td colspan="4">
-              <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                <tr> 
-                  <td>#(database)</td>
-                  <td>!#ausgaben_database</td>
-                </tr>
-                <tr> 
-                  <td>#(path)</td>
-                  <td>!#ausgaben_path</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr> 
-            <td>&nbsp;</td>
-          </tr>
-          <tr> 
-            <td width="25%" align="right">!#element_actual</td>
-            <td width="25%">!#element_del</td>
-            <td width="25%" align="right">!#element_add</td>
-            <td width="25%">!#element_avail</td>
-          </tr>
-          <tr> 
-            <td colspan="4">&nbsp;</td>
-          </tr>
-          <tr align="right"> 
-            <td colspan="4"><a href="!#ausgaben_form_break"> </a>
-              <table border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td colspan="3">&nbsp; </td>
-                </tr>
-                <tr>
-                  <td align="right"><input type="button" value="#(abort)" onClick="location='!#ausgaben_form_break'" name="button"></td>
-                </tr>
-              </table>
-              
-            </td>
-          </tr>
-          <tr> 
-            <td colspan="4">!#ausgaben_output<br>
-              !#ausgaben_inaccessible </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  </form>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <h2>#(database)</h2>
+    <p>!#ausgaben_database</p>
+    <h2>#(path)</h2>
+    <p>!#ausgaben_path</p>
+    <fieldset class="float">
+        <label>
+            !#element_actual
+            !#element_del
+        </label>
+        <label>
+            !#element_avail
+            !#element_add
+        </label>
+        <div class="clearer"></div>
+    </fieldset> 
+    <fieldset>
+        <input type="button" name="send[]" value="g(send)" onclick="location='!#ausgaben_form_break'" class="first" />
+    </fieldset>
+</form>
+<div class="clearer"></div>
+!#ausgaben_output
+!#ausgaben_inaccessible
+<div class="clearer"></div>
 <!--##end-->
-<input name="form_referer" type="hidden" value="!#ausgaben_form_referer">
 </body>
 </html>
