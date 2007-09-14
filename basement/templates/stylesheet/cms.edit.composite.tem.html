@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta NAME="author" CONTENT="Werner Ammon">
+<meta NAME="publisher" CONTENT="Chaos Networks">
+<meta NAME="copyright" CONTENT="(c) 2001, ChaoS Networks">
+<meta NAME="audience" CONTENT="alle">
+<meta NAME="robots" CONTENT="index,follow">
+<meta NAME="language" CONTENT="de">
+<meta http-equiv="Content-Language" content="de">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>cms.editor.composite</title>
+<link rel="stylesheet" href="../../css/business.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<FORM NAME="form" ACTION="!#ausgaben_form_aktion" METHOD="post">
+  <table width="75%" border="0" cellpadding="2" cellspacing="0">
+    <tr> 
+      <td align="left" valign="top" colspan="2">!#ausgaben_ce_tem_db - !#ausgaben_ce_tem_name 
+        - !#ausgaben_ce_tem_label - !#ausgaben_ce_tem_lang</td>
+    </tr>
+    <tr> 
+      <td align="left" valign="top" colspan="2"> 
+        <textarea rows=20 cols=85 name="!#ausgaben_ce_name">!#ausgaben_ce_inhalt</textarea>
+        <input type="hidden" name="html" value="!#ausgaben_form_hidden">
+        <input name="form_referer" type="hidden" id="form_referer" value="!#ausgaben_form_referer">
+      </td>
+    </tr>
+    <tr> 
+      <td>&nbsp; </td>
+      <td align="right"> 
+        <input type="SUBMIT" value="Speichern" name="SUBMIT">
+        <input type="BUTTON" value="Abbrechen" onClick="self.location.href='!#ausgaben_form_abbrechen'" name="BUTTON">
+      </td>
+    </tr>
+  </table>
+</FORM>
+<!--##end-->
+</body>
+</html>
