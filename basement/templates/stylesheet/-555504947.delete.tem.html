@@ -19,10 +19,12 @@
     <p>!#ausgaben_languages</p>
     <h2>#(content)</h2>
     <p>!#ausgaben_content</p>
-    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
-    !#ausgaben_form_hidden
-    <input type="submit" name="send[]" value="g(send)" class="first" />
-    <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        !#ausgaben_form_hidden
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+    </fieldset>
     <div class="clearer">&nbsp;</div>
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
