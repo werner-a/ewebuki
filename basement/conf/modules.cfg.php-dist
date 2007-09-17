@@ -156,21 +156,5 @@
 #        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
 #    }
 
-#    // admin - develop: fileed-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "fileed2" )
-#       || ( $environment["ebene"] == "/admin/fileed2" ))
-#    {
-#        include $pathvars["moduleroot"]."admin/fileed2.cfg.php";
-#        include $pathvars["moduleroot"]."admin/fileed2-ctrl.inc.php";
-#    }
-
-#    // admin - develop: menued-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued2" )
-#       || ( $environment["ebene"] == "/admin/menued2" ))
-#    {
-#        include $pathvars["moduleroot"]."admin/menued2.cfg.php";
-#        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
-#    }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
