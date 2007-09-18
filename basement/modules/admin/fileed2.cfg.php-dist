@@ -1,0 +1,135 @@
+<?php
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// "$Id: fileed.cfg.php-dist 779 2007-09-14 09:53:39Z chaot $";
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+    eWeBuKi - a easy website building kit
+    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+
+    This script is a part of eWeBuKi
+
+    eWeBuKi is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    eWeBuKi is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with eWeBuKi; If you did not, you may download a copy at:
+
+    URL:  http://www.gnu.org/licenses/gpl.txt
+
+    You may also request a copy from:
+
+    Free Software Foundation, Inc.
+    59 Temple Place, Suite 330
+    Boston, MA 02111-1307
+    USA
+
+    You may contact the author/development team at:
+
+    Chaos Networks
+    c/o Werner Ammon
+    Lerchenstr. 11c
+
+    86343 Königsbrunn
+
+    URL: http://www.chaos.de
+*/
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
+
+    // content umschaltung verhindern
+    $specialvars["dynlock"] = True;
+
+    $cfg = array(
+           "subdir" => "admin",
+             "name" => "fileed",
+            "basis" => $pathvars["virtual"]."/admin/fileed",
+         "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
+         #"function" => array("describe", "list", "note", "preview", "select"),
+         "function" => array(
+                     "list" => "", # array( "function_name" ),
+                      "add" => array( "thumbnail", "resize", "arrange" ),
+                     "edit" => array( "resize", "arrange" ),
+                   "delete" => "",
+                   "upload" => "",
+                       ),
+               "db" => array(
+                     "file" => array(
+                          "entries" => "site_file",
+                              "key" => "fid",
+                            "order" => "fid DESC",
+                             "rows" => "10",   # pro seite
+                             "line" => "5",    # pro zeile  (rows / line)
+                          "newline" => "<br clear=\"all\" />",
+                               ),
+                     "lang" => array(
+                            #"entries" => "site_file_lang",
+                               ),
+                  "content" => array(
+                          "entries" => "site_text",
+                          "content" => "content",
+                               ),
+                       ),
+         "filesize" => "5000000",
+          #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "bz2", "gz"),
+          "filetyp" => array( "gif" => "img",
+                              "jpg" => "img",
+                             "jpeg" => "img",
+                              "png" => "img",
+                              "pdf" => "pdf",
+                              "zip" => "arc",
+                              "bz2" => "arc",
+                               "gz" => "arc",
+                              "odt" => "odf",
+                              "ods" => "odf",
+                              "odp" => "odf",
+                       ),
+          "fileopt" => array(
+                      "img" => array(
+                             "name" => "img",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"],
+                           "tnpath" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                        "thumbnail" => "set"
+                               ),
+                      "pdf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "pdf_big.png"
+                              ),
+                      "arc" => array(
+                             "name" => "arc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "zip_icon.jpg"
+                               ),
+                      "odf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "odf_icon.png"
+                               ),
+                       ),
+             "size" => array(
+                        "b" => "580",
+                        "m" => "250",
+                        "s" => "150",
+                       "tn" => "96",
+                      "max" => "580", # leer bedeutet, orginal bleibt erhalten
+    #to be implemeted "may" => "",    # wenn gesetzt, wird auch höhe geaendert
+                       ),
+           "filter" => array(
+                        "0" => array("Meine", "Gruppe", "Alle"),
+                        "1" => array("Bilder", "Dokumente", "Archive"),
+                       ),
+            "right" => "cms_edit",
+            "restrict" => array(), # z.B. array("delete", "edit")
+    );
+
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
+?>
