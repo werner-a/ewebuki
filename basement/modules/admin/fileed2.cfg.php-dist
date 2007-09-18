@@ -57,6 +57,8 @@
                      "edit" => array( "resize", "arrange" ),
                    "delete" => "",
                    "upload" => "",
+                     #"used" => "",
+                  "collect" => "",
                        ),
                "db" => array(
                      "file" => array(
@@ -131,7 +133,7 @@
                        ),
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),
-                        "1" => array("Bilder", "Dokumente", "Archive"),
+                        "1" => array("Bilder", "Dokumente", "Archive", "Markierte Bilder"),
                        ),
             "right" => "cms_edit",
             "restrict" => array(), # z.B. array("delete", "edit")
