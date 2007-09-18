@@ -208,7 +208,11 @@
                         $convert = "";
                         $signal = "e";
                     }
-                    $editurl = $pathvars["virtual"]."/cms/edit,".$db->getDb().",".$dbtname.",".$label;
+                    if ( $specialvars["contented"] != True ) {
+                        $editurl = $pathvars["virtual"]."/cms/edit,".$db->getDb().",".$dbtname.",".$label;
+                    } else {
+                        $editurl = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$dbtname.",".$label;
+                    }
 
                     if ( $defaults["cms-tag"]["signal"] == "" ) {
                         $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";

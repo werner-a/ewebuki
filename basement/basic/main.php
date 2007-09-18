@@ -296,7 +296,9 @@
     require $pathvars["config"]."overwrite.cfg.php";
 
     if ( $environment["ebene"] == "/cms") {
-        include $pathvars["libraries"]."cms.inc.php";
+        if ( $specialvars["contented"] != True ) {
+            include $pathvars["libraries"]."cms.inc.php";
+        }
     } else {
         if ( strstr($_SERVER["REQUEST_URI"],"/auth/") ) {
             $_SESSION["page"] = $_SERVER["REQUEST_URI"];
