@@ -140,17 +140,25 @@
 #        include $pathvars["moduleroot"]."customer/leer-ctrl.inc.php"; # erweitertes modul
 #    }
 
+#    // admin - develop: contented-modul for testing only !!
+#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "contented" )
+#       || ( $environment["ebene"] == "/admin/contented" ))
+#    {
+#        include $pathvars["moduleroot"]."admin/contented.cfg.php";
+#        include $pathvars["moduleroot"]."admin/contented-ctrl.inc.php";
+#    }
+
 #    // admin - develop: fileed-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "fileed2" )
-#       || ( $environment["ebene"] == "/admin/fileed2" ))
+#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "fileed" )
+#       || ( $environment["ebene"] == "/admin/fileed" ))
 #    {
 #        include $pathvars["moduleroot"]."admin/fileed2.cfg.php";
 #        include $pathvars["moduleroot"]."admin/fileed2-ctrl.inc.php";
 #    }
 
 #    // admin - develop: menued-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued2" )
-#       || ( $environment["ebene"] == "/admin/menued2" ))
+#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued" )
+#       || ( $environment["ebene"] == "/admin/menued" ))
 #    {
 #        include $pathvars["moduleroot"]."admin/menued2.cfg.php";
 #        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
