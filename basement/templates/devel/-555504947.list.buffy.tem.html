@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>menued.list</title>
+<link rel="stylesheet" href="../../css/neu2005.css" type="text/css">
+</head>
+<div bgcolor="#FFFFFF">
+<div id="main">
+<!--##begin-->
+
+<script language="JavaScript">
+    function getElementsByClassName(className,art) {
+        var arr = new Array();
+        var elems = document.getElementsByTagName("tr");
+            for(var i = 0; i < elems.length; i++) {
+            var elem = elems[i];
+            var id = elem.getAttribute("id");
+            var cls = elem.className;
+            if(cls == className){
+                arr[arr.length] = id;
+            }
+            }
+
+        if (art=='manu') {
+            buffy = document.getElementById(arr[0]).style.display;
+        }
+
+        // ab hier ist es wieder von mir, ich will jetzt
+        // die Array-Elemente mit style wieder unsichtbar stellen:
+        if ( buffy == "" ) {
+                for (var j = 0; j < arr.length;j++){
+                    document.getElementById(arr[j]).style.display = "none"
+                    getElementsByClassName(arr[j],'self')
+                }
+        } else {
+                for (var j = 0; j < arr.length;j++){
+                    document.getElementById(arr[j]).style.display = ""
+                }
+        }
+    }
+</script>
+
+  <div class="kopf">
+    <div class="kopflinks">#(ueberschrift)</div>
+    <div class="kopfrechts">#(kopf1)</div>&nbsp;
+  </div>
+  <div class="inhalt">#(inhalt)</div>
+  <div class="red">!#ausgaben_form_error</div>
+  <div class="output">!#ausgaben_output</div>
+  <div class="inhalt">
+    <div class="kopflinks">!#ausgaben_renumber</div>
+    <div class="kopfrechts">!#ausgaben_new</div>&nbsp;
+  </div>
+  <div class="inhalt">!#ausgaben_inaccessible</div>
+
+<!--##end-->
+</table>
+
+</body>
+</html>
