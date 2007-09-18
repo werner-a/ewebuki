@@ -58,16 +58,35 @@
         ### put your code here ###
 
         // wird die datei im content verwendet?
+        $num_rows = 0;
         $old = "\_".$environment["parameter"][1].".";
         $new = "/".$environment["parameter"][1]."/";
-        #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
-        $sql = "SELECT *
-                  FROM ".$cfg["db"]["content"]["entries"]."
-                 WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
+        $sql2 = "SELECT *
+                FROM ".$cfg["db"]["content"]["entries"]."
+                WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
                     OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-        $num_rows = $db -> num_rows($result);
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
+
+        // multi db support
+        if ( $cfg["db"]["multi"]["change"] == True ) {
+            $sql = "SELECT ".$cfg["db"]["multi"]["field"]."
+                      FROM ".$cfg["db"]["multi"]["entries"]."
+                     WHERE ".$cfg["db"]["multi"]["where"];
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,$nop) ) {
+                $db -> selectDb($data[$cfg["db"]["multi"]["field"]],FALSE);
+                $result2 = $db -> query($sql2);
+                $num_rows = $db -> num_rows($result2);
+                break;
+            }
+            $db -> selectDb(DATABASE,FALSE);
+        }
+
+        // main db
+        if ( $num_rows == 0 ) {
+            $result2 = $db -> query($sql2);
+            $num_rows = $db -> num_rows($result2);
+        }
 
         // +++
         // funktions bereich fuer erweiterungen

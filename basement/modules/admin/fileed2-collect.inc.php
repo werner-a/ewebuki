@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: fileed-edit.inc.php,v 1.5 2006/10/06 19:10:05 chaot Exp $";
+// "$Id: fileed-edit.inc.php,v 1.6 2006/10/10 11:04:15 chaot Exp $";
 // "edit - edit funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Kï¿?igsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
@@ -113,59 +113,22 @@
         $old = "\_".$environment["parameter"][1].".";
         $new = "/".$environment["parameter"][1]."/";
         #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
-        $sql2 = "SELECT *
-                   FROM ".$cfg["db"]["content"]["entries"]."
-                  WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
-                     OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["content"]["entries"]."
+                 WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
+                    OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-
-        if ( $cfg["db"]["multi"]["change"] == True ) {
-            $sql = "SELECT ".$cfg["db"]["multi"]["field"]."
-                      FROM ".$cfg["db"]["multi"]["entries"]."
-                     WHERE ".$cfg["db"]["multi"]["where"];
-            $result = $db -> query($sql);
-            while ( $data = $db -> fetch_array($result,$nop) ) {
-                $db -> selectDb($data["addbase"],FALSE);
-
-                $result2 = $db -> query($sql2);
-                while ( $data2 = $db -> fetch_array($result2,$nop) ) {
-                    #if ( $ids != "" ) $ids .= ",";
-
-                    $ebene = $data2["ebene"]."/";
-                    $kategorie = $data2["kategorie"].".html";
-
-                    $url = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
-
-                    $label = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
-                    $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
-                }
-
-            }
-            $db -> selectDb(DATABASE,FALSE);
-        }
-
-        $result2 = $db -> query($sql2);
-        while ( $data2 = $db -> fetch_array($result2,$nop) ) {
-            #if ( $ids != "" ) $ids .= ",";
-
+        $result = $db -> query($sql);
+        while ( $data2 = $db -> fetch_array($result,$nop) ) {
+            if ( $ids != "" ) $ids .= ",";
             $ebene = $data2["ebene"]."/";
             $kategorie = $data2["kategorie"].".html";
-
-            #$url = $pathvars["menuroot"].$ebene.$kategorie;
-            $url = str_replace($environment["fqdn"][0],"www",$pathvars["menuroot"]).$ebene.$kategorie;
-
-
+            $url = $pathvars["menuroot"].$ebene.$kategorie;
             $label = $ebene.$kategorie;
             $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
         }
-
         if ( $ausgaben["reference"] == "" ) $ausgaben["reference"] = "---";
 
-
-        #$sql = 'INSERT INTO `db_adrd` (`id`, `addbase`) VALUES (NULL, \'develop\');';
-        #for ( $i = 1; $i <= 512; $i++ ) {
-        #    $result = $db -> query($sql);
-        #}
 
         // +++
         // page basics

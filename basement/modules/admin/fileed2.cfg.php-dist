@@ -47,7 +47,7 @@
 
     $cfg = array(
            "subdir" => "admin",
-             "name" => "fileed",
+             "name" => "fileed2",
             "basis" => $pathvars["virtual"]."/admin/fileed",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
          #"function" => array("describe", "list", "note", "preview", "select"),
@@ -73,6 +73,12 @@
                   "content" => array(
                           "entries" => "site_text",
                           "content" => "content",
+                               ),
+                    "multi" => array(
+                           "change" => False,
+                          "entries" => "db_adrd",
+                            "field" => "addbase",
+                            "where" => "addbase != ''",
                                ),
                        ),
          "filesize" => "5000000",

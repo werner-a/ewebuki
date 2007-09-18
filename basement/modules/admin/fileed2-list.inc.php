@@ -95,9 +95,11 @@
         if ( count($_SESSION["file_memo"]) >= 1 ) {
             $ausgaben["fileedit"] = "<a href=\"".$cfg["basis"]."/edit.html\">#(fileedit)</a>";
             $ausgaben["filedelete"] = "<a href=\"".$cfg["basis"]."/delete.html\">#(filedelete)</a>";
+            $ausgaben["filecollect"] = "<a href=\"".$cfg["basis"]."/collect.html\">filecollect</a>";
         } else {
             $ausgaben["fileedit"] = "";
             $ausgaben["filedelete"] = "";
+            $ausgaben["filecollect"] = "";
         }
 
         // +++
@@ -151,6 +153,19 @@
 
         // auswahlliste 2 verarbeiten
         switch ( $_SESSION["fileed_filter1"] ) {
+            case 3:
+                foreach ( $_SESSION["file_memo"] as $value ) {
+                    if ( $pattern == "" ) {
+                        $pattern = " (".$cfg["db"]["file"]["key"]." = ".$value.")";
+                    } else {
+                        $pattern .= " OR (".$cfg["db"]["file"]["key"]." = ".$value.")";
+                    }
+                }
+                if ( $pattern == "" ) $pattern = $cfg["db"]["file"]["key"]." = -1";
+
+                $part["auswahl2"] = $part["auswahl2"] = " ffart in ('gif','jpg','png') AND ".$pattern;
+                $hidedata["images"] = array();
+                break;
             case 2:
                 $part["auswahl2"] = " ffart in ('zip','bz2','gz')";
                 $hidedata["other"] = array();
