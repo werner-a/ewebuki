@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>fileed.list</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -939795212.list.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<div id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p id="search_switch" style="display:none;"><a href="#" onclick="searchswitch('search_field')">Suche ein-/ausblenden</a></p>
+    <div class="clearer">&nbsp;</div>
+    <div id="search_field" style="display:block;">
+        <form method="get" action="!#ausgaben_form1_aktion">
+            <fieldset>
+                <label for="search">#(search)</label>
+                <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+                <label for="filter0">#(group)</label>
+                <select name="filter0" onchange="submit()">
+                    <!--##loop-filter0-->
+                    <option value="!{value}"!{select}>!{label}</option>
+                    <!--##cont-->
+                </select>
+                <label for="filter1">#(type)</label>
+                <select name="filter1" onchange="submit()">
+                    <!--##loop-filter1-->
+                    <option value="!{value}"!{select}>!{label}</option>
+                    <!--##cont-->
+                </select>
+                <label for="send"></label>
+                <input type="submit" name="send[]" value="#(send)" />
+                <div class="clearer">&nbsp;</div>
+            </fieldset>
+        </form>
+        <form method="get" action="!#ausgaben_form2_aktion">
+            <fieldset>
+                <label for="anzahl">#(upload)</label>
+                    <select name="anzahl" onchange="submit()">
+                        <option selected="selected">Upload</option>
+                        <option value="1">1 Datei</option>
+                        <option value="2">2 Dateien</option>
+                        <option value="3">3 Dateien</option>
+                        <option value="4">4 Dateien</option>
+                        <option value="5">5 Dateien</option>
+                    </select>
+                <div class="clearer">&nbsp;</div>
+            </fieldset>
+        </form>
+    <p>!#ausgaben_result</p>
+    </div>
+</div>
+<p>!#ausgaben_form_error</p>
+<p>!#ausgaben_cmslink !#ausgaben_filecollect !#ausgaben_fileedit !#ausgaben_filedelete</p>
+<!--##hide-images-->
+<ul>
+<!--##loop-list-->
+    <li class="thumbs">
+        <a href="!{ehref}" class="pic"><img src="!{src}" !{size} alt="!{alt}" title="!{title} g(edit)" /></a>
+        <p>
+            !{cb}
+            <a href="!{ohref}" title="Vorschau Original (original)">O</a>
+            <a href="!{bhref}" title="Vorschau Gross (big)">B</a>
+            <a href="!{mhref}" title="Vorschau Mittel (middle)">M</a>
+            <a href="!{shref}" title="Vorschau Klein (small)" >S</a>
+        </p>
+    </li>
+<!--##cont-->
+</ul>
+<!--##show-->
+<!--##hide-other-->
+<ul>
+<!--##loop-list-->
+    <li style="background:!{color};">
+        !{cb}&nbsp;
+        <a title="!{title} bearbeiten" href="!{ehref}">
+            <img src="../../images/default/details.png" alt="g(details)" />
+        </a>&nbsp;
+        <a title="!{title} bearbeiten" href="!{ehref}">
+            !{title}
+        </a> [ <a title="Herunterladen (download)" href="!{dhref}">D</a> ]
+    </li>
+<!--##cont-->
+</ul>
+<!--##show-->
+<div style="clear:both"></div>
+<p style="float:left">g(anzahl)!#ausgaben_anzahl</p>
+<p style="float:right">!#ausgaben_inhalt_selector</p>
+<div style="clear:both"></div>
+<p>#(inhalt)</p>
+<p>#(text1)</p>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<script type="text/javascript">
+    function searchswitch(id){
+        var searchfield=document.getElementById(id) //Reference content for this header
+        if (searchfield.style.display=="block")
+            var display="none"
+        else{
+            var display="block"
+        }
+        searchfield.style.display = display
+    }
+
+    searchswitch('search_switch');
+    searchswitch('search_field');
+</script>
+<!--##end-->
+</body>
+</html>
