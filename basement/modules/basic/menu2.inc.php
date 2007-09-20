@@ -48,12 +48,12 @@
     function menu_generate($refid=0, $level=1, $arrEbene="", $url=""){
         global $db, $cfg, $debugging, $environment, $pathvars, $rechte, $dataloop, $hidedata, $ausgaben;
 
-        if ( $cfg["menu"]["level".$level]["enable"] == "-1" ){
+        if ( $cfg["menu"]["level".$level]["enable"] == "-1" ) {
             $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
             if ( $cfg["menu"]["level".$level]["full"] == "-1" ) $mandatory = "";
             if ( $cfg["menu"]["level".$level]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
 
-            if ( $arrEbene == "" ){
+            if ( $arrEbene == "" ) {
                 $ebene = $environment["ebene"]."/".$environment["kategorie"];
                 $arrEbene = explode("/",$ebene);
                 $url = $pathvars["virtual"];
@@ -98,7 +98,15 @@
                 if ( $data["exturl"] == "" ) {
                     $link   = $url."/".$data["entry"].".html";
                     $target = "";
-                }else{
+
+                    // eintrag aktiv?
+                    if ( $data["entry"] == $arrEbene[1] ) {
+                        $aktiv = "aktiv";
+                    } else {
+                        $aktiv = "";
+                    }
+
+                } else {
                     $link   = $data["exturl"];
                     $target = $cfg["menu"]["level".$level]["target"];
                 }
@@ -110,18 +118,18 @@
                 }
 
                 // was wird wodurch ersetzt
-                $marken = array("##target##", "##link##", "##title##", "##label##", "##picture##", "##extend##");
-                $ersatz = array($target, $link, $data["label"], $label, $data["picture"], $data["extend"]);
+                $marken = array("##target##", "##link##", "##title##", "##label##", "##picture##", "##extend##", "##aktiv##");
+                $ersatz = array($target, $link, $data["label"], $label, $data["picture"], $data["extend"], $aktiv);
 
                 // version mit template
                 if ( $cfg["menu"]["generate"] == false ) {
                     if ( $level != 1 ){
                         $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level".$level]["link"]);
-                    }else{
+                    } else {
                         if ( $data["entry"] == $arrEbene[1] ){
                             // open folder
                             $ausgaben["ordner"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["icona"]);
-                        }else{
+                        } else {
                             // closed folder
                             $ausgaben["ordner"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["iconb"]);
                         }
@@ -131,7 +139,7 @@
                 // css-klasse und naechste ebene
                 $class = "Level".$level;
                 $next_level = "";
-                if ( $data["entry"] == $arrEbene[1] ){
+                if ( $data["entry"] == $arrEbene[1] ) {
                     // css-klasse erzeugen
                     $class = "Level".$level."Active";
 
@@ -165,9 +173,20 @@
                     "class" => $class
                 );
                 $hidedata["level".$level][0] = "enable";
-                $item = $cfg["menu"]["level".$level]["link"];
-                $buffer .= str_replace($marken,$ersatz,$item);
 
+                // welcher link aufbau
+                if ( $cfg["menu"]["level1"]["link2"] == "" ) {
+                    $link_build = "link";
+                } else {
+                    if ( $aktiv == "" ) {
+                        $link_build = "link1";
+                    } else {
+                        $link_build = "link2";
+                    }
+                }
+
+                // komplett
+                $buffer .= str_replace( $marken, $ersatz, $cfg["menu"]["level".$level][$link_build] );
             }
 
             if ( $cfg["menu"]["generate"] == true ) {

@@ -90,6 +90,8 @@
     // css menu ohne template
                        "on" => "<ul>\n",
                      "link" => "<li class=\"##class##\"><a ##target## href=\"##link##\" title=\"##title##\">##label##</a>##next_level##</li>\n",
+                    #"link1" => "<li><a ##target## href=\"##link##\">##label##</a></li>\n",
+                    #"link2" => "<li class=\"##aktiv##\">##label##</li>\n",
                       "off" => "</ul>\n",
                        ),
     // css menu mit template (kommentar zeichen entfernen)
