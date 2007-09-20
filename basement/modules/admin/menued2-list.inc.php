@@ -58,6 +58,11 @@
         if ( $specialvars["security"]["enable"] == -1 ) {
             $modify["rights"] = array("", "#(button_desc_right)", $cfg["right"]);
         }
+        if ( $_GET["id"] != "" ) {
+            whereami($HTTP_GET_VARS["id"]);
+        } else {
+            $eintrag[] = "nop";
+        }
 
         $ausgaben["output"] .= sitemap(0, "menued", $modify);
 

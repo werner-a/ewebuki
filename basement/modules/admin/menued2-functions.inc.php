@@ -46,6 +46,17 @@
     // funktion um eine sitemap zu erstellen
     if ( in_array("sitemap", $cfg["function"][$environment["kategorie"]]) ) {
 
+        function whereami($id) {
+            global $eintrag,$db,$cfg;
+            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
+            $result  = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
+            $eintrag[$data["mid"]] = $data["mid"];
+            if ( $data["refid"] != 0 ) {
+                whereami($data["refid"]);
+            }
+        }
+
         function sitemap($refid, $art = "", $modify = "", $self = "") {
 
             switch($art) {
@@ -60,7 +71,7 @@
                 default:
             }
 
-            global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$zaehler,$tiefe;
+            global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$eintrag,$zaehler,$tiefe;
             $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
                             ".$cfg["db"]["menu"]["entries"].".entry,
                             ".$cfg["db"]["menu"]["entries"].".refid,
@@ -79,9 +90,22 @@
             $result  = $db -> query($sql);
             $count = $db->num_rows($result);
             $zaehler++;
-
+#echo $refid;
             while ( $array = $db -> fetch_array($result,1) ) {
 
+#echo "<pre>";
+#print_r($eintrag);
+#echo "</pre>";
+#echo $refid;
+#$buffy[] = "test";
+                #if ( in_array($refid,$eintrag) ) {
+                if ( $refid == 0 || in_array($refid,$eintrag) ) {
+
+#echo "T";
+                } else {
+#echo "N";   
+                    continue;
+                }
                 // beim moven ausblenden des zu verschiebenden ast
                 if ( $art == "select" && $array["mid"] == $modify ) continue;
 
@@ -174,8 +198,9 @@
                         $sort = "";
                     }
 
-                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"].".html\">".$array["label"]."</a>";
-
+                    #$tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"].".html?id=".$array["mid"]."\">".$array["label"]."</a>";
+                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"?id=".$array["mid"]."\">".$array["label"].$refid."</a>";
+                    
                     $tree .= sitemap($array["mid"], $art, $modify, -1);
                     $tree .= "</li>\n";
 
