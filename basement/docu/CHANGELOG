@@ -81,18 +81,18 @@ großbuchstaben ergaenzt/geaendert und enthaelt site_form keinen
 eintrag der das verhindert, wird der content nicht mehr gefunden.
 
 die neue version verhindert das und filtert grundsaetzlich mit
-/[^A-Za-z_.-0-9]/. will man die zeichen noch weiter einschraenken ist
+/[^A-Za-z_\-\.0-9]/. will man die zeichen noch weiter einschraenken ist
 mit folgenden fcheck eintraegen möglich:
 
--> PREG:^[a-z_.-0-9]+$
+-> z.B. PREG:^[a-z_\-\.0-9]+$
 
 INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
- VALUES ('entry', '-555504947.add', '0', '-1', 'PREG:^[a-z_.-0-9]+$');
+ VALUES ('entry', '-555504947.add', '0', '-1', 'PREG:^[a-z_\-\.0-9]+$');
 INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
  VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungültige Zeichen im Feld Eintrag.');
 
 INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
- VALUES ('entry', '-555504947.edit', '0', '-1', 'PREG:^[a-z_.-0-9]+$');
+ VALUES ('entry', '-555504947.edit', '0', '-1', 'PREG:^[a-z_\-\.0-9]+$');
 INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
  VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungültige Zeichen im Feld Eintrag.');
 
@@ -249,8 +249,8 @@ UPDATE `site_text` SET `tname` = '-939795212.modify' WHERE `tname` = '-939795212
 
 eingabe möglichkeiten im menued einschränken
 
-case-insensitiv: '|[a-z_\.\-0-9]+|i'
-case-sensitiv: '|^[a-z_\.\-0-9]+$|'
+case-insensitiv: ^[A-Za-z_\.\-0-9]+$ (ist default im add, edit script!)
+case-sensitiv: ^[a-z_\.\-0-9]+$
 
 sql:
 
