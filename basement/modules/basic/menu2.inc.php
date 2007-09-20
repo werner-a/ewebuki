@@ -46,7 +46,7 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
     function menu_generate($refid=0, $level=1, $arrEbene="", $url=""){
-        global $db, $cfg, $environment, $pathvars, $rechte, $dataloop, $hidedata, $ausgaben;
+        global $db, $cfg, $debugging, $environment, $pathvars, $rechte, $dataloop, $hidedata, $ausgaben;
 
         if ( $cfg["menu"]["level".$level]["enable"] == "-1" ){
             $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
@@ -59,25 +59,26 @@
                 $url = $pathvars["virtual"];
             }
 
-            $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,"
-                             .$cfg["menu"]["db"]["entries"].".refid,"
-                             .$cfg["menu"]["db"]["entries"].".entry,"
-                             .$cfg["menu"]["db"]["entries"].".picture,"
-                             .$cfg["menu"]["db"]["entries"].".level,"
-                             .$cfg["menu"]["db"]["entries"]."_lang.lang,"
-                             .$cfg["menu"]["db"]["entries"]."_lang.label,"
-                             .$extenddesc." "
-                             .$cfg["menu"]["db"]["entries"]."_lang.exturl".
-                     " FROM ".$cfg["menu"]["db"]["entries"].
-               " INNER JOIN ".$cfg["menu"]["db"]["entries"]."_lang".
-                       " ON ".$cfg["menu"]["db"]["entries"].".mid = ".$cfg["menu"]["db"]["entries"]."_lang.mid".
+            $sql = "SELECT ".$cfg["menu"]["db"]["entries"].".mid,"
+                            .$cfg["menu"]["db"]["entries"].".refid,"
+                            .$cfg["menu"]["db"]["entries"].".entry,"
+                            .$cfg["menu"]["db"]["entries"].".picture,"
+                            .$cfg["menu"]["db"]["entries"].".level,"
+                            .$cfg["menu"]["db"]["entries"]."_lang.lang,"
+                            .$cfg["menu"]["db"]["entries"]."_lang.label,"
+                            .$extenddesc." "
+                            .$cfg["menu"]["db"]["entries"]."_lang.exturl".
+                    " FROM ".$cfg["menu"]["db"]["entries"].
+              " INNER JOIN ".$cfg["menu"]["db"]["entries"]."_lang".
+                      " ON ".$cfg["menu"]["db"]["entries"].".mid = ".$cfg["menu"]["db"]["entries"]."_lang.mid".
                    " WHERE (".
-                            "(".$cfg["menu"]["db"]["entries"].".refid=".$refid.")".
-                       " AND (".$cfg["menu"]["db"]["entries"].".hide <> '-1' OR ".$cfg["menu"]["db"]["entries"].".hide IS NULL)".
-                       " AND (".$cfg["menu"]["db"]["entries"]."_lang.lang='".$environment["language"]."')"
-                               .$mandatory.
+                         "(".$cfg["menu"]["db"]["entries"].".refid=".$refid.")".
+                    " AND (".$cfg["menu"]["db"]["entries"].".hide <> '-1' OR ".$cfg["menu"]["db"]["entries"].".hide IS NULL)".
+                    " AND (".$cfg["menu"]["db"]["entries"]."_lang.lang='".$environment["language"]."')"
+                            .$mandatory.
                           ")".
-                 " ORDER BY sort, label;";
+               " ORDER BY sort, label;";
+            if ( $cfg["menu"]["db"]["debug"] ) $debugging["ausgabe"] .= "level".$level."sql: ".$sql.$debugging["char"];
 
             $result = $db->query($sql);
 

@@ -60,7 +60,7 @@
            "level1" => array(
                    "enable" => -1,
                      "full" => -1,
-                   "extend" => -1,
+                   "extend" => 0,
                     "force" => 0,
                    "length" => 24,
                    "target" => "", // z.B. target=\"_blank\"
@@ -83,7 +83,7 @@
            "level2" => array(
                    "enable" => -1,
                      "full" => -1,
-                   "extend" => -1,
+                   "extend" => 0,
                     "force" => 0,
                    "length" => 24,
                    "target" => "", // z.B. target=\"_blank\"
@@ -99,7 +99,7 @@
            "level3" => array(
                    "enable" => -1,
                      "full" => -1,
-                   "extend" => -1,
+                   "extend" => 0,
                     "force" => 0,
                    "length" => 24,
                    "target" => "", // z.B. target=\"_blank\"
