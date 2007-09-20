@@ -48,14 +48,6 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        if ( $environment["parameter"][1] == "" ) {
-            if ( count($_SESSION["file_memo"]) > 0 ) {
-                $environment["parameter"][1] = current($_SESSION["file_memo"]);
-            } else {
-                header("Location: ".$cfg["basis"]."/list.html");
-            }
-        }
-
         // +++
         // funktions bereich fuer erweiterungen
 
@@ -63,16 +55,46 @@
         // page basics
         // ***
 
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        // loop mit den ausgewaehlten Dateien wird erzeugt
+        if ( $environment["parameter"][1] != "" ){
             $sql = "SELECT *
                       FROM ".$cfg["db"]["file"]["entries"]."
-                     WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+                     WHERE fhit LIKE '%#p".$environment["parameter"][1]."%'";
+            $ausgaben["groupid"] = $environment["parameter"][1];
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
-            $form_values = $db -> fetch_array($result,1);
-        } else {
-            $form_values = $HTTP_POST_VARS;
-            $form_values["ffart"] = strtolower(substr(strrchr($form_values["ffname"],"."),1));
+            $i = 1;
+            while ( $data = $db -> fetch_array($result,1) ) {
+                preg_match("/#p".$environment["parameter"][1]."[,0-9]*#/i",$data["fhit"],$match);
+                $sort = (str_replace(array("#p","#"),"",$match[0]));
+                $sort = substr(strstr($sort,","),1);
+                $dataloop["list"][$sort] = array(
+                    "id"   => $data["fid"],
+                    "item" => $data["funder"]." (".$data["fhit"].")",
+                    "sort" => $sort,
+                );
+                ksort($dataloop["list"]);
+                // was steht schon im fhit-feld
+                $form_values[$data["fid"]]["fhit"] = $data["fhit"];
+            }
+        }else{
+            $sql = "SELECT *
+                      FROM ".$cfg["db"]["file"]["entries"]."
+                     WHERE ".$cfg["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
+            $ausgaben["groupid"] = $_POST["groupid"];
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+            $result = $db -> query($sql);
+            $i = 1;
+            while ( $data = $db -> fetch_array($result,1) ) {
+                $dataloop["list"][$i] = array(
+                    "id"   => $data["fid"],
+                    "item" => $data["funder"]." (".$data["fhit"].")",
+                    "sort" => $i*10,
+                );
+                $i++;
+                // was steht schon im fhit-feld
+                $form_values[$data["fid"]]["fhit"] = $data["fhit"];
+            }
         }
 
         // form options holen
@@ -80,55 +102,6 @@
 
         // form elememte bauen
         $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
-
-        // form elemente erweitern
-        #$element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
-        #$element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
-        #$ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280";
-
-        $type = $cfg["filetyp"][$form_values["ffart"]];
-        if ( $type == "img" ) {
-            $path = $cfg["fileopt"][$type]["path"]."original/";
-            $filename = "img_".$form_values["fid"].".".$form_values["ffart"];
-        } else {
-            $path = $cfg["fileopt"][$type]["tnpath"].ltrim($cfg["iconpath"],"/");
-            $filename = $cfg["fileopt"][$type]["thumbnail"];
-        }
-        $ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$path.$filename."&size=280";
-
-
-        if ( $_SESSION["uid"] == $form_values["fuid"] || !in_array( $environment["kategorie"], $cfg["restrict"]) ) { # nur eigene dateien duerfen ersetzt werden
-            $ausgaben["form_error"] = "";
-            $element["upload"] = "#(upa)<br><input type=\"file\" name=\"upload\"><br>#(upb)";
-        } else {
-            $ausgaben["form_error"] = "#(error_edit)";
-            $element["upload"] = "";
-            $element["fdesc"] = str_replace(">"," readonly>",$element["fdesc"]);
-            $element["fhit"] = str_replace(">"," readonly>",$element["fhit"]);
-            $element["funder"] = str_replace(">"," readonly>",$element["funder"]);
-        }
-
-
-        // wo im content wird die datei verwendet
-        $old = "\_".$environment["parameter"][1].".";
-        $new = "/".$environment["parameter"][1]."/";
-        #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
-        $sql = "SELECT *
-                  FROM ".$cfg["db"]["content"]["entries"]."
-                 WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
-                    OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-        while ( $data2 = $db -> fetch_array($result,$nop) ) {
-            if ( $ids != "" ) $ids .= ",";
-            $ebene = $data2["ebene"]."/";
-            $kategorie = $data2["kategorie"].".html";
-            $url = $pathvars["menuroot"].$ebene.$kategorie;
-            $label = $ebene.$kategorie;
-            $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
-        }
-        if ( $ausgaben["reference"] == "" ) $ausgaben["reference"] = "---";
-
 
         // +++
         // page basics
@@ -150,14 +123,14 @@
         #$ausgaben["form_error"] = ""; siehe edit sperre!
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["basis"]."/collect,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".modify";
+        $mapping["main"] = crc32($environment["ebene"]).".collect";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
@@ -177,12 +150,12 @@
         // page basics
 
         if ( $environment["parameter"][2] == "verify"
-            &&  ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["extension1"] != ""
-                || $HTTP_POST_VARS["extension2"] != "" ) ) {
+            &&  ( $_POST["send"] != ""
+                || $_POST["extension1"] != ""
+                || $_POST["extension2"] != "" ) ) {
 
             // form eingaben prüfen
-            form_errors( $form_options, $HTTP_POST_VARS );
+//             form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
@@ -190,48 +163,32 @@
                 // funktions bereich fuer erweiterungen
                 // ***
 
-                // file ersetzen
-                if ( $_FILES["upload"]["name"] != "" ) {
-                    $file = file_verarbeitung($pathvars["filebase"]["new"], "upload", $cfg["filesize"], array( $form_values["ffart"] ), $pathvars["filebase"]["maindir"]);
-                    if ( $file["returncode"] == 0 ) {
-                        $file_id = $form_values["fid"];
-                        $source = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"];
-                        arrange( $file_id, $source, $file["name"] );
-                    } else {
-                        $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ".file_error($file["returncode"]);
+                foreach ( $form_values as $key=>$value ){
+                    // testen, ob die p-nummer schon vorhanden ist
+                    if ( strstr($value["fhit"],"#p".$_POST["groupid"]) ){
+                        // bereits vorhandene marke finden und entfernen
+                        $fhit  = trim(preg_replace("/#p".$_POST["groupid"]."[,0-9]*#/i", "",$value["fhit"]));
+                        // bei leerem sortierfeld wird das bild rausgeworfen
+                        if ( $_POST["sort"][$key] != 0 || $_POST["sort"][$key] == "" ){
+                            $fhit .= " #p".$_POST["groupid"].",".$_POST["sort"][$key]."#";
+                        }
+                    }else{
+                        $fhit = $value["fhit"]." #p".$_POST["groupid"].",".$_POST["sort"][$key]."#";
                     }
+                    $sql = "UPDATE ".$cfg["db"]["file"]["entries"]."
+                               SET fhit='".$fhit."'
+                             WHERE ".$cfg["db"]["file"]["key"]."='".$key."'";
+                    $result  = $db -> query($sql);
                 }
+                if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
+
+//                 unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
 
                 ### put your code here ###
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
-            }
-
-            // datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
-
-                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y" );
-                foreach($HTTP_POST_VARS as $name => $value) {
-                    if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
-                        if ( $sqla != "" ) $sqla .= ", ";
-                        $sqla .= $name."='".$value."'";
-                    }
-                }
-
-                // Sql um spezielle Felder erweitern
-                #$ldate = $HTTP_POST_VARS["ldate"];
-                #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
-                #$sqla .= ", ldate='".$ldate."'";
-
-                $sql = "update ".$cfg["db"]["file"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                $result  = $db -> query($sql);
-                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
-
-                unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
