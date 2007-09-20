@@ -73,7 +73,9 @@
     //       ##picture## enthaelt den im menued unter bild vergebenen wert
     // css menu ohne template
                        "on" => "<ul class=\"navigation\">\n",
-                     "link" => "<li class=\"##class## ##extend##\"><a ##target## href=\"##link##\" title=\"##title##\">##label##</a>##next_level##</li>\n",
+                     #"link" => "<li class=\"##class## ##extend##\"><a ##target## href=\"##link##\" title=\"##title##\">##label##</a>##next_level##</li>\n",
+                    "link1" => "<li><a ##target## href=\"##link##\">##label##</a></li>\n",
+                    "link2" => "<li class=\"##aktiv##\">##label##</li>\n",
                       "off" => "</ul>\n",
     // css menu mit template (kommentar zeichen entfernen)
                      #"link" => "<a ##target## href=\"##link##\">##label##</a><br>",
@@ -88,11 +90,9 @@
                    "length" => 24,
                    "target" => "", // z.B. target=\"_blank\"
     // css menu ohne template
-                       "on" => "<ul>\n",
-                     "link" => "<li class=\"##class##\"><a ##target## href=\"##link##\" title=\"##title##\">##label##</a>##next_level##</li>\n",
-                    #"link1" => "<li><a ##target## href=\"##link##\">##label##</a></li>\n",
-                    #"link2" => "<li class=\"##aktiv##\">##label##</li>\n",
-                      "off" => "</ul>\n",
+                       #"on" => "<ul>\n",
+                     #"link" => "<li class=\"##class##\"><a ##target## href=\"##link##\" title=\"##title##\">##label##</a>##next_level##</li>\n",
+                      #"off" => "</ul>\n",
                        ),
     // css menu mit template (kommentar zeichen entfernen)
                      #"link" => "<a ##target## href=\"##link##\">##label##</a><br>",
