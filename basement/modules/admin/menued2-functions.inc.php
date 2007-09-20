@@ -60,7 +60,7 @@
                 default:
             }
 
-            global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $lokal;
+            global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$zaehler,$tiefe;
             $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
                             ".$cfg["db"]["menu"]["entries"].".entry,
                             ".$cfg["db"]["menu"]["entries"].".refid,
@@ -77,10 +77,15 @@
                        AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
                   ORDER BY  ".$cfg["db"]["menu"]["order"].";";
             $result  = $db -> query($sql);
+            $count = $db->num_rows($result);
+            $zaehler++;
 
             while ( $array = $db -> fetch_array($result,1) ) {
 
+                // beim moven ausblenden des zu verschiebenden ast
                 if ( $art == "select" && $array["mid"] == $modify ) continue;
+
+                // rechte !!!!!!
                 if ( $array["level"] == "" ) {
                     $right = -1;
                 } else {
@@ -90,38 +95,8 @@
                         $right = 0;
                     }
                 }
+
                 if ( $right == -1 ) {
-                    if ( $refid == 0 ) {
-                        $ast = array(0);
-                        $astpath = array($array["entry"]);
-                    }
-
-                    // ast einruecken
-                    if ( !in_array($refid, $ast, TRUE) ) {
-                        $ast[] = $refid;
-                        $astpath[] = $array["entry"];
-                        $tiefe = array_search($refid, $ast, TRUE);
-
-                    // ast ausruecken bzw. auf dem aktuellen wert setzen
-                    } else {
-                        $key = array_search($refid, $ast, TRUE);
-                        while ( array_key_exists( $key, $ast ) ) {
-                            array_pop($ast);
-                            array_pop($astpath);
-                        }
-
-                        // aktuellen wert setzen
-                        $ast[] = $refid;
-                        $astpath[] = $array["entry"];
-                        $tiefe = array_search($refid, $ast, TRUE);
-                    }
-                    // tiefe in anzeige wandeln
-                    $path = "";
-                    $level = "";
-                    for ( $i=0 ; $i < $tiefe ; $i++ ) {
-                        $path .= $astpath[$i]."/";
-                        $level .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"1\">";
-                    }
 
                     // schaltflaechen erstellen
                     $aktion = "";
@@ -140,25 +115,16 @@
                                 $ankerlnk = "";
                             }
                             if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
-                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img src=\"".$cfg["iconpath"].$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
+                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=float:right src=\"".$cfg["iconpath"].$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
+                                #$aktion .= "<a style=float:right href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img src=\"".$cfg["iconpath"].$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
                             } else {
                                 $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
                             }
                         }
                     }
+
+                    // hauptpunkt fett
                     if ( $level == "" ) $array["label"] = "<b>".$array["label"]."</b>";
-
-                    // tabellen farben wechseln
-                    if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                        $cfg["color"]["set"] = $cfg["color"]["b"];
-                    } else {
-                        $cfg["color"]["set"] = $cfg["color"]["a"];
-                    }
-
-                    // refid radio button
-                    if ( $radiorefid != "" ) {
-                        $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
-                    }
 
                     // hide status anzeigen
                     if ( $hidestatus != "" ) {
@@ -173,27 +139,62 @@
 
                     // wo geht der href hin?
                     if ( $array["exturl"] == "" ) {
-                        $href = $pathvars["virtual"]."/".$path.$array["entry"].".html";
+                        $href = $array["entry"];
                         $extern = "";
                     } else {
                         $href = $array["exturl"];
                         $extern = " #(extern)";
                     }
-                    $tree .= "<tr bgcolor=\"".$cfg["color"]["set"]."\">\n";
-                    if ( $radiorefid != "" ) $tree .= "<td>".$radiobutton."</td>\n";
-                    if ( $hidestatus != "" ) $tree .= "<td><img src=\"".$cfg["iconpath"].$hideimage."\" border=\"0\" alt=\"".$hidetext."\" title=\"".$hidetext."\" width=\"13\" height=\"13\"></td>\n";
-                    if ( $sortinfo != "" ) $tree .= "<td>(".$array["sort"].")</td>\n";
-                    $tree .= "<td width=\"100%\">".$level.$ankerpos."<a class=\"\" href=\"".$href."\"><img src=\"".$cfg["iconpath"]."sitemap.png\" width=\"16\" height=\"16\" align=\"absbottom\" border=\"0\"><img src=\"".$pathvars["images"]."pos.png\" width=\"3\" height=\"1\" align=\"absbottom\" border=\"0\">".$array["label"]."</a>".$extern."</td>\n";
-                    if ( $aktionlinks != "" ) $tree .= "<td align=\"right\" nowrap>".$aktion."</td>\n";
-                    $tree .= "</tr>\n";
+
+                    if ( !isset($buffer[$refid]["zaehler"]) ) {
+                        $tiefe++;
+                        $buffer[$refid]["zaehler"] = $count;
+
+                        if ( $zaehler == 1 ) { 
+                            $tree .= "<ul>\n";
+                        } else {
+                            $tree .= "<ul class=\"menued\">\n";
+                        }
+                    }
+                    $buffer["pfad"] .= "/".$href;
+
+                    // refid radio button
+                    if ( $radiorefid != "" ) {
+                        $radiobutton = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative><input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" /></span>";
+                    }
+
+                    if ( $hidestatus != "" ) {
+                        $hide = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative><img src=\"".$cfg["iconpath"].$hideimage."\" border=\"0\" alt=\"".$hidetext."\" title=\"".$hidetext."\" width=\"13\" height=\"13\"></span>\n";
+                    } else {
+                        $hide = "";
+                    }
+                    if ( $sortinfo != "" ) {
+                        $sort = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative>".$array["sort"]."</span>";
+                    } else {
+                        $sort = "";
+                    }
+
+                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"].".html\">".$array["label"]."</a>";
+
                     $tree .= sitemap($array["mid"], $art, $modify, -1);
+                    $tree .= "</li>\n";
+
+                    if ( isset($buffer[$refid]["zaehler"]) ) {
+                        $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
+                        $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
+                        if ( $buffer[$refid]["zaehler"] == 0 ) {
+                            $tiefe--;
+                            $tree .= "</ul>\n";
+                        }
+                    }
+
                 }
             }
             if ( $self == "" ) {
                     if ( $art == "select" ) {
-                        $tree = "<tr>\n<td><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</td><td width=\"100%\">#(root)</td>\n</tr>\n".$tree;
+                       # $tree = "<tr>\n<td><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</td><td width=\"100%\">#(root)</td>\n</tr>\n".$tree;
                     }
-                    $tree = "<table width=\"100%\">".$tree."</table>";
+                  #  $tree = "<table width=\"100%\">".$tree."</table>";
             }
             return $tree;
         }
