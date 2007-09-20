@@ -1,0 +1,271 @@
+/* project: eWeBuKi stylesheet template for eWeBuKi editor (eEd's) styles
+   based on a design from: luka cvrk (www.solucija.com)
+
+   $Id: eed.css 801 2007-09-16 18:20:51Z chaot $ */
+
+
+
+/*----------------------
+  alien styles
+  ----------------------*/
+/*
+body, p, form, ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+ul, ol {
+    list-style : none;
+}
+
+a img{
+    border:0px;
+}
+*/
+/* ---------------------*/
+
+
+
+/*----------------------
+  default styles
+  ----------------------*/
+
+#eEd {
+    float: left;
+    background: #EFEFEF;
+    width: 100%;
+    border: 1px dotted #333;
+}
+
+#eEd label {
+    float: left;
+    display: block;
+    clear: both;
+    width: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 40px;
+}
+
+#eEd input, #eEd textarea, #eEd select {
+    float: left;
+    display: block;
+    width: 250px;
+    border: 1px solid #333;
+    background:#F4F4F4;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 1px;
+}
+
+#eEd p {
+    float: left;
+    clear: both;
+    display: block;
+    width: 100% !important;
+    width: 80%; /*to fix IE6 position*/
+    padding-left: 40px;
+}
+
+#eEd h2 {
+    float: left;
+    clear: both;
+    display: block;
+    padding-left: 40px;
+}
+
+#eEd fieldset{
+    clear: both;
+    border:none;
+    margin:10px;
+    padding:0;
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  global modifiers
+  ----------------------*/
+
+    #eEd .hidden {
+        display:none;
+    }
+
+    #eEd .first {
+        margin-left: 40px !important;
+        margin-left: 10px; /*to fix IE6 position*/
+        width: 120px;
+        clear:both;
+    }
+
+    #eEd .next {
+        margin-left: 10px !important;
+        margin-left: 10px; /*to fix IE6 position*/
+        width: 100px;
+    }
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  spezial reset
+  ----------------------*/
+
+/*clearing all floats and fix Firefox and IE backgroundcolor-bug */
+div.clearer {
+    clear: both;
+    font-size: 1px;
+    line-height: 1px;
+    display: block;
+    height: 1px;
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  checkbox, radio group
+  ----------------------*/
+
+#eEd fieldset.cbra {
+/*     border: none; */
+    padding-left: 40px;
+    padding-bottom: 10px;
+    display: block;
+    clear: both;
+}
+
+#eEd fieldset.cbra label {
+    width: auto;
+    clear: none;
+    float: left;
+    display: block;
+    padding-right: 2px !important;
+    white-space: nowrap; /*to fix ie6 wrapping*/
+}
+
+#eEd fieldset.cbra input {
+    width: auto;
+/*     border: none; */
+    background: none;
+    float: left;
+    display: block;
+    margin-right: 10px;
+    margin-top: 3px !important;
+    margin-top: 0px; /*to fix ie6 position*/
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  floating input, 2lines
+  ----------------------*/
+
+    #eEd fieldset.float {
+        padding-left: 20px;
+    }
+
+    #eEd fieldset.float label {
+        clear: none;
+        float: left;
+        margin: 0;
+        padding-left: 10px;
+        width: 200px;
+    }
+
+    #eEd fieldset.float input, #eEd fieldset.float textarea, #eEd fieldset.float select {
+        margin-top: 0;
+        width: 200px;
+    }
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  menued special
+  ----------------------*/
+
+#eEd ul.menued {
+    margin: 0pt 0pt 0pt 20pt;
+
+}
+#eEd li.menued {
+    border-top: 1px solid #ddd;
+    list-style : none;
+
+}
+#eEd li.menued a{
+    text-decoration:none;
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  fileed special
+  ----------------------*/
+
+li.thumbs {
+        border: 1px solid silver;
+        float: left;
+        height: 130px;
+        margin: 5px;
+        width: 102px;
+        text-align: center;
+        padding: 3px;
+        -moz-border-radius: 5px;
+}
+
+li.thumbs a.pic {
+        display: block;
+        height: 100px;
+        margin: 0 auto;
+        width: 96px;
+}
+
+/* ---------------------*/
+
+
+
+/*----------------------
+  cmsed special (testing only)
+  ----------------------*/
+
+.buttag {
+    border: 1px solid #ddd;
+    padding: .5ex 1ex;
+    background-color: #fff;
+    text-decoration: none;
+    cursor: default;
+}
+
+.butoth {
+    border: 1px solid #ddd;
+    border-style: solid;
+    margin: 0 0 0 0;
+    padding: 0.2ex 0.2ex 0.2ex 0.2ex;
+    background-color: #fff;
+    text-decoration: none;
+/*     font: 0.9em Tahoma, sans-serif; */
+/*     cursor: default; */
+}
+
+.field {
+    width: 100%;
+    border: 1px solid #ddd;
+/*     margin: 0 0 1ex 0; */
+/*     padding: .5ex 1ex; */
+    background-color: #eee;
+    text-decoration: none;
+}
+
+/* ---------------------*/
