@@ -54,8 +54,8 @@
 
          function function_name(  $var1, $var2 = "") {
             ### put your code here ###
-         )
-    )
+         }
+    }
 
     ### platz fuer weitere funktionen ###
 
