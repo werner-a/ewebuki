@@ -112,7 +112,9 @@
     require $pathvars["libraries"]."function_form_errors.inc.php"; // formular elemente pruefen
     require $pathvars["libraries"]."function_inhalt_selector.inc.php"; // seiten umschalter bauen
     require $pathvars["libraries"]."function_file_verarbeitung.inc.php"; // upload verarbeitung
-    require $pathvars["libraries"]."function_makece.inc.php"; // content editor erstellen
+    if ( $specialvars["contented"] != True ) {
+        require $pathvars["libraries"]."function_makece.inc.php"; // content editor erstellen
+    }
     require $pathvars["libraries"]."function_parser.inc.php"; // parser funktion
     require $pathvars["libraries"]."function_right_check.inc.php"; // rechte in bereichen pruefen
     require $pathvars["libraries"]."function_rparser.inc.php"; // parser funktion recursiv
