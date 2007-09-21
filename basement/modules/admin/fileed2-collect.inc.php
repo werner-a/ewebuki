@@ -55,47 +55,55 @@
         // page basics
         // ***
 
-        // loop mit den ausgewaehlten Dateien wird erzeugt
+        // bauen des sql
         if ( $environment["parameter"][1] != "" ){
+            // eine bildergruppe wurde angewaehlt
             $sql = "SELECT *
                       FROM ".$cfg["db"]["file"]["entries"]."
                      WHERE fhit LIKE '%#p".$environment["parameter"][1]."%'";
             $ausgaben["groupid"] = $environment["parameter"][1];
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
-            $i = 1;
-            while ( $data = $db -> fetch_array($result,1) ) {
-                preg_match("/#p".$environment["parameter"][1]."[,0-9]*#/i",$data["fhit"],$match);
-                $sort = (str_replace(array("#p","#"),"",$match[0]));
-                $sort = substr(strstr($sort,","),1);
-                $dataloop["list"][$sort] = array(
-                    "id"   => $data["fid"],
-                    "item" => $data["funder"]." (".$data["fhit"].")",
-                    "sort" => $sort,
-                );
-                ksort($dataloop["list"]);
-                // was steht schon im fhit-feld
-                $form_values[$data["fid"]]["fhit"] = $data["fhit"];
-            }
         }else{
+            // ausgewaehlte dateien werden einer gruppe zugewiesen
             $sql = "SELECT *
                       FROM ".$cfg["db"]["file"]["entries"]."
                      WHERE ".$cfg["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
             $ausgaben["groupid"] = $_POST["groupid"];
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
             $i = 1;
-            while ( $data = $db -> fetch_array($result,1) ) {
-                $dataloop["list"][$i] = array(
-                    "id"   => $data["fid"],
-                    "item" => $data["funder"]." (".$data["fhit"].")",
-                    "sort" => $i*10,
-                );
-                $i++;
-                // was steht schon im fhit-feld
-                $form_values[$data["fid"]]["fhit"] = $data["fhit"];
-            }
         }
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (bilder der gruppe): ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+
+        // dataloop wird gebaut
+        while ( $data = $db -> fetch_array($result,1) ) {
+            // in welchen gruppen ist die datei bereits
+            preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
+            $containedGroups = array();
+            foreach ( $match[1] as $value ){
+                $containedGroups[$value] = $value;
+                ksort($containedGroups);
+            }
+
+            // festlegung der bild-sortierung
+            if ( $environment["parameter"][1] != "" ){
+                // der fhit eintrag wird gesucht, und sortiert
+                preg_match("/#p".$environment["parameter"][1]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                $sort = $match[1];
+            }else{
+                $sort = $i*10;
+                $i++;
+            }
+
+            $dataloop["list"][$sort] = array(
+                "id"   => $data["fid"],
+                "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
+                "sort" => $sort,
+            );
+
+            // welche werte stehen bereits in fhit
+            $form_values[$data["fid"]]["fhit"] = $data["fhit"];
+
+        }
+        ksort($dataloop["list"]);
 
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".modify");
@@ -110,7 +118,23 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        ### put your code here ###
+        // dropdown mit bereits vorhandenen gruppen
+        $sql = "SELECT *
+                    FROM ".$cfg["db"]["file"]["entries"]."
+                    WHERE fhit LIKE '%#p%'";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (dropdown): ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+
+        while ( $data = $db -> fetch_array($result,1) ) {
+            // alle gruppeneintraege holen
+            preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
+            foreach ( $match[1] as $value ){
+                $dataloop["group_dropdown"][$value] = array(
+                    "id" => $value
+                );
+            }
+            ksort($dataloop["group_dropdown"]);
+        }
 
         // +++
         // funktions bereich fuer erweiterungen
@@ -134,7 +158,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_edit) #(error_edit)<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
@@ -168,7 +192,7 @@
                     if ( strstr($value["fhit"],"#p".$_POST["groupid"]) ){
                         // bereits vorhandene marke finden und entfernen
                         $fhit  = trim(preg_replace("/#p".$_POST["groupid"]."[,0-9]*#/i", "",$value["fhit"]));
-                        // bei leerem sortierfeld wird das bild rausgeworfen
+                        // bei leerem sortier-input-feld wird das bild rausgeworfen
                         if ( $_POST["sort"][$key] != 0 || $_POST["sort"][$key] == "" ){
                             $fhit .= " #p".$_POST["groupid"].",".$_POST["sort"][$key]."#";
                         }
@@ -180,11 +204,11 @@
                              WHERE ".$cfg["db"]["file"]["key"]."='".$key."'";
                     $result  = $db -> query($sql);
                 }
-                if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
 
-//                 unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
+                // vorerst sprung zur entsprechenden bildergruppe
+                if ( $header == "" ) $header = $cfg["basis"]."/collect,".$_POST["groupid"].".html";
 
-                ### put your code here ###
+                unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++

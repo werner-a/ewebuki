@@ -30,6 +30,13 @@
         <img src="!#ausgaben_thumbnail" alt="" style="float:right;" />
         <label style="clear:left;">#(ffhit)</label>
         <input type="text" value="!#ausgaben_groupid" name="groupid" class="" />
+        <label style="clear:left;">#(ffhit)</label>
+        <select name="all_groups">
+            <!--##loop-group_dropdown-->
+            <option value="!{id}"!{select}>!{id}</option>
+            <!--##cont-->
+        </select>
+
 
 <!--        <label style="clear:left;">#(fdesc)
             !#element_fdesc
