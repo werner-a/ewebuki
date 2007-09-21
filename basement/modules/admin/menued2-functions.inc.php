@@ -87,24 +87,24 @@
                      WHERE (".$cfg["db"]["menu"]["entries"].".refid=".$refid.")
                        AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
                   ORDER BY  ".$cfg["db"]["menu"]["order"].";";
+
             $result  = $db -> query($sql);
             $count = $db->num_rows($result);
             $zaehler++;
-#echo $refid;
             while ( $array = $db -> fetch_array($result,1) ) {
 
-#echo "<pre>";
-#print_r($eintrag);
-#echo "</pre>";
-#echo $refid;
-#$buffy[] = "test";
-                #if ( in_array($refid,$eintrag) ) {
-                if ( $refid == 0 || in_array($refid,$eintrag) ) {
-
-#echo "T";
-                } else {
-#echo "N";   
+                if ( $refid != 0 && !in_array($refid,$eintrag) ) {
                     continue;
+                } else {
+                    // schauen ob unterpunkte vorhanden !
+                    $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
+                    $result_in  = $db -> query($sql);
+                    $count_in = $db->num_rows($result_in);
+                }
+                if  ( $count_in > 0 ) {
+                    $plus = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
+                } else {
+                    $plus = "";
                 }
                 // beim moven ausblenden des zu verschiebenden ast
                 if ( $art == "select" && $array["mid"] == $modify ) continue;
@@ -148,7 +148,7 @@
                     }
 
                     // hauptpunkt fett
-                    if ( $level == "" ) $array["label"] = "<b>".$array["label"]."</b>";
+                    if ( $refid == 0 ) $array["label"] = "<b>".$array["label"]."</b>";
 
                     // hide status anzeigen
                     if ( $hidestatus != "" ) {
@@ -198,9 +198,7 @@
                         $sort = "";
                     }
 
-                    #$tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"].".html?id=".$array["mid"]."\">".$array["label"]."</a>";
-                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"?id=".$array["mid"]."\">".$array["label"].$refid."</a>";
-                    
+                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"]."\">".$array["label"].$plus."</a>";
                     $tree .= sitemap($array["mid"], $art, $modify, -1);
                     $tree .= "</li>\n";
 
