@@ -52,10 +52,10 @@
                         "b" => "#fff",
                        ),
          "function" => array(
-                      "add" => "",
-                     "edit" => "",
-                   "delete" => "",
-                  "details" => "",
+                      "add" => array(""),
+                     "edit" => array(""),
+                   "delete" => array(""),
+                  "details" => array(""),
                        ),
                "db" => array(
                      "leer" => array(
