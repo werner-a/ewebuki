@@ -128,7 +128,7 @@
                         foreach($modify as $name => $value) {
                             if ( $name == "up" || $name == "down" ) {
                                 if ( $array["refid"] == 0 ) {
-                                    $ankerpos = "<a name=\"".$array["mid"]."\"</a>";
+                                    $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
                                     $ankerlnk = "#".$array["mid"];
                                 } else {
                                     #$anker   = "#".$ankerid;
@@ -139,8 +139,7 @@
                                 $ankerlnk = "";
                             }
                             if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
-                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=float:right src=\"".$cfg["iconpath"].$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
-                                #$aktion .= "<a style=float:right href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img src=\"".$cfg["iconpath"].$name.".png\" border=\"0\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></a>";
+                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                             } else {
                                 $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
                             }
@@ -170,6 +169,7 @@
                         $extern = " #(extern)";
                     }
 
+                    // in den buffer schreiben wieviel unterpunkte fuer jeweiligen überpunkt vorhanden sind !
                     if ( !isset($buffer[$refid]["zaehler"]) ) {
                         $tiefe++;
                         $buffer[$refid]["zaehler"] = $count;
@@ -198,7 +198,7 @@
                         $sort = "";
                     }
 
-                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"]."\">".$array["label"].$plus."</a>";
+                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"]."\">".$array["label"]."</a>".$plus."\n";
                     $tree .= sitemap($array["mid"], $art, $modify, -1);
                     $tree .= "</li>\n";
 
@@ -210,7 +210,6 @@
                             $tree .= "</ul>\n";
                         }
                     }
-
                 }
             }
             if ( $self == "" ) {
