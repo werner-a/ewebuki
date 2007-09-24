@@ -195,12 +195,16 @@ div.clearer {
 
 #eEd ul.menued {
     margin: 0pt 0pt 0pt 20pt;
-
+}
+#eEd li.menued input {
+    width: auto;
+    height: auto;
+    margin-top: 0;
 }
 #eEd li.menued {
+    clear:both;
     border-top: 1px solid #ddd;
     list-style : none;
-
 }
 #eEd li.menued a{
     text-decoration:none;

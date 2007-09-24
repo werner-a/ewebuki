@@ -46,10 +46,13 @@
     #} elseif ( $environment["parameter"][1] == "move" && $rechte[$cfg["right"]] == -1 ) {
     if ( $rechte[$cfg["right"]] == -1 ) {
 
+        $hidedata["move"]["on"] = -1;
+
         // page basics
         // ***
         if ( count($HTTP_POST_VARS) == 0 ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";            $result = $db -> query($sql);
+            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
+            $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
         } else {
             $form_values = $HTTP_POST_VARS;
@@ -65,7 +68,11 @@
         #$element["new_lang"] = "<input name=\"new_lang\" type=\"text\" maxlength=\"5\" size=\"5\">";
         // +++
         // page basics
-
+        if ( $_GET["id"] != "" ) {
+            locate($HTTP_GET_VARS["id"]);
+        } else {
+            $positionArray[] = "nop";
+        }
 
         $ausgaben["output"] .= sitemap(0, "select", $environment["parameter"][1]);
 
@@ -82,8 +89,12 @@
         // hidden values
         $ausgaben["form_hidden"] .= "";
 
+        // navigation erstellen
+        $ausgaben["renumber"] = "";
+        $ausgaben["new"] = "";
+
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".move";
+        $mapping["main"] = crc32($environment["ebene"]).".list";
         $mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

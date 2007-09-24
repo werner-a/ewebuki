@@ -11,8 +11,23 @@
 <!--$Id: -555504947.list.tem.html 789 2007-09-14 12:14:02Z chaot $-->
 <h1>#(ueberschrift)</h1>
 <p>!#ausgaben_new</p>
+<p>!#ausgaben_renumber</p>
 <div id="eEd">
-    !#ausgaben_output
+<!--##hide-move-->
+    <p>!#element_entry</p>
+    <form method="post" action="!#ausgaben_form_aktion">
+<!--##show-->
+        !#ausgaben_output
+<!--##hide-move-->
+        <fieldset>
+                <div class="clearer">&nbsp;</div>
+                <input type="submit" name="send[]" value="g(send)" class="first" />
+                <input type="reset" name="reset" value="g(reset)" class="next" />
+                <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+                <div class="clearer">&nbsp;</div>
+        </fieldset>
+    </form>
+<!--##show-->
 </div>
 <!--##end-->
 </body>

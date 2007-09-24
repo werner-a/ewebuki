@@ -59,9 +59,9 @@
             $modify["rights"] = array("", "#(button_desc_right)", $cfg["right"]);
         }
         if ( $_GET["id"] != "" ) {
-            whereami($HTTP_GET_VARS["id"]);
+            locate($HTTP_GET_VARS["id"]);
         } else {
-            $eintrag[] = "nop";
+            $positionArray[] = "nop";
         }
 
         $ausgaben["output"] .= sitemap(0, "menued", $modify);

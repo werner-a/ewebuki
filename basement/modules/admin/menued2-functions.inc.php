@@ -46,14 +46,14 @@
     // funktion um eine sitemap zu erstellen
     if ( in_array("sitemap", $cfg["function"][$environment["kategorie"]]) ) {
 
-        function whereami($id) {
-            global $eintrag,$db,$cfg;
+        function locate($id) {
+            global $positionArray,$db,$cfg;
             $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result,1);
-            $eintrag[$data["mid"]] = $data["mid"];
+            $positionArray[$data["mid"]] = $data["mid"];
             if ( $data["refid"] != 0 ) {
-                whereami($data["refid"]);
+                locate($data["refid"]);
             }
         }
 
@@ -71,7 +71,7 @@
                 default:
             }
 
-            global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$eintrag,$zaehler,$tiefe;
+            global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray,$zaehler,$tiefe;
             $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
                             ".$cfg["db"]["menu"]["entries"].".entry,
                             ".$cfg["db"]["menu"]["entries"].".refid,
@@ -93,7 +93,8 @@
             $zaehler++;
             while ( $array = $db -> fetch_array($result,1) ) {
 
-                if ( $refid != 0 && !in_array($refid,$eintrag) ) {
+                // wenn punkt nicht im array dann nicht anzeigen !
+                if ( $refid != 0 && !in_array($refid,$positionArray) ) {
                     continue;
                 } else {
                     // schauen ob unterpunkte vorhanden !
@@ -101,11 +102,14 @@
                     $result_in  = $db -> query($sql);
                     $count_in = $db->num_rows($result_in);
                 }
+
+                // sind unterpunkte vorhanden + einblenden
                 if  ( $count_in > 0 ) {
                     $plus = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
                 } else {
                     $plus = "";
                 }
+
                 // beim moven ausblenden des zu verschiebenden ast
                 if ( $art == "select" && $array["mid"] == $modify ) continue;
 
@@ -121,7 +125,6 @@
                 }
 
                 if ( $right == -1 ) {
-
                     // schaltflaechen erstellen
                     $aktion = "";
                     if ( is_array($modify) ) {
@@ -184,7 +187,7 @@
 
                     // refid radio button
                     if ( $radiorefid != "" ) {
-                        $radiobutton = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative><input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" /></span>";
+                        $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
                     }
 
                     if ( $hidestatus != "" ) {
@@ -214,9 +217,8 @@
             }
             if ( $self == "" ) {
                     if ( $art == "select" ) {
-                       # $tree = "<tr>\n<td><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</td><td width=\"100%\">#(root)</td>\n</tr>\n".$tree;
+                        $tree = "<ul><li class=\"menued\"><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</li><li>#(root)</li></ul>".$tree;
                     }
-                  #  $tree = "<table width=\"100%\">".$tree."</table>";
             }
             return $tree;
         }
