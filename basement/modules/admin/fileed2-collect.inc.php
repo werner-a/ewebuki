@@ -59,13 +59,12 @@
         // +++
         // funktions bereich fuer erweiterungen
 
-
         // page basics
         // ***
 
         // bauen des sql
         if ( $environment["parameter"][1] != "" ){
-            // eine bildergruppe wurde angewaehlt
+            // eine bildergruppe wurde angewaehlt (id in der url)
             $sql = "SELECT *
                       FROM ".$cfg["db"]["file"]["entries"]."
                      WHERE fhit LIKE '%#p".$environment["parameter"][1]."%'";
@@ -81,7 +80,7 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (bilder der gruppe): ".$sql.$debugging["char"];
         $result = $db -> query($sql);
 
-        // dataloop wird gebaut
+        // dataloop mit den ausgewaehlten bildern wird gebaut
         while ( $data = $db -> fetch_array($result,1) ) {
             // in welchen gruppen ist die datei bereits
             preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
@@ -123,9 +122,6 @@
         // form elememte bauen
         $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
 
-        // fehlermeldungen
-        $ausgaben["form_error"] = "";
-
         // +++
         // page basics
 
@@ -155,8 +151,8 @@
                     "select" => $select,
                 );
             }
-            ksort($dataloop["group_dropdown"]);
         }
+        ksort($dataloop["group_dropdown"]);
         // +++
         // funktions bereich fuer erweiterungen
 
@@ -165,7 +161,7 @@
         // ***
 
         // fehlermeldungen
-        #$ausgaben["form_error"] = ""; siehe edit sperre!
+        $ausgaben["form_error"] = "";
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["basis"]."/collect,".$environment["parameter"][1].",verify.html";
@@ -199,8 +195,8 @@
                 || $_POST["extension1"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
-            // form eingaben prüfen
-//             form_errors( $form_options, $_POST );
+            // form eingaben pruefen
+            form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
