@@ -228,7 +228,7 @@
                 // vorerst sprung zur entsprechenden bildergruppe
                 if ( $header == "" ) $header = $cfg["basis"]."/collect,".$groupid.".html";
 
-                unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
+                unset ($_SESSION["file_memo"]);
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
