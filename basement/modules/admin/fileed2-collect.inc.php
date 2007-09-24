@@ -48,6 +48,14 @@
         // funktions bereich fuer erweiterungen
         // ***
 
+        if ( isset($_GET["insert"]) ){
+            for ($i = 1; $i <= $_GET["insert"]; $i++) {
+                $sql = "INSERT INTO  site_file (frefid,fuid,fdid,ftname, ffname,ffart,fdesc,funder,fhit)
+                             VALUES (0,1,1,'','test.jpg','jpg','TempoTest','TempoTest','TempoTest #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."#');";
+                $result = $db -> query($sql);
+            }
+        }
+
         // +++
         // funktions bereich fuer erweiterungen
 
@@ -88,6 +96,10 @@
                 // der fhit eintrag wird gesucht, und sortiert
                 preg_match("/#p".$environment["parameter"][1]."[,]*([0-9]*)#/i",$data["fhit"],$match);
                 $sort = $match[1];
+                // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
+                while ( is_array($dataloop["list"][$sort]) ){
+                    $sort++;
+                }
             }else{
                 $sort = $i*10;
                 $i++;
@@ -111,6 +123,9 @@
         // form elememte bauen
         $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
 
+        // fehlermeldungen
+        $ausgaben["form_error"] = "";
+
         // +++
         // page basics
 
@@ -125,17 +140,23 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (dropdown): ".$sql.$debugging["char"];
         $result = $db -> query($sql);
 
+        $dataloop["group_dropdown"] = array();
         while ( $data = $db -> fetch_array($result,1) ) {
             // alle gruppeneintraege holen
             preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
             foreach ( $match[1] as $value ){
+                $select = "";
+                if ( $value == $environment["parameter"][1] ){
+                    $select = ' selected="true"';
+                    $ausgaben["groupid"] = "";
+                }
                 $dataloop["group_dropdown"][$value] = array(
-                    "id" => $value
+                    "id" => $value,
+                    "select" => $select,
                 );
             }
             ksort($dataloop["group_dropdown"]);
         }
-
         // +++
         // funktions bereich fuer erweiterungen
 
@@ -187,17 +208,20 @@
                 // funktions bereich fuer erweiterungen
                 // ***
 
+                $groupid = $_POST["groupid"];
+                if ( $_POST["all_groups"] != "" ) $groupid = $_POST["all_groups"];
+
                 foreach ( $form_values as $key=>$value ){
                     // testen, ob die p-nummer schon vorhanden ist
-                    if ( strstr($value["fhit"],"#p".$_POST["groupid"]) ){
+                    if ( strstr($value["fhit"],"#p".$groupid) ){
                         // bereits vorhandene marke finden und entfernen
-                        $fhit  = trim(preg_replace("/#p".$_POST["groupid"]."[,0-9]*#/i", "",$value["fhit"]));
+                        $fhit  = trim(preg_replace("/#p".$groupid."[,0-9]*#/i", "",$value["fhit"]));
                         // bei leerem sortier-input-feld wird das bild rausgeworfen
                         if ( $_POST["sort"][$key] != 0 || $_POST["sort"][$key] == "" ){
-                            $fhit .= " #p".$_POST["groupid"].",".$_POST["sort"][$key]."#";
+                            $fhit .= " #p".$groupid.",".$_POST["sort"][$key]."#";
                         }
                     }else{
-                        $fhit = $value["fhit"]." #p".$_POST["groupid"].",".$_POST["sort"][$key]."#";
+                        $fhit = $value["fhit"]." #p".$groupid.",".$_POST["sort"][$key]."#";
                     }
                     $sql = "UPDATE ".$cfg["db"]["file"]["entries"]."
                                SET fhit='".$fhit."'
@@ -206,7 +230,7 @@
                 }
 
                 // vorerst sprung zur entsprechenden bildergruppe
-                if ( $header == "" ) $header = $cfg["basis"]."/collect,".$_POST["groupid"].".html";
+                if ( $header == "" ) $header = $cfg["basis"]."/collect,".$groupid.".html";
 
                 unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
 

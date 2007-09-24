@@ -21,7 +21,7 @@
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <div class="clearer">&nbsp;</div>
-    <ul>
+    <ul style="margin-left:20px;">
         <!--##loop-list-->
         <li><input type="text" value="!{sort}" name="sort[!{id}]" style="margin:0 1em 0 0;width:2em;" />!{item}</li>
         <!--##cont-->
@@ -29,13 +29,14 @@
     <fieldset>
         <img src="!#ausgaben_thumbnail" alt="" style="float:right;" />
         <label style="clear:left;">#(ffhit)</label>
-        <input type="text" value="!#ausgaben_groupid" name="groupid" class="" />
-        <label style="clear:left;">#(ffhit)</label>
         <select name="all_groups">
+            <option value="">Bereits gespeicherte Gruppen</option>
             <!--##loop-group_dropdown-->
             <option value="!{id}"!{select}>!{id}</option>
             <!--##cont-->
         </select>
+        <label style="clear:left;">#(ffhit)</label>
+        <input type="text" value="!#ausgaben_groupid" name="groupid" class="" />
 
 
 <!--        <label style="clear:left;">#(fdesc)
