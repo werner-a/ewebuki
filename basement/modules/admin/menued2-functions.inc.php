@@ -111,17 +111,27 @@
                 }
 
                 // beim moven ausblenden des zu verschiebenden ast
-                if ( $art == "select" && $array["mid"] == $modify ) continue;
+             #   if ( $art == "select" && $array["mid"] == $modify ) continue;
 
                 // rechte !!!!!!
-                if ( $array["level"] == "" ) {
+//                 if ( $array["level"] == "" ) {
+//                     $right = -1;
+//                 } else {
+//                     if ( $rechte[$array["level"]] == -1 ) {
+//                         $right = -1;
+//                     } else {
+//                         $right = 0;
+//                     }
+//                 }
+
+                $buffer["pfad"] .= "/".$array["entry"];
+                $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
+                $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
+
+                if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
                     $right = -1;
                 } else {
-                    if ( $rechte[$array["level"]] == -1 ) {
-                        $right = -1;
-                    } else {
-                        $right = 0;
-                    }
+                    $right = "";
                 }
 
                 if ( $right == -1 ) {
@@ -148,70 +158,67 @@
                             }
                         }
                     }
+                }
+                // hauptpunkt fett
+                if ( $refid == 0 ) $array["label"] = "<b>".$array["label"]."</b>";
 
-                    // hauptpunkt fett
-                    if ( $refid == 0 ) $array["label"] = "<b>".$array["label"]."</b>";
-
-                    // hide status anzeigen
-                    if ( $hidestatus != "" ) {
-                        if ( $array["hide"] == -1 ) {
-                            $hideimage = "cms-cb0.png";
-                            $hidetext = "#(disabled)";
-                        } else {
-                            $hideimage = "cms-cb1.png";
-                            $hidetext = "#(enabled)";
-                        }
-                    }
-
-                    // wo geht der href hin?
-                    if ( $array["exturl"] == "" ) {
-                        $href = $array["entry"];
-                        $extern = "";
+                // hide status anzeigen
+                if ( $hidestatus != "" ) {
+                    if ( $array["hide"] == -1 ) {
+                        $hideimage = "cms-cb0.png";
+                        $hidetext = "#(disabled)";
                     } else {
-                        $href = $array["exturl"];
-                        $extern = " #(extern)";
+                        $hideimage = "cms-cb1.png";
+                        $hidetext = "#(enabled)";
                     }
+                }
 
-                    // in den buffer schreiben wieviel unterpunkte fuer jeweiligen überpunkt vorhanden sind !
-                    if ( !isset($buffer[$refid]["zaehler"]) ) {
-                        $tiefe++;
-                        $buffer[$refid]["zaehler"] = $count;
+                // wo geht der href hin?
+                if ( $array["exturl"] == "" ) {
+                    $href = $buffer["pfad"].".html";
+                    $extern = "";
+                } else {
+                    $href = $array["exturl"];
+                    $extern = " #(extern)";
+                }
 
-                        if ( $zaehler == 1 ) { 
-                            $tree .= "<ul>\n";
-                        } else {
-                            $tree .= "<ul class=\"menued\">\n";
-                        }
-                    }
-                    $buffer["pfad"] .= "/".$href;
+                // in den buffer schreiben wieviel unterpunkte fuer jeweiligen überpunkt vorhanden sind !
+                if ( !isset($buffer[$refid]["zaehler"]) ) {
+                    $tiefe++;
+                    $buffer[$refid]["zaehler"] = $count;
 
-                    // refid radio button
-                    if ( $radiorefid != "" ) {
-                        $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
-                    }
-
-                    if ( $hidestatus != "" ) {
-                        $hide = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative><img src=\"".$cfg["iconpath"].$hideimage."\" border=\"0\" alt=\"".$hidetext."\" title=\"".$hidetext."\" width=\"13\" height=\"13\"></span>\n";
+                    if ( $zaehler == 1 ) { 
+                        $tree .= "<ul>\n";
                     } else {
-                        $hide = "";
+                        $tree .= "<ul class=\"menued\">\n";
                     }
-                    if ( $sortinfo != "" ) {
-                        $sort = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative>".$array["sort"]."</span>";
-                    } else {
-                        $sort = "";
-                    }
+                }
 
-                    $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$buffer["pfad"]."\">".$array["label"]."</a>".$plus."\n";
-                    $tree .= sitemap($array["mid"], $art, $modify, -1);
-                    $tree .= "</li>\n";
+                // refid radio button
+                if ( $radiorefid != "" ) {
+                    $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
+                }
 
-                    if ( isset($buffer[$refid]["zaehler"]) ) {
-                        $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
-                        $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
-                        if ( $buffer[$refid]["zaehler"] == 0 ) {
-                            $tiefe--;
-                            $tree .= "</ul>\n";
-                        }
+                if ( $hidestatus != "" ) {
+                    $hide = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative><img src=\"".$cfg["iconpath"].$hideimage."\" border=\"0\" alt=\"".$hidetext."\" title=\"".$hidetext."\" width=\"13\" height=\"13\"></span>\n";
+                } else {
+                    $hide = "";
+                }
+                if ( $sortinfo != "" ) {
+                    $sort = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative>".$array["sort"]."</span>";
+                } else {
+                    $sort = "";
+                }
+
+                $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$plus."\n";
+                $tree .= sitemap($array["mid"], $art, $modify, -1);
+                $tree .= "</li>\n";
+
+                if ( isset($buffer[$refid]["zaehler"]) ) {
+                    $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
+                    $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
+                    if ( $buffer[$refid]["zaehler"] == 0 ) {
+                        $tree .= "</ul>\n";
                     }
                 }
             }
