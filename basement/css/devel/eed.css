@@ -244,7 +244,15 @@ li.thumbs a.pic {
   cmsed special (testing only)
   ----------------------*/
 
-.buttag {
+#eEd fieldset.ce {
+/*     border: none; */
+    padding-left: 0px;
+    display: block;
+    clear: both;
+}
+
+#eEd .buttag {
+    width: auto;
     border: 1px solid #ddd;
     padding: .5ex 1ex;
     background-color: #fff;
@@ -252,7 +260,9 @@ li.thumbs a.pic {
     cursor: default;
 }
 
-.butoth {
+#eEd .butoth {
+    float: left;
+    height: auto;
     border: 1px solid #ddd;
     border-style: solid;
     margin: 0 0 0 0;
@@ -263,12 +273,12 @@ li.thumbs a.pic {
 /*     cursor: default; */
 }
 
-.field {
+#eEd .field {
     width: 100%;
     border: 1px solid #ddd;
 /*     margin: 0 0 1ex 0; */
 /*     padding: .5ex 1ex; */
-    background-color: #eee;
+    background-color: #fff;
     text-decoration: none;
 }
 

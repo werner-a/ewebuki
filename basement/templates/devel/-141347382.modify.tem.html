@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>contented.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/devel/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -141347382.modify.tem.html 216 2004-10-21 01:32:53Z chaot $-->
+<script type="text/javascript">
+<!--
+  function resetForm(){
+     document.forms[0].reset();
+  }
+//-->
+</script>
+!#ausgaben_ce_script
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" onsubmit="chk('content',500)">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_ce_tem_db - !#ausgaben_ce_tem_name - !#ausgaben_ce_tem_label - !#ausgaben_ce_tem_lang<br />
+    !#ausgaben_form_error</p>
+
+    <fieldset class="ce">
+
+        <script type="text/javascript">ebToolbar('top');</script>
+
+
+<!--         <p>!#ausgaben_ce_button</p> -->
+        <textarea id="content" name="!#ausgaben_ce_name" cols="80" rows="15" class="field" !#ausgaben_ce_eventh>!#ausgaben_ce_inhalt</textarea>
+<!--         <p>!#ausgaben_ce_bottom_button</p> -->
+
+        <script type="text/javascript">ebToolbar('bot');</script>
+
+        <script type="text/javascript" language="JavaScript">
+            <!--
+            // This is for toolbar plugins
+            var ebCanvas = document.getElementById('content');
+            //-->
+        </script>
+
+
+
+
+        !#ausgaben_ce_upload !#ausgaben_ce_dropdown
+        <p>#(charakters)</p>
+        <p id="characters"></p>
+        <input type="hidden" name="html" value="!#ausgaben_form_hidden" class="hidden" />
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
+
+    <p>!#ausgaben_tn</p>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<!--##end-->
+</body>
+</html>

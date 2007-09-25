@@ -1,0 +1,417 @@
+<!--##begin-->
+<!--$Id: -141347382.modify.js-nextgen.tem.html 216 2004-10-21 01:32:53Z chaot $-->
+<noscript>
+Sie haben Javascript deaktiviert!<br />
+Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie Javascript.
+</noscript>
+<script type="text/javascript">
+
+    //<![CDATA[
+    function chk(field,anzahl){
+
+        var myField = document.getElementById(field);
+
+        laenge = myField.value.length;
+        if ( laenge >= anzahl ){
+            alert('Ihre Eingabe im Feld "Text" ist '+laenge+' Zeichen lang.\nMaximal sind nur '+anzahl+' Zeichen erlaubt.\nKürzen Sie bitte Ihre Eingabe und wiederholen Sie den Vorgang.\n');
+            return false;
+        }
+    }
+
+    function count(field,anzahl){
+
+        var myField = document.getElementById(field);
+
+        laenge = myField.value.length;
+        document.getElementById('characters').innerHTML=anzahl-laenge-1;
+        //document.getElementById('characters').innerHTML=laenge-1;
+    }
+
+    var ebButtons = new Array();
+    var ebLinks = new Array();
+    var ebOpenTags = new Array();
+
+    function ebButton(id, key, tit, position, access, noSelect, tagStart, tagEnd, disable) {
+        // position (T=top, B=bottom), access key, no select, links, rechts, disable
+        this.id = id;               // used to name the toolbar button
+        this.key = key;             // label on button
+        this.tit = tit;             // button title
+        this.position = position;   // position (top, bot)
+        this.access = access;       // access key
+        this.noSelect = noSelect;   //
+        this.tagStart = tagStart;   // open tag
+        this.tagEnd = tagEnd;       // close tag
+        this.disable = disable;     // disable
+//         this.open = open;        // set to -1 if tag does not need to be closed
+    }
+
+!#ausgaben_njs
+
+    function ebLink() {
+        this.key = '';
+        this.URL = '';
+        this.newWin = 0;
+    }
+
+    function ebShowButton(button, i, position) {
+        if (button.position == position) {
+            if (button.id == 'eb_img') {
+                document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertImage(ebCanvas);" value="' + button.key + '" />');
+            } else if (button.id == 'eb_link') {
+                document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertLink(ebCanvas, ' + i + ');" value="' + button.key + '" />');
+            } else {
+//                 document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertTak(ebCanvas, ' + i + ');" value="' + button.key + '"  />');
+                document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertTak(ebCanvas, ' + i + ');" value="' + button.key + '"  />');
+            }
+        }
+    }
+
+    function ebAddTak(button) {
+        if (ebButtons[button].tagEnd != '') {
+            ebOpenTags[ebOpenTags.length] = button;
+            document.getElementById(ebButtons[button].id).value = '/' + document.getElementById(ebButtons[button].id).value;
+        }
+    }
+
+    function ebRemoveTak(button) {
+        for (i = 0; i < ebOpenTags.length; i++) {
+            if (ebOpenTags[i] == button) {
+                ebOpenTags.splice(i, 1);
+                document.getElementById(ebButtons[button].id).value = document.getElementById(ebButtons[button].id).value.replace('/', '');
+            }
+        }
+    }
+
+    function ebCheckOpenTags(button) {
+        var tag = 0;
+        for (i = 0; i < ebOpenTags.length; i++) {
+            if (ebOpenTags[i] == button) {
+                tag++;
+            }
+        }
+        if (tag > 0) {
+            return true; // tag found
+        } else {
+            return false; // tag not found
+        }
+    }
+
+    function ebCloseAllTags() {
+        var count = ebOpenTags.length;
+        for (o = 0; o < count; o++) {
+            ebInsertTak(ebCanvas, ebOpenTags[ebOpenTags.length - 1]);
+        }
+    }
+
+    function ebToolbar(position) {
+
+        document.write('<div>');
+        for (var i = 0; i < ebButtons.length; i++) {
+            ebShowButton(ebButtons[i], i, position);
+        }
+        if ( position == 'bot' ) {
+            document.write('<input type="button" id="eb_close" class="buttag" onclick="ebCloseAllTags();" title="Schliesse alle Tags" value="X" />');
+        }
+        document.write('</div>');
+    }
+
+    // insertion code
+    function ebInsertTak(myField, i) {
+        // see if there's a callback registered that should handle this:
+        if( typeof eb_Callbacks == 'object' ) {
+            if (!ebCheckOpenTags(i) || ebButtons[i].tagEnd == '') {
+                if( eb_Callbacks.trigger_callback("insert_raw_into_"+myField.id, ebButtons[i].tagStart) ) {
+                    ebAddTak(i);
+                    return;
+                }
+            } else {
+                if( eb_Callbacks.trigger_callback("insert_raw_into_"+myField.id, ebButtons[i].tagEnd) ) {
+                    ebRemoveTak(i);
+                    return;
+                }
+            }
+
+        }
+
+        //IE support
+        if (document.selection) {
+            myField.focus();
+                sel = document.selection.createRange();
+            if (sel.text.length > 0) {
+                sel.text = ebButtons[i].tagStart + sel.text + ebButtons[i].tagEnd;
+            } else {
+                if (!ebCheckOpenTags(i) || ebButtons[i].tagEnd == '') {
+                    sel.text = ebButtons[i].tagStart;
+                    ebAddTak(i);
+                } else {
+                    sel.text = ebButtons[i].tagEnd;
+                    ebRemoveTak(i);
+                }
+            }
+            myField.focus();
+
+        //MOZILLA/NETSCAPE support
+        } else if (myField.selectionStart || myField.selectionStart == '0') {
+            var startPos = myField.selectionStart;
+            var endPos = myField.selectionEnd;
+            var cursorPos = endPos;
+
+            var scrollTop, scrollLeft;
+            if( myField.type == 'textarea' && typeof myField.scrollTop != 'undefined' ) { // remember old position
+                scrollTop = myField.scrollTop;
+                scrollLeft = myField.scrollLeft;
+            }
+
+            // some text selected
+            if (startPos != endPos) {
+                myField.value = myField.value.substring(0, startPos)
+                                            + ebButtons[i].tagStart
+                                            + myField.value.substring(startPos, endPos)
+                                            + ebButtons[i].tagEnd
+                                            + myField.value.substring(endPos, myField.value.length);
+                cursorPos += ebButtons[i].tagStart.length + ebButtons[i].tagEnd.length;
+            } else {
+                if (!ebCheckOpenTags(i) || ebButtons[i].tagEnd == '') {
+                    myField.value = myField.value.substring(0, startPos)
+                                                + ebButtons[i].tagStart
+                                                + myField.value.substring(endPos, myField.value.length);
+                    ebAddTak(i);
+                    cursorPos = startPos + ebButtons[i].tagStart.length;
+                } else {
+                    myField.value = myField.value.substring(0, startPos)
+                                                + ebButtons[i].tagEnd
+                                                + myField.value.substring(endPos, myField.value.length);
+                    ebRemoveTak(i);
+                    cursorPos = startPos + ebButtons[i].tagEnd.length;
+                }
+            }
+
+            // scroll to old position
+            if( typeof scrollTop != 'undefined' ) {
+                myField.scrollTop = scrollTop;
+                myField.scrollLeft = scrollLeft;
+            }
+
+            myField.focus();
+            myField.selectionStart = cursorPos;
+            myField.selectionEnd = cursorPos;
+
+        // Browser not especially supported
+        } else {
+            if (!ebCheckOpenTags(i) || ebButtons[i].tagEnd == '') {
+                myField.value += ebButtons[i].tagStart;
+                ebAddTak(i);
+            } else {
+                myField.value += ebButtons[i].tagEnd;
+                ebRemoveTak(i);
+            }
+            myField.focus();
+        }
+    }
+
+    function ebInsertContent(myField, myValue) {
+        if( typeof eb_Callbacks == 'object' ) { // see if there's a callback registered that should handle this:
+            if( eb_Callbacks.trigger_callback("insert_raw_into_"+myField.id, myValue) ) {
+                return;
+            }
+        }
+
+        //IE support
+        if (document.selection) {
+            myField.focus();
+            sel = document.selection.createRange();
+            sel.text = myValue;
+            myField.focus();
+
+        //MOZILLA/NETSCAPE support
+        } else if (myField.selectionStart || myField.selectionStart == '0') {
+            var startPos = myField.selectionStart;
+            var endPos = myField.selectionEnd;
+            myField.value = myField.value.substring(0, startPos)
+                                        + myValue
+                                        + myField.value.substring(endPos, myField.value.length);
+            myField.focus();
+            myField.selectionStart = startPos + myValue.length;
+            myField.selectionEnd = startPos + myValue.length;
+
+        // Browser not especially supported
+        } else {
+            myField.value += myValue;
+            myField.focus();
+        }
+    }
+
+    function ebInsertLink(myField, i, defaultValue) {
+        if (!defaultValue) {
+            defaultValue = 'http://';
+        }
+        if (!ebCheckOpenTags(i)) {
+            var URL = prompt('URL:' ,defaultValue);
+            if (URL) {
+                ebButtons[i].tagStart = '<a href="' + URL + '">';
+                ebInsertTak(myField, i);
+            }
+        } else {
+            ebInsertTak(myField, i);
+        }
+    }
+
+    function ebInsertImage(myField) {
+        var myValue = prompt('URL:', 'http://');
+        if (myValue) {
+            myValue = '<img src="'
+                    + myValue
+                    + '" alt="' + prompt('ALTernativer Text:', '')
+                    + '" title="' + prompt('Titel:', '')
+                    + '" />';
+            ebInsertContent(myField, myValue);
+        }
+    }
+    //]]>
+
+
+</script>
+<!--##end-->
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_h1','H1','[H1]','[/H1]','1','Überschrift [Alt-1]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_del'
+            ,'del'
+            ,'<del>','</del>'
+            ,'d'
+            ,'gelöscht [Alt-D]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_strong'
+            ,'str'
+            ,'<strong>','</strong>'
+            ,'s'
+            ,'kräftig [Alt-S]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_em'
+            ,'em'
+            ,'<em>','</em>'
+            ,'e'
+            ,'hervorgehoben [Alt-E]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_code'
+            ,'code'
+            ,'<code>','</code>'
+            ,'c'
+            ,'CODE [Alt-C]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_par'
+            ,'p'
+            ,'<p>','</p>'
+            ,'p'
+            ,'Absatz [Alt-P]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_ul'
+            ,'ul'
+            ,'<ul>\n','</ul>\n\n'
+            ,'u'
+            ,'Ungeordnete Liste [Alt-U]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_ol'
+            ,'ol'
+            ,'<ol>\n','</ol>\n\n'
+            ,'o'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_li'
+            ,'li'
+            ,'  <li>','</li>\n'
+            ,'l'
+            ,'Listenelement [Alt-E]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_block'
+            ,'block'
+            ,'<blockquote>','</blockquote>'
+            ,'b'
+            ,'Blockzitat [Alt-B]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_img'
+            ,'img'
+            ,'',''
+            ,'g'
+            ,'IMaGe [Alt-G]'
+            ,-1
+        ); // special case
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_link'
+            ,'link'
+            ,'','</a>'
+            ,'a'
+            ,'a href [Alt-A]'
+        ); // special case
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_pre'
+            ,'pre'
+            ,'<pre>','</pre>'
+            ,'r'
+            ,'[Alt-R]'
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_more'
+            ,'!M'
+            ,'<!-'+'-more-'+'->',''
+            ,'m'
+            ,'Mehr [Alt-M]'
+            ,-1
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_noteaser'
+            ,'!NT'
+            ,'<!-'+'-noteaser-'+'->',''
+            ,'t'
+            ,'kein Teaser (Lockartikel) wenn &quot;Lies Mehr..&quot; [Alt-T]'
+            ,-1
+        );
+
+    ebButtons[ebButtons.length] = new ebButton(
+            'eb_next'
+            ,'!NP'
+            ,'<!-'+'-nextpage-'+'->',''
+            ,'q'
+            ,'nächste Seite [Alt-Q]'
+            ,-1
+        );
+
+
+</script>
