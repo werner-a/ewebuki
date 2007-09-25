@@ -43,7 +43,12 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["right"]] == -1 || $rechte[$cfg["right_admin"]] == -1 ) {
+
+        // nur zum testen
+        if ( $rechte[$cfg["right_admin"]] == -1 ) {
+            $rechte[$cfg["right"]] = -1;
+        }
 
         $modify  = array (
             "add"       => array("", "#(button_desc_add)", $cfg["right"]),
