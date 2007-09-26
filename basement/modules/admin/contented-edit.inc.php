@@ -145,9 +145,9 @@
         $ausgaben["ce_tem_convert"] = "#(convert): ".$environment["parameter"][5];
 
 
-        // lock erzeugen
+        // lock erzeugen, anzeigen
         if ( strstr($form_values["byalias"],"!") ) {
-            $ausgaben["ce_tem_label"] .= " (lock by ".substr($form_values["byalias"],1)." @ ".$form_values["changed"].")";
+            $ausgaben["lock"] .= "lock by ".substr($form_values["byalias"],1)." @ ".$form_values["changed"];
             $ausgaben["class"] = "ta_lock";
         } else {
             $sql = "UPDATE ". SITETEXT ." set
@@ -156,6 +156,7 @@
                         AND  lang = '".$environment["language"]."'
                         AND label = '".$environment["parameter"][3]."'";
             $result  = $db -> query($sql);
+            $ausgaben["lock"] .= "lock by ".$_SESSION["alias"];
             $ausgaben["class"] = "ta_norm";
         }
 
