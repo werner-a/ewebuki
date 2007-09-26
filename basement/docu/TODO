@@ -7,6 +7,9 @@ $Id$
 
 --- allgemein
 
+fix: alle libs die nicht immer geladen werden sollen, aus basic/libraries nach
+     modules/libraries umziehen
+
 feature: 301 handling
 feature: prefix fuer alle tabellen (zwei ewebuki in einer db)
 feature: sprachumschalter nur fuer sprachen die auch vorhanden sind.

@@ -10,6 +10,23 @@ $Id$
 
 
 
+--- 26. september 2007
+
+es ist nun moeglich, dass sich mehrere funktionen eine lib teilen.
+als ablage dient das neue verzeichnis "modules/libraries"
+
+durch den eintrag im function array "kategorie,shared"
+wird die lib aus "modules/libraries" geladen
+
+ein eintrag "kategorie,global"
+laedt die lib aus "basic/libraries"
+
+im gegensatz zu den private functions enthaelt
+eine datei nur eine funktion!
+
+(beispiele siehe modules/leer.cfg.php)
+
+
 --- 14. september 2007 01
 
 eWeBuKi hat ein neues default design
