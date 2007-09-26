@@ -58,8 +58,22 @@
         $specialvars["editlock"] = -1;
     }
 
-    // include function loader
+    // private function include loader
     if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
+
+    // shared function include loader
+    if ( is_array($cfg["function"][$environment["kategorie"].",shared"]) ) {
+        foreach ( $cfg["function"][$environment["kategorie"].",shared"] as $value ) {
+            include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
+        }
+    }
+
+    // global function include loader
+    if ( is_array($cfg["function"][$environment["kategorie"].",global"]) ) {
+        foreach ( $cfg["function"][$environment["kategorie"].",global"] as $value ) {
+            include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
+        }
+    }
 
     // magic include loader
     if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {

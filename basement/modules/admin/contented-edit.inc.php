@@ -140,13 +140,15 @@
         $ausgaben["ce_tem_name"]    = "#(template): ".$environment["parameter"][2];
         $ausgaben["ce_tem_label"]   = "#(label): ".$environment["parameter"][3];
         # $environment["parameter"][4] -> abschnitt bearbeiten -> war: datensatz in db gefunden
-        $ausgaben["ce_tem_convert"] = "#(convert): ".$environment["parameter"][5];
+
         $ausgaben["ce_tem_lang"]    = "#(language): ".$environment["language"];
+        $ausgaben["ce_tem_convert"] = "#(convert): ".$environment["parameter"][5];
 
 
         // lock erzeugen
         if ( strstr($form_values["byalias"],"!") ) {
             $ausgaben["ce_tem_label"] .= " (lock by ".substr($form_values["byalias"],1)." @ ".$form_values["changed"].")";
+            $ausgaben["class"] = "ta_lock";
         } else {
             $sql = "UPDATE ". SITETEXT ." set
                             byalias = '!".$_SESSION["alias"]."'
@@ -154,6 +156,7 @@
                         AND  lang = '".$environment["language"]."'
                         AND label = '".$environment["parameter"][3]."'";
             $result  = $db -> query($sql);
+            $ausgaben["class"] = "ta_norm";
         }
 
 
@@ -246,6 +249,13 @@
             $art = "-".$specialvars["wysiwyg"];
         } else {
             // ce editor bauen
+
+            $ausgaben["name"] = "content";
+            $ausgaben["eventh2"] = "onsubmit=\"chk('content',1000);\"";
+            $ausgaben["eventh2"] = "onKeyDown=\"count('content',1000);\" onChange=\"chk('content',1000);\"";
+            $ausgaben["inhalt"] = $form_values["content"];
+
+
             $ausgaben["tn"] = makece("ceform", "content", $form_values["content"]);
 
             // template version
@@ -281,7 +291,7 @@
         #$ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
         #$ausgaben["form_aktion"] = $cfg["basis"]."edit/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,verify.html";
         $ausgaben["form_abbrechen"] = $_SESSION["page"];
 
 
@@ -312,7 +322,7 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][6] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["extension1"] != ""
                 || $HTTP_POST_VARS["extension2"] != "" ) ) {

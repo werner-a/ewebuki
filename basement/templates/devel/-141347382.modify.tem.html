@@ -17,7 +17,7 @@
 //-->
 </script>
 !#ausgaben_ce_script
-<form method="post" action="!#ausgaben_form_aktion" id="eEd" onsubmit="chk('content',500)">
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" !#ausgaben_eventh1>
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_ce_tem_db - !#ausgaben_ce_tem_name - !#ausgaben_ce_tem_label - !#ausgaben_ce_tem_lang<br />
@@ -29,7 +29,7 @@
 
 
 <!--         <p>!#ausgaben_ce_button</p> -->
-        <textarea id="content" name="!#ausgaben_ce_name" cols="80" rows="15" class="field" !#ausgaben_ce_eventh>!#ausgaben_ce_inhalt</textarea>
+        <textarea id="content" name="!#ausgaben_name" cols="80" rows="15" class="!#ausgaben_class" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
 <!--         <p>!#ausgaben_ce_bottom_button</p> -->
 
         <script type="text/javascript">ebToolbar('bot');</script>
@@ -43,16 +43,17 @@
 
 
 
-
-        !#ausgaben_ce_upload !#ausgaben_ce_dropdown
+        <div class="clearer">&nbsp;</div>
+        !#ausgaben_ce_upload
+        !#ausgaben_ce_dropdown
         <p>#(charakters)</p>
         <p id="characters"></p>
         <input type="hidden" name="html" value="!#ausgaben_form_hidden" class="hidden" />
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
-        <input type="submit" name="send[]" value="g(send)" class="first" />
-        <input type="reset" name="reset" value="g(reset)" class="next" />
-        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <input type="submit" name="send[]" value="g(send)" accesskey="s" class="first" />
+        <input type="reset" name="reset" value="g(reset)" accesskey="r" class="next" />
+        <input type="button" name="abort" value="g(abort)" accesskey="a" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>
 

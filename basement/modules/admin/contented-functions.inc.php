@@ -60,7 +60,6 @@
 
         function makece($ce_formname, $ce_name, $ce_inhalt) {
             global $debugging, $db, $cfg, $pathvars, $ausgaben, $specialvars, $defaults;
-            $ausgaben["ce_name"] = $ce_name;
 
             // vogelwilde regex die alte & neue file links findet
             // und viel arbeit erspart
@@ -297,8 +296,6 @@
             $ausgaben["ce_upload"] .= "<option value=\"5\">5 #(files)</option>";
             $ausgaben["ce_upload"] .= "</select>";
 
-            $ausgaben["ce_inhalt"] = $ce_inhalt;
-            $ausgaben["ce_eventh"] = "onKeyDown=\"count('content',500);\" onChange=\"chk('content',500);\"";
             return $tn;
         }
 
