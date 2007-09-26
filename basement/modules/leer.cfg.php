@@ -56,6 +56,8 @@
                      "edit" => array(""),
                    "delete" => array(""),
                   "details" => array(""),
+              #"edit,shared" => array("shared1", "shared2"),
+              #"edit,global" => array("global1", "global2"),
                        ),
                "db" => array(
                      "leer" => array(
