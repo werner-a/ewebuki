@@ -51,8 +51,8 @@
                         "b" => "#fff",
                        ),
          "function" => array(
-           "sitemap,shared" => array("menutree"),
-             "list,shared" => array("menutree"),
+                    "sitemap,shared" => array("menutree","locate"),
+                    "list,shared" => array("menutree","locate"),
                        ),
 
                "db" => array(

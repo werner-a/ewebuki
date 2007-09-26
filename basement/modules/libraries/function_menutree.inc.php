@@ -43,17 +43,6 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function locate($id) {
-        global $positionArray,$db,$cfg;
-        $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
-        $result  = $db -> query($sql);
-        $data = $db -> fetch_array($result,1);
-        $positionArray[$data["mid"]] = $data["mid"];
-        if ( $data["refid"] != 0 ) {
-            locate($data["refid"]);
-        }
-    }
-
     function sitemap($refid, $art = "", $modify = "", $self = "") {
 
         switch($art) {
