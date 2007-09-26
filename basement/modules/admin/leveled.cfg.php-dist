@@ -51,8 +51,8 @@
             "basis" => $pathvars["virtual"]."/admin/leveled",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
             "color" => array(
-                        "a" => "#eee",
-                        "b" => "#fff",
+                        "a" => "#eeeeee",
+                        "b" => "#ffffff",
                        ),
          "function" => array(
                       "add" => "",

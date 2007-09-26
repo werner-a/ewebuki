@@ -48,8 +48,8 @@
             "basis" => $pathvars["virtual"]."/admin/usered", # crc = -1468826685 *
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
             "color" => array(
-                        "a" => "#eee",
-                        "b" => "#fff",
+                        "a" => "#eeeeee",
+                        "b" => "#eeefff",
                        ),
          "function" => array(
                   "details" => "",
