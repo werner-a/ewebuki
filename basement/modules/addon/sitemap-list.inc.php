@@ -66,6 +66,14 @@
             $ausgaben["form_error"] = "";
         }
 
+        if ( $_GET["id"] != "" ) {
+            locate($HTTP_GET_VARS["id"]);
+        } else {
+            $positionArray[] = "nop";
+        }
+
+        $ausgaben["output"] = sitemap(0, "menued", $modify);
+
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
