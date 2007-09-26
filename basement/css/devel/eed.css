@@ -273,12 +273,19 @@ li.thumbs a.pic {
 /*     cursor: default; */
 }
 
-#eEd .field {
+#eEd .ta_norm {
     width: 100%;
     border: 1px solid #ddd;
 /*     margin: 0 0 1ex 0; */
 /*     padding: .5ex 1ex; */
     background-color: #fff;
+    text-decoration: none;
+}
+
+#eEd .ta_lock {
+    width: 100%;
+    border: 1px solid #f00;
+    background-color: #FFB2B3;
     text-decoration: none;
 }
 
