@@ -19,7 +19,7 @@ feature: sprachumschalter nur fuer sprachen die auch vorhanden sind.
 bugfix: bilder mit IMGB tag funktionieren nicht nebeneinander
         oder wenn sie sich zu nahe kommen, loesung?
         - wird wohl so nicht so eifach, die implementierung eines
-          div Tag loesst ectl. das problem
+          div Tag loesst evtl. das problem
 
         (neue css version! bitte darauf hin untersuchen)
 
@@ -46,6 +46,8 @@ bugfix: wird $rechte array immer noch beim anlegen eines neuer user
 
 -> contented (in arbeit, war cms)
 
+feature: gemeinsame lib mit fileed fuer anzeige der files
+feature: roter rahmen markiert locked content
 feature: marke "roter haken" einstellbar vorher oder nachher
 (feature:) lock content beim editieren, wobei ein lock loesbar sein muss
            -> besser hervorheben! z.B. roter rahmen um edit field!
@@ -59,6 +61,7 @@ feature: eine (extra tabelle?) mit username, timestamp, content-text
 
 bugfix: falsche fehlermeldungen im fileed in php5, ueberarbeiten
 
+feature: gemeinsame lib mit contented fuer anzeige der files
 feature: bildunterschrift = beschreibung > wenn leer
 feature: upload menge auf 10 erweitern, default wie jetzt
 feature: beschreibung des bild im viewer?
@@ -86,3 +89,4 @@ feature: bei der erfassung/änderung von news könnte ein dropdown mit einer
          nenne es 'showweeks' oder so. und speichere die anzahl
          der wochen da drin. max. 52 für ein jahr
 
+#EOF
