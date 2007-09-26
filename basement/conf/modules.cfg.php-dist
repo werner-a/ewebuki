@@ -124,6 +124,14 @@
 #        include $pathvars["moduleroot"]."addon/search.inc.php";
 #    }
 
+#    // addon: sitemap for testing only!
+#    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "sitemap" )
+#       || ( $environment["ebene"] == "/sitemap" ))
+#    {
+#        include $pathvars["moduleroot"]."addon/sitemap.cfg.php";
+#        include $pathvars["moduleroot"]."addon/sitemap-ctrl.inc.php";
+#    }
+
 #    // customer: modul beispiel "my" einfach
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
 #       || ( $environment["ebene"] == "/my" ))
