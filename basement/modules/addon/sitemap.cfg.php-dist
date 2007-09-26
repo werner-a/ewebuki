@@ -54,7 +54,6 @@
          "function" => array(
            "sitemap,shared" => array("menutree"),
                        ),
-              ),
             "right" => "",
     );
 
