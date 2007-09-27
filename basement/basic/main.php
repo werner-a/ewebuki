@@ -295,7 +295,7 @@
     // überschreiben von default werten
     require $pathvars["config"]."overwrite.cfg.php";
 
-    if ( $environment["ebene"] == "/cms") {
+    if ( $environment["ebene"] == "/cms" || $environment["ebene"] == "/admin/contented" ) {
         if ( $specialvars["contented"] != True ) {
             include $pathvars["libraries"]."cms.inc.php";
         }
