@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function loop_files($result) {
+    function filelist($result) {
         global $db, $cfg, $dataloop, $pathvars;
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)

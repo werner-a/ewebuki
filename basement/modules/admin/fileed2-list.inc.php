@@ -230,7 +230,7 @@
         }
 
         // dataloop wird ueber eine share-funktion aufgebaut
-        loop_files($result);
+        filelist($result);
 
         // +++
         // funktions bereich
