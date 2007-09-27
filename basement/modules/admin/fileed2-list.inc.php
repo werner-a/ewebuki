@@ -229,64 +229,8 @@
             }
         }
 
-        if ( $getvalues != "" ) $getvalues = "?".$getvalues;
-        while ( $data = $db -> fetch_array($result,1) ) {
-
-            if (is_array($_SESSION["file_memo"])) {
-                if (in_array($data["fid"],$_SESSION["file_memo"])) {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb1.png\"></a>";
-                } else {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb0.png\"></a>";
-                }
-            } else {
-                $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=".$cfg["iconpath"]."cms-cb0.png border=0></a>";
-            }
-
-            // tabellen farben wechseln
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
-            } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
-            }
-            $dataloop["list"][$data["fid"]]["color"] = $cfg["color"]["set"];
-
-            $dataloop["list"][$data["fid"]]["ehref"] = "edit,".$data["fid"].".html";
-
-            $type = $cfg["filetyp"][$data["ffart"]];
-            $dataloop["list"][$data["fid"]]["dhref"] = $pathvars["filebase"]["webdir"].
-                                                       $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].
-                                                       $cfg["fileopt"][$type]["name"]."_".
-                                                       $data["fid"].".".$data["ffart"];
-            if ( $data["ffart"] == "pdf" ) {
-                $dataloop["list"][$data["fid"]]["dtarget"] = "_blank";
-            } else {
-                $dataloop["list"][$data["fid"]]["dtarget"] = "";
-            }
-
-
-            $dataloop["list"][$data["fid"]]["src"] = $pathvars["filebase"]["webdir"].
-                                                     $pathvars["filebase"]["pic"]["root"].
-                                                     $pathvars["filebase"]["pic"]["tn"]."tn_".
-                                                     $data["fid"].".".$data["ffart"];
-
-            $dataloop["list"][$data["fid"]]["alt"] = $data["ffname"];
-            $dataloop["list"][$data["fid"]]["title"] = $data["ffname"];
-
-            $dataloop["list"][$data["fid"]]["cb"] = $cb;
-
-            $dataloop["list"][$data["fid"]]["ohref"] = "list/view,o,".$data["fid"].".html";
-            $dataloop["list"][$data["fid"]]["bhref"] = "list/view,b,".$data["fid"].".html";
-            $dataloop["list"][$data["fid"]]["mhref"] = "list/view,m,".$data["fid"].".html";
-            $dataloop["list"][$data["fid"]]["shref"] = "list/view,s,".$data["fid"].".html";
-
-            $i++;
-            $even = $i / $cfg["db"]["file"]["line"];
-            if ( is_int($even) ) {
-                $dataloop["list"][$data["fid"]]["newline"] = $cfg["db"]["file"]["newline"];
-            } else {
-                $dataloop["list"][$data["fid"]]["newline"] = "";
-            }
-        }
+        // dataloop wird ueber eine share-funktion aufgebaut
+        loop_files($result);
 
         // +++
         // funktions bereich
