@@ -193,21 +193,21 @@ div.clearer {
   menued special
   ----------------------*/
 
-#eEd ul.menued {
+#eEd ul.menued ul {
     margin: 0pt 0pt 0pt 20pt;
 }
-#eEd li.menued input {
+#eEd ul.menued a {
+    text-decoration:none;
+}
+
+#eEd ul.menued li {
+    clear:both;
+    border-top: 1px solid #ddd;
+}
+#eEd ul.menued input {
     width: auto;
     height: auto;
     margin-top: 0;
-}
-#eEd li.menued {
-    clear:both;
-    border-top: 1px solid #ddd;
-    list-style : none;
-}
-#eEd li.menued a{
-    text-decoration:none;
 }
 
 /* ---------------------*/

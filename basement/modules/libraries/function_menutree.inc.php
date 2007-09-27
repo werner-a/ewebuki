@@ -160,9 +160,9 @@
                 $buffer[$refid]["zaehler"] = $count;
 
                 if ( $zaehler == 1 ) { 
-                    $tree .= "<ul>\n";
-                } else {
                     $tree .= "<ul class=\"menued\">\n";
+                } else {
+                    $tree .= "<ul>\n";
                 }
             }
 
@@ -182,7 +182,7 @@
                 $sort = "";
             }
 
-            $tree .= "<li class=\"menued\">".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$plus."\n";
+            $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$plus."\n";
             $tree .= sitemap($array["mid"], $art, $modify, -1);
             $tree .= "</li>\n";
 
