@@ -81,7 +81,8 @@ feature: language support fuer hochgeladenen bilder?
 
 bugfix: verhindern das move entry feld geaendert werden kann
 bugfix: schutze der refid, falschen wert evtl. wegschmeissen
-
+feature: einmal zum auf- und zuklappen, oder nur anzeige der hauptpunkte und
+         dann nur noch den jeweiligen punkt
 
 
 -> bloged
