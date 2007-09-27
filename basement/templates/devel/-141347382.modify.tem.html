@@ -17,21 +17,30 @@
 //-->
 </script>
 !#ausgaben_ce_script
-<form method="post" action="!#ausgaben_form_aktion" id="eEd" !#ausgaben_eventh1>
+<form method="post" action="!#ausgaben_form_aktion" id="cEd" !#ausgaben_eventh1>
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     !#ausgaben_form_error</p>
 
     <fieldset class="ce">
 
-        <script type="text/javascript">ebToolbar('top');</script>
+        <div style="float:left"><script type="text/javascript">ebToolbar('top');</script></div>
 
+        <a class="infobox" href="#INFO">INFO
+        <span>
+            !#ausgaben_ce_tem_db<br />
+            !#ausgaben_ce_tem_name<br />
+            !#ausgaben_ce_tem_label<br />
+            !#ausgaben_ce_tem_lang
+        </span>
+        </a>
 
 <!--         <p>!#ausgaben_ce_button</p> -->
         <textarea id="content" name="!#ausgaben_name" cols="80" rows="15" title="!#ausgaben_lock" class="!#ausgaben_class" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
 <!--         <p>!#ausgaben_ce_bottom_button</p> -->
 
-        <script type="text/javascript">ebToolbar('bot');</script>
+        <div style="float:left"><script type="text/javascript">ebToolbar('bot');</script></div>
+        <p style="float:right" id="characters">#(charakters)</p>
 
         <script type="text/javascript" language="JavaScript">
             <!--
@@ -40,14 +49,13 @@
             //-->
         </script>
 
-
-
         <div class="clearer">&nbsp;</div>
+
+        <p>!#ausgaben_tn</p>
+
         !#ausgaben_ce_upload
         !#ausgaben_ce_dropdown
-        <p>#(charakters)</p>
-        <p>!#ausgaben_ce_tem_db - !#ausgaben_ce_tem_name - !#ausgaben_ce_tem_label - !#ausgaben_ce_tem_lang<br />
-        <p id="characters"></p>
+
         <input type="hidden" name="html" value="!#ausgaben_form_hidden" class="hidden" />
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
@@ -57,7 +65,6 @@
         <div class="clearer">&nbsp;</div>
     </fieldset>
 
-    <p>!#ausgaben_tn</p>
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>

@@ -284,7 +284,7 @@
             if ( $cms_old_mode == True ) {
                 $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$defaults["cms-tag"]["path"]."cms-tag-imgb.png\" title=\"#(add)\" width=\"23\" height=\"22\">";
             } else {
-                $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"submit\" class=\"butoth\" value=\"FILE\" title=\"#(add)\">";
+                $ausgaben["ce_button"] .= "<input type=\"submit\" name=\"add[]\" value=\"FILE\" title=\"#(add)\" class=\"butoth\">";
             }
 
             $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";

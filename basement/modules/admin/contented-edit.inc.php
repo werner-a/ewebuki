@@ -293,7 +293,8 @@
 
         #$ausgaben["form_aktion"] = $cfg["basis"]."edit/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
         $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,verify.html";
-        $ausgaben["form_abbrechen"] = $_SESSION["page"];
+        #$ausgaben["form_abbrechen"] = $_SESSION["page"];
+        $ausgaben["form_break"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,unlock.html";
 
 
         // hidden values
@@ -322,11 +323,22 @@
 
         // +++
         // page basics
+        if ( $environment["parameter"][6] == "unlock" ) {
 
-        if ( $environment["parameter"][6] == "verify"
+            // nur lock aufheben
+            $sql = "UPDATE ". SITETEXT ." set
+                            byalias = '".$_SESSION["alias"]."'
+                        WHERE tname = '".$environment["parameter"][2]."'
+                        AND  lang = '".$environment["language"]."'
+                        AND label = '".$environment["parameter"][3]."'";
+            $result  = $db -> query($sql);
+            header("Location: ".$_SESSION["page"]."");
+
+        } elseif ( $environment["parameter"][6] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["extension1"] != ""
-                || $HTTP_POST_VARS["extension2"] != "" ) ) {
+                || $HTTP_POST_VARS["add"] != ""
+                || $HTTP_POST_VARS["upload"] != "" ) ) {
+
 
             // form eingaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );

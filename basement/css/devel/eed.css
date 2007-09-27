@@ -244,49 +244,79 @@ li.thumbs a.pic {
   cmsed special (testing only)
   ----------------------*/
 
-#eEd fieldset.ce {
-/*     border: none; */
-    padding-left: 0px;
+#cEd fieldset.ce {
+    border: none;
+    padding-left: 0;
+    margin-bottom: 0;
     display: block;
     clear: both;
 }
 
-#eEd .buttag {
+#cEd .buttag {
     width: auto;
     border: 1px solid #ddd;
     padding: .5ex 1ex;
-    background-color: #fff;
+    background-color: #eee;
     text-decoration: none;
     cursor: default;
 }
 
-#eEd .butoth {
+#cEd .butoth {
     float: left;
     height: auto;
     border: 1px solid #ddd;
     border-style: solid;
     margin: 0 0 0 0;
     padding: 0.2ex 0.2ex 0.2ex 0.2ex;
-    background-color: #fff;
+    background-color: #eee;
     text-decoration: none;
 /*     font: 0.9em Tahoma, sans-serif; */
 /*     cursor: default; */
 }
 
-#eEd .ta_norm {
+#cEd .ta_norm {
     width: 100%;
     border: 1px solid #ddd;
 /*     margin: 0 0 1ex 0; */
 /*     padding: .5ex 1ex; */
-    background-color: #fff;
+    background-color: #eee;
     text-decoration: none;
 }
 
-#eEd .ta_lock {
+#cEd .ta_lock {
     width: 100%;
     border: 1px solid #f00;
     background-color: #FFB2B3;
     text-decoration: none;
 }
+
+
+#cEd a.infobox {
+    float: right;
+    border-bottom: 1px dashed #c30;
+    text-decoration:none;
+}
+
+    #cEd a.infobox:hover {
+        cursor:help;
+        color:#c30;
+        background:white;
+    }
+
+    #cEd a.infobox span {
+        visibility:hidden;
+        position:absolute;
+        left:-99em;
+        margin-top:1.5em;
+        padding:1em;
+        text-decoration:none;
+    }
+
+    #cEd a.infobox:hover span {
+        visibility:visible;
+        left:38em;
+        border:1px solid #c30;
+        color:blue; background:white;
+    }
 
 /* ---------------------*/

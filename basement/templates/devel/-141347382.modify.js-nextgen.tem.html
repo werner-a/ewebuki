@@ -109,8 +109,11 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         for (var i = 0; i < ebButtons.length; i++) {
             ebShowButton(ebButtons[i], i, position);
         }
+        if ( position == 'top' ) {
+            document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="#(add)" class="buttag"/>');
+        }
         if ( position == 'bot' ) {
-            document.write('<input type="button" id="eb_close" class="buttag" onclick="ebCloseAllTags();" title="Schliesse alle Tags" value="X" />');
+            document.write('<input type="button" id="eb_close" value="X" title="Schliesse alle Tags" onclick="ebCloseAllTags();" class="buttag" />');
         }
         document.write('</div>');
     }
@@ -248,7 +251,7 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         if (!ebCheckOpenTags(i)) {
             var URL = prompt('URL:' ,defaultValue);
             if (URL) {
-                ebButtons[i].tagStart = '<a href="' + URL + '">';
+                ebButtons[i].tagStart = '[LINK=' + URL + ']';
                 ebInsertTak(myField, i);
             }
         } else {
