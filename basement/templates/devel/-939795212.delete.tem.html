@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>fileed.delete</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -939795212.delete.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+
+    <div class="clearer">&nbsp;</div>
+
+    <!--##hide-possible2delete-->
+    #(possible2delete)
+    <div class="clearer">&nbsp;</div>
+    <ul style="padding-left:40px;">
+        <!--##loop-possible2delete-->
+        <li><a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}</li>
+        <!--##cont-->
+    </ul>
+    <!--##show-->
+
+    <!--##hide-warning-->
+    #(warning)
+    <div class="clearer">&nbsp;</div>
+    <ul style="padding-left:40px;">
+        <!--##loop-warning-->
+        <li><a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}</li>
+        <!--##cont-->
+    </ul>
+    <!--##show-->
+
+    <!--##hide-impossible2delete-->
+    #(impossible2delete)
+    <div class="clearer">&nbsp;</div>
+    <ul style="padding-left:40px;">
+        <!--##loop-impossible2delete-->
+        <li><a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}</li>
+        <!--##cont-->
+    </ul>
+    <!--##show-->
+
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
+        <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
+        <input name="delete" type="hidden" value="!#ausgaben_form_delete" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<!--##end-->
+</body>
+</html>

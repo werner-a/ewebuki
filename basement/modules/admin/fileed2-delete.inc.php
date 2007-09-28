@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: fileed-delete.inc.php 523 2006-10-10 11:04:15Z chaot $";
+// "$Id: leer-delete.inc.php 667 2007-08-10 18:13:18Z chaot $";
 // "leer - delete funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,217 +43,172 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
 
         // funktions bereich fuer erweiterungen
         // ***
 
-        if ( count($_SESSION["file_memo"]) > 0 ) {
-            $environment["parameter"][1] = current($_SESSION["file_memo"]);
-        } else  {
+        // falls keine dateien ausgewaehlt wurden, zurueck zur liste
+        if ( count($_SESSION["file_memo"]) == 0 ) {
             header("Location: ".$cfg["basis"]."/list.html");
-            exit();
-        }
-
-        ### put your code here ###
-
-        // wird die datei im content verwendet?
-        $num_rows = 0;
-        $old = "\_".$environment["parameter"][1].".";
-        $new = "/".$environment["parameter"][1]."/";
-        $sql2 = "SELECT *
-                FROM ".$cfg["db"]["content"]["entries"]."
-                WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
-                    OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
-
-        // multi db support
-        if ( $cfg["db"]["multi"]["change"] == True ) {
-            $sql = "SELECT ".$cfg["db"]["multi"]["field"]."
-                      FROM ".$cfg["db"]["multi"]["entries"]."
-                     WHERE ".$cfg["db"]["multi"]["where"];
-            $result = $db -> query($sql);
-            while ( $data = $db -> fetch_array($result,$nop) ) {
-                $db -> selectDb($data[$cfg["db"]["multi"]["field"]],FALSE);
-                $result2 = $db -> query($sql2);
-                $num_rows = $db -> num_rows($result2);
-                break;
-            }
-            $db -> selectDb(DATABASE,FALSE);
-        }
-
-        // main db
-        if ( $num_rows == 0 ) {
-            $result2 = $db -> query($sql2);
-            $num_rows = $db -> num_rows($result2);
         }
 
         // +++
         // funktions bereich fuer erweiterungen
 
-        if ( $num_rows > 0 ) {
+        // datensatz holen
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["file"]["entries"]."
+                 WHERE ".$cfg["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        while ( $data = $db -> fetch_array($result,1) ) {
 
-            // was anzeigen
-            $mapping["main"] = crc32($environment["ebene"]).".list";
-            $mapping["navi"] = "leer";
+            $error = del_check($data["fid"]);
 
-            // wohin schicken
-            header("Location: ".$cfg["basis"]."/list.html?error=1");
+            $item = $data["ffname"];
 
-        } else {
-
-            // datensatz holen
-            $sql = "SELECT *
-                      FROM ".$cfg["db"]["file"]["entries"]."
-                     WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,$nop);
-            $ausgaben["form_id1"] = $data["fid"];
-            #$ausgaben["field1"] = $data["field1"];
-            #$ausgaben["field2"] = $data["field2"];
-            $ausgaben["ffname"] = $data["ffname"];
-            $ausgaben["ffart"] = $data["ffart"];
-
-            // funktions bereich fuer erweiterungen
-            // ***
-
-            ### put your code here ###
-
-            if ( $_SESSION["uid"] != $data["fuid"] && in_array( $environment["kategorie"], $cfg["restrict"]) ) { # nur eigene dateien duerfen gelöscht werden
-                header("Location: ".$cfg["basis"]."/list.html?error=2");
-                exit();
+            if ( $cfg["filetyp"][$data["ffart"]] == "img" ){
+                $link = $cfg["basis"]."/delete/view,o,".$data["fid"].".html";
+            }else{
+                $link = $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"];
             }
 
+            $reason = "";
 
-            /* z.B. evtl. verknuepfte datensatze holen
-            $sql = "SELECT *
-                      FROM ".$cfg["db"]["more"]["entries"]."
-                     WHERE ".$cfg["db"]["more"]["key"]." ='".$environment["parameter"][1]."'";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
-            while ( $data2 = $db -> fetch_array($result,$nop) ) {
-                if ( $ids != "" ) $ids .= ",";
-                $ids .= $array["id"];
-                $ausgaben["field3"] .= $array["field1"]." ";
-                $ausgaben["field3"] .= $array["field2"]."<br />";
-            }
-            $ausgaben["form_id2"] = $ids;
-            */
-
-            // +++
-            // funktions bereich fuer erweiterungen
-
-
-            // page basics
-            // ***
-
-            // fehlermeldungen
-            $ausgaben["form_error"] = "";
-
-            // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-            $ausgaben["form_break"] = $cfg["basis"]."/list.html";
-
-            // hidden values
-            $ausgaben["form_hidden"] = "";
-            $ausgaben["form_delete"] = "true";
-
-            // was anzeigen
-            #$mapping["main"] = crc32($environment["ebene"]).".delete";
-            #$mapping["navi"] = "leer";
-
-            // unzugaengliche #(marken) sichtbar machen
-            // ***
-            if ( isset($HTTP_GET_VARS["edit"]) ) {
-                $ausgaben["inaccessible"] = "inaccessible values:<br />";
-                $ausgaben["inaccessible"] .= "# (error_result1) #(error_result1)<br />";
-                $ausgaben["inaccessible"] .= "# (error_result2) #(error_result2)<br />";
-            } else {
-                $ausgaben["inaccessible"] = "";
-            }
-            // +++
-            // unzugaengliche #(marken) sichtbar machen
-
-            // wohin schicken
-            #n/a
-
-            // +++
-            // page basics
-
-
-            // das loeschen wurde bestaetigt, loeschen!
-            // ***
-            if ( $HTTP_POST_VARS["delete"] != ""
-                && $HTTP_POST_VARS["send"] != "" ) {
-
-                // evtl. zusaetzlichen datensatz loeschen
-                if ( $HTTP_POST_VARS["id2"] != "" ) {
-                    // funktions bereich fuer erweiterungen
-                    // ***
-
-                    ### put your code here ###
-
-                    /* z.B. evtl. verknuepfte datensatze loeschen
-                    $sql = "DELETE FROM ".$cfg["db"]["more"]["entries"]."
-                                  WHERE ".$cfg["db"]["more"]["key"]." = '".$HTTP_POST_VARS["id2"]."'";
-                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                    $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
-                    */
-
-                    // +++
-                    // funktions bereich fuer erweiterungen
+            if ( $error == 0 ){
+                // keine fehler
+                $loop_name = "possible2delete";
+            }elseif( $error > 100 ){
+                // warnungen
+                if ( $error == 101 ){
+                    $reason = "#(group_warning)".implode("<br />",$arrError);
                 }
+                $loop_name = "warning";
+            }else{
+                // fehler
+                if ( $error == 1 ){
+                    $reason = "#(user_error)";
+                }elseif ( $error == 2 ){
+                    $reason = "#(content_error)".implode("<br />",$arrError);
+                }
+                $loop_name = "impossible2delete";
+            }
 
-                // datei loeschen
-                if ( $ausgaben["form_error"] == "" ) {
+            $hidedata[$loop_name][0] = -1;
+            $dataloop[$loop_name][] = array(
+                "item" => $item,
+                "link" => $link,
+                "reason" => $reason,
+            );
 
-                    $id = $HTTP_POST_VARS["id1"];
+        }
 
-                    $sql = "SELECT ffart, fuid FROM site_file WHERE fid =".$id;
+        $ausgaben["output"] .= $ausgaben["reference"];
+
+        // funktions bereich fuer erweiterungen
+        // ***
+
+        ### put your code here ###
+
+        // +++
+        // funktions bereich fuer erweiterungen
+
+        // page basics
+        // ***
+
+        // fehlermeldungen
+        $ausgaben["form_error"] = "";
+
+        // navigation erstellen
+        $ausgaben["form_aktion"] = $cfg["basis"]."/delete.html";
+        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+
+        // hidden values
+        $ausgaben["form_hidden"] = "";
+        $ausgaben["form_delete"] = "true";
+
+        // was anzeigen
+        $mapping["main"] = crc32($environment["ebene"]).".delete";
+        #$mapping["navi"] = "leer";
+
+        // unzugaengliche #(marken) sichtbar machen
+        // ***
+        if ( isset($_GET["edit"]) ) {
+            $ausgaben["inaccessible"] = "inaccessible values:<br />";
+            $ausgaben["inaccessible"] .= "# (user_error) #(user_error)<br />";
+            $ausgaben["inaccessible"] .= "# (content_error) #(content_error)<br />";
+            $ausgaben["inaccessible"] .= "# (group_warning) #(group_warning)<br />";
+            $ausgaben["inaccessible"] .= "# (delete_error) #(delete_error)<br />";
+        } else {
+            $ausgaben["inaccessible"] = "";
+        }
+        // +++
+        // unzugaengliche #(marken) sichtbar machen
+
+        // wohin schicken
+        #n/a
+
+        // +++
+        // page basics
+
+
+        // das loeschen wurde bestaetigt, loeschen!
+        // ***
+        if ( $_POST["delete"] != ""
+            && $_POST["send"] != "" ) {
+
+            foreach ( $_SESSION["file_memo"] as $value ){
+
+                $error = del_check($value);
+
+                if ( $error == 0 || $error > 100 ){
+                    // feststellen ob es ein bild ist
+                    $sql = "SELECT ffart, fuid FROM site_file WHERE fid =".$value;
                     $result = $db -> query($sql);
-                    $data = $db -> fetch_array($result,$nop);
+                    $data = $db -> fetch_array($result,1);
 
                     $type = $cfg["filetyp"][$data["ffart"]];
                     if ( $type == "img" ) {
+
                         $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
-                        foreach ( $art as $key => $value ) {
-                            $return = unlink($cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$value."_".$id.".".$data["ffart"]);
+                        foreach ( $art as $key => $pre ) {
+                            $return = unlink($cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"]);
                             ### sollte evtl. anderst gelöst werden, existiert nur ein file nicht
                             ### laesst sich der datensatz nie löschen!
                             if ( $return != 1 ) {
-                                #$ausgaben["form_error"] = "error delete files";
+                                $ausgaben["form_error"] = "#(delete_error)";
                                 break;
                             }
                         }
                     } else {
-                        $return = unlink($cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.".".$data["ffart"]);
+                        $return = unlink($cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$value.".".$data["ffart"]);
                         if ( $return != "1" ) {
-                            $ausgaben["form_error"] = "error delete file";
+                            $ausgaben["form_error"] = "#(delete_error)";
                         }
                     }
-                    unset ($_SESSION["file_memo"][$id]);
+
+                    // datensatz loeschen
+                    if ( $ausgaben["form_error"] == "" ) {
+                        $sql = "DELETE FROM ".$cfg["db"]["file"]["entries"]."
+                                      WHERE ".$cfg["db"]["file"]["key"]."='".$value."';";
+                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                        $result  = $db -> query($sql);
+                        if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
+                    }
                 }
 
-                // datensatz loeschen
-                if ( $ausgaben["form_error"] == "" ) {
-                    $sql = "DELETE FROM ".$cfg["db"]["file"]["entries"]."
-                                  WHERE ".$cfg["db"]["file"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
-                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                    $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
-                }
-                // +++
-
-                // wohin schicken
-                if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/delete.html");
-                }
+                unset ($_SESSION["file_memo"][$value]);
             }
-            // +++
-            // das loeschen wurde bestaetigt, loeschen!
+
+            // wohin schicken
+            if ( $ausgaben["form_error"] == "" ) {
+                header("Location: ".$cfg["basis"]."/list.html");
+            }
         }
+        // +++
+        // das loeschen wurde bestaetigt, loeschen!
+
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }

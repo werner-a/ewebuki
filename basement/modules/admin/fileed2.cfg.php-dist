@@ -53,9 +53,10 @@
          #"function" => array("describe", "list", "note", "preview", "select"),
          "function" => array(
                      "list" => "", # array( "function_name" ),
+              "list,shared" => array("filelist"),
                       "add" => array( "thumbnail", "resize", "arrange" ),
                      "edit" => array( "resize", "arrange" ),
-                   "delete" => "",
+                   "delete" => array("del_check"),
                    "upload" => "",
                      #"used" => "",
                   "collect" => "",

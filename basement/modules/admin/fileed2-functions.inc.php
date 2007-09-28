@@ -221,6 +221,108 @@
         }
     }
 
+    // check, ob dateien geloescht werden duerfen
+    if ( in_array("del_check", $cfg["function"][$environment["kategorie"]]) ) {
+
+        // function del_check
+        // ------------------
+        //
+        //          Ueberprueft, ob eine Datei geloescht werden
+        //
+        // Parameter:
+        //
+        //     $id: ID der zu untersuchenden Datei
+        //
+        // Rueckgabewerte:
+        //
+        //       1: Datei gehoert nicht dem angemeldeten Benutzer
+        //       2: Datei wird in Content benutzt (inkl. $arrError mit den Links zu den Contentseiten)
+        //
+        //    101: Warnung, dass die Datei zu einer Bildergruppe gehoert
+        //
+
+        function del_check($id) {
+            global $db, $_SESSION, $cfg, $pathvars, $file, $arrError;
+
+            $sql = "SELECT *
+                      FROM ".$cfg["db"]["file"]["entries"]."
+                     WHERE ".$cfg["db"]["file"]["key"]."=".$id;
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+            $result = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
+
+            $arrError = array();
+            $error = 0;
+
+            // FALL 1: Fehler:nur eigene dateien duerfen geloescht werden
+            // -------
+            if ( $_SESSION["uid"] != $data["fuid"] ) {
+                $error = 1;
+            }
+
+            // FALL 2: Fehler:gibt es content, der diese datei einthaelt
+            // -------
+            $content_error = "";
+            $old = "\_".$data[$cfg["db"]["file"]["key"]].".";
+            $new = "/".$data[$cfg["db"]["file"]["key"]]."/";
+            $sql2 = "SELECT *
+                       FROM ".$cfg["db"]["content"]["entries"]."
+                      WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
+                         OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
+
+            /* multi-db-support */
+            if ( $cfg["db"]["multi"]["change"] == True ) {
+                $sql = "SELECT ".$cfg["db"]["multi"]["field"]."
+                          FROM ".$cfg["db"]["multi"]["entries"]."
+                         WHERE ".$cfg["db"]["multi"]["where"];
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (multi-db): ".$sql.$debugging["char"];
+                $result_db = $db -> query($sql);
+                while ( $data_db = $db -> fetch_array($result_db,1) ) {
+                    $db -> selectDb($data_db["addbase"],FALSE);
+
+                    $result2 = $db -> query($sql2);
+                    while ( $data2 = $db -> fetch_array($result2,1) ) {
+
+                        $ebene = $data2["ebene"]."/";
+                        $kategorie = $data2["kategorie"].".html";
+
+                        $url = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
+
+                        $label = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
+                        $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
+                    }
+
+                }
+                $db -> selectDb(DATABASE,FALSE);
+            }
+
+            $result2 = $db -> query($sql2);
+            $num_rows = $db -> num_rows($result2);
+            if ( $num_rows > 0 && $error == 0 ){
+                while ( $data2 = $db -> fetch_array($result2,1) ) {
+                    $ebene = $data2["ebene"]."/";
+                    $kategorie = $data2["kategorie"].".html";
+                    $url = str_replace($environment["fqdn"][0],"www",$pathvars["menuroot"]).$ebene.$kategorie;
+                    $label = $ebene.$kategorie;
+                    $arrError[] = "<a href=\"".$url."\">".$label."</a>";
+                }
+                $error = 2;
+            }
+
+            // FALL 3: Warnung - bild gehoert zu einer bildergruppe
+            if ( strstr($data["fhit"],"#p") && $error == 0 ){
+                preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
+                foreach ( $match[1] as $value ){
+                    $arrError[] = "<a href=\"".$cfg["basis"]."/delete/view,o,".$id.",".$value.".html\">Gruppe #".$value."</a>";
+                }
+                $error = 101;
+            }
+
+            return $error;
+        }
+    }
+
 
     ### platz fuer weitere funktionen ###
 
