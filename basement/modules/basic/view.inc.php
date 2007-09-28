@@ -73,7 +73,7 @@
         if ( $environment["parameter"][3] != "" ) {
             $sql = "SELECT *
                     FROM ".$cfg["db"]["entries"]."
-                    WHERE fhit like '#p".$environment["parameter"][3]."%'
+                    WHERE fhit like '%#p".$environment["parameter"][3]."%'
                 ORDER BY ".$cfg["db"]["order"];
         } else {
             $sql = "SELECT *
@@ -90,19 +90,46 @@
             $dataloop["leer"][$data["fid"]][0] = $data["fid"];
             $dataloop["leer"][$data["fid"]][1] = $data["fhit"];
 
-            $gesamt++;
+            if ( $environment["parameter"][3] != "" ) {
+                preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                $sort = $match[1];
+                // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
+                while ( is_array($dataloop["list"][$sort]) ){
+                    $sort++;
+                }
 
-            if ( $erste == "" ) $erste = $data["fid"];
+                if ( $data["fid"] == $fid ){
+                    $color = "#FFE2CF";
+                }else{
+                    $color = "none";
+                }
 
-            if ( $gefunden == True ) {
-                $nachher = $data["fid"];
-                $gefunden = False;
+                $dataloop["list"][$sort] = array(
+                       "id" => $data["fid"],
+                      "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
+                     "link" => $environment["ebene"]."/view,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html",
+                    "title" => $data["funder"],
+                       "bg" => $color,
+                );
+                $hidedata["list"][0] = "enable";
+
+                $arrSort[$data["fid"]] = $i;
+                $i++;
             }
 
+//             $gesamt++;
+//
+//             if ( $erste == "" ) $erste = $data["fid"];
+//
+//             if ( $gefunden == True ) {
+//                 $nachher = $data["fid"];
+//                 $gefunden = False;
+//             }
+
             if ( $data["fid"] == $fid ) {
-                $gefunden = True;
-                $vorher = $merker;
-                $aktuell = $gesamt;
+//                 $gefunden = True;
+//                 $vorher = $merker;
+//                 $aktuell = $gesamt;
                 $filename = $data["ffname"];
                 $filetyp = $data["ffart"];
                 $ausgaben["beschriftung"] = $data["funder"];
@@ -114,15 +141,40 @@
             #$marke = substr($data["fhit"],0,strpos($data["fhit"],"#",1));
             #$merke = str_replace( "#p".$environment["parameter"][3].",", "", $marke )."<br />";
         }
-        $letzte = $merker;
+//         $letzte = $merker;
         #$hidedata["leer"][0] = "enable";
 
-        // ueberlauf sicherstellen
-        if ( $fid == $erste ) {
-            $vorher = $letzte;
-        }
-        if ( $fid == $letzte ) {
-            $nachher = $erste;
+//         // ueberlauf sicherstellen
+//         if ( $fid == $erste ) {
+//             $vorher = $letzte;
+//         }
+//         if ( $fid == $letzte ) {
+//             $nachher = $erste;
+//         }
+
+        if ( $environment["parameter"][3] != "" ){
+            $i = 0;
+            ksort($dataloop["list"]);
+            foreach ( $dataloop["list"] as $value ){
+                $i++;
+                $arrSort[$i] = $value["id"];
+
+                if ( $value["id"] == $fid ) $aktuell = $i;
+            }
+            $gesamt = $i;
+
+            // ueberlauf sicherstellen
+            if ( $aktuell == 1 ){
+                $vorher = $arrSort[$gesamt];
+            }else{
+                $vorher = $arrSort[( $aktuell - 1 )];
+            }
+
+            if ( $aktuell == $gesamt ){
+                $nachher = $arrSort[1];
+            }else{
+                $nachher = $arrSort[( $aktuell + 1 )];
+            }
         }
 
         // navi links

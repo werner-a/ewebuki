@@ -109,7 +109,7 @@
                 "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
                "title" => $data["funder"],
                  "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
-                "link" => $cfg["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].".html",
+                "link" => $cfg["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].",".$environment["parameter"][1].".html",
                 "sort" => $sort,
             );
 
