@@ -262,7 +262,7 @@
 
             // vogelwilde regex die alte & neue file links findet
             // und viel arbeit erspart
-            preg_match_all("/[_\/]([0-9]+)[.\/]/",$ce_inhalt,$found);
+            preg_match_all("/[_\/]([0-9]+)[.\/]/",$form_values["content"],$found);
             $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
 
             // file memo auslesen und zuruecksetzen
