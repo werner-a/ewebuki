@@ -21,13 +21,7 @@
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <div class="clearer">&nbsp;</div>
-    <ul style="margin-left:20px;">
-        <!--##loop-list-->
-        <li><input type="text" value="!{sort}" name="sort[!{id}]" style="margin:0 1em 0 0;width:2em;" />!{item}</li>
-        <!--##cont-->
-    </ul>
     <fieldset>
-        <img src="!#ausgaben_thumbnail" alt="" style="float:right;" />
         <label style="clear:left;">#(ffhit)</label>
         <select name="all_groups">
             <option value="">Bereits gespeicherte Gruppen</option>
@@ -37,11 +31,20 @@
         </select>
         <label style="clear:left;">#(ffhit)</label>
         <input type="text" value="!#ausgaben_groupid" name="groupid" class="" />
-
-
-<!--        <label style="clear:left;">#(fdesc)
-            !#element_fdesc
-        </label>-->
+    </fieldset>
+    <fieldset class="float">
+        <ul style="margin-left:20px;">
+            <!--##loop-list-->
+            <li class="thumbs">
+                <a href="!{link}" class="pic"><img src="!{src}" alt="!{title}" title="!{title}" /></a>
+                <p>
+                    <input type="text" value="!{sort}" name="sort[!{id}]" style="width:2em;" />
+                </p>
+            </li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
+    <fieldset>
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />

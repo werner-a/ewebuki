@@ -107,6 +107,9 @@
             $dataloop["list"][$sort] = array(
                 "id"   => $data["fid"],
                 "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
+               "title" => $data["funder"],
+                 "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
+                "link" => $cfg["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].".html",
                 "sort" => $sort,
             );
 
