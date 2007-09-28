@@ -261,6 +261,16 @@ li.thumbs a.pic {
     cursor: default;
 }
 
+#cEd .butfil {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    padding: .5ex 1ex;
+    background-color: #eee;
+    text-decoration: none;
+    cursor: default;
+}
+
 #cEd .butoth {
     float: left;
     height: auto;

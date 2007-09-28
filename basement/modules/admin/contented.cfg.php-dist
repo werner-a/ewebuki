@@ -54,21 +54,34 @@
          "function" => array(
 //                       "add" => "",
                      "edit" => array("makece"),
+              "edit,shared" => array("filelist"),
+              #"edit,shared" => array("sha","klo"),
+              #"edit,global" => array("glo"),
 //                    "delete" => "",
 //                   "details" => "",
                        ),
+
                "db" => array(
                      "leer" => array(
                           "entries" => "db_leer",
                               "key" => "id",
                             "order" => "sort, label",
                             "rows"  => 4,
-                              ),
+                               ),
+                     "file" => array(
+                          "entries" => "site_file",
+                              "key" => "fid",
+                            "order" => "fid DESC",
+                             "rows" => "10",   # pro seite
+                             "line" => "5",    # pro zeile  (rows / line)
+                          "newline" => "<br clear=\"all\" />",
+                               ),
                        ),
+
             "right" => "cms_edit",
             #"tagjs" => "-141347382.modify.js-classic",
             "tagjs" => "-141347382.modify.js-nextgen",
-             "tags" => array( // position (T=top, B=bottom), access key, no select, links, rechts, disable
+             "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts
                               // block-elemente
                    "h1"     => array( "T", "1" ),
                    "h2"     => array( "T", "2" ),
@@ -79,17 +92,19 @@
                    "p"      => array( "T", "P" ),
                    "pre"    => array( "" ),
                    "div"    => array( "", "D", False, "=wert]" ),
-                   "list"   => array( "", "L", False, "=1|a][*]" ),
+                   "list"   => array( "", "L", False, "=1|a]", "\\n[*]" ),
                    "hr"     => array( "", "H", True ),
-                   "tab"    => array( "", "T", False, "][ROW][COL]", "[\/COL][\/ROW]" ),
-                   "row"    => array( "" ),
+                   "table"  => array( "", "T", False, "]\\n[ROW]\\n[COL]", "" ,"\\n[\/COL]\\n[\/ROW]\\n" ),
+                   "tab"    => array( "", "T" ),
+                   "row"    => array( "", "R" ),
                    "col"    => array( "", "C", True ),
                    "center" => array( "" ),
 
                    // inline-elemente - logisch
-                   "br"     => array( "", "R", True ),
-                   "img"    => array( "", "I", False, "=image.typ;l]" ),
-                   "link"   => array( "T", "L", False, "=http:\/\/]"),
+                   "br"     => array( "", "N", True ),
+                   "img"    => array( "", "I", False, "=", ";;0;b" ),
+//                    "img"    => array( "", "I", False, "B=", ";;0;b", "B" ),
+                   "link"   => array( "T", "L", False, "=http:\/\/]" ),
 
                    // inline-elemente - logische auszeichnugen
                    "em"     => array( "" ),
@@ -124,11 +139,50 @@
                    "prev"   => array( "B", "<", True ),
                    "next"   => array( "B", ">", True ),
                    "quote"  => array( "" ),
-                   "sp"     => array( "", "N", True ),
+                   "sp"     => array( "", "S", True ),
 
                    // deprecated (automatic don't work)
-                   "int"    => array( "", "", "", "", "-1" ),
+                   "int"    => array( "", "", "", "", "" ),
                        ),
+          "filetyp" => array( "gif" => "img",
+                              "jpg" => "img",
+                             "jpeg" => "img",
+                              "png" => "img",
+                              "pdf" => "pdf",
+                              "zip" => "arc",
+                              "bz2" => "arc",
+                               "gz" => "arc",
+                              "odt" => "odf",
+                              "ods" => "odf",
+                              "odp" => "odf",
+                       ),
+          "fileopt" => array(
+                      "img" => array(
+                             "name" => "img",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"],
+                           "tnpath" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                        "thumbnail" => "set"
+                               ),
+                      "pdf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "pdf_big.png"
+                              ),
+                      "arc" => array(
+                             "name" => "arc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "zip_icon.jpg"
+                               ),
+                      "odf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "odf_icon.png"
+                               ),
+                       ),
+
            );
 
     // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich

@@ -259,6 +259,44 @@
 
             $ausgaben["tn"] = makece("ceform", "content", $form_values["content"]);
 
+
+            // vogelwilde regex die alte & neue file links findet
+            // und viel arbeit erspart
+            preg_match_all("/[_\/]([0-9]+)[.\/]/",$ce_inhalt,$found);
+            $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
+
+            // file memo auslesen und zuruecksetzen
+            if ( is_array($_SESSION["file_memo"]) ) {
+                $array = array_merge($_SESSION["file_memo"],$found[1]);
+//                 unset($_SESSION["file_memo"]);
+            } else {
+                $array = $found[1];
+            }
+
+            // wenn es thumbnails gibt, anzeigen
+            if ( count($array) >= 1 ) {
+
+                $merken = $db -> getDb();
+                if ( $merken != DATABASE ) {
+                    $db -> selectDB( DATABASE ,"");
+                }
+
+                foreach ( $array as $value ) {
+                    if ( $where != "" ) $where .= " OR ";
+                    $where .= "fid = '".$value."'";
+                }
+                $sql = "SELECT * FROM site_file WHERE ".$where." ORDER BY ffname, funder";
+                $result = $db -> query($sql);
+
+
+                if ( $merken != DATABASE ) {
+                    $db -> selectDB($merken,"");
+                }
+
+                filelist($result);
+            }
+
+
             // template version
             $art = "";
         }

@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function filelist($result) {
-        global $db, $cfg, $dataloop, $pathvars;
+        global $db, $cfg, $defaults, $pathvars, $dataloop;
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
         $getvalues = "";
@@ -64,50 +64,66 @@
                 $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=".$cfg["iconpath"]."cms-cb0.png border=0></a>";
             }
 
-            // tabellen farben wechseln
+            // table color change
             if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
                 $cfg["color"]["set"] = $cfg["color"]["b"];
             } else {
                 $cfg["color"]["set"] = $cfg["color"]["a"];
             }
-            $dataloop["list"][$data["fid"]]["color"] = $cfg["color"]["set"];
 
-            $dataloop["list"][$data["fid"]]["ehref"] = "edit,".$data["fid"].".html";
-
+            // file art
             $type = $cfg["filetyp"][$data["ffart"]];
-            $dataloop["list"][$data["fid"]]["dhref"] = $pathvars["filebase"]["webdir"].
+
+            // link target
+            if ( $data["ffart"] == "pdf" ) {
+                $target = "_blank";
+            } else {
+                $target = "";
+            }
+
+            // new line?
+            $i++; $even = $i / $cfg["db"]["file"]["line"];
+            if ( is_int($even) ) {
+                $newline = $cfg["db"]["file"]["newline"];
+            } else {
+                $newline = "";
+            }
+
+            // onclick link start / end
+            $la = $cfg["tags"]["img"][3]
+                 .$pathvars["filebase"]["webdir"]
+                 .$data["ffart"]."/"
+                 .$data["fid"]."/";
+            //   "o/"
+            $lb = $data["ffname"]
+                 .$cfg["tags"]["img"][4];
+
+            $dataloop["list"][$data["fid"]] = array (
+                                            "color" => $cfg["color"]["set"],
+                                            "ehref" => "edit,".$data["fid"].".html",
+                                            "dhref" => $pathvars["filebase"]["webdir"].
                                                        $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].
                                                        $cfg["fileopt"][$type]["name"]."_".
-                                                       $data["fid"].".".$data["ffart"];
-            if ( $data["ffart"] == "pdf" ) {
-                $dataloop["list"][$data["fid"]]["dtarget"] = "_blank";
-            } else {
-                $dataloop["list"][$data["fid"]]["dtarget"] = "";
-            }
-
-
-            $dataloop["list"][$data["fid"]]["src"] = $pathvars["filebase"]["webdir"].
-                                                     $pathvars["filebase"]["pic"]["root"].
-                                                     $pathvars["filebase"]["pic"]["tn"]."tn_".
-                                                     $data["fid"].".".$data["ffart"];
-
-            $dataloop["list"][$data["fid"]]["alt"] = $data["ffname"];
-            $dataloop["list"][$data["fid"]]["title"] = $data["ffname"];
-
-            $dataloop["list"][$data["fid"]]["cb"] = $cb;
-
-            $dataloop["list"][$data["fid"]]["ohref"] = "list/view,o,".$data["fid"].".html";
-            $dataloop["list"][$data["fid"]]["bhref"] = "list/view,b,".$data["fid"].".html";
-            $dataloop["list"][$data["fid"]]["mhref"] = "list/view,m,".$data["fid"].".html";
-            $dataloop["list"][$data["fid"]]["shref"] = "list/view,s,".$data["fid"].".html";
-
-            $i++;
-            $even = $i / $cfg["db"]["file"]["line"];
-            if ( is_int($even) ) {
-                $dataloop["list"][$data["fid"]]["newline"] = $cfg["db"]["file"]["newline"];
-            } else {
-                $dataloop["list"][$data["fid"]]["newline"] = "";
-            }
+                                                       $data["fid"].".".$data["ffart"],
+                                              "src" => $pathvars["filebase"]["webdir"].
+                                                       $pathvars["filebase"]["pic"]["root"].
+                                                       $pathvars["filebase"]["pic"]["tn"]."tn_".
+                                                       $data["fid"].".".$data["ffart"],
+                                          "dtarget" => $target,
+                                              "alt" => $data["ffname"],
+                                            "title" => $data["ffname"],
+                                               "cb" => $cb,
+                                            "ohref" => "list/view,o,".$data["fid"].".html",
+                                            "bhref" => "list/view,b,".$data["fid"].".html",
+                                            "mhref" => "list/view,m,".$data["fid"].".html",
+                                            "shref" => "list/view,s,".$data["fid"].".html",
+                                                       // new: ebInsertImage(ebCanvas);
+                                           "oclick" => "ebInsertImage(ebCanvas, '', '".$la."o/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
+                                           "bclick" => "ebInsertImage(ebCanvas, '', '".$la."b/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
+                                           "mclick" => "ebInsertImage(ebCanvas, '', '".$la."m/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
+                                           "sclick" => "ebInsertImage(ebCanvas, '', '".$la."s/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
+                                          "newline" => $newline,
+                                              );
         }
     }
 

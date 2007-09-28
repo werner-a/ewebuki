@@ -24,14 +24,15 @@
 
     <fieldset class="ce">
 
-        <div style="float:left"><script type="text/javascript">ebToolbar('top');</script></div>
+        <div style="float:left"><script type="text/javascript">ebToolbar('T');</script></div>
 
         <a class="infobox" href="#INFO">INFO
         <span>
             !#ausgaben_ce_tem_db<br />
             !#ausgaben_ce_tem_name<br />
             !#ausgaben_ce_tem_label<br />
-            !#ausgaben_ce_tem_lang
+            !#ausgaben_ce_tem_lang<br />
+            !#ausgaben_lock
         </span>
         </a>
 
@@ -39,8 +40,24 @@
         <textarea id="content" name="!#ausgaben_name" cols="80" rows="15" title="!#ausgaben_lock" class="!#ausgaben_class" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
 <!--         <p>!#ausgaben_ce_bottom_button</p> -->
 
-        <div style="float:left"><script type="text/javascript">ebToolbar('bot');</script></div>
+        <div style="float:left"><script type="text/javascript">ebToolbar('B');</script></div>
         <p style="float:right" id="characters">#(charakters)</p>
+
+        <div class="clearer">&nbsp;</div>
+
+        <ul>
+        <!--##loop-list-->
+            <li class="thumbs">
+                <p>
+                    <input type="button" id="eb_imgo" value="O" title="Einfügen Original (original)" onclick="!{oclick}" class="butfil" />
+                    <input type="button" id="eb_imgs" value="B" title="Einfügen Gross (big)" onclick="!{bclick}" class="butfil" />
+                    <input type="button" id="eb_imgm" value="M" title="Einfügen Mittel (middle)" onclick="!{mclick}" class="butfil" />
+                    <input type="button" id="eb_imgb" value="S" title="Einfügen Klein (small)" onclick="!{sclick}" class="butfil" />
+                </p>
+                <img src="!{src}" !{size} alt="!{alt}" title="!{title} g(edit)" onclick="!{oclick}" />
+            </li>
+        <!--##cont-->
+        </ul>
 
         <script type="text/javascript" language="JavaScript">
             <!--
@@ -49,12 +66,12 @@
             //-->
         </script>
 
+<!--         <p>!#ausgaben_tn</p> -->
+
         <div class="clearer">&nbsp;</div>
 
-        <p>!#ausgaben_tn</p>
-
-        !#ausgaben_ce_upload
-        !#ausgaben_ce_dropdown
+<!--         !#ausgaben_ce_upload -->
+<!--         !#ausgaben_ce_dropdown -->
 
         <input type="hidden" name="html" value="!#ausgaben_form_hidden" class="hidden" />
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />

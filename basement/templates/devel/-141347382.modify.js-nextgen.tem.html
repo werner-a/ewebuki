@@ -31,18 +31,18 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
     var ebLinks = new Array();
     var ebOpenTags = new Array();
 
-    function ebButton(id, key, tit, position, access, noSelect, tagStart, tagEnd, disable) {
+    function ebButton(id, key, tit, position, access, noSelect, tagStart, tagMid, tagEnd) {
         // position (T=top, B=bottom), access key, no select, links, rechts, disable
-        this.id = id;               // used to name the toolbar button
-        this.key = key;             // label on button
-        this.tit = tit;             // button title
-        this.position = position;   // position (top, bot)
-        this.access = access;       // access key
-        this.noSelect = noSelect;   //
-        this.tagStart = tagStart;   // open tag
-        this.tagEnd = tagEnd;       // close tag
-        this.disable = disable;     // disable
-//         this.open = open;        // set to -1 if tag does not need to be closed
+        this.id = id;                   // used to name the toolbar button
+        this.key = key;                 // label on button
+        this.tit = tit;                 // button title
+        this.position = position;       // position (top, bot)
+        this.access = access;           // access key
+        this.noSelect = noSelect;       //
+        this.tagStart = tagStart;       // open tag
+        this.tagMid = tagMid;           // mid tag
+        this.tagEnd = tagEnd;           // close tag
+//         this.open = open;            // set to -1 if tag does not need to be closed
     }
 
 !#ausgaben_njs
@@ -60,7 +60,6 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
             } else if (button.id == 'eb_link') {
                 document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertLink(ebCanvas, ' + i + ');" value="' + button.key + '" />');
             } else {
-//                 document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertTak(ebCanvas, ' + i + ');" value="' + button.key + '"  />');
                 document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertTak(ebCanvas, ' + i + ');" value="' + button.key + '"  />');
             }
         }
@@ -104,15 +103,14 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
     }
 
     function ebToolbar(position) {
-
         document.write('<div>');
         for (var i = 0; i < ebButtons.length; i++) {
             ebShowButton(ebButtons[i], i, position);
         }
-        if ( position == 'top' ) {
+        if ( position == 'T' ) {
             document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="#(add)" class="buttag"/>');
         }
-        if ( position == 'bot' ) {
+        if ( position == 'B' ) {
             document.write('<input type="button" id="eb_close" value="X" title="Schliesse alle Tags" onclick="ebCloseAllTags();" class="buttag" />');
         }
         document.write('</div>');
@@ -141,10 +139,10 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
             myField.focus();
                 sel = document.selection.createRange();
             if (sel.text.length > 0) {
-                sel.text = ebButtons[i].tagStart + sel.text + ebButtons[i].tagEnd;
+                sel.text = ebButtons[i].tagStart + sel.text + ebButtons[i].tagMid + ebButtons[i].tagEnd;
             } else {
                 if (!ebCheckOpenTags(i) || ebButtons[i].tagEnd == '') {
-                    sel.text = ebButtons[i].tagStart;
+                    sel.text = ebButtons[i].tagStart + ebButtons[i].tagMid;
                     ebAddTak(i);
                 } else {
                     sel.text = ebButtons[i].tagEnd;
@@ -170,14 +168,20 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
                 myField.value = myField.value.substring(0, startPos)
                                             + ebButtons[i].tagStart
                                             + myField.value.substring(startPos, endPos)
+                                            + ebButtons[i].tagMid
                                             + ebButtons[i].tagEnd
                                             + myField.value.substring(endPos, myField.value.length);
-                cursorPos += ebButtons[i].tagStart.length + ebButtons[i].tagEnd.length;
+                if ( ebButtons[i].tagMid == '') {
+                    cursorPos += ebButtons[i].tagStart.length + ebButtons[i].tagEnd.length;
+                } else {
+                    cursorPos += ebButtons[i].tagStart.length + ebButtons[i].tagMid.length;
+                }
             } else {
                 if (!ebCheckOpenTags(i) || ebButtons[i].tagEnd == '') {
                     myField.value = myField.value.substring(0, startPos)
                                                 + ebButtons[i].tagStart
-                                                + myField.value.substring(endPos, myField.value.length);
+                                                + myField.value.substring(endPos, myField.value.length)
+                                                + ebButtons[i].tagMid;
                     ebAddTak(i);
                     cursorPos = startPos + ebButtons[i].tagStart.length;
                 } else {
@@ -259,8 +263,23 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         }
     }
 
-    function ebInsertImage(myField) {
-        var myValue = prompt('URL:', 'http://');
+    function ebInsertImage(myField, i, defaultLink, defaultTitle, defaultEnd) {
+        if (!defaultLink) {
+            defaultValue = 'http://';
+        }
+        if (!defaultEnd) {
+            var defaultEnd = '';
+        }
+        var myValue = prompt('URL:', defaultLink);
+        if (myValue) {
+            myValue = '[IMG'
+                    + myValue
+                    + ']' + prompt('Titel:', defaultTitle)
+                    + '[/IMG' + defaultEnd + ']';
+            ebInsertContent(myField, myValue);
+        }
+
+/*        var myValue = prompt('URL:', 'http://');
         if (myValue) {
             myValue = '<img src="'
                     + myValue
@@ -268,7 +287,7 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
                     + '" title="' + prompt('Titel:', '')
                     + '" />';
             ebInsertContent(myField, myValue);
-        }
+        }*/
     }
     //]]>
 

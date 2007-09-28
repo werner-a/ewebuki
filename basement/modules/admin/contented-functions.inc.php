@@ -69,7 +69,7 @@
             // file memo auslesen und zuruecksetzen
             if ( is_array($_SESSION["file_memo"]) ) {
                 $array = array_merge($_SESSION["file_memo"],$found[1]);
-                unset($_SESSION["file_memo"]);
+//                 unset($_SESSION["file_memo"]);
             } else {
                 $array = $found[1];
             }
@@ -226,33 +226,34 @@
 
 
 
-                if ( $value[0] == "T" ) {
-                    $position = "top";
-                } elseif ( $value[0] == "B" ) {
-                    $position = "bot";
-                } else {
-                    $position = "na";
-                }
+                if ( $value[0] == "" ) $value[0] = "T";
 
-//              ebButtons[ebButtons.length] = new ebButton(
-//                  'eb_h1','H1','[H1]','[/H1]','1','Überschrift [Alt-1]','top'
-//              );
-
-//              position (T=top, B=bottom), access key, no select, links, rechts, disable
+                // position (T=top, B=bottom), access key, no select, links, rechts, disable
+                //                                                     ebButtons[ebButtons.length] = new ebButton(
+                // id           used to name the toolbar button           'eb_h1'
+                // key          label on button                          ,'H1'
+                // tit          button title                             ,'Überschrift [Alt-1]'
+                // position     position (top, bot)                      ,'T'
+                // access       access key                               ,'1'
+                // noSelect                                              ,'-1'
+                // tagStart     open tag                                 ,'[H1]'
+                // tagMid       mid tag                                  ,''
+                // tagEnd       close tag                                ,'[/H1]'
+                //                                                     );
 
                 $ausgaben["njs"] .= "ebButtons[ebButtons.length] = new ebButton(\n";
-
-                $ausgaben["njs"] .= "'eb_".$key."','".strtoupper($key)."','".strtoupper($key)." [KEY-".$value[1]."]','".$position."','".$value[1]."','noSelect','[".strtoupper($key)."]','[/".strtoupper($key)."]','".$value[5]."'\n";
-//                 $ausgaben["njs"] .= "'eb_".$key."','".strtoupper($key)."','[".strtoupper($key)."]','[/".strtoupper($key)."]','".$value[1]."','Überschrift [KEY-".$value[1]."]','".$position."'\n";
-//                 $ausgaben["njs"] .= "'eb_".$key."','".strtoupper($key)."','Überschrift [KEY-".$value[1]."]','".$position."','".$value[1]."','noSelect', '[".strtoupper($key)."]','[/".strtoupper($key)."]'\n";
-
-
+                $ausgaben["njs"] .= "'eb_".$key."'
+                                    ,'".strtoupper($key)."'
+                                    ,'".strtoupper($key)." [KEY-".$value[1]."]'
+                                    ,'".$value[0]."'
+                                    ,'".$value[1]."'
+                                    ,'noSelect'
+                                    ,'[".strtoupper($key).$l."'
+                                    ,'".$value[4]."'
+                                    ,'".$value[5]."[/".strtoupper($key)."]'\n";
                 $ausgaben["njs"] .= ");\n";
 
 
-
-
-//                                      'Überschrift [KEY-".$value[1]."]',
 
                 // buttons bauen
                 if ( $value[0] == "T" ) {
