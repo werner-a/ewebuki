@@ -63,15 +63,16 @@
         // page basics
         // ***
 
-        if ( count($_POST) == 0 ) {
-            $sql = "SELECT *
-                      FROM ".$cfg["db"]["file"]["entries"]."
-                     WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
-            $form_values = $db -> fetch_array($result,1);
-        } else {
-            $form_values = $_POST;
+        $sql = "SELECT *
+                  FROM ".$cfg["db"]["file"]["entries"]."
+                  JOIN ".$cfg["db"]["user"]["entries"]."
+                    ON (".$cfg["db"]["file"]["user"]."=".$cfg["db"]["user"]["key"].")
+                 WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        $form_values = $db -> fetch_array($result,1);
+        if ( count($_POST) != 0 ) {
+            $form_values = array_merge($form_values,$_POST);
             $form_values["ffart"] = strtolower(substr(strrchr($form_values["ffname"],"."),1));
         }
 
@@ -81,8 +82,11 @@
         // form elememte bauen
         $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
 
-        // form elemente erweitern
+        // fehlermeldungen
+        $ausgaben["form_error"] = "";
 
+        // form elemente erweitern
+        // link zum thumbnail wird gebaut
         $type = $cfg["filetyp"][$form_values["ffart"]];
         if ( $type == "img" ) {
             $path = $cfg["fileopt"][$type]["path"]."original/";
@@ -94,16 +98,22 @@
         $ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$path.$filename."&size=280";
 
 
-        if ( $_SESSION["uid"] == $form_values["fuid"] || !in_array( $environment["kategorie"], $cfg["restrict"]) ) { # nur eigene dateien duerfen ersetzt werden
-            $ausgaben["form_error"] = "";
+        if ( $_SESSION["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
             $hidedata["upload"][0] = -1;
+            $owner_error = "";
         } else {
-            $ausgaben["form_error"] = "#(error_edit)";
-            $element["fdesc"] = str_replace(">"," readonly>",$element["fdesc"]);
-            $element["fhit"] = str_replace(">"," readonly>",$element["fhit"]);
-            $element["funder"] = str_replace(">"," readonly>",$element["funder"]);
+            $owner_error = "#(error_edit)";
+            $element["fdesc"] = str_replace(">"," readonly=\"true\">",$element["fdesc"]);
+            $element["fhit"] = str_replace(">"," readonly=\"true\">",$element["fhit"]);
+            $element["funder"] = str_replace(">"," readonly=\"true\">",$element["funder"]);
         }
 
+        // besitzer feststellen
+        $hidedata["owner"] = array(
+             "name" => $form_values[$cfg["db"]["user"]["forename"]]." ".$form_values[$cfg["db"]["user"]["surname"]],
+            "email" => $form_values[$cfg["db"]["user"]["email"]],
+            "error" => $owner_error,
+        );
 
         // wo im content wird die datei verwendet
         if ( content_check($environment["parameter"][1]) == True && $error == 0 ){
@@ -111,12 +121,6 @@
         }else{
             $ausgaben["reference"] = "---";
         }
-
-
-        #$sql = 'INSERT INTO `db_adrd` (`id`, `addbase`) VALUES (NULL, \'develop\');';
-        #for ( $i = 1; $i <= 512; $i++ ) {
-        #    $result = $db -> query($sql);
-        #}
 
         // +++
         // page basics
@@ -173,51 +177,53 @@
             form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
+            if ( $ausgaben["form_error"] == ""   ) {
 
-                // funktions bereich fuer erweiterungen
-                // ***
+                if ( $owner_error == "" ){
 
-                // file ersetzen
-                if ( $_FILES["upload"]["name"] != "" ) {
-                    $file = file_verarbeitung($pathvars["filebase"]["new"], "upload", $cfg["filesize"], array( $form_values["ffart"] ), $pathvars["filebase"]["maindir"]);
-                    if ( $file["returncode"] == 0 ) {
-                        $file_id = $form_values["fid"];
-                        $source = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"];
-                        arrange( $file_id, $source, $file["name"] );
-                    } else {
-                        $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ".file_error($file["returncode"]);
+                    // funktions bereich fuer erweiterungen
+                    // ***
+
+                    // file ersetzen
+                    if ( $_FILES["upload"]["name"] != "" ) {
+                        $file = file_verarbeitung($pathvars["filebase"]["new"], "upload", $cfg["filesize"], array( $form_values["ffart"] ), $pathvars["filebase"]["maindir"]);
+                        if ( $file["returncode"] == 0 ) {
+                            $file_id = $form_values["fid"];
+                            $source = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"];
+                            arrange( $file_id, $source, $file["name"] );
+                        } else {
+                            $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ".file_error($file["returncode"]);
+                        }
                     }
-                }
 
-                ### put your code here ###
+                    ### put your code here ###
 
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                // +++
-                // funktions bereich fuer erweiterungen
-            }
+                    if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                    // +++
+                    // funktions bereich fuer erweiterungen
 
-            // datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
-
-                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y" );
-                foreach($_POST as $name => $value) {
-                    if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
-                        if ( $sqla != "" ) $sqla .= ", ";
-                        $sqla .= $name."='".$value."'";
+                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y" );
+                    foreach($_POST as $name => $value) {
+                        if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
+                            if ( $sqla != "" ) $sqla .= ", ";
+                            $sqla .= $name."='".$value."'";
+                        }
                     }
+
+                    // Sql um spezielle Felder erweitern
+                    #$ldate = $_POST["ldate"];
+                    #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
+                    #$sqla .= ", ldate='".$ldate."'";
+
+                    $sql = "update ".$cfg["db"]["file"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                    $result  = $db -> query($sql);
+                    if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                    if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
+
+                }else{
+                    if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
                 }
-
-                // Sql um spezielle Felder erweitern
-                #$ldate = $_POST["ldate"];
-                #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
-                #$sqla .= ", ldate='".$ldate."'";
-
-                $sql = "update ".$cfg["db"]["file"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                $result  = $db -> query($sql);
-                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
 
                 unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
             }
