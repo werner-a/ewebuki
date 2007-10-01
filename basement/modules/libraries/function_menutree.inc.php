@@ -78,59 +78,62 @@
         $count = $db->num_rows($result);
         $zaehler++;
         while ( $array = $db -> fetch_array($result,1) ) {
+            if ( $art != "" ) {
+                // wenn punkt nicht im array dann nicht anzeigen !
+                if ( $refid != 0 && !in_array($refid,$positionArray) ) {
+                    continue;
+                } else {
+                    // schauen ob unterpunkte vorhanden !
+                    $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
+                    $result_in  = $db -> query($sql);
+                    $count_in = $db->num_rows($result_in);
+                }
 
-            // wenn punkt nicht im array dann nicht anzeigen !
-            if ( $refid != 0 && !in_array($refid,$positionArray) ) {
-                continue;
-            } else {
-                // schauen ob unterpunkte vorhanden !
-                $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
-                $result_in  = $db -> query($sql);
-                $count_in = $db->num_rows($result_in);
+                // sind unterpunkte vorhanden + einblenden
+                if  ( $count_in > 0 ) {
+                    $plus = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
+                } else {
+                    $plus = "";
+                }
             }
-
-            // sind unterpunkte vorhanden + einblenden
-            if  ( $count_in > 0 ) {
-                $plus = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
-            } else {
-                $plus = "";
-            }
-
             $buffer["pfad"] .= "/".$array["entry"];
-            $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
-            $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
-
-            if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
-                $right = -1;
-            } else {
-                $right = "";
-            }
-
-            if ( $right == -1 ) {
-                // schaltflaechen erstellen
-                $aktion = "";
-                if ( is_array($modify) ) {
-                    foreach($modify as $name => $value) {
-                        if ( $name == "up" || $name == "down" ) {
-                            if ( $array["refid"] == 0 ) {
-                                $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
-                                $ankerlnk = "#".$array["mid"];
+            if ( $art != "" ) {
+                $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
+                $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
+    
+                if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
+                    $right = -1;
+                } else {
+                    $right = "";
+                }
+    
+                if ( $right == -1 ) {
+                    // schaltflaechen erstellen
+                    $aktion = "";
+                    if ( is_array($modify) ) {
+                        foreach($modify as $name => $value) {
+                            if ( $name == "up" || $name == "down" ) {
+                                if ( $array["refid"] == 0 ) {
+                                    $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
+                                    $ankerlnk = "#".$array["mid"];
+                                } else {
+                                    #$anker   = "#".$ankerid;
+                                    $ankerpos = "";
+                                    $ankerlnk = "#".$ast[1];
+                                }
                             } else {
-                                #$anker   = "#".$ankerid;
-                                $ankerpos = "";
-                                $ankerlnk = "#".$ast[1];
+                                $ankerlnk = "";
                             }
-                        } else {
-                            $ankerlnk = "";
-                        }
-                        if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
-                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
-                        } else {
-                            $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
+                            if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
+                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            } else {
+                                $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
+                            }
                         }
                     }
                 }
             }
+
             // hauptpunkt fett
             if ( $refid == 0 ) $array["label"] = "<b>".$array["label"]."</b>";
 
