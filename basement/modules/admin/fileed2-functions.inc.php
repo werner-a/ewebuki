@@ -222,7 +222,80 @@
     }
 
     // check, ob dateien geloescht werden duerfen
-    if ( in_array("del_check", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("file_check", $cfg["function"][$environment["kategorie"]]) ) {
+
+        // function content_check
+        // ------------------
+        //
+        //          Ueberprueft, ob content mit dieser Datei vorhanden ist
+        //
+        // Parameter:
+        //
+        //     $id: ID der zu untersuchenden Datei
+        //
+        // Rueckgabewerte:
+        //
+        //       True: Content vorhanden
+        //             $arrError: Links zu den entsprechenden Seiten
+        //      False: kein Content vorhanden
+        //
+
+        function content_check($id) {
+            global $db, $_SESSION, $cfg, $pathvars, $file, $arrError;
+
+            $content_error = "";
+            $old = "\_".$id.".";
+            $new = "/".$id."/";
+            $sql2 = "SELECT *
+                       FROM ".$cfg["db"]["content"]["entries"]."
+                      WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
+                         OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
+
+            /* multi-db-support */
+            if ( $cfg["db"]["multi"]["change"] == True ) {
+                $sql = "SELECT ".$cfg["db"]["multi"]["field"]."
+                          FROM ".$cfg["db"]["multi"]["entries"]."
+                         WHERE ".$cfg["db"]["multi"]["where"];
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (multi-db): ".$sql.$debugging["char"];
+                $result_db = $db -> query($sql);
+                while ( $data_db = $db -> fetch_array($result_db,1) ) {
+                    $db -> selectDb($data_db["addbase"],FALSE);
+
+                    $result2 = $db -> query($sql2);
+                    while ( $data2 = $db -> fetch_array($result2,1) ) {
+
+                        $ebene = $data2["ebene"]."/";
+                        $kategorie = $data2["kategorie"].".html";
+
+                        $url = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
+
+                        $label = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
+                        $arrError[] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
+                    }
+
+                }
+                $db -> selectDb(DATABASE,FALSE);
+            }
+
+            $result2 = $db -> query($sql2);
+            $num_rows = $db -> num_rows($result2);
+            if ( $num_rows > 0 && $error == 0 ){
+                while ( $data2 = $db -> fetch_array($result2,1) ) {
+                    $ebene = $data2["ebene"]."/";
+                    $kategorie = $data2["kategorie"].".html";
+                    $url = str_replace($environment["fqdn"][0],"www",$pathvars["menuroot"]).$ebene.$kategorie;
+                    $label = $ebene.$kategorie;
+                    $arrError[] = "<a href=\"".$url."\">".$label."</a>";
+                }
+            }
+
+            if ( count($arrError) > 0 ){
+                return True;
+            }else{
+                return False;
+            }
+        }
 
         // function del_check
         // ------------------
@@ -262,51 +335,7 @@
 
             // FALL 2: Fehler:gibt es content, der diese datei einthaelt
             // -------
-            $content_error = "";
-            $old = "\_".$data[$cfg["db"]["file"]["key"]].".";
-            $new = "/".$data[$cfg["db"]["file"]["key"]]."/";
-            $sql2 = "SELECT *
-                       FROM ".$cfg["db"]["content"]["entries"]."
-                      WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
-                         OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
-
-            /* multi-db-support */
-            if ( $cfg["db"]["multi"]["change"] == True ) {
-                $sql = "SELECT ".$cfg["db"]["multi"]["field"]."
-                          FROM ".$cfg["db"]["multi"]["entries"]."
-                         WHERE ".$cfg["db"]["multi"]["where"];
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (multi-db): ".$sql.$debugging["char"];
-                $result_db = $db -> query($sql);
-                while ( $data_db = $db -> fetch_array($result_db,1) ) {
-                    $db -> selectDb($data_db["addbase"],FALSE);
-
-                    $result2 = $db -> query($sql2);
-                    while ( $data2 = $db -> fetch_array($result2,1) ) {
-
-                        $ebene = $data2["ebene"]."/";
-                        $kategorie = $data2["kategorie"].".html";
-
-                        $url = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
-
-                        $label = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
-                        $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
-                    }
-
-                }
-                $db -> selectDb(DATABASE,FALSE);
-            }
-
-            $result2 = $db -> query($sql2);
-            $num_rows = $db -> num_rows($result2);
-            if ( $num_rows > 0 && $error == 0 ){
-                while ( $data2 = $db -> fetch_array($result2,1) ) {
-                    $ebene = $data2["ebene"]."/";
-                    $kategorie = $data2["kategorie"].".html";
-                    $url = str_replace($environment["fqdn"][0],"www",$pathvars["menuroot"]).$ebene.$kategorie;
-                    $label = $ebene.$kategorie;
-                    $arrError[] = "<a href=\"".$url."\">".$label."</a>";
-                }
+            if ( content_check($id) == True && $error == 0 ){
                 $error = 2;
             }
 

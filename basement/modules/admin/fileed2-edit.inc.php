@@ -110,56 +110,11 @@
 
 
         // wo im content wird die datei verwendet
-        $old = "\_".$environment["parameter"][1].".";
-        $new = "/".$environment["parameter"][1]."/";
-        #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
-        $sql2 = "SELECT *
-                   FROM ".$cfg["db"]["content"]["entries"]."
-                  WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
-                     OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-
-        if ( $cfg["db"]["multi"]["change"] == True ) {
-            $sql = "SELECT ".$cfg["db"]["multi"]["field"]."
-                      FROM ".$cfg["db"]["multi"]["entries"]."
-                     WHERE ".$cfg["db"]["multi"]["where"];
-            $result = $db -> query($sql);
-            while ( $data = $db -> fetch_array($result,$nop) ) {
-                $db -> selectDb($data["addbase"],FALSE);
-
-                $result2 = $db -> query($sql2);
-                while ( $data2 = $db -> fetch_array($result2,$nop) ) {
-                    #if ( $ids != "" ) $ids .= ",";
-
-                    $ebene = $data2["ebene"]."/";
-                    $kategorie = $data2["kategorie"].".html";
-
-                    $url = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
-
-                    $label = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
-                    $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
-                }
-
-            }
-            $db -> selectDb(DATABASE,FALSE);
+        if ( content_check($environment["parameter"][1]) == True && $error == 0 ){
+            $ausgaben["reference"] = implode("<br />",$arrError);
+        }else{
+            $ausgaben["reference"] = "---";
         }
-
-        $result2 = $db -> query($sql2);
-        while ( $data2 = $db -> fetch_array($result2,$nop) ) {
-            #if ( $ids != "" ) $ids .= ",";
-
-            $ebene = $data2["ebene"]."/";
-            $kategorie = $data2["kategorie"].".html";
-
-            #$url = $pathvars["menuroot"].$ebene.$kategorie;
-            $url = str_replace($environment["fqdn"][0],"www",$pathvars["menuroot"]).$ebene.$kategorie;
-
-
-            $label = $ebene.$kategorie;
-            $ausgaben["reference"] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
-        }
-
-        if ( $ausgaben["reference"] == "" ) $ausgaben["reference"] = "---";
 
 
         #$sql = 'INSERT INTO `db_adrd` (`id`, `addbase`) VALUES (NULL, \'develop\');';
