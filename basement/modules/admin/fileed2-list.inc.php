@@ -69,8 +69,8 @@
         $_SESSION["fileed_filter0"] = $_SESSION["fileed_filter0"] + 0;
         $_SESSION["fileed_filter1"] = $_SESSION["fileed_filter1"] + 0;
         foreach( $cfg["filter"] as $set => $data ) {
-            if ( $HTTP_GET_VARS["filter".$set] != "" ) {
-                $_SESSION["fileed_filter".$set] = $HTTP_GET_VARS["filter".$set];
+            if ( $_GET["filter".$set] != "" ) {
+                $_SESSION["fileed_filter".$set] = $_GET["filter".$set];
             }
             $dataloop["filter".$set][$_SESSION["fileed_filter".$set]]["select"] =  " selected";
             foreach ( $data as $key => $value ) {
@@ -114,10 +114,10 @@
         $part = array();
 
         // suche verarbeiten
-        if ( isset($HTTP_GET_VARS["search"]) ) {
+        if ( isset($_GET["search"]) ) {
             $_SESSION["fileed_position"] = 0;
-            $_SESSION["fileed_search"] = $HTTP_GET_VARS["search"];
-        } elseif ( isset($HTTP_GET_VARS["search"]) && $HTTP_GET_VARS["search"] == "" ) {
+            $_SESSION["fileed_search"] = $_GET["search"];
+        } elseif ( isset($_GET["search"]) && $_GET["search"] == "" ) {
             unset($_SESSION["fileed_search"]);
         }
         if ( $_SESSION["fileed_search"] ) {
@@ -240,8 +240,8 @@
         // ***
 
         // fehlermeldungen
-        if ( $HTTP_GET_VARS["error"] != "" ) {
-            if ( $HTTP_GET_VARS["error"] == 1 ) {
+        if ( $_GET["error"] != "" ) {
+            if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             } else {
                 $ausgaben["form_error"] = "#(error2)";
@@ -262,7 +262,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
             $ausgaben["inaccessible"] .= "# (error2) #(error2)<br />";
