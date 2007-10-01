@@ -55,7 +55,7 @@
         if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $specialvars["editlock"] = 0;
         } else {
             $specialvars["editlock"] = -1;
@@ -83,9 +83,6 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
 
-
-
-        $erste = "";
         while ( $data = $db -> fetch_array($result,1) ) {
             $dataloop["leer"][$data["fid"]][0] = $data["fid"];
             $dataloop["leer"][$data["fid"]][1] = $data["fhit"];
@@ -99,7 +96,7 @@
                 }
 
                 if ( $data["fid"] == $fid ){
-                    $color = "#FFE2CF";
+                    $color = $cfg["color"]["selected"];
                 }else{
                     $color = "none";
                 }
@@ -117,19 +114,7 @@
                 $i++;
             }
 
-//             $gesamt++;
-//
-//             if ( $erste == "" ) $erste = $data["fid"];
-//
-//             if ( $gefunden == True ) {
-//                 $nachher = $data["fid"];
-//                 $gefunden = False;
-//             }
-
             if ( $data["fid"] == $fid ) {
-//                 $gefunden = True;
-//                 $vorher = $merker;
-//                 $aktuell = $gesamt;
                 $filename = $data["ffname"];
                 $filetyp = $data["ffart"];
                 $ausgaben["beschriftung"] = $data["funder"];
@@ -143,14 +128,6 @@
         }
 //         $letzte = $merker;
         #$hidedata["leer"][0] = "enable";
-
-//         // ueberlauf sicherstellen
-//         if ( $fid == $erste ) {
-//             $vorher = $letzte;
-//         }
-//         if ( $fid == $letzte ) {
-//             $nachher = $erste;
-//         }
 
         if ( $environment["parameter"][3] != "" ){
             $i = 0;
@@ -212,8 +189,8 @@
         // ***
 
         // fehlermeldungen
-        if ( $HTTP_GET_VARS["error"] != "" ) {
-            if ( $HTTP_GET_VARS["error"] == 1 ) {
+        if ( $_GET["error"] != "" ) {
+            if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
         } else {
@@ -233,7 +210,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
         } else {
