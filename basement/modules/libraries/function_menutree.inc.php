@@ -77,18 +77,38 @@
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
         $zaehler++;
-        while ( $array = $db -> fetch_array($result,1) ) {
-            if ( $art != "" ) {
-                // wenn punkt nicht im array dann nicht anzeigen !
-                if ( $refid != 0 && !in_array($refid,$positionArray) ) {
-                    continue;
-                } else {
-                    // schauen ob unterpunkte vorhanden !
-                    $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
-                    $result_in  = $db -> query($sql);
-                    $count_in = $db->num_rows($result_in);
-                }
 
+        while ( $array = $db -> fetch_array($result,1) ) {
+
+            if ( $art != "" ) {
+                if ( $environment["parameter"][1] == "modern" ) {
+                    // der gesamte pfad muss hierein !
+                    if ( in_array($array["mid"],$positionArray) || in_array($array["refid"],$positionArray)  ) {
+                        $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
+                        $result_in  = $db -> query($sql);
+                        $count_in = $db->num_rows($result_in);
+
+                        // punkt vom pfad die nicht angezeigt werden sollen
+                        // ausnahme ist hier die uebersichtsseite
+                        if ( $array["refid"] != $_GET["id"] ) {
+                            if ( $_GET["id"] != "" || $array["refid"] != 0 ) {
+                                $buffer[$refid]["display"] = "none";
+                            } 
+                        } 
+                    } else {
+                        continue;
+                    }
+                } else {
+                    // wenn punkt nicht im array dann nicht anzeigen !
+                    if ( $refid != 0 && !in_array($refid,$positionArray) ) {
+                        continue;
+                    } else {
+                        // schauen ob unterpunkte vorhanden !
+                        $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
+                        $result_in  = $db -> query($sql);
+                        $count_in = $db->num_rows($result_in);
+                    }
+                }
                 // sind unterpunkte vorhanden + einblenden
                 if  ( $count_in > 0 ) {
                     $plus = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
@@ -162,10 +182,12 @@
                 $tiefe++;
                 $buffer[$refid]["zaehler"] = $count;
 
+if ( $buffer[$refid]["display"] != "none" ) {
                 if ( $zaehler == 1 ) { 
                     $tree .= "<ul class=\"menued\">\n";
                 } else {
                     $tree .= "<ul>\n";
+}
                 }
             }
 
@@ -185,10 +207,14 @@
                 $sort = "";
             }
 
+if ( $buffer[$refid]["display"] != "none" ) {
             $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$plus."\n";
+}
             $tree .= sitemap($array["mid"], $art, $modify, -1);
-            $tree .= "</li>\n";
 
+if ( $buffer[$refid]["display"] != "none" ) {
+            $tree .= "</li>\n";
+}
             if ( isset($buffer[$refid]["zaehler"]) ) {
                 $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
