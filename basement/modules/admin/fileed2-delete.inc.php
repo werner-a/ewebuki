@@ -81,7 +81,7 @@
                 // keine fehler
                 $loop_name = "possible2delete";
                 /* checkbox ggf ankreuzen */
-                if ( !$_POST["delete_cb"] || isset($_POST["delete_cb"][$data["fid"]]) ){
+                if ( !$_POST || isset($_POST["delete_cb"][$data["fid"]]) ){
                     $checked = ' checked="true"';
                 }
             }elseif( $error > 100 ){
@@ -91,7 +91,7 @@
                 }
                 $loop_name = "warning";
                 /* checkbox ggf ankreuzen */
-                if ( !$_POST["delete_cb"] || isset($_POST["delete_cb"][$data["fid"]]) ){
+                if ( !$_POST || isset($_POST["delete_cb"][$data["fid"]]) ){
                     $checked = ' checked="true"';
                 }
             }else{
@@ -171,43 +171,48 @@
 
             foreach ( $_SESSION["file_memo"] as $value ){
 
-                $error = del_check($value);
+                // test, ob datei zum loeschen ausgewaehlt wurde
+                if ( isset($_POST["delete_cb"][$value]) ){
 
-                if ( ($error == 0 || $error > 100)
-                  && isset($_POST["delete_cb"][$value]) ){
-                    // feststellen ob es ein bild ist
-                    $sql = "SELECT ffart, fuid FROM site_file WHERE fid =".$value;
-                    $result = $db -> query($sql);
-                    $data = $db -> fetch_array($result,1);
+                    // test, ob datei geloescht werden darf
+                    $error = del_check($value);
 
-                    $type = $cfg["filetyp"][$data["ffart"]];
-                    if ( $type == "img" ) {
+                    if ( ($error == 0 || $error > 100) ){
+                        // feststellen ob es ein bild ist
+                        $sql = "SELECT ffart, fuid FROM site_file WHERE fid =".$value;
+                        $result = $db -> query($sql);
+                        $data = $db -> fetch_array($result,1);
 
-                        $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
-                        foreach ( $art as $key => $pre ) {
-                            $return = unlink($cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"]);
-                            ### sollte evtl. anderst gelöst werden, existiert nur ein file nicht
-                            ### laesst sich der datensatz nie löschen!
-                            if ( $return != 1 ) {
+                        $type = $cfg["filetyp"][$data["ffart"]];
+                        if ( $type == "img" ) {
+
+                            $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
+                            foreach ( $art as $key => $pre ) {
+                                $return = unlink($cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"]);
+                                ### sollte evtl. anderst gelöst werden, existiert nur ein file nicht
+                                ### laesst sich der datensatz nie löschen!
+                                if ( $return != 1 ) {
+                                    $ausgaben["form_error"] = "#(delete_error)";
+                                    break;
+                                }
+                            }
+                        } else {
+                            $return = unlink($cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$value.".".$data["ffart"]);
+                            if ( $return != "1" ) {
                                 $ausgaben["form_error"] = "#(delete_error)";
-                                break;
                             }
                         }
-                    } else {
-                        $return = unlink($cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$value.".".$data["ffart"]);
-                        if ( $return != "1" ) {
-                            $ausgaben["form_error"] = "#(delete_error)";
+
+                        // datensatz loeschen
+                        if ( $ausgaben["form_error"] == "" ) {
+                            $sql = "DELETE FROM ".$cfg["db"]["file"]["entries"]."
+                                        WHERE ".$cfg["db"]["file"]["key"]."='".$value."';";
+                            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                            $result  = $db -> query($sql);
+                            if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
                         }
                     }
 
-                    // datensatz loeschen
-                    if ( $ausgaben["form_error"] == "" ) {
-                        $sql = "DELETE FROM ".$cfg["db"]["file"]["entries"]."
-                                      WHERE ".$cfg["db"]["file"]["key"]."='".$value."';";
-                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                        $result  = $db -> query($sql);
-                        if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
-                    }
                 }
 
                 unset ($_SESSION["file_memo"][$value]);
