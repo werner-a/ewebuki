@@ -69,9 +69,17 @@
                              "rows" => "10",   # pro seite
                              "line" => "5",    # pro zeile  (rows / line)
                           "newline" => "<br clear=\"all\" />",
+                             "user" => "fuid",
                                ),
                      "lang" => array(
                             #"entries" => "site_file_lang",
+                               ),
+                     "user" => array(
+                          "entries" => "auth_user",
+                              "key" => "uid",
+                          "surname" => "nachname",
+                         "forename" => "vorname",
+                            "email" => "email",
                                ),
                   "content" => array(
                           "entries" => "site_text",
