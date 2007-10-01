@@ -55,7 +55,8 @@
                         "b" => "#fff",
                        ),
          "function" => array(
-                     "list" => array("sitemap"),
+                      "list,shared" => array("menutree"),
+                      "list"=> array("locate"),
                       "add" => array(""),
                      "edit" => array("make_ebene", "update_tname"),
                    "delete" => array("make_ebene"),

@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // funktion um eine sitemap zu erstellen
-    if ( in_array("sitemap", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("locate", $cfg["function"][$environment["kategorie"]]) ) {
 
         function locate($id) {
             global $positionArray,$db,$cfg;
