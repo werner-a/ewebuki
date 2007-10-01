@@ -74,17 +74,26 @@
                 $link = $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"];
             }
 
-            $reason = "";
+            $reason  = "";
+            $checked = "";
 
             if ( $error == 0 ){
                 // keine fehler
                 $loop_name = "possible2delete";
+                /* checkbox ggf ankreuzen */
+                if ( !$_POST["delete_cb"] || isset($_POST["delete_cb"][$data["fid"]]) ){
+                    $checked = ' checked="true"';
+                }
             }elseif( $error > 100 ){
                 // warnungen
                 if ( $error == 101 ){
                     $reason = "#(group_warning)".implode("<br />",$arrError);
                 }
                 $loop_name = "warning";
+                /* checkbox ggf ankreuzen */
+                if ( !$_POST["delete_cb"] || isset($_POST["delete_cb"][$data["fid"]]) ){
+                    $checked = ' checked="true"';
+                }
             }else{
                 // fehler
                 if ( $error == 1 ){
@@ -97,9 +106,11 @@
 
             $hidedata[$loop_name][0] = -1;
             $dataloop[$loop_name][] = array(
-                "item" => $item,
-                "link" => $link,
+                    "id" => $data["fid"],
+                  "item" => $item,
+                  "link" => $link,
                 "reason" => $reason,
+               "checked" => $checked
             );
 
         }
@@ -162,7 +173,8 @@
 
                 $error = del_check($value);
 
-                if ( $error == 0 || $error > 100 ){
+                if ( ($error == 0 || $error > 100)
+                  && isset($_POST["delete_cb"][$value]) ){
                     // feststellen ob es ein bild ist
                     $sql = "SELECT ffart, fuid FROM site_file WHERE fid =".$value;
                     $result = $db -> query($sql);

@@ -17,33 +17,54 @@
     <div class="clearer">&nbsp;</div>
 
     <!--##hide-possible2delete-->
-    #(possible2delete)
-    <div class="clearer">&nbsp;</div>
-    <ul style="padding-left:40px;">
-        <!--##loop-possible2delete-->
-        <li><a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}</li>
-        <!--##cont-->
-    </ul>
+    <fieldset class="cbra">
+        #(possible2delete)
+        <div class="clearer">&nbsp;</div>
+        <ul style="padding-left:40px;">
+            <!--##loop-possible2delete-->
+            <li>
+                <input type="checkbox" name="delete_cb[!{id}]"!{checked}  />
+                <a href="!{link}" title="!{item}">!{item}</a>&nbsp;
+                <div class="clearer"></div>
+                !{reason}
+            </li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
     <!--##show-->
 
     <!--##hide-warning-->
-    #(warning)
-    <div class="clearer">&nbsp;</div>
-    <ul style="padding-left:40px;">
-        <!--##loop-warning-->
-        <li><a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}</li>
-        <!--##cont-->
-    </ul>
+    <fieldset class="cbra">
+        #(warning)
+        <div class="clearer">&nbsp;</div>
+        <ul style="padding-left:40px;">
+            <!--##loop-warning-->
+            <li>
+                <input type="checkbox" name="delete_cb[!{id}]"!{checked}  />
+                <a href="!{link}" title="!{item}">!{item}</a>&nbsp;
+                <div class="clearer"></div>
+                !{reason}
+            </li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
     <!--##show-->
 
     <!--##hide-impossible2delete-->
-    #(impossible2delete)
-    <div class="clearer">&nbsp;</div>
-    <ul style="padding-left:40px;">
-        <!--##loop-impossible2delete-->
-        <li><a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}</li>
-        <!--##cont-->
-    </ul>
+    <fieldset class="cbra">
+        #(impossible2delete)
+        <div class="clearer">&nbsp;</div>
+        <ul style="padding-left:40px;">
+            <!--##loop-impossible2delete-->
+            <li>
+                <input type="checkbox" name="delete_cb[!{id}]" disabled="true"!{checked}  />
+                <a href="!{link}" title="!{item}">!{item}</a>&nbsp;
+                <div class="clearer"></div>
+                !{reason}
+            </li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
     <!--##show-->
 
     <fieldset>
