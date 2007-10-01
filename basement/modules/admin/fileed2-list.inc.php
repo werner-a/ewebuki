@@ -152,6 +152,16 @@
         }
 
         // auswahlliste 2 verarbeiten
+
+        function collect_filetyps($kat){
+            global $cfg;
+
+            foreach ( $cfg["filetyp"] as $key=>$value ){
+                if ( $value == $kat ) $array[] = "'".$key."'";
+            }
+            return implode(",",$array);
+        }
+
         switch ( $_SESSION["fileed_filter1"] ) {
             case 3:
                 foreach ( $_SESSION["file_memo"] as $value ) {
@@ -163,19 +173,19 @@
                 }
                 if ( $pattern == "" ) $pattern = $cfg["db"]["file"]["key"]." = -1";
 
-                $part["auswahl2"] = $part["auswahl2"] = " ffart in ('gif','jpg','png') AND ".$pattern;
+                $part["auswahl2"] = $part["auswahl2"] = " ffart in (".collect_filetyps("img").") AND ".$pattern;
                 $hidedata["images"] = array();
                 break;
             case 2:
-                $part["auswahl2"] = " ffart in ('zip','bz2','gz')";
+                $part["auswahl2"] = " ffart in (".collect_filetyps("arc").")";
                 $hidedata["other"] = array();
                 break;
             case 1:
-                $part["auswahl2"] = " ffart in ('pdf','odt','ods','odp')";
+                $part["auswahl2"] = " ffart in (".collect_filetyps("odf").")";
                 $hidedata["other"] = array();
                 break;
             default:
-                $part["auswahl2"] = " ffart in ('gif','jpg','png')";
+                $part["auswahl2"] = " ffart in (".collect_filetyps("img").")";
                 $hidedata["images"] = array();
         }
 
