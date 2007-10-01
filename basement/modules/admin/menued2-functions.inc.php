@@ -56,6 +56,7 @@
                 locate($data["refid"]);
             }
         }
+    }
 
     // rekursive renumber funktion
     if ( in_array("renumber", $cfg["function"][$environment["kategorie"]]) ) {
