@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: menued-functions.inc.php 311 2005-03-12 21:46:39Z chaot $";
-// "funktion loader";
+// "$Id: function_menutree.inc.php 311 2005-03-12 21:46:39Z chaot $";
+// "menubaum bauen";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -57,7 +57,7 @@
             default:
         }
 
-        global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray,$zaehler,$tiefe;
+        global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
         $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
                         ".$cfg["db"]["menu"]["entries"].".entry,
                         ".$cfg["db"]["menu"]["entries"].".refid,
@@ -76,18 +76,12 @@
 
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
-        $zaehler++;
 
         while ( $array = $db -> fetch_array($result,1) ) {
-
-            if ( $art != "" ) {
+            if ( $art == "menued" ) {
                 if ( $environment["parameter"][1] == "modern" ) {
                     // der gesamte pfad muss hierein !
                     if ( in_array($array["mid"],$positionArray) || in_array($array["refid"],$positionArray)  ) {
-                        $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
-                        $result_in  = $db -> query($sql);
-                        $count_in = $db->num_rows($result_in);
-
                         // punkt vom pfad die nicht angezeigt werden sollen
                         // ausnahme ist hier die uebersichtsseite
                         if ( $array["refid"] != $_GET["id"] ) {
@@ -102,13 +96,14 @@
                     // wenn punkt nicht im array dann nicht anzeigen !
                     if ( $refid != 0 && !in_array($refid,$positionArray) ) {
                         continue;
-                    } else {
-                        // schauen ob unterpunkte vorhanden !
-                        $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
-                        $result_in  = $db -> query($sql);
-                        $count_in = $db->num_rows($result_in);
                     }
                 }
+
+                // schauen ob unterpunkte vorhanden !
+                $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
+                $result_in  = $db -> query($sql);
+                $count_in = $db->num_rows($result_in);
+
                 // sind unterpunkte vorhanden + einblenden
                 if  ( $count_in > 0 ) {
                     $plus = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
@@ -116,39 +111,41 @@
                     $plus = "";
                 }
             }
+
+            // aufbau des pfads
             $buffer["pfad"] .= "/".$array["entry"];
-            if ( $art != "" ) {
-                $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
-                $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
-    
-                if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
-                    $right = -1;
-                } else {
-                    $right = "";
-                }
-    
-                if ( $right == -1 ) {
-                    // schaltflaechen erstellen
-                    $aktion = "";
-                    if ( is_array($modify) ) {
-                        foreach($modify as $name => $value) {
-                            if ( $name == "up" || $name == "down" ) {
-                                if ( $array["refid"] == 0 ) {
-                                    $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
-                                    $ankerlnk = "#".$array["mid"];
-                                } else {
-                                    #$anker   = "#".$ankerid;
-                                    $ankerpos = "";
-                                    $ankerlnk = "#".$ast[1];
-                                }
+
+            // kategorie u. ebene herausfinden
+            $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
+            $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
+
+            // hier findet der rechte-check statt
+            if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
+                $right = -1;
+            } else {
+                $right = "";
+            }
+
+            // schaltflaechen erstellen
+            if ( $right == -1 ) {
+                $aktion = "";
+                if ( is_array($modify) ) {
+                    foreach($modify as $name => $value) {
+                        if ( $name == "up" || $name == "down" ) {
+                            if ( $array["refid"] == 0 ) {
+                                $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
+                                $ankerlnk = "#".$array["mid"];
                             } else {
-                                $ankerlnk = "";
+                                $ankerpos = "";
+                                $ankerlnk = "#".$ast[1];
                             }
-                            if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
-                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
-                            } else {
-                                $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
-                            }
+                        } else {
+                            $ankerlnk = "";
+                        }
+                        if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
+                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                        } else {
+                            $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
                         }
                     }
                 }
@@ -182,12 +179,13 @@
                 $tiefe++;
                 $buffer[$refid]["zaehler"] = $count;
 
-if ( $buffer[$refid]["display"] != "none" ) {
-                if ( $zaehler == 1 ) { 
-                    $tree .= "<ul class=\"menued\">\n";
-                } else {
-                    $tree .= "<ul>\n";
-}
+                if ( $buffer[$refid]["display"] != "none" ) {
+                    // beim ersten aufruf eine class menued setzen
+                    if ( $self == "" ) {
+                        $tree .= "<ul class=\"menued\">\n";
+                    } else {
+                        $tree .= "<ul>\n";
+                    }
                 }
             }
 
@@ -207,14 +205,14 @@ if ( $buffer[$refid]["display"] != "none" ) {
                 $sort = "";
             }
 
-if ( $buffer[$refid]["display"] != "none" ) {
-            $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$plus."\n";
-}
+            if ( $buffer[$refid]["display"] != "none" ) {
+                $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$plus."\n";
+            }
             $tree .= sitemap($array["mid"], $art, $modify, -1);
 
-if ( $buffer[$refid]["display"] != "none" ) {
-            $tree .= "</li>\n";
-}
+            if ( $buffer[$refid]["display"] != "none" ) {
+                $tree .= "</li>\n";
+            }
             if ( isset($buffer[$refid]["zaehler"]) ) {
                 $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
