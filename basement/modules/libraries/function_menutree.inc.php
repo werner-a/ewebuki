@@ -104,11 +104,18 @@
                 $result_in  = $db -> query($sql);
                 $count_in = $db->num_rows($result_in);
 
-                // sind unterpunkte vorhanden + einblenden
+
+                // sind unterpunkte vorhanden + oder - einblenden
                 if  ( $count_in > 0 ) {
-                    $plus = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
+                    $copy = $positionArray;
+                    array_shift($copy);
+                    if ( in_array($array["mid"],$copy) || $_GET["id"] == $array["mid"] ) {
+                        $flap = "<a class=\"\" href=\"?id=".$array["refid"]."\"> -</a>";
+                    } else {
+                        $flap = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
+                    }
                 } else {
-                    $plus = "";
+                    $flap = "";
                 }
             }
 
@@ -206,7 +213,7 @@
             }
 
             if ( $buffer[$refid]["display"] != "none" ) {
-                $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$plus."\n";
+                $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$flap."\n";
             }
             $tree .= sitemap($array["mid"], $art, $modify, -1);
 
