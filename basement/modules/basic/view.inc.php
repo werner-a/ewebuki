@@ -103,6 +103,7 @@
 
                 $dataloop["list"][$sort] = array(
                        "id" => $data["fid"],
+                     "type" => $data["ffart"],
                       "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
                      "link" => $pathvars["virtual"].$environment["ebene"]."/view,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html",
                     "title" => $data["funder"],
