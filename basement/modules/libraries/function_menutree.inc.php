@@ -90,35 +90,27 @@
 
         while ( $array = $db -> fetch_array($result,1) ) {
             if ( $flapmenu == -1) {
-                // menu auf werner-art
-                if ( $design == "modern" ) {
-                    // der gesamte pfad muss hierein !
-                    if ( in_array($array["mid"],$positionArray) || in_array($array["refid"],$positionArray)  ) {
-                        // punkt vom pfad die nicht angezeigt werden sollen
-                        // ausnahme ist hier die uebersichtsseite
+                // alle punkte die nicht im array sind nicht anzeigen
+                if ( $refid != 0 && !in_array($refid,$positionArray) ) {
+                    continue;
+                } else {
+                    // menu auf werner-art, hier auch noch den gesamten ast ausblenden !
+                    // nur noch die mit der refid laut $_GET 
+                    if ( $design == "modern" ) {
                         if ( $array["refid"] != $_GET["id"] ) {
                             if ( $_GET["id"] != "" || $array["refid"] != 0 ) {
                                 $buffer[$refid]["display"] = "none";
                             } 
                         } 
-                    } else {
-                        continue;
-                    }
 
-                    // back-link bauen
-                    if ( $array["mid"] == $_GET["id"] ) {
-                        if ( $array["refid"] == 0 ) {
-                            $ausgaben["back"] = "<a href=".$pathvars["requested"].">zurück</a>";
-                        } else {
-                            $ausgaben["back"] = "<a href=?id=".$array["refid"].">zurück</a>";
+                        // back-link bauen
+                        if ( $array["mid"] == $_GET["id"] ) {
+                            if ( $array["refid"] == 0 ) {
+                                $ausgaben["back"] = "<a href=".$pathvars["requested"].">zurück</a>";
+                            } else {
+                                $ausgaben["back"] = "<a href=?id=".$array["refid"].">zurück</a>";
+                            }
                         }
-                    }
-
-                // klappmenu
-                } elseif ( $design == "classic" ) {
-                    // wenn punkt nicht im array dann nicht anzeigen !
-                    if ( $refid != 0 && !in_array($refid,$positionArray) ) {
-                        continue;
                     }
                 }
 
@@ -139,6 +131,10 @@
                 } else {
                     $flap = "";
                 }
+                if ( $cfg["design"] == "" ) {
+                    $ausgaben["design"] = "<a href=\"?id=".$array["mid"]."\"> +</a>";
+                }
+
             }
 
             // aufbau des pfads
