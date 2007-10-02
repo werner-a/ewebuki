@@ -69,19 +69,8 @@
             $positionArray[0] = 0;
         }
 
-        $ausgaben["output"] .= sitemap(0, "menued", $modify);
-        if ( $_GET["id"] != "" ) {
-            $sql = "SELECT refid FROM site_menu WHERE mid = ".$_GET["id"];
-            $result  = $db -> query($sql);
-            $data = $db -> fetch_array($result,1);
-            if ( $data["refid"] == 0 ) {
-                $ausgaben["back"] = "<a href=".$pathvars["uri"].">zurück</a>";
-            } else {
-                $ausgaben["back"] = "<a href=?id=".$data["refid"].">zurück</a>";
-            }
-        } else {
-            $ausgaben["back"] = "";
-        }
+        $ausgaben["back"] = "";
+        $ausgaben["show_menu"] .= sitemap(0, "menued", $modify);
 
         // fehlermeldungen
         if ( $HTTP_GET_VARS["error"] != "" ) {

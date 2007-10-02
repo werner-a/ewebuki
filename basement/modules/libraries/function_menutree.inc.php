@@ -44,20 +44,31 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function sitemap($refid, $art = "", $modify = "", $self = "") {
+        global $ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
 
         switch($art) {
             case menued:
+                $flapmenu = -1;
+                $aktionlinks = -1;
+                #if ( $a = 1 ) { $halo = "j";}
                 $hidestatus = -1;
                 $sortinfo = -1;
-                $aktionlinks = -1;
                 break;
             case select:
                 $radiorefid = -1;
                 break;
             default:
+
+        }
+        // design management
+        if ( $cfg["design"] != "" ) {
+            $design = $cfg["design"];
+            $multidesign = 0;
+        } else {
+            $multidesign = -1;
+            $design = "classic";
         }
 
-        global $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
         $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
                         ".$cfg["db"]["menu"]["entries"].".entry,
                         ".$cfg["db"]["menu"]["entries"].".refid,
@@ -78,8 +89,9 @@
         $count = $db->num_rows($result);
 
         while ( $array = $db -> fetch_array($result,1) ) {
-            if ( $art == "menued" ) {
-                if ( $environment["parameter"][1] == "modern" ) {
+            if ( $flapmenu == -1) {
+                // menu auf werner-art
+                if ( $design == "modern" ) {
                     // der gesamte pfad muss hierein !
                     if ( in_array($array["mid"],$positionArray) || in_array($array["refid"],$positionArray)  ) {
                         // punkt vom pfad die nicht angezeigt werden sollen
@@ -92,7 +104,18 @@
                     } else {
                         continue;
                     }
-                } else {
+
+                    // back-link bauen
+                    if ( $array["mid"] == $_GET["id"] ) {
+                        if ( $array["refid"] == 0 ) {
+                            $ausgaben["back"] = "<a href=".$pathvars["requested"].">zurück</a>";
+                        } else {
+                            $ausgaben["back"] = "<a href=?id=".$array["refid"].">zurück</a>";
+                        }
+                    }
+
+                // klappmenu
+                } elseif ( $design == "classic" ) {
                     // wenn punkt nicht im array dann nicht anzeigen !
                     if ( $refid != 0 && !in_array($refid,$positionArray) ) {
                         continue;
@@ -100,10 +123,9 @@
                 }
 
                 // schauen ob unterpunkte vorhanden !
-                $sql = "SELECT * FROM site_menu where refid=".$array["mid"];
+                $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE refid=".$array["mid"];
                 $result_in  = $db -> query($sql);
                 $count_in = $db->num_rows($result_in);
-
 
                 // sind unterpunkte vorhanden + oder - einblenden
                 if  ( $count_in > 0 ) {
@@ -122,37 +144,39 @@
             // aufbau des pfads
             $buffer["pfad"] .= "/".$array["entry"];
 
-            // kategorie u. ebene herausfinden
-            $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
-            $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
+            if ( $aktionlinks == -1) {
+                // kategorie u. ebene herausfinden
+                $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
+                $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
 
-            // hier findet der rechte-check statt
-            if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
-                $right = -1;
-            } else {
-                $right = "";
-            }
+                // hier findet der rechte-check statt
+                if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
+                    $right = -1;
+                } else {
+                    $right = "";
+                }
 
-            // schaltflaechen erstellen
-            if ( $right == -1 ) {
-                $aktion = "";
-                if ( is_array($modify) ) {
-                    foreach($modify as $name => $value) {
-                        if ( $name == "up" || $name == "down" ) {
-                            if ( $array["refid"] == 0 ) {
-                                $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
-                                $ankerlnk = "#".$array["mid"];
+                // schaltflaechen erstellen
+                if ( $right == -1 ) {
+                    $aktion = "";
+                    if ( is_array($modify) ) {
+                        foreach($modify as $name => $value) {
+                            if ( $name == "up" || $name == "down" ) {
+                                if ( $array["refid"] == 0 ) {
+                                    $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
+                                    $ankerlnk = "#".$array["mid"];
+                                } else {
+                                    $ankerpos = "";
+                                    $ankerlnk = "#".$ast[1];
+                                }
                             } else {
-                                $ankerpos = "";
-                                $ankerlnk = "#".$ast[1];
+                                $ankerlnk = "";
                             }
-                        } else {
-                            $ankerlnk = "";
-                        }
-                        if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
-                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
-                        } else {
-                            $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
+                            if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
+                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            } else {
+                                $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
+                            }
                         }
                     }
                 }
@@ -233,6 +257,7 @@
                     $tree = "<ul><li class=\"menued\"><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</li><li>#(root)</li></ul>".$tree;
                 }
         }
+
         return $tree;
     }
 
