@@ -63,14 +63,38 @@
         if ( $specialvars["security"]["enable"] == -1 ) {
             $modify["rights"] = array("", "#(button_desc_right)", $cfg["right"]);
         }
+
+        // array umdrehen
+        $modify = array_reverse($modify);
+
         if ( $_GET["id"] != "" ) {
             locate($HTTP_GET_VARS["id"]);
         } else {
             $positionArray[0] = 0;
         }
 
+        // multidesign - verwalten nur ein TEST ( ueberhaupt sinnvoll ??? )
+        $ausgaben["design"] = "";
+        $design_handle = $cfg["design"];
+        if ( $cfg["design"] == "" ) {
+            // wenn design-variable leer , einfach den ersten array-eintrag benutzen
+            $design_handle = $cfg["design_available"][0];
+            // design-steuerung mit dem parameter
+            if ( $environment["parameter"][1] != "" ) {
+                $design_handle = $environment["parameter"][1];
+            }
+            // design - umschalter 
+            foreach ( $cfg["design_available"] as $value ) {
+                if ( $value != $environment["parameter"][1] && $environment["parameter"][1] != "") {
+                    $ausgaben["design"] .= "<a href=".str_replace($environment["parameter"][1],$value,$pathvars["uri"]).">".$value."</a>";
+                } elseif ( $value != $design_handle ){
+                    $ausgaben["design"] .= "<a href=".str_replace("list.","list,".$value.".",$pathvars["uri"]).">".$value."</a>";
+                }
+            }
+        }
+
         $ausgaben["back"] = "";
-        $ausgaben["show_menu"] .= sitemap(0, "menued", $modify);
+        $ausgaben["show_menu"] .= sitemap(0, "menued", $modify,"" ,$design_handle);
 
         // fehlermeldungen
         if ( $HTTP_GET_VARS["error"] != "" ) {

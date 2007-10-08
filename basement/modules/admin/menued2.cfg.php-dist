@@ -50,15 +50,17 @@
              "name" => "menued2",
             "basis" => $pathvars["virtual"]."/admin/menued",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
-           "design" => "classic",
+           "design" => "",
+ "design_available" => array("classic","modern"),
          "function" => array(
-                      "list,shared" => array("menutree"),
+              "list,shared" => array("menutree"),
                       "list"=> array("locate"),
                       "add" => array(""),
                      "edit" => array("make_ebene", "update_tname"),
                    "delete" => array("make_ebene"),
                      "sort" => array("sitemap", "renumber"),
-                     "move" => array("sitemap", "make_ebene", "update_tname"),
+              "move,shared" => array("menutree"),
+                     "move" => array("locate", "make_ebene", "update_tname"),
                    "rights" => array(""),
                        ),
                "db" => array(
