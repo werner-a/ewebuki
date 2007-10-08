@@ -43,30 +43,22 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function sitemap($refid, $art = "", $modify = "", $self = "") {
+    function sitemap($refid, $art = "", $modify = "", $self = "", $design="classic") {
         global $ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
 
         switch($art) {
             case menued:
                 $flapmenu = -1;
                 $aktionlinks = -1;
-                #if ( $a = 1 ) { $halo = "j";}
                 $hidestatus = -1;
                 $sortinfo = -1;
                 break;
             case select:
+                $flapmenu = -1;
                 $radiorefid = -1;
                 break;
             default:
 
-        }
-        // design management
-        if ( $cfg["design"] != "" ) {
-            $design = $cfg["design"];
-            $multidesign = 0;
-        } else {
-            $multidesign = -1;
-            $design = "classic";
         }
 
         $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
@@ -131,15 +123,20 @@
                 } else {
                     $flap = "";
                 }
-                if ( $cfg["design"] == "" ) {
-                    $ausgaben["design"] = "<a href=\"?id=".$array["mid"]."\"> +</a>";
-                }
+            }
 
+            // hide-status signalisieren
+            $class_hide = "";
+            if ( $hidestatus == -1 ) {
+                if ( $array["hide"] == -1 ) {
+                    $class_hide = "red";
+                }
             }
 
             // aufbau des pfads
             $buffer["pfad"] .= "/".$array["entry"];
 
+            // schaltflaechen erstellen
             if ( $aktionlinks == -1) {
                 // kategorie u. ebene herausfinden
                 $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
@@ -152,7 +149,6 @@
                     $right = "";
                 }
 
-                // schaltflaechen erstellen
                 if ( $right == -1 ) {
                     $aktion = "";
                     if ( is_array($modify) ) {
@@ -181,17 +177,6 @@
             // hauptpunkt fett
             if ( $refid == 0 ) $array["label"] = "<b>".$array["label"]."</b>";
 
-            // hide status anzeigen
-            if ( $hidestatus != "" ) {
-                if ( $array["hide"] == -1 ) {
-                    $hideimage = "cms-cb0.png";
-                    $hidetext = "#(disabled)";
-                } else {
-                    $hideimage = "cms-cb1.png";
-                    $hidetext = "#(enabled)";
-                }
-            }
-
             // wo geht der href hin?
             if ( $array["exturl"] == "" ) {
                 $href = $buffer["pfad"].".html";
@@ -203,7 +188,6 @@
 
             // in den buffer schreiben wieviel unterpunkte fuer jeweiligen überpunkt vorhanden sind !
             if ( !isset($buffer[$refid]["zaehler"]) ) {
-                $tiefe++;
                 $buffer[$refid]["zaehler"] = $count;
 
                 if ( $buffer[$refid]["display"] != "none" ) {
@@ -211,7 +195,11 @@
                     if ( $self == "" ) {
                         $tree .= "<ul class=\"menued\">\n";
                     } else {
-                        $tree .= "<ul>\n";
+                        if ( $design == "modern" ) {
+                            $tree .= "<ul class=\"menued\">\n";
+                        } else {
+                            $tree .= "<ul>\n";
+                        }
                     }
                 }
             }
@@ -221,11 +209,6 @@
                 $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
             }
 
-            if ( $hidestatus != "" ) {
-                $hide = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative><img src=\"".$cfg["iconpath"].$hideimage."\" border=\"0\" alt=\"".$hidetext."\" title=\"".$hidetext."\" width=\"13\" height=\"13\"></span>\n";
-            } else {
-                $hide = "";
-            }
             if ( $sortinfo != "" ) {
                 $sort = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative>".$array["sort"]."</span>";
             } else {
@@ -233,9 +216,9 @@
             }
 
             if ( $buffer[$refid]["display"] != "none" ) {
-                $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"\" href=\"".$href."\">".$array["label"]."</a>".$flap."\n";
+                $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"".$class_hide."\" href=\"".$href."\">".$array["label"]."</a>".$flap."\n";
             }
-            $tree .= sitemap($array["mid"], $art, $modify, -1);
+            $tree .= sitemap($array["mid"], $art, $modify, -1, $design);
 
             if ( $buffer[$refid]["display"] != "none" ) {
                 $tree .= "</li>\n";
@@ -250,7 +233,7 @@
         }
         if ( $self == "" ) {
                 if ( $art == "select" ) {
-                    $tree = "<ul><li class=\"menued\"><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</li><li>#(root)</li></ul>".$tree;
+                  #  $tree = "<ul><li><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</li><li>#(root)</li></ul>".$tree;
                 }
         }
 
