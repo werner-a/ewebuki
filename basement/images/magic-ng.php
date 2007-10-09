@@ -126,18 +126,18 @@
         switch ( $image["size"][2] ) {
             case 1: // gif
                 $img_src = @imagecreatefromgif($image["file"]);
-                $img_dst = magic_resize( $img_src, $image,$arrType);
-                echo imagegif($img_dst);
+//                 $img_dst = magic_resize( $img_src, $image,$arrType);
+//                 echo imagegif($img_dst);
                 break;
             case 2: // jpg
                 $img_src = @imagecreatefromjpeg($image["file"]);
-                $img_dst = magic_resize( $img_src, $image,$arrType);
-                echo imagejpeg($img_dst);
+//                 $img_dst = magic_resize( $img_src, $image,$arrType);
+//                 echo imagejpeg($img_dst);
                 break;
             case 3: // png
                 $img_src = @imagecreatefrompng($image["file"]);
-                $img_dst = magic_resize( $img_src, $image,$arrType);
-                echo imagepng($img_dst);
+//                 $img_dst = magic_resize( $img_src, $image,$arrType);
+//                 echo imagepng($img_dst);
                 break;
             default:
                 die("source is not a valid image (gif, jpg, png)");
