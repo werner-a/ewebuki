@@ -56,6 +56,28 @@
             }
         }
 
+        // loeschen von bilder aus der gruppe
+        if ( is_numeric($_GET["del"]) ){
+            // loeschen aus der SESSION-variable
+            if ( isset($_SESSION["file_memo"][$_GET["del"]]) ) unset($_SESSION["file_memo"][$_GET["del"]]);
+            // loeschen aus dem fhit-feld
+            if ( $environment["parameter"][1] != "" ){
+                $sql = "SELECT *
+                        FROM site_file
+                        WHERE fid=".$_GET["del"]." AND fhit LIKE '%".$environment["parameter"][1].",%'";
+                $result = $db -> query($sql);
+                if ( $db->num_rows($result) > 0 ){
+                    $data = $db -> fetch_array($result,1);
+                    $fhit = preg_replace("/#p".$environment["parameter"][1].",[,0-9]*#/i","",$data["fhit"]);
+                    $sql = "UPDATE site_file
+                               SET fhit='".trim($fhit)."'
+                             WHERE fid=".$_GET["del"];
+                    $result = $db -> query($sql);
+                }
+            }
+            header("Location: ".$_SERVER["HTTP_REFERER"]);
+        }
+
         // +++
         // funktions bereich fuer erweiterungen
 
@@ -67,7 +89,7 @@
             // eine bildergruppe wurde angewaehlt (id in der url)
             $sql = "SELECT *
                       FROM ".$cfg["db"]["file"]["entries"]."
-                     WHERE fhit LIKE '%#p".$environment["parameter"][1]."%'";
+                     WHERE fhit LIKE '%#p".$environment["parameter"][1].",%'";
             $ausgaben["groupid"] = $environment["parameter"][1];
         }else{
             // ausgewaehlte dateien werden einer gruppe zugewiesen
@@ -79,6 +101,8 @@
         }
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (bilder der gruppe): ".$sql.$debugging["char"];
         $result = $db -> query($sql);
+        // falls keine bilder vorhanden sind zur gruppen-uebersicht springen
+        if ( $db->num_rows($result) == 0 ) header("Location: ".$cfg["basis"]."/list.html");
 
         // dataloop mit den ausgewaehlten bildern wird gebaut
         while ( $data = $db -> fetch_array($result,1) ) {
@@ -95,6 +119,7 @@
                 // der fhit eintrag wird gesucht, und sortiert
                 preg_match("/#p".$environment["parameter"][1]."[,]*([0-9]*)#/i",$data["fhit"],$match);
                 $sort = $match[1];
+                if ( $match[1] == "" ) $sort = 1;
                 // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
                 while ( is_array($dataloop["list"][$sort]) ){
                     $sort++;
@@ -105,12 +130,13 @@
             }
 
             $dataloop["list"][$sort] = array(
-                "id"   => $data["fid"],
-                "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
-               "title" => $data["funder"],
-                 "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
-                "link" => $cfg["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].",".$environment["parameter"][1].".html",
-                "sort" => $sort,
+                    "id"   => $data["fid"],
+                    "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
+                   "title" => $data["funder"],
+                     "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
+                    "link" => $cfg["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].",".$environment["parameter"][1].".html",
+                    "sort" => $sort,
+                  "delete" => "?del=".$data["fid"],
             );
 
             // welche werte stehen bereits in fhit
@@ -215,10 +241,10 @@
                     if ( strstr($value["fhit"],"#p".$groupid) ){
                         // bereits vorhandene marke finden und entfernen
                         $fhit  = trim(preg_replace("/#p".$groupid."[,0-9]*#/i", "",$value["fhit"]));
-                        // bei leerem sortier-input-feld wird das bild rausgeworfen
-                        if ( $_POST["sort"][$key] != 0 || $_POST["sort"][$key] == "" ){
+//                         // bei leerem sortier-input-feld wird das bild rausgeworfen
+//                         if ( $_POST["sort"][$key] != 0 || $_POST["sort"][$key] == "" ){
                             $fhit .= " #p".$groupid.",".$_POST["sort"][$key]."#";
-                        }
+//                         }
                     }else{
                         $fhit = $value["fhit"]." #p".$groupid.",".$_POST["sort"][$key]."#";
                     }
