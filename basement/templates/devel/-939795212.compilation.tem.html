@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>fileed.list</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -939795212.list.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<div id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <form method="get" action="!#ausgaben_form_aktion">
+        <fieldset>
+            <label for="search">#(search)</label>
+            <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+            <label for="send"></label>
+            <input type="submit" name="send[]" value="g(send)" />
+            <div class="clearer">&nbsp;</div>
+        </fieldset>
+    </form>
+</div>
+<p>!#ausgaben_result</p>
+
+<div style="clear:both"></div>
+<!--##loop-compilations-->
+    <h2>#!{id}: !{name}</h2>
+    <p>
+        !{num_pics}
+        <a href="!{link}">
+            <img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)" />
+        </a>
+    </p>
+    <ul>
+        <li class="thumbs">
+            <a href="!{href0}" class="pic"><img src="!{src_pic0}" alt="!{alt_pic0}" title="!{alt_pic0}" /></a>
+        </li>
+        <li class="thumbs">
+            <a href="!{href1}" class="pic"><img src="!{src_pic1}" alt="!{alt_pic1}" title="!{alt_pic1}" /></a>
+        </li>
+        <li class="thumbs">
+            <a href="!{href2}" class="pic"><img src="!{src_pic2}" alt="!{alt_pic2}" title="!{alt_pic2}" /></a>
+        </li>
+        <li class="thumbs">
+            <a href="!{href3}" class="pic"><img src="!{src_pic3}" alt="!{alt_pic3}" title="!{alt_pic3}" /></a>
+        </li>
+        <li class="thumbs">
+            <a href="!{href4}" class="pic"><img src="!{src_pic4}" alt="!{alt_pic4}" title="!{alt_pic4}" /></a>
+        </li>
+    </ul>
+    <div style="clear:both"></div>
+<!--##cont-->
+
+
+<!-- <div style="clear:both"></div> -->
+<!-- <p style="float:left">g(anzahl)!#ausgaben_anzahl</p> -->
+<!-- <p style="float:right">!#ausgaben_inhalt_selector</p> -->
+<div style="clear:both"></div>
+<p>#(inhalt)</p>
+<p>#(text1)</p>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<!--##end-->
+</body>
+</html>
