@@ -85,9 +85,9 @@
                 $dataloop["compilations"][$value]["link"]   = $cfg["basis"]."/collect,".$value.".html";
                 $dataloop["compilations"][$value]["pics"][$sort[$value]] = array(
                           "id" => $data["fid"],
-                        "art"  => $data["ffart"],
+                         "art" => $data["ffart"],
                         "name" => $data["ffname"],
-                        "alt"  => $data["funder"]
+                         "alt" => $data["funder"],
                 );
                 // sortieren anhand der angegebenen reihenfolge
                 ksort($dataloop["compilations"][$value]["pics"]);
@@ -99,21 +99,31 @@
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
 
-            $preg = "/\[SEL=(.*)\](.*)\[\/SEL\]/";
-            $content = $data["content"];
-            preg_match_all($preg, $content, $match);
+            $parts = explode("[/SEL]",$data["content"]);
+            array_pop($parts);
 
-            foreach ( $match[1] as $key=>$value  ){
-                $tagwerte = explode(";",$value);
+            foreach ( $parts as $value ){
+                $sel_wert = explode("[SEL=",$value);
+                $buffer = explode("]",$sel_wert[1]);
+
+                $parameter = explode(";",$buffer[0]);
+                $sel_name  = $buffer[1];
 
                 // gibt es keine bilder zur gruppe, werden die fehlenden dataloop-eintraege nachgeholt
-                if ( !is_array($dataloop["compilations"][$tagwerte[1]]) ){
-                    $dataloop["compilations"][$tagwerte[1]]["id"]   = $tagwerte[1];
-                    $dataloop["compilations"][$tagwerte[1]]["link"] = $cfg["basis"]."/list.html";
-                    $dataloop["compilations"][$tagwerte[1]]["pics"] = array();
+                if ( !is_array($dataloop["compilations"][$parameter[1]]) ){
+                    $dataloop["compilations"][$parameter[1]]["id"]   = $parameter[1];
+                    $dataloop["compilations"][$parameter[1]]["link"] = $cfg["basis"]."/list.html";
+                    $dataloop["compilations"][$parameter[1]]["pics"] = array();
                 }
 
-                $dataloop["compilations"][$tagwerte[1]]["name"] = $match[2][$key];
+                if ( $dataloop["compilations"][$parameter[1]]["name"] == "---" ){
+                    $name = $sel_name;
+                }else{
+                    $name = $dataloop["compilations"][$parameter[1]]["name"].", ".$sel_name;
+                }
+
+                $dataloop["compilations"][$parameter[1]]["name"] = $name;
+
             }
         }
 
