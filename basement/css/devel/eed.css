@@ -236,6 +236,30 @@ li.thumbs a.pic {
         width: 96px;
 }
 
+/* compilation */
+.selection_teaser {
+    background:#eee;
+    font-size:0.9em;
+    margin:5px 0;
+    padding:3px;
+}
+
+.selection_teaser ul {
+    margin:5px 5px 0 5px;
+}
+
+.selection_teaser li{
+    background:#fff;
+    float: left;
+    margin: 0 5px 5px 0;
+}
+
+.selection_teaser li a {
+    display: block;
+    height: 96px;
+    width: 96px;
+}
+
 /* ---------------------*/
 
 

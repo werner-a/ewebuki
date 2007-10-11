@@ -116,7 +116,7 @@
                     $dataloop["compilations"][$parameter[1]]["pics"] = array();
                 }
 
-                if ( $dataloop["compilations"][$parameter[1]]["name"] == "---" ){
+                if ( $dataloop["compilations"][$parameter[1]]["name"] == "---" || $dataloop["compilations"][$parameter[1]]["name"] == "" ){
                     $name = $sel_name;
                 }else{
                     $name = $dataloop["compilations"][$parameter[1]]["name"].", ".$sel_name;
@@ -134,26 +134,28 @@
         // ausserdem wird der suchbegriff gefiltert
         foreach ( $dataloop["compilations"] as $key=>$value ){
             if ( ( $search != "" && ( stristr($dataloop["compilations"][$key]["name"],$search)
+                                   || stristr($dataloop["compilations"][$key]["id"],  $search)
                                    || stristr($dataloop["compilations"][$key]["desc"],$search) ) )
                || $search == "" ){
                 if ( is_array($value["pics"]) ){
-                    reset($value["pics"]);
-                    for ( $i=0 ; $i <= $cfg["db"]["compilation"]["items"] ; $i++ ){
-                        if ( current($value["pics"]) == FALSE ){
-                            $dataloop["compilations"][$key]["src_pic".$i] = "/images/default/pos.png";
-                        }else{
-                            $buffer = current($value["pics"]);
-                            $dataloop["compilations"][$key]["src_pic".$i] = $pathvars["filebase"]["webdir"].
-                                                                            $buffer["art"]."/".
-                                                                            $buffer["id"]."/tn/".
-                                                                            $buffer["name"];
-                            $dataloop["compilations"][$key]["alt_pic".$i] = $buffer["alt"];
-                            $dataloop["compilations"][$key]["href".$i]    = $cfg["basis"]."/".
-                                                                            $environment["allparameter"].
-                                                                            "/view,o,".$buffer["id"].",".$key.".html";
-                        }
-                        next($value["pics"]);
+
+                    $i = 0;
+                    foreach( $value["pics"] as $pic ){
+                        if ( $i == $cfg["db"]["compilation"]["items"] ) break;
+                        $ausgaben["scr"]  = $pathvars["filebase"]["webdir"].
+                                            $pic["art"].
+                                            "/".$pic["id"].
+                                            "/tn/".
+                                            $pic["name"];
+                        $ausgaben["link"] = $pathvars["virtual"].
+                                            $environment["ebene"].
+                                            "/".$environment["allparameter"].
+                                            "/view,o,".$pic["id"].",".$key.".html";
+                        $ausgaben["alt"]  = $pic["desc"];
+                        $dataloop["compilations"][$key]["thumbs"] .= parser("compilation-preview", "");
+                        $i++;
                     }
+
                     if ( count($value["pics"]) == 1 ){
                         $dataloop["compilations"][$key]["num_pics"] = count($value["pics"])." #(img_sing)";
                     }else{
@@ -177,6 +179,8 @@
             $ausgaben["result"] = "#(answera) \"".$search."\" #(answerb) ";
             if ( count($dataloop["compilations"]) == 0 ){
                 $ausgaben["result"] .= " #(answerc_no)";
+            }elseif ( count($dataloop["compilations"]) == 1 ){
+                $ausgaben["result"] .= count($dataloop["compilations"])." #(answerc_yes_sing)";
             }else{
                 $ausgaben["result"] .= count($dataloop["compilations"])." #(answerc_yes)";
             }
@@ -204,6 +208,7 @@
             $ausgaben["inaccessible"] .= "# (answerb) #(answerb)<br />";
             $ausgaben["inaccessible"] .= "# (answerc_no) #(answerc_no)<br />";
             $ausgaben["inaccessible"] .= "# (answerc_yes) #(answerc_yes)<br />";
+            $ausgaben["inaccessible"] .= "# (answerc_yes_sing) #(answerc_yes_sing)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
