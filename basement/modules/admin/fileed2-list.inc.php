@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -87,11 +87,7 @@
             // abrechen im cms editor soll zur ursrungseite springen und nicht in den fileed
             $_SESSION["page"] = $_SESSION["cms_last_referer"];
             $hidedata["cms"]["link"] = $_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"];
-            #$ausgaben["cmslink"] = "<a href=\"".$_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"]."\">#(cmslink)</a>";
         }
-        #} else {
-        #    $ausgaben["cmslink"] = "";
-        #}
 
         // bearbeiten- und loeschen link erstellen
         if ( count($_SESSION["file_memo"]) >= 1 ) {
