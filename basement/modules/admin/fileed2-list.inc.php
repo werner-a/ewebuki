@@ -86,20 +86,18 @@
         if ( isset($_SESSION["cms_last_edit"]) ) {
             // abrechen im cms editor soll zur ursrungseite springen und nicht in den fileed
             $_SESSION["page"] = $_SESSION["cms_last_referer"];
-            $ausgaben["cmslink"] = "<a href=\"".$_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"]."\">#(cmslink)</a>";
-        } else {
-            $ausgaben["cmslink"] = "";
+            $hidedata["cms"]["link"] = $_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"];
+            #$ausgaben["cmslink"] = "<a href=\"".$_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"]."\">#(cmslink)</a>";
         }
+        #} else {
+        #    $ausgaben["cmslink"] = "";
+        #}
 
         // bearbeiten- und loeschen link erstellen
         if ( count($_SESSION["file_memo"]) >= 1 ) {
-            $ausgaben["fileedit"] = "<a href=\"".$cfg["basis"]."/edit.html\">#(fileedit)</a>";
-            $ausgaben["filedelete"] = "<a href=\"".$cfg["basis"]."/delete.html\">#(filedelete)</a>";
-            $ausgaben["filecollect"] = "<a href=\"".$cfg["basis"]."/collect.html\">filecollect</a>";
-        } else {
-            $ausgaben["fileedit"] = "";
-            $ausgaben["filedelete"] = "";
-            $ausgaben["filecollect"] = "";
+            $hidedata["file"]["edit"] = $cfg["basis"]."/edit.html";
+            $hidedata["file"]["delete"] = $cfg["basis"]."/delete.html";
+            $hidedata["file"]["collect"] = $cfg["basis"]."/collect.html";
         }
 
         // +++
