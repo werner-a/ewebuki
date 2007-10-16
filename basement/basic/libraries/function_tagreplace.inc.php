@@ -715,6 +715,19 @@
                         $ausgabewert = str_replace(chr(13).chr(10),"",parser("imgb", ""));
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         break;
+                    case "[/SEL]":
+                        if ( $sign == "]" ) {
+                            $sel = "not ready";
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $selwerte = explode(";",$tagwerte[0]);
+                            $path = dirname($pathvars["requested"]);
+                            if ( substr( $path, -1 ) != '/') $path = $path."/";
+                            $link = $path.basename($pathvars["requested"],".html")."/view,".$selwerte[1].",2,".$selwerte[0].".html"; #/view,größe,bild,selektion
+                            $sel = "<a href=\"".$link."\">".$tagwerte[1]."</a>";
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
+                        }
                     case "[/IN]":
                         if ( $defaults["tag"]["in"] == "" ) {
                           $defaults["tag"]["in"] = "<em>";
