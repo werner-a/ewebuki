@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function filelist($result) {
+    function filelist($result,$group="") {
         global $db, $cfg, $defaults, $pathvars, $dataloop;
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
@@ -98,6 +98,14 @@
             $lb = $data["ffname"]
                  .$cfg["tags"]["img"][4];
 
+            // sortierkritierium fuer die compilations
+            if ( $group != "" ){
+                preg_match("/#p".$group."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                $sort = $match[1];
+            }else{
+                $sort = "";
+            }
+
             $dataloop["list"][$data["fid"]] = array (
                                             "color" => $cfg["color"]["set"],
                                             "ehref" => "edit,".$data["fid"].".html",
@@ -105,6 +113,7 @@
                                                        $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].
                                                        $cfg["fileopt"][$type]["name"]."_".
                                                        $data["fid"].".".$data["ffart"],
+                                            "vhref" => "view,o,".$data["fid"].",".$group.".html",
                                               "src" => $pathvars["filebase"]["webdir"].
                                                        $pathvars["filebase"]["pic"]["root"].
                                                        $pathvars["filebase"]["pic"]["tn"]."tn_".
@@ -123,6 +132,7 @@
                                            "mclick" => "ebInsertImage(ebCanvas, '', '".$la."m/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
                                            "sclick" => "ebInsertImage(ebCanvas, '', '".$la."s/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
                                           "newline" => $newline,
+                                             "sort" => $sort,
                                               );
         }
     }

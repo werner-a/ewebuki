@@ -15,6 +15,13 @@
         <fieldset>
             <label for="search">#(search)</label>
             <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+            <label>#(compilation)</label>
+            <select name="compID" onchange="submit()">
+                <option value="">Compilation ausw&auml;hlen</option>
+                <!--##loop-groups-->
+                <option value="!{id}"!{select}>#!{id}: !{name}</option>
+                <!--##cont-->
+            </select>
             <label for="send"></label>
             <input type="submit" name="send[]" value="g(send)" />
             <div class="clearer">&nbsp;</div>
@@ -22,6 +29,27 @@
     </form>
 </div>
 <p>!#ausgaben_result</p>
+
+<h1>!#ausgaben_compilation</h1>
+<p>
+<!--##hide-zurueck-->
+<a href="!{link}">g(prev)</a>
+<!--##show-->
+<!--##hide-vor-->
+<a href="!{link}">g(next)</a>
+<!--##show-->
+</p>
+
+<div style="clear:both"></div>
+<ul>
+<!--##loop-list-->
+    <li class="thumbs">
+        <a href="!{vhref}" class="pic"><img src="!{src}" !{size} alt="!{alt}" title="!{title} g(edit)" /></a>
+    </li>
+<!--##cont-->
+</ul>
+<div style="clear:both"></div>
+<p>!#ausgaben_count</p>
 
 <div style="clear:both"></div>
 <!--##loop-compilations-->
@@ -38,35 +66,6 @@
     </div>
     #(selection_teaser)
 </div>
-<!--##cont-->
-
-
-<!--##loop-compilations_alt-->
-    <h2>#!{id}: !{name}</h2>
-    <p>
-        !{num_pics}
-        <a href="!{link}">
-            <img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)" />
-        </a>
-    </p>
-    <ul>
-        <li class="thumbs">
-            <a href="!{href0}" class="pic"><img src="!{src_pic0}" alt="!{alt_pic0}" title="!{alt_pic0}" /></a>
-        </li>
-        <li class="thumbs">
-            <a href="!{href1}" class="pic"><img src="!{src_pic1}" alt="!{alt_pic1}" title="!{alt_pic1}" /></a>
-        </li>
-        <li class="thumbs">
-            <a href="!{href2}" class="pic"><img src="!{src_pic2}" alt="!{alt_pic2}" title="!{alt_pic2}" /></a>
-        </li>
-        <li class="thumbs">
-            <a href="!{href3}" class="pic"><img src="!{src_pic3}" alt="!{alt_pic3}" title="!{alt_pic3}" /></a>
-        </li>
-        <li class="thumbs">
-            <a href="!{href4}" class="pic"><img src="!{src_pic4}" alt="!{alt_pic4}" title="!{alt_pic4}" /></a>
-        </li>
-    </ul>
-    <div style="clear:both"></div>
 <!--##cont-->
 
 
