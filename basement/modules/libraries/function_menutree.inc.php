@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -87,13 +87,13 @@
                     continue;
                 } else {
                     // menu auf werner-art, hier auch noch den gesamten ast ausblenden !
-                    // nur noch die mit der refid laut $_GET 
+                    // nur noch die mit der refid laut $_GET
                     if ( $design == "modern" ) {
                         if ( $array["refid"] != $_GET["id"] ) {
                             if ( $_GET["id"] != "" || $array["refid"] != 0 ) {
                                 $buffer[$refid]["display"] = "none";
-                            } 
-                        } 
+                            }
+                        }
 
                         // back-link bauen
                         if ( $array["mid"] == $_GET["id"] ) {
