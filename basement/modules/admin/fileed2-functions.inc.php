@@ -354,7 +354,7 @@
 
     // funktionen fuer die compilation-liste
     if ( in_array("compilationlist", $cfg["function"][$environment["kategorie"]]) ) {
-        function compilationlist( $select="" ) {
+        function compilation_list( $select="" ) {
             global $db;
 
             // selection-bilder, werden aus der site_file geholt

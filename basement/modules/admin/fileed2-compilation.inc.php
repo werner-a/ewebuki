@@ -49,7 +49,7 @@
         // ***
 
         // dropdown bauen lassen
-        $dataloop["groups"] = compilationlist($environment["parameter"][1]);
+        $dataloop["groups"] = compilation_list($environment["parameter"][1]);
 
         if ( is_numeric($_GET["compID"]) ){
             // umwandeln der GET-Variable in environment-parameter
@@ -66,10 +66,7 @@
         $ausgaben["search"] = "";
 
         // vor- und zurueck-links
-        $vor = "";
-        $zurueck = "";
-        $aktuell = "";
-        $i = 0;
+        $vor = ""; $zurueck = ""; $aktuell = ""; $i = 0;
         foreach ( $dataloop["groups"] as $value ){
             if ( $aktuell != "" ){
                 $vor = $value["id"];
@@ -94,9 +91,6 @@
         }
 
         // bilderliste erstellen, sortieren, zaehlen
-        function pics_sort($a, $b) {
-            return ($a["sort"] < $b["sort"]) ? -1 : 1;
-        }
         $sql = "SELECT *
                   FROM site_file
                  WHERE fhit
@@ -104,6 +98,9 @@
         $result = $db -> query($sql);
         filelist($result,$environment["parameter"][1]);
         if ( count($dataloop["list"]) > 0 ) {
+            function pics_sort($a, $b) {
+                return ($a["sort"] < $b["sort"]) ? -1 : 1;
+            }
             uasort($dataloop["list"],"pics_sort");
         }
         $ausgaben["pic_count"] = count($dataloop["list"]);
