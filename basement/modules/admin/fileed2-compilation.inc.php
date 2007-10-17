@@ -48,12 +48,6 @@
         // funktions bereich
         // ***
 
-        // funktion zum sortieren der bildern
-        // vorlaeufig hier abgelegt
-        function _compare($a, $b) {
-            return ($a["sort"] < $b["sort"]) ? -1 : 1;
-        }
-
         // dropdown bauen lassen
         $dataloop["groups"] = compilationlist($environment["parameter"][1]);
 
@@ -90,32 +84,27 @@
             }
             $i++;
         }
-        $ausgaben["result"] = count($dataloop["groups"]);
+        $ausgaben["comp_count"] = count($dataloop["groups"]);
+        $ausgaben["aktuell"] = $i;
         if ( $vor != "" ){
             $hidedata["vor"]["link"] = $cfg["basis"]."/compilation,".$vor.".html";
         }
         if ( $zurueck != "" ){
             $hidedata["zurueck"]["link"] = $cfg["basis"]."/compilation,".$zurueck.".html";
         }
-        // bei der wievielten compilation stehen wir
-        $ausgaben["aktuell"] = $i;
-        // wieviele compilation gibt es
 
-        // dataloop mit den bildern, file-dataloop wird gebaut
+        // file-dataloop
         $sql = "SELECT *
                   FROM site_file
                  WHERE fhit
                   LIKE '%#p".$environment["parameter"][1]."%' ORDER BY fid";
         $result = $db -> query($sql);
-
-        // dataloop wird ueber eine share-funktion aufgebaut
         filelist($result,$environment["parameter"][1]);
-        // sortieren der bilder mittels uasort-funktion (s.o.)
+        // bilder sortieren
         if ( count($dataloop["list"]) > 0 ) {
-            uasort($dataloop["list"],"_compare");
+            uasort($dataloop["list"],"pics_sort");
         }
-        // anzahl der enthaltenen bilder
-        $ausgaben["count"]  = count($dataloop["list"]);
+        $ausgaben["pic_count"]  = count($dataloop["list"]);
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["basis"]."/compilation.html";

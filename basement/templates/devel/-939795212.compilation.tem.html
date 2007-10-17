@@ -41,7 +41,7 @@
 <!--##hide-zurueck-->
 <a href="!{link}">g(prev)</a>
 <!--##show-->
-#(compilation) !#ausgaben_aktuell #(of) !#ausgaben_result
+#(compilation) !#ausgaben_aktuell #(of) !#ausgaben_comp_count
 <!--##hide-vor-->
 <a href="!{link}">g(next)</a>
 <!--##show-->
@@ -51,30 +51,12 @@
 <ul>
 <!--##loop-list-->
     <li class="thumbs">
-        <a href="!{vhref}" class="pic"><img src="!{src}" !{size} alt="!{alt}" title="!{title} g(edit)" /></a>
+        <a href="!{vhref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} g(edit)" /></a>
     </li>
 <!--##cont-->
 </ul>
 <div style="clear:both"></div>
-<p>#(num_pics) !#ausgaben_count</p>
-
-<div style="clear:both"></div>
-<!--##loop-compilations-->
-<div class="selection_teaser" style="">
-        <a href="!{link}" style="float:right;">
-            <img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)" />
-        </a>
-    <h2>#!{id}: !{name}</h2>
-    <div style="border:1px solid #c8c8c8;text-align:center;">
-        <ul>
-            !{thumbs}
-        </ul>
-        <p style="clear:both;" />
-    </div>
-    #(selection_teaser)
-</div>
-<!--##cont-->
-
+<p>#(num_pics) !#ausgaben_pic_count</p>
 
 <!-- <div style="clear:both"></div> -->
 <!-- <p style="float:left">g(anzahl)!#ausgaben_anzahl</p> -->
