@@ -61,6 +61,7 @@
                      #"used" => "",
                   "collect" => "",
               "compilation" => "",
+       "compilation,shared" => array("compilationlist","filelist"),
                        ),
                "db" => array(
                      "file" => array(
