@@ -354,11 +354,6 @@
 
     // funktionen fuer die compilation-liste
     if ( in_array("compilationlist", $cfg["function"][$environment["kategorie"]]) ) {
-        // bilder sortieren (uasort)
-        function pics_sort($a, $b) {
-            return ($a["sort"] < $b["sort"]) ? -1 : 1;
-        }
-
         function compilationlist( $select="" ) {
             global $db;
 

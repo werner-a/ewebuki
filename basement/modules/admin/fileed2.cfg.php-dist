@@ -60,8 +60,8 @@
                    "upload" => "",
                      #"used" => "",
                   "collect" => "",
-              "compilation" => "",
-       "compilation,shared" => array("compilationlist","filelist"),
+              "compilation" => array("compilationlist"),
+       "compilation,shared" => array("filelist"),
                        ),
                "db" => array(
                      "file" => array(

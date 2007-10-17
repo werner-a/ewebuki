@@ -100,11 +100,15 @@
                   LIKE '%#p".$environment["parameter"][1]."%' ORDER BY fid";
         $result = $db -> query($sql);
         filelist($result,$environment["parameter"][1]);
+
         // bilder sortieren
+        function pics_sort($a, $b) {
+            return ($a["sort"] < $b["sort"]) ? -1 : 1;
+        }
         if ( count($dataloop["list"]) > 0 ) {
             uasort($dataloop["list"],"pics_sort");
         }
-        $ausgaben["pic_count"]  = count($dataloop["list"]);
+        $ausgaben["pic_count"] = count($dataloop["list"]);
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["basis"]."/compilation.html";
