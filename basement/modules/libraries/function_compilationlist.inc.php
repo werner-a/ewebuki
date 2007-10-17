@@ -95,7 +95,7 @@
                 if ( !strstr($match[0][$key],"[E]")
                     || ( strstr($match[0][$key],"[E]") && strstr($match[0][$key],"[/E]") ) ){
 
-                    $parameter = explode(",",$value);
+                    $parameter = explode(";",$value);
                     $sel_name  = $match[3][$key];
                     $id = $parameter[0];
 
