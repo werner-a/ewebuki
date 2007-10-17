@@ -352,6 +352,97 @@
         }
     }
 
+    // beschreibung der funktion
+    if ( in_array("compilationlist", $cfg["function"][$environment["kategorie"]]) ) {
+        function compilationlist( $select="" ) {
+            global $db;
+
+            // selection-bilder, werden aus der site_file geholt
+            $sql = "SELECT *
+                    FROM site_file
+                    WHERE fhit LIKE '%#p%'";
+            $result = $db -> query($sql);
+
+            $compilations = array();
+            while ( $data = $db -> fetch_array($result,1) ){
+                // alle gruppeneintraege holen
+                preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);
+                foreach ( $match[1] as $key=>$value ){
+
+                    if ( $match[2][$key] == "" ){
+                        $sort[$value] = 0;
+                    } else {
+                        $sort[$value] = $match[2][$key];
+                    }
+                    // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
+                    if ( is_array($dataloop["compilations"][$value]["pics"]) ){
+                        while ( is_array($dataloop["compilations"][$value]["pics"][$sort[$value]]) ){
+                            $sort[$value]++;
+                        }
+                    }
+
+                    $compilations[$value]["id"]     = $value;
+                    $compilations[$value]["name"]   = "---";
+                    $compilations[$value]["desc"]  .= $data["fdesc"]." ";
+
+                    if ( $value == $select ) {
+                        $compilations[$value]["select"] = ' selected="true"';
+                    } else {
+                        $compilations[$value]["select"] = "";
+                    }
+                }
+            }
+
+            // aus dem content werden die gruppen rausgezogen und ggf. das dataloop um einen gruppennamen ergaenzt
+            $sql = "SELECT * FROM site_text WHERE content LIKE '%[/SEL]%'";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+
+                preg_match_all("/(.*)\[SEL=(.*)\](.*)\[\/SEL\]/Usi",$data["content"],$match);
+
+                foreach ( $match[2] as $key=>$value ){
+
+                    // den fall abfangen, dass die selection in [E]-Tags steht
+                    if ( !strstr($match[0][$key],"[E]")
+                        || ( strstr($match[0][$key],"[E]") && strstr($match[0][$key],"[/E]") ) ){
+
+                        $parameter = explode(";",$value);
+                        $sel_name  = $match[3][$key];
+                        $id = $parameter[0];
+
+                        // gibt es keine bilder zur gruppe, werden die fehlenden dataloop-eintraege nachgeholt
+                        if ( !is_array($compilations[$id]) ){
+                            $compilations[$id]["id"]   = $id;
+                            if ( $id == $select ) {
+                                $compilations[$id]["select"] = ' selected="true"';
+                            } else {
+                                $compilations[$id]["select"] = "";
+                            }
+                        }
+
+                        if ( $compilations[$id]["name"] == "---"
+                        || $compilations[$id]["name"] == "" ){
+                            $name = $sel_name;
+                        } else {
+                            // name wird nur erfasst, wenn er nicht schon drinsteht
+                            $buffer_names = explode(", ",$compilations[$id]["name"]);
+                            if ( !in_array($sel_name,$buffer_names) ){
+                                $name = $compilations[$id]["name"].", ".$sel_name;
+                            }
+                        }
+
+                        $compilations[$id]["name"] = $name;
+                    }
+
+                }
+            }
+
+            ksort($compilations);
+
+            return $compilations;
+        }
+    }
+
 
     ### platz fuer weitere funktionen ###
 
