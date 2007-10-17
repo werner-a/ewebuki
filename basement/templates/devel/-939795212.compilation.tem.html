@@ -15,7 +15,7 @@
         <fieldset>
             <label for="search">#(search)</label>
             <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
-            <label>#(compilation)</label>
+            <label>#(compilation_search)</label>
             <select name="compID" onchange="submit()">
                 <option value="">Compilation ausw&auml;hlen</option>
                 <!--##loop-groups-->
@@ -28,13 +28,20 @@
         </fieldset>
     </form>
 </div>
-<p>!#ausgaben_result</p>
+<!-- <p>#(num_comps) !#ausgaben_result</p> -->
+<p style="clear:both" />
+    <a href="./list.html">#(filelist)</a></p>
+</p>
 
 <h1>!#ausgaben_compilation</h1>
 <p>
+<a href="!#ausgaben_edit" style="float:right;">
+    <img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)" />
+</a>
 <!--##hide-zurueck-->
 <a href="!{link}">g(prev)</a>
 <!--##show-->
+#(compilation) !#ausgaben_aktuell #(of) !#ausgaben_result
 <!--##hide-vor-->
 <a href="!{link}">g(next)</a>
 <!--##show-->
@@ -49,7 +56,7 @@
 <!--##cont-->
 </ul>
 <div style="clear:both"></div>
-<p>!#ausgaben_count</p>
+<p>#(num_pics) !#ausgaben_count</p>
 
 <div style="clear:both"></div>
 <!--##loop-compilations-->

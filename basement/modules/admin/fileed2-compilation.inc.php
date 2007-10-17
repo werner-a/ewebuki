@@ -48,152 +48,79 @@
         // funktions bereich
         // ***
 
-        $search = "";
-        if ( $_GET["send"] ){
-            $search = $_GET["search"];
-        }
-        $ausgaben["search"] = $search;
-
+        // funktion zum sortieren der bildern
+        // vorlaeufig hier abgelegt
         function _compare($a, $b) {
             return ($a["sort"] < $b["sort"]) ? -1 : 1;
         }
 
-        function compilationlist($select=""){
-            global $db;
+        // dropdown bauen lassen
+        $dataloop["groups"] = compilationlist($environment["parameter"][1]);
 
-            // selection-bilder, werden aus der site_file geholt
-            $sql = "SELECT *
-                    FROM site_file
-                    WHERE fhit LIKE '%#p%'";
-            $result = $db -> query($sql);
-
-            $compilations = array();
-            while ( $data = $db -> fetch_array($result,1) ){
-                // alle gruppeneintraege holen
-                preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);
-                foreach ( $match[1] as $key=>$value ){
-
-                    if ( $match[2][$key] == "" ){
-                        $sort[$value] = 0;
-                    }else{
-                        $sort[$value] = $match[2][$key];
-                    }
-                    // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
-                    if ( is_array($dataloop["compilations"][$value]["pics"]) ){
-                        while ( is_array($dataloop["compilations"][$value]["pics"][$sort[$value]]) ){
-                            $sort[$value]++;
-                        }
-                    }
-
-                    $compilations[$value]["id"]     = $value;
-                    $compilations[$value]["name"]   = "---";
-
-                    if ( $value == $select ) {
-                        $compilations[$value]["select"] = ' selected="true"';
-                    } else {
-                        $compilations[$value]["select"] = "";
-                    }
-                }
-            }
-
-            // aus dem content werden die gruppen rausgezogen und ggf. das dataloop um einen gruppennamen ergaenzt
-            $sql = "SELECT * FROM site_text WHERE content LIKE '%[/SEL]%'";
-            $result = $db -> query($sql);
-            while ( $data = $db -> fetch_array($result,1) ) {
-
-                preg_match_all("/(.*)\[SEL=(.*)\](.*)\[\/SEL\]/Usi",$data["content"],$match);
-
-                foreach ( $match[2] as $key=>$value ){
-
-                    // den fall abfangen, dass die selection in [E]-Tags steht
-                    if ( !strstr($match[0][$key],"[E]")
-                     || ( strstr($match[0][$key],"[E]") && strstr($match[0][$key],"[/E]") ) ){
-
-                        $parameter = explode(",",$value);
-                        $sel_name  = $match[3][$key];
-                        $id = $parameter[0];
-
-                        // gibt es keine bilder zur gruppe, werden die fehlenden dataloop-eintraege nachgeholt
-                        if ( !is_array($compilations[$id]) ){
-                            $compilations[$id]["id"]   = $id;
-                            if ( $id == $select ) {
-                                $compilations[$id]["select"] = ' selected="true"';
-                            } else {
-                                $compilations[$id]["select"] = "";
-                            }
-                        }
-
-                        if ( $compilations[$id]["name"] == "---"
-                        || $compilations[$id]["name"] == "" ){
-                            $name = $sel_name;
-                        }else{
-                            $name = $compilations[$id]["name"].", ".$sel_name;
-                        }
-
-                        $compilations[$id]["name"] = $name;
-                    }
-
-                }
-            }
-
-            ksort($compilations);
-
-            return $compilations;
-        }
-
-        $dataloop["groups"] = compilationlist($_GET["compID"]);
-
-        // beim ersten aufruf wird die erste compilation genommen
-        reset($dataloop["groups"]);
-        if ( $_GET["compID"] ){
-            $groupid = $_GET["compID"];
-        } else {
+        if ( is_numeric($_GET["compID"]) ){
+            // umwandeln der GET-Variable in environment-parameter
+            $header = $cfg["basis"]."/compilation,".$_GET["compID"].".html";
+            header("Location: ".$header);
+        } elseif ( !isset($environment["parameter"][1]) ){
+            // falls weder GET-Variable noch environment-parameter gesetzt, wird zur ersten compilation gesprungen
             $buffer = current($dataloop["groups"]);
-            $groupid = $buffer["id"];
+            $header = $cfg["basis"]."/compilation,".$buffer["id"].".html";
+            header("Location: ".$header);
         }
+
+        // TODO: hier kommt die schnellsuche hin
+        $ausgaben["search"] = "";
 
         // vor- und zurueck-links
         $vor = "";
         $zurueck = "";
         $aktuell = "";
+        $i = 0;
         foreach ( $dataloop["groups"] as $value ){
             if ( $aktuell != "" ){
                 $vor = $value["id"];
                 break;
             }
-            if ( $value["id"] == $groupid ){
-                $aktuell = $groupid;
+            if ( $value["id"] == $environment["parameter"][1] ){
+                $aktuell = $environment["parameter"][1];
                 $ausgaben["compilation"] = "#".$value["id"].": ".$value["name"];
             }
             if ( $aktuell == "" ) {
                 $zurueck = $value["id"];
             }
+            $i++;
         }
+        $ausgaben["result"] = count($dataloop["groups"]);
         if ( $vor != "" ){
-            $hidedata["vor"]["link"] = $cfg["basis"]."/compilation.html?compID=".$vor;
+            $hidedata["vor"]["link"] = $cfg["basis"]."/compilation,".$vor.".html";
         }
         if ( $zurueck != "" ){
-            $hidedata["zurueck"]["link"] = $cfg["basis"]."/compilation.html?compID=".$zurueck;
+            $hidedata["zurueck"]["link"] = $cfg["basis"]."/compilation,".$zurueck.".html";
         }
+        // bei der wievielten compilation stehen wir
+        $ausgaben["aktuell"] = $i;
+        // wieviele compilation gibt es
 
-        // dataloop mit den bildern
+        // dataloop mit den bildern, file-dataloop wird gebaut
         $sql = "SELECT *
                   FROM site_file
                  WHERE fhit
-                  LIKE '%#p".$_GET["compID"]."%' ORDER BY fid";
+                  LIKE '%#p".$environment["parameter"][1]."%' ORDER BY fid";
         $result = $db -> query($sql);
 
         // dataloop wird ueber eine share-funktion aufgebaut
-        filelist($result,$_GET["compID"]);
+        filelist($result,$environment["parameter"][1]);
+        // sortieren der bilder mittels uasort-funktion (s.o.)
         if ( count($dataloop["list"]) > 0 ) {
-            usort($dataloop["list"],"_compare");
+            uasort($dataloop["list"],"_compare");
         }
-
-        $ausgaben["count"] = count($dataloop["list"]);
+        // anzahl der enthaltenen bilder
+        $ausgaben["count"]  = count($dataloop["list"]);
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["basis"]."/compilation.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_break"]  = $cfg["basis"]."/list.html";
+        $ausgaben["edit"]        = $cfg["basis"]."/collect,".$environment["parameter"][1].".html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";

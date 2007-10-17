@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function filelist($result,$group="") {
-        global $db, $cfg, $defaults, $pathvars, $dataloop;
+        global $db, $cfg, $defaults, $pathvars, $environment, $dataloop;
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
         $getvalues = "";
@@ -113,7 +113,7 @@
                                                        $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].
                                                        $cfg["fileopt"][$type]["name"]."_".
                                                        $data["fid"].".".$data["ffart"],
-                                            "vhref" => "view,o,".$data["fid"].",".$group.".html",
+                                            "vhref" => $environment["allparameter"]."/view,o,".$data["fid"].",".$group.".html",
                                               "src" => $pathvars["filebase"]["webdir"].
                                                        $pathvars["filebase"]["pic"]["root"].
                                                        $pathvars["filebase"]["pic"]["tn"]."tn_".
