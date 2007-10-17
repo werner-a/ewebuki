@@ -60,7 +60,7 @@
 
                 if ( $match[2][$key] == "" ){
                     $sort[$value] = 0;
-                }else{
+                } else {
                     $sort[$value] = $match[2][$key];
                 }
                 // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
@@ -112,8 +112,12 @@
                     if ( $compilations[$id]["name"] == "---"
                     || $compilations[$id]["name"] == "" ){
                         $name = $sel_name;
-                    }else{
-                        $name = $compilations[$id]["name"].", ".$sel_name;
+                    } else {
+                        // name wird nur erfasst, wenn er nicht schon drinsteht
+                        $buffer_names = explode(", ",$compilations[$id]["name"]);
+                        if ( !in_array($sel_name,$buffer_names) ){
+                            $name = $compilations[$id]["name"].", ".$sel_name;
+                        }
                     }
 
                     $compilations[$id]["name"] = $name;
