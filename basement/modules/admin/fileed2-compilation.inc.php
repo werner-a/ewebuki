@@ -93,18 +93,16 @@
             $hidedata["zurueck"]["link"] = $cfg["basis"]."/compilation,".$zurueck.".html";
         }
 
-        // file-dataloop
+        // bilderliste erstellen, sortieren, zaehlen
+        function pics_sort($a, $b) {
+            return ($a["sort"] < $b["sort"]) ? -1 : 1;
+        }
         $sql = "SELECT *
                   FROM site_file
                  WHERE fhit
                   LIKE '%#p".$environment["parameter"][1]."%' ORDER BY fid";
         $result = $db -> query($sql);
         filelist($result,$environment["parameter"][1]);
-
-        // bilder sortieren
-        function pics_sort($a, $b) {
-            return ($a["sort"] < $b["sort"]) ? -1 : 1;
-        }
         if ( count($dataloop["list"]) > 0 ) {
             uasort($dataloop["list"],"pics_sort");
         }
