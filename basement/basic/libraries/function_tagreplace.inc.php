@@ -724,7 +724,7 @@
                             $selwerte = explode(";",$tagwerte[0]);
                             $path = dirname($pathvars["requested"]);
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
-                            $link = $path.basename($pathvars["requested"],".html")."/view,".$selwerte[1].",2,".$selwerte[0].".html"; #/view,größe,bild,selektion
+                            $link = $path.basename($pathvars["requested"],".html")."/view,".$selwerte[1].",2,".$selwerte[0].",".$selwerte[2].".html"; #/view,größe,bild,selektion,thumbs
                             $sel = "<a href=\"".$link."\">".$tagwerte[1]."</a>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         }

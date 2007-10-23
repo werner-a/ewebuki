@@ -68,24 +68,30 @@
         // funktions bereich
         // ***
 
+        # file id
         $fid = $environment["parameter"][2];
 
+        # selection mode
         if ( $environment["parameter"][3] != "" ) {
             $sql = "SELECT *
-                    FROM ".$cfg["db"]["entries"]."
-                    WHERE fhit like '%#p".$environment["parameter"][3]."%'
-                ORDER BY ".$cfg["db"]["order"];
+                      FROM ".$cfg["db"]["entries"]."
+                     WHERE fhit like '%#p".$environment["parameter"][3]."%'
+                  ORDER BY ".$cfg["db"]["order"];
         } else {
             $sql = "SELECT *
-                    FROM ".$cfg["db"]["entries"]."
-                    WHERE fid =".$fid;
+                      FROM ".$cfg["db"]["entries"]."
+                     WHERE fid =".$fid;
         }
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
 
+        # thumbs mode
+        if ( $environment["parameter"][4] != "" ) {
+            $hidedata["thumbs"][0] = "enable";
+            $parameter4 = ",".$environment["parameter"][4];
+        }
+
         while ( $data = $db -> fetch_array($result,1) ) {
-            $dataloop["leer"][$data["fid"]][0] = $data["fid"];
-            $dataloop["leer"][$data["fid"]][1] = $data["fhit"];
 
             if ( $environment["parameter"][3] != "" ) {
                 preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
@@ -97,20 +103,18 @@
 
                 if ( $data["fid"] == $fid ){
                     $color = $cfg["color"]["selected"];
-                }else{
+                } else {
                     $color = "none";
                 }
 
-                $dataloop["list"][$sort] = array(
+                $dataloop["thumbs"][$sort] = array(
                        "id" => $data["fid"],
                      "type" => $data["ffart"],
                       "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
-                     "link" => $pathvars["virtual"].$environment["ebene"]."/view,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html",
+                     "link" => $pathvars["virtual"].$environment["ebene"]."/view,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].$parameter4.".html",
                     "title" => $data["funder"],
                        "bg" => $color,
                 );
-                $hidedata["list"][0] = "enable";
-
                 $arrSort[$data["fid"]] = $i;
                 $i++;
             }
@@ -121,19 +125,12 @@
                 $ausgaben["beschriftung"] = $data["funder"];
                 $ausgaben["beschreibung"] = $data["fdesc"];
             }
-
-            $merker = $data["fid"];
-
-            #$marke = substr($data["fhit"],0,strpos($data["fhit"],"#",1));
-            #$merke = str_replace( "#p".$environment["parameter"][3].",", "", $marke )."<br />";
         }
-//         $letzte = $merker;
-        #$hidedata["leer"][0] = "enable";
 
-        if ( $environment["parameter"][3] != "" ){
+        if ( $environment["parameter"][3] != "" ) {
             $i = 0;
-            ksort($dataloop["list"]);
-            foreach ( $dataloop["list"] as $value ){
+            ksort($dataloop["thumbs"]);
+            foreach ( $dataloop["thumbs"] as $value ) {
                 $i++;
                 $arrSort[$i] = $value["id"];
 
@@ -142,24 +139,24 @@
             $gesamt = $i;
 
             // ueberlauf sicherstellen
-            if ( $aktuell == 1 ){
+            if ( $aktuell == 1 ) {
                 $vorher = $arrSort[$gesamt];
-            }else{
+            } else {
                 $vorher = $arrSort[( $aktuell - 1 )];
             }
 
-            if ( $aktuell == $gesamt ){
+            if ( $aktuell == $gesamt ) {
                 $nachher = $arrSort[1];
-            }else{
+            } else {
                 $nachher = $arrSort[( $aktuell + 1 )];
             }
         }
 
         // navi links
-        $ausgaben["zurueck"] = "view,".$environment["parameter"][1].",".$vorher.",".$environment["parameter"][3].".html";
+        $ausgaben["zurueck"] = "view,".$environment["parameter"][1].",".$vorher.",".$environment["parameter"][3].$parameter4.".html";
         $ausgaben["aktuell"] = $aktuell;
         $ausgaben["gesamt"] = $gesamt;
-        $ausgaben["vor"] = "view,".$environment["parameter"][1].",".$nachher.",".$environment["parameter"][3].".html";
+        $ausgaben["vor"] = "view,".$environment["parameter"][1].",".$nachher.",".$environment["parameter"][3].$parameter4.".html";
         $ausgaben["referer"] = dirname($pathvars["requested"]).".html";
         if ( $environment["parameter"][3] != "" ) {
             $hidedata["navi"][0] = "enable";
