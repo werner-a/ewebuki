@@ -161,8 +161,7 @@
 
         // das loeschen wurde bestaetigt, loeschen!
         // ***
-        if ( $_POST["delete"] != ""
-            && $_POST["send"] != "" ) {
+        if ( $_POST["send"] != "" ) {
 
             foreach ( $_SESSION["file_memo"] as $value ) {
                 if ( !in_array($value,$forbidden) ) {
