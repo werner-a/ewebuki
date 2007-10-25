@@ -241,7 +241,7 @@
         //
 
         function content_check($id) {
-            global $db, $_SESSION, $cfg, $pathvars, $file, $arrError;
+            global $db, $_SESSION, $cfg, $pathvars, $file;
 
             $content_error = "";
             $old = "\_".$id.".";
@@ -271,7 +271,7 @@
                         $url = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
 
                         $label = str_replace($environment["fqdn"][0],$db -> getdb(),$pathvars["menuroot"]).$ebene.$kategorie;
-                        $arrError[] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
+                        $found_in[] .= "<a href=\"".$url."\">".$label."</a>"."<br />";
                     }
 
                 }
@@ -286,69 +286,15 @@
                     $kategorie = $data2["kategorie"].".html";
                     $url = str_replace($environment["fqdn"][0],"www",$pathvars["menuroot"]).$ebene.$kategorie;
                     $label = $ebene.$kategorie;
-                    $arrError[] = "<a href=\"".$url."\">".$label."</a>";
+                    $found_in[] = "<a href=\"".$url."\">".$label."</a>";
                 }
             }
 
-            if ( count($arrError) > 0 ){
-                return True;
+            if ( count($found_in) > 0 ){
+                return $found_in;
             } else {
-                return False;
+                return array();
             }
-        }
-
-        // function del_check
-        // ------------------
-        //
-        //          Ueberprueft, ob eine Datei geloescht werden
-        //
-        // Parameter:
-        //
-        //     $id: ID der zu untersuchenden Datei
-        //
-        // Rueckgabewerte:
-        //
-        //       1: Datei gehoert nicht dem angemeldeten Benutzer
-        //       2: Datei wird in Content benutzt (inkl. $arrError mit den Links zu den Contentseiten)
-        //
-        //    101: Warnung, dass die Datei zu einer Bildergruppe gehoert
-        //
-
-        function del_check($id) {
-            global $db, $_SESSION, $cfg, $pathvars, $file, $arrError;
-
-            $sql = "SELECT *
-                      FROM ".$cfg["db"]["file"]["entries"]."
-                     WHERE ".$cfg["db"]["file"]["key"]."=".$id;
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,1);
-
-            $arrError = array();
-            $error = 0;
-
-            // FALL 1: Fehler:nur eigene dateien duerfen geloescht werden
-            // -------
-            if ( $_SESSION["uid"] != $data["fuid"] ) {
-                $error = 1;
-            }
-
-            // FALL 2: Fehler:gibt es content, der diese datei einthaelt
-            // -------
-            if ( content_check($id) == True && $error == 0 ){
-                $error = 2;
-            }
-
-            // FALL 3: Warnung - bild gehoert zu einer bildergruppe
-            if ( strstr($data["fhit"],"#p") && $error == 0 ){
-                preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
-                foreach ( $match[1] as $value ){
-                    $arrError[] = "<a href=\"".$cfg["basis"]."/delete/view,o,".$id.",".$value.".html\">Gruppe #".$value."</a>";
-                }
-                $error = 101;
-            }
-
-            return $error;
         }
     }
 
