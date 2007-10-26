@@ -51,19 +51,38 @@
         // dropdown bauen lassen
         $dataloop["groups"] = compilation_list($environment["parameter"][1]);
 
+        // schnellsuche
+        if ( $_GET["send"] ){
+            if ( $_GET["search"] == "" ){
+                unset($_SESSION["compilation_search"]);
+            }else{
+                $_SESSION["compilation_search"] = $_GET["search"];
+            }
+        }
+        if ( isset($_SESSION["compilation_search"]) ){
+            function groups_filter ($var) {
+                if ( stristr($var["name"],$_SESSION["compilation_search"])
+                  || stristr($var["desc"],$_SESSION["compilation_search"]) ) {
+                    return $var;
+                }
+            }
+            $dataloop["groups"] = array_filter($dataloop["groups"], "groups_filter");
+            $ausgaben["search"] = $_SESSION["compilation_search"];
+        }else{
+            $ausgaben["search"] = "";
+        }
+
+        // get wird environment-parameter, weiterleitung
         if ( is_numeric($_GET["compID"]) ){
-            // umwandeln der GET-Variable in environment-parameter
             $header = $cfg["basis"]."/compilation,".$_GET["compID"].".html";
             header("Location: ".$header);
-        } elseif ( !isset($environment["parameter"][1]) ){
-            // falls weder GET-Variable noch environment-parameter gesetzt, wird zur ersten compilation gesprungen
+        } elseif (( !isset($environment["parameter"][1])
+                 || !isset($dataloop["groups"][$environment["parameter"][1]])
+                  ) && count($dataloop["groups"]) > 0 ){
             $buffer = current($dataloop["groups"]);
             $header = $cfg["basis"]."/compilation,".$buffer["id"].".html";
             header("Location: ".$header);
         }
-
-        // TODO: hier kommt die schnellsuche hin
-        $ausgaben["search"] = "";
 
         // vor- und zurueck-links
         $vor = ""; $zurueck = ""; $aktuell = ""; $i = 0;
@@ -91,19 +110,22 @@
         }
 
         // bilderliste erstellen, sortieren, zaehlen
-        $sql = "SELECT *
-                  FROM site_file
-                 WHERE fhit
-                  LIKE '%#p".$environment["parameter"][1]."%' ORDER BY fid";
-        $result = $db -> query($sql);
-        filelist($result,$environment["parameter"][1]);
-        if ( count($dataloop["list"]) > 0 ) {
-            function pics_sort($a, $b) {
-                return ($a["sort"] < $b["sort"]) ? -1 : 1;
+        if ( count($dataloop["groups"]) > 0 ) {
+            $sql = "SELECT *
+                    FROM site_file
+                    WHERE fhit
+                    LIKE '%#p".$environment["parameter"][1]."%'
+                ORDER BY fid";
+            $result = $db -> query($sql);
+            filelist($result,$environment["parameter"][1]);
+            if ( count($dataloop["list"]) > 0 ) {
+                function pics_sort($a, $b) {
+                    return ($a["sort"] < $b["sort"]) ? -1 : 1;
+                }
+                uasort($dataloop["list"],"pics_sort");
             }
-            uasort($dataloop["list"],"pics_sort");
+            $hidedata["compilation"]["pic_count"] = count($dataloop["list"]);
         }
-        $ausgaben["pic_count"] = count($dataloop["list"]);
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["basis"]."/compilation.html";

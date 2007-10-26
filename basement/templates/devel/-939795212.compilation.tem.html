@@ -33,11 +33,14 @@
     <a href="./list.html">#(filelist)</a></p>
 </p>
 
+<!--##hide-compilation-->
 <h1>!#ausgaben_compilation</h1>
 <p>
 <a href="!#ausgaben_edit" style="float:right;">
     <img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)" />
 </a>
+<!--##show-->
+
 <!--##hide-zurueck-->
 <a href="!{link}">g(prev)</a>
 <!--##show-->
@@ -47,6 +50,7 @@
 <!--##show-->
 </p>
 
+<!--##hide-compilation-->
 <div style="clear:both"></div>
 <ul>
 <!--##loop-list-->
@@ -56,11 +60,8 @@
 <!--##cont-->
 </ul>
 <div style="clear:both"></div>
-<p>#(num_pics) !#ausgaben_pic_count</p>
-
-<!-- <div style="clear:both"></div> -->
-<!-- <p style="float:left">g(anzahl)!#ausgaben_anzahl</p> -->
-<!-- <p style="float:right">!#ausgaben_inhalt_selector</p> -->
+<p>#(num_pics) !{pic_count}</p>
+<!--##show-->
 <div style="clear:both"></div>
 <p>#(inhalt)</p>
 <p>#(text1)</p>
