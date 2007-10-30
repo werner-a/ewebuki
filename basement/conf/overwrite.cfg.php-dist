@@ -99,5 +99,10 @@
   #$defaults["tag"]["in"] = "<strong><font color=\"#990000\" size=\"4\"><em>";
   #$defaults["tag"]["/in"] = "</em></font></strong>";
 
+  // [SEL] aussehen der picture collection
+  #$defaults["tag"]["sel"] = "<ul>\n";
+  #$defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n    <a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
+  #$defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n";
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
