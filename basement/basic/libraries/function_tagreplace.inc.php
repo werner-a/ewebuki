@@ -722,19 +722,25 @@
                         } else {
                             $tag_value = explode("]",$tagwert,2);
                             $tag_param = explode(";",$tag_value[0]);
+                            $tag_extra = explode(":",$tag_param[3]);
 
                             $path = dirname($pathvars["requested"]);
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
-                            $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",2,".$tag_param[0].",".$tag_param[2].".html"; #/view,größe,bild,selektion,thumbs
+                            $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,größe,bild,selektion,thumbs
 
                             if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<ul>\n";
                             if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n    <a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
                             if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n";
 
                             if ( $tag_param[3] == "" ) {
+                                $sql = "SELECT *
+                                          FROM site_file
+                                         WHERE fhit like '%#p".$tag_param[0]."%'";
+                                $result = $db -> query($sql);
+                                $data = $db -> fetch_array($result,1);
+                                $link = str_replace( "#", $data["fid"], $link);
                                 $sel = "<a href=\"".$link."\">".$tag_value[1]."</a>";
                             } else {
-                                $tag_extra = explode(":",$tag_param[3]);
                                 $sel = $defaults["tag"]["sel"];
                                 foreach ( $tag_extra as $value ) {
                                     $sql = "SELECT *
@@ -749,8 +755,10 @@
                                     .$pathvars["filebase"]["pic"]["tn"]
                                     ."tn_".$value.".".$data["ffart"];
 
+                                    $changed = str_replace( "#", $data["fid"], $link);
+
                                     $s = array("##link##", "##tn#");
-                                    $r = array($link, $tn);
+                                    $r = array($changed, $tn);
                                     $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
                                 $sel .= $defaults["tag"]["/sel"];
