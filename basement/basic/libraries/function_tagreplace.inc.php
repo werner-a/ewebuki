@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tagreplace($replace) {
-        global $pathvars, $environment, $ausgaben, $defaults, $specialvars;
+        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars;
 
         // cariage return + linefeed fix
         if ( $specialvars["newbrmode"] != True ) {
@@ -720,12 +720,41 @@
                             $sel = "not ready";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $selwerte = explode(";",$tagwerte[0]);
+                            $tag_value = explode("]",$tagwert,2);
+                            $tag_param = explode(";",$tag_value[0]);
+
                             $path = dirname($pathvars["requested"]);
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
-                            $link = $path.basename($pathvars["requested"],".html")."/view,".$selwerte[1].",2,".$selwerte[0].",".$selwerte[2].".html"; #/view,größe,bild,selektion,thumbs
-                            $sel = "<a href=\"".$link."\">".$tagwerte[1]."</a>";
+                            $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",2,".$tag_param[0].",".$tag_param[2].".html"; #/view,größe,bild,selektion,thumbs
+
+                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<ul>\n";
+                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n    <a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
+                            if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n";
+
+                            if ( $tag_param[3] == "" ) {
+                                $sel = "<a href=\"".$link."\">".$tag_value[1]."</a>";
+                            } else {
+                                $tag_extra = explode(":",$tag_param[3]);
+                                $sel = $defaults["tag"]["sel"];
+                                foreach ( $tag_extra as $value ) {
+                                    $sql = "SELECT *
+                                            FROM site_file
+                                            WHERE fid =".$value;
+                                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                                    $result = $db -> query($sql);
+
+                                    $data = $db -> fetch_array($result,1);
+                                    $tn = $pathvars["filebase"]["webdir"]
+                                    .$pathvars["filebase"]["pic"]["root"]
+                                    .$pathvars["filebase"]["pic"]["tn"]
+                                    ."tn_".$value.".".$data["ffart"];
+
+                                    $s = array("##link##", "##tn#");
+                                    $r = array($link, $tn);
+                                    $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
+                                }
+                                $sel .= $defaults["tag"]["/sel"];
+                            }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         }
                     case "[/IN]":
