@@ -225,7 +225,7 @@ div.clearer {
 li.thumbs {
         border: 1px solid silver;
         float: left;
-        height: 130px;
+/*         height: 130px; */
         margin: 5px;
         width: 102px;
         text-align: center;
