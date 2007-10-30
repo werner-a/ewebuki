@@ -99,10 +99,10 @@
                  .$cfg["tags"]["img"][4];
 
             // sortierkritierium fuer die compilations
-            if ( $group != "" ){
+            if ( $group != "" ) {
                 preg_match("/#p".$group."[,]*([0-9]*)#/i",$data["fhit"],$match);
                 $sort = $match[1];
-            }else{
+            } else {
                 $sort = "";
             }
 
