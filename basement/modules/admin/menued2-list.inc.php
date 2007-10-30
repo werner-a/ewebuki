@@ -51,6 +51,7 @@
         }
 
         $modify  = array (
+            "sort"      => array("","#(button_desc_sort)"),
             "add"       => array("", "#(button_desc_add)", $cfg["right"]),
             "edit"      => array("", "#(button_desc_edit)", $cfg["right"]),
             "delete"    => array("", "#(button_desc_delete)", $cfg["right"]),
@@ -86,9 +87,9 @@
             // design - umschalter 
             foreach ( $cfg["design_available"] as $value ) {
                 if ( $value != $environment["parameter"][1] && $environment["parameter"][1] != "") {
-                    $ausgaben["design"] .= "<a href=".str_replace($environment["parameter"][1],$value,$pathvars["uri"]).">".$value."</a>";
+                    $ausgaben["design"] .= "<a href=\"".str_replace($environment["parameter"][1],$value,$pathvars["uri"]).">".$value."\"</a>";
                 } elseif ( $value != $design_handle ){
-                    $ausgaben["design"] .= "<a href=".str_replace("list.","list,".$value.".",$pathvars["uri"]).">".$value."</a>";
+                    $ausgaben["design"] .= "<a href=\"".str_replace("list.","list,".$value.".",$pathvars["uri"])."\">".$value."</a>";
                 }
             }
         }

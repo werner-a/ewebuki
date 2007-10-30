@@ -81,6 +81,18 @@
         $count = $db->num_rows($result);
 
         while ( $array = $db -> fetch_array($result,1) ) {
+
+            // aufbau des pfads
+            $buffer["pfad"] .= "/".$array["entry"];
+
+            // hide-status signalisieren
+            $class_hide = "\"\"";
+            if ( $hidestatus == -1 ) {
+                if ( $array["hide"] == -1 ) {
+                    $class_hide = "\"red\"";
+                }
+            }
+
             if ( $flapmenu == -1) {
                 // alle punkte die nicht im array sind nicht anzeigen
                 if ( $refid != 0 && !in_array($refid,$positionArray) ) {
@@ -116,25 +128,14 @@
                     $copy = $positionArray;
                     array_shift($copy);
                     if ( in_array($array["mid"],$copy) || $_GET["id"] == $array["mid"] ) {
-                        $flap = "<a class=\"\" href=\"?id=".$array["refid"]."\"> -</a>";
+                        $href = "<a class=".$class_hide." href=\"?id=".$array["refid"]."\">".$array["label"]."-</a>"."\n";
                     } else {
-                        $flap = "<a class=\"\" href=\"?id=".$array["mid"]."\"> +</a>";
+                        $href = "<a class=".$class_hide." href=\"?id=".$array["mid"]."\">".$array["label"]."+</a>"."\n";
                     }
                 } else {
-                    $flap = "";
+                    $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
             }
-
-            // hide-status signalisieren
-            $class_hide = "";
-            if ( $hidestatus == -1 ) {
-                if ( $array["hide"] == -1 ) {
-                    $class_hide = "red";
-                }
-            }
-
-            // aufbau des pfads
-            $buffer["pfad"] .= "/".$array["entry"];
 
             // schaltflaechen erstellen
             if ( $aktionlinks == -1) {
@@ -153,6 +154,12 @@
                     $aktion = "";
                     if ( is_array($modify) ) {
                         foreach($modify as $name => $value) {
+                            if ( $sortinfo != "" ) {
+                                if ( $name == "sort") {
+                                    $aktion .= "<span title=\"".$value[1]."\" style=\"float:right\">(".$array["sort"].")</span>";
+                                    continue;
+                                }
+                            }
                             if ( $name == "up" || $name == "down" ) {
                                 if ( $array["refid"] == 0 ) {
                                     $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
@@ -174,16 +181,9 @@
                 }
             }
 
-            // hauptpunkt fett
-            if ( $refid == 0 ) $array["label"] = "<b>".$array["label"]."</b>";
-
             // wo geht der href hin?
-            if ( $array["exturl"] == "" ) {
-                $href = $buffer["pfad"].".html";
-                $extern = "";
-            } else {
-                $href = $array["exturl"];
-                $extern = " #(extern)";
+            if ( $array["exturl"] != "" ) {
+                $href = "<a class=".$class_hide." href=".$array["exturl"].">".$array["label"]."</a>"."\n";
             }
 
             // in den buffer schreiben wieviel unterpunkte fuer jeweiligen überpunkt vorhanden sind !
@@ -209,14 +209,8 @@
                 $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
             }
 
-            if ( $sortinfo != "" ) {
-                $sort = "<span style=left:-".(($tiefe-1)*20)."pt;position:relative>".$array["sort"]."</span>";
-            } else {
-                $sort = "";
-            }
-
             if ( $buffer[$refid]["display"] != "none" ) {
-                $tree .= "<li>".$aktion.$ankerpos.$radiobutton."<a class=\"".$class_hide."\" href=\"".$href."\">".$array["label"]."</a>".$flap."\n";
+                $tree .= "<li>".$aktion.$ankerpos.$radiobutton.$href;
             }
             $tree .= sitemap($array["mid"], $art, $modify, -1, $design);
 
