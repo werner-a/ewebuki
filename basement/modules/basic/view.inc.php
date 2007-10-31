@@ -91,6 +91,12 @@
             // selection mode - part1
             if ( $environment["parameter"][3] != "" ) {
 
+                if ( $data["fid"] == $environment["parameter"][2] ){
+                    $color = $cfg["color"]["selected"];
+                } else {
+                    $color = "none";
+                }
+
                 preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
                 $dataloop["thumbs"][] = array(
                        "id" => $data["fid"],
@@ -101,12 +107,6 @@
                     "title" => $data["funder"],
                        "bg" => $color,
                 );
-
-                if ( $data["fid"] == $environment["parameter"][2] ){
-                    $color = $cfg["color"]["selected"];
-                } else {
-                    $color = "none";
-                }
             }
 
             if ( $data["fid"] == $environment["parameter"][2] ) {
