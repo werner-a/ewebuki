@@ -731,43 +731,53 @@
                             if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<ul>\n";
                             if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n    <a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
                             if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n";
-
+                            $sql = "SELECT *
+                                        FROM site_file
+                                        WHERE fhit like '%#p".$tag_param[0]."%'";
+                            $result = $db -> query($sql);
+                            $files = array();
+                            while ( $data = $db -> fetch_array($result,1) ) {
+                                preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                                $files[] = array(
+                                            "fid" => $data["fid"],
+                                            "sort" => $match[1],
+                                            "ffart" => $data["ffart"]
+                                            );
+                            }
+                            foreach ($files as $key => $row) {
+                                $sort[$key]  = $row['sort'];
+                            }
+                            array_multisort($sort, $files);
                             if ( $tag_param[3] == "" ) {
-                                $sql = "SELECT *
-                                          FROM site_file
-                                         WHERE fhit like '%#p".$tag_param[0]."%'";
-                                $result = $db -> query($sql);
-                                while ( $data = $db -> fetch_array($result,1) ) {
-                                    preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
-                                    $files[] = array(
-                                               "id" => $data["fid"],
-                                             "sort" => $match[1]
-                                               );
-                                }
-                                foreach ($files as $key => $row) {
-                                    $sort[$key]  = $row['sort'];
-                                }
-                                array_multisort($sort, $files);
-                                $changed = str_replace( "#", $files[0]["id"], $link);
+                                $changed = str_replace( "#", $files[0]["fid"], $link);
                                 $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
+                            } elseif ( $tag_param[3] == "a" ) {
+                                $sel = $defaults["tag"]["sel"];
+                                foreach ( $files as $row ) {
+                                    $tn = $pathvars["filebase"]["webdir"]
+                                         .$pathvars["filebase"]["pic"]["root"]
+                                         .$pathvars["filebase"]["pic"]["tn"]
+                                         ."tn_".$row["fid"].".".$row["ffart"];
+
+                                    $changed = str_replace( "#", $row["fid"], $link);
+
+                                    $s = array("##link##", "##tn##");
+                                    $r = array($changed, $tn);
+                                    $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
+                                }
+                                $sel .= $defaults["tag"]["/sel"];
                             } else {
                                 $sel = $defaults["tag"]["sel"];
-                                foreach ( $tag_extra as $value ) {
-                                    $sql = "SELECT *
-                                            FROM site_file
-                                            WHERE fid =".$value;
-                                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                                    $result = $db -> query($sql);
-
-                                    $data = $db -> fetch_array($result,1);
+                                foreach ( $files as $row ) {
+                                    if ( !in_array( $row["fid"], $tag_extra ) ) continue;
                                     $tn = $pathvars["filebase"]["webdir"]
-                                    .$pathvars["filebase"]["pic"]["root"]
-                                    .$pathvars["filebase"]["pic"]["tn"]
-                                    ."tn_".$value.".".$data["ffart"];
+                                         .$pathvars["filebase"]["pic"]["root"]
+                                         .$pathvars["filebase"]["pic"]["tn"]
+                                         ."tn_".$row["fid"].".".$row["ffart"];
 
-                                    $changed = str_replace( "#", $data["fid"], $link);
+                                    $changed = str_replace( "#", $row["fid"], $link);
 
-                                    $s = array("##link##", "##tn#");
+                                    $s = array("##link##", "##tn##");
                                     $r = array($changed, $tn);
                                     $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
