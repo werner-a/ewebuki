@@ -737,9 +737,19 @@
                                           FROM site_file
                                          WHERE fhit like '%#p".$tag_param[0]."%'";
                                 $result = $db -> query($sql);
-                                $data = $db -> fetch_array($result,1);
-                                $link = str_replace( "#", $data["fid"], $link);
-                                $sel = "<a href=\"".$link."\">".$tag_value[1]."</a>";
+                                while ( $data = $db -> fetch_array($result,1) ) {
+                                    preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                                    $files[] = array(
+                                               "id" => $data["fid"],
+                                             "sort" => $match[1]
+                                               );
+                                }
+                                foreach ($files as $key => $row) {
+                                    $sort[$key]  = $row['sort'];
+                                }
+                                array_multisort($sort, $files);
+                                $changed = str_replace( "#", $files[0]["id"], $link);
+                                $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
                             } else {
                                 $sel = $defaults["tag"]["sel"];
                                 foreach ( $tag_extra as $value ) {
