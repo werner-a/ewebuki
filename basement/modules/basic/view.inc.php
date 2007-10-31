@@ -68,58 +68,48 @@
         // funktions bereich
         // ***
 
-        # file id
-        $fid = $environment["parameter"][2];
+        // back link
+        $ausgaben["referer"] = dirname($pathvars["requested"]).".html";
 
-        # selection mode
         if ( $environment["parameter"][3] != "" ) {
+            // selection mode
             $sql = "SELECT *
                       FROM ".$cfg["db"]["entries"]."
                      WHERE fhit like '%#p".$environment["parameter"][3]."%'
                   ORDER BY ".$cfg["db"]["order"];
         } else {
+            // picture mode
             $sql = "SELECT *
                       FROM ".$cfg["db"]["entries"]."
-                     WHERE fid =".$fid;
+                     WHERE fid =".$environment["parameter"][2];
         }
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
 
-        # thumbs mode
-        if ( $environment["parameter"][4] != "" ) {
-            $hidedata["thumbs"][0] = "enable";
-            $parameter4 = ",".$environment["parameter"][4];
-        }
-
         while ( $data = $db -> fetch_array($result,1) ) {
 
+            // selection mode - part1
             if ( $environment["parameter"][3] != "" ) {
-                preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
-                $sort = $match[1];
-                // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
-                while ( is_array($dataloop["list"][$sort]) ){
-                    $sort++;
-                }
 
-                if ( $data["fid"] == $fid ){
+                preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                $dataloop["thumbs"][] = array(
+                       "id" => $data["fid"],
+                     "sort" => $match[1],
+                     "type" => $data["ffart"],
+                      "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
+                     "link" => $pathvars["virtual"].$environment["ebene"]."/view,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].",".$environment["parameter"][4].".html",
+                    "title" => $data["funder"],
+                       "bg" => $color,
+                );
+
+                if ( $data["fid"] == $environment["parameter"][2] ){
                     $color = $cfg["color"]["selected"];
                 } else {
                     $color = "none";
                 }
-
-                $dataloop["thumbs"][$sort] = array(
-                       "id" => $data["fid"],
-                     "type" => $data["ffart"],
-                      "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
-                     "link" => $pathvars["virtual"].$environment["ebene"]."/view,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].$parameter4.".html",
-                    "title" => $data["funder"],
-                       "bg" => $color,
-                );
-                $arrSort[$data["fid"]] = $i;
-                $i++;
             }
 
-            if ( $data["fid"] == $fid ) {
+            if ( $data["fid"] == $environment["parameter"][2] ) {
                 $filename = $data["ffname"];
                 $filetyp = $data["ffart"];
                 $ausgaben["beschriftung"] = $data["funder"];
@@ -127,49 +117,59 @@
             }
         }
 
+        // selection mode - part2
         if ( $environment["parameter"][3] != "" ) {
-            $i = 0;
-            ksort($dataloop["thumbs"]);
-            foreach ( $dataloop["thumbs"] as $value ) {
-                $i++;
-                $arrSort[$i] = $value["id"];
 
-                if ( $value["id"] == $fid ) $aktuell = $i;
+            // thumbs sortieren
+            foreach ($dataloop["thumbs"] as $key => $row) {
+               $sort[$key]  = $row['sort'];
             }
-            $gesamt = $i;
+            array_multisort($sort, $dataloop["thumbs"]);
 
-            // ueberlauf sicherstellen
-            if ( $aktuell == 1 ) {
-                $vorher = $arrSort[$gesamt];
+            // thumb aktuell
+            foreach ($dataloop["thumbs"] as $key => $row) {
+               if ( $environment["parameter"][2] == $row['id'] ) {
+                    $aktuell = $key;
+                    $ausgaben["aktuell"] = $aktuell +1;
+               }
+            }
+
+            // thumbs gesamt
+            $ende = count($dataloop["thumbs"]) -1;
+            $ausgaben["gesamt"] = $ende +1;
+
+            // previous link
+            if ( $aktuell == 0 ) {
+                $prev = $dataloop["thumbs"][($ende)]["id"];
             } else {
-                $vorher = $arrSort[( $aktuell - 1 )];
+                $prev = $dataloop["thumbs"][($aktuell-1)]["id"];
             }
+            $ausgaben["prev"] = "view,".$environment["parameter"][1].",".$prev.",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
 
-            if ( $aktuell == $gesamt ) {
-                $nachher = $arrSort[1];
+            // next link
+            if ( $aktuell == $ende ) {
+                $next = $dataloop["thumbs"][0]["id"];
             } else {
-                $nachher = $arrSort[( $aktuell + 1 )];
+                $next = $dataloop["thumbs"][($aktuell+1)]["id"];
             }
-        }
+            $ausgaben["next"] = "view,".$environment["parameter"][1].",".$next.",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
 
-        // navi links
-        $ausgaben["zurueck"] = "view,".$environment["parameter"][1].",".$vorher.",".$environment["parameter"][3].$parameter4.".html";
-        $ausgaben["aktuell"] = $aktuell;
-        $ausgaben["gesamt"] = $gesamt;
-        $ausgaben["vor"] = "view,".$environment["parameter"][1].",".$nachher.",".$environment["parameter"][3].$parameter4.".html";
-        $ausgaben["referer"] = dirname($pathvars["requested"]).".html";
-        if ( $environment["parameter"][3] != "" ) {
+            // navi einblenden
             $hidedata["navi"][0] = "enable";
+
+            // picture link
+            $ausgaben["href"] = $ausgaben["next"];
         } else {
-            $ausgaben["vor"] = $ausgaben["referer"];
+            // picture link
+            $ausgaben["href"] = $ausgaben["referer"];
         }
 
 
         // img werte
         if ( $pathvars["filebase"]["realname"] == True ) {
-            $img = $filetyp."/".$fid."/".$environment["parameter"][1]."/".$filename;
+            $img = $filetyp."/".$environment["parameter"][2]."/".$environment["parameter"][1]."/".$filename;
         } else {
-            $img =  $pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"][$environment["parameter"][1]]."img_".$fid.".".$filetyp;
+            $img = $pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"][$environment["parameter"][1]]."img_".$environment["parameter"][2].".".$filetyp;
         }
 
         $imgfile = $pathvars["filebase"]["maindir"].$img;
@@ -177,6 +177,11 @@
         if ( file_exists($imgfile) ) {
             $imgsize = getimagesize($imgfile);
             $ausgaben["imgsize"] = " ".$imgsize[3];
+        }
+
+        // thumbs mode
+        if ( $environment["parameter"][4] != "" ) {
+            $hidedata["thumbs"][0] = "enable";
         }
 
         // +++

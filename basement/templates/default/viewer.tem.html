@@ -12,27 +12,30 @@
 <h1>#(ueberschrift)</h1>
 <p><a href="!#ausgaben_referer">g(back)</a></p>
 <p>#(inhalt)</p>
+
 <!--##hide-navi-->
-<p><a href="!#ausgaben_zurueck">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_vor">g(next)</a></p>
+<p><a href="!#ausgaben_prev">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_next">g(next)</a></p>
 <!--##show-->
-<p><a href="!#ausgaben_vor"><img src="!#ausgaben_imgurl" title="!#ausgaben_beschriftung" alt="!#ausgaben_beschriftung" /></a></p>
-<!-- !#ausgaben_imgsize -->
-<!--##hide-leer-->
-<table width="200" border="1" cellpadding="0" cellspacing="0">
-    <tr>
-        <td nowrap class="menu_ueberschrift" colspan="2">#(data)</td>
-    </tr>
-    <!--##loop-leer-->
-    <tr>
-        <td align="left" valign="top">!{0}</td>
-        <td align="left" valign="top">!{1}</td>
-    </tr>
-    <!--##cont-->
-</table>
+
+<p><a href="!#ausgaben_href"><img src="!#ausgaben_imgurl" title="!#ausgaben_beschriftung" alt="!#ausgaben_beschriftung" /></a></p>
 <p>!#ausgaben_beschreibung</p>
+<!-- !#ausgaben_imgsize -->
+
+
+<!--##hide-thumbs-->
+<ul>
+    <!--##loop-thumbs-->
+    <li class="thumbs" style="background:!{bg};">
+        <a href="!{link}" class="pic"><img src="!{src}" alt="!{title}" title="!{title}" /></a>
+    </li>
+    <!--##cont-->
+</ul>
+<div style="clear:both;"></div>
 <!--##show-->
+
+
 <!--##hide-navi-->
-<p><a href="!#ausgaben_zurueck">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_vor">g(next)</a></p>
+<p><a href="!#ausgaben_prev">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_next">g(next)</a></p>
 <!--##show-->
 <!--##end-->
 </body>
