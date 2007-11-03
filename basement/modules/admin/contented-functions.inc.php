@@ -226,7 +226,7 @@
 
 
 
-                if ( $value[0] == "" ) $value[0] = "T";
+                if ( $value[0] == "" && $cfg["debug"] == True ) $value[0] = "T";
 
                 // position (T=top, B=bottom), access key, no select, links, rechts, disable
                 //                                                     ebButtons[ebButtons.length] = new ebButton(
