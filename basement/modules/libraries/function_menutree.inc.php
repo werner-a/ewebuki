@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function sitemap($refid, $art = "", $modify = "", $self = "", $design="classic") {
-        global $ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
+        global $sery,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
 
         switch($art) {
             case menued:
@@ -127,10 +127,11 @@
                 if  ( $count_in > 0 ) {
                     $copy = $positionArray;
                     array_shift($copy);
+
                     if ( in_array($array["mid"],$copy) || $_GET["id"] == $array["mid"] ) {
-                        $href = "<a class=".$class_hide." href=\"?id=".$array["refid"]."\">".$array["label"]."-</a>"."\n";
+                        $href = "<a class=".$class_hide." href=?ar=".$sery."&id=".$array["mid"].">".$array["label"]."-</a>"."\n";
                     } else {
-                        $href = "<a class=".$class_hide." href=\"?id=".$array["mid"]."\">".$array["label"]."+</a>"."\n";
+                        $href = "<a class=".$class_hide." href=?ar=".$sery."&id=".$array["mid"].">".$array["label"]."+</a>"."\n";
                     }
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";

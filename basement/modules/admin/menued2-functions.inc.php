@@ -46,12 +46,28 @@
     // funktion um eine sitemap zu erstellen
     if ( in_array("locate", $cfg["function"][$environment["kategorie"]]) ) {
 
-        function locate($id) {
-            global $positionArray,$db,$cfg;
+       function delete($id,$fd) {
+            global $_GET,$db,$cfg,$stop;
             $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result,1);
+            if ( $_GET["id"] == $data["mid"] ) {
+                $stop[] = $fd;
+            }
+            if ( $data["refid"] != 0 ) {
+                delete($data["refid"],$fd);
+            }
+        }
+
+       function locate($id) {
+            global $positionArray,$db,$cfg;
+            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
+
+            $result  = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
+
             $positionArray[$data["mid"]] = $data["mid"];
+
             if ( $data["refid"] != 0 ) {
                 locate($data["refid"]);
             }
