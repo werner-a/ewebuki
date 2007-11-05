@@ -73,7 +73,7 @@
         if ( $environment["parameter"][1] != "" ) {
 
             // explode des GETS
-            $opentree = explode(":",$environment["parameter"][2]);
+            $opentree = explode("-",$environment["parameter"][2]);
 
             // was muss geschlossen werden ?!?!?
             foreach ( $opentree as $key => $value ) {
@@ -97,7 +97,7 @@
                 if ( $treelink == "" ) {
                     $trenner = "";
                 } else {
-                    $trenner = ":";
+                    $trenner = "-";
                 }
                 $treelink .= $trenner.$value;
                 if ( $value != "" ) {
