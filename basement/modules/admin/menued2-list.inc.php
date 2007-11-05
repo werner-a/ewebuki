@@ -68,8 +68,41 @@
         // array umdrehen
         $modify = array_reverse($modify);
 
+        $stop["nop"] = "nop";
+        $positionArray["nop"] = "nop";
         if ( $_GET["id"] != "" ) {
-            locate($HTTP_GET_VARS["id"]);
+
+            // explode des GETS
+            $ar = explode(":",$_GET["ar"]);
+
+            // was muss geschlossen werden ?!?!?
+            foreach ( $ar as $key => $value ) {
+                if ( $value != "" ) {
+                    delete($value,$value);
+                }
+                if ( $stop != "" ) {
+                    if ( in_array($value,$stop) ) {
+                        unset ($ar[$key]);
+                    }
+                }
+            }
+
+            if ( !in_array($_GET["id"],$stop) ) {
+                $ar[] = $_GET["id"];
+            }
+
+            foreach ( $ar as $key => $value ) {
+                if ( $sery == "" ) {
+                    $trenner = "";
+                } else {
+                    $trenner = ":";
+                }
+                $sery .= $trenner.$value;
+                if ( $value != "" ) {
+                    locate($value,$stop);
+                }
+            }
+
         } else {
             $positionArray[0] = 0;
         }
