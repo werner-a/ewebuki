@@ -73,33 +73,33 @@
         if ( $environment["parameter"][1] != "" ) {
 
             // explode des GETS
-            $ar = explode(":",$environment["parameter"][2]);
+            $opentree = explode(":",$environment["parameter"][2]);
 
             // was muss geschlossen werden ?!?!?
-            foreach ( $ar as $key => $value ) {
+            foreach ( $opentree as $key => $value ) {
                 if ( $value != "" ) {
                     delete($value,$value);
                 }
                 if ( $stop != "" ) {
                     if ( in_array($value,$stop) ) {
-                        unset ($ar[$key]);
+                        unset ($opentree[$key]);
                     }
                 }
             }
 
             // punkt oeffnen
             if ( !in_array($environment["parameter"][1],$stop) ) {
-                $ar[] = $environment["parameter"][1];
+                $opentree[] = $environment["parameter"][1];
             }
 
             // link bauen und positionArray bauen
-            foreach ( $ar as $key => $value ) {
-                if ( $sery == "" ) {
+            foreach ( $opentree as $key => $value ) {
+                if ( $treelink == "" ) {
                     $trenner = "";
                 } else {
                     $trenner = ":";
                 }
-                $sery .= $trenner.$value;
+                $treelink .= $trenner.$value;
                 if ( $value != "" ) {
                     locate($value);
                 }
