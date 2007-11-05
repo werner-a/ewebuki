@@ -62,7 +62,12 @@
         // form elemente erweitern
         #$element["extension1"] = "";
         #$element["extension2"] = "";
-        for ( $i = 1; $i <= $_GET["anzahl"]; $i++ ) {
+        if ( $_GET["anzahl"] ) {
+            $anzahl = $_GET["anzahl"];
+        } else {
+            $anzahl = $cfg["upload"]["inputs"];
+        }
+        for ( $i = 1; $i <= $anzahl; $i++ ) {
             $dataloop["upload"][$i]["name"] = "upload".$i;
         }
 
@@ -116,6 +121,8 @@
                 || $_POST["extension1"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
+            unset($dataloop["upload"]);
+
             // form eigaben prüfen
             form_errors( $form_options, $_POST );
 
@@ -128,12 +135,14 @@
                 ### put your code here ###
 
                 foreach ( $_FILES as $key => $value ) {
-                    $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
-                    if ( $file["returncode"] == 0 ) {
-                        rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
-                    } else {
-                        $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ";
-                        $ausgaben["form_error"] .= file_error($file["returncode"])."<br>";
+                    if ( $value["name"] != "" || $value["size"] != 0 ) {
+                        $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
+                        if ( $file["returncode"] == 0 ) {
+                            rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
+                        } else {
+                            $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ";
+                            $ausgaben["form_error"] .= file_error($file["returncode"])."<br>";
+                        }
                     }
                 }
 
@@ -148,35 +157,6 @@
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
-            }
-
-            // datensatz anlegen
-            if ( $ausgaben["form_error"] == ""  ) {
-
-                $kick = array( "PHPSESSID", "form_referer", "send", "avail" );
-                foreach($_POST as $name => $value) {
-                    if ( !in_array($name,$kick) ) {
-                        if ( $sqla != "" ) $sqla .= ",";
-                        $sqla .= " ".$name;
-                        if ( $sqlb != "" ) $sqlb .= ",";
-                        $sqlb .= " '".$value."'";
-                    }
-                }
-
-                // Sql um spezielle Felder erweitern
-                #$sqla .= ", pass";
-                #$sqlb .= ", password('".$checked_password."')";
-
-                $sql = "insert into ".$cfg["db"]["leer"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                #$result  = $db -> query($sql);
-                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
-            }
-
-            // wenn es keine fehlermeldungen gab, die uri $header laden
-            if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$header);
             }
         }
     } else {

@@ -9,48 +9,35 @@
 <body>
 <!--##begin-->
 <!--$Id$-->
-<div id="eEd">
-    <h1>#(ueberschrift)</h1>
-    <p id="search_switch" style="display:none;"><a href="#" onclick="searchswitch('search_field')">Suche ein-/ausblenden</a></p>
-    <div class="clearer">&nbsp;</div>
-    <div id="search_field" style="display:block;">
-        <form method="get" action="!#ausgaben_form1_aktion">
-            <fieldset>
-                <label for="search">#(search)</label>
-                <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
-                <label for="filter0">#(group)</label>
-                <select name="filter0" onchange="submit()">
-                    <!--##loop-filter0-->
-                    <option value="!{value}"!{select}>!{label}</option>
-                    <!--##cont-->
-                </select>
-                <label for="filter1">#(type)</label>
-                <select name="filter1" onchange="submit()">
-                    <!--##loop-filter1-->
-                    <option value="!{value}"!{select}>!{label}</option>
-                    <!--##cont-->
-                </select>
-                <label for="send"></label>
-                <input type="submit" name="send[]" value="#(send)" />
-                <div class="clearer">&nbsp;</div>
-            </fieldset>
-        </form>
-        <form method="get" action="!#ausgaben_form2_aktion">
-            <fieldset>
-                <label for="anzahl">#(upload)</label>
-                    <select name="anzahl" onchange="submit()">
-                        <option selected="selected">Upload</option>
-                        <option value="1">1 Datei</option>
-                        <option value="2">2 Dateien</option>
-                        <option value="3">3 Dateien</option>
-                        <option value="4">4 Dateien</option>
-                        <option value="5">5 Dateien</option>
-                    </select>
-                <div class="clearer">&nbsp;</div>
-            </fieldset>
-        </form>
-    </div>
-</div>
+<form method="get" action="!#ausgaben_form1_aktion" id="eEd">
+<h1>#(ueberschrift)</h1>
+    <fieldset class="float">
+        <label>
+            #(search)&nbsp;<input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+        </label>
+        <label>
+            &nbsp;
+            <input type="submit" name="send[]" value="g(send)" />
+        </label>
+        <div class="clearer">&nbsp;</div>
+        <label>
+            #(group)
+            <select name="filter0" onchange="submit()">
+                <!--##loop-filter0-->
+                <option value="!{value}"!{select}>!{label}</option>
+                <!--##cont-->
+            </select>
+        </label>
+        <label>
+            #(type)
+            <select name="filter1" onchange="submit()">
+                <!--##loop-filter1-->
+                <option value="!{value}"!{select}>!{label}</option>
+                <!--##cont-->
+            </select>
+        </label>
+    </fieldset>
+</form>
 <p>!#ausgaben_result</p>
 <p>!#ausgaben_form_error</p>
 <p>
@@ -65,6 +52,7 @@
 <!--##show-->
 
  <a href="./compilation.html">#(filecompilation)</a>
+ <a href="./upload.html">#(fileupload)</a>
 </p>
 <!--##hide-images-->
 <div style="clear:both"></div>
@@ -107,20 +95,6 @@
 <p>#(text1)</p>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
-<script type="text/javascript">
-    function searchswitch(id){
-        var searchfield=document.getElementById(id) //Reference content for this header
-        if (searchfield.style.display=="block")
-            var display="none"
-        else{
-            var display="block"
-        }
-        searchfield.style.display = display
-    }
-
-    searchswitch('search_switch');
-    searchswitch('search_field');
-</script>
 <!--##end-->
 </body>
 </html>

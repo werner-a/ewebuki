@@ -56,12 +56,12 @@
               "list,shared" => array("filelist"),
                       "add" => array( "thumbnail", "resize", "arrange" ),
                      "edit" => array( "resize", "arrange", "file_check" ),
-                   "delete" => array("file_check"),
-                   "upload" => "",
+                   "delete" => array( "file_check" ),
+                   "upload" => array( "resize" ),
                      #"used" => "",
                   "collect" => "",
-              "compilation" => array("compilationlist"),
-       "compilation,shared" => array("filelist"),
+              "compilation" => array( "compilationlist" ),
+       "compilation,shared" => array( "filelist" ),
                        ),
                "db" => array(
                      "file" => array(
@@ -145,6 +145,9 @@
                        "tn" => "96",
                       "max" => "580", # leer bedeutet, orginal bleibt erhalten
     #to be implemeted "may" => "",    # wenn gesetzt, wird auch höhe geaendert
+                       ),
+           "upload" => array(
+                   "inputs" => 5,
                        ),
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),
