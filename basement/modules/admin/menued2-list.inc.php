@@ -70,10 +70,10 @@
 
         $stop["nop"] = "nop";
         $positionArray["nop"] = "nop";
-        if ( $_GET["id"] != "" ) {
+        if ( $environment["parameter"][1] != "" ) {
 
             // explode des GETS
-            $ar = explode(":",$_GET["ar"]);
+            $ar = explode(":",$environment["parameter"][2]);
 
             // was muss geschlossen werden ?!?!?
             foreach ( $ar as $key => $value ) {
@@ -87,10 +87,12 @@
                 }
             }
 
-            if ( !in_array($_GET["id"],$stop) ) {
-                $ar[] = $_GET["id"];
+            // punkt oeffnen
+            if ( !in_array($environment["parameter"][1],$stop) ) {
+                $ar[] = $environment["parameter"][1];
             }
 
+            // link bauen und positionArray bauen
             foreach ( $ar as $key => $value ) {
                 if ( $sery == "" ) {
                     $trenner = "";
@@ -99,7 +101,7 @@
                 }
                 $sery .= $trenner.$value;
                 if ( $value != "" ) {
-                    locate($value,$stop);
+                    locate($value);
                 }
             }
 

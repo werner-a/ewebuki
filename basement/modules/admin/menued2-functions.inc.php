@@ -47,11 +47,11 @@
     if ( in_array("locate", $cfg["function"][$environment["kategorie"]]) ) {
 
        function delete($id,$fd) {
-            global $_GET,$db,$cfg,$stop;
+            global $environment,$db,$cfg,$stop;
             $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result,1);
-            if ( $_GET["id"] == $data["mid"] ) {
+            if ( $environment["parameter"][1] == $data["mid"] ) {
                 $stop[] = $fd;
             }
             if ( $data["refid"] != 0 ) {
