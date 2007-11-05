@@ -87,8 +87,9 @@
 
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "internal file name: ".$file_name.$debugging["char"];
 
-            // php minor version auf oder >= 2 pruefen
-            if ( substr(strstr($_SERVER["SERVER_SOFTWARE"],"PHP"),6,1) >= 2 ) {
+            // php version checken, error-codes seit 4.2.0
+            $phpversion = explode(".",PHP_VERSION);
+            if ( ( $phpversion[0] == 4 && $phpversion[1] >= 2 ) || $phpversion[0] > 4 ) {
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file error: ".$_FILES[$name]["error"].$debugging["char"];
                 $array["returncode"] = $_FILES[$name]["error"];
             }
@@ -96,16 +97,15 @@
             // php 4.2.x fehler ueberschreiben php 4.1.x fehler
             if ( $array["returncode"] == 0 ) {
                 if ( is_null($_FILES[$name]["name"]) && is_null($_FILES[$name]["size"]) ) {
-                    $array["returncode"] = 10;
+                    $array["returncode"] = 13;
                 } elseif ( $_FILES[$name]["size"] >= $limit ) {
-                    $array["returncode"] = 7;
+                    $array["returncode"] = 10;
                 } elseif ( !in_array($file_extension, $valid) && !array_key_exists($file_extension, $valid) ) {
-                    $array["returncode"] = 8;
+                    $array["returncode"] = 11;
                 } elseif ( file_exists($destination.$file_name) ) {
-                    $array["returncode"] = 9;
+                    $array["returncode"] = 12;
                 }
             }
-
 
             $images = array("gif"  => 1, "jpg"  => 2, "jpeg" => 2, "png"  => 3);
             $weitere = array("pdf" => "%PDF", "zip" => "PK", "odt" => "PK", "ods" => "PK", "odp" => "PK", "bz2" => "BZ", "gz" => chr(hexdec("1F")).chr(hexdec("8B")).chr(hexdec("08")).chr(hexdec("08")));
@@ -120,22 +120,21 @@
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type soll: ".$images[$file_extension].$debugging["char"];
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type ist: ".$imgsize[2].$debugging["char"];
                 if ( $images[$file_extension] != $imgsize[2] ) {
-                    $array["returncode"] = 8;
+                    $array["returncode"] = 11;
                 }
             // weitere formate testen
             } elseif ( $weitere[$file_extension] != "" && $array["returncode"] == 0 ) {
                 $fp = fopen($_FILES[$name]["tmp_name"], "r");
                 $buffer = fgets($fp, 5);
                 if ( strpos($buffer,$weitere[$file_extension]) === false ) {
-                    $array["returncode"] = 8;
+                    $array["returncode"] = 11;
                 }
                 unset($buffer);
                 fclose($fp);
             // sonstiges ablehnen
-            } else {
-                $array["returncode"] = 8;
+            } elseif ( $array["returncode"] == 0 ) {
+                $array["returncode"] = 11;
             }
-
 
             if ( $array["returncode"] == 0 ) {
                 $MySafeModeUid = getmyuid();
@@ -146,7 +145,7 @@
             $array["name"] = $file_name;
 
         } else {
-            $array["returncode"] = 11;
+            $array["returncode"] = 14;
         }
         return $array;
     }
@@ -157,20 +156,26 @@
         } elseif ( $error == 1 ) {
             $meldung .= "The uploaded file exceeds the upload_max_filesize directive ( ".get_cfg_var(upload_max_filesize)." ) in php.ini.";
         } elseif ( $error == 2 ) {
-            $meldung .= "The uploaded file exceeds the MAX_FILE_SIZE ( ".$HTTP_POST_VARS["MAX_FILE_SIZE"]."kb ) directive that was specified in the html form.";
+            $meldung .= "The uploaded file exceeds the MAX_FILE_SIZE ( ".$_POST["MAX_FILE_SIZE"]."kb ) directive that was specified in the html form.";
         } elseif ( $error == 3 ) {
             $meldung .= "The uploaded file was only partially uploaded.";
         } elseif ( $error == 4 ) {
             $meldung .= "No file was uploaded.";
+        } elseif ( $error == 6 ) {
+            $meldung .= "Missing a temporary folder.";
         } elseif ( $error == 7 ) {
-            $meldung .= "File Size to big.";
+            $meldung .= "Failed to write file to disk.";
         } elseif ( $error == 8 ) {
-            $meldung .= "File Type not valid.";
-        } elseif ( $error == 9 ) {
-            $meldung .= "File Name already exists.";
+            $meldung .= "File upload stopped by extension.";
         } elseif ( $error == 10 ) {
-            $meldung .= "Unknown Error. Maybe post_max_size directive ( ".get_cfg_var(post_max_size)." ) in php.ini. Please do not try again.";
+            $meldung .= "File Size to big.";
         } elseif ( $error == 11 ) {
+            $meldung .= "File Type not valid.";
+        } elseif ( $error == 12 ) {
+            $meldung .= "File Name already exists.";
+        } elseif ( $error == 13 ) {
+            $meldung .= "Unknown Error. Maybe post_max_size directive ( ".get_cfg_var(post_max_size)." ) in php.ini. Please do not try again.";
+        } elseif ( $error == 14 ) {
             $meldung .= "Sorry, you need minimal PHP/4.x.x to handle uploads!";
         }
         return $meldung;
