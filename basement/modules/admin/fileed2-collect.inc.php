@@ -48,7 +48,7 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        if ( isset($_GET["insert"]) ){
+        if ( isset($_GET["insert"]) ) {
             for ($i = 1; $i <= $_GET["insert"]; $i++) {
                 $sql = "INSERT INTO  site_file (frefid,fuid,fdid,ftname, ffname,ffart,fdesc,funder,fhit)
                              VALUES (0,1,1,'','test.jpg','jpg','TempoTest','TempoTest','TempoTest #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."#');";
@@ -57,16 +57,16 @@
         }
 
         // loeschen von bilder aus der gruppe
-        if ( is_numeric($_GET["del"]) ){
+        if ( is_numeric($_GET["del"]) ) {
             // loeschen aus der SESSION-variable
             if ( isset($_SESSION["file_memo"][$_GET["del"]]) ) unset($_SESSION["file_memo"][$_GET["del"]]);
             // loeschen aus dem fhit-feld
-            if ( $environment["parameter"][1] != "" ){
+            if ( $environment["parameter"][1] != "" ) {
                 $sql = "SELECT *
                         FROM site_file
                         WHERE fid=".$_GET["del"]." AND fhit LIKE '%".$environment["parameter"][1].",%'";
                 $result = $db -> query($sql);
-                if ( $db->num_rows($result) > 0 ){
+                if ( $db->num_rows($result) > 0 ) {
                     $data = $db -> fetch_array($result,1);
                     $fhit = preg_replace("/#p".$environment["parameter"][1].",[,0-9]*#/i","",$data["fhit"]);
                     $sql = "UPDATE site_file
@@ -85,13 +85,13 @@
         // ***
 
         // bauen des sql
-        if ( $environment["parameter"][1] != "" ){
+        if ( $environment["parameter"][1] != "" ) {
             // eine bildergruppe wurde angewaehlt (id in der url)
             $sql = "SELECT *
                       FROM ".$cfg["db"]["file"]["entries"]."
                      WHERE fhit LIKE '%#p".$environment["parameter"][1].",%'";
             $ausgaben["groupid"] = $environment["parameter"][1];
-        }else{
+        } else {
             // ausgewaehlte dateien werden einer gruppe zugewiesen
             $sql = "SELECT *
                       FROM ".$cfg["db"]["file"]["entries"]."
@@ -109,22 +109,22 @@
             // in welchen gruppen ist die datei bereits
             preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
             $containedGroups = array();
-            foreach ( $match[1] as $value ){
+            foreach ( $match[1] as $value ) {
                 $containedGroups[$value] = $value;
                 ksort($containedGroups);
             }
 
             // festlegung der bild-sortierung
-            if ( $environment["parameter"][1] != "" ){
+            if ( $environment["parameter"][1] != "" ) {
                 // der fhit eintrag wird gesucht, und sortiert
                 preg_match("/#p".$environment["parameter"][1]."[,]*([0-9]*)#/i",$data["fhit"],$match);
                 $sort = $match[1];
                 if ( $match[1] == "" ) $sort = 1;
                 // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
-                while ( is_array($dataloop["list"][$sort]) ){
+                while ( is_array($dataloop["list"][$sort]) ) {
                     $sort++;
                 }
-            }else{
+            } else {
                 $sort = $i*10;
                 $i++;
             }
@@ -144,6 +144,15 @@
 
         }
         ksort($dataloop["list"]);
+
+        if ( isset($_GET["renumber"]) ) {
+            $i = 1;
+            foreach ( $dataloop["list"] as $key=>$value ) {
+                $dataloop["list"][$key]["sort"] = $i*10;
+                $i++;
+            }
+        }
+        $ausgaben["renumber"] = $cfg["basis"]."/".$environment["allparameter"].".html?renumber";
 
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".modify");
@@ -169,9 +178,9 @@
         while ( $data = $db -> fetch_array($result,1) ) {
             // alle gruppeneintraege holen
             preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
-            foreach ( $match[1] as $value ){
+            foreach ( $match[1] as $value ) {
                 $select = "";
-                if ( $value == $environment["parameter"][1] ){
+                if ( $value == $environment["parameter"][1] ) {
                     $select = ' selected="true"';
                     $ausgaben["groupid"] = "";
                 }
@@ -236,16 +245,13 @@
                 $groupid = $_POST["groupid"];
                 if ( $_POST["all_groups"] != "" ) $groupid = $_POST["all_groups"];
 
-                foreach ( $form_values as $key=>$value ){
+                foreach ( $form_values as $key=>$value ) {
                     // testen, ob die p-nummer schon vorhanden ist
-                    if ( strstr($value["fhit"],"#p".$groupid) ){
+                    if ( strstr($value["fhit"],"#p".$groupid) ) {
                         // bereits vorhandene marke finden und entfernen
                         $fhit  = trim(preg_replace("/#p".$groupid."[,0-9]*#/i", "",$value["fhit"]));
-//                         // bei leerem sortier-input-feld wird das bild rausgeworfen
-//                         if ( $_POST["sort"][$key] != 0 || $_POST["sort"][$key] == "" ){
-                            $fhit .= " #p".$groupid.",".$_POST["sort"][$key]."#";
-//                         }
-                    }else{
+                        $fhit .= " #p".$groupid.",".$_POST["sort"][$key]."#";
+                    } else {
                         $fhit = $value["fhit"]." #p".$groupid.",".$_POST["sort"][$key]."#";
                     }
                     $sql = "UPDATE ".$cfg["db"]["file"]["entries"]."
