@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function sitemap($refid, $art = "", $modify = "", $self = "", $design="classic") {
-        global $treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
+        global $opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
 
 
 
@@ -130,10 +130,10 @@
                     $copy = $positionArray;
                     array_shift($copy);
 
-                    if ( in_array($array["mid"],$copy) || $environment["parameter"][1] == $array["mid"] ) {
+                    if ( is_array($opentree) && in_array($array["mid"],$opentree) ) {
                         $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.".html>".$array["label"]."-</a>"."\n";
                     } else {
-                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.".html>".$array["label"]."-</a>"."\n";
+                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.".html>".$array["label"]."+</a>"."\n";
                     }
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
