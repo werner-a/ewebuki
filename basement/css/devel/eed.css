@@ -185,6 +185,14 @@ div.clearer {
         width: 200px;
     }
 
+    #eEd fieldset.float label.small {
+        width: 130px;
+    }
+
+    #eEd fieldset.float label.small input, #eEd fieldset.float label.small textarea, #eEd fieldset.float label.small select {
+        width: 125px;
+    }
+
 /* ---------------------*/
 
 

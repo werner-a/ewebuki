@@ -12,29 +12,29 @@
 <form method="get" action="!#ausgaben_form1_aktion" id="eEd">
 <h1>#(ueberschrift)</h1>
     <fieldset class="float">
-        <label>
-            #(search)&nbsp;<input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+        <label class="small">
+            #(search)&nbsp;
+            <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
         </label>
-        <label>
-            &nbsp;
-            <input type="submit" name="send[]" value="g(send)" />
-        </label>
-        <div class="clearer">&nbsp;</div>
-        <label>
-            #(group)
+        <label class="small">
+            #(group)&nbsp;
             <select name="filter0" onchange="submit()">
                 <!--##loop-filter0-->
                 <option value="!{value}"!{select}>!{label}</option>
                 <!--##cont-->
             </select>
         </label>
-        <label>
-            #(type)
+        <label class="small">
+            #(type)&nbsp;
             <select name="filter1" onchange="submit()">
                 <!--##loop-filter1-->
                 <option value="!{value}"!{select}>!{label}</option>
                 <!--##cont-->
             </select>
+        </label>
+        <label class="small">
+            &nbsp;
+            <input type="submit" name="send[]" value="g(send)" />
         </label>
     </fieldset>
 </form>
