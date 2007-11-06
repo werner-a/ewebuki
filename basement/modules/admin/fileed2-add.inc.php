@@ -73,29 +73,35 @@
         // thumbnail wird vorlaeufig gebaut
         preg_match("/(.*)\.([a-zA-z]{1,4})/i",$file,$match);
         $thumb_srv = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
+        $thumb_web = $pathvars["filebase"]["webdir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
         if ( !file_exists($thumb_srv) ) {
-            switch ( strtolower($match[2]) ) {
-                case "gif":
-                    $img_src = @imagecreatefromgif($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
-                    break;
-                case "jpg":
-                    $img_src = @imagecreatefromjpeg($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
-                    break;
-                case "png":
-                    $img_src = @imagecreatefrompng($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
-                    break;
-                default:
-                    die("config error. can't handle ".$match[2]." file");
+            $type = $cfg["filetyp"][$match[2]];
+            if ( $type == "img" ) {
+                switch ( strtolower($match[2]) ) {
+                    case "gif":
+                        $img_src = @imagecreatefromgif($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+                        break;
+                    case "jpg":
+                        $img_src = @imagecreatefromjpeg($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+                        break;
+                    case "png":
+                        $img_src = @imagecreatefrompng($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+                        break;
+                    default:
+                        die("config error. can't handle ".$match[2]." file");
+                }
+                resize( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
+                        "preview",
+                        $img_src,
+                        $cfg["size"]["m"],
+                        preg_replace("/\/$/i","",$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]),
+                        "tmp".$match[1]
+                );
+            } else {
+                $thumb_web = $cfg["iconpath"].$cfg["fileopt"][$type]["thumbnail"];
             }
-            resize( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
-                    "preview",
-                    $img_src,
-                    $cfg["size"]["m"],
-                    preg_replace("/\/$/i","",$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]),
-                    "tmp".$match[1]
-            );
         }
-        $ausgaben["thumbnail"] = $pathvars["filebase"]["webdir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
+        $ausgaben["thumbnail"] = $thumb_web;
 
         // +++
         // page basics

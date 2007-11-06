@@ -123,7 +123,7 @@
                              "name" => "doc",
                              "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "pdf_big.png"
+                        "thumbnail" => "pdf_icon.png"
                               ),
                       "arc" => array(
                              "name" => "arc",
