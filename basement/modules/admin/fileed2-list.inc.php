@@ -147,11 +147,14 @@
 
         // auswahlliste 2 verarbeiten
 
-        function collect_filetyps($kat){
+        function collect_filetyps($kategorie){
             global $cfg;
 
-            foreach ( $cfg["filetyp"] as $key=>$value ){
-                if ( $value == $kat ) $array[] = "'".$key."'";
+            $types = explode( ",",$kategorie );
+            foreach ( $types as $kat ){
+                foreach ( $cfg["filetyp"] as $key=>$value ){
+                    if ( $value == $kat ) $array[] = "'".$key."'";
+                }
             }
             return implode(",",$array);
         }
@@ -175,7 +178,7 @@
                 $hidedata["other"] = array();
                 break;
             case 1:
-                $part["auswahl2"] = " ffart in (".collect_filetyps("odf").")";
+                $part["auswahl2"] = " ffart in (".collect_filetyps("odf,pdf").")";
                 $hidedata["other"] = array();
                 break;
             default:
