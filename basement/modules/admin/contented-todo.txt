@@ -1,0 +1,8 @@
+
+
+DIV Tag - irgendwie mehrfach verfügbar?
+IMG Tag - komplett
+EMAIL - komplett
+IMGB - komplett
+
+HR, BR, SP, HS, HL wenn nichts markiert ist open/close auf einmal?
