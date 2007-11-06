@@ -68,8 +68,12 @@
         // array umdrehen
         $modify = array_reverse($modify);
 
+        // variablen u. arrays definieren
         $stop["nop"] = "nop";
         $positionArray["nop"] = "nop";
+        $ausgaben["path"] = "";
+        $ausgaben["back"] = "";
+
         if ( $environment["parameter"][1] != "" ) {
 
             // explode des parameters
@@ -107,27 +111,26 @@
 
         // multidesign - verwalten nur ein TEST ( ueberhaupt sinnvoll ??? )
         $ausgaben["design"] = "";
-        $design_handle = $cfg["design"];
         if ( $cfg["design"] == "" ) {
-            // wenn design-variable leer , einfach den ersten array-eintrag benutzen
-            $design_handle = $cfg["design_available"][0];
-            // design-steuerung mit dem parameter
+            $design = $cfg["design_available"][0];
             if ( $environment["parameter"][3] != "" ) {
-                $design_handle = $environment["parameter"][3];
+                $design = $environment["parameter"][3];
             }
             // design - umschalter 
             foreach ( $cfg["design_available"] as $value ) {
-                if ( $value != $environment["parameter"][3] && $environment["parameter"][3] != "") {
-                    $ausgaben["design"] .= "<a href=\"".str_replace($environment["parameter"][3],$value,$pathvars["uri"]).">".$value."\"</a>";
-                } elseif ( $value != $design_handle ){
-                    $ausgaben["design"] .= "<a href=\"".str_replace("list.","list,".$value.".",$pathvars["uri"])."\">".$value."</a>";
+                if ( $value != $design ) {
+                    if ( $environment["parameter"][3] == "" ) { 
+                        $ausgaben["design"] = "<a href=\"".str_replace("list.","list,,,".$value.".",$pathvars["uri"])."\">".$value."</a>";
+                    } else {
+                        $ausgaben["design"] = "<a href=\"".str_replace($environment["parameter"][3],$value,$pathvars["uri"])."\">".$value."</a>";
+                    }
                 }
             }
+        } else {
+            $design = $cfg["design"];
         }
 
-        $ausgaben["path"] = "";
-        $ausgaben["back"] = "";
-        $ausgaben["show_menu"] .= sitemap(0, "menued", $modify,"" ,$design_handle);
+        $ausgaben["show_menu"] .= sitemap(0, "menued", $modify,"");
 
         // fehlermeldungen
         if ( $HTTP_GET_VARS["error"] != "" ) {

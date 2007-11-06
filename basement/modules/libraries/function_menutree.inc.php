@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function sitemap($refid, $art = "", $modify = "", $self = "", $design="classic") {
-        global $opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
+    function sitemap($refid, $art = "", $modify = "", $self = "") {
+        global $design,$opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
 
 
         switch($art) {
@@ -114,9 +114,9 @@
                         if ( $array["mid"] == $environment["parameter"][1] ) {
                             $ausgaben["path"] = $buffer["pfad"];
                             if ( $array["refid"] == 0 ) {
-                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",,.html>zurück</a>";
+                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",,".$design.".html>zurück</a>";
                             } else {
-                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].",,.html>zurück</a>";
+                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].",,".$design.".html>zurück</a>";
                             }
                         }
                     }
@@ -218,7 +218,7 @@
             if ( $buffer[$refid]["display"] != "none" ) {
                 $tree .= "<li>".$aktion.$ankerpos.$radiobutton.$href;
             }
-            $tree .= sitemap($array["mid"], $art, $modify, -1, $design);
+            $tree .= sitemap($array["mid"], $art, $modify, -1);
 
             if ( $buffer[$refid]["display"] != "none" ) {
                 $tree .= "</li>\n";
