@@ -59,6 +59,7 @@
                  WHERE ".$cfg["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
+        $forbidden = array();
         while ( $data = $db -> fetch_array($result,1) ) {
             if ( $cfg["filetyp"][$data["ffart"]] == "img" ) {
                 $link = $cfg["basis"]."/delete/view,o,".$data["fid"].".html";
