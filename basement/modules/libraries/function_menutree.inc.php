@@ -47,7 +47,6 @@
         global $opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
 
 
-
         switch($art) {
             case menued:
                 $flapmenu = -1;
@@ -85,7 +84,9 @@
         while ( $array = $db -> fetch_array($result,1) ) {
 
             // aufbau des pfads
-            $buffer["pfad"] .= "/".$array["entry"];
+            if ( $refid == 0 || in_array($refid,$positionArray) ) {
+                $buffer["pfad"] .= "/".$array["entry"];
+            }
 
             // hide-status signalisieren
             $class_hide = "\"\"";
@@ -103,18 +104,19 @@
                     // menu auf werner-art, hier auch noch den gesamten ast ausblenden !
                     // nur noch die mit der refid laut $_GET
                     if ( $design == "modern" ) {
-                        if ( $array["refid"] != $_GET["id"] ) {
-                            if ( $_GET["id"] != "" || $array["refid"] != 0 ) {
+                        if ( $array["refid"] != $environment["parameter"][1] ) {
+                            if ( $environment["parameter"][1] != "" || $array["refid"] != 0 ) {
                                 $buffer[$refid]["display"] = "none";
                             }
                         }
 
                         // back-link bauen
-                        if ( $array["mid"] == $_GET["id"] ) {
+                        if ( $array["mid"] == $environment["parameter"][1] ) {
+                            $ausgaben["path"] = $buffer["pfad"];
                             if ( $array["refid"] == 0 ) {
-                                $ausgaben["back"] = "<a href=".$pathvars["requested"].">zurück</a>";
+                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",,.html>zurück</a>";
                             } else {
-                                $ausgaben["back"] = "<a href=?id=".$array["refid"].">zurück</a>";
+                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].",,.html>zurück</a>";
                             }
                         }
                     }
@@ -131,9 +133,10 @@
                     array_shift($copy);
 
                     if ( is_array($opentree) && in_array($array["mid"],$opentree) ) {
-                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.".html>".$array["label"]."-</a>"."\n";
+                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.",".$design.".html>".$array["label"]."-</a>"."\n";
+
                     } else {
-                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.".html>".$array["label"]."+</a>"."\n";
+                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.",".$design.".html>".$array["label"]."+</a>"."\n";
                     }
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";

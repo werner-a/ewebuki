@@ -72,7 +72,7 @@
         $positionArray["nop"] = "nop";
         if ( $environment["parameter"][1] != "" ) {
 
-            // explode des GETS
+            // explode des parameters
             $opentree = explode("-",$environment["parameter"][2]);
 
             // was muss geschlossen werden ?!?!?
@@ -94,11 +94,7 @@
 
             // link bauen und positionArray bauen
             foreach ( $opentree as $key => $value ) {
-                if ( $treelink == "" ) {
-                    $trenner = "";
-                } else {
-                    $trenner = "-";
-                }
+                $treelink == "" ? $trenner = "" : $trenner = "-";
                 $treelink .= $trenner.$value;
                 if ( $value != "" ) {
                     locate($value);
@@ -116,19 +112,20 @@
             // wenn design-variable leer , einfach den ersten array-eintrag benutzen
             $design_handle = $cfg["design_available"][0];
             // design-steuerung mit dem parameter
-            if ( $environment["parameter"][1] != "" ) {
-                $design_handle = $environment["parameter"][1];
+            if ( $environment["parameter"][3] != "" ) {
+                $design_handle = $environment["parameter"][3];
             }
             // design - umschalter 
             foreach ( $cfg["design_available"] as $value ) {
-                if ( $value != $environment["parameter"][1] && $environment["parameter"][1] != "") {
-                    $ausgaben["design"] .= "<a href=\"".str_replace($environment["parameter"][1],$value,$pathvars["uri"]).">".$value."\"</a>";
+                if ( $value != $environment["parameter"][3] && $environment["parameter"][3] != "") {
+                    $ausgaben["design"] .= "<a href=\"".str_replace($environment["parameter"][3],$value,$pathvars["uri"]).">".$value."\"</a>";
                 } elseif ( $value != $design_handle ){
                     $ausgaben["design"] .= "<a href=\"".str_replace("list.","list,".$value.".",$pathvars["uri"])."\">".$value."</a>";
                 }
             }
         }
 
+        $ausgaben["path"] = "";
         $ausgaben["back"] = "";
         $ausgaben["show_menu"] .= sitemap(0, "menued", $modify,"" ,$design_handle);
 
