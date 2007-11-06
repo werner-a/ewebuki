@@ -160,7 +160,7 @@
                 $mark_l = array( "[/", "["  );
                 $hide_l = array( "++", "**" );
                 $mark_o = array( "#(", "g(", "#{", "!#" );
-                $hide_o = array( "-1-", "-2-", "-3-", "-4-" );
+                $hide_o = array( "::1::", "::2::", "::3::", "::4::" );
                 foreach ( $match[0] as $key => $value ) {
                     $escape = str_replace( $mark_l, $hide_l, $match[1][$key]);
                     $escape = str_replace( $mark_o, $hide_o, $escape);

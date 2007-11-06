@@ -384,7 +384,7 @@
               } else {
                 // eWeBuKi tag schutz part 4
                 $mark_o = array( "#(", "g(", "#{", "!#" );
-                $hide_o = array( "-1-", "-2-", "-3-", "-4-" );
+                $hide_o = array( "::1::", "::2::", "::3::", "::4::" );
                 $line = str_replace( $hide_o, $mark_o, $line );
 
                 // da keine marken fuer sub templates da waren zeile unveraendert ausgeben
