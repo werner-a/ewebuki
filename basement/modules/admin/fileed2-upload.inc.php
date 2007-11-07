@@ -67,8 +67,22 @@
         } else {
             $anzahl = $cfg["upload"]["inputs"];
         }
+        if ( $environment["parameter"][1] == "zip" ){
+            $name = "zip_upload";
+            $anzahl = 1;
+            $hidedata["modus"] = array(
+                "link" => "./upload.html",
+                "text" => "#(nozip)",
+            );
+        } else {
+            $name = "upload";
+            $hidedata["modus"] = array(
+                "link" => "./upload,zip.html",
+                "text" => "#(zip)",
+            );
+        }
         for ( $i = 1; $i <= $anzahl; $i++ ) {
-            $dataloop["upload"][$i]["name"] = "upload".$i;
+            $dataloop["upload"][$i]["name"] = $name.$i;
         }
 
         // +++
@@ -112,6 +126,7 @@
 
         // wohin schicken
         #n/a
+// echo "<pre>".print_r($_FILES,true)."</pre>";
 
         // +++
         // page basics
@@ -136,12 +151,49 @@
 
                 foreach ( $_FILES as $key => $value ) {
                     if ( $value["name"] != "" || $value["size"] != 0 ) {
-                        $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
-                        if ( $file["returncode"] == 0 ) {
-                            rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
-                        } else {
-                            $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ";
-                            $ausgaben["form_error"] .= file_error($file["returncode"])."<br>";
+                        if ( !strstr($key,"zip_upload") ){
+                            $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
+                            if ( $file["returncode"] == 0 ) {
+                                rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
+                            } else {
+                                $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ";
+                                $ausgaben["form_error"] .= file_error($file["returncode"])."<br>";
+                            }
+                        }else{
+                            // zip validieren
+                            $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize_zip"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
+
+                            // zip oeffnen, ausspielen und aufraeumen
+                            $zip = zip_open($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]);
+                            if ( $zip && $file["returncode"] == 0 ) {
+                                while ($zip_entry = zip_read($zip)) {
+
+                                    if (zip_entry_open($zip, $zip_entry, "w")) {
+                                        $handle = fopen($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry),"a");
+                                        fwrite($handle, zip_entry_read($zip_entry, zip_entry_filesize($zip_entry)));
+                                        fclose($handle);
+
+                                        // $_FILES simulieren/ersetzen
+                                        $file_info = array(
+                                            "name" => zip_entry_name($zip_entry),
+                                            "type" => "",
+                                            "tmp_name" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry),
+                                            "error" => 0,
+                                            "size" => filesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry)),
+                                        );
+                                        // dateien in zip validieren
+                                        $tmp_file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"], $file_info );
+                                        if ( $tmp_file["returncode"] == 0 ) {
+                                            rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry),
+                                                   $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".zip_entry_name($zip_entry));
+                                        } else {
+                                            unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry));
+                                        }
+                                    }
+                                }
+                                zip_close($zip);
+                                unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]);
+                            }
                         }
                     }
                 }

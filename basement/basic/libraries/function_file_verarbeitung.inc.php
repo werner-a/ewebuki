@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    function file_verarbeitung($destination, $name, $limit, $valid, $root = "") {
+    function file_verarbeitung($destination, $name, $limit, $valid, $root = "", $manual_check = "") {
 
         global $pathvars, $debugging;
 
@@ -61,20 +61,27 @@
         // historisch: $destination beginnt oder endet evtl. mit einem "/"
         $destination = trim($destination,"/");
 
+        $phpversion = explode(".",PHP_VERSION);
         // php major version muss mindestens 4 sein!
-        if ( substr(PHP_VERSION,0,1) >= 4 ) {
+        if ( $phpversion[0] >= 4 ) {
+
+            if ( $manual_check == "" ){
+                $file = $_FILES[$name];
+            }else{
+                $file = $manual_check;
+            }
 
             $destination = $document_root.$destination."/";
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "version: ".$_SERVER["SERVER_SOFTWARE"].$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file destination: ".$destination.$debugging["char"];
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file name tmp: ".$_FILES[$name]["tmp_name"].$debugging["char"];
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file name: ".$_FILES[$name]["name"].$debugging["char"];
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file mime type: ".$_FILES[$name]["type"].$debugging["char"];
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file size: ".$_FILES[$name]["size"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file name tmp: ".$file["tmp_name"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file name: ".$file["name"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file mime type: ".$file["type"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file size: ".$file["size"].$debugging["char"];
 
             // find file basename, extension
-            $file_extension = strtolower(substr(strrchr($_FILES[$name]["name"],"."),1));
-            $file_basename = basename($_FILES[$name]["name"],".".$file_extension);
+            $file_extension = strtolower(substr(strrchr($file["name"],"."),1));
+            $file_basename = basename($file["name"],".".$file_extension);
 
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file basename: ".$file_basename.$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file extension: ".$file_extension.$debugging["char"];
@@ -88,21 +95,20 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "internal file name: ".$file_name.$debugging["char"];
 
             // php version checken, error-codes seit 4.2.0
-            $phpversion = explode(".",PHP_VERSION);
             if ( ( $phpversion[0] == 4 && $phpversion[1] >= 2 ) || $phpversion[0] > 4 ) {
-                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file error: ".$_FILES[$name]["error"].$debugging["char"];
-                $array["returncode"] = $_FILES[$name]["error"];
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file error: ".$file["error"].$debugging["char"];
+                $array["returncode"] = $file["error"];
             }
 
             // php 4.2.x fehler ueberschreiben php 4.1.x fehler
             if ( $array["returncode"] == 0 ) {
-                if ( is_null($_FILES[$name]["name"]) && is_null($_FILES[$name]["size"]) ) {
+                if ( is_null($file["name"]) && is_null($file["size"]) ) {
                     $array["returncode"] = 13;
-                } elseif ( $_FILES[$name]["size"] >= $limit ) {
+                } elseif ( $file["size"] >= $limit ) {
                     $array["returncode"] = 10;
                 } elseif ( !in_array($file_extension, $valid) && !array_key_exists($file_extension, $valid) ) {
                     $array["returncode"] = 11;
-                } elseif ( file_exists($destination.$file_name) ) {
+                } elseif ( file_exists($destination.$file_name) && $manual_check == "" ) {
                     $array["returncode"] = 12;
                 }
             }
@@ -116,7 +122,7 @@
                 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order),
                 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
                 */
-                $imgsize = getimagesize($_FILES[$name]["tmp_name"]);
+                $imgsize = getimagesize($file["tmp_name"]);
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type soll: ".$images[$file_extension].$debugging["char"];
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "chk type ist: ".$imgsize[2].$debugging["char"];
                 if ( $images[$file_extension] != $imgsize[2] ) {
@@ -124,7 +130,7 @@
                 }
             // weitere formate testen
             } elseif ( $weitere[$file_extension] != "" && $array["returncode"] == 0 ) {
-                $fp = fopen($_FILES[$name]["tmp_name"], "r");
+                $fp = fopen($file["tmp_name"], "r");
                 $buffer = fgets($fp, 5);
                 if ( strpos($buffer,$weitere[$file_extension]) === false ) {
                     $array["returncode"] = 11;
@@ -138,9 +144,13 @@
 
             if ( $array["returncode"] == 0 ) {
                 $MySafeModeUid = getmyuid();
-                passthru ("chuid ".$_FILES[$name]["tmp_name"]." ".$MySafeModeUid);
-                move_uploaded_file ($_FILES[$name]["tmp_name"], $destination.$file_name);
-                @chmod($destination.$file_name,0664);
+                passthru ("chuid ".$file["tmp_name"]." ".$MySafeModeUid);
+                if ( $manual_check == "" ){
+                    move_uploaded_file ($file["tmp_name"], $destination.$file_name);
+                }else{
+                    rename ($file["tmp_name"], $destination.$file_name);
+                }
+                chmod($destination.$file_name,0664);
             }
             $array["name"] = $file_name;
 
