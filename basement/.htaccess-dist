@@ -14,6 +14,7 @@
   RewriteRule ^file/picture/.* - [L]
   RewriteRule ^file.* ./basic/wrapper.php [L] [T=application/x-httpd-php]
   RewriteRule ^images.* - [L] 			
+  RewriteRule ^js.* - [L] 			
   RewriteRule ^modules.* - [L] 			
   RewriteRule ^templates.* - [L] 			
   
