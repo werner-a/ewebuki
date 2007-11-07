@@ -59,6 +59,8 @@
                 $radiorefid = -1;
                 $hidestatus = -1;
                 break;
+            case sitemap:
+                break;
             default:
 
         }
@@ -148,6 +150,8 @@
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
+            } else {
+                $href = $array["entry"];
             }
 
             // schaltflaechen erstellen
@@ -233,14 +237,19 @@
                 $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
             }
 
+            // listenpunkt schreiben
             if ( $buffer[$refid]["display"] != "none" ) {
                 $tree .= "<li>".$aktion.$ankerpos.$radiobutton.$href;
             }
+
+            // funktionsaufruf
             $tree .= sitemap($array["mid"], $art, $modify, -1);
 
+            // abschliessendes li anbringen
             if ( $buffer[$refid]["display"] != "none" ) {
                 $tree .= "</li>\n";
             }
+            // abschliessendes ul anbringen u. pfad kuerzen
             if ( isset($buffer[$refid]["zaehler"]) ) {
                 $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
@@ -249,12 +258,6 @@
                 }
             }
         }
-        if ( $self == "" ) {
-                if ( $art == "select" ) {
-                  #  $tree = "<ul><li><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />\n</li><li>#(root)</li></ul>".$tree;
-                }
-        }
-
         return $tree;
     }
 

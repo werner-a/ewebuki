@@ -48,7 +48,8 @@
         // funktions bereich
         // ***
 
-        #$ausgaben["map"] = sitemap(0, "menued", $modify);
+        $positionArray["nop"] = "nop";
+        $ausgaben["output"] = sitemap(0, "sitemap", $modify);
 
         // +++
         // funktions bereich
@@ -65,14 +66,6 @@
         } else {
             $ausgaben["form_error"] = "";
         }
-
-        if ( $_GET["id"] != "" ) {
-            locate($HTTP_GET_VARS["id"]);
-        } else {
-            $positionArray[] = "nop";
-        }
-
-        $ausgaben["output"] = sitemap(0, "menued", $modify);
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
