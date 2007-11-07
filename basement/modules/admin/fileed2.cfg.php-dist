@@ -98,6 +98,7 @@
                                ),
                        ),
          "filesize" => "5000000",
+     "filesize_zip" => "10000000",
           #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "odg", "bz2", "gz"),
           "filetyp" => array( "gif" => "img",
                               "jpg" => "img",
