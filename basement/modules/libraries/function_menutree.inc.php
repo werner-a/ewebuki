@@ -151,7 +151,7 @@
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
             } else {
-                $href = $array["entry"];
+                $href = $array["label"];
             }
 
             // schaltflaechen erstellen
