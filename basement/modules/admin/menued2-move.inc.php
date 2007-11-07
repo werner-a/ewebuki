@@ -48,10 +48,17 @@
 
         $hidedata["move"]["on"] = -1;
 
+        $stop["nop"] = "nop";
+        $design = "modern";
+        $positionArray["nop"] = "nop";
+
+        $_SESSION["menued_id"] = $environment["parameter"][1];
+        locate($_SESSION["menued_id"]);
+
         // page basics
         // ***
         if ( count($HTTP_POST_VARS) == 0 ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
+            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
         } else {
@@ -68,13 +75,13 @@
         #$element["new_lang"] = "<input name=\"new_lang\" type=\"text\" maxlength=\"5\" size=\"5\">";
         // +++
         // page basics
-        if ( $_GET["id"] != "" ) {
-            locate($HTTP_GET_VARS["id"]);
-        } else {
-            $positionArray[] = "nop";
-        }
+        #if ( $_GET["id"] != "" ) {
+        #    locate($HTTP_GET_VARS["id"]);
+        #} else {
+        #    $positionArray[] = "nop";
+        #}
 
-        $ausgaben["output"] .= sitemap(0, "select", $environment["parameter"][1]);
+        $ausgaben["show_menu"] .= sitemap(0, "select", "");
 
 
         // page basics
@@ -83,7 +90,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/move,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["basis"]."/move,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
         $ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
         // hidden values
@@ -113,7 +120,7 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][3] == "verify"
             && $HTTP_POST_VARS["send"] != "" ) {
 
             // form eigaben prüfen
@@ -131,7 +138,7 @@
 
             // content tabellen aenderungen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "SELECT refid, entry FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
+                $sql = "SELECT refid, entry FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
                 $result = $db -> query($sql);
                 $data = $db -> fetch_array($result,1);
 
@@ -168,7 +175,7 @@
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
 
                 // content der unterpunkte aendern (alle sprachen)
-                update_tname($environment["parameter"][1], $suchmuster, $ersatz);
+                update_tname($environment["parameter"][2], $suchmuster, $ersatz);
             }
 
 
@@ -188,7 +195,7 @@
                 #$entry = str_replace(" ", "", $entry);
                 #$sqla .= ", entry='".$entry."'";
 
-                $sql = "update ".$cfg["db"]["menu"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
+                $sql = "update ".$cfg["db"]["menu"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");

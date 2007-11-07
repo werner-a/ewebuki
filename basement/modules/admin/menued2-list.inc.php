@@ -52,6 +52,7 @@
 
         $modify  = array (
             "sort"      => array("","#(button_desc_sort)"),
+            "jump"      => array("", "#(button_desc_jump)"),
             "add"       => array("", "#(button_desc_add)", $cfg["right"]),
             "edit"      => array("", "#(button_desc_edit)", $cfg["right"]),
             "delete"    => array("", "#(button_desc_delete)", $cfg["right"]),
@@ -74,10 +75,18 @@
         $ausgaben["path"] = "";
         $ausgaben["back"] = "";
 
-        if ( $environment["parameter"][1] != "" ) {
+        if ( $environment["parameter"][1] == "" ) {
+            $_SESSION["menued_id"] = "";
+            $_SESSION["menued_opentree"] = "";
+            $_SESSION["menued_design"] = "";
+        } else {
+            $_SESSION["menued_id"] = $environment["parameter"][1];
+        }
+
+        if ( $_SESSION["menued_id"] != "" ) {
 
             // explode des parameters
-            $opentree = explode("-",$environment["parameter"][2]);
+            $opentree = explode("-",$_SESSION["menued_opentree"]);
 
             // was muss geschlossen werden ?!?!?
             foreach ( $opentree as $key => $value ) {
@@ -92,8 +101,8 @@
             }
 
             // punkt oeffnen
-            if ( !in_array($environment["parameter"][1],$stop) ) {
-                $opentree[] = $environment["parameter"][1];
+            if ( !in_array($_SESSION["menued_id"],$stop) ) {
+                $opentree[] = $_SESSION["menued_id"];
             }
 
             // link bauen und positionArray bauen
@@ -105,6 +114,7 @@
                 }
             }
 
+            $_SESSION["menued_design"] = $design;
         } else {
             $positionArray[0] = 0;
         }
@@ -113,16 +123,16 @@
         $ausgaben["design"] = "";
         if ( $cfg["design"] == "" ) {
             $design = $cfg["design_available"][0];
-            if ( $environment["parameter"][3] != "" ) {
-                $design = $environment["parameter"][3];
+            if ( $_SESSION["menued_design"] != "" ) {
+                $design = $_SESSION["menued_design"];
             }
             // design - umschalter 
             foreach ( $cfg["design_available"] as $value ) {
                 if ( $value != $design ) {
-                    if ( $environment["parameter"][3] == "" ) { 
+                    if ( $_SESSION["menued_design"] == "" ) { 
                         $ausgaben["design"] = "<a href=\"".str_replace("list.","list,,,".$value.".",$pathvars["uri"])."\">".$value."</a>";
                     } else {
-                        $ausgaben["design"] = "<a href=\"".str_replace($environment["parameter"][3],$value,$pathvars["uri"])."\">".$value."</a>";
+                        $ausgaben["design"] = "<a href=\"".str_replace($_SESSION["menued_design"],$value,$pathvars["uri"])."\">".$value."</a>";
                     }
                 }
             }

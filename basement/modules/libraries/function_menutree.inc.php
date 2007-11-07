@@ -57,6 +57,7 @@
             case select:
                 $flapmenu = -1;
                 $radiorefid = -1;
+                $hidestatus = -1;
                 break;
             default:
 
@@ -101,22 +102,24 @@
                 if ( $refid != 0 && !in_array($refid,$positionArray) ) {
                     continue;
                 } else {
+
                     // menu auf werner-art, hier auch noch den gesamten ast ausblenden !
                     // nur noch die mit der refid laut $_GET
                     if ( $design == "modern" ) {
-                        if ( $array["refid"] != $environment["parameter"][1] ) {
-                            if ( $environment["parameter"][1] != "" || $array["refid"] != 0 ) {
+
+                        if ( $array["refid"] != $_SESSION["menued_id"] ) {
+                            if ( $_SESSION["menued_id"] != "" || $array["refid"] != 0 ) {
                                 $buffer[$refid]["display"] = "none";
                             }
                         }
 
                         // back-link bauen
-                        if ( $array["mid"] == $environment["parameter"][1] ) {
+                        if ( $array["mid"] == $_SESSION["menued_id"] ) {
                             $ausgaben["path"] = $buffer["pfad"];
                             if ( $array["refid"] == 0 ) {
-                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",,".$design.".html>zurück</a>";
+                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].".html>zurück</a>";
                             } else {
-                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].",,".$design.".html>zurück</a>";
+                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].".html>zurück</a>";
                             }
                         }
                     }
@@ -132,11 +135,15 @@
                     $copy = $positionArray;
                     array_shift($copy);
 
-                    if ( is_array($opentree) && in_array($array["mid"],$opentree) ) {
-                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.",".$design.".html>".$array["label"]."-</a>"."\n";
-
+                    if ( $environment["parameter"][2] != "" ) {
+                        $move_para = ",".$environment["parameter"][2];
                     } else {
-                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].",".$treelink.",".$design.".html>".$array["label"]."+</a>"."\n";
+                        $move_para = "";
+                    }
+                    if ( is_array($opentree) && in_array($array["mid"],$opentree) ) {
+                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_para.".html>".$array["label"]."-</a>"."\n";
+                    } else {
+                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_para.".html>".$array["label"]."+</a>"."\n";
                     }
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
@@ -160,11 +167,17 @@
                     $aktion = "";
                     if ( is_array($modify) ) {
                         foreach($modify as $name => $value) {
+                            // anzeige der sortierung
                             if ( $sortinfo != "" ) {
                                 if ( $name == "sort") {
                                     $aktion .= "<span title=\"".$value[1]."\" style=\"float:right\">(".$array["sort"].")</span>";
                                     continue;
                                 }
+                            }
+                            // anzeige des icons zur content-seite
+                            if ( $name == "jump" ) {
+                                $aktion .= "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                                continue;
                             }
                             if ( $name == "up" || $name == "down" ) {
                                 if ( $array["refid"] == 0 ) {
@@ -177,8 +190,13 @@
                             } else {
                                 $ankerlnk = "";
                             }
+                            // je nach recht icon anzeigen !
                             if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
-                                $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                                if ( $name == "move" ) {
+                                    $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",0,".$array["mid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                                } else {
+                                    $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                                }
                             } else {
                                 $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
                             }

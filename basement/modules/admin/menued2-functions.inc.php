@@ -51,7 +51,7 @@
             $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result,1);
-            if ( $environment["parameter"][1] == $data["mid"] ) {
+            if ( $_SESSION["menued_id"] == $data["mid"] ) {
                 $stop[] = $fd;
             }
             if ( $data["refid"] != 0 ) {
