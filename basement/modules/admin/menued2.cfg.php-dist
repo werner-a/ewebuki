@@ -50,8 +50,8 @@
              "name" => "menued2",
             "basis" => $pathvars["virtual"]."/admin/menued",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
-           "design" => "",
- "design_available" => array("classic","modern"),
+           "design" => "modern",
+ "design_available" => array("modern","classic"),
          "function" => array(
               "list,shared" => array("menutree"),
                       "list"=> array("locate"),
