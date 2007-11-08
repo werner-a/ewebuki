@@ -88,6 +88,7 @@
             // aufbau des pfads
             if ( $refid == 0 || in_array($refid,$positionArray) ) {
                 $buffer["pfad"] .= "/".$array["entry"];
+                $buffer["pfad_label"] .= "/".$array["label"];
             }
 
             // hide-status signalisieren
@@ -115,7 +116,7 @@
 
                         // back-link bauen
                         if ( $array["mid"] == $_SESSION["menued_id"] ) {
-                            $ausgaben["path"] = $buffer["pfad"];
+                            $ausgaben["path"] = $buffer["pfad_label"];
                             if ( $array["refid"] == 0 ) {
                                 $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].".html\"";
                             } else {
@@ -218,6 +219,9 @@
                     // beim ersten aufruf eine class menued setzen
                     if ( $self == "" ) {
                         $tree .= "<ul class=\"menued\">\n";
+                        if ( $art == "select" ) {
+                            $tree .= "<input type=\"radio\" name=\"refid\" value=\"".$refid."\" />#(root)";
+                        }
                     } else {
                         if ( $design == "modern" ) {
                             $tree .= "<ul class=\"menued\">\n";
@@ -250,6 +254,7 @@
             if ( isset($buffer[$refid]["zaehler"]) ) {
                 // pfad kürzen
                 $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
+                $buffer["pfad_label"] = substr($buffer["pfad_label"],0,strrpos($buffer["pfad_label"],"/"));
                 // zaehler 1 zurücksetzen
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
                 // ul anbringen wenn zaehler bei 0
