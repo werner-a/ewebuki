@@ -67,7 +67,7 @@
         } else {
             $anzahl = $cfg["upload"]["inputs"];
         }
-        if ( $environment["parameter"][1] == "zip" ){
+        if ( $environment["parameter"][1] == "zip" ) {
             $name = "zip_upload";
             $anzahl = 1;
             $hidedata["modus"] = array(
@@ -126,7 +126,6 @@
 
         // wohin schicken
         #n/a
-// echo "<pre>".print_r($_FILES,true)."</pre>";
 
         // +++
         // page basics
@@ -151,7 +150,7 @@
 
                 foreach ( $_FILES as $key => $value ) {
                     if ( $value["name"] != "" || $value["size"] != 0 ) {
-                        if ( !strstr($key,"zip_upload") ){
+                        if ( !strstr($key,"zip_upload") ) {
                             $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
                             if ( $file["returncode"] == 0 ) {
                                 rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
@@ -159,41 +158,44 @@
                                 $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ";
                                 $ausgaben["form_error"] .= file_error($file["returncode"])."<br>";
                             }
-                        }else{
+                        } else {
                             // zip validieren
                             $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize_zip"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
 
-                            // zip oeffnen, ausspielen und aufraeumen
-                            $zip = zip_open($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]);
-                            if ( $zip && $file["returncode"] == 0 ) {
-                                while ($zip_entry = zip_read($zip)) {
-
-                                    if (zip_entry_open($zip, $zip_entry, "w")) {
-                                        $handle = fopen($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry),"a");
-                                        fwrite($handle, zip_entry_read($zip_entry, zip_entry_filesize($zip_entry)));
-                                        fclose($handle);
-
-                                        // $_FILES simulieren/ersetzen
-                                        $file_info = array(
-                                            "name" => zip_entry_name($zip_entry),
-                                            "type" => "",
-                                            "tmp_name" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry),
-                                            "error" => 0,
-                                            "size" => filesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry)),
-                                        );
-                                        // dateien in zip validieren
-                                        $tmp_file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"], $file_info );
-                                        if ( $tmp_file["returncode"] == 0 ) {
-                                            rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry),
-                                                   $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".zip_entry_name($zip_entry));
-                                        } else {
-                                            unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].zip_entry_name($zip_entry));
-                                        }
+                            $zip = new ZipArchive;
+                            if ($zip->open($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]) === TRUE) {
+                                // zip durchgehen und dateien-informationen holen
+                                for ( $i=0; $i<$zip->numFiles; $i++ ) {
+                                    $buffer = $zip->statIndex($i);
+                                    $zip_contents[$buffer["name"]] = array(
+                                        "name" => $buffer["name"],
+                                        "type" => "",
+                                        "tmp_name" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$buffer["name"],
+                                        "error" => 0,
+                                        "size" => $buffer["size"],
+                                    );
+                                }
+                                foreach ( $zip_contents as $zip_key=>$zip_value ) {
+                                    // dateien ausspielen
+                                    $handle = fopen($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$zip_key,"a");
+                                    fwrite($handle, $zip->getFromName($zip_key));
+                                    fclose($handle);
+                                    // dateien ueberpruefen und aufraeumen
+                                    $tmp_file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"], $zip_value );
+                                    if ( $tmp_file["returncode"] == 0 ) {
+                                        rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$zip_key,
+                                                $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$zip_key);
+                                    } else {
+                                        $ausgaben["form_error"] .= "Ergebnis: ".$tmp_file["name"]." ";
+                                        $ausgaben["form_error"] .= file_error($tmp_file["returncode"])."<br>";
+                                        unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$zip_key);
                                     }
                                 }
-                                zip_close($zip);
-                                unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]);
+                                $zip->close();
+                            } else {
+                                $ausgaben["form_error"] .= "ZIP-Datei ".$file["name"]." konnte nicht geoeffnet werden<br />";
                             }
+                            unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]);
                         }
                     }
                 }
@@ -203,6 +205,7 @@
                     exit(); ### laut guenther wird es gebraucht, warum?
                 } else {
                     $ausgaben["form_error"] .= "<br><br><a href=\"".$cfg["basis"]."/add,".$environment["parameter"][1].".html\">Trotzdem weiter</a>";
+                    unset($hidedata["modus"]);
                     #$mapping["main"] = "default1";
                 }
 
