@@ -258,7 +258,7 @@
                 // zaehler 1 zurücksetzen
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
                 // ul anbringen wenn zaehler bei 0
-                if ( $buffer[$refid]["zaehler"] == 0 && $refid == $_SESSION["menued_id"] ) {
+                if ( $buffer[$refid]["zaehler"] == 0  && ( $art == "sitemap" || $refid == $_SESSION["menued_id"]) ) {
                     $tree .= "</ul>\n";
                 }
             }
