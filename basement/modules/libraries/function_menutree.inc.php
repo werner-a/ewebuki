@@ -44,8 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function sitemap($refid, $art = "", $modify = "", $self = "") {
-        global $design,$opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $ast, $astpath, $buffer,$positionArray;
-
+        global $hidedata,$design,$opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $buffer,$positionArray;
 
         switch($art) {
             case menued:
@@ -118,9 +117,9 @@
                         if ( $array["mid"] == $_SESSION["menued_id"] ) {
                             $ausgaben["path"] = $buffer["pfad"];
                             if ( $array["refid"] == 0 ) {
-                                $ausgaben["back"] = "<a href=\"".$cfg["basis"]."/".$environment["parameter"][0].".html\">zurück</a>";
+                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].".html\"";
                             } else {
-                                $ausgaben["back"] = "<a href=\"".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].".html\">zurück</a>";
+                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].".html\"";
                             }
                         }
                     }
