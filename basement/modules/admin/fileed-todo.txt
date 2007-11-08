@@ -1,0 +1,6 @@
+
+
+zip-handling:
+- automatisch gallerien bilden
+- möglichkeit, die felder (fdesc, fhit) vorzubelegen
+- dateibeschreibung aus mitgegebenen textfile lesen
