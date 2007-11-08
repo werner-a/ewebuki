@@ -6,3 +6,18 @@ EMAIL - komplett
 IMGB - komplett
 
 HR, BR, SP, HS, HL wenn nichts markiert ist open/close auf einmal?
+
+
+
+
+"BUFFY MINDS"
+Versionieren vom Content:
+-content wird über 4-augen-prinzip abgespeichert
+-solang der content nicht freigeben ist kann user manuell entscheiden ob eine neue
+ version angelegt werden soll, die beliebig "anspringbar" sind.
+
+Anlegen neuer Seiten:
+- erfolgt von der content-seite aus ,über menued-add zum contented zurück zur seite
+
+Füllen von Seiten:
+dummy-user erhalten eigenen editor der nur bestimmte marken ( DIV oder HS )ohne tags speichern kann.
