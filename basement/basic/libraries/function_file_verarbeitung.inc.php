@@ -60,18 +60,19 @@
 
         // historisch: $destination beginnt oder endet evtl. mit einem "/"
         $destination = trim($destination,"/");
+        $destination = $document_root.$destination."/";
 
         $phpversion = explode(".",PHP_VERSION);
         // php major version muss mindestens 4 sein!
         if ( $phpversion[0] >= 4 ) {
 
-            if ( $manual_check == "" ){
+            // quelle der datei-informationen
+            if ( $manual_check == "" ) {
                 $file = $_FILES[$name];
-            }else{
+            } else{
                 $file = $manual_check;
             }
 
-            $destination = $document_root.$destination."/";
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "version: ".$_SERVER["SERVER_SOFTWARE"].$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file destination: ".$destination.$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file name tmp: ".$file["tmp_name"].$debugging["char"];
@@ -145,10 +146,10 @@
             if ( $array["returncode"] == 0 ) {
                 $MySafeModeUid = getmyuid();
                 passthru ("chuid ".$file["tmp_name"]." ".$MySafeModeUid);
-                if ( $manual_check == "" ){
+                if ( $manual_check == "" ) {
                     move_uploaded_file ($file["tmp_name"], $destination.$file_name);
-                }else{
-                    rename ($file["tmp_name"], $destination.$file_name);
+                } else{
+                    copy ($file["tmp_name"], $destination.$file_name);
                 }
                 chmod($destination.$file_name,0664);
             }
