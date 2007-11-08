@@ -99,16 +99,15 @@
                 }
             }
 
+            // menu-aufbau ala konqueror oder zum klappen
             if ( $flapmenu == -1) {
                 // alle punkte die nicht im array sind nicht anzeigen
                 if ( $refid != 0 && !in_array($refid,$positionArray) ) {
                     continue;
                 } else {
-
                     // menu auf werner-art, hier auch noch den gesamten ast ausblenden !
-                    // nur noch die mit der refid laut $_GET
+                    // nur noch die mit der refid laut $_SESSION
                     if ( $design == "modern" ) {
-
                         if ( $array["refid"] != $_SESSION["menued_id"] ) {
                             if ( $_SESSION["menued_id"] != "" || $array["refid"] != 0 ) {
                                 $buffer[$refid]["display"] = "none";
@@ -119,9 +118,9 @@
                         if ( $array["mid"] == $_SESSION["menued_id"] ) {
                             $ausgaben["path"] = $buffer["pfad"];
                             if ( $array["refid"] == 0 ) {
-                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].".html>zurück</a>";
+                                $ausgaben["back"] = "<a href=\"".$cfg["basis"]."/".$environment["parameter"][0].".html\">zurück</a>";
                             } else {
-                                $ausgaben["back"] = "<a href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].".html>zurück</a>";
+                                $ausgaben["back"] = "<a href=\"".$cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].".html\">zurück</a>";
                             }
                         }
                     }
@@ -142,14 +141,12 @@
                     } else {
                         $move_para = "";
                     }
-                    if ( is_array($opentree) && in_array($array["mid"],$opentree) ) {
-                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_para.".html>".$array["label"]."-</a>"."\n";
-                    } else {
-                        $href = "<a class=".$class_hide." href=".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_para.".html>".$array["label"]."+</a>"."\n";
-                    }
+                    ( is_array($opentree) && in_array($array["mid"],$opentree) ) ? $sign = "-" : $sign = "+";
+                    $href = "<a class=".$class_hide." href=\"".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_para.".html\">".$array["label"]."+</a>"."\n";
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
+            // hier wird komplett geoeffnet
             } else {
                 $href = $array["label"];
             }
@@ -249,11 +246,15 @@
             if ( $buffer[$refid]["display"] != "none" ) {
                 $tree .= "</li>\n";
             }
+
             // abschliessendes ul anbringen u. pfad kuerzen
             if ( isset($buffer[$refid]["zaehler"]) ) {
+                // pfad kürzen
                 $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
+                // zaehler 1 zurücksetzen
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
-                if ( $buffer[$refid]["zaehler"] == 0 ) {
+                // ul anbringen wenn zaehler bei 0
+                if ( $buffer[$refid]["zaehler"] == 0 && $refid == $_SESSION["menued_id"] ) {
                     $tree .= "</ul>\n";
                 }
             }
