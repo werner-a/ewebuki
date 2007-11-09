@@ -55,6 +55,7 @@
                      "list" => "", # array( "function_name" ),
               "list,shared" => array("filelist"),
                       "add" => array( "thumbnail", "resize", "arrange" ),
+               "add,shared" => array( "zip_handling", "file_validate" ),
                      "edit" => array( "resize", "arrange", "file_check" ),
                    "delete" => array( "file_check" ),
                    "upload" => array( "resize" ),
@@ -97,8 +98,7 @@
                             "items" => "5",
                                ),
                        ),
-         "filesize" => "5000000",
-     "filesize_zip" => "10000000",
+         "filesize" => "10000000",
           #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "odg", "bz2", "gz"),
           "filetyp" => array( "gif" => "img",
                               "jpg" => "img",
@@ -124,19 +124,19 @@
                              "name" => "doc",
                              "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "pdf_icon.png"
+                        "thumbnail" => "icon_pdf.png"
                               ),
                       "arc" => array(
                              "name" => "arc",
                              "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "zip_icon.jpg"
+                        "thumbnail" => "icon_zip.jpg"
                                ),
                       "odf" => array(
                              "name" => "doc",
                              "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "odf_icon.png"
+                        "thumbnail" => "icon_odf.png"
                                ),
                        ),
              "size" => array(
