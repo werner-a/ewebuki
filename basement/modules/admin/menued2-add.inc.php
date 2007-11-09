@@ -184,7 +184,7 @@
                     $extenda = "extend, ";
                     $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
                 }
-                $sql = "INSERT INTO  ".$cfg["db"]["lang"]["entries"]."
+                $sql = "INSERT INTO ".$cfg["db"]["lang"]["entries"]."
                                     ( mid, lang, label, ".$extenda." exturl )
                              VALUES ( '".$lastid."',
                                       '".$HTTP_POST_VARS["lang"]."',
@@ -200,7 +200,14 @@
             if ( $HTTP_POST_VARS["add"] ) {
                 $header = $cfg["basis"]."/edit,".$lastid.",verify.html";
             } else {
-                $header = $cfg["basis"]."/list.html";
+                if ( $_SESSION["REFERER"] != "" ) {
+                    #$header = $_SESSION["REFERER"]."/".$fixed_entry.".html";
+                    $crc = crc32(str_replace( $pathvars["virtual"], "", $_SESSION["REFERER"]));
+                    $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.".".$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
+                    unset($_SESSION["referer"]);
+                } else {
+                    $header = $cfg["basis"]."/list.html";
+                }
             }
             if ( $ausgaben["form_error"] == "" ) {
                 header("Location: ".$header);

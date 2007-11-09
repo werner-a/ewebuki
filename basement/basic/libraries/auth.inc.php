@@ -213,16 +213,30 @@
         $ausgaben["logout_meldung"] = "\"".$_SESSION["username"]."\"";
         $ausgaben["logout_rechte"] = "";
 
+        $path = dirname($pathvars["requested"]);
+        if ( substr( $path, -1 ) != '/') $path = $path."/";
+        $newlnk = $path.basename($pathvars["requested"],".html")."/new.html";
+
+        if ( $cfg["boxed"] == True ) $ausgaben["logout_new"] = "<a href=\"".$newlnk."\">New Page</a><br /><br />";
+
         foreach( $cfg["menu"] as $funktion => $werte) {
             $array = explode(";", $werte[1]);
             foreach( $array as $value) {
                 if ( $rechte[$value] == -1 || $value == "" ) {
-                    $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
+                    if ( $cfg["boxed"] == False ) {
+                        $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
+                    } else {
+                        $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\" title=\"#(".$funktion.")\">".strtoupper($funktion[0])."</a> ";
+                    }
                     break;
                 }
             }
         }
-        if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = "<br />#(desc)<br /><br />".$ausgaben["logout_rechte"];
+        if ( $cfg["boxed"] == False ) {
+            if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = "<br />#(desc)<br /><br />".$ausgaben["logout_rechte"];
+        } else {
+            if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = $ausgaben["logout_rechte"]."<br />";
+        }
 
         $ausgaben["auth"] = parser( "auth.logout", "");
     }

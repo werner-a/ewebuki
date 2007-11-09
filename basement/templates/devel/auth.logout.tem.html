@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>auth.logout</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<p>#(vorher) !#ausgaben_logout_meldung #(nachher)</p>
+<form method="post" action="!#ausgaben_auth_url">
+    <fieldset>
+        <input type="submit" name="logout" value="logout" />
+    </fieldset>
+</form>
+<!-- <p>!#ausgaben_logout_rechte</p> -->
+
+<!-- background:#bbf; width:100px;height:100px;-->
+<div id="magic" class="magic1" style="position:absolute;left:5px;top:5px;padding:3px;z-index:1000;background:#bbf;">
+  <span id="handle1">::Magic::</span><br />
+  !#ausgaben_logout_new
+  !#ausgaben_logout_rechte
+</div>
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+  new Draggable('magic',{scroll:window,handle:'handle1',});
+// ]]>
+</script>
+
+
+<!--##end-->
+</body>
+</html>
