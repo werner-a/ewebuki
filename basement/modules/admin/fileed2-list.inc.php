@@ -163,26 +163,26 @@
             case 3:
                 foreach ( $_SESSION["file_memo"] as $value ) {
                     if ( $pattern == "" ) {
-                        $pattern = " (".$cfg["db"]["file"]["key"]." = ".$value.")";
+                        $pattern = "(".$cfg["db"]["file"]["key"]." = ".$value.")";
                     } else {
                         $pattern .= " OR (".$cfg["db"]["file"]["key"]." = ".$value.")";
                     }
                 }
                 if ( $pattern == "" ) $pattern = $cfg["db"]["file"]["key"]." = -1";
 
-                $part["auswahl2"] = $part["auswahl2"] = " ffart in (".collect_filetyps("img").") AND ".$pattern;
+                $part["auswahl2"] = $part["auswahl2"] = " ffart IN (".collect_filetyps("img").") AND (".$pattern.")";
                 $hidedata["images"] = array();
                 break;
             case 2:
-                $part["auswahl2"] = " ffart in (".collect_filetyps("arc").")";
+                $part["auswahl2"] = " ffart IN (".collect_filetyps("arc").")";
                 $hidedata["other"] = array();
                 break;
             case 1:
-                $part["auswahl2"] = " ffart in (".collect_filetyps("odf,pdf").")";
+                $part["auswahl2"] = " ffart IN (".collect_filetyps("odf,pdf").")";
                 $hidedata["other"] = array();
                 break;
             default:
-                $part["auswahl2"] = " ffart in (".collect_filetyps("img").")";
+                $part["auswahl2"] = " ffart IN (".collect_filetyps("img").")";
                 $hidedata["images"] = array();
         }
 
