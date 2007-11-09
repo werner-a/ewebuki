@@ -69,9 +69,11 @@
         $element["fid"] = "";
         $element["ffname"] = str_replace("ffname\"", "ffname\" value=\"".str_replace($_SESSION["uid"]."_","",$file)."\"", $element["ffname"]);
 
+        // +++
+        // page basics
 
-        // thumbnail wird vorlaeufig gebaut
         preg_match("/(.*)\.([a-zA-z]{1,4})/i",$file,$match);
+        // thumbnail wird vorlaeufig gebaut
         $thumb_srv = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
         $thumb_web = $pathvars["filebase"]["webdir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
         if ( !file_exists($thumb_srv) ) {
@@ -103,9 +105,12 @@
         }
         $ausgaben["thumbnail"] = $thumb_web;
 
-        // +++
-        // page basics
-
+        if ( $match[2] == "zip" ) {
+            $dataloop["zip"] = zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+            if ( count($dataloop["zip"]) > 0 ){
+                $hidedata["zip"][] = -1;
+            }
+        }
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -150,7 +155,7 @@
 
         if ( $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""
-                || $_POST["extension1"] != ""
+                || $_POST["extract"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
             // form eigaben prüfen
@@ -163,6 +168,14 @@
                 // ***
 
                 ### put your code here ###
+                if ( $_POST["extract"] != "" ){
+                    zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
+                                $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                                $cfg["filetyp"],
+                                $cfg["filesize"],
+                                ""
+                               );
+                }
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
@@ -172,7 +185,7 @@
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
 
-                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "bnet", "cnet" );
+                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "bnet", "cnet" );
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";

@@ -47,6 +47,18 @@
     <!--##show-->
     <p>#(references)!#ausgaben_reference</p>
     <p>!#element_fid</p>
+    <!--##hide-zip-->
+    <fieldset>
+        <p>#(zip)</p>
+        <input type="submit" name="extract" value="g(extract)" class="first" />
+        <div class="clearer">&nbsp;</div>
+        <ul>
+            <!--##loop-zip-->
+            <li>!{file}</li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
+    <!--##show-->
     <fieldset>
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
