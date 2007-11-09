@@ -101,6 +101,14 @@
 
             // menu-aufbau ala konqueror oder zum klappen
             if ( $flapmenu == -1) {
+
+                // zweiten parameter mitziehen wenn er gesetzt ist
+                if ( $environment["parameter"][2] != "" ) {
+                    $move_parameter = ",".$environment["parameter"][2];
+                } else {
+                    $move_parameter = "";
+                }
+
                 // alle punkte die nicht im array sind nicht anzeigen
                 if ( $refid != 0 && !in_array($refid,$positionArray) ) {
                     continue;
@@ -118,9 +126,9 @@
                         if ( $array["mid"] == $_SESSION["menued_id"] ) {
                             $ausgaben["path"] = $buffer["pfad_label"];
                             if ( $array["refid"] == 0 ) {
-                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].".html\"";
+                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].$move_parameter.".html\"";
                             } else {
-                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].".html\"";
+                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].$move_parameter.".html\"";
                             }
                         }
                     }
@@ -135,14 +143,8 @@
                 if  ( $count_in > 0 ) {
                     $copy = $positionArray;
                     array_shift($copy);
-
-                    if ( $environment["parameter"][2] != "" ) {
-                        $move_para = ",".$environment["parameter"][2];
-                    } else {
-                        $move_para = "";
-                    }
                     ( is_array($opentree) && in_array($array["mid"],$opentree) ) ? $sign = "-" : $sign = "+";
-                    $href = "<a class=".$class_hide." href=\"".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_para.".html\">".$array["label"]."+</a>"."\n";
+                    $href = "<a class=".$class_hide." href=\"".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_parameter.".html\">".$array["label"]."+</a>"."\n";
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
