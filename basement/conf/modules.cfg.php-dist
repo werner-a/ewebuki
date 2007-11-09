@@ -55,6 +55,12 @@
         include $pathvars["moduleroot"]."basic/view.cfg.php";
         include $pathvars["moduleroot"]."basic/view.inc.php";
     }
+    
+#    // admin: new for testing only !!
+#    if ( $environment["kategorie"] == "new" ) {
+#        include $pathvars["moduleroot"]."admin/new.cfg.php";
+#        include $pathvars["moduleroot"]."admin/new.inc.php";
+#    }
 
     // admin: leveled
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
