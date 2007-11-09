@@ -140,7 +140,7 @@
                 $count_in = $db->num_rows($result_in);
 
                 // sind unterpunkte vorhanden + oder - einblenden
-                if  ( $count_in > 0 ) {
+                if  ( $count_in > 0 && $array["mid"] != $environment["parameter"][2]) {
                     $copy = $positionArray;
                     array_shift($copy);
                     ( is_array($opentree) && in_array($array["mid"],$opentree) ) ? $sign = "-" : $sign = "+";
@@ -222,7 +222,7 @@
                     if ( $self == "" ) {
                         $tree .= "<ul class=\"menued\">\n";
                         if ( $art == "select" ) {
-                            $tree .= "<input type=\"radio\" name=\"refid\" value=\"".$refid."\" />#(root)";
+                            $tree .= "<li><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />#(root)</li>";
                         }
                     } else {
                         if ( $design == "modern" ) {
@@ -236,7 +236,12 @@
 
             // refid radio button
             if ( $radiorefid != "" ) {
-                $radiobutton = "<input type=\"radio\" name=\"refid\" value=\"".$array["mid"]."\" />";
+                if ( ($array["mid"] == $environment["parameter"][2]) || $array["refid"] == $environment["parameter"][2]  ) {
+                    $radio_disabled = " disabled";
+                } else {
+                    $radio_disabled = "";
+                }
+                $radiobutton = "<input type=\"radio\" name=\"refid\" ".$radio_disabled." value=\"".$array["mid"]."\" />";
             }
 
             // listenpunkt schreiben
