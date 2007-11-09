@@ -50,6 +50,7 @@
                      "set" => False,
                "kategorie" => "login",
                        ),
+            "boxed" => False,
                "db" => array(
                     "user" => array(
                           "entries" => "auth_user",
