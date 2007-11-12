@@ -85,7 +85,13 @@
 
             if ( strpos($label,",") !== false ) break; // javascript fix
 
-            $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='".$dbtname."' AND lang='".$environment["language"]."' AND label='$label'";
+            $sql = "SELECT html, content
+                      FROM ". SITETEXT ."
+                     WHERE tname='".$dbtname."'
+                       AND lang='".$environment["language"]."'
+                       AND label='$label'
+                  ORDER BY version DESC
+                     LIMIT 1";
             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result  = $db -> query($sql);
             $row = $db -> fetch_row($result);
@@ -95,7 +101,13 @@
                 if ( $environment["language"] != $specialvars["default_language"] ) {
                     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Language: \"".$environment["language"]."\" for #(".$label.") in template \"".$dbtname."\" not found using default: \"".$specialvars["default_language"]."\"".$debugging["char"];
                 }
-                $sql = "SELECT html, content FROM ". SITETEXT ." WHERE tname='$dbtname' AND lang='".$specialvars["default_language"]."' AND label='$label'";
+                $sql = "SELECT html, content
+                          FROM ". SITETEXT ."
+                         WHERE tname='$dbtname'
+                           AND lang='".$specialvars["default_language"]."'
+                           AND label='$label'
+                      ORDER BY version DESC
+                         LIMIT 1";
                 $result  = $db -> query($sql);
                 $row = $db -> fetch_row($result);
             }

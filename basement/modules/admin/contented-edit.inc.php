@@ -72,16 +72,17 @@
             #          FROM ".$cfg["db"]["leer"]["entries"]."
             #         WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
 
-            $sql = "SELECT html, content, changed, byalias
+            $sql = "SELECT version, html, content, changed, byalias
                       FROM ". SITETEXT ."
-                     WHERE tname='".$environment["parameter"][2]."'
-                       AND lang='".$environment["language"]."'
-                       AND label='".$environment["parameter"][3]."'";
+                     WHERE lang = '".$environment["language"]."'
+                       AND label ='".$environment["parameter"][3]."'
+                       AND tname ='".$environment["parameter"][2]."'
+                     ORDER BY version DESC
+                     LIMIT 1";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             #$data = $db -> fetch_array($result, $nop);
             $form_values = $db -> fetch_array($result,1);
-
 
         } else {
             $form_values = $_POST;
@@ -139,6 +140,8 @@
         $ausgaben["ce_tem_db"]      = "#(db): ".$environment["parameter"][1];
         $ausgaben["ce_tem_name"]    = "#(template): ".$environment["parameter"][2];
         $ausgaben["ce_tem_label"]   = "#(label): ".$environment["parameter"][3];
+        $ausgaben["version"]        = "#(version): ".$form_values["version"];
+
         # $environment["parameter"][4] -> abschnitt bearbeiten -> war: datensatz in db gefunden
 
         $ausgaben["ce_tem_lang"]    = "#(language): ".$environment["language"];
@@ -146,17 +149,26 @@
 
 
         // lock erzeugen, anzeigen
-        if ( strstr($form_values["byalias"],"!") ) {
-            $ausgaben["lock"] .= "lock by ".substr($form_values["byalias"],1)." @ ".$form_values["changed"];
+        $sql = "SELECT byalias, lockat
+                    FROM site_lock
+                   WHERE lang = '".$environment["language"]."'
+                     AND label ='".$environment["parameter"][3]."'
+                     AND tname ='".$environment["parameter"][2]."'";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        if ( $data = $db -> fetch_array($result, $nop) ) {
+            $ausgaben["lock"] .= "lock by ".$data["byalias"]." @ ".$data["lockat"];
             $ausgaben["class"] = "ta_lock";
         } else {
-            $sql = "UPDATE ". SITETEXT ." set
-                            byalias = '!".$_SESSION["alias"]."'
-                        WHERE tname = '".$environment["parameter"][2]."'
-                        AND  lang = '".$environment["language"]."'
-                        AND label = '".$environment["parameter"][3]."'";
+            $sql = "INSERT INTO site_lock
+                    (tname, lang, label, byalias, lockat)
+            VALUES ('".$environment["parameter"][2]."',
+                    '".$environment["language"]."',
+                    '".$environment["parameter"][3]."',
+                    '".$_SESSION["alias"]."',
+                    '".date("Y-m-d H:i:s")."')";
             $result  = $db -> query($sql);
-            $ausgaben["lock"] .= "lock by ".$_SESSION["alias"];
+            $ausgaben["lock"] .= "lock by ".$_SESSION["alias"]." @ ".date("Y-m-d H:i:s");
             $ausgaben["class"] = "ta_norm";
         }
 
@@ -361,18 +373,18 @@
 
         // +++
         // page basics
-        if ( $environment["parameter"][6] == "unlock" ) {
 
-            // nur lock aufheben
-            $sql = "UPDATE ". SITETEXT ." set
-                            byalias = '".$_SESSION["alias"]."'
-                        WHERE tname = '".$environment["parameter"][2]."'
-                        AND  lang = '".$environment["language"]."'
-                        AND label = '".$environment["parameter"][3]."'";
+        // lock aufheben
+        if ( $environment["parameter"][6] != "" ) {
+            $sql = "DELETE FROM site_lock
+                          WHERE label ='".$environment["parameter"][3]."'
+                            AND tname ='".$environment["parameter"][2]."'
+                            AND lang = '".$environment["language"]."'";
             $result  = $db -> query($sql);
             header("Location: ".$_SESSION["page"]."");
+        }
 
-        } elseif ( $environment["parameter"][6] == "verify"
+        if ( $environment["parameter"][6] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["add"] != ""
                 || $HTTP_POST_VARS["upload"] != "" ) ) {
@@ -383,15 +395,17 @@
 
 
             // gibt es bereits content?
-            $sql = "SELECT html, content
+            $sql = "SELECT version, html, content
                       FROM ". SITETEXT ."
                      WHERE tname='".$environment["parameter"][2]."'
                        AND lang='".$environment["language"]."'
-                       AND label='".$environment["parameter"][3]."'";
+                       AND label='".$environment["parameter"][3]."'
+                  ORDER BY version DESC
+                     LIMIT 1";
             $result = $db -> query($sql);
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $data = $db -> fetch_array($result, $nop);
             $content_exist = $db -> num_rows($result);
-
 
             // evtl. spezielle section
             if ( $environment["parameter"][4] != "" ) {
@@ -466,48 +480,50 @@
             // datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
 
-
-                if ( $content_exist == 1 ) {
+                if ( $content_exist == 1 && !in_array($environment["parameter"][3], $cfg["archive"]) ) {
                     if ( $environment["parameter"][4] == "" && $HTTP_POST_VARS["content"] == "" ) {
                         $sql = "DELETE FROM ". SITETEXT ."
-                                    WHERE  label ='".$environment["parameter"][3]."'
-                                        AND  tname ='".$environment["parameter"][2]."'
-                                        AND  lang = '".$environment["language"]."'";
+                                      WHERE lang = '".$environment["language"]."'
+                                        AND label ='".$environment["parameter"][3]."'
+                                        AND tname ='".$environment["parameter"][2]."'";
                     } else {
                         $sql = "UPDATE ". SITETEXT ." set
-                                        content = '".$content."',
-                                        crc32 = '".$specialvars["crc32"]."',
-                                        html = '".$HTTP_POST_VARS["html"]."',
-                                        ebene = '".$_SESSION["ebene"]."',
-                                    kategorie = '".$_SESSION["kategorie"]."',
-                                        changed = '".date("Y-m-d H:i:s")."',
-                                    bysurname = '".$_SESSION["surname"]."',
-                                    byforename = '".$_SESSION["forename"]."',
-                                        byemail = '".$_SESSION["email"]."',
-                                        byalias = '".$_SESSION["alias"]."'
-                                WHERE  label = '".$environment["parameter"][3]."'
-                                AND  tname = '".$environment["parameter"][2]."'
-                                AND  lang = '".$environment["language"]."'";
+                                       version = ".++$data["version"].",
+                                       ebene = '".$_SESSION["ebene"]."',
+                                       kategorie = '".$_SESSION["kategorie"]."',
+                                       crc32 = '".$specialvars["crc32"]."',
+                                       html = '".$HTTP_POST_VARS["html"]."',
+                                       content = '".$content."',
+                                       changed = '".date("Y-m-d H:i:s")."',
+                                       bysurname = '".$_SESSION["surname"]."',
+                                       byforename = '".$_SESSION["forename"]."',
+                                       byemail = '".$_SESSION["email"]."',
+                                       byalias = '".$_SESSION["alias"]."'
+                                 WHERE lang = '".$environment["language"]."'
+                                   AND label ='".$environment["parameter"][3]."'
+                                   AND tname ='".$environment["parameter"][2]."'";
                     }
                 } else {
                     $sql = "INSERT INTO ". SITETEXT ."
-                                        (lang, crc32, label,
-                                        tname, ebene, kategorie,
-                                        html, content,
+                                        (lang, label, tname, version,
+                                        ebene, kategorie,
+                                        crc32, html, content,
                                         changed, bysurname, byforename, byemail, byalias)
-                                VALUES ( '".$environment["language"]."',
-                                        '".$specialvars["crc32"]."',
-                                        '".$environment["parameter"][3]."',
-                                        '".$environment["parameter"][2]."',
-                                        '".$_SESSION["ebene"]."',
-                                        '".$_SESSION["kategorie"]."',
-                                        '".$HTTP_POST_VARS["html"]."',
-                                        '".$content."',
-                                        '".date("Y-m-d H:i:s")."',
-                                        '".$_SESSION["surname"]."',
-                                        '".$_SESSION["forename"]."',
-                                        '".$_SESSION["email"]."',
-                                        '".$_SESSION["alias"]."')";
+                                 VALUES (
+                                         '".$environment["language"]."',
+                                         '".$environment["parameter"][3]."',
+                                         '".$environment["parameter"][2]."',
+                                         '".++$data["version"]."',
+                                         '".$_SESSION["ebene"]."',
+                                         '".$_SESSION["kategorie"]."',
+                                         '".$specialvars["crc32"]."',
+                                         '".$HTTP_POST_VARS["html"]."',
+                                         '".$content."',
+                                         '".date("Y-m-d H:i:s")."',
+                                         '".$_SESSION["surname"]."',
+                                         '".$_SESSION["forename"]."',
+                                         '".$_SESSION["email"]."',
+                                         '".$_SESSION["alias"]."')";
                 }
 
 
