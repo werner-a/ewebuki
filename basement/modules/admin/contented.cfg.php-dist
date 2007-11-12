@@ -47,6 +47,8 @@
              "name" => "contented",
             "basis" => $pathvars["virtual"]."/admin/contented", # crc = -1468826685 *
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
+//             "debug" => True,
+          "archive" => array( "inhalt" ),
 /*            "color" => array(
                         "a" => "#eee",
                         "b" => "#fff",

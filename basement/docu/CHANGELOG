@@ -9,6 +9,30 @@ $Id$
 --- v?.?.?-???? - ??. mon year num
 
 
+--- 12. November 2007
+
+ACHTUNG! - um in zukunft eine versionierung des content zu ermoeglichen
+mussten die tabellen geaendert werden!
+
+ein preview der versionierung ist vorerst nur in der entwickler version
+verfuegbar!
+
+sql:
+
+ALTER TABLE `site_text` DROP `crc32`;
+ALTER TABLE `site_text` ADD `version` INT(11) NOT NULL AFTER `tname`;
+ALTER TABLE `site_text` ADD `crc32` ENUM('-1', '0') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '-1' AFTER `kategorie`;
+ALTER TABLE `site_text` DROP PRIMARY KEY, ADD PRIMARY KEY (`lang`,`label`,`tname`,`version`);
+
+CREATE TABLE IF NOT EXISTS `site_lock` (
+  `lang` varchar(5) NOT NULL,
+  `label` varchar(20) NOT NULL,
+  `tname` varchar(40) NOT NULL,
+  `byalias` varchar(20) NOT NULL,
+  `lockat` datetime NOT NULL,
+  PRIMARY KEY  (`lang`,`label`,`tname`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 
 --- 26. september 2007
 
@@ -102,6 +126,8 @@ die neue version verhindert das und filtert grundsaetzlich mit
 mit folgenden fcheck eintraegen möglich:
 
 -> z.B. PREG:^[a-z_\-\.0-9]+$
+
+sql:
 
 INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
  VALUES ('entry', '-555504947.add', '0', '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
