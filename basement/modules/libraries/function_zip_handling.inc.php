@@ -57,7 +57,7 @@
                 $path = explode("/",$buffer["name"]);
                 $name = array_pop($path);
                 $dir  = implode("/",$path);
-                if ( $name != "" ){
+                if ( $name != "" ) {
                     $zip_content[$buffer["index"]] = array(
                             "name" => $name,
                              "dir" => $dir,
