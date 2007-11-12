@@ -51,6 +51,9 @@
     <fieldset>
         <p>#(zip)</p>
         <input type="submit" name="extract" value="g(extract)" class="first" />
+        <fieldset class="cbra">
+            <input type="checkbox" name="selection" value="-1" class="first" />#(bundle_zip)
+        </fieldset>
         <div class="clearer">&nbsp;</div>
         <ul>
             <!--##loop-zip-->
@@ -67,6 +70,7 @@
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>
+    <div class="clearer">&nbsp;</div>
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>

@@ -43,11 +43,11 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function zip_handling( $file, $extract_dest="", $restrict_type=array(), $restrict_size="", $restrict_dir="" ) {
-        global $db, $pathvars;
+    function zip_handling( $file, $extract_dest="", $restrict_type=array(), $restrict_size="", $restrict_dir="", $compid="" ) {
+        global $db, $pathvars, $ausgaben;
 
         $zip = new ZipArchive;
-        if ($zip->open($file) === TRUE) {
+        if ($zip->open($file) == TRUE) {
             $zip_content = array();
             // beschraenkung, welche unterordner im zip bearbeitet werden sollen
             $restrict = explode(",",$restrict_dir);
@@ -65,29 +65,56 @@
                             "size" => $buffer["size"],
                     );
                 }
+                // textdateien in eigenes array
+                if ( preg_match("/.*\.txt$/i",$name) ){
+                    $text_files[str_replace("/","--",$buffer["name"])] = array(
+                        "id" => $buffer["index"],
+                        "content" => addslashes(substr($zip->getFromIndex($buffer["index"]),0,400))
+                    );
+                }
             }
 
+            // auspacken
             if ( $extract_dest != "" ) {
+                unset($_SESSION["zip_extracted"]);
+                $i = 1;
                 foreach ( $zip_content as $key=>$value ) {
                     // falls angegeben werden nur bestimmte unterordner abgearbeitet
                     if ( ($restrict_dir == "" || in_array($value["dir"],$restrict))
                       && $value["name"] != "" ) {
+
                         // 1. datei auf den server schreiben
-                        $target = $extract_dest.str_replace("/","--",$value["file"]);
-                        $handle = fopen($target,"a");
+                        $tmp_file = $extract_dest.str_replace("/","--",$value["file"]);
+                        $handle = fopen($tmp_file,"a");
                         fwrite($handle, $zip->getFromIndex($key));
                         fclose($handle);
+
                         // 2. file ueberpruefen
-                        $error = file_validate($target, $value["size"], $restrict_size, $restrict_type);
-                        // 3. loeschen oeder umbenennen
+                        $error = file_validate($tmp_file, $value["size"], $restrict_size, $restrict_type);
+
+                        // 3. file weiterverarbeiten (umbenennen/loeschen)
                         if ( $error == 0 ) {
-                            rename($target,dirname($target)."/".$_SESSION["uid"]."_".basename($target));
-//                             rename($file,dirname($file)."/xxx_".basename($file));
+                            $new_file = $_SESSION["uid"]."_".basename($tmp_file);
+                            rename($tmp_file,dirname($tmp_file)."/".$new_file);
+                            // session schreiben fuer weitere verarbeitung
+                            if ( $compid != "" && $restrict_type[strtolower(substr(strrchr($tmp_file,"."),1))] == "img" ){
+                                $compilation = "#p".$compid.",".($i*10)."#";
+                                $i++;
+                            }else{
+                                $compilation = "";
+                            }
+                            $_SESSION["zip_extracted"][$new_file] = array(
+                                "name" => $new_file,
+                                "compilation" => $compilation,
+                                "desc" => $text_files[basename($tmp_file).".txt"]["content"]
+                            );
+                            // zip_content soll die nicht auszupackenden dateien ausgeben
+                            unset($zip_content[$key]);
+                            if ( is_array( $text_files[basename($tmp_file).".txt"] ) ) unset($zip_content[$text_files[basename($tmp_file).".txt"]["id"]]);
                         } else {
-                            unlink($target);
+                            unlink($tmp_file);
                         }
-//                         unlink($target);
-//                     } else {
+                    } else {
 // echo "<p> Auspacken NICHT moeglich</p>";
                     }
                 }

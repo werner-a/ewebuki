@@ -45,8 +45,27 @@
 
     if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
 
-        $ausgaben["thumbnail"] = thumbnail();
-        if ( $ausgaben["thumbnail"] == "" ) header("Location: ".$cfg["basis"]."/list.html");
+        // auf session losgehen, falls zip bearbeitet wurde
+        if ( count($_SESSION["zip_extracted"]) == 0 ) unset($_SESSION["zip_extracted"]);
+        if ( is_array($_SESSION["zip_extracted"])  ){
+            reset($_SESSION["zip_extracted"]);
+            $file_buffer = current($_SESSION["zip_extracted"]);
+            $file = $file_buffer["name"];
+            while( !file_exists($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file) ){
+                unset($_SESSION["zip_extracted"][$file]);
+                $file_buffer = current($_SESSION["zip_extracted"]);
+                $file = $file_buffer["name"];
+            }
+        }
+        if ( $file == "" ) {
+            $ausgaben["thumbnail"] = thumbnail();
+        }
+
+        // keine files in dem new-ordner
+        if ( $file == "" ) {
+            unset($_SESSION["zip_extracted"]);
+            header("Location: ".$cfg["basis"]."/list.html");
+        }
 
         // page basics
         // ***
@@ -63,11 +82,14 @@
         $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
 
         // form elemente erweitern
-        #$element["extension1"] = "";
-        #$element["extension2"] = "";
         $element["upload"] = "";
         $element["fid"] = "";
         $element["ffname"] = str_replace("ffname\"", "ffname\" value=\"".str_replace($_SESSION["uid"]."_","",$file)."\"", $element["ffname"]);
+        if ( is_array($_SESSION["zip_extracted"]) ){
+            $element["fdesc"] = str_replace("></textarea>", "/>".$file_buffer["desc"]."</textarea>", $element["fdesc"]);
+            $element["funder"] = str_replace("value=\"\"", "value=\"".$file_buffer["funder"]."\"", $element["funder"]);
+            $element["fhit"] = str_replace("value=\"\"", "value=\"".$file_buffer["compilation"]." ".$file_buffer["fhit"]."\"", $element["fhit"]);
+        }
 
         // +++
         // page basics
@@ -105,6 +127,7 @@
         }
         $ausgaben["thumbnail"] = $thumb_web;
 
+        // falls zip wird der inhalt gebaut
         if ( $match[2] == "zip" ) {
             $dataloop["zip"] = zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
             if ( count($dataloop["zip"]) > 0 ){
@@ -169,12 +192,32 @@
 
                 ### put your code here ###
                 if ( $_POST["extract"] != "" ){
-                    zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
-                                $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
-                                $cfg["filetyp"],
-                                $cfg["filesize"],
-                                ""
-                               );
+                    // naechste freie compilation-id suchen
+                    if ( $_POST["selection"] == -1 ){
+                        $buffer = compilation_list();
+                        end($buffer);
+                        $compid = key($buffer) + 1;
+                    } else {
+                        $compid = "";
+                    }
+                    // zip auspacken
+                    $not_extracted = zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
+                                                 $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                                                 $cfg["filetyp"],
+                                                 $cfg["filesize"],
+                                                 "",
+                                                 $compid
+                    );
+                    if ( count($not_extracted) > 0 ) {
+                        $buffer = array();
+                        foreach ( $not_extracted as $value ){
+                            $buffer[] = $value["name"];
+                        }
+                        $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
+                    } else {
+                        unlink( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file );
+                        header("Location: ".$cfg["basis"]."/add.html");
+                    }
                 }
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -185,7 +228,7 @@
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
 
-                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "bnet", "cnet" );
+                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet" );
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
@@ -214,7 +257,8 @@
                     $file_id = $db->lastid();
                     $source = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file;
                     arrange( $file_id, $source, $file );
-                    unlink( $thumb_srv );
+                    if ( file_exists($thumb_srv) ) unlink( $thumb_srv );
+                    unset($_SESSION["zip_extracted"][$file]);
                 } else {
                     $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 }

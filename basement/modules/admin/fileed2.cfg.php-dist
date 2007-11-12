@@ -54,11 +54,11 @@
          "function" => array(
                      "list" => "", # array( "function_name" ),
               "list,shared" => array("filelist"),
-                      "add" => array( "thumbnail", "resize", "arrange" ),
+                      "add" => array( "thumbnail", "resize", "arrange", "compilationlist" ),
                "add,shared" => array( "zip_handling", "file_validate" ),
                      "edit" => array( "resize", "arrange", "file_check" ),
                    "delete" => array( "file_check" ),
-                   "upload" => array( "resize" ),
+                   "upload" => array( "resize", "compilationlist" ),
             "upload,shared" => array( "zip_handling", "file_validate" ),
                      #"used" => "",
                   "collect" => "",

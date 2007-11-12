@@ -158,6 +158,10 @@
                                              $cfg["filesize"],
                                              "selection"
                                 );
+                                unset($_SESSION["zip_extract"]);
+                                $buffer = compilation_list();
+                                end($buffer);
+                                $_SESSION["zip_extract"]["compid"] = key($buffer) + 1;
                             } else {
                                 $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." #(error".$error.")";
                             }
