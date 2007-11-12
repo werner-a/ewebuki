@@ -43,10 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function file_validate($file, $file_size, $limit, $valid_type) {
+    function file_validate($file, $file_size, $limit, $valid_type, $key="") {
         global $pathvars, $debugging;
 
-        // find file basename, extension
         $file_extension = strtolower(substr(strrchr($file,"."),1));
         $file_basename = basename($file,".".$file_extension);
 
@@ -54,6 +53,18 @@
         if ( $file_extension == "jpeg" ) $file_extension = "jpg";
 
         $error_code = 0;
+
+        if ( is_uploaded_file($file) == TRUE || $key != "" ) {
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file name tmp: ".$_FILES[$key]["tmp_name"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file name: ".$_FILES[$key]["name"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file mime type: ".$_FILES[$key]["type"].$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file size: ".$_FILES[$key]["size"].$debugging["char"];
+            $file_extension = strtolower(substr(strrchr($_FILES[$key]["name"],"."),1));
+            if ( version_compare(PHP_VERSION, "4.2.0", ">") == TRUE ) {
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "file error: ".$_FILES[$key]["error"].$debugging["char"];
+                $error_code = $_FILES[$key]["error"];
+            }
+        }
 
         if ( $error_code == 0 ) {
             if ( count($valid_type) == 0 || (!in_array($file_extension, $valid_type) && !array_key_exists($file_extension, $valid_type)) ) {
@@ -100,6 +111,21 @@
         }
 
         return $error_code;
+
+        // Error-Codes
+        //  0: There is no error, the file uploaded with success.
+        //  1: The uploaded file exceeds the upload_max_filesize directive ( ".get_cfg_var(upload_max_filesize)." ) in php.ini.
+        //  2: The uploaded file exceeds the MAX_FILE_SIZE ( ".$_POST["MAX_FILE_SIZE"]."kb ) directive that was specified in the html form.
+        //  3: The uploaded file was only partially uploaded.
+        //  4: No file was uploaded.
+        //  6: Missing a temporary folder.
+        //  7: Failed to write file to disk.
+        //  8: File upload stopped by extension.
+        // 10: File Size to big.
+        // 11: File Type not valid.
+        // 12: File Name already exists.
+        // 13: Unknown Error. Maybe post_max_size directive ( ".get_cfg_var(post_max_size)." ) in php.ini. Please do not try again.
+        // 14: Sorry, you need minimal PHP/4.x.x to handle uploads!";
 
     }
 

@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -67,20 +67,6 @@
         } else {
             $anzahl = $cfg["upload"]["inputs"];
         }
-//         if ( $environment["parameter"][1] == "zip" ) {
-//             $name = "zip_upload";
-//             $anzahl = 1;
-//             $hidedata["modus"] = array(
-//                 "link" => "./upload.html",
-//                 "text" => "#(nozip)",
-//             );
-//         } else {
-//             $name = "upload";
-//             $hidedata["modus"] = array(
-//                 "link" => "./upload,zip.html",
-//                 "text" => "#(zip)",
-//             );
-//         }
         for ( $i = 1; $i <= $anzahl; $i++ ) {
             $dataloop["upload"][$i]["name"] = $name.$i;
         }
@@ -119,7 +105,19 @@
         if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
-            $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
+            $ausgaben["inaccessible"] .= "# (error0) #(error0)<br />";
+            $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
+            $ausgaben["inaccessible"] .= "# (error2) #(error2)<br />";
+            $ausgaben["inaccessible"] .= "# (error3) #(error3)<br />";
+            $ausgaben["inaccessible"] .= "# (error4) #(error4)<br />";
+            $ausgaben["inaccessible"] .= "# (error6) #(error6)<br />";
+            $ausgaben["inaccessible"] .= "# (error7) #(error7)<br />";
+            $ausgaben["inaccessible"] .= "# (error8) #(error8)<br />";
+            $ausgaben["inaccessible"] .= "# (error10) #(error10)<br />";
+            $ausgaben["inaccessible"] .= "# (error11) #(error11)<br />";
+            $ausgaben["inaccessible"] .= "# (error12) #(error12)<br />";
+            $ausgaben["inaccessible"] .= "# (error13) #(error13)<br />";
+            $ausgaben["inaccessible"] .= "# (error14) #(error14)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -150,79 +148,31 @@
 
                 foreach ( $_FILES as $key => $value ) {
                     if ( $value["name"] != "" || $value["size"] != 0 ) {
-//                         if ( !strstr($key,"zip_upload") ) {
-                            $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
-                            if ( $file["returncode"] == 0 ) {
-                                rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
+                            $error = file_validate($value["tmp_name"], $value["size"], $cfg["filesize"], $cfg["filetyp"], $key);
+                            if ( $error == 0 ) {
+                                $newname = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$value["name"];
+                                rename($value["tmp_name"],$newname);
+                                zip_handling($newname,
+                                             $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                                             $cfg["filetyp"],
+                                             $cfg["filesize"],
+                                             "selection"
+                                );
                             } else {
-                                $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ";
-                                $ausgaben["form_error"] .= file_error($file["returncode"])."<br>";
+                                $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." #(error".$error.")";
                             }
-//                         } else {
-//                             // zip validieren
-//                             $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
-//
-//                             $zip = new ZipArchive;
-//                             if ($zip->open($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]) === TRUE) {
-//                                 // zip durchgehen und dateien-informationen holen
-//                                 for ( $i=0; $i<$zip->numFiles; $i++ ) {
-//                                     $buffer = $zip->statIndex($i);
-// //                                     $zip_contents[$buffer["name"]] = array(
-// //                                             "name" => $buffer["name"],
-//                                     // verzeichnisse abfangen
-//                                     $name = trim(strstr($buffer["name"], '/'),"/");
-//                                     if ( $name != "" ){
-//                                         $zip_contents[$name] = array(
-//                                                 "name" => $name,
-//                                                 "type" => "",
-// //                                             "tmp_name" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$buffer["name"],
-//                                             "tmp_name" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$name,
-//                                             "zip_path" => $buffer["name"],
-//                                             "error" => 0,
-//                                                 "size" => $buffer["size"],
-//                                         );
-//                                     }
-// echo "--".$buffer["name"]."<br>";
-// echo "--".trim(strstr($buffer["name"], '/'),"/")."<br>";
-// echo "-------------------<br>";
-//                                 }
-// echo "<pre>".print_r($zip_contents,true)."</pre>";
-//                                 foreach ( $zip_contents as $zip_key=>$zip_value ) {
-//                                     // dateien ausspielen
-//                                     $handle = fopen($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$zip_key,"a");
-//                                     fwrite($handle, $zip->getFromName($zip_value["zip_path"]));
-//                                     fclose($handle);
-//                                     // dateien ueberpruefen und aufraeumen
-//                                     $tmp_file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"], $zip_value );
-//                                     if ( $tmp_file["returncode"] == 0 ) {
-//                                         rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$zip_key,
-//                                                $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$zip_key
-//                                         );
-//                                     } else {
-//                                         $ausgaben["form_error"] .= "Ergebnis: ".$tmp_file["name"]." ";
-//                                         $ausgaben["form_error"] .= file_error($tmp_file["returncode"])."<br>";
-//                                         unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$zip_key);
-//                                     }
-//                                 }
-//                                 $zip->close();
-//                             } else {
-//                                 $ausgaben["form_error"] .= "ZIP-Datei ".$file["name"]." konnte nicht geoeffnet werden<br />";
-//                             }
-//                             unlink($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"]);
-//                         }
                     }
                 }
 
                 if ( $ausgaben["form_error"] == "" ) {
-//                     header("Location: ".$cfg["basis"]."/add,".$environment["parameter"][1].".html");
-//                     exit(); ### laut guenther wird es gebraucht, warum?
+                    header("Location: ".$cfg["basis"]."/add,".$environment["parameter"][1].".html");
+                    exit(); ### laut guenther wird es gebraucht, warum?
                 } else {
                     $ausgaben["form_error"] .= "<br><br><a href=\"".$cfg["basis"]."/add,".$environment["parameter"][1].".html\">Trotzdem weiter</a>";
                     unset($hidedata["modus"]);
                     #$mapping["main"] = "default1";
                 }
 
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
             }
