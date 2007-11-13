@@ -105,19 +105,19 @@
         if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
-            $ausgaben["inaccessible"] .= "# (error0) #(error0)<br />";
-            $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
-            $ausgaben["inaccessible"] .= "# (error2) #(error2)<br />";
-            $ausgaben["inaccessible"] .= "# (error3) #(error3)<br />";
-            $ausgaben["inaccessible"] .= "# (error4) #(error4)<br />";
-            $ausgaben["inaccessible"] .= "# (error6) #(error6)<br />";
-            $ausgaben["inaccessible"] .= "# (error7) #(error7)<br />";
-            $ausgaben["inaccessible"] .= "# (error8) #(error8)<br />";
-            $ausgaben["inaccessible"] .= "# (error10) #(error10)<br />";
-            $ausgaben["inaccessible"] .= "# (error11) #(error11)<br />";
-            $ausgaben["inaccessible"] .= "# (error12) #(error12)<br />";
-            $ausgaben["inaccessible"] .= "# (error13) #(error13)<br />";
-            $ausgaben["inaccessible"] .= "# (error14) #(error14)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error0) g(file_error0)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error1) g(file_error1)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error2) g(file_error2)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error3) g(file_error3)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error4) g(file_error4)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error6) g(file_error6)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error7) g(file_error7)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error8) g(file_error8)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error10) g(file_error10)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error11) g(file_error11)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error12) g(file_error12)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error13) g(file_error13)<br />";
+            $ausgaben["inaccessible"] .= "# (file_error14) g(file_error14)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -152,18 +152,19 @@
                             if ( $error == 0 ) {
                                 $newname = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$value["name"];
                                 rename($value["tmp_name"],$newname);
+                                // compilation
+                                $buffer = compilation_list();
+                                end($buffer);
+                                $new_comp = key($buffer) + 1;
                                 zip_handling($newname,
                                              $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
                                              $cfg["filetyp"],
                                              $cfg["filesize"],
-                                             "selection"
+                                             "selection",
+                                             $new_comp
                                 );
-                                unset($_SESSION["zip_extract"]);
-                                $buffer = compilation_list();
-                                end($buffer);
-                                $_SESSION["zip_extract"]["compid"] = key($buffer) + 1;
                             } else {
-                                $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." #(error".$error.")";
+                                $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." g(file_error".$error.")";
                             }
                     }
                 }
