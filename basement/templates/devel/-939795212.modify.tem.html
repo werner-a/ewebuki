@@ -47,6 +47,14 @@
     <!--##show-->
     <p>#(references)!#ausgaben_reference</p>
     <p>!#element_fid</p>
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" onclick="resetForm()" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
     <!--##hide-zip-->
     <fieldset>
         <p>#(zip)</p>
@@ -62,14 +70,6 @@
         </ul>
     </fieldset>
     <!--##show-->
-    <fieldset>
-        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
-        <div class="clearer">&nbsp;</div>
-        <input type="submit" name="send[]" value="g(send)" class="first" />
-        <input type="reset" name="reset" value="g(reset)" onclick="resetForm()" class="next" />
-        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
-        <div class="clearer">&nbsp;</div>
-    </fieldset>
     <div class="clearer">&nbsp;</div>
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
