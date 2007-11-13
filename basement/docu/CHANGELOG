@@ -8,6 +8,18 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 13. November 2007
+
+um den neuen grouped benutzen zu können ist eine neue tabelle erforderlich:
+
+CREATE TABLE `auth_group` (
+  `gid` int(11) NOT NULL auto_increment,
+  `gruppe` varchar(10) NOT NULL,
+  `beschreibung` text NOT NULL,
+  `members` text,
+  PRIMARY KEY  (`gid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
 
 --- 12. November 2007
 
