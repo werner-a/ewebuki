@@ -117,7 +117,7 @@
                 resize( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
                         "preview",
                         $img_src,
-                        $cfg["size"]["m"],
+                        $cfg["size"][$cfg["fileopt"]["preview_size"]],
                         preg_replace("/\/$/i","",$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]),
                         "tmp".$match[1]
                 );
@@ -217,6 +217,7 @@
                     } else {
                         unlink( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file );
                         header("Location: ".$cfg["basis"]."/add.html");
+                        exit;
                     }
                 }
 
@@ -249,7 +250,7 @@
                 $sqlb .= ", '".$_SESSION["custom"]."'";
 
 
-                $sql = "insert into ".$cfg["db"]["file"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "INSERT INTO ".$cfg["db"]["file"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 #if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
