@@ -59,7 +59,6 @@
         // +++
         // funktions bereich fuer erweiterungen
 
-
         // page basics
         // ***
 
@@ -89,13 +88,15 @@
         // link zum thumbnail wird gebaut
         $type = $cfg["filetyp"][$form_values["ffart"]];
         if ( $type == "img" ) {
-            $path = $cfg["fileopt"][$type]["path"]."original/";
-            $filename = "img_".$form_values["fid"].".".$form_values["ffart"];
+            $filename = $pathvars["filebase"]["webdir"].
+                        $form_values["ffart"]."/".
+                        $form_values["fid"]."/".
+                        $cfg["fileopt"]["preview_size"]."/".
+                        $form_values["fname"];
         } else {
-            $path = $cfg["fileopt"][$type]["tnpath"].ltrim($cfg["iconpath"],"/");
-            $filename = $cfg["fileopt"][$type]["thumbnail"];
+            $filename = $cfg["iconpath"].$cfg["fileopt"][$type]["thumbnail"];
         }
-        $ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$path.$filename."&size=280";
+        $ausgaben["thumbnail"] = $filename;
 
 
         if ( $_SESSION["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
@@ -116,10 +117,20 @@
         );
 
         // wo im content wird die datei verwendet
-        if ( content_check($environment["parameter"][1]) == True && $error == 0 ){
-            $ausgaben["reference"] = implode("<br />",$arrError);
-        }else{
+        $used_in = content_check($environment["parameter"][1]);
+        if ( count($used_in) > 0 ) {
+            $ausgaben["reference"] = implode("<br />",$used_in);
+        } else {
             $ausgaben["reference"] = "---";
+        }
+
+        // falls zip wird der inhalt gebaut
+        if ( $form_values["ffart"] == "zip" ) {
+            $file_srv = $cfg["fileopt"][$type]["path"].$type."_".$form_values["fid"].".".$form_values["ffart"];
+            $dataloop["zip"] = zip_handling($file_srv);
+            if ( count($dataloop["zip"]) > 0 ) {
+                $hidedata["zip"][] = -1;
+            }
         }
 
         // +++
@@ -157,7 +168,7 @@
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_edit) #(error_edit)<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
-            $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
+            $ausgaben["inaccessible"] .= "# (error_replace) #(error_replace)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -170,7 +181,7 @@
 
         if ( $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""
-                || $_POST["extension1"] != ""
+                || $_POST["extract"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
             // form eingaben prüfen
@@ -179,26 +190,54 @@
             // evtl. zusaetzliche datensatz aendern
             if ( $ausgaben["form_error"] == ""   ) {
 
-                if ( $owner_error == "" ){
+                if ( $owner_error == "" ) {
 
                     // funktions bereich fuer erweiterungen
                     // ***
 
                     // file ersetzen
                     if ( $_FILES["upload"]["name"] != "" ) {
-                        $file = file_verarbeitung($pathvars["filebase"]["new"], "upload", $cfg["filesize"], array( $form_values["ffart"] ), $pathvars["filebase"]["maindir"]);
-                        if ( $file["returncode"] == 0 ) {
-                            $file_id = $form_values["fid"];
-                            $source = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"];
-                            arrange( $file_id, $source, $file["name"] );
+                            $error = file_validate($_FILES["upload"]["tmp_name"], $_FILES["upload"]["size"], $cfg["filesize"], $cfg["filetyp"], "upload");
+                            if ( $error == 0 ) {
+                                $file_id = $form_values["fid"];
+                                $source = $_FILES["upload"]["tmp_name"];
+                                arrange( $file_id, $source, $_FILES["upload"]["name"] );
+                            } else {
+                                $ausgaben["form_error"] .= "#(error_replace) ".$file["name"]." g(file_error".$error.")";
+                            }
+                    }
+
+                    if ( $_POST["extract"] != "" ) {
+                        // naechste freie compilation-id suchen
+                        if ( $_POST["selection"] == -1 ) {
+                            $buffer = compilation_list();
+                            end($buffer);
+                            $compid = key($buffer) + 1;
                         } else {
-                            $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ".file_error($file["returncode"]);
+                            $compid = "";
+                        }
+                        // zip auspacken
+                        $not_extracted = zip_handling($file_srv,
+                                                      $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                                                      $cfg["filetyp"],
+                                                      $cfg["filesize"],
+                                                      "",
+                                                      $compid
+                        );
+                        if ( count($not_extracted) > 0 ) {
+                            $buffer = array();
+                            foreach ( $not_extracted as $value ) {
+                                $buffer[] = $value["name"];
+                            }
+                            $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
+                        } else {
+                            header("Location: ".$cfg["basis"]."/add.html");
+                            exit;
                         }
                     }
 
                     ### put your code here ###
 
-                    if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     // +++
                     // funktions bereich fuer erweiterungen
 
@@ -215,13 +254,16 @@
                     #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                     #$sqla .= ", ldate='".$ldate."'";
 
-                    $sql = "update ".$cfg["db"]["file"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+                    $sql = "UPDATE ".$cfg["db"]["file"]["entries"]."
+                               SET ".$sqla." WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                    if ( !$result ) {
+                        $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                    }
                     if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
 
-                }else{
+                } else {
                     if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
                 }
 

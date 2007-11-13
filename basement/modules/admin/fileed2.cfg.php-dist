@@ -57,6 +57,7 @@
                       "add" => array( "thumbnail", "resize", "arrange", "compilationlist" ),
                "add,shared" => array( "zip_handling", "file_validate" ),
                      "edit" => array( "resize", "arrange", "file_check" ),
+              "edit,shared" => array( "zip_handling", "file_validate" ),
                    "delete" => array( "file_check" ),
                    "upload" => array( "resize", "compilationlist" ),
             "upload,shared" => array( "zip_handling", "file_validate" ),
@@ -139,6 +140,7 @@
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
                         "thumbnail" => "icon_odf.png"
                                ),
+             "preview_size" => "m",
                        ),
              "size" => array(
                         "b" => "580",
