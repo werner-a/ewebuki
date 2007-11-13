@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>leveled.list</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
+<p><a href="!#ausgaben_link_new">g(new)</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <thead>
+        <tr>
+            <th align="left">#(group)</th>
+            <th align="left">#(beschreibung)</th>
+            <th align="left">g(modcol)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--##loop-list-->
+        <tr style="background:!{color}">
+            <td>!{bezeichnung}</td>
+            <td>!{beschreibung}</td>
+            <td style="white-space:nowrap">
+                <a href="!{editlink}"><img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)"  /></a>
+                <a href="!{deletelink}"><img src="../../images/default/delete.png" width="24" height="18" alt="g(delete)" title="g(delete)" /></a>
+                <a href="!{detaillink}"><img src="../../images/default/details.png" width="24" height="18" alt="g(details)" title="g(details)" /></a>
+            </td>
+        </tr>
+        <!--##cont-->
+    </tbody>
+</table>
+<p style="float:left">g(anzahl)!#ausgaben_anzahl</p>
+<p style="float:right">!#ausgaben_inhalt_selector</p>
+<div style="clear:both"></div>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<!--##end-->
+</body>
+</html>

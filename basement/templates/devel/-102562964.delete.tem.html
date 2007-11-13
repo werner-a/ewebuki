@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>leveled.delete</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -840786483.delete.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <p>#(frage)</p>
+    <!--##hide-members-->
+    <h2>#(members)</h2>
+    <p>!#ausgaben_members</p>
+    <!--##show-->
+    <fieldset>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+    </fieldset>
+    <div class="clearer">&nbsp;</div>
+    <p>!#ausgaben_output </p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<!--##end-->
+</body>
+</html>
