@@ -79,13 +79,13 @@ $hidedata["edit"]["ii"] = "on";
         // ***
 
         # nice sql query tnx@bastard!
-        $sql = "SELECT auth_user.uid, auth_user.username, auth_right.lid, auth_right.rid FROM auth_user LEFT JOIN auth_right ON auth_user.uid = auth_right.uid and auth_right.lid = ".$environment["parameter"][1]." ORDER by username";
+        $sql = "SELECT auth_user.uid, auth_user.username, auth_right.lid FROM auth_user LEFT JOIN auth_right ON auth_user.uid = auth_right.uid and auth_right.lid = ".$environment["parameter"][1]." ORDER by username";
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
 
             if ( $all["lid"] == $environment["parameter"][1] ) {
                 $dataloop["actual"][] = array(
-                                            "value" => $all["rid"],
+                                            "value" => $all["uid"],
                                             "username" => $all["username"]
                                         );
             } else {
@@ -149,10 +149,9 @@ $hidedata["edit"]["ii"] = "on";
                 // user hinzufuegen
                 if ( $HTTP_POST_VARS["add"] ) {
                     foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
-                        $sql = "INSERT INTO auth_right
-                                            (lid, uid)
-                                        VALUES ('".$environment["parameter"][1]."',
-                                                '".$value."')";
+                        $sql = "INSERT INTO ".$cfg["db"]["right"]["entries"]."
+                                            (".$cfg["db"]["right"]["level"].",".$cfg["db"]["right"]["user"].")
+                                     VALUES ('".$environment["parameter"][1]."','".$value."')";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -163,7 +162,8 @@ $hidedata["edit"]["ii"] = "on";
                 // user entfernen
                 if ( $HTTP_POST_VARS["del"] ) {
                     foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
-                        $sql = "DELETE FROM auth_right where rid='".$value."'";
+                        $sql = "DELETE FROM ".$cfg["db"]["right"]["entries"]."
+                                      WHERE ".$cfg["db"]["right"]["user"]."='".$value."' AND ".$cfg["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
