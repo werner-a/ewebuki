@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>contented.list</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -1468826685.list.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
+<p>!#ausgaben_form_error</p>
+<p><a href="!#ausgaben_link_new">g(new)</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+    <thead>
+        <tr>
+            <th align="left">#(field1)</th>
+            <th align="left">g(modcol)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--##loop-list-->
+        <tr style="background:!{color}">
+            <td>!{0}</td>
+            <td>!{1}</td>
+            <td style="white-space:nowrap">
+                <a href="!{edit}"><img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)" /></a>
+                <a href="!{delete}"><img src="../../images/default/delete.png" width="24" height="18" alt="g(delete)" title="g(delete)" /></a>
+                <a href="!{details}"><img src="../../images/default/details.png" width="24" height="18" alt="g(details)" title="g(details)" /></a>
+            </td>
+        </tr>
+        <!--##cont-->
+    </tbody>
+</table>
+<p style="float:left">g(anzahl)!#ausgaben_anzahl</p>
+<p style="float:right">!#ausgaben_inhalt_selector</p>
+<div style="clear:both"></div>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<!--##end-->
+</body>
+</html>

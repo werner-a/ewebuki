@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>leer.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -1468826685.modify.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<script type="text/javascript">
+<!--
+  function resetForm(){
+     document.forms[0].reset();
+  }
+//-->
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset>
+        <label for="field1">#(field1)</label>
+        !#element_field1
+        <label for="field2">#(field2)</label>
+        !#element_field2
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<!--##end-->
+</body>
+</html>
