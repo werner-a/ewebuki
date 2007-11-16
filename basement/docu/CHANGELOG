@@ -33,7 +33,7 @@ sql:
 
 ALTER TABLE `site_text` DROP `crc32`;
 ALTER TABLE `site_text` ADD `version` INT(11) NOT NULL AFTER `tname`;
-ALTER TABLE `site_text` ADD `crc32` ENUM('-1', '0') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '-1' AFTER `kategorie`;
+ALTER TABLE `site_text` ADD `crc32` ENUM('-1', '0') NOT NULL DEFAULT '-1' AFTER `kategorie`;
 ALTER TABLE `site_text` DROP PRIMARY KEY, ADD PRIMARY KEY (`lang`,`label`,`tname`,`version`);
 
 CREATE TABLE IF NOT EXISTS `site_lock` (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `site_lock` (
   `byalias` varchar(20) NOT NULL,
   `lockat` datetime NOT NULL,
   PRIMARY KEY  (`lang`,`label`,`tname`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM;
 
 
 --- 26. september 2007
