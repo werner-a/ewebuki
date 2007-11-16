@@ -151,7 +151,7 @@
             $result = $db -> query($sql);
             if ( $db -> num_rows($result) == 1 ) {
                 $data2 = $db -> fetch_array($result,1);
-                $upper[] = array( "entry" => $data2["entry"], "label" => $data2["label"] );
+                $upper[] = array( "mid" => $data2["mid"], "entry" => $data2["entry"], "label" => $data2["label"] );
             }
             //
             // prev + next handling
@@ -405,14 +405,27 @@
                 }
                 if ( $next == "" ) {
                     $last = @end($upper);
-                    $tiefe = $count_menu - count($upper);
+                    function depth_find( $refid, &$count ) {
+                        global $debugging, $db, $cfg;
+                        $sql = "SELECT refid
+                                  FROM ".$cfg["db"]["menu"]["entries"]."
+                                 WHERE mid = ".$refid;
+                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                        $result = $db -> query($sql);
+                        if ( $db -> num_rows($result) > 0 ) {
+                            $data = $db -> fetch_array($result,1);
+                            $count++;
+                            depth_find($data["refid"],$count);
+                        }
+                    }
+                    $count = 0;
+                    if ( is_array($last) ) depth_find($last["mid"],$count);
+                    $tiefe = $count_menu - $count;
                     for ( $i=0 ; $i < $tiefe ; $i++ ) {
                         $last["entry"] = "../".$last["entry"];
                     }
                     $next = $next = "<a href=\"".$last["entry"].".html\">".$last["label"]."</a>";
                 }
-                #$next = "<a href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";$navbararray["entry"];
-                #echo "prev:".$prev." - next:".$next;
                 $ausgaben["prev"] = $prev;
                 $ausgaben["next"] = $next;
                 // +++
