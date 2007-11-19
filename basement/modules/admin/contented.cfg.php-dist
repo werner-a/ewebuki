@@ -47,7 +47,7 @@
              "name" => "contented",
             "basis" => $pathvars["virtual"]."/admin/contented", # crc = -1468826685 *
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
-//             "debug" => True,
+            #"debug" => True,
           "archive" => array( "inhalt" ),
 /*            "color" => array(
                         "a" => "#eee",
@@ -56,7 +56,8 @@
          "function" => array(
 //                       "add" => "",
                      "edit" => array("makece"),
-              "edit,shared" => array("filelist"),
+              "edit,shared" => array("filelist","phpdiff"),
+                  "history" => "",
               #"edit,shared" => array("sha","klo"),
               #"edit,global" => array("glo"),
 //                    "delete" => "",
@@ -127,12 +128,13 @@
 
                    // ewebuki spezial
                    "e"      => array( "B", "E" ),
-                   "!"      => array( "" ),
+                   "!"      => array( "B" ),
                    "ank"    => array( "" ),
                    "email"  => array( "", "M", False, "=Adresse]" ),
                    "hs"     => array( "" ),
                    "hl"     => array( "", "_", True ),
-                   "imgb"   => array( "", "X", False, "=image.typ;l|r;0;b;20;20;10" ),
+                   "imgb"   => array( "", "X", False, "=image.typ;l|r;0;b;20;20;10]" ),
+                   "sel"    => array( "T", "S", False, "=1;m;True;1:2]" ),
                    "in"     => array( "" ),
                    "m0"     => array( "B", "-" ),
                    "m1"     => array( "B", "=" ),
@@ -141,7 +143,7 @@
                    "prev"   => array( "B", "<", True ),
                    "next"   => array( "B", ">", True ),
                    "quote"  => array( "" ),
-                   "sp"     => array( "", "S", True ),
+                   "sp"     => array( "", "", True ),
 
                    // deprecated (automatic don't work)
                    "int"    => array( "", "", "", "", "" ),
@@ -186,10 +188,6 @@
                        ),
 
            );
-
-    // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich
-    // "/my" lauten. es funktioniert im beispiel nur ohne aenderung, da das
-    // einfache script $cfg["basis] nicht nutzt.
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>
