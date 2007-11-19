@@ -79,7 +79,7 @@
 
         // level management form form elemente begin
         // ***
-        $sql = "SELECT auth_level.lid, auth_level.level, auth_right.uid, auth_right.rid
+        $sql = "SELECT auth_level.lid, auth_level.level, auth_right.uid
                   FROM auth_level
              LEFT JOIN auth_right ON auth_level.lid = auth_right.lid and auth_right.uid = ".$environment["parameter"][1]."
               ORDER BY level";
