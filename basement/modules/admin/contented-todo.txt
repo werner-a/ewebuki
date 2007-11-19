@@ -21,3 +21,6 @@ Anlegen neuer Seiten:
 
 Füllen von Seiten:
 dummy-user erhalten eigenen editor der nur bestimmte marken ( DIV oder HS )ohne tags speichern kann.
+
+
+beim zurückspringen vom fileed landet man nicht im contented, sondern auf der seite selber
