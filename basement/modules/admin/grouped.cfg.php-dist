@@ -47,7 +47,7 @@
 
     $cfg = array(
            "subdir" => "admin",
-             "name" => "grouped2",
+             "name" => "grouped",
             "basis" => $pathvars["virtual"]."/admin/grouped",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
             "color" => array(
