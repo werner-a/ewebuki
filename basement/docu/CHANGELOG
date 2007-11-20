@@ -8,6 +8,25 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 20. November 2007
+
+grouped wurde umgestellt auf zwischentabelle auth_member;
+bei der vorhanden tabelle auth_group feld 'members' löschen oder neuen sql fuer auth_group verwenden
+
+CREATE TABLE `auth_group` (
+  `gid` int(11) NOT NULL auto_increment,
+  `group` varchar(10) NOT NULL,
+  `beschreibung` text NOT NULL,
+  PRIMARY KEY  (`gid`)
+) ENGINE=MyISAM
+
+CREATE TABLE `auth_member` (
+  `uid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  PRIMARY KEY  (`uid`,`gid`)
+) ENGINE=MyISAM
+
+
 --- 13. November 2007
 
 um den neuen grouped benutzen zu können ist eine neue tabelle erforderlich:
