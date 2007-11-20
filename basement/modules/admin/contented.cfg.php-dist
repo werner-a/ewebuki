@@ -95,7 +95,7 @@
                    "p"      => array( "T", "P" ),
                    "pre"    => array( "" ),
                    "div"    => array( "", "D", False, "=wert]" ),
-                   "teaser" => array( "T", "D", False, "=teaser]", "", "", "DIV" ),
+                   "box"    => array( "T", "D", False, "=box]", "", "", "DIV" ),
                    "list"   => array( "", "L", False, "=1|a]", "\\n[*]" ),
                    "hr"     => array( "", "H", True ),
                    "table"  => array( "", "T", False, "]\\n[ROW]\\n[COL]", "" ,"\\n[\/COL]\\n[\/ROW]\\n" ),
