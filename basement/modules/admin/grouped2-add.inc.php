@@ -167,13 +167,14 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                $sqla .= ", members";
-                $sqlb .= ", '".$members."'";
+                #$sqla .= ", members";
+                #$sqlb .= ", '".$members."'";
 
                 // level hinzufuegen
-                $sql = "insert into ".$cfg["db"]["group"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "insert into ".$cfg["db"]["member"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+echo $sql;
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                $result  = $db -> query($sql);
+                #$result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
 
                 // usern mit neuem level versehen
@@ -181,7 +182,7 @@
 
                 }
 
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+              #  if ( $header == "" ) $header = $cfg["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
