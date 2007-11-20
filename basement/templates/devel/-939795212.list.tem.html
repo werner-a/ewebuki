@@ -10,14 +10,26 @@
 <!--##begin-->
 <!--$Id$-->
 <form method="get" action="!#ausgaben_form1_aktion" id="eEd">
-<h1>#(ueberschrift)</h1>
-    <div class="reiter" style="">
-    <!--##loop-filter1-->
-        <a href="./list,,!{value}.html" class="!{select}">!{label}</a>
-    <!--##cont-->
-        <a href="./compilation.html">#(filecompilation)</a>
-        <a href="./upload.html">#(fileupload)</a>
+    <h1>#(ueberschrift)</h1>
+    <div class="tabbed" style="">
+        <ul style="">
+            <!--##loop-filter1-->
+            <li style="">
+                <a href="./list,,!{value}.html" class="!{select}" style="">!{label}</a>
+            </li>
+            <!--##cont-->
+            <li style="float:right;">
+                <a href="./upload.html">#(fileupload)</a>
+            </li>
+            <li style="float:right;">
+                <a href="./compilation.html">#(filecompilation)</a>
+            </li>
+            <li style="float:right;">
+                <a href="./list.html" class="selected">#(filelist)</a>
+            </li>
+        </ul>
     </div>
+    <div style="clear:both;border-top:1px solid #666666;"></div>
     <fieldset class="float">
         <label class="small">
             #(search)&nbsp;
@@ -29,14 +41,6 @@
                 <!--##loop-filter0-->
                 <option value="!{value}"!{select}>!{label}</option>
                 <!--##cont-->
-            </select>
-        </label>
-        <label class="small">
-            #(type)&nbsp;
-            <select name="filter1" onchange="submit()">
-                <!--##loop-filter1-->
-                <option value="!{value}"!{select}>!{label}</option>
-                <!--##cont -->
             </select>
         </label>
         <label class="small">

@@ -11,25 +11,39 @@
 <!--$Id$-->
 <div id="eEd">
     <h1>#(ueberschrift)</h1>
-    <div class="reiter">
-    <!--##loop-filter1-->
-<!--         <a href="" style="margin:5px 0 0 5px;background:#efefef;padding:5px;">!{label}</a> -->
-    <!--##cont-->
-        <a href="./list.html">#(filelist)</a>
+    <div class="tabbed" style="">
+        <ul style="">
+            <li style="float:right;">
+                <a href="./upload.html">#(fileupload)</a>
+            </li>
+            <li style="float:right;">
+                <a href="./compilation.html" class="selected">#(filecompilation)</a>
+            </li>
+            <li style="float:right;">
+                <a href="./list.html">#(filelist)</a>
+            </li>
+        </ul>
     </div>
+    <div style="clear:both;border-top:1px solid #666666;"></div>
     <form method="get" action="!#ausgaben_form_aktion">
-        <fieldset>
-            <label for="search">#(search)</label>
-            <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
-            <label>#(compilation_search)</label>
-            <select name="compID" onchange="submit()">
-                <option value="">Compilation ausw&auml;hlen</option>
-                <!--##loop-groups-->
-                <option value="!{id}"!{select}>#!{id}: !{name}</option>
-                <!--##cont-->
-            </select>
-            <label for="send"></label>
-            <input type="submit" name="send[]" value="g(send)" />
+        <fieldset class="float">
+            <label class="small">
+                #(search)&nbsp;
+                <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+            </label>
+            <label class="small">
+                #(compilation_search)&nbsp;
+                <select name="compID" onchange="submit()">
+                    <option value="">Compilation ausw&auml;hlen</option>
+                    <!--##loop-groups-->
+                    <option value="!{id}"!{select}>#!{id}: !{name}</option>
+                    <!--##cont-->
+                </select>
+            </label>
+            <label class="small">
+                &nbsp;
+                <input type="submit" name="send[]" value="g(send)" />
+            </label>
             <div class="clearer">&nbsp;</div>
         </fieldset>
     </form>

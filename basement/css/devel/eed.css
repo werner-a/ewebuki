@@ -199,20 +199,40 @@ div.clearer {
   reiter-struktur
   ----------------------*/
 
-    #eEd .reiter {
-        background:#fff;
-        padding-top:10px;
+    #eEd .tabbed {
+        height:3em;
+        position:relative;
     }
 
-    #eEd .reiter a {
-        background:#efefef;
-        margin:5px 0 0 5px;
-        padding:5px 5px 1px 5px;
+    #eEd .tabbed ul {
+        position:absolute;
+        bottom:-1px;
+    }
+
+    #eEd .tabbed ul li {
+        display:inline;
+    }
+
+    #eEd .tabbed ul li a {
+        background:#eee;
+        border:1px solid #aaa;
+        border-bottom-color:#666;
+        color:#aaa;
+        display:block;
+        float:left;
+        margin:1px 2px 0pt 1px;
+        padding:2px 6px;
         text-decoration:none;
     }
 
-    #eEd .reiter a.selected {
-        background:#FFE2CF;
+    #eEd .tabbed ul li a.selected {
+        background:#efefef;
+        border-color:#666666;
+        border-style:solid solid none;
+        border-width:1px 1px medium;
+        color:inherit;
+        margin-top:0;
+        padding-bottom:4px;
     }
 
 /* ---------------------*/
