@@ -182,8 +182,8 @@
 #    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "grouped" )
 #       || ( $environment["ebene"] == "/admin/grouped" ))
 #    {
-#        include $pathvars["moduleroot"]."admin/grouped2.cfg.php";
-#        include $pathvars["moduleroot"]."admin/grouped2-ctrl.inc.php";
+#        include $pathvars["moduleroot"]."admin/grouped.cfg.php";
+#        include $pathvars["moduleroot"]."admin/grouped-ctrl.inc.php";
 #    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
