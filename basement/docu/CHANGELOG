@@ -10,34 +10,23 @@ $Id$
 
 --- 20. November 2007
 
-grouped wurde umgestellt auf zwischentabelle auth_member;
-bei der vorhanden tabelle auth_group feld 'members' löschen oder neuen sql fuer auth_group verwenden
+aufgrund der anpassungen am leveled bzw. usered wird das feld rid nicht mehr benötigt !
+ALTER TABLE `auth_right` DROP `rid`;
+
+neuer grouped mit zwischentabelle auth_member;
 
 CREATE TABLE `auth_group` (
   `gid` int(11) NOT NULL auto_increment,
   `group` varchar(10) NOT NULL,
   `beschreibung` text NOT NULL,
   PRIMARY KEY  (`gid`)
-) ENGINE=MyISAM
+) ENGINE=MyISAM;
 
 CREATE TABLE `auth_member` (
   `uid` int(11) NOT NULL,
   `gid` int(11) NOT NULL,
   PRIMARY KEY  (`uid`,`gid`)
 ) ENGINE=MyISAM
-
-
---- 13. November 2007
-
-um den neuen grouped benutzen zu können ist eine neue tabelle erforderlich:
-
-CREATE TABLE `auth_group` (
-  `gid` int(11) NOT NULL auto_increment,
-  `gruppe` varchar(10) NOT NULL,
-  `beschreibung` text NOT NULL,
-  `members` text,
-  PRIMARY KEY  (`gid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 
 --- 12. November 2007
