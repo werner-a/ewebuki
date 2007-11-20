@@ -73,6 +73,11 @@
                           "order" => "group",
                           "rows" => 10
                               ),
+                    "member"=> array(
+                        "entries" => "auth_member",
+                        "user"    => "uid",
+                        "group"   => "gid"
+                               ) 
                        ),
             "right" => "cms_admin",
     );
