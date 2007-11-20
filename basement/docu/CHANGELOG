@@ -10,10 +10,15 @@ $Id$
 
 --- 20. November 2007
 
-aufgrund der anpassungen am leveled bzw. usered wird das feld rid nicht mehr benötigt !
-ALTER TABLE `auth_right` DROP `rid`;
+aufgrund der anpassungen am leveled bzw. usered wird das feld rid nicht mehr
+benoetigt, ein neuer index auf uid, lid ersetzt dessen funktion.
 
-neuer grouped mit zwischentabelle auth_member;
+ausserdem benoetigt der zukuenftige grouped zwei neue tabellen.
+
+sql:
+
+ALTER TABLE `auth_right` DROP `rid`;
+ALTER TABLE `auth_right` ADD PRIMARY KEY (`uid`,`lid`);
 
 CREATE TABLE `auth_group` (
   `gid` int(11) NOT NULL auto_increment,
