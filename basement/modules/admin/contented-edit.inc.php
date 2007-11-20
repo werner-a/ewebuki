@@ -552,7 +552,8 @@
             if ( $ausgaben["form_error"] == "" ) {
                 if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["upload"] > 0 ) {
 
-                    $_SESSION["cms_last_edit"] = str_replace("save,", "edit,", $pathvars["requested"]);
+                    $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
+
                     $_SESSION["cms_last_referer"] = $ausgaben["form_referer"];
                     $_SESSION["cms_last_ebene"] = $_SESSION["ebene"];
                     $_SESSION["cms_last_kategorie"] = $_SESSION["kategorie"];
