@@ -222,7 +222,8 @@
                                                       $cfg["filetyp"],
                                                       $cfg["filesize"],
                                                       "",
-                                                      $compid
+                                                      $compid,
+                                                      $cfg["zip_handling"]["sektions"]
                         );
                         if ( count($not_extracted) > 0 ) {
                             $buffer = array();

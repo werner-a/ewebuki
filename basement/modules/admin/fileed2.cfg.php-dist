@@ -142,6 +142,12 @@
                                ),
              "preview_size" => "m",
                        ),
+     "zip_handling" => array(
+             "sektions" => array(
+                     "unterschrift" => "funder",
+                     "beschreibung" => "fdesc",
+                               )
+                       ),
              "size" => array(
                         "b" => "580",
                         "m" => "250",

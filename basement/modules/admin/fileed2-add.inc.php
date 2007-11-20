@@ -86,7 +86,7 @@
         $element["fid"] = "";
         $element["ffname"] = str_replace("ffname\"", "ffname\" value=\"".str_replace($_SESSION["uid"]."_","",$file)."\"", $element["ffname"]);
         if ( is_array($_SESSION["zip_extracted"]) ){
-            $element["fdesc"] = str_replace("></textarea>", "/>".$file_buffer["desc"]."</textarea>", $element["fdesc"]);
+            $element["fdesc"] = str_replace("></textarea>", "/>".$file_buffer["fdesc"]."</textarea>", $element["fdesc"]);
             $element["funder"] = str_replace("value=\"\"", "value=\"".$file_buffer["funder"]."\"", $element["funder"]);
             $element["fhit"] = str_replace("value=\"\"", "value=\"".$file_buffer["compilation"]." ".$file_buffer["fhit"]."\"", $element["fhit"]);
         }

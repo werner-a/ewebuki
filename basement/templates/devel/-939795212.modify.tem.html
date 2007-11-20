@@ -56,18 +56,33 @@
         <div class="clearer">&nbsp;</div>
     </fieldset>
     <!--##hide-zip-->
-    <fieldset>
-        <p>#(zip)</p>
-        <input type="submit" name="extract" value="g(extract)" class="first" />
-        <fieldset class="cbra">
-            <input type="checkbox" name="selection" value="-1" class="first" />#(bundle_zip)
-        </fieldset>
+<!--     <fieldset class="float"> -->
+    <p>#(zip)</p>
+    <div class="clearer">&nbsp;</div>
+    <ul>
+        <!--##loop-zip-->
+        <li>!{file}</li>
+        <!--##cont-->
+    </ul>
+    <fieldset class="float">
+        <label class="small">
+            Beschreibung<textarea class="" name="zip_fdesc" rows="" cols="40"></textarea>
+        </label>
+        <label class="small">
+            Unterschrift<input class="" type="text" value="" name="zip_funder" />
+        </label>
+        <label class="small">
+            Schlagw&ouml;rter<input class="" type="text" value="" name="zip_fhit" />
+        </label>
         <div class="clearer">&nbsp;</div>
-        <ul>
-            <!--##loop-zip-->
-            <li>!{file}</li>
-            <!--##cont-->
-        </ul>
+    </fieldset>
+    <fieldset class="cbra">
+        <input type="checkbox" name="selection" value="-1" class="first" />#(bundle_zip)
+    </fieldset>
+    <fieldset class="float">
+        <label>
+            <input type="submit" name="extract" value="g(extract)" />
+        </label>
     </fieldset>
     <!--##show-->
     <div class="clearer">&nbsp;</div>

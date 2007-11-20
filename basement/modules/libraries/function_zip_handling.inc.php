@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function zip_handling( $file, $extract_dest="", $restrict_type=array(), $restrict_size="", $restrict_dir="", $compid="" ) {
+    function zip_handling( $file, $extract_dest="", $restrict_type=array(), $restrict_size="", $restrict_dir="", $compid="", $section=array() ) {
         global $db, $pathvars, $ausgaben;
 
         $zip = new ZipArchive;
@@ -66,11 +66,32 @@
                     );
                 }
                 // textdateien in eigenes array
-                if ( preg_match("/.*\.txt$/i",$name) ){
+                if ( preg_match("/.*\.txt$/i",$name) ) {
+
+                    $content = addslashes($zip->getFromIndex($buffer["index"]));
+                    $textfile = explode("\n",$content);
+                    $var_name = "";
+                    foreach ( $textfile as $value ) {
+                        if ( array_key_exists(strtolower(trim($value)), $section) ) {
+                            $var_name = $section[strtolower(trim($value))];
+                            continue;
+                        }
+                        if ( $var_name != "" && $value != "" ) {
+                            if ( $array[$var_name] != "" ) {
+                                $array[$var_name] .= "\n";
+                            }
+                            $array[$var_name] .= trim($value);
+                        }
+                    }
+
                     $text_files[str_replace("/","--",$buffer["name"])] = array(
                         "id" => $buffer["index"],
                         "content" => addslashes(substr($zip->getFromIndex($buffer["index"]),0,400))
                     );
+
+                    foreach ( $array as $key => $value ) {
+                        $text_files[str_replace("/","--",$buffer["name"])][$key] = $value;
+                    }
                 }
             }
 
@@ -97,16 +118,19 @@
                             $new_file = $_SESSION["uid"]."_".basename($tmp_file);
                             rename($tmp_file,dirname($tmp_file)."/".$new_file);
                             // session schreiben fuer weitere verarbeitung
-                            if ( $compid != "" && $restrict_type[strtolower(substr(strrchr($tmp_file,"."),1))] == "img" ){
+                            if ( $compid != "" && $restrict_type[strtolower(substr(strrchr($tmp_file,"."),1))] == "img" ) {
                                 $compilation = "#p".$compid.",".($i*10)."#";
                                 $i++;
-                            }else{
+                            } else {
                                 $compilation = "";
                             }
                             $_SESSION["zip_extracted"][$new_file] = array(
-                                "name" => $new_file,
+                                 "name" => $new_file,
                                 "compilation" => $compilation,
-                                "desc" => $text_files[basename($tmp_file).".txt"]["content"]
+//                                 "desc" => $text_files[basename($tmp_file).".txt"]["content"],
+                                "fdesc" => $_POST["zip_fdesc"]."\n".$text_files[basename($tmp_file).".txt"]["fdesc"],
+                               "funder" => $_POST["zip_fdesc"]." ".$text_files[basename($tmp_file).".txt"]["funder"],
+                                 "fhit" => $_POST["zip_fhit"]." ".$text_files[basename($tmp_file).".txt"]["fhit"],
                             );
                             // zip_content soll die nicht auszupackenden dateien ausgeben
                             unset($zip_content[$key]);
