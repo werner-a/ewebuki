@@ -284,13 +284,13 @@
     $connect = $db->connect();
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db connect: ".$connect.$debugging["char"];
 
-    // login verwalten ( muss erste funktion nach datenbank connect sein !!!)
-    require $pathvars["config"]."auth.cfg.php";
-    require $pathvars["libraries"]."auth.inc.php";
-
     // subdir support
     $pathvars["virtual"] = $pathvars["subdir"].$pathvars["virtual"];
     $pathvars["requested"] = $pathvars["subdir"].$pathvars["requested"];
+
+    // login verwalten ( muss erste funktion nach datenbank connect sein !!!)
+    require $pathvars["config"]."auth.cfg.php";
+    require $pathvars["libraries"]."auth.inc.php";
 
     // überschreiben von default werten
     require $pathvars["config"]."overwrite.cfg.php";
