@@ -31,7 +31,7 @@ CREATE TABLE `auth_member` (
   `uid` int(11) NOT NULL,
   `gid` int(11) NOT NULL,
   PRIMARY KEY  (`uid`,`gid`)
-) ENGINE=MyISAM
+) ENGINE=MyISAM;
 
 
 --- 12. November 2007
