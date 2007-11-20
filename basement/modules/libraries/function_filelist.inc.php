@@ -54,15 +54,32 @@
 
         while ( $data = $db -> fetch_array($result,1) ) {
 
-            if (is_array($_SESSION["file_memo"])) {
+            if ( is_array($_SESSION["file_memo"]) && $environment["parameter"][0] == "list" ) {
                 if (in_array($data["fid"],$_SESSION["file_memo"])) {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb1.png\"></a>";
+                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $icon = $cfg["iconpath"]."cms-cb1.png";
+                    $checked = " checked=\"checked\"";
                 } else {
-                    $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=\"".$cfg["iconpath"]."cms-cb0.png\"></a>";
+                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $icon = $cfg["iconpath"]."cms-cb0.png";
+                    $checked = "";
+                }
+            } elseif ( is_array($_SESSION["compilation_memo"][$environment["parameter"][1]]) && $environment["parameter"][0] == "compilation") {
+                if (in_array($data["fid"],$_SESSION["compilation_memo"][$environment["parameter"][1]])) {
+                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $icon = $cfg["iconpath"]."cms-cb1.png";
+                    $checked = " checked=\"checked\"";
+                } else {
+                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $icon = $cfg["iconpath"]."cms-cb0.png";
+                    $checked = "";
                 }
             } else {
-                $cb = "<a href=".$cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues."><img width=\"13\" height\"13\" border=\"0\" src=".$cfg["iconpath"]."cms-cb0.png border=0></a>";
+                $link = $cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                $icon = $cfg["iconpath"]."cms-cb0.png";
+                $checked = "";
             }
+            $cb = "<a href=".$link."><img width=\"13\" height\"13\" border=\"0\" src=\"".$icon."\"></a>";
 
             // table color change
             if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
@@ -107,7 +124,9 @@
             }
 
             $dataloop["list"][$data["fid"]] = array (
+                                               "id" => $data["fid"],
                                             "color" => $cfg["color"]["set"],
+                                          "checked" => $checked,
                                             "ehref" => "edit,".$data["fid"].".html",
                                             "dhref" => $pathvars["filebase"]["webdir"].
                                                        $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].

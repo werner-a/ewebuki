@@ -48,6 +48,30 @@
         // funktions bereich
         // ***
 
+        if ( $environment["parameter"][2] ){
+            if ( isset($_SESSION["compilation_memo"][$environment["parameter"][1]])
+              && in_array($environment["parameter"][2],$_SESSION["compilation_memo"][$environment["parameter"][1]]) ){
+                $key = array_search($environment["parameter"][2],$_SESSION["compilation_memo"][$environment["parameter"][1]]);
+                unset($_SESSION["compilation_memo"][$environment["parameter"][1]][$key]);
+            } else {
+                $_SESSION["compilation_memo"][$environment["parameter"][1]][] = $environment["parameter"][2];
+            }
+            if ( count($_SESSION["compilation_memo"][$environment["parameter"][1]]) == 0 ) unset($_SESSION["compilation_memo"][$environment["parameter"][1]]);
+            if ( isset($_GET["ajax"]) ){
+                if ( $debugging["html_enable"] ) {
+                    echo "<pre>";
+                    echo '$_SESSION["compilation_memo"]'."<br>";
+                    echo print_r($_SESSION["compilation_memo"],true);
+                    echo "</pre>";
+                }
+                exit;
+            } else {
+                header("Location: ".$cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].".html");
+            }
+        }
+
+        $ausgaben["compid"] = $environment["parameter"][1];
+
         // dropdown bauen lassen
         $dataloop["groups"] = compilation_list($environment["parameter"][1]);
 
@@ -125,6 +149,7 @@
                 uasort($dataloop["list"],"pics_sort");
             }
             $hidedata["compilation"]["pic_count"] = count($dataloop["list"]);
+
         }
 
         // navigation erstellen

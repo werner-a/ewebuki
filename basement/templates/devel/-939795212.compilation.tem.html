@@ -11,6 +11,12 @@
 <!--$Id$-->
 <div id="eEd">
     <h1>#(ueberschrift)</h1>
+    <div class="reiter">
+    <!--##loop-filter1-->
+<!--         <a href="" style="margin:5px 0 0 5px;background:#efefef;padding:5px;">!{label}</a> -->
+    <!--##cont-->
+        <a href="./list.html">#(filelist)</a>
+    </div>
     <form method="get" action="!#ausgaben_form_aktion">
         <fieldset>
             <label for="search">#(search)</label>
@@ -29,9 +35,7 @@
     </form>
 </div>
 <!-- <p>#(num_comps) !#ausgaben_result</p> -->
-<p style="clear:both" />
-    <a href="./list.html">#(filelist)</a></p>
-</p>
+<p style="clear:both">&nbsp;</p>
 
 <!--##hide-compilation-->
 <h1>!#ausgaben_compilation</h1>
@@ -56,6 +60,10 @@
 <!--##loop-list-->
     <li class="thumbs">
         <a href="!{vhref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} g(edit)" /></a>
+        <p>
+<!--             !{cb} -->
+            <input type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!#ausgaben_compid,!{id});"!{checked} />
+        </p>
     </li>
 <!--##cont-->
 </ul>
@@ -67,6 +75,12 @@
 <p>#(text1)</p>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
+<div id="ajax_output"></div>
+<script type="text/javascript">
+    function session_update(compid,fileid) {
+        new Ajax.Updater('ajax_output', './compilation,' + compid + ',' + fileid + '.html?ajax', {asynchronous:true});
+    }
+</script>
 <!--##end-->
 </body>
 </html>
