@@ -178,5 +178,13 @@
 #        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
 #    }
 
+#    // admin - develop: grouped-modul for testing only !!
+#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "grouped" )
+#       || ( $environment["ebene"] == "/admin/grouped" ))
+#    {
+#        include $pathvars["moduleroot"]."admin/grouped2.cfg.php";
+#        include $pathvars["moduleroot"]."admin/grouped2-ctrl.inc.php";
+#    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
