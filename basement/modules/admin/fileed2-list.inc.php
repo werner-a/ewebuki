@@ -72,8 +72,15 @@
             if ( $_GET["filter".$set] != "" ) {
                 $_SESSION["fileed_filter".$set] = $_GET["filter".$set];
             }
-            $dataloop["filter".$set][$_SESSION["fileed_filter".$set]]["select"] =  " selected";
+            if ( $environment["parameter"][2] != "" ){
+                $_SESSION["fileed_filter".$set] = $environment["parameter"][2];
+            }
             foreach ( $data as $key => $value ) {
+                if ( $key == $_SESSION["fileed_filter".$set] ) {
+                    $dataloop["filter".$set][$key]["select"] = "selected";
+                } else {
+                    $dataloop["filter".$set][$key]["select"] = "";
+                }
                 $dataloop["filter".$set][$key]["value"] = $key;
                 $dataloop["filter".$set][$key]["label"] = $value;
             }
@@ -215,7 +222,7 @@
         if ( $environment["parameter"][1] != "" ) {
             $_SESSION["fileed_position"] = $environment["parameter"][1];
         }
-        $inhalt_selector = inhalt_selector( $sql, $_SESSION["fileed_position"], $cfg["db"]["file"]["rows"], Null, 1, 3, Null );
+        $inhalt_selector = inhalt_selector( $sql, $_SESSION["fileed_position"], $cfg["db"]["file"]["rows"], ",".$environment["parameter"][2], 1, 3, Null );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0];
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];

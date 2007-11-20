@@ -11,6 +11,13 @@
 <!--$Id$-->
 <form method="get" action="!#ausgaben_form1_aktion" id="eEd">
 <h1>#(ueberschrift)</h1>
+    <div class="reiter" style="">
+    <!--##loop-filter1-->
+        <a href="./list,,!{value}.html" class="!{select}">!{label}</a>
+    <!--##cont-->
+        <a href="./compilation.html">#(filecompilation)</a>
+        <a href="./upload.html">#(fileupload)</a>
+    </div>
     <fieldset class="float">
         <label class="small">
             #(search)&nbsp;
@@ -29,7 +36,7 @@
             <select name="filter1" onchange="submit()">
                 <!--##loop-filter1-->
                 <option value="!{value}"!{select}>!{label}</option>
-                <!--##cont-->
+                <!--##cont -->
             </select>
         </label>
         <label class="small">
@@ -47,12 +54,12 @@
 
 <!--##hide-file-->
  <a href="!{edit}">#(fileedit)</a>
- <a href="!{delete}">#(filedelete)</a>
  <a href="!{collect}">#(filecollect)</a>
+ <a href="!{delete}">#(filedelete)</a>
 <!--##show-->
 
- <a href="./compilation.html">#(filecompilation)</a>
- <a href="./upload.html">#(fileupload)</a>
+<!--  <a href="./compilation.html">#(filecompilation)</a> -->
+<!--  <a href="./upload.html">#(fileupload)</a> -->
 </p>
 <!--##hide-images-->
 <div style="clear:both"></div>

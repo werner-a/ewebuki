@@ -195,6 +195,27 @@ div.clearer {
 
 /* ---------------------*/
 
+/*----------------------
+  reiter-struktur
+  ----------------------*/
+
+    #eEd .reiter {
+        background:#fff;
+        padding-top:10px;
+    }
+
+    #eEd .reiter a {
+        background:#efefef;
+        margin:5px 0 0 5px;
+        padding:5px 5px 1px 5px;
+        text-decoration:none;
+    }
+
+    #eEd .reiter a.selected {
+        background:#FFE2CF;
+    }
+
+/* ---------------------*/
 
 
 /*----------------------
