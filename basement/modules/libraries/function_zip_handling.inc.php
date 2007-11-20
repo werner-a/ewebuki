@@ -70,7 +70,7 @@
 
                     $content = addslashes($zip->getFromIndex($buffer["index"]));
                     $textfile = explode("\n",$content);
-                    $var_name = "";
+                    $var_name = "";$array = array();
                     foreach ( $textfile as $value ) {
                         if ( array_key_exists(strtolower(trim($value)), $section) ) {
                             $var_name = $section[strtolower(trim($value))];
