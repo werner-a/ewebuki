@@ -242,7 +242,7 @@
                     // +++
                     // funktions bereich fuer erweiterungen
 
-                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y" );
+                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder" );
                     foreach($_POST as $name => $value) {
                         if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                             if ( $sqla != "" ) $sqla .= ", ";
