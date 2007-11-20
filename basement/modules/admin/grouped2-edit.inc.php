@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "grouped - edit funktion";
+// "grouped edit funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -45,8 +45,7 @@
 
     if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
 
-        // hide-bereich fuer edit einblenden
-        $hidedata["edit"]["on"] = "on";
+        $hidedata["edit"]["ii"] = "on";
 
         // page basics
         // ***
@@ -79,14 +78,13 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        // auslesen der gruppenmitglieder
-        $readMembers = explode(":",$form_values["members"]);
-
-        // auf die dropdowns aufteilen
-        $sql = "SELECT uid, username FROM auth_user ORDER by username";
+        # nice sql query tnx@bastard!
+        $sql = "SELECT auth_user.uid, auth_user.username, auth_member.gid FROM auth_user LEFT JOIN auth_member ON (auth_user.uid = auth_member.uid and auth_member.gid = ".$environment["parameter"][1].") ORDER by username";
         $result = $db -> query($sql);
+
         while ( $all = $db -> fetch_array($result,1) ) {
-            if ( in_array($all["uid"],$readMembers) ) {
+
+            if ( $all["gid"] == $environment["parameter"][1] ) {
                 $dataloop["actual"][] = array(
                                             "value" => $all["uid"],
                                             "username" => $all["username"]
@@ -101,7 +99,6 @@
 
         // +++
         // funktions bereich fuer erweiterungen
-
 
         // page basics
         // ***
@@ -149,37 +146,30 @@
                 // funktions bereich fuer erweiterungen
                 // ***
 
-                $sql = "SELECT members 
-                          FROM ".$cfg["db"]["group"]["entries"]." 
-                         WHERE ".$cfg["db"]["group"]["key"]."=".$environment["parameter"][1];
-                $result = $db -> query($sql);
-                $data = $db -> fetch_array($result,1);
-                if ( $data["members"] != "" ) {
-                    $writeMembers = explode(":",$data["members"]);
-                }
-
                 // user hinzufuegen
                 if ( $HTTP_POST_VARS["add"] ) {
                     foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
-                        $writeMembers[] = $value;
+                        $sql = "INSERT INTO ".$cfg["db"]["member"]["entries"]."
+                                            (".$cfg["db"]["member"]["group"].",".$cfg["db"]["member"]["user"].")
+                                     VALUES ('".$environment["parameter"][1]."','".$value."')";
+                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                        $result = $db -> query($sql);
+                        if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
                     $header = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
                 }
 
                 // user entfernen
                 if ( $HTTP_POST_VARS["del"] ) {
-
                     foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
-                        foreach ( $writeMembers as $key => $value1 ) {
-                            if ( $value == $value1 ) {
-                                unset($writeMembers[$key]);
-                            }
-                        }
+                        $sql = "DELETE FROM ".$cfg["db"]["member"]["entries"]."
+                                      WHERE ".$cfg["db"]["member"]["user"]."='".$value."' AND ".$cfg["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
+                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                        $result = $db -> query($sql);
+                        if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
                     $header = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
                 }
-
-                $writeMembers = implode(":",$writeMembers);
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
@@ -202,13 +192,11 @@
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
 
-                // level aendern
+                // gruppe aendern
                 $sql = "UPDATE ".$cfg["db"]["group"]["entries"]."
-                            SET gruppe = '".$HTTP_POST_VARS["gruppe"]."',
-                                beschreibung = '".$HTTP_POST_VARS["beschreibung"]."',
-                                members = '".$writeMembers."'
+                            SET `group` = '".$HTTP_POST_VARS["group"]."',
+                                beschreibung = '".$HTTP_POST_VARS["beschreibung"]."'
                             WHERE gid='".$environment["parameter"][1]."'";
-
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
 

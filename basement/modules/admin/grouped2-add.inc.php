@@ -132,10 +132,10 @@
                 // funktions bereich fuer erweiterungen
                 // ***
 
-               // gibt es diesen level bereits?
-                $sql = "SELECT gruppe
+               // gibt es diesen gruppe bereits?
+                $sql = "SELECT 'group'
                           FROM ".$cfg["db"]["group"]["entries"]."
-                         WHERE gruppe = '".$HTTP_POST_VARS["level"]."'";
+                         WHERE 'group' = '".$HTTP_POST_VARS["group"]."'";
                 $result  = $db -> query($sql);
                 $num_rows = $db -> num_rows($result);
                 if ( $num_rows >= 1 ) $ausgaben["form_error"] = "#(error_dupe)";
@@ -153,36 +153,38 @@
                 foreach($HTTP_POST_VARS as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
-                        $sqla .= " ".$name;
+                        $sqla .= " `".$name."`";
                         if ( $sqlb != "" ) $sqlb .= ",";
                         $sqlb .= " '".$value."'";
                     }
                 }
 
-                if ( is_array($HTTP_POST_VARS["avail"]) ) {
-                    foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
-                        if ( $members != "" ) $members .= ":";
-                        $members .= $value;
-                    }
-                }
-
                 // Sql um spezielle Felder erweitern
-                #$sqla .= ", members";
-                #$sqlb .= ", '".$members."'";
+                #$sqla .= ", pass";
+                #$sqlb .= ", password('".$checked_password."')";
 
                 // level hinzufuegen
-                $sql = "insert into ".$cfg["db"]["member"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
-echo $sql;
+                $sql = "insert into ".$cfg["db"]["group"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                #$result  = $db -> query($sql);
+                $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
 
                 // usern mit neuem level versehen
                 if ( $ausgaben["form_error"] == "" ) {
-
+                    if ( is_array($HTTP_POST_VARS["avail"]) ) {
+                        $gid = $db -> lastid();
+                        foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
+                            $sql = "INSERT INTO auth_member (gid, uid) VALUES ('".$gid."', '".$value."')";
+                            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                            $db -> query($sql);
+                            if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                        }
+                    }
                 }
 
-              #  if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+
+                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

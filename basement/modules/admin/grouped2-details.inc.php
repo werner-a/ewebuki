@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "grouped - details funktion";
+  $script["name"] = "$Id$";
+  $Script["desc"] = "gruppieren von usern";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Kï¿½nigsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
@@ -77,32 +77,28 @@
 
         ### put your code here ###
 
-        // daten holen
+
         $sql = "SELECT *
                   FROM ".$cfg["db"]["group"]["entries"]."
                  WHERE ".$cfg["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-        $ausgaben["level"] = $data["gruppe"];
-        $ausgaben["beschreibung"] = $data["beschreibung"];
+            $ausgaben["level"] = $data["group"];
+            $ausgaben["beschreibung"] = $data["beschreibung"];
 
-        // wenn mitglieder vorhanden , diese ausgeben
-        if ( $data["members"] != "" ) {
-            $hidedata["members"][0] = "enable";
-            $readMembers = explode(":",$data["members"]);
-            foreach ( $readMembers as $value ) {
-                $sql = "SELECT *
-                          FROM ".$cfg["db"]["user"]["entries"]."
-                         WHERE ".$cfg["db"]["user"]["key"]."='".$value."'";
 
-                $result = $db -> query($sql);
-                $data = $db -> fetch_array($result,$nop);
-
-                ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
-                $ausgaben["members"] .= $trenner.$data[$cfg["db"]["user"]["order"]];
-            }
+        $sql = "SELECT ".$cfg["db"]["user"]["order"]."
+                 FROM ".$cfg["db"]["member"]["entries"]."
+                 INNER JOIN ".$cfg["db"]["user"]["entries"]."
+                 ON ( auth_member.uid=auth_user.uid )
+                WHERE ".$cfg["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
+        $result = $db -> query($sql);
+        while ( $members = $db -> fetch_array($result,1) ) {
+            ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
+            $ausgaben["members"] .= $trenner.$members["username"];
         }
+        if ( $db -> num_rows($result) > 0 ) $hidedata["members"][0] = "enable";
 
         // +++
         // funktions bereich

@@ -51,7 +51,7 @@
         /* db query */
         $sql = "SELECT *
                   FROM ".$cfg["db"]["group"]["entries"]."
-              ORDER BY ".$cfg["db"]["group"]["order"];
+              ORDER BY '".$cfg["db"]["group"]["order"]."'";
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 

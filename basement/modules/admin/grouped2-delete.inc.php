@@ -49,32 +49,42 @@
         // ***
 
         // ausgaben variablen bauen
-        $sql = "SELECT * FROM ".$cfg["db"]["group"]["entries"]." WHERE ".$cfg["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
+        $sql = "SELECT * FROM ".$cfg["db"]["group"]["entries"]." WHERE gid='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         $field = $db -> fetch_array($result,$nop);
         foreach($field as $name => $value) {
             $ausgaben[$name] = $value;
         }
 
+         //z.B. evtl. auf verknuepften datensatz pruefen
+        $sql = "SELECT auth_member.".$cfg["db"]["member"]["user"].",".$cfg["db"]["user"]["order"]."
+                 FROM ".$cfg["db"]["member"]["entries"]."
+                 INNER JOIN ".$cfg["db"]["user"]["entries"]."
+                 ON ( auth_member.uid=auth_user.uid )
+                WHERE auth_member.".$cfg["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
+
+        $result = $db -> query($sql);
+
+        while ( $members = $db -> fetch_array($result,1) ) {
+            ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
+            $ausgaben["members"] .= $trenner.$members["username"];
+        }
+
+        if ( $db -> num_rows($result) > 0 ) $hidedata["members"]["enabled"] = "on";
         // +++
         // funktions bereich fuer erweiterungen
 
-        if ( $field["members"] != "" ) {
-            $ausgaben["members"] = "";
-            $hidedata["members"]["on"] = "on";
+        // datensatz holen
+        $sql = "SELECT *
+                    FROM ".$cfg["db"]["group"]["entries"]."
+                    WHERE ".$cfg["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
 
-            $readMembers = explode(":",$field["members"]);
-            foreach ( $readMembers as $value ) {
-                $sql = "SELECT *
-                          FROM ".$cfg["db"]["user"]["entries"]."
-                         WHERE ".$cfg["db"]["user"]["key"]."='".$value."'";
-                $result = $db -> query($sql);
-                $data = $db -> fetch_array($result,$nop);
-
-                ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
-                $ausgaben["members"] .= $trenner.$data[$cfg["db"]["user"]["order"]];
-            }
-        }
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,$nop);
+        $ausgaben["form_id1"] = $data["id"];
+        $ausgaben["field1"] = $data["field1"];
+        $ausgaben["field2"] = $data["field2"];
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -120,11 +130,24 @@
         // ***
         if ( $HTTP_POST_VARS["send"] != "" ) {
 
+            // evtl. zusaetzlichen datensatz loeschen
+#            if ( $HTTP_POST_VARS["id2"] != "" ) {
                 // funktions bereich fuer erweiterungen
                 // ***
 
+                ### put your code here ###
+
+                // z.B. evtl. verknuepfte datensatze loeschen
+                $sql = "DELETE FROM ".$cfg["db"]["member"]["entries"]."
+                                WHERE ".$cfg["db"]["member"]["group"]." = '".$environment["parameter"][1]."'";
+
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $result  = $db -> query($sql);
+                if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
+
                 // +++
                 // funktions bereich fuer erweiterungen
+#            }
 
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
