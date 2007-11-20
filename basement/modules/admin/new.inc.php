@@ -79,6 +79,7 @@
         $tet = dirname($pathvars["requested"]);
 
         $_SESSION["REFERER"] = $tet;
+        $tet = str_replace($pathvars["subdir"],"",$tet);
 
         $work = split("/",$tet);
         #$work = array_reverse($work);
