@@ -62,6 +62,14 @@
 #        include $pathvars["moduleroot"]."admin/new.inc.php";
 #    }
 
+    // admin: grouped
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "grouped" )
+       || ( $environment["ebene"] == "/admin/grouped" ))
+    {
+        include $pathvars["moduleroot"]."admin/grouped.cfg.php";
+        include $pathvars["moduleroot"]."admin/grouped-ctrl.inc.php";
+    }
+    
     // admin: leveled
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
        || ( $environment["ebene"] == "/admin/leveled" ))
@@ -178,13 +186,6 @@
 #        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
 #    }
 
-#    // admin - develop: grouped-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "grouped" )
-#       || ( $environment["ebene"] == "/admin/grouped" ))
-#    {
-#        include $pathvars["moduleroot"]."admin/grouped.cfg.php";
-#        include $pathvars["moduleroot"]."admin/grouped-ctrl.inc.php";
-#    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
