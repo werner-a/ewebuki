@@ -86,12 +86,14 @@
                     "file" => "base.name",
                        ),
              "menu" => array(
-                 "leveled" => array("list", "cms_admin"),    # ""              = jeder
-                  "usered" => array("list", "cms_admin"),    # "ein wert"      = nur dieses recht
-                  "menued" => array("list", "cms_admin"),    # "recht1;recht2" = beide rechte
+                 "grouped" => array("list", "cms_admin"),
+                 "leveled" => array("list", "cms_admin"),
+                  "usered" => array("list", "cms_admin"),
+                  "menued" => array("list", "cms_admin"),
                   "fileed" => array("list", "cms_edit"),
                   "passed" => array("modify","cms_edit"),
                   "bloged" => array("list","cms_edit"),
+             # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
     );
 
