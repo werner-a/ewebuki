@@ -1,6 +1,6 @@
 
 
-DIV Tag - irgendwie mehrfach verfügbar?
+DIV Tag - irgendwie mehrfach verfügbar? -> done!
 IMG Tag - komplett
 EMAIL - komplett
 IMGB - komplett

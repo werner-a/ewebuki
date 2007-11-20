@@ -217,6 +217,11 @@
                     $l = "]";
                 }
 
+                if ( $value[6] == "" ) {
+                    $keyX = $key;
+                } else {
+                    $keyX = $value[6];
+                }
 
 //              else if (st=='b')
 //              st='[B]' + selText + '[\/B]';
@@ -248,9 +253,9 @@
                                     ,'".$value[0]."'
                                     ,'".$value[1]."'
                                     ,'noSelect'
-                                    ,'[".strtoupper($key).$l."'
+                                    ,'[".strtoupper($keyX).$l."'
                                     ,'".$value[4]."'
-                                    ,'".$value[5]."[/".strtoupper($key)."]'\n";
+                                    ,'".$value[5]."[/".strtoupper($keyX)."]'\n";
                 $ausgaben["njs"] .= ");\n";
 
 

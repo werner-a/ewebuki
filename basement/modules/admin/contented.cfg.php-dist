@@ -84,7 +84,7 @@
             "right" => "cms_edit",
             #"tagjs" => "-141347382.modify.js-classic",
             "tagjs" => "-141347382.modify.js-nextgen",
-             "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts
+             "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts, eingener tag
                               // block-elemente
                    "h1"     => array( "T", "1" ),
                    "h2"     => array( "T", "2" ),
@@ -95,6 +95,7 @@
                    "p"      => array( "T", "P" ),
                    "pre"    => array( "" ),
                    "div"    => array( "", "D", False, "=wert]" ),
+                   "teaser" => array( "T", "D", False, "=teaser]", "", "", "DIV" ),
                    "list"   => array( "", "L", False, "=1|a]", "\\n[*]" ),
                    "hr"     => array( "", "H", True ),
                    "table"  => array( "", "T", False, "]\\n[ROW]\\n[COL]", "" ,"\\n[\/COL]\\n[\/ROW]\\n" ),
