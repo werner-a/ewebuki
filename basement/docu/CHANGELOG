@@ -21,24 +21,6 @@ sql:
 ALTER TABLE `auth_right` DROP `rid`;
 ALTER TABLE `auth_right` ADD PRIMARY KEY (`uid`,`lid`);
 
-CREATE TABLE `auth_content` (
-  `uid` int(11) NOT NULL,
-  `gid` int(11) NOT NULL,
-  `pid` int(11) NOT NULL,
-  `db` varchar(20) NOT NULL,
-  `tname` varchar(50) NOT NULL,
-  `ebene` text NOT NULL,
-  `kategorie` text NOT NULL,
-  PRIMARY KEY  (`uid`,`gid`,`pid`,`db`,`tname`)
-) ENGINE=MyISAM;
-
-
-CREATE TABLE `auth_priv` (
-  `pid` int(11) NOT NULL,
-  `priv` varchar(20) NOT NULL,
-  PRIMARY KEY  (`pid`)
-) ENGINE=MyISAM;
-
 CREATE TABLE `auth_group` (
   `gid` int(11) NOT NULL auto_increment,
   `ggroup` varchar(30) NOT NULL,
@@ -52,6 +34,22 @@ CREATE TABLE `auth_member` (
   PRIMARY KEY  (`uid`,`gid`)
 ) ENGINE=MyISAM;
 
+CREATE TABLE `auth_content` (
+  `uid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `db` varchar(20) NOT NULL,
+  `tname` varchar(50) NOT NULL,
+  `ebene` text NOT NULL,
+  `kategorie` text NOT NULL,
+  PRIMARY KEY  (`uid`,`gid`,`pid`,`db`,`tname`)
+) ENGINE=MyISAM;
+
+CREATE TABLE `auth_priv` (
+  `pid` int(11) NOT NULL,
+  `priv` varchar(20) NOT NULL,
+  PRIMARY KEY  (`pid`)
+) ENGINE=MyISAM;
 
 --- 12. November 2007
 
