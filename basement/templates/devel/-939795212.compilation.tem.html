@@ -13,15 +13,11 @@
     <h1>#(ueberschrift)</h1>
     <div class="tabbed" style="">
         <ul style="">
-            <li style="float:right;">
-                <a href="./upload.html">g(fileupload)</a>
+            <!--##loop-tabs-->
+            <li style="!{style}">
+                <a href="!{link}" class="!{class}" style="">!{label}</a>
             </li>
-            <li style="float:right;">
-                <a href="./compilation.html" class="selected">g(filecompilation)</a>
-            </li>
-            <li style="float:right;">
-                <a href="./list.html">g(filelist)</a>
-            </li>
+            <!--##cont-->
         </ul>
     </div>
     <div style="clear:both;border-top:1px solid #666666;"></div>
@@ -68,33 +64,52 @@
 <!--##show-->
 </p>
 
-<!--##hide-compilation-->
+<!--##hide-list_ajax-->
 <div style="clear:both"></div>
 <ul>
-<!--##loop-list-->
+<!--##loop-list_images-->
     <li class="thumbs">
         <a href="!{vhref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} g(edit)" /></a>
         <p>
-<!--             !{cb} -->
             <input type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!#ausgaben_compid,!{id});"!{checked} />
         </p>
     </li>
 <!--##cont-->
 </ul>
 <div style="clear:both"></div>
+<script type="text/javascript">
+    function session_update(compid,fileid) {
+        new Ajax.Updater('ajax_output', './compilation,' + compid + ',' + fileid + '.html?ajax', {asynchronous:true});
+    }
+</script>
+<!--##show-->
+
+<!--##hide-list_plain-->
+<div style="clear:both"></div>
+<ul>
+<!--##loop-list-->
+    <li class="thumbs">
+        <a href="!{vhref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} g(edit)" /></a>
+        <p>
+            !{cb}
+        </p>
+    </li>
+<!--##cont-->
+</ul>
+<div style="clear:both"></div>
+<!--##show-->
+
+<!--##hide-compilation-->
 <p>#(num_pics) !{pic_count}</p>
 <!--##show-->
+
+
 <div style="clear:both"></div>
 <p>#(inhalt)</p>
 <p>#(text1)</p>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
 <div id="ajax_output"></div>
-<script type="text/javascript">
-    function session_update(compid,fileid) {
-        new Ajax.Updater('ajax_output', './compilation,' + compid + ',' + fileid + '.html?ajax', {asynchronous:true});
-    }
-</script>
 <!--##end-->
 </body>
 </html>

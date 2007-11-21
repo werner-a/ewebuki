@@ -149,7 +149,9 @@
                 uasort($dataloop["list"],"pics_sort");
             }
             $hidedata["compilation"]["pic_count"] = count($dataloop["list"]);
-
+        } else {
+            unset($hidedata["list_plain"]);
+            unset($hidedata["list_ajax"]);
         }
 
         // navigation erstellen

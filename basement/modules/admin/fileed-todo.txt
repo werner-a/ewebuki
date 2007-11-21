@@ -1,6 +1,27 @@
 
 
+ToDo:
+-----
+- zurück-sprungziel nach bearbeiten von compilations
+- möglichkeit, die datei nach dem upload, aber vor dem db-eintrag aus dem new-ordner zu löschen
+
+
+
+
+
+
+
+erledigt:
+---------
+- gemeinsame liste bilder, dokumente, archive macht im markierten zustand probleme - lösung: kombinierte liste
+- reiter:
+    links: dateien, markiert
+    rechts: Selektionen, Upload
+
 zip-handling:
-- automatisch gallerien bilden
+- funktionalität auch bei edit
 - möglichkeit, die felder (fdesc, fhit) vorzubelegen
+- nach fehlerfreien extrahieren soll die zip-datei geloescht werden
+- automatisch gallerien bilden
 - dateibeschreibung aus mitgegebenen textfile lesen
+

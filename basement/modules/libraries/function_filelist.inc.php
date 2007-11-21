@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function filelist($result,$group="") {
-        global $db, $cfg, $defaults, $pathvars, $environment, $dataloop;
+        global $db, $cfg, $defaults, $pathvars, $environment, $dataloop, $hidedata;
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
         $getvalues = "";
@@ -52,30 +52,32 @@
 //             $getvalues = "?".$_SERVER["QUERY_STRING"];
 //         }
 
+        $dataloop["list"] = array();
+
         while ( $data = $db -> fetch_array($result,1) ) {
 
             if ( is_array($_SESSION["file_memo"]) && $environment["parameter"][0] == "list" ) {
                 if (in_array($data["fid"],$_SESSION["file_memo"])) {
-                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
                     $icon = $cfg["iconpath"]."cms-cb1.png";
                     $checked = " checked=\"checked\"";
                 } else {
-                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
                     $icon = $cfg["iconpath"]."cms-cb0.png";
                     $checked = "";
                 }
             } elseif ( is_array($_SESSION["compilation_memo"][$environment["parameter"][1]]) && $environment["parameter"][0] == "compilation") {
                 if (in_array($data["fid"],$_SESSION["compilation_memo"][$environment["parameter"][1]])) {
-                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
                     $icon = $cfg["iconpath"]."cms-cb1.png";
                     $checked = " checked=\"checked\"";
                 } else {
-                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
                     $icon = $cfg["iconpath"]."cms-cb0.png";
                     $checked = "";
                 }
             } else {
-                $link = $cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",".$data["fid"].".html".$getvalues;
+                $link = $cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
                 $icon = $cfg["iconpath"]."cms-cb0.png";
                 $checked = "";
             }
@@ -123,8 +125,17 @@
                 $sort = "";
             }
 
-            $dataloop["list"][$data["fid"]] = array (
+            $name = "list";
+            if ( $cfg["filetyp"][$data["ffart"]] == "img" ){
+                $name = "list_images";
+            } else {
+                $name = "list_other";
+            }
+
+//             $dataloop["list"][$data["fid"]] = array (
+            $dataloop[$name][$data["fid"]] = array (
                                                "id" => $data["fid"],
+                                              "art" => $data["ffart"],
                                             "color" => $cfg["color"]["set"],
                                           "checked" => $checked,
                                             "ehref" => "edit,".$data["fid"].".html",
@@ -154,6 +165,8 @@
                                              "sort" => $sort,
                                               );
         }
+        if ( count($dataloop["list_images"]) > 0 ) $hidedata["list_images"] = array();
+        if ( count($dataloop["list_other"]) > 0 )  $hidedata["list_other"]  = array();
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

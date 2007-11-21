@@ -50,6 +50,7 @@
              "name" => "fileed2",
             "basis" => $pathvars["virtual"]."/admin/fileed",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
+       "ajax-modus" => TRUE,
          #"function" => array("describe", "list", "note", "preview", "select"),
          "function" => array(
                      "list" => "", # array( "function_name" ),
@@ -140,7 +141,7 @@
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
                         "thumbnail" => "icon_odf.png"
                                ),
-             "preview_size" => "m",
+             "preview_size" => "tn",
                        ),
      "zip_handling" => array(
              "sektions" => array(
@@ -162,6 +163,12 @@
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),
                         "1" => array("Bilder", "Dokumente", "Archive", "Markierte Bilder"),
+                       ),
+             "tabs" => array(      #  beschriftung,  link,  anordung (L/R), url-muster
+                        "0" => array("g(all_files)", "list,,,all.html" , "L", "/list[,0-9]*[all]*\.html/i"),
+                        "1" => array("g(sel_files)", "list,,,sel.html", "L", "/list[,0-9]*,sel.*\.html/i"),
+                        "3" => array("g(fileupload)", "upload.html", "R", "/upload[,0-9]*.html/"),
+                        "4" => array("g(filecompilation)", "compilation.html", "R", "/compilation[,0-9]*.html/"),
                        ),
             "right" => "cms_edit",
             "restrict" => array(), # z.B. array("delete", "edit")

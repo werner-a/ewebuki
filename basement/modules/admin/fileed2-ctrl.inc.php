@@ -75,6 +75,28 @@
         }
     }
 
+    // reiter bauen
+    foreach ( $cfg["tabs"] as $value ) {
+        $style = "";$class = "";
+        if ( $value[2] == "R" ) $style = "float:right;";
+        if ( $value[3] != "" && preg_match($value[3],$pathvars["requested"]) ) {
+            $class = "selected";
+        }
+        $dataloop["tabs"][] = array(
+            "label" => $value[0],
+             "link" => $value[1],
+            "style" => $style,
+            "class" => $class,
+        );
+    }
+
+    // ajax-funktionalitaet aktivieren
+    if ( $cfg["ajax-modus"] == FALSE ) {
+        $hidedata["list_plain"]["pic_count"] = count($dataloop["list"]);
+    } else {
+        $hidedata["list_ajax"]["pic_count"] = count($dataloop["list"]);
+    }
+
     // magic include loader
     if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
         include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";

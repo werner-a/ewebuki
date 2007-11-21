@@ -49,19 +49,27 @@
         // ***
 
         // file_memo verwalten
-        if ( $environment["parameter"][2] ) {
-            $key = $environment["parameter"][2];
-            $wert = $environment["parameter"][2];
-            if ( is_array( $_SESSION["file_memo"] ) ) {
-                if ( in_array($key, $_SESSION["file_memo"] ) ) {
-                    unset ( $_SESSION["file_memo"][$key] );
-                } else {
-                    $_SESSION["file_memo"][$key] = $wert;
-                }
+        if ( $environment["parameter"][2] ){
+            if ( isset($_SESSION["file_memo"][$environment["parameter"][2]]) ){
+                unset($_SESSION["file_memo"][$environment["parameter"][2]]);
             } else {
-                $_SESSION["file_memo"][$key] = $wert;
+                $_SESSION["file_memo"][$environment["parameter"][2]] = $environment["parameter"][2];
+            }
+            if ( count($_SESSION["file_memo"]) == 0 ) unset($_SESSION["file_memo"]);
+            if ( isset($_GET["ajax"]) ){
+                if ( $debugging["html_enable"] ) {
+                    echo "<pre>";
+                    echo '$_SESSION["file_memo"]'."<br>";
+                    echo print_r($_SESSION["file_memo"],true);
+                    echo "</pre>";
+                }
+                if ( count($_SESSION["file_memo"]) == 0 ) header("HTTP/1.0 404 Not Found");
+                exit;
+            } else {
+                header("Location: ".$cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",,".$environment["parameter"][3].".html");
             }
         }
+
         $debugging["ausgabe"] .= "<pre>".print_r($_SESSION["file_memo"],True)."</pre>";
 
         // auswahllisten erstellen
@@ -93,14 +101,26 @@
         if ( isset($_SESSION["cms_last_edit"]) ) {
             // abrechen im cms editor soll zur ursrungseite springen und nicht in den fileed
             $_SESSION["page"] = $_SESSION["cms_last_referer"];
-            $hidedata["cms"]["link"] = $_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"];
+            $hidedata["cms"] = array(
+                   "link" => $_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"],
+                "display" => "inline",
+            );
+        } else {
+            $hidedata["cms"] = array(
+                   "link" => "",
+                "display" => "none",
+            );
         }
 
         // bearbeiten- und loeschen link erstellen
-        if ( count($_SESSION["file_memo"]) >= 1 ) {
-            $hidedata["file"]["edit"] = $cfg["basis"]."/edit.html";
-            $hidedata["file"]["delete"] = $cfg["basis"]."/delete.html";
-            $hidedata["file"]["collect"] = $cfg["basis"]."/collect.html";
+        $hidedata["file"] = array(
+                "edit" => $cfg["basis"]."/edit.html",
+                "delete" => $cfg["basis"]."/delete.html",
+            "collect" => $cfg["basis"]."/collect.html",
+            "display" => "inline"
+        );
+        if ( count($_SESSION["file_memo"]) == 0 ) {
+            $hidedata["file"]["display"] = "none";
         }
 
         // +++
@@ -188,9 +208,19 @@
                 $part["auswahl2"] = " ffart IN (".collect_filetyps("odf,pdf").")";
                 $hidedata["other"] = array();
                 break;
-            default:
-                $part["auswahl2"] = " ffart IN (".collect_filetyps("img").")";
-                $hidedata["images"] = array();
+        }
+
+        if ( $environment["parameter"][3] == "sel" ) {
+            if ( is_array($_SESSION["file_memo"]) ) {
+                foreach ( $_SESSION["file_memo"] as $value ) {
+                    if ( $part["sel"] == "" ) {
+                        $part["sel"] = "(".$cfg["db"]["file"]["key"]." = ".$value.")";
+                    } else {
+                        $part["sel"] .= " OR (".$cfg["db"]["file"]["key"]." = ".$value.")";
+                    }
+                }
+            }
+            if ( $part["sel"] == "" ) $part["sel"] = $cfg["db"]["file"]["key"]." = -1";
         }
 
         // where build
@@ -222,7 +252,7 @@
         if ( $environment["parameter"][1] != "" ) {
             $_SESSION["fileed_position"] = $environment["parameter"][1];
         }
-        $inhalt_selector = inhalt_selector( $sql, $_SESSION["fileed_position"], $cfg["db"]["file"]["rows"], ",".$environment["parameter"][2], 1, 3, Null );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["file"]["rows"], ",".$environment["parameter"][2], 1, 5, Null );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0];
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
