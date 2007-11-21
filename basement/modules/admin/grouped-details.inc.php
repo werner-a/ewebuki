@@ -84,7 +84,7 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-            $ausgaben["level"] = $data["group"];
+            $ausgaben["level"] = $data[$cfg["db"]["group"]["order"]];
             $ausgaben["beschreibung"] = $data["beschreibung"];
 
 

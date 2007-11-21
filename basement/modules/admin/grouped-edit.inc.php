@@ -140,6 +140,20 @@
             // form eingaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );
 
+            // gibt es diesen gruppe bereits?
+            $sql = "SELECT ".$cfg["db"]["group"]["order"].",gid
+                        FROM ".$cfg["db"]["group"]["entries"]."
+                       WHERE ".$cfg["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["db"]["group"]["order"]]."'";
+            $result  = $db -> query($sql);
+            $num_rows = 0;
+            while ( $array = $db -> fetch_array($result,1) ) {;
+                if ( $array["gid"] != $environment["parameter"][1] ) {
+                    $num_rows++;
+                }
+            }
+
+            if ( $num_rows >= 1 ) $ausgaben["form_error"] = "#(error_dupe)";
+
             // evtl. zusaetzliche datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
 
@@ -194,7 +208,7 @@
 
                 // gruppe aendern
                 $sql = "UPDATE ".$cfg["db"]["group"]["entries"]."
-                            SET `group` = '".$HTTP_POST_VARS["group"]."',
+                            SET ".$cfg["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["db"]["group"]["order"]]."',
                                 beschreibung = '".$HTTP_POST_VARS["beschreibung"]."'
                             WHERE gid='".$environment["parameter"][1]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];

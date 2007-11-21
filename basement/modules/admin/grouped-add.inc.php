@@ -133,9 +133,9 @@
                 // ***
 
                // gibt es diesen gruppe bereits?
-                $sql = "SELECT 'group'
+                $sql = "SELECT ".$cfg["db"]["group"]["order"]."
                           FROM ".$cfg["db"]["group"]["entries"]."
-                         WHERE 'group' = '".$HTTP_POST_VARS["group"]."'";
+                         WHERE ".$cfg["db"]["group"]["order"]." = '".$HTTP_POST_VARS["ggroup"]."'";
                 $result  = $db -> query($sql);
                 $num_rows = $db -> num_rows($result);
                 if ( $num_rows >= 1 ) $ausgaben["form_error"] = "#(error_dupe)";

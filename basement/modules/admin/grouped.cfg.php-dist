@@ -70,7 +70,7 @@
                         "entries" => "auth_group",
                             "key" => "gid",
                            "desc" => "beschreibung",
-                          "order" => "group",
+                          "order" => "ggroup",
                           "rows" => 10
                               ),
                     "member"=> array(
