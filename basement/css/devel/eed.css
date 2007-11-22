@@ -321,6 +321,19 @@ li.thumbs a.pic {
   cmsed special (testing only)
   ----------------------*/
 
+
+li.files {
+        border: 1px solid silver;
+        float: left;
+/*         height: 130px; */
+        margin: 5px;
+/*         width: 102px; */
+/*         text-align: center; */
+        padding: 3px;
+        -moz-border-radius: 5px;
+}
+
+
 #cEd fieldset.ce {
     border: none;
     padding-left: 0;
