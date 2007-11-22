@@ -300,7 +300,7 @@
 
     // funktionen fuer die compilation-liste
     if ( in_array("compilationlist", $cfg["function"][$environment["kategorie"]]) ) {
-        function compilation_list( $select="" ) {
+        function compilation_list( $select="", $length=25 ) {
             global $db;
 
             // selection-bilder, werden aus der site_file geholt
@@ -367,7 +367,7 @@
                         }
 
                         if ( $compilations[$id]["name"] == "---"
-                        || $compilations[$id]["name"] == "" ){
+                          || $compilations[$id]["name"] == "" ){
                             $name = $sel_name;
                         } else {
                             // name wird nur erfasst, wenn er nicht schon drinsteht
@@ -376,8 +376,17 @@
                                 $name = $compilations[$id]["name"].", ".$sel_name;
                             }
                         }
+                        $name = preg_replace(array("/(, )*$/","/(, ){2}/"),
+                                             "",
+                                             $name
+                        );
 
                         $compilations[$id]["name"] = $name;
+                        if ( strlen($name) > $length ) {
+                            $compilations[$id]["name_short"] = substr($name,0,$length)."...";
+                        } else {
+                            $compilations[$id]["name_short"] = $name;
+                        }
                     }
 
                 }
