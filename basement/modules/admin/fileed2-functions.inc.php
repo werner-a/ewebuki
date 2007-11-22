@@ -241,12 +241,12 @@
         //
 
         function content_check($id) {
-            global $db, $_SESSION, $cfg, $pathvars, $file;
+            global $db, $_SESSION, $cfg, $pathvars, $file, $debugging;
 
             $content_error = "";
             $old = "\_".$id.".";
             $new = "/".$id."/";
-            $sql2 = "SELECT *
+            $sql2 = "SELECT DISTINCT ".$cfg["db"]["content"]["path"]."
                        FROM ".$cfg["db"]["content"]["entries"]."
                       WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
                          OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";

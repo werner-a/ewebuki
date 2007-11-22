@@ -90,6 +90,7 @@
                   "content" => array(
                           "entries" => "site_text",
                           "content" => "content",
+                             "path" => "ebene, kategorie"
                                ),
                     "multi" => array(
                            "change" => False,
