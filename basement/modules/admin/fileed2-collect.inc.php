@@ -223,21 +223,27 @@
         }
 
         // wohin schicken
-        #n/a
+        if ( strstr($_SERVER["HTTP_REFERER"],"/compilation") ){
+            $_SESSION["referer"] = $_SERVER["HTTP_REFERER"];
+        }
 
         // +++
         // page basics
 
         if ( $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""
-                || $_POST["extension1"] != ""
+                || $_POST["abort"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
             // form eingaben pruefen
             form_errors( $form_options, $_POST );
 
+            if ( $_POST["abort"] != "" ){
+                $header = $_SESSION["referer"];
+            }
+
             // evtl. zusaetzliche datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
+            if ( $ausgaben["form_error"] == "" && $header == "" ) {
 
                 // funktions bereich fuer erweiterungen
                 // ***
@@ -261,7 +267,7 @@
                 }
 
                 // vorerst sprung zur entsprechenden bildergruppe
-                if ( $header == "" ) $header = $cfg["basis"]."/collect,".$groupid.".html";
+                if ( $header == "" ) $header = $_SESSION["referer"];
 
                 unset ($_SESSION["file_memo"]);
 
@@ -272,6 +278,7 @@
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
+                unset($_SESSION["referer"]);
                 header("Location: ".$header);
             }
         }

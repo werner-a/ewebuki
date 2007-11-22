@@ -18,6 +18,16 @@
 </script>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
+    <div class="tabbed" style="">
+        <ul style="">
+            <!--##loop-tabs-->
+            <li style="!{style}">
+                <a href="!{link}" class="!{class}" style="">!{label}</a>
+            </li>
+            <!--##cont-->
+        </ul>
+    </div>
+    <div style="clear:both;border-top:1px solid #666666;"></div>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <div class="clearer">&nbsp;</div>
@@ -53,7 +63,7 @@
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />
         <input type="reset" name="reset" value="g(reset)" onclick="resetForm()" class="next" />
-        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <input type="submit" name="abort[]" value="g(abort)" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>
     <div class="clearer">&nbsp;</div>
