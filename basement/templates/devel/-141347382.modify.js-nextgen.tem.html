@@ -248,6 +248,16 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         }
     }
 
+
+    function ebInsertother(myField, i, defaultLink, defaultTitle, defaultEnd) {
+        var myValue = '[LINK'
+                + defaultLink
+                + ']' + prompt('Titel:', defaultTitle)
+                + '[/LINK' + defaultEnd + ']';
+        ebInsertContent(myField, myValue);
+    }
+
+
     function ebInsertLink(myField, i, defaultValue) {
         if (!defaultValue) {
             defaultValue = 'http://';

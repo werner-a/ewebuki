@@ -117,6 +117,11 @@
             $lb = $data["ffname"]
                  .$cfg["tags"]["img"][4];
 
+            // keine weiteren parameter fuer others
+            if ( $cfg["filetyp"][$data["ffart"]] != "img" ) {
+                $lb = $data["ffname"];
+            }
+
             // sortierkritierium fuer die compilations
             if ( $group != "" ) {
                 preg_match("/#p".$group."[,]*([0-9]*)#/i",$data["fhit"],$match);
@@ -161,6 +166,7 @@
                                            "bclick" => "ebInsertImage(ebCanvas, '', '".$la."b/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
                                            "mclick" => "ebInsertImage(ebCanvas, '', '".$la."m/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
                                            "sclick" => "ebInsertImage(ebCanvas, '', '".$la."s/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
+                                           "fclick" => "ebInsertother(ebCanvas, '', '".$la.$lb."', '".$data["funder"]."', '');",
                                           "newline" => $newline,
                                              "sort" => $sort,
                                               );
