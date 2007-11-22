@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>default</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: viewer.tem.html 938 2007-10-31 13:26:17Z chaot $-->
+<h1>#(ueberschrift)</h1>
+<p><a href="!#ausgaben_referer">g(back)</a></p>
+<p>#(inhalt)</p>
+
+<!--##hide-navi-->
+<p><a href="!#ausgaben_prev">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_next">g(next)</a></p>
+<!--##show-->
+
+<p style="float:left"><a href="!#ausgaben_href"><img src="!#ausgaben_imgurl" title="!#ausgaben_beschriftung" alt="!#ausgaben_beschriftung" /></a></p>
+<p style="float:right">!#ausgaben_beschreibung</p>
+<!-- !#ausgaben_imgsize -->
+
+
+<!--##hide-thumbs-->
+<ul>
+    <!--##loop-thumbs-->
+    <li class="thumbs" style="background:!{bg};">
+        <a href="!{link}" class="pic"><img src="!{src}" alt="!{title}" title="!{title}" /></a>
+    </li>
+    <!--##cont-->
+</ul>
+<div style="clear:both;"></div>
+<!--##show-->
+
+
+<!--##hide-navi-->
+<p><a href="!#ausgaben_prev">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_next">g(next)</a></p>
+<!--##show-->
+<!--##end-->
+</body>
+</html>

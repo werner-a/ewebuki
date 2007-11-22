@@ -209,8 +209,14 @@
 
         // was anzeigen
         #$mapping["main"] = crc32($environment["ebene"]).".list";
-        $mapping["main"] = "viewer";
+        #$mapping["main"] = "viewer";
         #$mapping["navi"] = "leer";
+
+        if ( $environment["parameter"][1] == "b" ) {
+            $mapping["main"] = "viewer-bottom";
+        } else {
+            $mapping["main"] = "viewer-right";
+        }
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($_GET["edit"]) ) {
