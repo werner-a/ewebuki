@@ -55,13 +55,19 @@
             for ( $i=0; $i<$zip->numFiles; $i++ ) {
                 $buffer = $zip->statIndex($i);
                 $path = explode("/",$buffer["name"]);
-                $name = array_pop($path);
+                $name = str_replace(array("/"," "),
+                                    array("--","_"),
+                                    array_pop($path)
+                );
                 $dir  = implode("/",$path);
                 if ( $name != "" ) {
                     $zip_content[$buffer["index"]] = array(
                             "name" => $name,
                              "dir" => $dir,
-                            "file" => $buffer["name"],
+                            "file" => str_replace(array("/"," "),
+                                                  array("--","_"),
+                                                  $buffer["name"]
+                                      ),
                             "size" => $buffer["size"],
                     );
                 }
@@ -84,7 +90,12 @@
                         }
                     }
 
-                    $text_files[str_replace("/","--",$buffer["name"])] = array(
+                    $key = str_replace(array("/"," "),
+                                        array("--","_"),
+                                        $buffer["name"]
+                    );
+
+                    $text_files[$key] = array(
                         "id" => $buffer["index"],
                         "content" => addslashes(substr($zip->getFromIndex($buffer["index"]),0,400))
                     );
@@ -105,7 +116,10 @@
                       && $value["name"] != "" ) {
 
                         // 1. datei auf den server schreiben
-                        $tmp_file = $extract_dest.str_replace("/","--",$value["file"]);
+                        $tmp_file = $extract_dest.str_replace(array("/"," "),
+                                                              array("--","_"),
+                                                              $value["file"]
+                        );
                         $handle = fopen($tmp_file,"a");
                         fwrite($handle, $zip->getFromIndex($key));
                         fclose($handle);
