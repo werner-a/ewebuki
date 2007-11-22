@@ -206,7 +206,10 @@
                     $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.".".$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
                     unset($_SESSION["referer"]);
                 } else {
-                    $header = $cfg["basis"]."/list.html";
+                    $sql = "SELECT refid FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."=".$lastid;
+                    $result  = $db -> query($sql);
+                    $lastrefid = $db -> fetch_array($result,1); 
+                    $header = $cfg["basis"]."/list,".$lastrefid["refid"].".html";
                 }
             }
             if ( $ausgaben["form_error"] == "" ) {
