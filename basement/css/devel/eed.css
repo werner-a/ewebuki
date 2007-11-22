@@ -322,13 +322,10 @@ li.thumbs a.pic {
   ----------------------*/
 
 
-li.files {
+#cEd li.files {
         border: 1px solid silver;
         float: left;
-/*         height: 130px; */
         margin: 5px;
-/*         width: 102px; */
-/*         text-align: center; */
         padding: 3px;
         -moz-border-radius: 5px;
 }
