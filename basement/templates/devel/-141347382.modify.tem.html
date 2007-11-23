@@ -36,7 +36,7 @@
             !#ausgaben_lock
         </span>
         </a>
-
+    
 <!--         <p>!#ausgaben_ce_button</p> -->
         <textarea id="content" name="!#ausgaben_name" cols="80" rows="15" title="!#ausgaben_lock" class="!#ausgaben_class" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
 <!--         <p>!#ausgaben_ce_bottom_button</p> -->
@@ -65,8 +65,10 @@
       <!--##hide-list_other-->
         <ul>
         <!--##loop-list_other-->
-            <li style="background:!{color};">
-                <a title="!{title} einfügen" onclick="!{fclick}">!{title}</a> 
+            <li class="files" style="background:!{color};" onclick="!{fclick}">
+<!--                 <input type="button" id="eb_imgo" value="D" title="!{title} einfügen)" onclick="!{fclick}" class="butfil" />  -->
+                <a title="!{title} einfügen">!{title}</a> 
+                <div style="clear:both"></div>
             </li>
         <!--##cont-->
         </ul>
