@@ -308,6 +308,14 @@
                 filelist($result);
             }
 
+            foreach ( $_SESSION["compilation_memo"] as $compid=>$value ) {
+                $dataloop["selection"][] = array(
+                    "id" => $compid,
+                    "pics" => implode(":",$value)
+                );
+            }
+            if ( count($dataloop["selection"]) > 0 ) $hidedata["selection"] = array();
+
 
             // template version
             $art = "";
@@ -387,6 +395,7 @@
         if ( $environment["parameter"][6] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["add"] != ""
+                || $HTTP_POST_VARS["sel"] != ""
                 || $HTTP_POST_VARS["upload"] != "" ) ) {
 
 
@@ -550,7 +559,7 @@
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["upload"] > 0 ) {
+                if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["sel"] || $HTTP_POST_VARS["upload"] > 0 ) {
 
                     $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
 
@@ -560,6 +569,8 @@
 
                     if ( $HTTP_POST_VARS["upload"] > 0 ) {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$HTTP_POST_VARS["upload"]);
+                    } elseif ( $_POST["sel"] != "" ) {
+                        header("Location: ".$pathvars["virtual"]."/admin/fileed/compilation.html");
                     } else {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
                     }

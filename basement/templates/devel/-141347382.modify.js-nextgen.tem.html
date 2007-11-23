@@ -108,6 +108,7 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
             ebShowButton(ebButtons[i], i, position);
         }
         if ( position == 'T' ) {
+            document.write('<input type="submit" name="sel[]" id="eb_submit" value="SEL" title="#(sel)" class="buttag"/>');
             document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="#(add)" class="buttag"/>');
         }
         if ( position == 'B' ) {
@@ -254,6 +255,17 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
                 + defaultLink
                 + ']' + prompt('Titel:', defaultTitle)
                 + '[/LINK' + defaultEnd + ']';
+        ebInsertContent(myField, myValue);
+    }
+
+    function ebInsertsel(myField, id, art, defaultTitle, pics, thumbs) {
+        var myValue = '[SEL='
+                + id + ';'
+                + art + ';'
+                + thumbs + ';'
+                + pics + ']'
+                + prompt('Titel:', defaultTitle)
+                + '[/SEL]\n';
         ebInsertContent(myField, myValue);
     }
 
