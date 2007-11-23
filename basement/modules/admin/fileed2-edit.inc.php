@@ -211,7 +211,7 @@
                         // naechste freie compilation-id suchen
                         if ( $_POST["selection"] == -1 ) {
                             $buffer = compilation_list();
-                            end($buffer);
+                            reset($buffer);
                             $compid = key($buffer) + 1;
                         } else {
                             $compid = "";

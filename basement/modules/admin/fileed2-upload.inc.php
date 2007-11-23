@@ -154,7 +154,7 @@
                                 rename($value["tmp_name"],$newname);
                                 // compilation
                                 $buffer = compilation_list();
-                                end($buffer);
+                                reset($buffer);
                                 $new_comp = key($buffer) + 1;
                                 zip_handling($newname,
                                              $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
