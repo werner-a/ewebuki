@@ -308,13 +308,15 @@
                 filelist($result);
             }
 
-            foreach ( $_SESSION["compilation_memo"] as $compid=>$value ) {
-                $dataloop["selection"][] = array(
-                    "id" => $compid,
-                    "pics" => implode(":",$value)
-                );
+            if ( is_array($_SESSION["compilation_memo"]) ) {
+                foreach ( $_SESSION["compilation_memo"] as $compid=>$value ) {
+                    $dataloop["selection"][] = array(
+                        "id" => $compid,
+                        "pics" => implode(":",$value)
+                    );
+                }
+                if ( count($dataloop["selection"]) > 0 ) $hidedata["selection"] = array();
             }
-            if ( count($dataloop["selection"]) > 0 ) $hidedata["selection"] = array();
 
 
             // template version
