@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function zip_handling( $file, $extract_dest="", $restrict_type=array(), $restrict_size="", $restrict_dir="", $compid="", $section=array() ) {
+    function zip_handling( $file, $extract_dest="", $restrict_type=array(), $restrict_size="", $restrict_dir="", $compid="", $section=array(), $wave_thru=0 ) {
         global $db, $pathvars, $ausgaben;
 
         $zip = new ZipArchive;
@@ -145,6 +145,7 @@
                                 "fdesc" => $_POST["zip_fdesc"]."\n".$text_files[basename($tmp_file).".txt"]["fdesc"],
                                "funder" => $_POST["zip_fdesc"]." ".$text_files[basename($tmp_file).".txt"]["funder"],
                                  "fhit" => $_POST["zip_fhit"]." ".$text_files[basename($tmp_file).".txt"]["fhit"],
+                            "wave_thru" => $wave_thru,
                             );
                             // zip_content soll die nicht auszupackenden dateien ausgeben
                             unset($zip_content[$key]);

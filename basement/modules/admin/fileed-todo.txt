@@ -2,8 +2,6 @@
 
 ToDo:
 -----
-- zurück-sprungziel nach bearbeiten von compilations
-- möglichkeit, die datei nach dem upload, aber vor dem db-eintrag aus dem new-ordner zu löschen
 - filecollect: benutzer muß neue CompilationId eingeben -> soll system übernehmen
 
 
@@ -25,4 +23,6 @@ zip-handling:
 - nach fehlerfreien extrahieren soll die zip-datei geloescht werden
 - automatisch gallerien bilden
 - dateibeschreibung aus mitgegebenen textfile lesen
+- zurück-sprungziel nach bearbeiten von compilations
+- möglichkeit, die datei nach dem upload, aber vor dem db-eintrag aus dem new-ordner zu löschen
 

@@ -161,7 +161,8 @@
                                              $cfg["filetyp"],
                                              $cfg["filesize"],
                                              "selection",
-                                             $new_comp
+                                             $new_comp,
+                                             $cfg["zip_handling"]["sektions"]
                                 );
                             } else {
                                 $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." g(file_error".$error.")";

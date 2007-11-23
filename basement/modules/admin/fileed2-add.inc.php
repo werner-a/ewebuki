@@ -91,6 +91,8 @@
             $element["fhit"] = str_replace("value=\"\"", "value=\"".$file_buffer["compilation"]." ".$file_buffer["fhit"]."\"", $element["fhit"]);
         }
 
+        $hidedata[$environment["kategorie"]] = array();
+
         // +++
         // page basics
 
@@ -175,11 +177,20 @@
 
         // +++
         // page basics
+// echo "--".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."<br>";
+// echo "<pre>".print_r($hidedata,true)."</pre>";
+        if ( $_POST["continue"] != "" ) {
+            unlink( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file );
+            if ( file_exists($thumb_srv) ) unlink( $thumb_srv );
+            header("Location: ".$cfg["basis"]."/add.html");
+            exit;
+        }
 
-        if ( $environment["parameter"][2] == "verify"
-            &&  ( $_POST["send"] != ""
-                || $_POST["extract"] != ""
-                || $_POST["extension2"] != "" ) ) {
+        if ( ( $environment["parameter"][2] == "verify"
+                 &&  ( $_POST["send"] != ""
+                    || $_POST["extract"] != ""
+                    || $_POST["extension2"] != "" )
+             ) || $file_buffer["wave_thru"] == -1 ) {
 
             // form eigaben prüfen
             form_errors( $form_options, $_POST );
@@ -219,6 +230,13 @@
                         header("Location: ".$cfg["basis"]."/add.html");
                         exit;
                     }
+                }
+
+                if ( $file_buffer["wave_thru"] == -1 ) {
+                    $_POST["ffname"] = str_replace($_SESSION["uid"]."_","",$file_buffer["name"]);
+                    $_POST["funder"] = $file_buffer["funder"];
+                     $_POST["fdesc"] = $file_buffer["fdesc"];
+                      $_POST["fhit"] = $file_buffer["fhit"];
                 }
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
