@@ -103,6 +103,7 @@
         } elseif (( !isset($environment["parameter"][1])
                  || !isset($dataloop["groups"][$environment["parameter"][1]])
                   ) && count($dataloop["groups"]) > 0 ){
+            reset($dataloop["groups"]);
             $buffer = current($dataloop["groups"]);
             $header = $cfg["basis"]."/compilation,".$buffer["id"].".html";
             header("Location: ".$header);

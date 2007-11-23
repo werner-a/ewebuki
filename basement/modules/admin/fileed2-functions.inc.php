@@ -327,9 +327,10 @@
                         }
                     }
 
-                    $compilations[$value]["id"]     = $value;
-                    $compilations[$value]["name"]   = "---";
-                    $compilations[$value]["desc"]  .= $data["fdesc"]." ";
+                    $compilations[$value]["id"]         = $value;
+                    $compilations[$value]["name"]       = "---";
+                    $compilations[$value]["name_short"] = "---";
+                    $compilations[$value]["desc"]      .= $data["fdesc"]." ";
 
                     if ( $value == $select ) {
                         $compilations[$value]["select"] = ' selected="true"';
@@ -392,7 +393,7 @@
                 }
             }
 
-            ksort($compilations);
+            krsort($compilations);
 
             return $compilations;
         }
