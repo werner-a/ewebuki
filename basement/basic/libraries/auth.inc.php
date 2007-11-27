@@ -204,8 +204,12 @@
 
     // daten fuer login, logout formular setzen
     if ( $_SESSION["auth"] != -1 ) {
+            if ( $cfg["hidden"]["set"] == True ) {
+                $hidedata["authArea"]["message"] = "#(secret)";
+            } else {
+                $hidedata["authArea"]["message"] = "";
+            }
         if ( $cfg["hidden"]["set"] != True || $environment["kategorie"] == $cfg["hidden"]["kategorie"] ) {
-            $hidedata["authArea"]["message"] = "#(secret)";
             $hidedata["authLogin"]["nop"] = "";
         }
     } else {
