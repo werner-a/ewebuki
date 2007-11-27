@@ -59,6 +59,7 @@
                 $hidestatus = -1;
                 break;
             case sitemap:
+                $sitemap = -1;
                 break;
             default:
 
@@ -86,7 +87,7 @@
         while ( $array = $db -> fetch_array($result,1) ) {
 
             // aufbau des pfads
-            if ( $refid == 0 || in_array($refid,$positionArray) ) {
+            if ( $refid == 0 || in_array($refid,$positionArray) || $sitemap == -1 ) {
                 $buffer["pfad"] .= "/".$array["entry"];
                 $buffer["pfad_label"] .= "/".$array["label"];
             }
@@ -149,8 +150,10 @@
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
             // hier wird komplett geoeffnet
-            } else {
-                $href = $array["label"];
+            } elseif ( $sitemap == -1 ) {
+                $href = "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html\">".$array["label"]."</a>";
+            }else {
+                $href = $array["label"] ;
             }
 
             // schaltflaechen erstellen
