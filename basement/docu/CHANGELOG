@@ -8,6 +8,22 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+
+--- 20. November 2007
+
+login auf hidedata umgebaut
+
+sql:
+
+UPDATE `site_text` SET `tname` = 'auth'
+WHERE `lang` = 'de' AND `tname` LIKE 'auth%';
+
+INSERT INTO `site_text`
+( `lang` , `label` , `crc32` , `tname` , `ebene` , `kategorie` , `html` , `content` )
+VALUES
+( 'de', 'secret', '-1', 'auth', '', 'auth', '0', 'Hintereingang');
+
+
 --- 20. November 2007
 
 aufgrund der anpassungen am leveled bzw. usered wird das feld rid nicht mehr

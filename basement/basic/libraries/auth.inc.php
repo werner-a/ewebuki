@@ -107,18 +107,6 @@
             $_SESSION["alias"] = $AUTH[$cfg["db"]["user"]["alias"]];
             $_SESSION["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
 
-            if ( $specialvars["new_rights"] == True ) {
-                $sql = "SELECT tname,auth_priv.priv FROM auth_content 
-                        INNER JOIN auth_member ON (auth_content.gid=auth_member.gid ) 
-                        INNER JOIN auth_role ON ( auth_role.rid=auth_member.gid )
-                        INNER JOIN auth_priv ON ( auth_priv.pid=auth_content.pid )
-                        WHERE auth_member.uid=".$AUTH[$cfg["db"]["user"]["id"]];
-                $result = $db -> query($sql);
-                while ( $data = $db -> fetch_array($result,$nop) ) {
-                    $_SESSION["content"][$data["tname"]][$data["priv"]] = "on";
-                }
-            }
-
             // wenn content_right on dann katzugriff array bauen
             if ( $specialvars["security"]["enable"] == -1 ) {
                 $sql = "SELECT ".$cfg["db"]["special"]["contentkey"].",
@@ -159,7 +147,8 @@
                 setcookie(session_name(), '', time()-42000, '/');
             }
             session_destroy();
-            $ausgaben["login_meldung"] = "#(denied)";
+            $hidedata["authArea"]["message"] = "#(denied)";
+
         }
     }
 
@@ -171,7 +160,7 @@
             setcookie(session_name(), '', time()-42000, '/');
         }
         session_destroy();
-        $ausgaben["login_meldung"] = "#(logout)";
+        $hidedata["authArea"]["message"] = "#(logout)";
     }
 
     // session variablen nur holen wenn /auth/ in der url
@@ -215,61 +204,34 @@
 
     // daten fuer login, logout formular setzen
     if ( $_SESSION["auth"] != -1 ) {
-        $ausgaben["login_meldung"] .= "";
         if ( $cfg["hidden"]["set"] != True || $environment["kategorie"] == $cfg["hidden"]["kategorie"] ) {
-          $ausgaben["auth"] = parser( "auth.login", "");
-        } else {
-          $ausgaben["auth"] = "";
+            $hidedata["authArea"]["message"] = "#(secret)";
+            $hidedata["authLogin"]["nop"] = "";
         }
     } else {
-        $ausgaben["logout_meldung"] = "\"".$_SESSION["username"]."\"";
-        $ausgaben["logout_rechte"] = "";
+        $hidedata["authArea"]["message"] = "#(vorher) \"".$_SESSION["username"]."\" #(nachher)";
+        $hidedata["authLogout"]["nop"] = "";
 
+        // in place functions
         $path = dirname($pathvars["requested"]);
         if ( substr( $path, -1 ) != '/') $path = $path."/";
-        $newlnk = $path.basename($pathvars["requested"],".html")."/new.html";
+        $hidedata["authInPlace"]["newlink"] = $path.basename($pathvars["requested"],".html")."/new.html";
 
-        if ( $cfg["boxed"] == True ) $ausgaben["logout_new"] = "<a href=\"".$newlnk."\">New Page</a><br /><br />";
-        if ( $specialvars["new_rights"] == True ) {
-
-            foreach( $cfg["menu"] as $funktion => $werte) {
-                $RightConcept = "";
-                priv_check("/admin/".$funktion,$werte[0],"",$RightConcept);    
-                if ( is_array($RightConcept) ){
-                    if ( array_key_exists($werte[1],$RightConcept) ) {
-                        if ( $cfg["boxed"] == False ) {
-                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
-                        } else {
-                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\" title=\"#(".$funktion.")\">".strtoupper($funktion[0])."</a> ";
-                        }
+        // ed links
+        foreach( $cfg["menu"] as $funktion => $werte) {
+            $array = explode(";", $werte[1]);
+            foreach( $array as $value) {
+                if ( $rechte[$value] == -1 || $value == "" ) {
+                    if ( $cfg["boxed"] == False ) {
+                        $hidedata["authTools"]["links"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
+                    } else {
+                        $hidedata["authTools"]["links"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\" title=\"#(".$funktion.")\">".strtoupper($funktion[0])."</a> ";
+                        $hidedata["authBox"]["nop"] = "";
                     }
-                }
-            }
-
-            $RightConcept = "";
-            priv_check($environment["ebene"],$environment["kategorie"],"",$RightConcept);
-        } else {
-            foreach( $cfg["menu"] as $funktion => $werte) {
-                $array = explode(";", $werte[1]);
-                foreach( $array as $value) {
-                    if ( $rechte[$value] == -1 || $value == "" ) {
-                        if ( $cfg["boxed"] == False ) {
-                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
-                        } else {
-                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\" title=\"#(".$funktion.")\">".strtoupper($funktion[0])."</a> ";
-                        }
-                        break;
-                    }
+                    break;
                 }
             }
         }
-        if ( $cfg["boxed"] == False ) {
-            if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = "<br />#(desc)<br /><br />".$ausgaben["logout_rechte"];
-        } else {
-            if ( $ausgaben["logout_rechte"] != "" ) $ausgaben["logout_rechte"] = $ausgaben["logout_rechte"]."<br />";
-        }
-
-        $ausgaben["auth"] = parser( "auth.logout", "");
     }
 
     $specialvars["editlock"] = 0;

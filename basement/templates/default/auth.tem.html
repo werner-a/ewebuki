@@ -8,8 +8,56 @@
 </head>
 <body>
 <!--##begin-->
-<h3>#(ueberschrift)</h3>
-!#ausgaben_auth
+
+<!--##hide-authBox-->
+<!-- background:#bbf; width:100px;height:100px; -->
+<div id="magic" class="magic1" style="position:absolute;left:900px;top:5px;padding:3px;z-index:1000;background:#bbf;">
+<!--##show-->
+
+<!--##hide-authArea-->
+<span id="handle1"><h3>#(ueberschrift)</h3></span>
+<p>!{message}</p>
+<form method="post" action="!#ausgaben_auth_url">
+<!--##show-->
+
+<!--##hide-authLogin-->
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" />
+        <input type="text" name="user" style="width:50;font-size:9px" />
+        <input type="password" name="pass" style="width:50;font-size:9px" />
+        <input type="submit" name="login" value="login" />
+    </fieldset>
+<!--##show-->
+
+<!--##hide-authLogout-->
+    <fieldset>
+        <input type="submit" name="logout" value="logout" />
+    </fieldset>
+<!--##show-->
+
+<!--##hide-authInPlace-->
+<a href="!{newlink}">g(new)</a><br /><br />
+<!--##show-->
+
+<!--##hide-authArea-->
+</form>
+<!--##show-->
+
+<!--##hide-authTools-->
+<p>#(desc)<br />
+!{links}</p>
+<!--##show-->
+
+<!--##hide-authBox-->
+</div>
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+  new Draggable('magic',{scroll:window,handle:'handle1',});
+// ]]>
+</script>
+<!--##show-->
+
 <!--##end-->
 </body>
 </html>
