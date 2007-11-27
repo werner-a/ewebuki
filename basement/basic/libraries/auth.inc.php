@@ -107,6 +107,18 @@
             $_SESSION["alias"] = $AUTH[$cfg["db"]["user"]["alias"]];
             $_SESSION["custom"] = $AUTH[$cfg["db"]["user"]["custom"]];
 
+            if ( $specialvars["new_rights"] == True ) {
+                $sql = "SELECT tname,auth_priv.priv FROM auth_content 
+                        INNER JOIN auth_member ON (auth_content.gid=auth_member.gid ) 
+                        INNER JOIN auth_role ON ( auth_role.rid=auth_member.gid )
+                        INNER JOIN auth_priv ON ( auth_priv.pid=auth_content.pid )
+                        WHERE auth_member.uid=".$AUTH[$cfg["db"]["user"]["id"]];
+                $result = $db -> query($sql);
+                while ( $data = $db -> fetch_array($result,$nop) ) {
+                    $_SESSION["content"][$data["tname"]][$data["priv"]] = "on";
+                }
+            }
+
             // wenn content_right on dann katzugriff array bauen
             if ( $specialvars["security"]["enable"] == -1 ) {
                 $sql = "SELECT ".$cfg["db"]["special"]["contentkey"].",
@@ -218,17 +230,36 @@
         $newlnk = $path.basename($pathvars["requested"],".html")."/new.html";
 
         if ( $cfg["boxed"] == True ) $ausgaben["logout_new"] = "<a href=\"".$newlnk."\">New Page</a><br /><br />";
+        if ( $specialvars["new_rights"] == True ) {
 
-        foreach( $cfg["menu"] as $funktion => $werte) {
-            $array = explode(";", $werte[1]);
-            foreach( $array as $value) {
-                if ( $rechte[$value] == -1 || $value == "" ) {
-                    if ( $cfg["boxed"] == False ) {
-                        $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
-                    } else {
-                        $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\" title=\"#(".$funktion.")\">".strtoupper($funktion[0])."</a> ";
+            foreach( $cfg["menu"] as $funktion => $werte) {
+                $RightConcept = "";
+                priv_check("/admin/".$funktion,$werte[0],"",$RightConcept);    
+                if ( is_array($RightConcept) ){
+                    if ( array_key_exists($werte[1],$RightConcept) ) {
+                        if ( $cfg["boxed"] == False ) {
+                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
+                        } else {
+                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\" title=\"#(".$funktion.")\">".strtoupper($funktion[0])."</a> ";
+                        }
                     }
-                    break;
+                }
+            }
+
+            $RightConcept = "";
+            priv_check($environment["ebene"],$environment["kategorie"],"",$RightConcept);
+        } else {
+            foreach( $cfg["menu"] as $funktion => $werte) {
+                $array = explode(";", $werte[1]);
+                foreach( $array as $value) {
+                    if ( $rechte[$value] == -1 || $value == "" ) {
+                        if ( $cfg["boxed"] == False ) {
+                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\">#(".$funktion.")</a><br />";
+                        } else {
+                            $ausgaben["logout_rechte"] .= "<a href=\"".$pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html\" title=\"#(".$funktion.")\">".strtoupper($funktion[0])."</a> ";
+                        }
+                        break;
+                    }
                 }
             }
         }

@@ -45,7 +45,7 @@
 
     function content($line, $tname) {
 
-        global $db, $debugging, $pathvars, $specialvars, $environment, $defaults, $ausgaben, $rechte, $eWeBuKi;
+        global $db, $debugging, $pathvars, $specialvars, $environment, $defaults, $ausgaben, $rechte, $eWeBuKi, $RightConcept;
 
         if ( $specialvars["crc32"] == -1 ) {
             if ( $environment["ebene"] != "" && $tname == $environment["kategorie"] ) {
@@ -183,12 +183,19 @@
             // cms edit link einblenden
             if ( $specialvars["editlock"] == False ) {
                 // erlaubt wenn content_right nicht gesetzt und cms_edit = -1
-                if ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
+
+
+                if ( $specialvars["new_rights"] == True ) {
+                    if ( !is_array($RightConcept) ) {
+                        $RightConcept["nop"] = "nop";
+                    }
+                }
+
+                if ( ( $specialvars["new_rights"] == True && array_key_exists("standard",$RightConcept) ) || 
+
+                    ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
                   // erlaubt wenn content_right gesetzt katzugriff und nur im
-                  ( $specialvars["security"]["enable"] == -1 && $katzugriff == -1 && $dbzugriff == -1 )){
-
-
-
+                  ( $specialvars["security"]["enable"] == -1 && $katzugriff == -1 && $dbzugriff == -1 )) ){
 
                     if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
                     if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
