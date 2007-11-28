@@ -130,7 +130,7 @@
         $ausgaben["thumbnail"] = $thumb_web;
 
         // falls zip wird der inhalt gebaut
-        if ( $match[2] == "zip" ) {
+        if ( $match[2] == "zip" && function_exists("zip_open") ) {
             $dataloop["zip"] = zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
             if ( count($dataloop["zip"]) > 0 ){
                 $hidedata["zip"][] = -1;

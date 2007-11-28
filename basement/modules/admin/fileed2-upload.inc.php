@@ -160,18 +160,20 @@
                             if ( $error == 0 ) {
                                 $newname = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$value["name"];
                                 rename($value["tmp_name"],$newname);
-                                // compilation
-                                $buffer = compilation_list();
-                                reset($buffer);
-                                $new_comp = key($buffer) + 1;
-                                zip_handling($newname,
-                                             $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
-                                             $cfg["filetyp"],
-                                             $cfg["filesize"],
-                                             "selection",
-                                             $new_comp,
-                                             $cfg["zip_handling"]["sektions"]
-                                );
+                                if ( function_exists("zip_open") ) {
+                                    // compilation
+                                    $buffer = compilation_list();
+                                    reset($buffer);
+                                    $new_comp = key($buffer) + 1;
+                                    zip_handling($newname,
+                                                $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                                                $cfg["filetyp"],
+                                                $cfg["filesize"],
+                                                "selection",
+                                                $new_comp,
+                                                $cfg["zip_handling"]["sektions"]
+                                    );
+                                }
                             } else {
                                 $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." g(file_error".$error.")";
                             }

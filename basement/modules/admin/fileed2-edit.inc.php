@@ -125,7 +125,7 @@
         }
 
         // falls zip wird der inhalt gebaut
-        if ( $form_values["ffart"] == "zip" ) {
+        if ( $form_values["ffart"] == "zip" && function_exists("zip_open") ) {
             $file_srv = $cfg["fileopt"][$type]["path"].$type."_".$form_values["fid"].".".$form_values["ffart"];
             $dataloop["zip"] = zip_handling($file_srv);
             if ( count($dataloop["zip"]) > 0 ) {
