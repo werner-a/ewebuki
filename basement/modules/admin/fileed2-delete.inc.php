@@ -67,7 +67,7 @@
                 $link = $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"];
             }
             if ( $_SESSION["uid"] != $data["fuid"] ) {
-                $dataloop["list"][] = array(
+                $dataloop["list"][$data["fid"]] = array(
                             "id" => $data["fid"],
                           "item" => $data["ffname"],
                           "link" => $link,
@@ -78,7 +78,7 @@
                 $pages = content_check($data["fid"]);
                 if ( count($pages) > 0 ) {
                     foreach ( $pages as $value ) {
-                        $dataloop["list"][] = array(
+                        $dataloop["list"][$data["fid"]] = array(
                                     "id" => $data["fid"],
                                   "item" => $data["ffname"],
                                   "link" => $link,
@@ -92,7 +92,7 @@
                     preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
                     foreach ( $match[1] as $value ) {
                         $view_link = "<a href=\"".$cfg["basis"]."/delete/view,o,".$data["fid"].",".$value.".html\">Gruppe #".$value."</a>";
-                        $dataloop["list"][] = array(
+                        $dataloop["list"][$data["fid"]] = array(
                                     "id" => $data["fid"],
                                   "item" => $data["ffname"],
                                   "link" => $link,
@@ -103,7 +103,7 @@
                 }
             }
             if ( !in_array($data["fid"],$forbidden) ) {
-                $dataloop["list"][] = array(
+                $dataloop["list"][$data["fid"]] = array(
                             "id" => $data["fid"],
                           "item" => $data["ffname"],
                           "link" => $link,
@@ -178,35 +178,45 @@
 
                         $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                         foreach ( $art as $key => $pre ) {
-                            $return = unlink($cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"]);
-                            ### sollte evtl. anderst gelöst werden, existiert nur ein file nicht
-                            ### laesst sich der datensatz nie löschen!
-                            if ( $return != 1 ) {
-                                $ausgaben["form_error"] = "#(delete_error)";
-                                break;
+                            $file_name = $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"];
+                            if ( file_exists($file_name) ) {
+                                $return = unlink($file_name);
+                                if ( $return != 1 ) {
+                                    $error[$value] = "#(delete_error)";
+                                }
                             }
                         }
                     } else {
-                        $return = unlink($cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$value.".".$data["ffart"]);
-                        if ( $return != "1" ) {
-                            $ausgaben["form_error"] = "#(delete_error)";
-                        }
+                        $file_name = $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$value.".".$data["ffart"];
+                            if ( file_exists($file_name) ) {
+                                $return = unlink($file_name);
+                                if ( $return != 1 ) {
+                                    $error[$value] = "#(delete_error)";
+                                }
+                            }
                     }
 
                     // datensatz loeschen
-                    if ( $ausgaben["form_error"] == "" ) {
+                    if ( $error[$value] == "" ) {
                         $sql = "DELETE FROM ".$cfg["db"]["file"]["entries"]."
                                       WHERE ".$cfg["db"]["file"]["key"]."='".$value."';";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
+                        if ( $result ) {
+                            unset ($dataloop["list"][$value]);
+                            unset ($_SESSION["file_memo"][$value]);
+                        }
+
                         if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
+
+                    } else {
+                        $dataloop["list"][$value]["reason"] = $error[$value];
                     }
                 }
-                unset ($_SESSION["file_memo"][$value]);
             }
 
             // wohin schicken
-            if ( $ausgaben["form_error"] == "" ) {
+            if ( $ausgaben["form_error"] == "" && count($error) == 0 ) {
                 header("Location: ".$cfg["basis"]."/list.html");
             }
         }
