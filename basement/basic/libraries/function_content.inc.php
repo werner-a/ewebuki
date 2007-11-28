@@ -181,20 +181,17 @@
             }
 
             // cms edit link einblenden
+            $check = "";
             if ( $specialvars["editlock"] == False && $tname != "auth" ) {
-                // erlaubt wenn content_right nicht gesetzt und cms_edit = -1
-
-
-                if ( $specialvars["new_rights"] == True ) {
-                    if ( !is_array($RightConcept) ) {
-                        $RightConcept["nop"] = "nop";
-                    }
+                if ( $specialvars["new_rights"] == -1 ) {
+                    $check = priv_check($environment["ebene"]."/".$environment["kategorie"],"cms_edit");
+                } elseif ( $specialvars["security"]["enable"] == -1) {
+                    if ( $katzugriff == -1 && $dbzugriff == -1 ) $check = True;
+                } else {
+                    if ( $rechte["cms_edit"] == -1 ) $check = True;
                 }
-                if ( ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) )||
 
-                    ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
-                  // erlaubt wenn content_right gesetzt katzugriff und nur im
-                  ( $specialvars["security"]["enable"] == -1 && $katzugriff == -1 && $dbzugriff == -1 )) ){
+                if ( $check == True ) {
 
                     if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
                     if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";

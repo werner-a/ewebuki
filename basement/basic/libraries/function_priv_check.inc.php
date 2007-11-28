@@ -46,23 +46,23 @@
     // aufruf: $priv_check(ebene,kategorie,database,$right);
     // funktion prueft rekursiv, ob die aktuelle url rechte in der $_SESSION["content"] besitzt !
 
-    function priv_check($ebene, $kategorie="",$database=DATABASE,&$RightConcept) {
-        if ( is_array($_SESSION["content"] ) ){
-                if ( array_key_exists(crc32($ebene).".".$kategorie,$_SESSION["content"]) ) {
-                    $check = crc32($ebene).".".$kategorie;
-
-                foreach ( $_SESSION["content"][$check] as $key => $value ) {
-                        $RightConcept[$key][$check] = "on" ;
+    function priv_check($url,$required) {
+        if ( !function_exists(priv_check_path) ) {
+            function priv_check_path($url,$required,&$hit) {
+                if ( is_array($_SESSION["content"] ) ){
+                    if ( strpos($_SESSION["content"][$url],$required) !== False ) {
+                        $hit = True;
                     }
                 }
-
-                if ( !$RightConcept && $kategorie != "index") {
-                    $newebene = substr($ebene,0,strrpos($ebene,"/"));
-                    $newkat = substr($ebene,strrpos($ebene,"/")+1);
-                    if ( $ebene == "" ) $newkat = "index";
-                    priv_check($newebene,$newkat,"",$RightConcept);
+                if ( !$hit && $url != "/" ) {
+                    $url = dirname($url);
+                    priv_check_path($url,$required,$hit);
                 }
+            }
         }
+        $hit = "";
+        priv_check_path($url,$required,$hit);
+        return $hit;
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
