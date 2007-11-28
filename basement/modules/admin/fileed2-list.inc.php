@@ -57,13 +57,9 @@
             }
             if ( count($_SESSION["file_memo"]) == 0 ) unset($_SESSION["file_memo"]);
             if ( isset($_GET["ajax"]) ){
-                if ( $debugging["html_enable"] ) {
-                    echo "<pre>";
-                    echo '$_SESSION["file_memo"]'."<br>";
-                    echo print_r($_SESSION["file_memo"],true);
-                    echo "</pre>";
+                if ( count($_SESSION["file_memo"]) == 0 ) {
+                    header("HTTP/1.0 404 Not Found");
                 }
-                if ( count($_SESSION["file_memo"]) == 0 ) header("HTTP/1.0 404 Not Found");
                 exit;
             } else {
                 header("Location: ".$cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",,".$environment["parameter"][3].".html");
