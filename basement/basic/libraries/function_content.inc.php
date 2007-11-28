@@ -191,7 +191,7 @@
                     }
                 }
 
-                if ( ( $specialvars["new_rights"] == True && array_key_exists("standard",$RightConcept) ) ||
+                if ( ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
 
                     ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
                   // erlaubt wenn content_right gesetzt katzugriff und nur im
