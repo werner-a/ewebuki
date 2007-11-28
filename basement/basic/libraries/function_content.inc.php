@@ -190,8 +190,7 @@
                         $RightConcept["nop"] = "nop";
                     }
                 }
-
-                if ( ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
+                if ( ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) )||
 
                     ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
                   // erlaubt wenn content_right gesetzt katzugriff und nur im
