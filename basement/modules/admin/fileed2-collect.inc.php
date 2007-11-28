@@ -102,7 +102,11 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (bilder der gruppe): ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         // falls keine bilder vorhanden sind zur gruppen-uebersicht springen
-        if ( $db->num_rows($result) == 0 ) header("Location: ".$cfg["basis"]."/list.html");
+        if ( $db->num_rows($result) == 0 ) {
+            $header = $_SESSION["referer"];
+            unset($_SESSION["referer"]);
+            header("Location: ".$header);
+        }
 
         // dataloop mit den ausgewaehlten bildern wird gebaut
         while ( $data = $db -> fetch_array($result,1) ) {
@@ -168,29 +172,9 @@
         // ***
 
         // dropdown mit bereits vorhandenen gruppen
-        $sql = "SELECT *
-                    FROM ".$cfg["db"]["file"]["entries"]."
-                    WHERE fhit LIKE '%#p%'";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (dropdown): ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-
-        $dataloop["group_dropdown"] = array();
-        while ( $data = $db -> fetch_array($result,1) ) {
-            // alle gruppeneintraege holen
-            preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
-            foreach ( $match[1] as $value ) {
-                $select = "";
-                if ( $value == $environment["parameter"][1] ) {
-                    $select = ' selected="true"';
-                    $ausgaben["groupid"] = "";
-                }
-                $dataloop["group_dropdown"][$value] = array(
-                    "id" => $value,
-                    "select" => $select,
-                );
-            }
-        }
-        ksort($dataloop["group_dropdown"]);
+        $dataloop["group_dropdown"] = compilation_list($environment["parameter"][1]);
+        reset($dataloop["group_dropdown"]);
+        $ausgaben["new_comp"] = key($dataloop["group_dropdown"]) + 1;
         // +++
         // funktions bereich fuer erweiterungen
 
@@ -217,13 +201,14 @@
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_edit) #(error_edit)<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
-            $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
+            $ausgaben["inaccessible"] .= "# (saved_groups) #(saved_groups)<br />";
+            $ausgaben["inaccessible"] .= "# (new_comp) #(new_comp)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
 
         // wohin schicken
-        if ( strstr($_SERVER["HTTP_REFERER"],"/compilation") ){
+        if ( strstr($_SERVER["HTTP_REFERER"],"/compilation") || strstr($_SERVER["HTTP_REFERER"],"/list") ){
             $_SESSION["referer"] = $_SERVER["HTTP_REFERER"];
         }
 
@@ -248,8 +233,7 @@
                 // funktions bereich fuer erweiterungen
                 // ***
 
-                $groupid = $_POST["groupid"];
-                if ( $_POST["all_groups"] != "" ) $groupid = $_POST["all_groups"];
+                $groupid = $_POST["all_groups"];
 
                 foreach ( $form_values as $key=>$value ) {
                     // testen, ob die p-nummer schon vorhanden ist

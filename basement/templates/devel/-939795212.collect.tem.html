@@ -34,13 +34,13 @@
     <fieldset>
         <label style="clear:left;">#(ffhit)</label>
         <select name="all_groups">
-            <option value="">Bereits gespeicherte Gruppen</option>
-            <!--##loop-group_dropdown-->
-            <option value="!{id}"!{select}>!{id}</option>
-            <!--##cont-->
+            <option value="!#ausgaben_new_comp">#(new_comp) (ID: !#ausgaben_new_comp)</option>
+            <optgroup label="#(saved_groups)">
+                <!--##loop-group_dropdown-->
+                <option value="!{id}"!{select}># !{id}: !{name_short}</option>
+                <!--##cont-->
+            </optgroup>
         </select>
-        <label style="clear:left;">#(ffhit)</label>
-        <input type="text" value="!#ausgaben_groupid" name="groupid" class="" />
     </fieldset>
     <fieldset class="float">
         <ul style="margin-left:20px;">
