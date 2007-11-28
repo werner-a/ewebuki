@@ -25,11 +25,11 @@
         <label style="clear:left;">#(ffname)
             !#element_ffname
         </label>
-        <label style="clear:left;">#(fdesc)
-            !#element_fdesc
-        </label>
         <label style="clear:left;">#(funder)
             !#element_funder
+        </label>
+        <label style="clear:left;">#(fdesc)
+            !#element_fdesc
         </label>
         <label style="clear:left;">#(fhit)
             !#element_fhit
@@ -59,13 +59,16 @@
         <div class="clearer">&nbsp;</div>
     </fieldset>
     <!--##hide-zip-->
-    <p>#(zip)</p>
+    #(zip)
     <div class="clearer">&nbsp;</div>
-    <ul>
-        <!--##loop-zip-->
-        <li>!{file}</li>
-        <!--##cont-->
-    </ul>
+    <fieldset class="cbra">
+        <ul>
+            <!--##loop-zip-->
+            <li>!{file}</li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
+    <h2>#(zip_stdval)</h2>
     <fieldset class="float">
         <label class="small">
             Beschreibung<textarea class="" name="zip_fdesc" rows="" cols="40"></textarea>

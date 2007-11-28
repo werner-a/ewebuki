@@ -71,6 +71,14 @@
             $dataloop["upload"][$i]["name"] = $name.$i;
         }
 
+        $ausgaben["filesize"] = sprintf("%0.1f",($cfg["filesize"]/1000000))." MB";
+        $ausgaben["filetyp"] = "";
+        ksort($cfg["filetyp"]);
+        foreach ( $cfg["filetyp"] as $key=>$value ) {
+            if ( $ausgaben["filetyp"] != "" ) $ausgaben["filetyp"] .= ", ";
+            $ausgaben["filetyp"] .= $key;
+        }
+
         // +++
         // page basics
 
