@@ -181,7 +181,7 @@
             }
 
             // cms edit link einblenden
-            if ( $specialvars["editlock"] == False ) {
+            if ( $specialvars["editlock"] == False && $tname != "auth" ) {
                 // erlaubt wenn content_right nicht gesetzt und cms_edit = -1
 
 
@@ -191,7 +191,7 @@
                     }
                 }
 
-                if ( ( $specialvars["new_rights"] == True && array_key_exists("standard",$RightConcept) ) || 
+                if ( ( $specialvars["new_rights"] == True && array_key_exists("standard",$RightConcept) ) ||
 
                     ( $rechte["cms_edit"] == -1 && ( $specialvars["security"]["enable"] != -1 ) ||
                   // erlaubt wenn content_right gesetzt katzugriff und nur im
