@@ -30,7 +30,7 @@ aufgrund der anpassungen am leveled bzw. usered wird das feld rid nicht mehr
 benoetigt, ein neuer index auf uid, lid ersetzt dessen funktion.
 
 ausserdem benoetigt der zukuenftige grouped zwei neue tabellen.
-fuer das zukuenftige rechte-konzept wurden zwei weitere tabellen erstellt
+fuer das zukuenftige rechte-konzept wurden drei weitere tabellen erstellt
 
 sql:
 
@@ -66,6 +66,12 @@ CREATE TABLE `auth_priv` (
   `priv` varchar(20) NOT NULL,
   PRIMARY KEY  (`pid`)
 ) ENGINE=MyISAM;
+
+CREATE TABLE `auth_role` (
+  `rid` int(11) NOT NULL default '0',
+  `pid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`rid`,`pid`)
+) ENGINE=MyISAM
 
 --- 12. November 2007
 
