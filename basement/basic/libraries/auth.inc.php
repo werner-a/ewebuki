@@ -247,7 +247,6 @@
             foreach( $array as $value) {
                 if ( $rechte[$value] == -1 ) return "on";
             }
-            print_r($cfg["menu"][$funktion]);
         }
 
         // ed links
