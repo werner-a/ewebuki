@@ -110,7 +110,7 @@
              if ( $specialvars["new_rights"] == True ) { 	 
                  $sql = "SELECT tname,auth_priv.priv FROM auth_content 	 
                          INNER JOIN auth_member ON (auth_content.gid=auth_member.gid ) 	 
-                         INNER JOIN auth_role ON ( auth_role.rid=auth_member.gid ) 	 
+                         INNER JOIN auth_role ON ( auth_role.pid=auth_content.pid ) 	 
                          INNER JOIN auth_priv ON ( auth_priv.pid=auth_role.pid ) 	 
                          WHERE auth_member.uid=".$AUTH[$cfg["db"]["user"]["id"]]; 	 
                  $result = $db -> query($sql); 	 
