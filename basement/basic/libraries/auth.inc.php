@@ -243,14 +243,12 @@
             global $cfg,$rechte;
             $url = dirname($url);
             $funktion = basename($url);
-            if ( $required != "" ) {
-                if ( !is_array($required) ){
-                    $array = array($required);
-                }
-            } else {
-                $required = explode(";",$cfg["menu"][$funktion][1]);
+            if ( $required == "" ) {
+                $required = $cfg["menu"][$funktion][1];
             }
-            foreach( $required as $value) {
+#echo $required;
+            $array = explode(";",$required);
+            foreach( $array as $value) {
                 if ( $rechte[$value] == -1 ) return True;
             }
         }
