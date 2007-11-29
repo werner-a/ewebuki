@@ -239,18 +239,18 @@
         if ( substr( $path, -1 ) != '/') $path = $path."/";
         $hidedata["authInPlace"]["newlink"] = $path.basename($pathvars["requested"],".html")."/new.html";
 
-        function priv_check_old ($url,$array=""){
+        function priv_check_old ($url,$required=""){
             global $cfg,$rechte;
             $url = dirname($url);
             $funktion = basename($url);
-            if ( $array != "" ) {
-                if ( !is_array($array) ){
-                    $array = array($array);
+            if ( $required != "" ) {
+                if ( !is_array($required) ){
+                    $array = array($required);
                 }
             } else {
-                $array = explode(";",$cfg["menu"][$funktion][1]);
+                $required = explode(";",$cfg["menu"][$funktion][1]);
             }
-            foreach( $array as $value) {
+            foreach( $required as $value) {
                 if ( $rechte[$value] == -1 ) return True;
             }
         }
