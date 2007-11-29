@@ -54,7 +54,7 @@
                         $hit = True;
                     }
                 }
-                if ( !$hit && $url != "/" ) {
+                if ( $url != "/" ) {
                     $url = dirname($url);
                     priv_check_path($url,$required,$hit);
                 }
