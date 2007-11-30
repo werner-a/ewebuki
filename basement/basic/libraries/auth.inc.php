@@ -110,7 +110,7 @@
              if ( $specialvars["new_rights"] == True ) { 	 
                  $sql = "SELECT tname,auth_priv.priv FROM auth_content 	 
                          INNER JOIN auth_member ON (auth_content.gid=auth_member.gid ) 	 
-                         INNER JOIN auth_role ON ( auth_role.pid=auth_content.pid ) 	 
+                         INNER JOIN auth_role ON ( auth_role.rid=auth_content.pid ) 	 
                          INNER JOIN auth_priv ON ( auth_priv.pid=auth_role.pid ) 	 
                          WHERE auth_member.uid=".$AUTH[$cfg["db"]["user"]["id"]]; 	 
                  $result = $db -> query($sql); 	 
@@ -234,23 +234,24 @@
         $hidedata["authArea"]["message"] = "#(vorher) \"".$_SESSION["username"]."\" #(nachher)";
         $hidedata["authLogout"]["nop"] = "";
 
-        // in place functions
-        $path = dirname($pathvars["requested"]);
-        if ( substr( $path, -1 ) != '/') $path = $path."/";
-        $hidedata["authInPlace"]["newlink"] = $path.basename($pathvars["requested"],".html")."/new.html";
-
-        function priv_check_old ($url,$required=""){
+        function priv_check_old ($url="",$required=""){
             global $cfg,$rechte;
-            $url = dirname($url);
-            $funktion = basename($url);
             if ( $required == "" ) {
+                $url = dirname($url);
+                $funktion = basename($url);
                 $required = $cfg["menu"][$funktion][1];
             }
-#echo $required;
             $array = explode(";",$required);
             foreach( $array as $value) {
                 if ( $rechte[$value] == -1 ) return True;
             }
+        }
+
+        // in place functions
+        if ( priv_check_old("","cms_admin") == True  || priv_check($environment["ebene"]."/".$environment["kategorie"],"cms_edit") ) {;
+            $path = dirname($pathvars["requested"]);
+            if ( substr( $path, -1 ) != '/') $path = $path."/";
+            $hidedata["authInPlace"]["newlink"] = $path.basename($pathvars["requested"],".html")."/new.html";
         }
 
         // ed links
