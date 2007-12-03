@@ -64,7 +64,7 @@
 
         $sql = "SELECT *
                   FROM ".$cfg["db"]["file"]["entries"]."
-                  JOIN ".$cfg["db"]["user"]["entries"]."
+             LEFT JOIN ".$cfg["db"]["user"]["entries"]."
                     ON (".$cfg["db"]["file"]["user"]."=".$cfg["db"]["user"]["key"].")
                  WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
