@@ -81,6 +81,9 @@
                 $_SESSION["compilation_search"] = $_GET["search"];
             }
         }
+        if ( $environment["parameter"][2] == "sel" && count($_SESSION["compilation_memo"]) == 0 ) {
+            header("Location: ".$cfg["basis"]."/compilation,".$environment["parameter"][1].".html");
+        }
         if ( isset($_SESSION["compilation_search"]) || $environment["parameter"][2] == "sel" ){
             function groups_filter ($var) {
                 if ( stristr($var["name"],$_SESSION["compilation_search"])
@@ -197,6 +200,7 @@
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
+            $ausgaben["inaccessible"] .= "g (cmslink) g(cmslink)<br />";
             $ausgaben["inaccessible"] .= "# (img_plural) #(img_plural)<br />";
             $ausgaben["inaccessible"] .= "# (img_sing) #(img_sing)<br />";
 

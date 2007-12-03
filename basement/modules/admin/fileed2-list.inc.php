@@ -307,7 +307,7 @@
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
             $ausgaben["inaccessible"] .= "# (error2) #(error2)<br />";
 
-            $ausgaben["inaccessible"] .= "# (cmslink) #(cmslink)<br />";
+            $ausgaben["inaccessible"] .= "g (cmslink) g(cmslink)<br />";
             $ausgaben["inaccessible"] .= "# (fileedit) #(fileedit)<br />";
             $ausgaben["inaccessible"] .= "# (filedelete) #(filedelete)<br />";
 
