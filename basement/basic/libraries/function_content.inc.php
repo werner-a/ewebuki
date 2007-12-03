@@ -91,7 +91,7 @@
                        AND lang='".$environment["language"]."'
                        AND label='$label'
                   ORDER BY version DESC
-                     LIMIT 1";
+                     LIMIT 0,1";
             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result  = $db -> query($sql);
             $row = $db -> fetch_row($result);
@@ -107,7 +107,7 @@
                            AND lang='".$specialvars["default_language"]."'
                            AND label='$label'
                       ORDER BY version DESC
-                         LIMIT 1";
+                         LIMIT 0,1";
                 $result  = $db -> query($sql);
                 $row = $db -> fetch_row($result);
             }

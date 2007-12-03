@@ -78,7 +78,7 @@
                        AND label ='".$environment["parameter"][3]."'
                        AND tname ='".$environment["parameter"][2]."'
                      ORDER BY version DESC
-                     LIMIT 1";
+                     LIMIT 0,1";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             #$data = $db -> fetch_array($result, $nop);
@@ -412,7 +412,7 @@
                        AND lang='".$environment["language"]."'
                        AND label='".$environment["parameter"][3]."'
                   ORDER BY version DESC
-                     LIMIT 1";
+                     LIMIT 0,1";
             $result = $db -> query($sql);
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $data = $db -> fetch_array($result, $nop);
