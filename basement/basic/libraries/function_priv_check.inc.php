@@ -50,8 +50,11 @@
         if ( !function_exists(priv_check_path) ) {
             function priv_check_path($url,$required,&$hit) {
                 if ( is_array($_SESSION["content"] ) ){
-                    if ( strpos($_SESSION["content"][$url],$required) !== False ) {
-                        $hit = True;
+                    $array = explode(";",$required);
+                    foreach ( $array as $value ) {
+                        if ( strpos($_SESSION["content"][$url],$value) !== False ) {
+                            $hit = True;
+                        }
                     }
                 }
                 if ( $url != "/" ) {
