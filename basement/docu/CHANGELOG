@@ -19,10 +19,13 @@ UPDATE `site_text` SET `tname` = 'auth'
 WHERE `lang` = 'de' AND `tname` LIKE 'auth%';
 
 INSERT INTO `site_text`
-( `lang` , `label` , `crc32` , `tname` , `ebene` , `kategorie` , `html` , `content` )
+(`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`,
+`changed`, `bysurname`, `byforename`, `byemail`, `byalias`) 
 VALUES
-( 'de', 'secret', '-1', 'auth', '', 'auth', '0', 'Hintereingang');
-
+( 'de', 'secret', 'auth', '', 'auth', '-1', 'Hintereingang', 
+'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki'),
+( 'de', 'grouped', 'auth', '', 'auth', '-1', 'Gruppen-Editor', 
+'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 
 --- 20. November 2007
 
