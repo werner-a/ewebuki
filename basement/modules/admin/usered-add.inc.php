@@ -43,8 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],"admin") ) ||
-        priv_check_old("",$cfg["right") ) {
+    if ( $cfg["right"] == "" ||
+        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+        priv_check_old("",$cfg["right"]) ) {
 
         // page basics
         // ***

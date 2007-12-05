@@ -45,7 +45,8 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+    if ( $cfg["right"] == "" ||
+        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
         priv_check_old("",$cfg["right"]) ) {
 
         // funktions bereich
