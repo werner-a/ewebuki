@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    #if ( $environment["parameter"][1] == "add" && $rechte[$cfg["right"]] == -1 ) {
-    if ( $rechte[$cfg["right"]] == -1 ) {
+    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+        priv_check_old("",$cfg["right"]) ) {
         // page basics
         // ***
         #if ( count($HTTP_POST_VARS) == 0 ) {

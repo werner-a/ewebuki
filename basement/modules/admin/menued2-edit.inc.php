@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#    } elseif ( $environment["parameter"][1] == "edit" && $rechte[$cfg["right"]] == -1 ) {
-    if ( $rechte[$cfg["right"]] == -1 ) {
+    if ( priv_check(make_ebene($environment["parameter"][1]),$cfg["right"]) ||
+        ( function_exists(priv_check_old) && priv_check_old("",$cfg["right"])) ) {
 
         // page basics
         // ***

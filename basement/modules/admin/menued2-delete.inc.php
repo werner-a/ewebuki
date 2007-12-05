@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    #} elseif ( $environment["parameter"][1] == "delete" && $rechte[$cfg["right"]] == -1 ) {
-    if ( $rechte[$cfg["right"]] == -1 ) {
+    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+        priv_check_old("",$cfg["right"]) ) {
 
         // erst mal kucken ob leoschen eine gute idee ist?
         // ***

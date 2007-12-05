@@ -73,7 +73,7 @@
     }
 
     // private function include loader
-    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
+    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["real"]."-functions.inc.php";
 
     // shared function include loader
     if ( is_array($cfg["function"][$environment["kategorie"].",shared"]) ) {
@@ -91,9 +91,9 @@
 
     // magic include loader
     if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
+        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["real"]."-".$environment["kategorie"].".inc.php";
     } else {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
+        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["real"]."-list.inc.php";
     }
 
     // globale db auswaehlen

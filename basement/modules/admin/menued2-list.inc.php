@@ -43,7 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == -1 || $rechte[$cfg["right_admin"]] == -1 ) {
+    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+        priv_check_old("",$cfg["right"]) ) {
 
         // nur zum testen
         if ( $rechte[$cfg["right_admin"]] == -1 ) {

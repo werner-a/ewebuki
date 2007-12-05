@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    #} elseif ( $environment["parameter"][1] == "move" && $rechte[$cfg["right"]] == -1 ) {
-    if ( $rechte[$cfg["right"]] == -1 ) {
+    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+        priv_check_old("",$cfg["right"]) ) {
 
         $hidedata["move"]["on"] = -1;
 

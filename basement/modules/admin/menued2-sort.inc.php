@@ -66,7 +66,7 @@
 
         // ob up, down, oder all renumber funktion aufrufen
         renumber($cfg["db"]["menu"]["entries"], $cfg["db"]["lang"]["entries"], $environment["parameter"][3], $all);
-        header("Location: ".$cfg["basis"]."/list.html");
+        header("Location: ".$cfg["basis"]."/list,".$environment["parameter"][1].".html");
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

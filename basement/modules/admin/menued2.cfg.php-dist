@@ -47,7 +47,8 @@
 
     $cfg = array(
            "subdir" => "admin",
-             "name" => "menued2",
+             "name" => "menued",
+             "real" => "menued2",
             "basis" => $pathvars["virtual"]."/admin/menued",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
            "design" => "modern",
