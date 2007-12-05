@@ -82,6 +82,8 @@
     $specialvars["security"]["enable"] = 0; // spezial recht auf content bearbeitung
     $specialvars["security"]["nochk"] = array("auth.logout","index","auth"); // templates die nur admin aendern darf
     $specialvars["security"]["overwrite"] = "cms_admin"; // wer ist content admin
+    #$specialvars["security"]["new"] = -1;
+    #$specialvars["security"]["content"] = "edit;publish";
 
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.
