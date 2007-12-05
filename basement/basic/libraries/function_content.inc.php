@@ -183,8 +183,8 @@
             // cms edit link einblenden
             $check = "";
             if ( $specialvars["editlock"] == False && $tname != "auth" ) {
-                if ( $specialvars["new_rights"] == -1 ) {
-                    $check = priv_check($environment["ebene"]."/".$environment["kategorie"],"cms_edit");
+                if ( $specialvars["security"]["new"] == -1 ) {
+                    $check = priv_check($environment["ebene"]."/".$environment["kategorie"],$specialvars["security"]["content"]);
                 } elseif ( $specialvars["security"]["enable"] == -1) {
                     if ( $katzugriff == -1 && $dbzugriff == -1 ) $check = True;
                 } else {

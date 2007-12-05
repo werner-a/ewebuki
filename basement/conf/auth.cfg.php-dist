@@ -95,6 +95,11 @@
                   "bloged" => array("list","cms_edit"),
              # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
+            "inplace" => array(
+                 "new" => "add",
+                 #"delete" => array("add"),
+                 #"move" => array("add")
+                       ),
     );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
