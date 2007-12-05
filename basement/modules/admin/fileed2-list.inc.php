@@ -282,15 +282,7 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
-            if ( $_GET["error"] == 1 ) {
-                $ausgaben["form_error"] = "#(error1)";
-            } else {
-                $ausgaben["form_error"] = "#(error2)";
-            }
-        } else {
-            $ausgaben["form_error"] = "";
-        }
+        $ausgaben["form_error"] = "";
 
         // navigation erstellen
         $ausgaben["link_new"] = $cfg["basis"]."/add.html";
@@ -306,20 +298,18 @@
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
-            $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
-            $ausgaben["inaccessible"] .= "# (error2) #(error2)<br />";
-
             $ausgaben["inaccessible"] .= "g (cmslink) g(cmslink)<br />";
             $ausgaben["inaccessible"] .= "# (fileedit) #(fileedit)<br />";
+            $ausgaben["inaccessible"] .= "# (filecollect) #(filecollect)<br />";
             $ausgaben["inaccessible"] .= "# (filedelete) #(filedelete)<br />";
-
             $ausgaben["inaccessible"] .= "# (answera) #(answera)<br />";
             $ausgaben["inaccessible"] .= "# (answerb) #(answerb)<br />";
             $ausgaben["inaccessible"] .= "# (answerc_no) #(answerc_no)<br />";
             $ausgaben["inaccessible"] .= "# (answerc_yes) #(answerc_yes)<br />";
-
             $ausgaben["inaccessible"] .= "# (prev) #(next)<br />";
             $ausgaben["inaccessible"] .= "# (next) #(prev)<br />";
+            $ausgaben["inaccessible"] .= "# (images) #(images)<br />";
+            $ausgaben["inaccessible"] .= "# (other) #(other)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }

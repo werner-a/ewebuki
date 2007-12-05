@@ -149,7 +149,10 @@
             }
             if ( $value["id"] == $environment["parameter"][1] ){
                 $aktuell = $environment["parameter"][1];
-                $ausgaben["compilation"] = "#".$value["id"].": ".$value["name"];
+                $hidedata["compilation"]["title"] = "#".$value["id"].": ".$value["name_short"];
+                if ( $value["name"] != $value["name_short"] ) {
+                    $hidedata["long_name"]["title"] = "#".$value["id"].": ".$value["name"];
+                }
             }
             if ( $aktuell == "" ) {
                 $zurueck = $value["id"];
@@ -180,7 +183,7 @@
                 }
                 uasort($dataloop["list"],"pics_sort");
             }
-            $hidedata["compilation"]["pic_count"] = count($dataloop["list"]);
+            $hidedata["compilation"]["pic_count"] = count($dataloop["list_images"]) + count($dataloop["list_other"]);
         } else {
             unset($hidedata["list_plain"]);
             unset($hidedata["list_ajax"]);
@@ -205,6 +208,7 @@
             $ausgaben["inaccessible"] .= "g (cmslink) g(cmslink)<br />";
             $ausgaben["inaccessible"] .= "# (img_plural) #(img_plural)<br />";
             $ausgaben["inaccessible"] .= "# (img_sing) #(img_sing)<br />";
+            $ausgaben["inaccessible"] .= "# (all_names) #(all_names)<br />";
 
             $ausgaben["inaccessible"] .= "# (answera) #(answera)<br />";
             $ausgaben["inaccessible"] .= "# (answerb) #(answerb)<br />";
