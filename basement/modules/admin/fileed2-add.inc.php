@@ -43,7 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["right"] == "" ||
+        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+        priv_check_old("",$cfg["right"]) ) {
 
         // auf session losgehen, falls zip bearbeitet wurde
         if ( count($_SESSION["zip_extracted"]) == 0 ) unset($_SESSION["zip_extracted"]);
