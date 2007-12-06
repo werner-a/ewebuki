@@ -55,7 +55,7 @@
  "design_available" => array("modern","classic"),
          "function" => array(
               "list,shared" => array("menutree"),
-                      "list"=> array("locate"),
+                      "list"=> array("locate","make_ebene"),
                       "add" => array(""),
                      "edit" => array("make_ebene", "update_tname"),
                    "delete" => array("make_ebene"),
@@ -102,6 +102,16 @@
                          "tnamekey" => "stname"
                                ),
                        ),
+            "modify"=> array(
+                "sort"      => array("","#(button_desc_sort)","edit"),
+                "jump"      => array("", "#(button_desc_jump)","edit"),
+                "add"       => array("", "#(button_desc_add)", "add"),
+                "edit"      => array("", "#(button_desc_edit)", "edit"),
+                "delete"    => array("", "#(button_desc_delete)", "admin"),
+                "up"        => array("sort,", "#(button_desc_up)", "admin"),
+                "down"      => array("sort,", "#(button_desc_down)", "admin"),
+                "move"      => array("", "#(button_desc_move)", "admin"),
+                            ),
             "fqdn0"         => "www",
             "right_admin"   => "cms_admin",
             "right"         => "cms_edit",

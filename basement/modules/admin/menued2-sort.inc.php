@@ -43,7 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $environment["kategorie"] == "sort"  && $rechte[$cfg["right"]] == -1 ) {
+    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
+        priv_check_old("",$cfg["right"]) ) {
 
         if ( $environment["parameter"][1] == "up" ) {
             $sql = "UPDATE ".$cfg["db"]["menu"]["entries"]."
@@ -66,7 +67,7 @@
 
         // ob up, down, oder all renumber funktion aufrufen
         renumber($cfg["db"]["menu"]["entries"], $cfg["db"]["lang"]["entries"], $environment["parameter"][3], $all);
-        header("Location: ".$cfg["basis"]."/list,".$environment["parameter"][1].".html");
+        header("Location: ".$cfg["basis"]."/list.html");
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

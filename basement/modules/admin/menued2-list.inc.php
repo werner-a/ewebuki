@@ -46,29 +46,13 @@
     if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
         priv_check_old("",$cfg["right"]) ) {
 
-        // nur zum testen
-        if ( $rechte[$cfg["right_admin"]] == -1 ) {
-            $rechte[$cfg["right"]] = -1;
-        }
-
-        $modify  = array (
-            "sort"      => array("","#(button_desc_sort)"),
-            "jump"      => array("", "#(button_desc_jump)"),
-            "add"       => array("", "#(button_desc_add)", $cfg["right"]),
-            "edit"      => array("", "#(button_desc_edit)", $cfg["right"]),
-            "delete"    => array("", "#(button_desc_delete)", $cfg["right"]),
-            "up"        => array("sort,", "#(button_desc_up)", $cfg["right"]),
-            "down"      => array("sort,", "#(button_desc_down)", $cfg["right"]),
-            "move"      => array("", "#(button_desc_move)", $cfg["right"]),
-        );
-
         // bei eingeschalteten content recht wird button hinzugefuegt
-        if ( $specialvars["security"]["enable"] == -1 ) {
-            $modify["rights"] = array("", "#(button_desc_right)", $cfg["right"]);
+        if ( $specialvars["security"]["enable"] == -1 || $specialvars["security"]["new"] == -1 ) {
+            $cfg["modify"]["rights"] = array("", "#(button_desc_right)", "admin");
         }
 
         // array umdrehen
-        $modify = array_reverse($modify);
+        $modify = array_reverse($cfg["modify"]);
 
         // variablen u. arrays definieren
         $stop["nop"] = "nop";
@@ -154,8 +138,11 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add,0.html\">g(new)</a>";
-
+        if ( priv_check(make_ebene($environment["parameter"][1]),$cfg["right"]) || priv_check_old("",$cfg["right"])) {
+            $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add,0.html\">g(new)</a>";
+        } else {
+            $ausgaben["new"] = "";
+        }
         // was anzeigen
         $mapping["main"] = crc32($environment["ebene"]).".list";
         $mapping["navi"] = "leer";

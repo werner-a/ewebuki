@@ -158,60 +158,63 @@
 
             // schaltflaechen erstellen
             if ( $aktionlinks == -1) {
-                // kategorie u. ebene herausfinden
-                $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
-                $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
-
-                // hier findet der rechte-check statt
-                if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
-                    $right = -1;
-                } else {
-                    $right = "";
+                // hier der alte rechte-check ! fällt weg !
+                if ( $specialvars["security"]["enable"] == -1 ) {
+                    // kategorie u. ebene herausfinden
+                    $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
+                    $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
+                    // hier findet der rechte-check statt
+                    if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
+                        $right = -1;
+                    } else {
+                        $right = "";
+                    }
                 }
 
-                if ( $right == -1 ) {
-                    $aktion = "";
-                    if ( is_array($modify) ) {
-                        foreach($modify as $name => $value) {
-                            // anzeige der sortierung
-                            if ( $sortinfo != "" ) {
-                                if ( $name == "sort") {
-                                    $aktion .= "<span title=\"".$value[1]."\" style=\"float:right\">(".$array["sort"].")</span>";
-                                    continue;
-                                }
-                            }
-                            // anzeige des icons zur content-seite
-                            if ( $name == "jump" ) {
-                                $aktion .= "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                $aktion = "";
+                if ( is_array($modify) ) {
+                    foreach($modify as $name => $value) {
+                        if ( !priv_check(make_ebene($array["mid"]),$value[2]) && !$rechte[$cfg["right"]] == -1 && $right != "-1") { 
+                            continue;
+                        }
+                        if ( $name == "rights" ) {
+                            if ( $specialvars["security"]["new"] == -1 ) {
+                                $aktion .= "<a href=\"".$pathvars["virtual"]."/".$cfg["subdir"]."/righted/edit,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                                 continue;
                             }
-                            if ( $name == "up" || $name == "down" ) {
-                                if ( $array["refid"] == 0 ) {
-                                    $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
-                                    $ankerlnk = "#".$array["mid"];
-                                } else {
-                                    $ankerpos = "";
-                                    $ankerlnk = "#".$ast[1];
-                                }
-                            } else {
-                                $ankerlnk = "";
-                            }
-                            // je nach recht icon anzeigen !
-                            if ( $value[2] == "" || $rechte[$value[2]] == -1 ) {
-                                if ( $name == "move" ) {
-                                    $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",0,".$array["mid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
-                                } else {
-                                    $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
-                                }
-                            } else {
-                                $aktion .= "<img src=\"".$cfg["iconpath"]."pos.png\" alt=\"\" width=\"24\" height=\"18\">";
+                        }
+                        // anzeige der sortierung
+                        if ( $sortinfo != "" ) {
+                            if ( $name == "sort") {
+                                $aktion .= "<span title=\"".$value[1]."\" style=\"float:right\">(".$array["sort"].")</span>";
+                                continue;
                             }
                         }
+                        // anzeige des icons zur content-seite
+                        if ( $name == "jump" ) {
+                            $aktion .= "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            continue;
+                        }
+                        if ( $name == "up" || $name == "down" ) {
+                            if ( $array["refid"] == 0 ) {
+                                $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
+                                $ankerlnk = "#".$array["mid"];
+                            } else {
+                                $ankerpos = "";
+                                $ankerlnk = "#".$ast[1];
+                            }
+                        } else {
+                            $ankerlnk = "";
+                        }
+                        // beim move ausnahme!
+                        if ( $name == "move" ) {
+                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",0,".$array["mid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                        } else {
+                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                        }
                     }
-                } else {
-                    $aktion = "";
                 }
-            }
+             }
 
             // wo geht der href hin?
             if ( $array["exturl"] != "" ) {
