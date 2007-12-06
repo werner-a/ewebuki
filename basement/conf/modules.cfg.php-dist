@@ -186,6 +186,13 @@
 #        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
 #    }
 
+#    // admin - develop: righted-modul for testing only !!
+#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "righted" )
+#       || ( $environment["ebene"] == "/admin/righted" ))
+#    {
+#        include $pathvars["moduleroot"]."admin/righted.cfg.php";
+#        include $pathvars["moduleroot"]."admin/righted-ctrl.inc.php";
+#    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
