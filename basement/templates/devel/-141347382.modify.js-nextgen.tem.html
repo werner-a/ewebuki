@@ -259,14 +259,21 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
     }
 
     function ebInsertsel(myField, id, art, defaultTitle, pics, thumbs) {
-        var myValue = '[SEL='
-                + id + ';'
-                + art + ';'
-                + thumbs + ';'
-                + pics + ']'
-                + prompt('Titel:', defaultTitle)
-                + '[/SEL]\n';
-        ebInsertContent(myField, myValue);
+        var myThumbs = prompt('Bilderstrecke mit Thumbnails anzeigen:', thumbs);
+        if ( myThumbs != "TRUE" ) {
+            myThumbs = "";
+        }
+        var myTitle = prompt('Titel:', defaultTitle);
+        if (myTitle) {
+            var myValue = '[SEL='
+                    + id + ';'
+                    + art + ';'
+                    + myThumbs + ';'
+                    + pics + ']'
+                    + myTitle
+                    + '[/SEL]\n';
+            ebInsertContent(myField, myValue);
+        }
     }
 
 

@@ -51,13 +51,13 @@
         // ***
 
         if ( is_numeric($environment["parameter"][2]) ){
-            if ( isset($_SESSION["compilation_memo"][$environment["parameter"][1]])
-              && in_array($environment["parameter"][2],$_SESSION["compilation_memo"][$environment["parameter"][1]]) ){
-                $key = array_search($environment["parameter"][2],$_SESSION["compilation_memo"][$environment["parameter"][1]]);
-                unset($_SESSION["compilation_memo"][$environment["parameter"][1]][$key]);
+
+            if ( $_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]] != "" ) {
+                unset($_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]]);
             } else {
-                $_SESSION["compilation_memo"][$environment["parameter"][1]][] = $environment["parameter"][2];
+                $_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]] = $environment["parameter"][2];
             }
+
             if ( count($_SESSION["compilation_memo"][$environment["parameter"][1]]) == 0 ) unset($_SESSION["compilation_memo"][$environment["parameter"][1]]);
             if ( count($_SESSION["compilation_memo"]) == 0 ) unset($_SESSION["compilation_memo"]);
             if ( isset($_GET["ajax"]) ){
@@ -68,6 +68,7 @@
             } else {
                 header("Location: ".$cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].".html");
             }
+            exit;
         }
 
         $ausgaben["compid"] = $environment["parameter"][1];
