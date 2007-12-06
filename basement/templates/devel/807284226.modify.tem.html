@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>righted.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<script type="text/javascript">
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset>
+        #(url)!#ausgaben_url
+        <div class="clearer"></div>
+    </fieldset>
+    <fieldset>
+        #(actual)<br /><br />
+        <ul>
+        <!--##loop-actual-->
+        <li><input class="icon" type="submit" name="del[!{gid},!{pid}]" value="-">&nbsp;!{group}&nbsp;!{priv}</li>
+        <div class="clearer"></div>
+        <!--##cont-->
+        </ul>
+        <div class="clearer"></div>
+    </fieldset>
+    <fieldset class="float">
+        <label>#(group)
+            <select name="group" size="10">
+            <!--##loop-group-->
+                <option value="!{value}">!{name}</option>
+            <!--##cont-->
+            </select>
+        </label>
+        <label>#(priv)
+            <select name="priv" size="10">
+            <!--##loop-priv-->
+                <option value="!{value}">!{name}</option>
+            <!--##cont-->
+            </select>
+        </label>
+        <input type="submit" name="add[]" value="#(add)" class="next"  />
+    </fieldset>
+    <fieldset>
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="first" />
+        <div class="clearer"></div>
+    </fieldset>
+</form>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<!--##end-->
+</body>
+</html>
