@@ -82,6 +82,18 @@ a img{
     padding:0;
 }
 
+#eEd .icon {
+    margin-top: 0px;
+/*     display: block; */
+    width: 24px;
+    height: 24px;
+    border: 1px solid #ddd;
+/*     padding: .5ex 1ex; */
+    background-color: #eee;
+    text-decoration: none;
+    cursor: default;
+}
+
 /* ---------------------*/
 
 
