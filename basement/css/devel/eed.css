@@ -304,25 +304,21 @@ li.thumbs a.pic {
 /* compilation */
 .selection_teaser {
     background:#eee;
-    font-size:0.9em;
     margin:5px 0;
-    padding:3px;
+    padding:0 3px;
 }
-
-.selection_teaser ul {
-    margin:5px 5px 0 5px;
-}
-
-.selection_teaser li{
+.selection_teaser div {
     background:#fff;
-    float: left;
-    margin: 0 5px 5px 0;
 }
-
-.selection_teaser li a {
-    display: block;
-    height: 96px;
-    width: 96px;
+.selection_teaser li {
+    border: 1px solid #eee;
+    margin: 2px;
+    padding:0;
+    -moz-border-radius: 0;
+}
+.selection_teaser span {
+    clear:both;
+    font-size:0.9em;
 }
 
 /* ---------------------*/
@@ -417,6 +413,7 @@ li.thumbs a.pic {
         position:absolute;
         left:-99em;
         margin-top:1.5em;
+        max-width:300px;
         padding:1em;
         text-decoration:none;
     }

@@ -9,13 +9,22 @@
 <body>
 <!--##begin-->
 <!--$Id: viewer.tem.html 938 2007-10-31 13:26:17Z chaot $-->
-<h1>#(ueberschrift)</h1>
-<p><a href="!#ausgaben_referer">g(back)</a></p>
+<!-- <h1>#(ueberschrift)</h1> -->
+<!--##hide-nogallery-->
+<h1>!#ausgaben_beschriftung</h1>
+<!--##show-->
+<!--##hide-gallery-->
+<h1>!{title}</h1>
+<h2>!#ausgaben_beschriftung</h2>
+<!--##show-->
 <p>#(inhalt)</p>
 
-<!--##hide-navi-->
-<p><a href="!#ausgaben_prev">g(prev)</a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_next">g(next)</a></p>
-<!--##show-->
+<p>
+    <a href="!#ausgaben_referer">g(back)</a>
+    <!--##hide-navi-->
+    <a href="!#ausgaben_prev"><img src="../../images/default/left.png" width="24" height="18" alt="g(prev)" title="g(prev)" /></a> g(picture) !#ausgaben_aktuell g(of) !#ausgaben_gesamt <a href="!#ausgaben_next"><img src="../../images/default/right.png" width="24" height="18" alt="g(next)" title="g(next)" /></a>
+    <!--##show-->
+</p>
 
 <p><a href="!#ausgaben_href"><img src="!#ausgaben_imgurl" title="!#ausgaben_beschriftung" alt="!#ausgaben_beschriftung" /></a></p>
 <p>!#ausgaben_beschreibung</p>

@@ -120,6 +120,28 @@
         // selection mode - part2
         if ( $environment["parameter"][3] != "" ) {
 
+            // galerie-titel suchen
+            $array = explode("/",$environment["ebene"]);
+            $kategorie = array_pop($array);
+            $ebene = implode("/",$array);
+            if ( $ebene == "" ) {
+                $tname = $kategorie;
+            } else {
+                $tname = crc32($ebene).".".$kategorie;
+            }
+            $sql = "SELECT *
+                      FROM site_text
+                     WHERE tname='".$tname."'
+                       AND lang='".$environment["language"]."' AND content LIKE '%[SEL=".$environment["parameter"][3].";%'
+                  ORDER BY version DESC LIMIT 0,1";
+            $result = $db -> query($sql);
+            $galery = "";
+            while ( $data = $db -> fetch_array($result,1) ) {
+                preg_match("/\[SEL=".$environment["parameter"][3].";.*\](.*)\[\/SEL\]/Ui",$data["content"],$match);
+                $galery[] = $match[1];
+            }
+            if ( count($galery) > 0 ) $hidedata["gallery"]["title"] = implode(", ",$galery);
+
             // thumbs sortieren
             foreach ($dataloop["thumbs"] as $key => $row) {
                $sort[$key]  = $row['sort'];
@@ -160,6 +182,7 @@
             // picture link
             $ausgaben["href"] = $ausgaben["next"];
         } else {
+            $hidedata["nogallery"] = array();
             // picture link
             $ausgaben["href"] = $ausgaben["referer"];
         }

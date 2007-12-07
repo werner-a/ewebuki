@@ -730,14 +730,15 @@
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
                             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,größe,bild,selektion,thumbs
 
-                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<ul>\n";
-                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n    <a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
-                            if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n";
+                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div class=\"selection_teaser\">\n<b>##title##</b>\n<div>\n<ul>\n";
+                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n<a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
+                            if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n</div>\n<span>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
                             $sql = "SELECT *
                                         FROM site_file
                                         WHERE fhit like '%#p".$tag_param[0]."%'";
                             $result = $db -> query($sql);
                             $files = array();
+                            $sort = array();
                             while ( $data = $db -> fetch_array($result,1) ) {
                                 preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
                                 $files[] = array(
@@ -754,7 +755,7 @@
                                 $changed = str_replace( "#", $files[0]["fid"], $link);
                                 $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
                             } elseif ( $tag_param[3] == "a" ) {
-                                $sel = $defaults["tag"]["sel"];
+                                $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
                                 foreach ( $files as $row ) {
                                     $tn = $pathvars["filebase"]["webdir"]
                                          .$pathvars["filebase"]["pic"]["root"]
@@ -767,9 +768,9 @@
                                     $r = array($changed, $tn);
                                     $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
-                                $sel .= $defaults["tag"]["/sel"];
+                                $sel .= str_replace("##count##",count($files),$defaults["tag"]["/sel"]);
                             } else {
-                                $sel = $defaults["tag"]["sel"];
+                                $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
                                 foreach ( $files as $row ) {
                                     if ( !in_array( $row["fid"], $tag_extra ) ) continue;
                                     $tn = $pathvars["filebase"]["webdir"]
@@ -783,7 +784,7 @@
                                     $r = array($changed, $tn);
                                     $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
-                                $sel .= $defaults["tag"]["/sel"];
+                                $sel .= str_replace("##count##",count($files),$defaults["tag"]["/sel"]);
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         }
