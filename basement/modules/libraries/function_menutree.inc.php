@@ -195,22 +195,12 @@
                             $aktion .= "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                             continue;
                         }
-                        if ( $name == "up" || $name == "down" ) {
-                            if ( $array["refid"] == 0 ) {
-                                $ankerpos = "<a name=\"".$array["mid"]."\"></a>";
-                                $ankerlnk = "#".$array["mid"];
-                            } else {
-                                $ankerpos = "";
-                                $ankerlnk = "#".$ast[1];
-                            }
-                        } else {
-                            $ankerlnk = "";
-                        }
+
                         // beim move ausnahme!
                         if ( $name == "move" ) {
-                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",0,".$array["mid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",0,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                         } else {
-                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                         }
                     }
                 }
@@ -254,7 +244,7 @@
 
             // listenpunkt schreiben
             if ( $buffer[$refid]["display"] != "none" ) {
-                $tree .= "<li>".$aktion.$ankerpos.$radiobutton.$href;
+                $tree .= "<li>".$aktion.$radiobutton.$href;
             }
 
             // funktionsaufruf
