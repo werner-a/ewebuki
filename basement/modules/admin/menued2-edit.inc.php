@@ -165,7 +165,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
         $ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
         // hidden values
@@ -198,7 +198,7 @@
         #$fixed_entry = str_replace(" ", "", $HTTP_POST_VARS["entry"]);
         $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][3] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["add"] != ""
                 || $HTTP_POST_VARS["delete"] != "" ) ) {
@@ -365,7 +365,7 @@
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["basis"]."/list,".$environment["parameter"][2].".html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
