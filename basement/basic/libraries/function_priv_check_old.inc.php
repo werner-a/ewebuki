@@ -48,11 +48,11 @@
     // wird kein required uebergeben wird das array in der auth.cfg anhand der url benutzt um das jeweilige recht zu ueberpruefen
 
     function priv_check_old ($url="",$required=""){
-        global $cfg,$rechte;
+        global $cfg, $rechte;
         if ( $required == "" ) {
             $url = dirname($url);
             $funktion = basename($url);
-            $required = $cfg["menu"][$funktion][1];
+            $required = $cfg["auth"]["menu"][$funktion][1];
         }
         $array = explode(";",$required);
         foreach( $array as $value) {
