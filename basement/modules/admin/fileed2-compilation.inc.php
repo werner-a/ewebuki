@@ -178,11 +178,11 @@
                 ORDER BY fid";
             $result = $db -> query($sql);
             filelist($result,$environment["parameter"][1]);
-            if ( count($dataloop["list"]) > 0 ) {
+            if ( count($dataloop["list_images"]) > 0 ) {
                 function pics_sort($a, $b) {
                     return ($a["sort"] < $b["sort"]) ? -1 : 1;
                 }
-                uasort($dataloop["list"],"pics_sort");
+                uasort($dataloop["list_images"],"pics_sort");
             }
             $hidedata["compilation"]["pic_count"] = count($dataloop["list_images"]) + count($dataloop["list_other"]);
         } else {
