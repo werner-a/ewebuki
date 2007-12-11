@@ -45,7 +45,7 @@
     // content umschaltung verhindern
     $specialvars["dynlock"] = True;
 
-    $cfg = array(
+    $cfg["menued"] = array(
            "subdir" => "admin",
              "name" => "menued",
              "real" => "menued2",
@@ -114,7 +114,7 @@
                             ),
             "fqdn0"         => "www",
             "right_admin"   => "cms_admin",
-            "right"         => "cms_edit",
+            "right"         => $cfg["auth"]["menu"]["menued"][1],
 
     );
 

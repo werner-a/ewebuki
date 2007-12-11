@@ -43,13 +43,13 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
+        priv_check_old("",$cfg["menued"]["right"]) ) {
 
         // erst mal kucken ob leoschen eine gute idee ist?
         // ***
-        $sql = "SELECT ".$cfg["db"]["menu"]["key"]."
-                  FROM ".$cfg["db"]["menu"]["entries"]."
+        $sql = "SELECT ".$cfg["menued"]["db"]["menu"]["key"]."
+                  FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
                  WHERE refid='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
@@ -63,15 +63,15 @@
             $mapping["navi"] = "leer";
 
             // wohin schicken
-            header("Location: ".$cfg["basis"]."/list.html?error=1");
+            header("Location: ".$cfg["menued"]["basis"]."/list.html?error=1");
 
         } else {
 
             // menupunkt holen
             // ***
             $sql = "SELECT mid, refid, entry
-                      FROM ".$cfg["db"]["menu"]["entries"]."
-                     WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
+                     WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
             $result = $db -> query($sql);
             $array = $db -> fetch_array($result,$nop);
             $refid = $array["refid"];
@@ -84,7 +84,7 @@
             // bezeichnungen holen (alle sprachen)
             // ***
             $sql = "SELECT mlid, lang, label
-                      FROM ".$cfg["db"]["lang"]["entries"]."
+                      FROM ".$cfg["menued"]["db"]["lang"]["entries"]."
                      WHERE mid='".$environment["parameter"][1]."'";
             $result = $db -> query($sql);
             while ( $array = $db -> fetch_array($result,$nop) ) {
@@ -104,7 +104,7 @@
             if ( $ebene != "/" ) $extend = crc32($ebene).".";
             $tname = $extend.$kategorie;
             $sql = "SELECT lang, label, tname, content
-                      FROM ".$cfg["db"]["text"]["entries"]."
+                      FROM ".$cfg["menued"]["db"]["text"]["entries"]."
                      WHERE tname='".$tname."';";
             $result  = $db -> query($sql);
             while ( $array = $db -> fetch_array($result,$nop) ) {
@@ -124,8 +124,8 @@
             $ausgaben["form_error"] = "";
 
             // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-            $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+            $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/delete,".$environment["parameter"][1].".html";
+            $ausgaben["form_break"] = $cfg["menued"]["basis"]."/list.html";
 
             // hidden values
             $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"delete\" value=\"true\" class=\"hidden\"/>";
@@ -149,7 +149,7 @@
             // unzugaengliche #(marken) sichtbar machen
 
             // wohin schicken
-            # header("Location: ".$cfg["basis"]."/?.html");
+            # header("Location: ".$cfg["menued"]["basis"]."/?.html");
             // +++
             // page basics
 
@@ -162,7 +162,7 @@
                 // content loeschen
                 // ***
                 if ( $HTTP_POST_VARS["tname"] != "" ) {
-                    $sql = "DELETE FROM ".$cfg["db"]["text"]["entries"]." WHERE tname = '".$HTTP_POST_VARS["tname"]."'";
+                    $sql = "DELETE FROM ".$cfg["menued"]["db"]["text"]["entries"]." WHERE tname = '".$HTTP_POST_VARS["tname"]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(text_error)<br />");
@@ -175,7 +175,7 @@
                 if ( $HTTP_POST_VARS["mlids"] != "" && $ausgaben["form_error"] == "" ) {
                     $array = split(",",$HTTP_POST_VARS["mlids"]);
                     foreach( $array as $value) {
-                        $sql = "DELETE FROM ".$cfg["db"]["lang"]["entries"]." WHERE ".$cfg["db"]["lang"]["key"]."='".$value."';";
+                        $sql = "DELETE FROM ".$cfg["menued"]["db"]["lang"]["entries"]." WHERE ".$cfg["menued"]["db"]["lang"]["key"]."='".$value."';";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] = $db -> error("#(menu_lang_error)<br />");
@@ -189,7 +189,7 @@
                 if ( $HTTP_POST_VARS["mid"] != "" && $ausgaben["form_error"] == "" ) {
                     $array = split(",",$HTTP_POST_VARS["mid"]);
                     foreach( $array as $value) {
-                        $sql = "DELETE FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$value."';";
+                        $sql = "DELETE FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$value."';";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] = $db -> error("#(menu_error)<br />");
@@ -200,7 +200,7 @@
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/list.html");
+                    header("Location: ".$cfg["menued"]["basis"]."/list.html");
                 }
             }
             // +++

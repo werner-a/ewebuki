@@ -43,12 +43,12 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
+        priv_check_old("",$cfg["menued"]["right"]) ) {
         // page basics
         // ***
         #if ( count($HTTP_POST_VARS) == 0 ) {
-        #    $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";            $result = $db -> query($sql);
+        #    $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";            $result = $db -> query($sql);
         #    $form_values = $db -> fetch_array($result,1);
         #} else {
             $form_values = $HTTP_POST_VARS;
@@ -58,10 +58,10 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["menu"]["entries"], $form_values );
+        $element = form_elements( $cfg["menued"]["db"]["menu"]["entries"], $form_values );
 
         // form elemente erweitern
-        $element = array_merge($element, form_elements( $cfg["db"]["lang"]["entries"], $form_values ));
+        $element = array_merge($element, form_elements( $cfg["menued"]["db"]["lang"]["entries"], $form_values ));
         if ( $HTTP_POST_VARS["refid"] == "" ) {
             $value = $environment["parameter"][1];
         } else {
@@ -76,7 +76,7 @@
         /*
         // lang management form elemente begin
         // ***
-        $element_lang = form_elements( $cfg["db"]["lang"]["entries"], $HTTP_POST_VARS );
+        $element_lang = form_elements( $cfg["menued"]["db"]["lang"]["entries"], $HTTP_POST_VARS );
         $element_lang["lang"] = str_replace("lang\"","lang\" value=\"".$environment["language"]."\"",$element_lang["lang"]);
 
         $ausgaben["langtabelle"]  = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
@@ -101,8 +101,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/add,verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/add,verify.html";
+        $ausgaben["form_break"] = $cfg["menued"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -124,7 +124,7 @@
         // unzugaengliche #(marken) sichtbar machen
 
         // wohin schicken
-        # header("Location: ".$cfg["basis"]."/?.html");
+        # header("Location: ".$cfg["menued"]["basis"]."/?.html");
         // +++
         // page basics
 
@@ -143,7 +143,7 @@
             // gibt es einen solchen entry bereits?
             if ( $fixed_entry != "" ) {
                 $sql = "SELECT entry
-                        FROM ".$cfg["db"]["menu"]["entries"]."
+                        FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
                         WHERE refid = '".$HTTP_POST_VARS["refid"]."'
                         AND entry = '".$fixed_entry."'";
                 $result = $db -> query($sql);
@@ -171,7 +171,7 @@
                 $sqla .= ", entry";
                 $sqlb .= ", '".$fixed_entry."'";
 
-                $sql = "insert into ".$cfg["db"]["menu"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "insert into ".$cfg["menued"]["db"]["menu"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -184,7 +184,7 @@
                     $extenda = "extend, ";
                     $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
                 }
-                $sql = "INSERT INTO ".$cfg["db"]["lang"]["entries"]."
+                $sql = "INSERT INTO ".$cfg["menued"]["db"]["lang"]["entries"]."
                                     ( mid, lang, label, ".$extenda." exturl )
                              VALUES ( '".$lastid."',
                                       '".$HTTP_POST_VARS["lang"]."',
@@ -198,7 +198,7 @@
 
             // wohin schicken
             if ( $HTTP_POST_VARS["add"] ) {
-                $header = $cfg["basis"]."/edit,".$lastid.",verify.html";
+                $header = $cfg["menued"]["basis"]."/edit,".$lastid.",verify.html";
             } else {
                 if ( $_SESSION["REFERER"] != "" ) {
                     #$header = $_SESSION["REFERER"]."/".$fixed_entry.".html";
@@ -206,10 +206,10 @@
                     $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.".".$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
                     unset($_SESSION["referer"]);
                 } else {
-                    $sql = "SELECT refid FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."=".$lastid;
+                    $sql = "SELECT refid FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."=".$lastid;
                     $result  = $db -> query($sql);
                     $lastrefid = $db -> fetch_array($result,1); 
-                    $header = $cfg["basis"]."/list,".$lastrefid["refid"].".html";
+                    $header = $cfg["menued"]["basis"]."/list,".$lastrefid["refid"].".html";
                 }
             }
             if ( $ausgaben["form_error"] == "" ) {

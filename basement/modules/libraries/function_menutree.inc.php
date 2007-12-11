@@ -65,21 +65,21 @@
 
         }
 
-        $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
-                        ".$cfg["db"]["menu"]["entries"].".entry,
-                        ".$cfg["db"]["menu"]["entries"].".refid,
-                        ".$cfg["db"]["menu"]["entries"].".level,
-                        ".$cfg["db"]["menu"]["entries"].".sort,
-                        ".$cfg["db"]["menu"]["entries"].".hide,
-                        ".$cfg["db"]["lang"]["entries"].".lang,
-                        ".$cfg["db"]["lang"]["entries"].".label,
-                        ".$cfg["db"]["lang"]["entries"].".exturl
-                FROM  ".$cfg["db"]["menu"]["entries"]."
-            INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
-                    ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
-                WHERE (".$cfg["db"]["menu"]["entries"].".refid=".$refid.")
-                AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
-            ORDER BY  ".$cfg["db"]["menu"]["order"].";";
+        $sql = "SELECT  ".$cfg["menued"]["db"]["menu"]["entries"].".mid,
+                        ".$cfg["menued"]["db"]["menu"]["entries"].".entry,
+                        ".$cfg["menued"]["db"]["menu"]["entries"].".refid,
+                        ".$cfg["menued"]["db"]["menu"]["entries"].".level,
+                        ".$cfg["menued"]["db"]["menu"]["entries"].".sort,
+                        ".$cfg["menued"]["db"]["menu"]["entries"].".hide,
+                        ".$cfg["menued"]["db"]["lang"]["entries"].".lang,
+                        ".$cfg["menued"]["db"]["lang"]["entries"].".label,
+                        ".$cfg["menued"]["db"]["lang"]["entries"].".exturl
+                FROM  ".$cfg["menued"]["db"]["menu"]["entries"]."
+            INNER JOIN  ".$cfg["menued"]["db"]["lang"]["entries"]."
+                    ON  ".$cfg["menued"]["db"]["menu"]["entries"].".mid = ".$cfg["menued"]["db"]["lang"]["entries"].".mid
+                WHERE (".$cfg["menued"]["db"]["menu"]["entries"].".refid=".$refid.")
+                AND (".$cfg["menued"]["db"]["lang"]["entries"].".lang='".$environment["language"]."')
+            ORDER BY  ".$cfg["menued"]["db"]["menu"]["order"].";";
 
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
@@ -127,16 +127,16 @@
                         if ( $array["mid"] == $_SESSION["menued_id"] ) {
                             $ausgaben["path"] = $buffer["pfad_label"];
                             if ( $array["refid"] == 0 ) {
-                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].$move_parameter.".html\"";
+                                $hidedata["back"]["link"] = $cfg["menued"]["basis"]."/".$environment["parameter"][0].",".$array["refid"].$move_parameter.".html\"";
                             } else {
-                                $hidedata["back"]["link"] = $cfg["basis"]."/".$environment["parameter"][0].",".$array["refid"].$move_parameter.".html\"";
+                                $hidedata["back"]["link"] = $cfg["menued"]["basis"]."/".$environment["parameter"][0].",".$array["refid"].$move_parameter.".html\"";
                             }
                         }
                     }
                 }
 
                 // schauen ob unterpunkte vorhanden !
-                $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE refid=".$array["mid"];
+                $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE refid=".$array["mid"];
                 $result_in  = $db -> query($sql);
                 $count_in = $db->num_rows($result_in);
 
@@ -145,7 +145,7 @@
                     $copy = $positionArray;
                     array_shift($copy);
                     ( is_array($opentree) && in_array($array["mid"],$opentree) ) ? $sign = "-" : $sign = "+";
-                    $href = "<a class=".$class_hide." href=\"".$cfg["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_parameter.".html\">".$array["label"]."+</a>"."\n";
+                    $href = "<a class=".$class_hide." href=\"".$cfg["menued"]["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_parameter.".html\">".$array["label"]."+</a>"."\n";
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
@@ -164,7 +164,7 @@
                     $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
                     $ebene2check = substr($buffer["pfad"],strpos($buffer["pfad"],"/"));
                     // hier findet der rechte-check statt
-                    if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["right_admin"]] == -1 ) {
+                    if ( right_check("-1",$ebene2check,$kategorie2check != "") || $rechte[$cfg["menued"]["right_admin"]] == -1 ) {
                         $right = -1;
                     } else {
                         $right = "";
@@ -174,12 +174,12 @@
                 $aktion = "";
                 if ( is_array($modify) ) {
                     foreach($modify as $name => $value) {
-                        if ( !priv_check(make_ebene($array["mid"]),$value[2]) && !$rechte[$cfg["right"]] == -1 && $right != "-1") { 
+                        if ( !priv_check(make_ebene($array["mid"]),$value[2]) && !$rechte[$cfg["menued"]["right"]] == -1 && $right != "-1") { 
                             continue;
                         }
                         if ( $name == "rights" ) {
                             if ( $specialvars["security"]["new"] == -1 ) {
-                                $aktion .= "<a href=\"".$pathvars["virtual"]."/".$cfg["subdir"]."/righted/edit,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                                $aktion .= "<a href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg["menued"]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                                 continue;
                             }
                         }
@@ -192,15 +192,15 @@
                         }
                         // anzeige des icons zur content-seite
                         if ( $name == "jump" ) {
-                            $aktion .= "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            $aktion .= "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg["menued"]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                             continue;
                         }
 
                         // beim move ausnahme!
                         if ( $name == "move" ) {
-                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",0,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            $aktion .= "<a href=\"".$cfg["menued"]["basis"]."/".$value[0].$name.",0,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg["menued"]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                         } else {
-                            $aktion .= "<a href=\"".$cfg["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html\"><img style=\"float:right\" src=\"".$cfg["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            $aktion .= "<a href=\"".$cfg["menued"]["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html\"><img style=\"float:right\" src=\"".$cfg["menued"]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                         }
                     }
                 }

@@ -43,17 +43,17 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
+        priv_check_old("",$cfg["menued"]["right"]) ) {
 
         if ( $environment["parameter"][1] == "up" ) {
-            $sql = "UPDATE ".$cfg["db"]["menu"]["entries"]."
+            $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
                        SET sort=sort-11
                      WHERE mid='".$environment["parameter"][2]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $db -> query($sql);
         } elseif ( $environment["parameter"][1] == "down" ) {
-            $sql = "UPDATE ".$cfg["db"]["menu"]["entries"]."
+            $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
                        SET sort=sort+11
                      WHERE mid='".$environment["parameter"][2]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -66,8 +66,8 @@
         }
 
         // ob up, down, oder all renumber funktion aufrufen
-        renumber($cfg["db"]["menu"]["entries"], $cfg["db"]["lang"]["entries"], $environment["parameter"][3], $all);
-        header("Location: ".$cfg["basis"]."/list,".$environment["parameter"][3].",".$environment["parameter"][4].".html");
+        renumber($cfg["menued"]["db"]["menu"]["entries"], $cfg["menued"]["db"]["lang"]["entries"], $environment["parameter"][3], $all);
+        header("Location: ".$cfg["menued"]["basis"]."/list,".$environment["parameter"][3].",".$environment["parameter"][4].".html");
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -44,11 +44,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // funktion um eine sitemap zu erstellen
-    if ( in_array("locate", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("locate", $cfg["menued"]["function"][$environment["kategorie"]]) ) {
 
        function delete($id,$fd) {
             global $environment,$db,$cfg,$stop;
-            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
+            $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." where mid=".$id;
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result,1);
             if ( $_SESSION["menued_id"] == $data["mid"] ) {
@@ -61,7 +61,7 @@
 
        function locate($id) {
             global $positionArray,$db,$cfg;
-            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." where mid=".$id;
+            $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." where mid=".$id;
 
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result,1);
@@ -75,7 +75,7 @@
     }
 
     // rekursive renumber funktion
-    if ( in_array("renumber", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("renumber", $cfg["menued"]["function"][$environment["kategorie"]]) ) {
 
         function renumber($mt, $mtl, $refid, $rekursiv=0) {
             global $environment, $debugging, $db;
@@ -101,13 +101,13 @@
 
 
     // funktion um die ebene aus der refid zu erstellen
-    if ( in_array("make_ebene", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("make_ebene", $cfg["menued"]["function"][$environment["kategorie"]]) ) {
 
         function make_ebene($mid, $ebene="") {
             # call: make_ebene(refid);
             global $db, $cfg;
             $sql = "SELECT refid, entry
-                    FROM ".$cfg["db"]["menu"]["entries"]."
+                    FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
                     WHERE mid='".$mid."'";
             $result = $db -> query($sql);
             $array = $db -> fetch_array($result,$nop);
@@ -121,11 +121,11 @@
 
 
     // funktion um den content unterhalb eine eintrags zu verschieben
-    if ( in_array("update_tname", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("update_tname", $cfg["menued"]["function"][$environment["kategorie"]]) ) {
 
         function update_tname($refid, /*$new = "",*/ $suchmuster = "", $ersatz = "") {
             global $db, $cfg, $debugging, $ausgaben;
-            $sql = "SELECT mid, refid, entry FROM ".$cfg["db"]["menu"]["entries"]." WHERE refid ='".$refid."'";
+            $sql = "SELECT mid, refid, entry FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE refid ='".$refid."'";
             $result = $db -> query($sql);
             while ( $data = $db -> fetch_array($result,1) ) {
 
@@ -149,7 +149,7 @@
                 $new_tname = $extend.$data["entry"];
                 #echo $ebene.":".$new_tname."<br>";
 
-                $sql = "UPDATE ".$cfg["db"]["text"]["entries"]."
+                $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
                             SET tname = '".$new_tname."',
                                 ebene = '".$ebene."',
                                 kategorie = '".$data["entry"]."'

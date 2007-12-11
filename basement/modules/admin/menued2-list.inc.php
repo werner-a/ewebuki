@@ -43,16 +43,16 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
+        priv_check_old("",$cfg["menued"]["right"]) ) {
 
         // bei eingeschalteten content recht wird button hinzugefuegt
         if ( $specialvars["security"]["enable"] == -1 || $specialvars["security"]["new"] == -1 ) {
-            $cfg["modify"]["rights"] = array("", "#(button_desc_right)", "admin");
+            $cfg["menued"]["modify"]["rights"] = array("", "#(button_desc_right)", "admin");
         }
 
         // array umdrehen
-        $modify = array_reverse($cfg["modify"]);
+        $modify = array_reverse($cfg["menued"]["modify"]);
 
         // variablen u. arrays definieren
         $stop["nop"] = "nop";
@@ -106,13 +106,13 @@
 
         // multidesign - verwalten nur ein TEST ( ueberhaupt sinnvoll ??? )
         $ausgaben["design"] = "";
-        if ( $cfg["design"] == "" ) {
-            $design = $cfg["design_available"][0];
+        if ( $cfg["menued"]["design"] == "" ) {
+            $design = $cfg["menued"]["design_available"][0];
             if ( $_SESSION["menued_design"] != "" ) {
                 $design = $_SESSION["menued_design"];
             }
             // design - umschalter 
-            foreach ( $cfg["design_available"] as $value ) {
+            foreach ( $cfg["menued"]["design_available"] as $value ) {
                 if ( $value != $design ) {
                     if ( $_SESSION["menued_design"] == "" ) { 
                         $ausgaben["design"] = "<a href=\"".str_replace("list.","list,,,".$value.".",$pathvars["uri"])."\">".$value."</a>";
@@ -122,7 +122,7 @@
                 }
             }
         } else {
-            $design = $cfg["design"];
+            $design = $cfg["menued"]["design"];
         }
 
         $ausgaben["show_menu"] .= sitemap(0, "menued", $modify,"");
@@ -137,9 +137,9 @@
         }
 
         // navigation erstellen
-        $ausgaben["renumber"] = "<a href=\"".$cfg["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        if ( priv_check(make_ebene($environment["parameter"][1]),$cfg["right"]) || priv_check_old("",$cfg["right"])) {
-            $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add,0.html\">g(new)</a>";
+        $ausgaben["renumber"] = "<a href=\"".$cfg["menued"]["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
+        if ( priv_check(make_ebene($environment["parameter"][1]),$cfg["menued"]["right"]) || priv_check_old("",$cfg["menued"]["right"])) {
+            $ausgaben["new"] = "<a href=\"".$cfg["menued"]["basis"]."/add,0.html\">g(new)</a>";
         } else {
             $ausgaben["new"] = "";
         }

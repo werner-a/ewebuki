@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $specialvars["dynlock"] = True;
-    $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." INNER JOIN ".$cfg["db"]["lang"]["entries"]." ON (site_menu.mid=site_menu_lang.mid) WHERE site_menu.mid = ".$environment["parameter"][1];
+    $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." INNER JOIN ".$cfg["menued"]["db"]["lang"]["entries"]." ON (site_menu.mid=site_menu_lang.mid) WHERE site_menu.mid = ".$environment["parameter"][1];
     $result = $db -> query($sql);
     $data = $db -> fetch_array($result,1);
     $entry[] = $data["entry"];
@@ -52,7 +52,7 @@
 
     if ( $data["refid"] != "0" ) {
         while ( $count != "0" ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." INNER JOIN ".$cfg["db"]["lang"]["entries"]." ON (site_menu.mid=site_menu_lang.mid) WHERE site_menu.mid = ".$data["refid"];            
+            $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." INNER JOIN ".$cfg["menued"]["db"]["lang"]["entries"]." ON (site_menu.mid=site_menu_lang.mid) WHERE site_menu.mid = ".$data["refid"];            
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,1); 
             $entry[] = $data["entry"];
@@ -83,15 +83,15 @@
     $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
     // form elememte bauen
-    #$element = form_elements( $cfg["db"]["menu"]["entries"], $form_values );
+    #$element = form_elements( $cfg["menued"]["db"]["menu"]["entries"], $form_values );
 
     // was anzeigen
     $mapping["main"] = crc32($environment["ebene"]).".rights";
 
     // wohin schicken
     $ausgaben["form_error"] = "";
-    $ausgaben["form_aktion"] = $cfg["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
-    $ausgaben["form_break"] = $cfg["basis"]."/list.html";    
+    $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
+    $ausgaben["form_break"] = $cfg["menued"]["basis"]."/list.html";    
 
     // page basics
     // ***
@@ -110,7 +110,7 @@
     // +++
     // page basics
 
-    $order = explode(",",$cfg["db"]["user"]["order"]);
+    $order = explode(",",$cfg["menued"]["db"]["user"]["order"]);
 
     // zum eintrag in auth_special immer nach DATABASE wechseln
     $db -> selectdb(DATABASE,FALSE);
@@ -122,17 +122,17 @@
     $element["actual"] = "<select name=\"actual[]\" size=\"10\" multiple>";
     $element["avail"] = "<select name=\"avail[]\" size=\"10\" multiple>";
 
-    $sql = "SELECT * FROM ".$cfg["db"]["user"]["entries"]." INNER JOIN ".$cfg["db"]["right"]["entries"]." ON (".$cfg["db"]["user"]["entries"].".".$cfg["db"]["user"]["key"]."=".$cfg["db"]["right"]["entries"].".".$cfg["db"]["right"]["userkey"].") INNER JOIN ".$cfg["db"]["level"]["entries"]." on (".$cfg["db"]["right"]["entries"].".".$cfg["db"]["right"]["levelkey"]."=auth_level.lid) WHERE ".$cfg["db"]["level"]["levelkey"]." = 'cms_edit' ORDER by ".$cfg["db"]["user"]["order"];
+    $sql = "SELECT * FROM ".$cfg["menued"]["db"]["user"]["entries"]." INNER JOIN ".$cfg["menued"]["db"]["right"]["entries"]." ON (".$cfg["menued"]["db"]["user"]["entries"].".".$cfg["menued"]["db"]["user"]["key"]."=".$cfg["menued"]["db"]["right"]["entries"].".".$cfg["menued"]["db"]["right"]["userkey"].") INNER JOIN ".$cfg["menued"]["db"]["level"]["entries"]." on (".$cfg["menued"]["db"]["right"]["entries"].".".$cfg["menued"]["db"]["right"]["levelkey"]."=auth_level.lid) WHERE ".$cfg["menued"]["db"]["level"]["levelkey"]." = 'cms_edit' ORDER by ".$cfg["menued"]["db"]["user"]["order"];
     $result = $db -> query($sql);
     while ( $all = $db -> fetch_array($result,1) ) {
         $text = "";
         foreach ( $order as $value ) {
             $text .= $all[$value]." ";
         }
-        $element["avail"] .= "<option value=\"".$all[$cfg["db"]["user"]["key"]]."\">".$text."</option>\n";
+        $element["avail"] .= "<option value=\"".$all[$cfg["menued"]["db"]["user"]["key"]]."\">".$text."</option>\n";
     }
     $element["avail"] .= "</select>";
-    $sql = "SELECT * FROM ".$cfg["db"]["special"]["entries"]." INNER JOIN ".$cfg["db"]["user"]["entries"]." ON (".$cfg["db"]["user"]["key"]."=".$cfg["db"]["special"]["userkey"].") WHERE ".$cfg["db"]["special"]["dbasekey"]."='".$base."' AND ".$cfg["db"]["special"]["tnamekey"]."='".$crc."' AND ".$cfg["db"]["special"]["contentkey"]."='-1'";
+    $sql = "SELECT * FROM ".$cfg["menued"]["db"]["special"]["entries"]." INNER JOIN ".$cfg["menued"]["db"]["user"]["entries"]." ON (".$cfg["menued"]["db"]["user"]["key"]."=".$cfg["menued"]["db"]["special"]["userkey"].") WHERE ".$cfg["menued"]["db"]["special"]["dbasekey"]."='".$base."' AND ".$cfg["menued"]["db"]["special"]["tnamekey"]."='".$crc."' AND ".$cfg["menued"]["db"]["special"]["contentkey"]."='-1'";
     $result = $db -> query($sql);
 
     while ( $all = $db -> fetch_array($result,1) ) {
@@ -140,8 +140,8 @@
         foreach ( $order as $value ) {
             $text .= $all[$value]." ";
         } 
-        $actuallarray[] =  $all[$cfg["db"]["user"]["key"]];
-        $element["actual"] .= "<option value=\"".$all[$cfg["db"]["user"]["key"]]."\">".$text."</option>\n";
+        $actuallarray[] =  $all[$cfg["menued"]["db"]["user"]["key"]];
+        $element["actual"] .= "<option value=\"".$all[$cfg["menued"]["db"]["user"]["key"]]."\">".$text."</option>\n";
     }
     $element["actual"] .= "</select>";
 
@@ -152,28 +152,28 @@
                     if (in_array($value,$actuallarray)) {
                         $ausgaben["form_error"] = "#(error_dupe)"; 
                     } else {
-                        $sql = "INSERT INTO ".$cfg["db"]["special"]["entries"]." (".$cfg["db"]["special"]["userkey"].",".$cfg["db"]["special"]["contentkey"].",".$cfg["db"]["special"]["dbasekey"].",".$cfg["db"]["special"]["tnamekey"].") VALUES ('".$value."','-1','".$base."','".$crc."')";
+                        $sql = "INSERT INTO ".$cfg["menued"]["db"]["special"]["entries"]." (".$cfg["menued"]["db"]["special"]["userkey"].",".$cfg["menued"]["db"]["special"]["contentkey"].",".$cfg["menued"]["db"]["special"]["dbasekey"].",".$cfg["menued"]["db"]["special"]["tnamekey"].") VALUES ('".$value."','-1','".$base."','".$crc."')";
                         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $db -> query($sql);
                     }
                 } else {
-                    $sql = "INSERT INTO ".$cfg["db"]["special"]["entries"]." (".$cfg["db"]["special"]["userkey"].",".$cfg["db"]["special"]["contentkey"].",".$cfg["db"]["special"]["dbasekey"].",".$cfg["db"]["special"]["tnamekey"].") VALUES ('".$value."','-1','".$base."','".$crc."')";
+                    $sql = "INSERT INTO ".$cfg["menued"]["db"]["special"]["entries"]." (".$cfg["menued"]["db"]["special"]["userkey"].",".$cfg["menued"]["db"]["special"]["contentkey"].",".$cfg["menued"]["db"]["special"]["dbasekey"].",".$cfg["menued"]["db"]["special"]["tnamekey"].") VALUES ('".$value."','-1','".$base."','".$crc."')";
                     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $db -> query($sql);
                 }
             }
             if ( isset($HTTP_POST_VARS["add"]) && $ausgaben["form_error"] == "" ) {
-            header("Location: ".$cfg["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].".html");
+            header("Location: ".$cfg["menued"]["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].".html");
             }
         }
 
         if ( is_array($HTTP_POST_VARS["actual"]) && isset($HTTP_POST_VARS["del"]) ) {
             foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
-                $sql = "DELETE FROM ".$cfg["db"]["special"]["entries"]." WHERE ".$cfg["db"]["special"]["userkey"]."='".$value."' AND ".$cfg["db"]["special"]["dbasekey"]."='".$base."' AND ".$cfg["db"]["special"]["contentkey"]." = '-1' AND ".$cfg["db"]["special"]["tnamekey"]."='".$crc."'";
+                $sql = "DELETE FROM ".$cfg["menued"]["db"]["special"]["entries"]." WHERE ".$cfg["menued"]["db"]["special"]["userkey"]."='".$value."' AND ".$cfg["menued"]["db"]["special"]["dbasekey"]."='".$base."' AND ".$cfg["menued"]["db"]["special"]["contentkey"]." = '-1' AND ".$cfg["menued"]["db"]["special"]["tnamekey"]."='".$crc."'";
                 $db -> query($sql);
             }
             if ( isset($HTTP_POST_VARS["del"]) && $ausgaben["form_error"] == "" ) {
-            header("Location: ".$cfg["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].".html");
+            header("Location: ".$cfg["menued"]["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].".html");
             }
         }
     }

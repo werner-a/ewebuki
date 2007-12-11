@@ -49,7 +49,7 @@
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
     // path fuer die schaltflaechen anpassen
-    if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+    if ( $cfg["menued"]["iconpath"] == "" ) $cfg["menued"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
     if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -59,10 +59,10 @@
     }
 
     // lokale db auswaehlen
-    if ( $cfg["db"]["change"] == -1 ) {
+    if ( $cfg["menued"]["db"]["change"] == -1 ) {
         if ( $environment["fqdn"][0] == $specialvars["dyndb"] && in_array($specialvars["dyndb"],$_SESSION["dbzugriff"]) ) {
             $db->selectDb($specialvars["dyndb"],FALSE);
-        } elseif ( $environment["fqdn"][0] == $cfg["fqdn0"] && $_SESSION["sti"] == -1 ) {
+        } elseif ( $environment["fqdn"][0] == $cfg["menued"]["fqdn0"] && $_SESSION["sti"] == -1 ) {
             ### loesung?
         } else {
             $sql = "SELECT adakz FROM db_adrd where adid='".$_SESSION["custom"]."'";
@@ -73,31 +73,31 @@
     }
 
     // private function include loader
-    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["real"]."-functions.inc.php";
+    if ( is_array($cfg["menued"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["menued"]["subdir"]."/".$cfg["menued"]["real"]."-functions.inc.php";
 
     // shared function include loader
-    if ( is_array($cfg["function"][$environment["kategorie"].",shared"]) ) {
-        foreach ( $cfg["function"][$environment["kategorie"].",shared"] as $value ) {
+    if ( is_array($cfg["menued"]["function"][$environment["kategorie"].",shared"]) ) {
+        foreach ( $cfg["menued"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // global function include loader
-    if ( is_array($cfg["function"][$environment["kategorie"].",global"]) ) {
-        foreach ( $cfg["function"][$environment["kategorie"].",global"] as $value ) {
+    if ( is_array($cfg["menued"]["function"][$environment["kategorie"].",global"]) ) {
+        foreach ( $cfg["menued"]["function"][$environment["kategorie"].",global"] as $value ) {
             include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // magic include loader
-    if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["real"]."-".$environment["kategorie"].".inc.php";
+    if ( array_key_exists($environment["kategorie"], $cfg["menued"]["function"]) ) {
+        include $pathvars["moduleroot"].$cfg["menued"]["subdir"]."/".$cfg["menued"]["real"]."-".$environment["kategorie"].".inc.php";
     } else {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["real"]."-list.inc.php";
+        include $pathvars["moduleroot"].$cfg["menued"]["subdir"]."/".$cfg["menued"]["real"]."-list.inc.php";
     }
 
     // globale db auswaehlen
-    if ( $cfg["db"]["change"] == -1 ) {
+    if ( $cfg["menued"]["db"]["change"] == -1 ) {
         $db -> selectDb(DATABASE,FALSE);
     }
 

@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
+        priv_check_old("",$cfg["menued"]["right"]) ) {
 
         $hidedata["move"]["on"] = -1;
 
@@ -58,7 +58,7 @@
         // page basics
         // ***
         if ( count($HTTP_POST_VARS) == 0 ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
+            $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
         } else {
@@ -69,7 +69,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["menu"]["entries"], $form_values );
+        $element = form_elements( $cfg["menued"]["db"]["menu"]["entries"], $form_values );
 
         // form elemente erweitern
         #$element["new_lang"] = "<input name=\"new_lang\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -90,8 +90,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/move,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/move,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
+        $ausgaben["form_break"] = $cfg["menued"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -116,7 +116,7 @@
         // unzugaengliche #(marken) sichtbar machen
 
         // wohin schicken
-        # header("Location: ".$cfg["basis"]."/?.html");
+        # header("Location: ".$cfg["menued"]["basis"]."/?.html");
         // +++
         // page basics
 
@@ -128,7 +128,7 @@
 
             // gibt es in der neuen ebene einen solchen entry?
             $sql = "SELECT entry
-                      FROM ".$cfg["db"]["menu"]["entries"]."
+                      FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
                      WHERE refid = '".$HTTP_POST_VARS["refid"]."'
                        AND entry = '".$HTTP_POST_VARS["entry"]."'";
             $result = $db -> query($sql);
@@ -138,7 +138,7 @@
 
             // content tabellen aenderungen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "SELECT refid, entry FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
+                $sql = "SELECT refid, entry FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
                 $result = $db -> query($sql);
                 $data = $db -> fetch_array($result,1);
 
@@ -165,7 +165,7 @@
                 #echo $ebene.":".$new_tname."<br>";
                 $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
 
-                $sql = "UPDATE ".$cfg["db"]["text"]["entries"]."
+                $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
                             SET tname = '".$new_tname."',
                                 ebene = '".$ebene."',
                                 kategorie = '".$HTTP_POST_VARS["entry"]."'
@@ -195,11 +195,11 @@
                 #$entry = str_replace(" ", "", $entry);
                 #$sqla .= ", entry='".$entry."'";
 
-                $sql = "update ".$cfg["db"]["menu"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
+                $sql = "update ".$cfg["menued"]["db"]["menu"]["entries"]." SET ".$sqla." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["menued"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
