@@ -102,6 +102,7 @@
                 $dest_height = $max_size;
                 $dest_width = (int)(($max_size * $src_width) / $src_height );
             }
+            $file_ext = strtolower(substr(strrchr($img_org,"."),1));
 
             // gd < 2.0 fallback
             if ( function_exists(imagecreatetruecolor) ) {
@@ -110,22 +111,17 @@
                 // leeres image erstellen
                 $img_dst = @imagecreatetruecolor($dest_width,$dest_height);
 
-                /*
-                transparenz geht zur zeit leider verloren
-                eine neuere php version koennte das problem loesen
-
-                imageantialias($img_dst,true);
-                imagealphablending($img_dst, false);
-                imagesavealpha($img_dst,true);
-
-                $transparent = imagecolorallocatealpha($img_dst, 255, 255, 255, 0);
-
-                for($x=0;$x<$dest_width;$x++) {
-                    for($y=0;$y<$dest_height;$y++) {
-                        imageSetPixel( $img_dst, $x, $y, $transparent );
-                    }
+                if ( $file_ext == "gif" ) {
+                    $colorTrans = imagecolortransparent($img_src);
+                    imagepalettecopy($img_src,$img_dst);
+                    imagefill($img_dst, 0, 0, $colorTrans);
+                    imagecolortransparent($img_dst, $colorTrans);
+                    imagetruecolortopalette($img_dst,true,256);
+                } elseif ( $file_ext == "png" ) {
+                    imageantialias($img_dst,true);
+                    imagealphablending($img_dst, False);
+                    imagesavealpha($img_dst, True);
                 }
-                */
 
                 // groesse aendern
                 imagecopyresampled($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height, $src_width, $src_height);
@@ -133,25 +129,24 @@
             } else {
 
                 // transparente farbe finden
-                #$colorTrans = imagecolortransparent($img_src);
+                $colorTrans = imagecolortransparent($img_src);
 
                 // leeres image erstellen
                 $img_dst = imagecreate($dest_width,$dest_height);
 
                 // palette kopieren
-                #imagepalettecopy($img_dst,$img_src);
+                imagepalettecopy($img_dst,$img_src);
 
                 // mit transparenter farbe fuellen
-                #imagefill($img_dst,0,0,$colorTrans);
+                imagefill($img_dst,0,0,$colorTrans);
 
                 // transparent setzen
-                #imagecolortransparent($img_dst, $colorTrans);
+                imagecolortransparent($img_dst, $colorTrans);
 
                 // groesse aendern
                 imagecopyresized($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height, $src_width, $src_height);
             }
 
-            $file_ext = strtolower(substr(strrchr($img_org,"."),1));
             switch ( $file_ext ) {
                 case "gif":
                     imagegif($img_dst,$img_path."/".$img_name."_".$img_id.".gif");
