@@ -171,7 +171,7 @@
                         "3" => array("g(fileupload)", "upload.html", "R", "/upload[,0-9]*.html/"),
                         "4" => array("g(filecompilation)", "compilation.html", "R", "/compilation[,0-9]*.html/"),
                        ),
-            "right" => "cms_edit",
+            "right" => $cfg["auth"]["menu"]["fileed"][1],
             "restrict" => array(), # z.B. array("delete", "edit")
     );
 
