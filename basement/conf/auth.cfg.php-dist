@@ -85,6 +85,10 @@
                     "path" => "setit",
                     "file" => "base.name",
                        ),
+            "ghost" => array(
+               "contented" => "admin",
+                 "righted" => "admin",
+                       ),
              "menu" => array(
                  "grouped" => array("list", "cms_admin"),
                  "leveled" => array("list", "cms_admin"),
