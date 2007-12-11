@@ -175,7 +175,7 @@
     // file arrange
     if ( in_array("resize", $cfg["function"][$environment["kategorie"]]) ) {
 
-        function arrange( $id, $source, $file ) {
+        function arrange( $id, $source, $file, $move=-1 ) {
 
             global $cfg, $pathvars;
 
@@ -205,16 +205,26 @@
                 #if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
                 #if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
                 if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] ) {
-                    rename( $source, $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                    if ( $move == -1 ) {
+                        rename( $source, $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                    } else {
+                        copy( $source, $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                    }
                 } else {
                     resize( $source, $id, $img_src, $cfg["size"]["max"], $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"], $cfg["fileopt"][$type]["name"] );
-                    unlink( $source );
+                    if ( $move == -1 ) {
+                        unlink( $source );
+                    }
                 }
 
                 // speicher des quellbild freigeben
                 imagedestroy($img_src);
             } else {
-                rename($source, $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                if ( $move == -1 ) {
+                    rename( $source, $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                } else {
+                    copy($source, $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                }
             }
 
 
