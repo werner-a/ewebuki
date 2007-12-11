@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["path"] = array(
          "menuroot" => "", // !#lnk_0,!#ausgaben_UP [UP][/UP]; "" zeigt nach $pathvars["menuroot"]
                "db" => array(
                     "menu" => array(

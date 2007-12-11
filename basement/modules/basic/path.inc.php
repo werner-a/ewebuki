@@ -62,19 +62,19 @@
     $defaults["split"]["l2"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;
 
     // dynamic style - db test/extension
-    $sql = "select dynamiccss from ".$cfg["db"]["menu"]["entries"];
+    $sql = "select dynamiccss from ".$cfg["path"]["db"]["menu"]["entries"];
     $result = $db -> query($sql);
     if ( $result ) {
-        $dynamiccss = $cfg["db"]["menu"]["entries"].".dynamiccss,";
+        $dynamiccss = $cfg["path"]["db"]["menu"]["entries"].".dynamiccss,";
     } else {
         unset($dynamiccss);
     }
 
     // dynamic bg - db test/extension
-    $sql = "select dynamicbg from ".$cfg["db"]["menu"]["entries"];
+    $sql = "select dynamicbg from ".$cfg["path"]["db"]["menu"]["entries"];
     $result = $db -> query($sql);
     if ( $result ) {
-        $dynamicbg = $cfg["db"]["menu"]["entries"].".dynamicbg,";
+        $dynamicbg = $cfg["path"]["db"]["menu"]["entries"].".dynamicbg,";
     } else {
         unset($dynamicbg);
     }
@@ -87,8 +87,8 @@
     $kekspath = explode('/', $kekspath);
 
     // navi tags und marken
-    $ausgaben["UP"] = $cfg["menuroot"];
-    $lnk[0] = $cfg["menuroot"];
+    $ausgaben["UP"] = $cfg["path"]["menuroot"];
+    $lnk[0] = $cfg["path"]["menuroot"];
 
     // 404 error handling
     $count_url = count($kekspath);
@@ -103,20 +103,20 @@
 
     foreach ($kekspath as $key => $value) {
         $search = "like '".$value."'";
-        $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
-                       ".$cfg["db"]["menu"]["entries"].".refid,
-                       ".$cfg["db"]["menu"]["entries"].".entry,
-                       ".$cfg["db"]["menu"]["entries"].".sort,
-                       ".$cfg["db"]["menu"]["entries"].".level,
-                       ".$cfg["db"]["menu"]["entries"].".defaulttemplate,
+        $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
+                       ".$cfg["path"]["db"]["menu"]["entries"].".refid,
+                       ".$cfg["path"]["db"]["menu"]["entries"].".entry,
+                       ".$cfg["path"]["db"]["menu"]["entries"].".sort,
+                       ".$cfg["path"]["db"]["menu"]["entries"].".level,
+                       ".$cfg["path"]["db"]["menu"]["entries"].".defaulttemplate,
                        ".$dynamiccss.$dynamicbg."
-                       ".$cfg["db"]["lang"]["entries"].".label
-                  FROM ".$cfg["db"]["menu"]["entries"]."
-            INNER JOIN ".$cfg["db"]["lang"]["entries"]."
-                    ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
-                 WHERE ".$cfg["db"]["menu"]["entries"].".entry ".$search."
-                   AND ".$cfg["db"]["menu"]["entries"].".refid = '".$actid."'
-                   AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
+                       ".$cfg["path"]["db"]["lang"]["entries"].".label
+                  FROM ".$cfg["path"]["db"]["menu"]["entries"]."
+            INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
+                    ON ".$cfg["path"]["db"]["menu"]["entries"].".mid = ".$cfg["path"]["db"]["lang"]["entries"].".mid
+                 WHERE ".$cfg["path"]["db"]["menu"]["entries"].".entry ".$search."
+                   AND ".$cfg["path"]["db"]["menu"]["entries"].".refid = '".$actid."'
+                   AND ".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
         #if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         if ( $db -> num_rows($result) == 1 ) {
@@ -134,20 +134,20 @@
             // ***
             #echo "other: ".$data["mid"]." - ".$data["refid"]." - ".$data["sort"]." - ".$data["entry"]." - ".$data["label"]."<br />";
             $tet = $data["sort"] + 10;
-            $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
-                        ".$cfg["db"]["menu"]["entries"].".refid,
-                        ".$cfg["db"]["menu"]["entries"].".entry,
-                        ".$cfg["db"]["menu"]["entries"].".sort,
-                        ".$cfg["db"]["menu"]["entries"].".level,
-                        ".$cfg["db"]["menu"]["entries"].".defaulttemplate,
+            $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
+                        ".$cfg["path"]["db"]["menu"]["entries"].".refid,
+                        ".$cfg["path"]["db"]["menu"]["entries"].".entry,
+                        ".$cfg["path"]["db"]["menu"]["entries"].".sort,
+                        ".$cfg["path"]["db"]["menu"]["entries"].".level,
+                        ".$cfg["path"]["db"]["menu"]["entries"].".defaulttemplate,
                         ".$dynamiccss.$dynamicbg."
-                        ".$cfg["db"]["lang"]["entries"].".label
-                   FROM ".$cfg["db"]["menu"]["entries"]."
-             INNER JOIN ".$cfg["db"]["lang"]["entries"]."
-                     ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
-                  WHERE ".$cfg["db"]["menu"]["entries"].".sort = ".$tet."
-                    AND ".$cfg["db"]["menu"]["entries"].".refid = '".$data["refid"]."'
-                    AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
+                        ".$cfg["path"]["db"]["lang"]["entries"].".label
+                   FROM ".$cfg["path"]["db"]["menu"]["entries"]."
+             INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
+                     ON ".$cfg["path"]["db"]["menu"]["entries"].".mid = ".$cfg["path"]["db"]["lang"]["entries"].".mid
+                  WHERE ".$cfg["path"]["db"]["menu"]["entries"].".sort = ".$tet."
+                    AND ".$cfg["path"]["db"]["menu"]["entries"].".refid = '".$data["refid"]."'
+                    AND ".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
             $result = $db -> query($sql);
             if ( $db -> num_rows($result) == 1 ) {
                 $data2 = $db -> fetch_array($result,1);
@@ -189,23 +189,23 @@
 
             // M0 -> ebene darueber
             if ( $path == $environment["ebene"] ) {
-                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".mid,
-                                ".$cfg["db"]["menu"]["entries"].".refid,
-                                ".$cfg["db"]["menu"]["entries"].".entry,
-                                ".$cfg["db"]["menu"]["entries"].".sort,
-                                ".$cfg["db"]["menu"]["entries"].".level,
-                                ".$cfg["db"]["lang"]["entries"].".lang,
-                                ".$cfg["db"]["lang"]["entries"].".label,
-                                ".$cfg["db"]["lang"]["entries"].".exturl
-                          FROM  ".$cfg["db"]["menu"]["entries"]."
-                    INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
-                            ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                $sql = "SELECT  ".$cfg["path"]["db"]["menu"]["entries"].".mid,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".refid,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".entry,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".sort,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".level,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".lang,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".label,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".exturl
+                          FROM  ".$cfg["path"]["db"]["menu"]["entries"]."
+                    INNER JOIN  ".$cfg["path"]["db"]["lang"]["entries"]."
+                            ON  ".$cfg["path"]["db"]["menu"]["entries"].".mid = ".$cfg["path"]["db"]["lang"]["entries"].".mid
                          WHERE (
-                               (".$cfg["db"]["menu"]["entries"].".refid=".$refid.")
-                           AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
-                           AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
+                               (".$cfg["path"]["db"]["menu"]["entries"].".refid=".$refid.")
+                           AND (".$cfg["path"]["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["path"]["db"]["menu"]["entries"].".hide is NULL)
+                           AND (".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."')
                                )
-                      ORDER BY  ".$cfg["db"]["menu"]["order"].";";
+                      ORDER BY  ".$cfg["path"]["db"]["menu"]["order"].";";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
@@ -236,22 +236,22 @@
 
             // M1 -> gleiche ebene
             if ( $path.".html" == $environment["ebene"]."/".$environment["kategorie"].".html" ) {
-                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".refid,
-                                ".$cfg["db"]["menu"]["entries"].".entry,
-                                ".$cfg["db"]["menu"]["entries"].".sort,
-                                ".$cfg["db"]["menu"]["entries"].".level,
-                                ".$cfg["db"]["lang"]["entries"].".lang,
-                                ".$cfg["db"]["lang"]["entries"].".label,
-                                ".$cfg["db"]["lang"]["entries"].".exturl
-                          FROM  ".$cfg["db"]["menu"]["entries"]."
-                    INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
-                            ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                $sql = "SELECT  ".$cfg["path"]["db"]["menu"]["entries"].".refid,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".entry,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".sort,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".level,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".lang,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".label,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".exturl
+                          FROM  ".$cfg["path"]["db"]["menu"]["entries"]."
+                    INNER JOIN  ".$cfg["path"]["db"]["lang"]["entries"]."
+                            ON  ".$cfg["path"]["db"]["menu"]["entries"].".mid = ".$cfg["path"]["db"]["lang"]["entries"].".mid
                          WHERE (
-                               (".$cfg["db"]["menu"]["entries"].".refid=".$data["refid"].")
-                           AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
-                           AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."')
+                               (".$cfg["path"]["db"]["menu"]["entries"].".refid=".$data["refid"].")
+                           AND (".$cfg["path"]["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["path"]["db"]["menu"]["entries"].".hide is NULL)
+                           AND (".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."')
                                )
-                      ORDER BY  ".$cfg["db"]["menu"]["order"].";";
+                      ORDER BY  ".$cfg["path"]["db"]["menu"]["order"].";";
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
@@ -300,21 +300,21 @@
                 $lnk[$lnkcount] = $ausgaben["UP"];
 
                 // M2 -> ebene darunter (unterpunkte)
-                $sql = "SELECT  ".$cfg["db"]["menu"]["entries"].".entry,
-                                ".$cfg["db"]["menu"]["entries"].".refid,
-                                ".$cfg["db"]["menu"]["entries"].".sort,
-                                ".$cfg["db"]["menu"]["entries"].".level,
-                                ".$cfg["db"]["lang"]["entries"].".lang,
-                                ".$cfg["db"]["lang"]["entries"].".label,
-                                ".$cfg["db"]["lang"]["entries"].".exturl
-                          FROM  ".$cfg["db"]["menu"]["entries"]."
-                    INNER JOIN  ".$cfg["db"]["lang"]["entries"]."
-                            ON  ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
+                $sql = "SELECT  ".$cfg["path"]["db"]["menu"]["entries"].".entry,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".refid,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".sort,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".level,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".lang,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".label,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".exturl
+                          FROM  ".$cfg["path"]["db"]["menu"]["entries"]."
+                    INNER JOIN  ".$cfg["path"]["db"]["lang"]["entries"]."
+                            ON  ".$cfg["path"]["db"]["menu"]["entries"].".mid = ".$cfg["path"]["db"]["lang"]["entries"].".mid
                          WHERE (
-                               (".$cfg["db"]["menu"]["entries"].".refid=".$data["mid"].")
-                           AND (".$cfg["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["db"]["menu"]["entries"].".hide is NULL)
-                           AND (".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."'))
-                      ORDER BY  ".$cfg["db"]["menu"]["order"].";";
+                               (".$cfg["path"]["db"]["menu"]["entries"].".refid=".$data["mid"].")
+                           AND (".$cfg["path"]["db"]["menu"]["entries"].".hide <> '-1' OR ".$cfg["path"]["db"]["menu"]["entries"].".hide is NULL)
+                           AND (".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."'))
+                      ORDER BY  ".$cfg["path"]["db"]["menu"]["order"].";";
                 $navbarresult  = $db -> query($sql);
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
@@ -356,17 +356,17 @@
                 function prev_child_find( $mid ) {
                     global $db, $environment, $cfg, $children;
                     // gibts unterpunkte?
-                    $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
-                                ".$cfg["db"]["menu"]["entries"].".refid,
-                                ".$cfg["db"]["menu"]["entries"].".entry,
-                                ".$cfg["db"]["menu"]["entries"].".sort,
-                                ".$cfg["db"]["menu"]["entries"].".level,
-                                ".$cfg["db"]["lang"]["entries"].".label
-                            FROM ".$cfg["db"]["menu"]["entries"]."
-                        INNER JOIN ".$cfg["db"]["lang"]["entries"]."
-                                ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
-                            WHERE ".$cfg["db"]["menu"]["entries"].".refid = '".$mid."'
-                            AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."'
+                    $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".refid,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".entry,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".sort,
+                                ".$cfg["path"]["db"]["menu"]["entries"].".level,
+                                ".$cfg["path"]["db"]["lang"]["entries"].".label
+                            FROM ".$cfg["path"]["db"]["menu"]["entries"]."
+                        INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
+                                ON ".$cfg["path"]["db"]["menu"]["entries"].".mid = ".$cfg["path"]["db"]["lang"]["entries"].".mid
+                            WHERE ".$cfg["path"]["db"]["menu"]["entries"].".refid = '".$mid."'
+                            AND ".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."'
                     ORDER BY SORT DESC;";
                     $result = $db -> query($sql);
                     if ( $db -> num_rows($result) > 0 ) {
@@ -385,18 +385,18 @@
                 }
                 // eintrag vorher suchen
                 $sort = $data["sort"] - 10;
-                $sql = "SELECT ".$cfg["db"]["menu"]["entries"].".mid,
-                            ".$cfg["db"]["menu"]["entries"].".refid,
-                            ".$cfg["db"]["menu"]["entries"].".entry,
-                            ".$cfg["db"]["menu"]["entries"].".sort,
-                            ".$cfg["db"]["menu"]["entries"].".level,
-                            ".$cfg["db"]["lang"]["entries"].".label
-                       FROM ".$cfg["db"]["menu"]["entries"]."
-                 INNER JOIN ".$cfg["db"]["lang"]["entries"]."
-                         ON ".$cfg["db"]["menu"]["entries"].".mid = ".$cfg["db"]["lang"]["entries"].".mid
-                      WHERE ".$cfg["db"]["menu"]["entries"].".sort = ".$sort."
-                        AND ".$cfg["db"]["menu"]["entries"].".refid = '".$data["refid"]."'
-                        AND ".$cfg["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
+                $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
+                            ".$cfg["path"]["db"]["menu"]["entries"].".refid,
+                            ".$cfg["path"]["db"]["menu"]["entries"].".entry,
+                            ".$cfg["path"]["db"]["menu"]["entries"].".sort,
+                            ".$cfg["path"]["db"]["menu"]["entries"].".level,
+                            ".$cfg["path"]["db"]["lang"]["entries"].".label
+                       FROM ".$cfg["path"]["db"]["menu"]["entries"]."
+                 INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
+                         ON ".$cfg["path"]["db"]["menu"]["entries"].".mid = ".$cfg["path"]["db"]["lang"]["entries"].".mid
+                      WHERE ".$cfg["path"]["db"]["menu"]["entries"].".sort = ".$sort."
+                        AND ".$cfg["path"]["db"]["menu"]["entries"].".refid = '".$data["refid"]."'
+                        AND ".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."';";
                 $result = $db -> query($sql);
                 if ( $db -> num_rows($result) == 1 ) {
                     $data2 = $db -> fetch_array($result,1);
@@ -408,7 +408,7 @@
                     function depth_find( $refid, &$count ) {
                         global $debugging, $db, $cfg;
                         $sql = "SELECT refid
-                                  FROM ".$cfg["db"]["menu"]["entries"]."
+                                  FROM ".$cfg["path"]["db"]["menu"]["entries"]."
                                  WHERE mid = ".$refid;
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
