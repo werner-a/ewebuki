@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["contented"]["right"] == "" || $rechte[$cfg["contented"]["right"]] == -1 ) {
 
         // funktions bereich
         // ***
@@ -60,7 +60,7 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["leer"]["rows"], $parameter, 1, 3, $getvalues );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["contented"]["db"]["leer"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
@@ -71,18 +71,18 @@
             $dataloop["list"][$data["version"]][1] = $data["version"];
 
             // tabellen farben wechseln
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
+            if ( $cfg["contented"]["color"]["set"] == $cfg["contented"]["color"]["a"]) {
+                $cfg["contented"]["color"]["set"] = $cfg["contented"]["color"]["b"];
             } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
+                $cfg["contented"]["color"]["set"] = $cfg["contented"]["color"]["a"];
             }
 
 /*            $dataloop["list"][$data["id"]] = array(
-                                   "color" => $cfg["color"]["set"],
+                                   "color" => $cfg["contented"]["color"]["set"],
                                   "field1" => $data["field1"],
-                                    "edit" => $cfg["basis"]."/edit,".$data["id"].".html",
-                                  "delete" => $cfg["basis"]."/delete,".$data["id"].".html",
-                                 "details" => $cfg["basis"]."/details,".$data["id"].".html",
+                                    "edit" => $cfg["contented"]["basis"]."/edit,".$data["id"].".html",
+                                  "delete" => $cfg["contented"]["basis"]."/delete,".$data["id"].".html",
+                                 "details" => $cfg["contented"]["basis"]."/details,".$data["id"].".html",
             );*/
         }
         #echo sprintf("<pre>%s</pre>",print_r($dataloop,True));
@@ -103,14 +103,14 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
+        $ausgaben["link_new"] = $cfg["contented"]["basis"]."/add.html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        $mapping["main"] = crc32($cfg["path"]).".list";
+        $cfg["contented"]["path"] = str_replace($pathvars["virtual"],"",$cfg["contented"]["basis"]);
+        $mapping["main"] = crc32($cfg["contented"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

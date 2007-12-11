@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["contented"] = array(
            "subdir" => "admin",
              "name" => "contented",
             "basis" => $pathvars["virtual"]."/admin/contented", # crc = -1468826685 *
@@ -81,7 +81,7 @@
                                ),
                        ),
 
-            "right" => "cms_edit",
+            "right" => $cfg["auth"]["ghost"]["contented"],
             #"tagjs" => "-141347382.modify.js-classic",
             "tagjs" => "-141347382.modify.js-nextgen",
              "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts, eingener tag
@@ -149,45 +149,6 @@
                    // deprecated (automatic don't work)
                    "int"    => array( "", "", "", "", "" ),
                        ),
-          "filetyp" => array( "gif" => "img",
-                              "jpg" => "img",
-                             "jpeg" => "img",
-                              "png" => "img",
-                              "pdf" => "pdf",
-                              "zip" => "arc",
-                              "bz2" => "arc",
-                               "gz" => "arc",
-                              "odt" => "odf",
-                              "ods" => "odf",
-                              "odp" => "odf",
-                       ),
-          "fileopt" => array(
-                      "img" => array(
-                             "name" => "img",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"],
-                           "tnpath" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
-                        "thumbnail" => "set"
-                               ),
-                      "pdf" => array(
-                             "name" => "doc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
-                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "pdf_big.png"
-                              ),
-                      "arc" => array(
-                             "name" => "arc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
-                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "zip_icon.jpg"
-                               ),
-                      "odf" => array(
-                             "name" => "doc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
-                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "odf_icon.png"
-                               ),
-                       ),
-
            );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////

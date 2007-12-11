@@ -59,9 +59,9 @@
 
 
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ||
+    if ( $cfg["contented"]["right"] == "" ||
+        priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
+        priv_check_old("",$cfg["contented"]["right"]) ||
         $rechte["administration"] == -1 ||
         $erlaubnis == -1 ) {
 
@@ -72,8 +72,8 @@
         if ( count($_POST) == 0 ) {
 
             #$sql = "SELECT *
-            #          FROM ".$cfg["db"]["leer"]["entries"]."
-            #         WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+            #          FROM ".$cfg["contented"]["db"]["leer"]["entries"]."
+            #         WHERE ".$cfg["contented"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
 
             $sql = "SELECT version, html, content, changed, byalias
                       FROM ". SITETEXT ."
@@ -95,7 +95,7 @@
         #$form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        #$element = form_elements( $cfg["db"]["leer"]["entries"], $form_values );
+        #$element = form_elements( $cfg["contented"]["db"]["leer"]["entries"], $form_values );
 
         // form elemente erweitern
         #$element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -308,7 +308,7 @@
                     $db -> selectDB($merken,"");
                 }
 
-                filelist($result);
+                filelist($result, "contented");
             }
 
             if ( is_array($_SESSION["compilation_memo"]) ) {
@@ -351,13 +351,13 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        #$ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-        #$ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        #$ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        #$ausgaben["form_break"] = $cfg["contented"]["basis"]."/list.html";
 
-        #$ausgaben["form_aktion"] = $cfg["basis"]."edit/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,verify.html";
+        #$ausgaben["form_aktion"] = $cfg["contented"]["basis"]."edit/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
+        $ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,verify.html";
         #$ausgaben["form_abbrechen"] = $_SESSION["page"];
-        $ausgaben["form_break"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,unlock.html";
+        $ausgaben["form_break"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,unlock.html";
 
 
         // hidden values
@@ -494,7 +494,7 @@
             // datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
 
-                if ( $content_exist == 1 && !in_array($environment["parameter"][3], $cfg["archive"]) ) {
+                if ( $content_exist == 1 && !in_array($environment["parameter"][3], $cfg["contented"]["archive"]) ) {
                     if ( $environment["parameter"][4] == "" && $HTTP_POST_VARS["content"] == "" ) {
                         $sql = "DELETE FROM ". SITETEXT ."
                                       WHERE lang = '".$environment["language"]."'
@@ -554,12 +554,12 @@
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
 
-//                 $sql = "update ".$cfg["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+//                 $sql = "update ".$cfg["contented"]["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["contented"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 #if ( !$result ) die($db -> error("DB ERROR: "));
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["contented"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

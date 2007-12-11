@@ -49,14 +49,14 @@
     /*                 "add" => array( "function1_name", "function2_name"),
     */
 
-//     if ( in_array("makece", $cfg["function"][$environment["kategorie"]]) ) {
+//     if ( in_array("makece", $cfg["contented"]["function"][$environment["kategorie"]]) ) {
 //          function function_name(  $var1, $var2 = "") {
 //             ### put your code here ###
 //          }
 //     }
 
     // content editor erstellen
-    if ( in_array("makece", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("makece", $cfg["contented"]["function"][$environment["kategorie"]]) ) {
 
         function makece($ce_formname, $ce_name, $ce_inhalt) {
             global $debugging, $db, $cfg, $pathvars, $ausgaben, $specialvars, $defaults;
@@ -193,10 +193,10 @@
             $ausgaben["ce_dropdown"]  = "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"st\" size=\"1\" onChange=\"INSst(this.options[this.selectedIndex].value,'".$ce_formname."','".$ce_name."');this.selectedIndex=0;\">";
             $ausgaben["ce_dropdown"] .= "<option value=\"\">#(tagselect)</option>";
 
-            #$debugging["ausgabe"] .= "<pre>".print_r($cfg["tags"],True)."</pre>";
+            #$debugging["ausgabe"] .= "<pre>".print_r($cfg["contented"]["tags"],True)."</pre>";
 
             $cms_old_mode = False;
-            foreach( $cfg["tags"] as $key => $value ) {
+            foreach( $cfg["contented"]["tags"] as $key => $value ) {
 
                 // js code erstellen
                 if ( $ausgaben["js"] == "" ) {
@@ -231,7 +231,7 @@
 
 
 
-                if ( $value[0] == "" && $cfg["debug"] == True ) $value[0] = "T";
+                if ( $value[0] == "" && $cfg["contented"]["debug"] == True ) $value[0] = "T";
 
                 // position (T=top, B=bottom), access key, no select, links, rechts, disable
                 //                                                     ebButtons[ebButtons.length] = new ebButton(
@@ -285,7 +285,7 @@
 
             // script in seite parsen
             #echo "<pre>".$ausgaben["js"]."</pre>";
-            $ausgaben["ce_script"] = parser($cfg["tagjs"],"");
+            $ausgaben["ce_script"] = parser($cfg["contented"]["tagjs"],"");
 
             if ( $cms_old_mode == True ) {
                 $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$defaults["cms-tag"]["path"]."cms-tag-imgb.png\" title=\"#(add)\" width=\"23\" height=\"22\">";
