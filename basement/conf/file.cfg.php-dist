@@ -85,6 +85,14 @@
                                ),
              "preview_size" => "tn",
                        ),
+             "size" => array(
+                        "b" => "580",
+                        "m" => "250",
+                        "s" => "150",
+                       "tn" => "96",
+                      "max" => "580", # leer bedeutet, orginal bleibt erhalten
+    #to be implemeted "may" => "",    # wenn gesetzt, wird auch höhe geaendert
+                       ),
              "base" => array(
                   "maindir" => $pathvars["fileroot"]."file/",
                    "webdir" => "/file/",
