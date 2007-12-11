@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -40,7 +40,68 @@
 
     URL: http://www.chaos.de
 */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
+
+    $cfg["file"] = array(
+         "filesize" => "5000000",
+          #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "odg", "bz2", "gz"),
+          "filetyp" => array( "gif" => "img",
+                              "jpg" => "img",
+                             "jpeg" => "img",
+                              "png" => "img",
+                              "pdf" => "pdf",
+                              "zip" => "arc",
+                              "bz2" => "arc",
+                               "gz" => "arc",
+                              "odt" => "odf",
+                              "ods" => "odf",
+                              "odp" => "odf",
+                              "odg" => "odf",
+                       ),
+          "fileopt" => array(
+                      "img" => array(
+                             "name" => "img",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"],
+                           "tnpath" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                        "thumbnail" => "set"
+                               ),
+                      "pdf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "icon_pdf.png"
+                              ),
+                      "arc" => array(
+                             "name" => "arc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "icon_zip.jpg"
+                               ),
+                      "odf" => array(
+                             "name" => "doc",
+                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "icon_odf.png"
+                               ),
+             "preview_size" => "tn",
+                       ),
+             "base" => array(
+                  "maindir" => $pathvars["fileroot"]."file/",
+                   "webdir" => "/file/",
+                 "realname" => True,
+                      "new" => "new/",
+                      "pic" => array(
+                             "root" => "picture/",
+                               "tn" => "thumbnail/",
+                                "o" => "original/",
+                                "s" => "small/",
+                                "m" => "medium/",
+                                "b" => "big/",
+                      ),
+                      "doc" => "document/",
+                      "arc" => "archiv/",
+                       ),
+    );
 
     $pathvars["filebase"]["maindir"] = $pathvars["fileroot"]."file/"; // pfad der dateien im filesystem
     $pathvars["filebase"]["webdir"] = "/file/"; // pfad der dateien auf dem webserver
