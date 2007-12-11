@@ -43,28 +43,28 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" ||
+        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
+        priv_check_old("",$cfg["fileed"]["right"]) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
         if ( count($_SESSION["file_memo"]) == 0 ) {
-            header("Location: ".$cfg["basis"]."/list.html");
+            header("Location: ".$cfg["fileed"]["basis"]."/list.html");
         }
 
         // +++
         // funktions bereich fuer erweiterungen
 
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["file"]["entries"]."
-                 WHERE ".$cfg["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
+                  FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                 WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $forbidden = array();
         while ( $data = $db -> fetch_array($result,1) ) {
-            if ( $cfg["filetyp"][$data["ffart"]] == "img" ) {
-                $link = $cfg["basis"]."/delete/view,o,".$data["fid"].".html";
+            if ( $cfg["file"]["filetyp"][$data["ffart"]] == "img" ) {
+                $link = $cfg["fileed"]["basis"]."/delete/view,o,".$data["fid"].".html";
             } else {
                 $link = $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"];
             }
@@ -93,7 +93,7 @@
                 if ( strstr($data["fhit"],"#p") ) {
                     preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
                     foreach ( $match[1] as $value ) {
-                        $view_link = "<a href=\"".$cfg["basis"]."/delete/view,o,".$data["fid"].",".$value.".html\">Gruppe #".$value."</a>";
+                        $view_link = "<a href=\"".$cfg["fileed"]["basis"]."/delete/view,o,".$data["fid"].",".$value.".html\">Gruppe #".$value."</a>";
                         $dataloop["list"][$data["fid"]] = array(
                                     "id" => $data["fid"],
                                   "item" => $data["ffname"],
@@ -129,8 +129,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/delete.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/delete.html";
+        $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] = "";
@@ -175,12 +175,12 @@
                     $result = $db -> query($sql);
                     $data = $db -> fetch_array($result,1);
 
-                    $type = $cfg["filetyp"][$data["ffart"]];
+                    $type = $cfg["file"]["filetyp"][$data["ffart"]];
                     if ( $type == "img" ) {
 
                         $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                         foreach ( $art as $key => $pre ) {
-                            $file_name = $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"];
+                            $file_name = $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"];
                             if ( file_exists($file_name) ) {
                                 $return = unlink($file_name);
                                 if ( $return != 1 ) {
@@ -189,7 +189,7 @@
                             }
                         }
                     } else {
-                        $file_name = $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$value.".".$data["ffart"];
+                        $file_name = $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["fileopt"][$type]["name"]."_".$value.".".$data["ffart"];
                             if ( file_exists($file_name) ) {
                                 $return = unlink($file_name);
                                 if ( $return != 1 ) {
@@ -200,8 +200,8 @@
 
                     // datensatz loeschen
                     if ( $error[$value] == "" ) {
-                        $sql = "DELETE FROM ".$cfg["db"]["file"]["entries"]."
-                                      WHERE ".$cfg["db"]["file"]["key"]."='".$value."';";
+                        $sql = "DELETE FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                                      WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$value."';";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
                         if ( $result ) {
@@ -219,7 +219,7 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" && count($error) == 0 ) {
-                header("Location: ".$cfg["basis"]."/list.html");
+                header("Location: ".$cfg["fileed"]["basis"]."/list.html");
             }
         }
         // +++

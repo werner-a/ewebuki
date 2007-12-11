@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function filelist($result,$group="") {
+    function filelist($result,$script_name,$group="") {
         global $db, $cfg, $defaults, $pathvars, $environment, $dataloop, $hidedata;
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
@@ -58,40 +58,40 @@
 
             if ( is_array($_SESSION["file_memo"]) && $environment["parameter"][0] == "list" ) {
                 if (in_array($data["fid"],$_SESSION["file_memo"])) {
-                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
-                    $icon = $cfg["iconpath"]."cms-cb1.png";
+                    $link = $cfg[$script_name]["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
+                    $icon = $cfg[$script_name]["iconpath"]."cms-cb1.png";
                     $checked = " checked=\"checked\"";
                 } else {
-                    $link = $cfg["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
-                    $icon = $cfg["iconpath"]."cms-cb0.png";
+                    $link = $cfg[$script_name]["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
+                    $icon = $cfg[$script_name]["iconpath"]."cms-cb0.png";
                     $checked = "";
                 }
             } elseif ( is_array($_SESSION["compilation_memo"][$environment["parameter"][1]]) && $environment["parameter"][0] == "compilation") {
                 if (in_array($data["fid"],$_SESSION["compilation_memo"][$environment["parameter"][1]])) {
-                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
-                    $icon = $cfg["iconpath"]."cms-cb1.png";
+                    $link = $cfg[$script_name]["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
+                    $icon = $cfg[$script_name]["iconpath"]."cms-cb1.png";
                     $checked = " checked=\"checked\"";
                 } else {
-                    $link = $cfg["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
-                    $icon = $cfg["iconpath"]."cms-cb0.png";
+                    $link = $cfg[$script_name]["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
+                    $icon = $cfg[$script_name]["iconpath"]."cms-cb0.png";
                     $checked = "";
                 }
             } else {
-                $link = $cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
-                $icon = $cfg["iconpath"]."cms-cb0.png";
+                $link = $cfg[$script_name]["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
+                $icon = $cfg[$script_name]["iconpath"]."cms-cb0.png";
                 $checked = "";
             }
             $cb = "<a href=".$link."><img width=\"13\" height\"13\" border=\"0\" src=\"".$icon."\"></a>";
 
             // table color change
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
+            if ( $cfg[$script_name]["color"]["set"] == $cfg[$script_name]["color"]["a"]) {
+                $cfg[$script_name]["color"]["set"] = $cfg[$script_name]["color"]["b"];
             } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
+                $cfg[$script_name]["color"]["set"] = $cfg[$script_name]["color"]["a"];
             }
 
             // file art
-            $type = $cfg["filetyp"][$data["ffart"]];
+            $type = $cfg["file"]["filetyp"][$data["ffart"]];
 
             // link target
             if ( $data["ffart"] == "pdf" ) {
@@ -101,24 +101,24 @@
             }
 
             // new line?
-            $i++; $even = $i / $cfg["db"]["file"]["line"];
+            $i++; $even = $i / $cfg[$script_name]["db"]["file"]["line"];
             if ( is_int($even) ) {
-                $newline = $cfg["db"]["file"]["newline"];
+                $newline = $cfg[$script_name]["db"]["file"]["newline"];
             } else {
                 $newline = "";
             }
 
             // onclick link start / end
-            $la = $cfg["tags"]["img"][3]
+            $la = $cfg[$script_name]["tags"]["img"][3]
                  .$pathvars["filebase"]["webdir"]
                  .$data["ffart"]."/"
                  .$data["fid"]."/";
             //   "o/"
             $lb = $data["ffname"]
-                 .$cfg["tags"]["img"][4];
+                 .$cfg[$script_name]["tags"]["img"][4];
 
             // keine weiteren parameter fuer others
-            if ( $cfg["filetyp"][$data["ffart"]] != "img" ) {
+            if ( $cfg["file"]["filetyp"][$data["ffart"]] != "img" ) {
                 $lb = $data["ffname"];
             }
 
@@ -131,7 +131,7 @@
             }
 
             $name = "list";
-            if ( $cfg["filetyp"][$data["ffart"]] == "img" ){
+            if ( $cfg["file"]["filetyp"][$data["ffart"]] == "img" ){
                 $name = "list_images";
             } else {
                 $name = "list_other";
@@ -141,12 +141,12 @@
             $dataloop[$name][$data["fid"]] = array (
                                                "id" => $data["fid"],
                                               "art" => $data["ffart"],
-                                            "color" => $cfg["color"]["set"],
+                                            "color" => $cfg[$script_name]["color"]["set"],
                                           "checked" => $checked,
                                             "ehref" => "edit,".$data["fid"].".html",
                                             "dhref" => $pathvars["filebase"]["webdir"].
-                                                       $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].
-                                                       $cfg["fileopt"][$type]["name"]."_".
+                                                       $pathvars["filebase"][$cfg["file"]["fileopt"][$type]["name"]].
+                                                       $cfg["file"]["fileopt"][$type]["name"]."_".
                                                        $data["fid"].".".$data["ffart"],
                                             "vhref" => $environment["allparameter"]."/view,o,".$data["fid"].",".$group.".html",
                                               "src" => $pathvars["filebase"]["webdir"].
@@ -162,10 +162,10 @@
                                             "mhref" => "list/view,m,".$data["fid"].".html",
                                             "shref" => "list/view,s,".$data["fid"].".html",
                                                        // new: ebInsertImage(ebCanvas);
-                                           "oclick" => "ebInsertImage(ebCanvas, '', '".$la."o/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
-                                           "bclick" => "ebInsertImage(ebCanvas, '', '".$la."b/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
-                                           "mclick" => "ebInsertImage(ebCanvas, '', '".$la."m/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
-                                           "sclick" => "ebInsertImage(ebCanvas, '', '".$la."s/".$lb."', '".$data["funder"]."', '".$cfg["tags"]["img"][5]."');",
+                                           "oclick" => "ebInsertImage(ebCanvas, '', '".$la."o/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",
+                                           "bclick" => "ebInsertImage(ebCanvas, '', '".$la."b/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",
+                                           "mclick" => "ebInsertImage(ebCanvas, '', '".$la."m/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",
+                                           "sclick" => "ebInsertImage(ebCanvas, '', '".$la."s/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",
                                            "fclick" => "ebInsertother(ebCanvas, '', '".$la.$lb."', '".$data["funder"]."', '');",
                                           "newline" => $newline,
                                              "sort" => $sort,

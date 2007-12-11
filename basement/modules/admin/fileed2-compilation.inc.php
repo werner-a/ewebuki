@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" ||
+        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
+        priv_check_old("",$cfg["fileed"]["right"]) ) {
 
         // funktions bereich
         // ***
@@ -66,7 +66,7 @@
                 }
                 exit;
             } else {
-                header("Location: ".$cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].".html");
+                header("Location: ".$cfg["fileed"]["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].".html");
             }
             exit;
         }
@@ -85,7 +85,7 @@
             }
         }
         if ( $environment["parameter"][2] == "sel" && count($_SESSION["compilation_memo"]) == 0 ) {
-            header("Location: ".$cfg["basis"]."/compilation,".$environment["parameter"][1].".html");
+            header("Location: ".$cfg["fileed"]["basis"]."/compilation,".$environment["parameter"][1].".html");
         }
         if ( isset($_SESSION["compilation_search"]) || $environment["parameter"][2] == "sel" ){
             function groups_filter ($var) {
@@ -103,10 +103,10 @@
         }
         if ( count($_SESSION["compilation_memo"]) > 0 ) {
             if ( $environment["parameter"][2] == "sel" ) {
-                $link = $cfg["basis"]."/compilation.html";
+                $link = $cfg["fileed"]["basis"]."/compilation.html";
                 $aktion = "#(sel_hide)";
             } else {
-                $link = $cfg["basis"]."/compilation,,sel.html";
+                $link = $cfg["fileed"]["basis"]."/compilation,,sel.html";
                 $aktion = "#(sel_show)";
             }
             $hidedata["selected"] = array(
@@ -118,14 +118,14 @@
 
         // get wird environment-parameter, weiterleitung
         if ( is_numeric($_GET["compID"]) ){
-            $header = $cfg["basis"]."/compilation,".$_GET["compID"].",".$environment["parameter"][2].".html";
+            $header = $cfg["fileed"]["basis"]."/compilation,".$_GET["compID"].",".$environment["parameter"][2].".html";
             header("Location: ".$header);
         } elseif (( !isset($environment["parameter"][1])
                  || !isset($dataloop["groups"][$environment["parameter"][1]])
                   ) && count($dataloop["groups"]) > 0 ){
             reset($dataloop["groups"]);
             $buffer = current($dataloop["groups"]);
-            $header = $cfg["basis"]."/compilation,".$buffer["id"].",".$environment["parameter"][2].".html";
+            $header = $cfg["fileed"]["basis"]."/compilation,".$buffer["id"].",".$environment["parameter"][2].".html";
             header("Location: ".$header);
         }
 
@@ -163,10 +163,10 @@
         $ausgaben["comp_count"] = count($dataloop["groups"]);
         $ausgaben["aktuell"] = $i;
         if ( $vor != "" ){
-            $hidedata["vor"]["link"] = $cfg["basis"]."/compilation,".$vor.",".$environment["parameter"][2].".html";
+            $hidedata["vor"]["link"] = $cfg["fileed"]["basis"]."/compilation,".$vor.",".$environment["parameter"][2].".html";
         }
         if ( $zurueck != "" ){
-            $hidedata["zurueck"]["link"] = $cfg["basis"]."/compilation,".$zurueck.",".$environment["parameter"][2].".html";
+            $hidedata["zurueck"]["link"] = $cfg["fileed"]["basis"]."/compilation,".$zurueck.",".$environment["parameter"][2].".html";
         }
 
         // bilderliste erstellen, sortieren, zaehlen
@@ -177,7 +177,7 @@
                     LIKE '%#p".$environment["parameter"][1]."%'
                 ORDER BY fid";
             $result = $db -> query($sql);
-            filelist($result,$environment["parameter"][1]);
+            filelist($result, "fileed", $environment["parameter"][1]);
             if ( count($dataloop["list_images"]) > 0 ) {
                 function pics_sort($a, $b) {
                     return ($a["sort"] < $b["sort"]) ? -1 : 1;
@@ -191,16 +191,16 @@
         }
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/compilation.html";
-        $ausgaben["form_break"]  = $cfg["basis"]."/list.html";
-        $ausgaben["edit"]        = $cfg["basis"]."/collect,".$environment["parameter"][1].".html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/compilation.html";
+        $ausgaben["form_break"]  = $cfg["fileed"]["basis"]."/list.html";
+        $ausgaben["edit"]        = $cfg["fileed"]["basis"]."/collect,".$environment["parameter"][1].".html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        $mapping["main"] = crc32($cfg["path"]).".compilation";
+        $cfg["fileed"]["path"] = str_replace($pathvars["virtual"],"",$cfg["fileed"]["basis"]);
+        $mapping["main"] = crc32($cfg["fileed"]["path"]).".compilation";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

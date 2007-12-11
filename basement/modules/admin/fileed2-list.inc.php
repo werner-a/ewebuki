@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" ||
+        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
+        priv_check_old("",$cfg["fileed"]["right"]) ) {
 
         // funktions bereich ( aufbau )
         // ***
@@ -64,7 +64,7 @@
                 }
                 exit;
             } else {
-                header("Location: ".$cfg["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",,".$environment["parameter"][3].".html");
+                header("Location: ".$cfg["fileed"]["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",,".$environment["parameter"][3].".html");
             }
         }
 
@@ -74,7 +74,7 @@
         $set = array(); $data = array();
         $_SESSION["fileed_filter0"] = $_SESSION["fileed_filter0"] + 0;
         $_SESSION["fileed_filter1"] = $_SESSION["fileed_filter1"] + 0;
-        foreach( $cfg["filter"] as $set => $data ) {
+        foreach( $cfg["fileed"]["filter"] as $set => $data ) {
             if ( $_GET["filter".$set] != "" ) {
                 $_SESSION["fileed_filter".$set] = $_GET["filter".$set];
             }
@@ -112,9 +112,9 @@
 
         // bearbeiten- und loeschen link erstellen
         $hidedata["file"] = array(
-                "edit" => $cfg["basis"]."/edit.html",
-                "delete" => $cfg["basis"]."/delete.html",
-            "collect" => $cfg["basis"]."/collect.html",
+                "edit" => $cfg["fileed"]["basis"]."/edit.html",
+                "delete" => $cfg["fileed"]["basis"]."/delete.html",
+            "collect" => $cfg["fileed"]["basis"]."/collect.html",
             "display" => "inline"
         );
         if ( count($_SESSION["file_memo"]) == 0 ) {
@@ -177,7 +177,7 @@
 
             $types = explode( ",",$kategorie );
             foreach ( $types as $kat ){
-                foreach ( $cfg["filetyp"] as $key=>$value ){
+                foreach ( $cfg["fileed"]["filetyp"] as $key=>$value ){
                     if ( $value == $kat ) $array[] = "'".$key."'";
                 }
             }
@@ -188,12 +188,12 @@
             case 3:
                 foreach ( $_SESSION["file_memo"] as $value ) {
                     if ( $pattern == "" ) {
-                        $pattern = "(".$cfg["db"]["file"]["key"]." = ".$value.")";
+                        $pattern = "(".$cfg["fileed"]["db"]["file"]["key"]." = ".$value.")";
                     } else {
-                        $pattern .= " OR (".$cfg["db"]["file"]["key"]." = ".$value.")";
+                        $pattern .= " OR (".$cfg["fileed"]["db"]["file"]["key"]." = ".$value.")";
                     }
                 }
-                if ( $pattern == "" ) $pattern = $cfg["db"]["file"]["key"]." = -1";
+                if ( $pattern == "" ) $pattern = $cfg["fileed"]["db"]["file"]["key"]." = -1";
 
                 $part["auswahl2"] = $part["auswahl2"] = " ffart IN (".collect_filetyps("img").") AND (".$pattern.")";
                 $hidedata["images"] = array();
@@ -212,13 +212,13 @@
             if ( is_array($_SESSION["file_memo"]) ) {
                 foreach ( $_SESSION["file_memo"] as $value ) {
                     if ( $part["sel"] == "" ) {
-                        $part["sel"] = "(".$cfg["db"]["file"]["key"]." = ".$value.")";
+                        $part["sel"] = "(".$cfg["fileed"]["db"]["file"]["key"]." = ".$value.")";
                     } else {
-                        $part["sel"] .= " OR (".$cfg["db"]["file"]["key"]." = ".$value.")";
+                        $part["sel"] .= " OR (".$cfg["fileed"]["db"]["file"]["key"]." = ".$value.")";
                     }
                 }
             }
-            if ( $part["sel"] == "" ) $part["sel"] = $cfg["db"]["file"]["key"]." = -1";
+            if ( $part["sel"] == "" ) $part["sel"] = $cfg["fileed"]["db"]["file"]["key"]." = -1";
         }
 
         // where build
@@ -241,16 +241,16 @@
 
         // db query
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["file"]["entries"]."
+                  FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
                   ".$where."
-              ORDER BY ".$cfg["db"]["file"]["order"];
+              ORDER BY ".$cfg["fileed"]["db"]["file"]["order"];
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
         if ( $environment["parameter"][1] != "" ) {
             $_SESSION["fileed_position"] = $environment["parameter"][1];
         }
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["file"]["rows"], ",".$environment["parameter"][2], 1, 5, Null );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["fileed"]["db"]["file"]["rows"], ",".$environment["parameter"][2], 1, 5, Null );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0];
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
@@ -272,7 +272,7 @@
         }
 
         // dataloop wird ueber eine share-funktion aufgebaut
-        filelist($result);
+        filelist($result, "fileed");
 
         // +++
         // funktions bereich
@@ -285,14 +285,14 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
+        $ausgaben["link_new"] = $cfg["fileed"]["basis"]."/add.html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        $mapping["main"] = crc32($cfg["path"]).".list";
+        $cfg["fileed"]["path"] = str_replace($pathvars["virtual"],"",$cfg["fileed"]["basis"]);
+        $mapping["main"] = crc32($cfg["fileed"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
@@ -315,8 +315,8 @@
         }
 
         // wohin schicken
-        $ausgaben["form1_aktion"] = $cfg["basis"]."/list.html";
-        $ausgaben["form2_aktion"] = $cfg["basis"]."/upload.html";
+        $ausgaben["form1_aktion"] = $cfg["fileed"]["basis"]."/list.html";
+        $ausgaben["form2_aktion"] = $cfg["fileed"]["basis"]."/upload.html";
 
         // +++
         // page basics

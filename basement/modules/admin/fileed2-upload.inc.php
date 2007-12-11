@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" ||
+        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
+        priv_check_old("",$cfg["fileed"]["right"]) ) {
 
         // page basics
         // ***
@@ -59,7 +59,7 @@
         #$form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        #$element = form_elements( $cfg["db"]["leer"]["entries"], $form_values );
+        #$element = form_elements( $cfg["fileed"]["db"]["leer"]["entries"], $form_values );
 
         // form elemente erweitern
         #$element["extension1"] = "";
@@ -67,16 +67,16 @@
         if ( $_GET["anzahl"] ) {
             $anzahl = $_GET["anzahl"];
         } else {
-            $anzahl = $cfg["upload"]["inputs"];
+            $anzahl = $cfg["fileed"]["upload"]["inputs"];
         }
         for ( $i = 1; $i <= $anzahl; $i++ ) {
             $dataloop["upload"][$i]["name"] = $name.$i;
         }
 
-        $ausgaben["filesize"] = sprintf("%0.1f",($cfg["filesize"]/1000000))." MB";
+        $ausgaben["filesize"] = sprintf("%0.1f",($cfg["file"]["filesize"]/1000000))." MB";
         $ausgaben["filetyp"] = "";
-        ksort($cfg["filetyp"]);
-        foreach ( $cfg["filetyp"] as $key=>$value ) {
+        ksort($cfg["file"]["filetyp"]);
+        foreach ( $cfg["file"]["filetyp"] as $key=>$value ) {
             if ( $ausgaben["filetyp"] != "" ) $ausgaben["filetyp"] .= ", ";
             $ausgaben["filetyp"] .= $key;
         }
@@ -101,8 +101,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/upload,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/upload,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -158,7 +158,7 @@
 
                 foreach ( $_FILES as $key => $value ) {
                     if ( $value["name"] != "" || $value["size"] != 0 ) {
-                            $error = file_validate($value["tmp_name"], $value["size"], $cfg["filesize"], $cfg["filetyp"], $key);
+                            $error = file_validate($value["tmp_name"], $value["size"], $cfg["fileed"]["filesize"], $cfg["fileed"]["filetyp"], $key);
                             if ( $error == 0 ) {
                                 $newname = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$value["name"];
                                 rename($value["tmp_name"],$newname);
@@ -169,11 +169,11 @@
                                     $new_comp = key($buffer) + 1;
                                     zip_handling($newname,
                                                 $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
-                                                $cfg["filetyp"],
-                                                $cfg["filesize"],
+                                                $cfg["fileed"]["filetyp"],
+                                                $cfg["fileed"]["filesize"],
                                                 "selection",
                                                 $new_comp,
-                                                $cfg["zip_handling"]["sektions"]
+                                                $cfg["fileed"]["zip_handling"]["sektions"]
                                     );
                                 }
                             } else {
@@ -183,10 +183,10 @@
                 }
 
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/add,".$environment["parameter"][1].".html");
+                    header("Location: ".$cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].".html");
                     exit(); ### laut guenther wird es gebraucht, warum?
                 } else {
-                    $ausgaben["form_error"] .= "<br><br><a href=\"".$cfg["basis"]."/add,".$environment["parameter"][1].".html\">Trotzdem weiter</a>";
+                    $ausgaben["form_error"] .= "<br><br><a href=\"".$cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].".html\">Trotzdem weiter</a>";
                     unset($hidedata["modus"]);
                     #$mapping["main"] = "default1";
                 }

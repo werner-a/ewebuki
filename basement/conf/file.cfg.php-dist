@@ -42,6 +42,19 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
+    $pathvars["filebase"]["maindir"] = $pathvars["fileroot"]."file/"; // pfad der dateien im filesystem
+    $pathvars["filebase"]["webdir"] = "/file/"; // pfad der dateien auf dem webserver
+    $pathvars["filebase"]["realname"] = True; // requires mod_rewrite siehe .htaccess
+    $pathvars["filebase"]["new"] = "new/";
+    $pathvars["filebase"]["pic"]["root"] = "picture/";
+    $pathvars["filebase"]["pic"]["tn"] = "thumbnail/";
+    $pathvars["filebase"]["pic"]["o"] = "original/";
+    $pathvars["filebase"]["pic"]["s"] = "small/";
+    $pathvars["filebase"]["pic"]["m"] = "medium/";
+    $pathvars["filebase"]["pic"]["b"] = "big/";
+    $pathvars["filebase"]["doc"] = "document/";
+    $pathvars["filebase"]["arc"] = "archiv/";
+
     $cfg["file"] = array(
          "filesize" => "5000000",
           #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "odg", "bz2", "gz"),
@@ -110,19 +123,6 @@
                       "arc" => "archiv/",
                        ),
     );
-
-    $pathvars["filebase"]["maindir"] = $pathvars["fileroot"]."file/"; // pfad der dateien im filesystem
-    $pathvars["filebase"]["webdir"] = "/file/"; // pfad der dateien auf dem webserver
-    $pathvars["filebase"]["realname"] = True; // requires mod_rewrite siehe .htaccess
-    $pathvars["filebase"]["new"] = "new/";
-    $pathvars["filebase"]["pic"]["root"] = "picture/";
-    $pathvars["filebase"]["pic"]["tn"] = "thumbnail/";
-    $pathvars["filebase"]["pic"]["o"] = "original/";
-    $pathvars["filebase"]["pic"]["s"] = "small/";
-    $pathvars["filebase"]["pic"]["m"] = "medium/";
-    $pathvars["filebase"]["pic"]["b"] = "big/";
-    $pathvars["filebase"]["doc"] = "document/";
-    $pathvars["filebase"]["arc"] = "archiv/";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

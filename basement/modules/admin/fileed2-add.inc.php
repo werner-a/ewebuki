@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" ||
+        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
+        priv_check_old("",$cfg["fileed"]["right"]) ) {
 
         // auf session losgehen, falls zip bearbeitet wurde
         if ( count($_SESSION["zip_extracted"]) == 0 ) unset($_SESSION["zip_extracted"]);
@@ -66,7 +66,7 @@
         // keine files in dem new-ordner
         if ( $file == "" ) {
             unset($_SESSION["zip_extracted"]);
-            header("Location: ".$cfg["basis"]."/list.html");
+            header("Location: ".$cfg["fileed"]["basis"]."/list.html");
         }
 
         // page basics
@@ -81,7 +81,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".modify");
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
+        $element = form_elements( $cfg["fileed"]["db"]["file"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["upload"] = "";
@@ -103,7 +103,7 @@
         $thumb_srv = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
         $thumb_web = $pathvars["filebase"]["webdir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
         if ( !file_exists($thumb_srv) ) {
-            $type = $cfg["filetyp"][$match[2]];
+            $type = $cfg["file"]["filetyp"][$match[2]];
             if ( $type == "img" ) {
                 switch ( strtolower($match[2]) ) {
                     case "gif":
@@ -121,12 +121,12 @@
                 resize( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
                         "preview",
                         $img_src,
-                        $cfg["size"][$cfg["fileopt"]["preview_size"]],
+                        $cfg["file"]["size"][$cfg["file"]["fileopt"]["preview_size"]],
                         preg_replace("/\/$/i","",$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]),
                         "tmp".$match[1]
                 );
             } else {
-                $thumb_web = $cfg["iconpath"].$cfg["fileopt"][$type]["thumbnail"];
+                $thumb_web = $cfg["fileed"]["iconpath"].$cfg["file"]["fileopt"][$type]["thumbnail"];
             }
         }
         $ausgaben["thumbnail"] = $thumb_web;
@@ -155,8 +155,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -175,16 +175,13 @@
         }
 
         // wohin schicken
-        #n/a
 
         // +++
         // page basics
-// echo "--".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file."<br>";
-// echo "<pre>".print_r($hidedata,true)."</pre>";
         if ( $_POST["continue"] != "" ) {
             unlink( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file );
             if ( file_exists($thumb_srv) ) unlink( $thumb_srv );
-            header("Location: ".$cfg["basis"]."/add.html");
+            header("Location: ".$cfg["fileed"]["basis"]."/add.html");
             exit;
         }
 
@@ -216,8 +213,8 @@
                     // zip auspacken
                     $not_extracted = zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
                                                  $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
-                                                 $cfg["filetyp"],
-                                                 $cfg["filesize"],
+                                                 $cfg["file"]["filetyp"],
+                                                 $cfg["file"]["filesize"],
                                                  "",
                                                  $compid
                     );
@@ -229,7 +226,7 @@
                         $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
                     } else {
                         unlink( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file );
-                        header("Location: ".$cfg["basis"]."/add.html");
+                        header("Location: ".$cfg["fileed"]["basis"]."/add.html");
                         exit;
                     }
                 }
@@ -270,7 +267,7 @@
                 $sqlb .= ", '".$_SESSION["custom"]."'";
 
 
-                $sql = "INSERT INTO ".$cfg["db"]["file"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "INSERT INTO ".$cfg["fileed"]["db"]["file"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 #if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -283,7 +280,7 @@
                 } else {
                     $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 }
-                if ( $header == "" ) $header = $cfg["basis"]."/add.html";
+                if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/add.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

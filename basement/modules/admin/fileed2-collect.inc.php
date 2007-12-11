@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" ||
+        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
+        priv_check_old("",$cfg["fileed"]["right"]) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -90,14 +90,14 @@
         if ( $environment["parameter"][1] != "" ) {
             // eine bildergruppe wurde angewaehlt (id in der url)
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["file"]["entries"]."
+                      FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
                      WHERE fhit LIKE '%#p".$environment["parameter"][1].",%'";
             $ausgaben["groupid"] = $environment["parameter"][1];
         } else {
             // ausgewaehlte dateien werden einer gruppe zugewiesen
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["file"]["entries"]."
-                     WHERE ".$cfg["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
+                      FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                     WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
             $ausgaben["groupid"] = $_POST["groupid"];
             $i = 1;
         }
@@ -140,7 +140,7 @@
                     "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
                    "title" => $data["funder"],
                      "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
-                    "link" => $cfg["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].",".$environment["parameter"][1].".html",
+                    "link" => $cfg["fileed"]["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].",".$environment["parameter"][1].".html",
                     "sort" => $sort,
                   "delete" => "?del=".$data["fid"],
             );
@@ -158,13 +158,13 @@
                 $i++;
             }
         }
-        $ausgaben["renumber"] = $cfg["basis"]."/".$environment["allparameter"].".html?renumber";
+        $ausgaben["renumber"] = $cfg["fileed"]["basis"]."/".$environment["allparameter"].".html?renumber";
 
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".modify");
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
+        $element = form_elements( $cfg["fileed"]["db"]["file"]["entries"], $form_values );
 
         // +++
         // page basics
@@ -188,8 +188,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/collect,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/collect,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -246,9 +246,9 @@
                     } else {
                         $fhit = $value["fhit"]." #p".$groupid.",".$_POST["sort"][$key]."#";
                     }
-                    $sql = "UPDATE ".$cfg["db"]["file"]["entries"]."
+                    $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
                                SET fhit='".$fhit."'
-                             WHERE ".$cfg["db"]["file"]["key"]."='".$key."'";
+                             WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$key."'";
                     $result  = $db -> query($sql);
                 }
 

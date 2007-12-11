@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" ||
+        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
+        priv_check_old("",$cfg["fileed"]["right"]) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -54,7 +54,7 @@
             if ( count($_SESSION["file_memo"]) > 0 ) {
                 $environment["parameter"][1] = current($_SESSION["file_memo"]);
             } else {
-                header("Location: ".$cfg["basis"]."/list.html");
+                header("Location: ".$cfg["fileed"]["basis"]."/list.html");
             }
         }
 
@@ -65,10 +65,10 @@
         // ***
 
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["file"]["entries"]."
-             LEFT JOIN ".$cfg["db"]["user"]["entries"]."
-                    ON (".$cfg["db"]["file"]["user"]."=".$cfg["db"]["user"]["key"].")
-                 WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+                  FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+             LEFT JOIN ".$cfg["fileed"]["db"]["user"]["entries"]."
+                    ON (".$cfg["fileed"]["db"]["file"]["user"]."=".$cfg["fileed"]["db"]["user"]["key"].")
+                 WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $form_values = $db -> fetch_array($result,1);
@@ -81,22 +81,22 @@
         $form_options = form_options(crc32($environment["ebene"]).".modify");
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["file"]["entries"], $form_values );
+        $element = form_elements( $cfg["fileed"]["db"]["file"]["entries"], $form_values );
 
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
         // form elemente erweitern
         // link zum thumbnail wird gebaut
-        $type = $cfg["filetyp"][$form_values["ffart"]];
+        $type = $cfg["file"]["filetyp"][$form_values["ffart"]];
         if ( $type == "img" ) {
             $filename = $pathvars["filebase"]["webdir"].
                         $form_values["ffart"]."/".
                         $form_values["fid"]."/".
-                        $cfg["fileopt"]["preview_size"]."/".
+                        $cfg["file"]["fileopt"]["preview_size"]."/".
                         $form_values["fname"];
         } else {
-            $filename = $cfg["iconpath"].$cfg["fileopt"][$type]["thumbnail"];
+            $filename = $cfg["fileed"]["iconpath"].$cfg["file"]["fileopt"][$type]["thumbnail"];
         }
         $ausgaben["thumbnail"] = $filename;
 
@@ -113,8 +113,8 @@
 
         // besitzer feststellen
         $hidedata["owner"] = array(
-             "name" => $form_values[$cfg["db"]["user"]["forename"]]." ".$form_values[$cfg["db"]["user"]["surname"]],
-            "email" => $form_values[$cfg["db"]["user"]["email"]],
+             "name" => $form_values[$cfg["fileed"]["db"]["user"]["forename"]]." ".$form_values[$cfg["fileed"]["db"]["user"]["surname"]],
+            "email" => $form_values[$cfg["fileed"]["db"]["user"]["email"]],
             "error" => $owner_error,
         );
 
@@ -128,7 +128,7 @@
 
         // falls zip wird der inhalt gebaut
         if ( $form_values["ffart"] == "zip" && function_exists("zip_open") ) {
-            $file_srv = $cfg["fileopt"][$type]["path"].$type."_".$form_values["fid"].".".$form_values["ffart"];
+            $file_srv = $cfg["file"]["fileopt"][$type]["path"].$type."_".$form_values["fid"].".".$form_values["ffart"];
             $dataloop["zip"] = zip_handling($file_srv);
             if ( count($dataloop["zip"]) > 0 ) {
                 $hidedata["zip"][] = -1;
@@ -155,8 +155,8 @@
         #$ausgaben["form_error"] = ""; siehe edit sperre!
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -199,7 +199,7 @@
 
                     // file ersetzen
                     if ( $_FILES["upload"]["name"] != "" ) {
-                            $error = file_validate($_FILES["upload"]["tmp_name"], $_FILES["upload"]["size"], $cfg["filesize"], $cfg["filetyp"], "upload");
+                            $error = file_validate($_FILES["upload"]["tmp_name"], $_FILES["upload"]["size"], $cfg["file"]["filesize"], $cfg["file"]["filetyp"], "upload");
                             if ( $error == 0 ) {
                                 $file_id = $form_values["fid"];
                                 $source = $_FILES["upload"]["tmp_name"];
@@ -221,11 +221,11 @@
                         // zip auspacken
                         $not_extracted = zip_handling($file_srv,
                                                       $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
-                                                      $cfg["filetyp"],
-                                                      $cfg["filesize"],
+                                                      $cfg["file"]["filetyp"],
+                                                      $cfg["file"]["filesize"],
                                                       "",
                                                       $compid,
-                                                      $cfg["zip_handling"]["sektions"]
+                                                      $cfg["fileed"]["zip_handling"]["sektions"]
                         );
                         if ( count($not_extracted) > 0 ) {
                             $buffer = array();
@@ -234,7 +234,7 @@
                             }
                             $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
                         } else {
-                            header("Location: ".$cfg["basis"]."/add.html");
+                            header("Location: ".$cfg["fileed"]["basis"]."/add.html");
                             exit;
                         }
                     }
@@ -257,17 +257,17 @@
                     #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                     #$sqla .= ", ldate='".$ldate."'";
 
-                    $sql = "UPDATE ".$cfg["db"]["file"]["entries"]."
-                               SET ".$sqla." WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+                    $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
+                               SET ".$sqla." WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) {
                         $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
-                    if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
+                    if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/edit.html";
 
                 } else {
-                    if ( $header == "" ) $header = $cfg["basis"]."/edit.html";
+                    if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/edit.html";
                 }
 
                 unset ($_SESSION["file_memo"][$environment["parameter"][1]]);

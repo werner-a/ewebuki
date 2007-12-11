@@ -45,7 +45,7 @@
     // content umschaltung verhindern
     $specialvars["dynlock"] = True;
 
-    $cfg = array(
+    $cfg["fileed"] = array(
            "subdir" => "admin",
              "name" => "fileed2",
             "basis" => $pathvars["virtual"]."/admin/fileed",

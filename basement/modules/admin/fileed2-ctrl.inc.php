@@ -49,7 +49,7 @@
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
     // path fuer die schaltflaechen anpassen
-    if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+    if ( $cfg["fileed"]["iconpath"] == "" ) $cfg["fileed"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
     if ( isset($_GET["edit"]) ) {
@@ -59,24 +59,24 @@
     }
 
     // include function loader
-    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
+    if ( is_array($cfg["fileed"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"]."-functions.inc.php";
 
     // shared function include loader
-    if ( is_array($cfg["function"][$environment["kategorie"].",shared"]) ) {
-        foreach ( $cfg["function"][$environment["kategorie"].",shared"] as $value ) {
+    if ( is_array($cfg["fileed"]["function"][$environment["kategorie"].",shared"]) ) {
+        foreach ( $cfg["fileed"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // global function include loader
-    if ( is_array($cfg["function"][$environment["kategorie"].",global"]) ) {
-        foreach ( $cfg["function"][$environment["kategorie"].",global"] as $value ) {
+    if ( is_array($cfg["fileed"]["function"][$environment["kategorie"].",global"]) ) {
+        foreach ( $cfg["fileed"]["function"][$environment["kategorie"].",global"] as $value ) {
             include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // reiter bauen
-    foreach ( $cfg["tabs"] as $value ) {
+    foreach ( $cfg["fileed"]["tabs"] as $value ) {
         $style = "";$class = "";
         if ( $value[2] == "R" ) $style = "float:right;";
         if ( $value[3] != "" && preg_match($value[3],$pathvars["requested"]) ) {
@@ -91,17 +91,17 @@
     }
 
     // ajax-funktionalitaet aktivieren
-    if ( $cfg["ajax-modus"] == FALSE ) {
+    if ( $cfg["fileed"]["ajax-modus"] == FALSE ) {
         $hidedata["list_plain"]["pic_count"] = count($dataloop["list"]);
     } else {
         $hidedata["list_ajax"]["pic_count"] = count($dataloop["list"]);
     }
 
     // magic include loader
-    if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
+    if ( array_key_exists($environment["kategorie"], $cfg["fileed"]["function"]) ) {
+        include $pathvars["moduleroot"].$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"]."-".$environment["kategorie"].".inc.php";
     } else {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
+        include $pathvars["moduleroot"].$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"]."-list.inc.php";
     }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
