@@ -43,8 +43,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // basic: menu
-    include $pathvars["moduleroot"]."basic/menu.cfg.php";
-    include $pathvars["moduleroot"]."basic/menu.inc.php";
+    include $pathvars["moduleroot"]."basic/menu2.cfg.php";
+    include $pathvars["moduleroot"]."basic/menu2.inc.php";
 
     // basic: path
     include $pathvars["moduleroot"]."basic/path.cfg.php";
