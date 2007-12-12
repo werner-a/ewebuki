@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 KÃ¶nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -162,7 +162,7 @@
             $conn = $this->CONN;
 
             // wir drehen fuer postgresql < 7.3 das limit :(
-            if ( stristr($sql,"LIMIT") ) {
+            if ( preg_match("/LIMIT [0-9]+,[0-9]+/Ui",$sql) ) {
                 $limit = explode(" ", strstr($sql,"LIMIT"),2);
                 $oldlimit = $limit[0]." ".$limit[1];
                 $orglimitvalue = $limit[1];
@@ -186,7 +186,6 @@
 
                 $sql = str_replace("CONCAT(".$concat.")", $neu, $sql);
             }
-
 
             // @ disables buggy pg warning
             $results = pg_query($conn, $sql);
