@@ -45,7 +45,7 @@
     // content umschaltung verhindern
     $specialvars["dynlock"] = True;
 
-    $cfg = array(
+    $cfg["grouped"] = array(
            "subdir" => "admin",
              "name" => "grouped",
             "basis" => $pathvars["virtual"]."/admin/grouped",
@@ -79,7 +79,7 @@
                         "group"   => "gid"
                                ) 
                        ),
-            "right" => "cms_admin",
+            "right" => $cfg["auth"]["menu"]["grouped"][1],
     );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

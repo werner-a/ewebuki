@@ -43,14 +43,14 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"],$cfg["grouped"]["right"]) ||
+        priv_check_old("",$cfg["grouped"]["right"]) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
 
         // ausgaben variablen bauen
-        $sql = "SELECT * FROM ".$cfg["db"]["group"]["entries"]." WHERE gid='".$environment["parameter"][1]."'";
+        $sql = "SELECT * FROM ".$cfg["grouped"]["db"]["group"]["entries"]." WHERE gid='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         $field = $db -> fetch_array($result,$nop);
         foreach($field as $name => $value) {
@@ -58,11 +58,11 @@
         }
 
          //z.B. evtl. auf verknuepften datensatz pruefen
-        $sql = "SELECT auth_member.".$cfg["db"]["member"]["user"].",".$cfg["db"]["user"]["order"]."
-                 FROM ".$cfg["db"]["member"]["entries"]."
-                 INNER JOIN ".$cfg["db"]["user"]["entries"]."
+        $sql = "SELECT auth_member.".$cfg["grouped"]["db"]["member"]["user"].",".$cfg["grouped"]["db"]["user"]["order"]."
+                 FROM ".$cfg["grouped"]["db"]["member"]["entries"]."
+                 INNER JOIN ".$cfg["grouped"]["db"]["user"]["entries"]."
                  ON ( auth_member.uid=auth_user.uid )
-                WHERE auth_member.".$cfg["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
+                WHERE auth_member.".$cfg["grouped"]["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
 
         $result = $db -> query($sql);
 
@@ -77,8 +77,8 @@
 
         // datensatz holen
         $sql = "SELECT *
-                    FROM ".$cfg["db"]["group"]["entries"]."
-                    WHERE ".$cfg["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
+                    FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
+                    WHERE ".$cfg["grouped"]["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
@@ -97,8 +97,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["grouped"]["basis"]."/delete,".$environment["parameter"][1].".html";
+        $ausgaben["form_break"] = $cfg["grouped"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] = "";
@@ -139,8 +139,8 @@
                 ### put your code here ###
 
                 // z.B. evtl. verknuepfte datensatze loeschen
-                $sql = "DELETE FROM ".$cfg["db"]["member"]["entries"]."
-                                WHERE ".$cfg["db"]["member"]["group"]." = '".$environment["parameter"][1]."'";
+                $sql = "DELETE FROM ".$cfg["grouped"]["db"]["member"]["entries"]."
+                                WHERE ".$cfg["grouped"]["db"]["member"]["group"]." = '".$environment["parameter"][1]."'";
 
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
@@ -152,8 +152,8 @@
 
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "DELETE FROM ".$cfg["db"]["group"]["entries"]."
-                                WHERE ".$cfg["db"]["group"]["key"]."='".$environment["parameter"][1]."';";
+                $sql = "DELETE FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
+                                WHERE ".$cfg["grouped"]["db"]["group"]["key"]."='".$environment["parameter"][1]."';";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
@@ -161,7 +161,7 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$cfg["basis"]."/list.html");
+                header("Location: ".$cfg["grouped"]["basis"]."/list.html");
             }
             // +++
             // das loeschen wurde bestaetigt, loeschen!

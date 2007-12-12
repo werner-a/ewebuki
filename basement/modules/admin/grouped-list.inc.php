@@ -43,21 +43,21 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"],$cfg["grouped"]["right"]) ||
+        priv_check_old("",$cfg["grouped"]["right"]) ) {
 
         // funktions bereich
         // ***
 
         /* db query */
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["group"]["entries"]."
-              ORDER BY '".$cfg["db"]["group"]["order"]."'";
+                  FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
+              ORDER BY '".$cfg["grouped"]["db"]["group"]["order"]."'";
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["group"]["rows"], $parameter, 1, 3, $getvalues );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["grouped"]["db"]["group"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
@@ -65,20 +65,20 @@
 
         while ( $data = $db -> fetch_array($result,1) ) {
             // tabellen farben wechseln
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
+            if ( $cfg["grouped"]["color"]["set"] == $cfg["grouped"]["color"]["a"]) {
+                $cfg["grouped"]["color"]["set"] = $cfg["grouped"]["color"]["b"];
             } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
+                $cfg["grouped"]["color"]["set"] = $cfg["grouped"]["color"]["a"];
             }
             $dataloop["list"][] = array(
-                        "color" => $cfg["color"]["set"],
-                  "bezeichnung" => $data[$cfg["db"]["group"]["order"]],
-                 "beschreibung" => $data[$cfg["db"]["group"]["desc"]],
-                     "editlink" => $cfg["basis"]."/edit,".$data[$cfg["db"]["group"]["key"]].".html",
+                        "color" => $cfg["grouped"]["color"]["set"],
+                  "bezeichnung" => $data[$cfg["grouped"]["db"]["group"]["order"]],
+                 "beschreibung" => $data[$cfg["grouped"]["db"]["group"]["desc"]],
+                     "editlink" => $cfg["grouped"]["basis"]."/edit,".$data[$cfg["grouped"]["db"]["group"]["key"]].".html",
                     "edittitel" => "#(edittitel)",
-                   "deletelink" => $cfg["basis"]."/delete,".$data[$cfg["db"]["group"]["key"]].".html",
+                   "deletelink" => $cfg["grouped"]["basis"]."/delete,".$data[$cfg["grouped"]["db"]["group"]["key"]].".html",
                   "deletetitel" => "#(deletetitel)",
-                   "detaillink" => $cfg["basis"]."/details,".$data[$cfg["db"]["group"]["key"]].".html",
+                   "detaillink" => $cfg["grouped"]["basis"]."/details,".$data[$cfg["grouped"]["db"]["group"]["key"]].".html",
                   "detailtitel" => "#(detailtitel)",
             );
         }
@@ -100,14 +100,14 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
+        $ausgaben["link_new"] = $cfg["grouped"]["basis"]."/add.html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        $mapping["main"] = crc32($cfg["path"]).".list";
+        $cfg["grouped"]["path"] = str_replace($pathvars["virtual"],"",$cfg["grouped"]["basis"]);
+        $mapping["main"] = crc32($cfg["grouped"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

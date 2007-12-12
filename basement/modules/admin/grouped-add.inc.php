@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"],$cfg["grouped"]["right"]) ||
+        priv_check_old("",$cfg["grouped"]["right"]) ) {
 
         // page basics
         // ***
@@ -58,7 +58,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["group"]["entries"], $form_values );
+        $element = form_elements( $cfg["grouped"]["db"]["group"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = "";
@@ -73,8 +73,8 @@
 
         // user holen und mit dataloop ausgeben
         $sql = "SELECT uid, username
-                  FROM ".$cfg["db"]["user"]["entries"]."
-              ORDER BY ".$cfg["db"]["user"]["order"];
+                  FROM ".$cfg["grouped"]["db"]["user"]["entries"]."
+              ORDER BY ".$cfg["grouped"]["db"]["user"]["order"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
             $dataloop["avail"][] = array(
@@ -94,8 +94,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["grouped"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["grouped"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -134,9 +134,9 @@
                 // ***
 
                // gibt es diesen gruppe bereits?
-                $sql = "SELECT ".$cfg["db"]["group"]["order"]."
-                          FROM ".$cfg["db"]["group"]["entries"]."
-                         WHERE ".$cfg["db"]["group"]["order"]." = '".$HTTP_POST_VARS["ggroup"]."'";
+                $sql = "SELECT ".$cfg["grouped"]["db"]["group"]["order"]."
+                          FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
+                         WHERE ".$cfg["grouped"]["db"]["group"]["order"]." = '".$HTTP_POST_VARS["ggroup"]."'";
                 $result  = $db -> query($sql);
                 $num_rows = $db -> num_rows($result);
                 if ( $num_rows >= 1 ) $ausgaben["form_error"] = "#(error_dupe)";
@@ -165,7 +165,7 @@
                 #$sqlb .= ", password('".$checked_password."')";
 
                 // level hinzufuegen
-                $sql = "insert into ".$cfg["db"]["group"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "insert into ".$cfg["grouped"]["db"]["group"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
 
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
@@ -185,7 +185,7 @@
                 }
 
 
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["grouped"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

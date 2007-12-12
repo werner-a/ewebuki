@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"],$cfg["grouped"]["right"]) ||
+        priv_check_old("",$cfg["grouped"]["right"]) ) {
 
         $hidedata["edit"]["ii"] = "on";
 
@@ -53,8 +53,8 @@
 
         if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["group"]["entries"]."
-                     WHERE ".$cfg["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
+                     WHERE ".$cfg["grouped"]["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
@@ -66,7 +66,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["group"]["entries"], $form_values );
+        $element = form_elements( $cfg["grouped"]["db"]["group"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -108,8 +108,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["grouped"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["grouped"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -142,9 +142,9 @@
             form_errors( $form_options, $HTTP_POST_VARS );
 
             // gibt es diesen gruppe bereits?
-            $sql = "SELECT ".$cfg["db"]["group"]["order"].",gid
-                        FROM ".$cfg["db"]["group"]["entries"]."
-                       WHERE ".$cfg["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["db"]["group"]["order"]]."'";
+            $sql = "SELECT ".$cfg["grouped"]["db"]["group"]["order"].",gid
+                        FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
+                       WHERE ".$cfg["grouped"]["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["grouped"]["db"]["group"]["order"]]."'";
             $result  = $db -> query($sql);
             $num_rows = 0;
             while ( $array = $db -> fetch_array($result,1) ) {;
@@ -164,26 +164,26 @@
                 // user hinzufuegen
                 if ( $HTTP_POST_VARS["add"] ) {
                     foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
-                        $sql = "INSERT INTO ".$cfg["db"]["member"]["entries"]."
-                                            (".$cfg["db"]["member"]["group"].",".$cfg["db"]["member"]["user"].")
+                        $sql = "INSERT INTO ".$cfg["grouped"]["db"]["member"]["entries"]."
+                                            (".$cfg["grouped"]["db"]["member"]["group"].",".$cfg["grouped"]["db"]["member"]["user"].")
                                      VALUES ('".$environment["parameter"][1]."','".$value."')";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
-                    $header = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+                    $header = $cfg["grouped"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
                 }
 
                 // user entfernen
                 if ( $HTTP_POST_VARS["del"] ) {
                     foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
-                        $sql = "DELETE FROM ".$cfg["db"]["member"]["entries"]."
-                                      WHERE ".$cfg["db"]["member"]["user"]."='".$value."' AND ".$cfg["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
+                        $sql = "DELETE FROM ".$cfg["grouped"]["db"]["member"]["entries"]."
+                                      WHERE ".$cfg["grouped"]["db"]["member"]["user"]."='".$value."' AND ".$cfg["grouped"]["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
-                    $header = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+                    $header = $cfg["grouped"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
                 }
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -208,15 +208,15 @@
                 #$sqla .= ", ldate='".$ldate."'";
 
                 // gruppe aendern
-                $sql = "UPDATE ".$cfg["db"]["group"]["entries"]."
-                            SET ".$cfg["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["db"]["group"]["order"]]."',
+                $sql = "UPDATE ".$cfg["grouped"]["db"]["group"]["entries"]."
+                            SET ".$cfg["grouped"]["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["grouped"]["db"]["group"]["order"]]."',
                                 beschreibung = '".$HTTP_POST_VARS["beschreibung"]."'
                             WHERE gid='".$environment["parameter"][1]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
 
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["grouped"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
