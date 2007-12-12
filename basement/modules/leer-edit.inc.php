@@ -43,15 +43,15 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["leer"]["right"] == "" || $rechte[$cfg["leer"]["right"]] == -1 ) {
 
         // page basics
         // ***
 
         if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["leer"]["entries"]."
-                     WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
+                     WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
@@ -63,7 +63,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["leer"]["entries"], $form_values );
+        $element = form_elements( $cfg["leer"]["db"]["leer"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -89,8 +89,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["leer"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["leer"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -151,11 +151,11 @@
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
 
-                $sql = "update ".$cfg["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+                $sql = "update ".$cfg["leer"]["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["leer"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

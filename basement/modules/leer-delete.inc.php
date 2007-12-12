@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["leer"]["right"] == "" || $rechte[$cfg["leer"]["right"]] == -1 ) {
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -51,8 +51,8 @@
         ### put your code here ###
 
         /* z.B. evtl. auf verknuepften datensatz pruefen
-        $sql = "SELECT ".$cfg["db"]["menu"]["key"]."
-                  FROM ".$cfg["db"]["menu"]["entries"]."
+        $sql = "SELECT ".$cfg["leer"]["db"]["menu"]["key"]."
+                  FROM ".$cfg["leer"]["db"]["menu"]["entries"]."
                  WHERE refid='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
@@ -68,14 +68,14 @@
             $mapping["navi"] = "leer";
 
             // wohin schicken
-            header("Location: ".$cfg["basis"]."/list.html?error=1");
+            header("Location: ".$cfg["leer"]["basis"]."/list.html?error=1");
 
         } else {
 
             // datensatz holen
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["leer"]["entries"]."
-                     WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
+                     WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,$nop);
@@ -90,8 +90,8 @@
 
             /* z.B. evtl. verknuepfte datensatze holen
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["more"]["entries"]."
-                     WHERE ".$cfg["db"]["more"]["key"]." ='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["leer"]["db"]["more"]["entries"]."
+                     WHERE ".$cfg["leer"]["db"]["more"]["key"]." ='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             while ( $data2 = $db -> fetch_array($result,$nop) ) {
@@ -114,8 +114,8 @@
             $ausgaben["form_error"] = "";
 
             // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-            $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+            $ausgaben["form_aktion"] = $cfg["leer"]["basis"]."/delete,".$environment["parameter"][1].".html";
+            $ausgaben["form_break"] = $cfg["leer"]["basis"]."/list.html";
 
             // hidden values
             $ausgaben["form_hidden"] = "";
@@ -157,8 +157,8 @@
                     ### put your code here ###
 
                     /* z.B. evtl. verknuepfte datensatze loeschen
-                    $sql = "DELETE FROM ".$cfg["db"]["more"]["entries"]."
-                                  WHERE ".$cfg["db"]["more"]["key"]." = '".$HTTP_POST_VARS["id2"]."'";
+                    $sql = "DELETE FROM ".$cfg["leer"]["db"]["more"]["entries"]."
+                                  WHERE ".$cfg["leer"]["db"]["more"]["key"]." = '".$HTTP_POST_VARS["id2"]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
@@ -170,8 +170,8 @@
 
                 // datensatz loeschen
                 if ( $ausgaben["form_error"] == "" ) {
-                    $sql = "DELETE FROM ".$cfg["db"]["leer"]["entries"]."
-                                  WHERE ".$cfg["db"]["leer"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
+                    $sql = "DELETE FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
+                                  WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
@@ -179,7 +179,7 @@
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/list.html");
+                    header("Location: ".$cfg["leer"]["basis"]."/list.html");
                 }
             }
             // +++

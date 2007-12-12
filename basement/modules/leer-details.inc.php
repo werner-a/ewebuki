@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["leer"]["right"] == "" || $rechte[$cfg["leer"]["right"]] == -1 ) {
 
         ////////////////////////////////////////////////////////////////////
         // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!
@@ -59,7 +59,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+        if ( $cfg["leer"]["iconpath"] == "" ) $cfg["leer"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -78,8 +78,8 @@
         ### put your code here ###
 
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["leer"]["entries"]."
-                 WHERE ".$cfg["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+                  FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
+                 WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -103,8 +103,8 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_edit"] = $cfg["basis"]."/edit,".$environment["parameter"][1].".html";
-        $ausgaben["link_list"] = $cfg["basis"]."/list.html";
+        $ausgaben["link_edit"] = $cfg["leer"]["basis"]."/edit,".$environment["parameter"][1].".html";
+        $ausgaben["link_list"] = $cfg["leer"]["basis"]."/list.html";
         #$mapping["navi"] = "leer";
 
         // hidden values

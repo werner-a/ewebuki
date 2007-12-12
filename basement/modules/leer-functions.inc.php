@@ -50,7 +50,7 @@
     */
 
     // beschreibung der funktion
-    if ( in_array("function_name", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("function_name", $cfg["leer"]["function"][$environment["kategorie"]]) ) {
 
          function function_name(  $var1, $var2 = "") {
             ### put your code here ###
