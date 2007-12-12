@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["sitemap"] = array(
            "subdir" => "addon",
              "name" => "sitemap",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
