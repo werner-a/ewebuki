@@ -66,7 +66,7 @@
             if ( $cfg["file"]["filetyp"][$data["ffart"]] == "img" ) {
                 $link = $cfg["fileed"]["basis"]."/delete/view,o,".$data["fid"].".html";
             } else {
-                $link = $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"];
+                $link = $cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"];
             }
             if ( $_SESSION["uid"] != $data["fuid"] ) {
                 $dataloop["list"][$data["fid"]] = array(
@@ -180,7 +180,7 @@
 
                         $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                         foreach ( $art as $key => $pre ) {
-                            $file_name = $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$pre."_".$value.".".$data["ffart"];
+                            $file_name = $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"][$key].$pre."_".$value.".".$data["ffart"];
                             if ( file_exists($file_name) ) {
                                 $return = unlink($file_name);
                                 if ( $return != 1 ) {

@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -53,7 +53,7 @@
             reset($_SESSION["zip_extracted"]);
             $file_buffer = current($_SESSION["zip_extracted"]);
             $file = $file_buffer["name"];
-            while( !file_exists($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file) ){
+            while( !file_exists($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file) ){
                 unset($_SESSION["zip_extracted"][$file]);
                 $file_buffer = current($_SESSION["zip_extracted"]);
                 $file = $file_buffer["name"];
@@ -100,29 +100,29 @@
 
         preg_match("/(.*)\.([a-zA-z]{1,4})/i",$file,$match);
         // thumbnail wird vorlaeufig gebaut
-        $thumb_srv = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
-        $thumb_web = $pathvars["filebase"]["webdir"].$pathvars["filebase"]["new"]."tmp".$match[1]."_preview.".$match[2];
+        $thumb_srv = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]."tmp".$match[1]."_preview.".$match[2];
+        $thumb_web = $cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["new"]."tmp".$match[1]."_preview.".$match[2];
         if ( !file_exists($thumb_srv) ) {
             $type = $cfg["file"]["filetyp"][$match[2]];
             if ( $type == "img" ) {
                 switch ( strtolower($match[2]) ) {
                     case "gif":
-                        $img_src = @imagecreatefromgif($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+                        $img_src = @imagecreatefromgif($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
                         break;
                     case "jpg":
-                        $img_src = @imagecreatefromjpeg($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+                        $img_src = @imagecreatefromjpeg($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
                         break;
                     case "png":
-                        $img_src = @imagecreatefrompng($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+                        $img_src = @imagecreatefrompng($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
                         break;
                     default:
                         die("config error. can't handle ".$match[2]." file");
                 }
-                resize( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
+                resize( $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file,
                         "preview",
                         $img_src,
                         $cfg["file"]["size"][$cfg["file"]["fileopt"]["preview_size"]],
-                        preg_replace("/\/$/i","",$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]),
+                        preg_replace("/\/$/i","",$cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]),
                         "tmp".$match[1]
                 );
             } else {
@@ -133,7 +133,7 @@
 
         // falls zip wird der inhalt gebaut
         if ( $match[2] == "zip" && function_exists("zip_open") ) {
-            $dataloop["zip"] = zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file);
+            $dataloop["zip"] = zip_handling($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
             if ( count($dataloop["zip"]) > 0 ){
                 $hidedata["zip"][] = -1;
             }
@@ -179,7 +179,7 @@
         // +++
         // page basics
         if ( $_POST["continue"] != "" ) {
-            unlink( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file );
+            unlink( $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file );
             if ( file_exists($thumb_srv) ) unlink( $thumb_srv );
             header("Location: ".$cfg["fileed"]["basis"]."/add.html");
             exit;
@@ -211,8 +211,8 @@
                         $compid = "";
                     }
                     // zip auspacken
-                    $not_extracted = zip_handling($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file,
-                                                 $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                    $not_extracted = zip_handling($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file,
+                                                 $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"],
                                                  $cfg["file"]["filetyp"],
                                                  $cfg["file"]["filesize"],
                                                  "",
@@ -225,7 +225,7 @@
                         }
                         $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
                     } else {
-                        unlink( $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file );
+                        unlink( $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file );
                         header("Location: ".$cfg["fileed"]["basis"]."/add.html");
                         exit;
                     }
@@ -273,7 +273,7 @@
                 #if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 if ( $result ) {
                     $file_id = $db->lastid();
-                    $source = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file;
+                    $source = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file;
                     arrange( $file_id, $source, $file );
                     if ( file_exists($thumb_srv) ) unlink( $thumb_srv );
                     unset($_SESSION["zip_extracted"][$file]);

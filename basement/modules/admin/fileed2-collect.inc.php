@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -139,7 +139,7 @@
                     "id"   => $data["fid"],
                     "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
                    "title" => $data["funder"],
-                     "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
+                     "src" => $cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
                     "link" => $cfg["fileed"]["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].",".$environment["parameter"][1].".html",
                     "sort" => $sort,
                   "delete" => "?del=".$data["fid"],

@@ -365,15 +365,15 @@
                             } else {
                                 $imgurl = $tagwert;
                                 if ( !strstr($tagwert, "http") ) {
-                                    if ( strpos($tagwert,$pathvars["filebase"]["pic"]["root"]) === false ) {
+                                    if ( strpos($tagwert,$cfg["file"]["base"]["pic"]["root"]) === false ) {
                                         $opt = explode("/",$tagwert);
-                                        $imgfile = $pathvars["filebase"]["maindir"]
-                                                   .$pathvars["filebase"]["pic"]["root"]
-                                                   .$pathvars["filebase"]["pic"][$opt[4]]
+                                        $imgfile = $cfg["file"]["base"]["maindir"]
+                                                   .$cfg["file"]["base"]["pic"]["root"]
+                                                   .$cfg["file"]["base"]["pic"][$opt[4]]
                                                    ."img_".$opt[3].".".$opt[2];
-                                    } elseif ( strstr($tagwert, $pathvars["filebase"]["webdir"]) ) {
-                                        $imgfile = str_replace($pathvars["filebase"]["webdir"],"",$tagwert);
-                                        $imgfile = $pathvars["filebase"]["maindir"].$imgfile;
+                                    } elseif ( strstr($tagwert, $cfg["file"]["base"]["webdir"]) ) {
+                                        $imgfile = str_replace($cfg["file"]["base"]["webdir"],"",$tagwert);
+                                        $imgfile = $cfg["file"]["base"]["maindir"].$imgfile;
                                     } else {
                                         $imgfile = $pathvars["fileroot"].$tagwert;
                                     }
@@ -442,15 +442,15 @@
                             } else {
                                 $imgurl = $imgwerte[0];
                                 if ( !strstr($imgwerte[0], "http") ) {
-                                    if ( strpos($imgwerte[0],$pathvars["filebase"]["pic"]["root"]) === false ) {
-                                        $opt = explode("/",$imgwerte[0]);
-                                        $imgfile = $pathvars["filebase"]["maindir"]
-                                                .$pathvars["filebase"]["pic"]["root"]
-                                                .$pathvars["filebase"]["pic"][$opt[4]]
+                                    if ( strpos($imgwerte[0],$cfg["file"]["base"]["pic"]["root"]) === false ) {
+                                        $opt = explode("/",str_replace($pathvars["subdir"],"",$imgwerte[0]));
+                                        $imgfile = $cfg["file"]["base"]["maindir"]
+                                                .$cfg["file"]["base"]["pic"]["root"]
+                                                .$cfg["file"]["base"]["pic"][$opt[4]]
                                                 ."img_".$opt[3].".".$opt[2];
-                                    } elseif ( strstr($imgwerte[0], $pathvars["filebase"]["webdir"]) ) {
-                                        $imgfile = str_replace($pathvars["filebase"]["webdir"],"",$imgwerte[0]);
-                                        $imgfile = $pathvars["filebase"]["maindir"].$imgfile;
+                                    } elseif ( strstr($imgwerte[0], $cfg["file"]["base"]["webdir"]) ) {
+                                        $imgfile = str_replace($cfg["file"]["base"]["webdir"],"",$imgwerte[0]);
+                                        $imgfile = $cfg["file"]["base"]["maindir"].$imgfile;
                                     } else {
                                         $imgfile = $pathvars["fileroot"].$imgwerte[0];
                                     }
@@ -464,8 +464,8 @@
                                         $bilderstrecke = "";
                                     }
                                     if ( $imgwerte[3] != "" ) {
-                                        if ( strpos($imgurl,$pathvars["filebase"]["pic"]["root"]) === false ) {
-                                            $opt = explode("/",$imgurl);
+                                        if ( strpos($imgurl,$cfg["file"]["base"]["pic"]["root"]) === false ) {
+                                            $opt = explode("/",str_replace($pathvars["subdir"],"",$imgurl));
                                             $imgid = $opt[3];
                                         } else {
                                             $opt = split("[_.]",$imgurl);
@@ -663,14 +663,14 @@
                         } else {
                             $imgurl = $imgwerte[0];
                             if ( strpos($imgurl,"http") === false ) {
-                                if ( strpos($imgwerte[0],$pathvars["filebase"]["pic"]["root"]) === false ) {
-                                    $opt = explode("/",$imgurl);
-                                    $imgfile = $pathvars["filebase"]["maindir"]
-                                               .$pathvars["filebase"]["pic"]["root"]
-                                               .$pathvars["filebase"]["pic"][$opt[4]]
+                                if ( strpos($imgwerte[0],$cfg["file"]["base"]["pic"]["root"]) === false ) {
+                                    $opt = explode("/",str_replace($pathvars["subdir"],"",$imgurl));
+                                    $imgfile = $cfg["file"]["base"]["maindir"]
+                                               .$cfg["file"]["base"]["pic"]["root"]
+                                               .$cfg["file"]["base"]["pic"][$opt[4]]
                                                ."img_".$opt[3].".".$opt[2];
-                                } elseif ( strpos($imgurl,$pathvars["filebase"]["webdir"]) !== false ) {
-                                    $imgfile = $pathvars["filebase"]["maindir"].str_replace($pathvars["filebase"]["webdir"],"",$imgurl);
+                                } elseif ( strpos($imgurl,$cfg["file"]["base"]["webdir"]) !== false ) {
+                                    $imgfile = $cfg["file"]["base"]["maindir"].str_replace($cfg["file"]["base"]["webdir"],"",$imgurl);
                                 } else {
                                     $imgfile = $pathvars["fileroot"].$imgwerte[0];
                                 }
@@ -688,8 +688,8 @@
                                     $bilderstrecke = "";
                                 }
                                 if ( $imgwerte[3] != "" ) {
-                                    if ( strpos($imgurl,$pathvars["filebase"]["pic"]["root"]) === false ) {
-                                        $opt = explode("/",$imgurl);
+                                    if ( strpos($imgurl,$cfg["file"]["base"]["pic"]["root"]) === false ) {
+                                        $opt = explode("/",str_replace($pathvars["subdir"],"",$imgurl));
                                         $imgid = $opt[3];
                                     } else {
                                         $opt = split("[_.]",$imgurl);
@@ -757,9 +757,9 @@
                             } elseif ( $tag_param[3] == "a" ) {
                                 $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
                                 foreach ( $files as $row ) {
-                                    $tn = $pathvars["filebase"]["webdir"]
-                                         .$pathvars["filebase"]["pic"]["root"]
-                                         .$pathvars["filebase"]["pic"]["tn"]
+                                    $tn = $cfg["file"]["base"]["webdir"]
+                                         .$cfg["file"]["base"]["pic"]["root"]
+                                         .$cfg["file"]["base"]["pic"]["tn"]
                                          ."tn_".$row["fid"].".".$row["ffart"];
 
                                     $changed = str_replace( "#", $row["fid"], $link);
@@ -773,9 +773,9 @@
                                 $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
                                 foreach ( $files as $row ) {
                                     if ( !in_array( $row["fid"], $tag_extra ) ) continue;
-                                    $tn = $pathvars["filebase"]["webdir"]
-                                         .$pathvars["filebase"]["pic"]["root"]
-                                         .$pathvars["filebase"]["pic"]["tn"]
+                                    $tn = $cfg["file"]["base"]["webdir"]
+                                         .$cfg["file"]["base"]["pic"]["root"]
+                                         .$cfg["file"]["base"]["pic"]["tn"]
                                          ."tn_".$row["fid"].".".$row["ffart"];
 
                                     $changed = str_replace( "#", $row["fid"], $link);

@@ -268,9 +268,9 @@
         // images in templates + funktionen
         $line = str_replace("/images/",$pathvars["subdir"]."/images/",$line);
         // images im content aber nur bei der ausgabe (nicht im cms editor und im filesystem (magic.php))
-#        if ( strpos($line,"=".$pathvars["filebase"]["webdir"]) === false && strpos($line,$pathvars["filebase"]["maindir"]) === false ) {
-        if ( strpos($line,"textarea") === false && strpos($line,$pathvars["filebase"]["maindir"]) === false ) {
-            $line = str_replace($pathvars["filebase"]["webdir"],$pathvars["subdir"].$pathvars["filebase"]["webdir"],$line);
+#        if ( strpos($line,"=".$cfg["file"]["base"]["webdir"]) === false && strpos($line,$cfg["file"]["base"]["maindir"]) === false ) {
+        if ( strpos($line,"textarea") === false && strpos($line,$cfg["file"]["base"]["maindir"]) === false ) {
+            $line = str_replace($cfg["file"]["base"]["webdir"],$pathvars["subdir"].$cfg["file"]["base"]["webdir"],$line);
         } #else {
         #    echo "####".$line."####";
         #}

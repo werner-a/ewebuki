@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -61,22 +61,22 @@
 
     if ( $value[6] == "d" ) {
         echo "<pre>";
-        print_r($pathvars["filebase"]);
+        print_r($cfg["file"]["base"]);
         print_r($value);
         echo "</pre>";
     }
 
 
     // path finden
-    $path["img"] = $pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"][$value[4]];
+    $path["img"] = $cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"][$value[4]];
     if ( $value[4] == "tn" ) {
         $path["img"] = $path["img"]."tn_";
     } else {
         $path["img"] = $path["img"]."img_";
     }
 
-    $path["doc"] = $pathvars["filebase"]["doc"]."doc_";
-    $path["arc"] = $pathvars["filebase"]["arc"]."arc_";
+    $path["doc"] = $cfg["file"]["base"]["doc"]."doc_";
+    $path["arc"] = $cfg["file"]["base"]["arc"]."arc_";
 
 
     // filetyp auswerten
@@ -127,7 +127,7 @@
 
 
     // filenamen zusammensetzen
-    $file = $pathvars["filebase"]["maindir"].$filepath.$value[3].".".$value[2];
+    $file = $cfg["file"]["base"]["maindir"].$filepath.$value[3].".".$value[2];
 
     if ( $value[6] == "d" ) {
         echo $type."<br>";

@@ -102,7 +102,7 @@
                        "id" => $data["fid"],
                      "sort" => $match[1],
                      "type" => $data["ffart"],
-                      "src" => $pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
+                      "src" => $cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
                      "link" => $pathvars["virtual"].$environment["ebene"]."/view,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].",".$environment["parameter"][4].".html",
                     "title" => $data["funder"],
                        "bg" => $color,
@@ -189,14 +189,14 @@
 
 
         // img werte
-        if ( $pathvars["filebase"]["realname"] == True ) {
+        if ( $cfg["file"]["base"]["realname"] == True ) {
             $img = $filetyp."/".$environment["parameter"][2]."/".$environment["parameter"][1]."/".$filename;
         } else {
-            $img = $pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"][$environment["parameter"][1]]."img_".$environment["parameter"][2].".".$filetyp;
+            $img = $cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"][$environment["parameter"][1]]."img_".$environment["parameter"][2].".".$filetyp;
         }
 
-        $imgfile = $pathvars["filebase"]["maindir"].$img;
-        $ausgaben["imgurl"] = $pathvars["webroot"].$pathvars["filebase"]["webdir"].$img;
+        $imgfile = $cfg["file"]["base"]["maindir"].$img;
+        $ausgaben["imgurl"] = $pathvars["webroot"].$cfg["file"]["base"]["webdir"].$img;
         if ( file_exists($imgfile) ) {
             $imgsize = getimagesize($imgfile);
             $ausgaben["imgsize"] = " ".$imgsize[3];

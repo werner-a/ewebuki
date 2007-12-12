@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -64,7 +64,7 @@
             global $_SESSION, $cfg, $pathvars, $file;
 
             $thumbnail = "";
-            $dp = opendir($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]);
+            $dp = opendir($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]);
             while ( $file = readdir($dp) ) {
                 $info  = explode( "_", $file, 2 );
                 if ( $info[0] == $_SESSION["uid"] ) {
@@ -193,7 +193,7 @@
                 }
                 $art = array( "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                 foreach ( $art as $key => $value ) {
-                    resize( $source, $id, $img_src, $cfg["file"]["size"][$key], $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key], $value );
+                    resize( $source, $id, $img_src, $cfg["file"]["size"][$key], $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"][$key], $value );
                 }
 
                 // orginal bild nach max resizen oder loeschen
@@ -201,12 +201,12 @@
                 #if ( $cfg["file"]["size"]["max"] == "" || (imagesx($img_src) <= $cfg["file"]["size"]["max"] && imagesy($img_src) <= $cfg["file"]["size"]["max"] )) {
                 if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $cfg["file"]["size"]["max"] ) {
                     if ( $move == -1 ) {
-                        rename( $source, $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
+                        rename( $source, $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
                     } else {
-                        copy( $source, $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
+                        copy( $source, $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
                     }
                 } else {
-                    resize( $source, $id, $img_src, $cfg["file"]["size"]["max"], $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"], $cfg["file"]["fileopt"][$type]["name"] );
+                    resize( $source, $id, $img_src, $cfg["file"]["size"]["max"], $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"]["o"], $cfg["file"]["fileopt"][$type]["name"] );
                     if ( $move == -1 ) {
                         unlink( $source );
                     }

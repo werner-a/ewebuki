@@ -116,10 +116,10 @@
                             $tnd .= "<tr><td>".$defaults["icon"]["pdf"]."</td></tr>";
                             $tnd .= "</table>";
 
-                            if ( $pathvars["filebase"]["realname"] == True ) {
-                                $ausgaben["extension"] .= $sp."else if (st=='doc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
+                            if ( $cfg["file"]["base"]["realname"] == True ) {
+                                $ausgaben["extension"] .= $sp."else if (st=='doc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
                             } else {
-                                $ausgaben["extension"] .= $sp."else if (st=='doc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["doc"]."doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
+                                $ausgaben["extension"] .= $sp."else if (st=='doc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["doc"]."doc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                             }
                             break;
                         case "zip": case "bz2": case "gz":
@@ -138,14 +138,14 @@
                             $tnd .= "<tr><td>".$defaults["icon"]["zip"]."</td></tr>";
                             $tnd .= "</table>";
 
-                            if ( $pathvars["filebase"]["realname"] == True ) {
-                                $ausgaben["extension"] .= $sp."else if (st=='arc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
+                            if ( $cfg["file"]["base"]["realname"] == True ) {
+                                $ausgaben["extension"] .= $sp."else if (st=='arc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/".$data["ffname"]."]".$data["funder"]."[/LINK]';";
                             } else {
-                                $ausgaben["extension"] .= $sp."else if (st=='arc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["arc"]."arc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
+                                $ausgaben["extension"] .= $sp."else if (st=='arc".$data["fid"]."')\n".$sp.$sp."st='[LINK=".$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["arc"]."arc_".$data["fid"].".".$data["ffart"]."]".$data["fdesc"]."[/LINK]';";
                             }
                             break;
                         default:
-                            $imgsize = getimagesize($pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]);
+                            $imgsize = getimagesize($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]);
                             $imgsize = " ".$imgsize[3];
                             #$tn .= "<a href=\"#\" onclick=\"INSst('imb".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img src=\"/dateien/bilder/thumbnail/tn_".$data["fid"].".".$data["ffart"]."\"></a> ";
                             $tn1 .= "\n<table align=\"left\" width=\"96\">";
@@ -154,7 +154,7 @@
                             $tn1 .= "<a href=\"#\" onclick=\"INSst('imm".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Mittel (middle)\">M</a> ";
                             $tn1 .= "<a href=\"#\" onclick=\"INSst('ims".$data["fid"]."','".$ce_formname."','".$ce_name."')\" title=\"Klein (small)\">S</a></td></tr>";
 
-                            $tn1 .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" alt=\"id:".$data["fid"].", .".$data["ffart"]."\" title=\"id:".$data["fid"].", .".$data["ffart"]."\"></a></td></tr>";
+                            $tn1 .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" alt=\"id:".$data["fid"].", .".$data["ffart"]."\" title=\"id:".$data["fid"].", .".$data["ffart"]."\"></a></td></tr>";
                             $tn1 .= "</table>";
 
                             if ( $defaults["cms-tag"]["grafik"] == "" ) {
@@ -162,16 +162,16 @@
                                 $defaults["cms-tag"][",grafik"] = "";
                                 $defaults["cms-tag"]["/grafik"] = "[/IMG]";
                             }
-                            if ( $pathvars["filebase"]["realname"] == True ) {
-                                $ausgaben["extension"] .= $sp."else if (st=='imo".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."o/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                                $ausgaben["extension"] .= $sp."else if (st=='imb".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."b/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                                $ausgaben["extension"] .= $sp."else if (st=='imm".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."m/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                                $ausgaben["extension"] .= $sp."else if (st=='ims".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."s/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                            if ( $cfg["file"]["base"]["realname"] == True ) {
+                                $ausgaben["extension"] .= $sp."else if (st=='imo".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."o/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                                $ausgaben["extension"] .= $sp."else if (st=='imb".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."b/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                                $ausgaben["extension"] .= $sp."else if (st=='imm".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."m/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                                $ausgaben["extension"] .= $sp."else if (st=='ims".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/"."s/".$data["ffname"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
                             } else {
-                                $ausgaben["extension"] .= $sp."else if (st=='imo".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                                $ausgaben["extension"] .= $sp."else if (st=='imb".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                                $ausgaben["extension"] .= $sp."else if (st=='imm".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
-                                $ausgaben["extension"] .= $sp."else if (st=='ims".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$pathvars["filebase"]["webdir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                                $ausgaben["extension"] .= $sp."else if (st=='imo".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["o"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                                $ausgaben["extension"] .= $sp."else if (st=='imb".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["b"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                                $ausgaben["extension"] .= $sp."else if (st=='imm".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["m"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
+                                $ausgaben["extension"] .= $sp."else if (st=='ims".$data["fid"]."')\n".$sp.$sp."st='".$defaults["cms-tag"]["grafik"].$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["s"]."img_".$data["fid"].".".$data["ffart"].$defaults["cms-tag"][",grafik"]."]".$data["funder"].$defaults["cms-tag"]["/grafik"]."';";
                             }
                             $i++;
                             $a = $i / 6;

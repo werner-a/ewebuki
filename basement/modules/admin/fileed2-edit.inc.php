@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -90,7 +90,7 @@
         // link zum thumbnail wird gebaut
         $type = $cfg["file"]["filetyp"][$form_values["ffart"]];
         if ( $type == "img" ) {
-            $filename = $pathvars["filebase"]["webdir"].
+            $filename = $cfg["file"]["base"]["webdir"].
                         $form_values["ffart"]."/".
                         $form_values["fid"]."/".
                         $cfg["file"]["fileopt"]["preview_size"]."/".
@@ -220,7 +220,7 @@
                         }
                         // zip auspacken
                         $not_extracted = zip_handling($file_srv,
-                                                      $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                                                      $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"],
                                                       $cfg["file"]["filetyp"],
                                                       $cfg["file"]["filesize"],
                                                       "",

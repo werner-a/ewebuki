@@ -158,9 +158,9 @@
 
                 foreach ( $_FILES as $key => $value ) {
                     if ( $value["name"] != "" || $value["size"] != 0 ) {
-                            $error = file_validate($value["tmp_name"], $value["size"], $cfg["fileed"]["filesize"], $cfg["fileed"]["filetyp"], $key);
+                            $error = file_validate($value["tmp_name"], $value["size"], $cfg["file"]["filesize"], $cfg["file"]["filetyp"], $key);
                             if ( $error == 0 ) {
-                                $newname = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$value["name"];
+                                $newname = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$_SESSION["uid"]."_".$value["name"];
                                 rename($value["tmp_name"],$newname);
                                 if ( function_exists("zip_open") ) {
                                     // compilation
@@ -168,7 +168,7 @@
                                     reset($buffer);
                                     $new_comp = key($buffer) + 1;
                                     zip_handling($newname,
-                                                $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                                                $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"],
                                                 $cfg["fileed"]["filetyp"],
                                                 $cfg["fileed"]["filesize"],
                                                 "selection",

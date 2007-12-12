@@ -110,7 +110,7 @@
 
             // onclick link start / end
             $la = $cfg[$script_name]["tags"]["img"][3]
-                 .$pathvars["filebase"]["webdir"]
+                 .$cfg["file"]["base"]["webdir"]
                  .$data["ffart"]."/"
                  .$data["fid"]."/";
             //   "o/"
@@ -144,14 +144,14 @@
                                             "color" => $cfg[$script_name]["color"]["set"],
                                           "checked" => $checked,
                                             "ehref" => "edit,".$data["fid"].".html",
-                                            "dhref" => $pathvars["filebase"]["webdir"].
-                                                       $pathvars["filebase"][$cfg["file"]["fileopt"][$type]["name"]].
+                                            "dhref" => $cfg["file"]["base"]["webdir"].
+                                                       $cfg["file"]["base"][$cfg["file"]["fileopt"][$type]["name"]].
                                                        $cfg["file"]["fileopt"][$type]["name"]."_".
                                                        $data["fid"].".".$data["ffart"],
                                             "vhref" => $environment["allparameter"]."/view,o,".$data["fid"].",".$group.".html",
-                                              "src" => $pathvars["filebase"]["webdir"].
-                                                       $pathvars["filebase"]["pic"]["root"].
-                                                       $pathvars["filebase"]["pic"]["tn"]."tn_".
+                                              "src" => $cfg["file"]["base"]["webdir"].
+                                                       $cfg["file"]["base"]["pic"]["root"].
+                                                       $cfg["file"]["base"]["pic"]["tn"]."tn_".
                                                        $data["fid"].".".$data["ffart"],
                                           "dtarget" => $target,
                                               "alt" => $data["ffname"],
