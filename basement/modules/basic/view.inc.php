@@ -52,7 +52,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+        if ( $cfg["view"]["iconpath"] == "" ) $cfg["view"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($_GET["edit"]) ) {
@@ -74,13 +74,13 @@
         if ( $environment["parameter"][3] != "" ) {
             // selection mode
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["entries"]."
+                      FROM ".$cfg["view"]["db"]["entries"]."
                      WHERE fhit like '%#p".$environment["parameter"][3]."%'
-                  ORDER BY ".$cfg["db"]["order"];
+                  ORDER BY ".$cfg["view"]["db"]["order"];
         } else {
             // picture mode
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["entries"]."
+                      FROM ".$cfg["view"]["db"]["entries"]."
                      WHERE fid =".$environment["parameter"][2];
         }
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -92,7 +92,7 @@
             if ( $environment["parameter"][3] != "" ) {
 
                 if ( $data["fid"] == $environment["parameter"][2] ){
-                    $color = $cfg["color"]["selected"];
+                    $color = $cfg["view"]["color"]["selected"];
                 } else {
                     $color = "none";
                 }
@@ -224,7 +224,7 @@
         }
 
         // navigation erstellen
-        #$ausgaben["add"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        #$ausgaben["add"] = $cfg["view"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
         #$mapping["navi"] = "leer";
 
         // hidden values
