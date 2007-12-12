@@ -81,7 +81,7 @@
         #    $positionArray[] = "nop";
         #}
 
-        $ausgaben["show_menu"] .= sitemap(0, "select", "");
+        $ausgaben["show_menu"] .= sitemap(0,"menued", "select", "");
 
 
         // page basics

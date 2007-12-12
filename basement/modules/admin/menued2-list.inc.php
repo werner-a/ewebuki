@@ -125,7 +125,7 @@
             $design = $cfg["menued"]["design"];
         }
 
-        $ausgaben["show_menu"] .= sitemap(0, "menued", $modify,"");
+        $ausgaben["show_menu"] .= sitemap(0, "menued", "menued", $modify,"");
 
         // fehlermeldungen
         if ( $HTTP_GET_VARS["error"] != "" ) {
