@@ -262,7 +262,7 @@
             }
 
             if ( $check == True ) {
-                $dataloop["authTools"][$funktion]["url"] = $pathvars["subdir"].$pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html";
+                $dataloop["authTools"][$funktion]["url"] = $pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html";
                 $dataloop["authTools"][$funktion]["label"] = $label;
                 $dataloop["authTools"][$funktion]["title"] = "#(".$funktion.")";
                 $dataloop["authTools"][$funktion]["end"] = $end;
