@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["changed"] = array(
            "format" => "d.m.Y H:i:s",
                "db" => array(
                   "changed" => array(

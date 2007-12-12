@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -62,15 +62,15 @@
         } else {
             $tname = $environment["kategorie"];
         }
-        $sql = "SELECT ".$cfg["db"]["changed"]["lang"].",
-                       ".$cfg["db"]["changed"]["changed"].",
-                       ".$cfg["db"]["changed"]["surname"].",
-                       ".$cfg["db"]["changed"]["forename"].",
-                       ".$cfg["db"]["changed"]["email"].",
-                       ".$cfg["db"]["changed"]["alias"]."
-                  FROM ".$cfg["db"]["changed"]["entries"]."
+        $sql = "SELECT ".$cfg["changed"]["db"]["changed"]["lang"].",
+                       ".$cfg["changed"]["db"]["changed"]["changed"].",
+                       ".$cfg["changed"]["db"]["changed"]["surname"].",
+                       ".$cfg["changed"]["db"]["changed"]["forename"].",
+                       ".$cfg["changed"]["db"]["changed"]["email"].",
+                       ".$cfg["changed"]["db"]["changed"]["alias"]."
+                  FROM ".$cfg["changed"]["db"]["changed"]["entries"]."
                  WHERE tname = '".$tname."'
-              ORDER BY ".$cfg["db"]["changed"]["changed"];
+              ORDER BY ".$cfg["changed"]["db"]["changed"]["changed"];
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
@@ -83,12 +83,12 @@
             $lang = $specialvars["default_language"];
         }
 
-        if ( $changed[$lang][$cfg["db"]["changed"]["alias"]] != "" ) {
-            $hidedata["changed"]["changed"] = date($cfg["format"],strtotime($changed[$lang][$cfg["db"]["changed"]["changed"]]));
-            $hidedata["changed"]["surname"] = $changed[$lang][$cfg["db"]["changed"]["surname"]];
-            $hidedata["changed"]["forename"] = $changed[$lang][$cfg["db"]["changed"]["forename"]];
-            $hidedata["changed"]["email"] = $changed[$lang][$cfg["db"]["changed"]["email"]];
-            $hidedata["changed"]["alias"] = $changed[$lang][$cfg["db"]["changed"]["alias"]];
+        if ( $changed[$lang][$cfg["changed"]["db"]["changed"]["alias"]] != "" ) {
+            $hidedata["changed"]["changed"] = date($cfg["changed"]["format"],strtotime($changed[$lang][$cfg["changed"]["db"]["changed"]["changed"]]));
+            $hidedata["changed"]["surname"] = $changed[$lang][$cfg["changed"]["db"]["changed"]["surname"]];
+            $hidedata["changed"]["forename"] = $changed[$lang][$cfg["changed"]["db"]["changed"]["forename"]];
+            $hidedata["changed"]["email"] = $changed[$lang][$cfg["changed"]["db"]["changed"]["email"]];
+            $hidedata["changed"]["alias"] = $changed[$lang][$cfg["changed"]["db"]["changed"]["alias"]];
         }
 
         // globale db auswaehlen
