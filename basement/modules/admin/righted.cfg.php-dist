@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["righted"] = array(
            "subdir" => "admin",
              "name" => "righted",
             "basis" => $pathvars["virtual"]."/admin/righted", # crc = -1468826685 *
@@ -74,7 +74,7 @@
                              "name" => "priv",
                      ),
               ),
-            "right" => "admin",
+            "right" => $cfg["auth"]["ghost"]["righted"],
     );
 
     // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich

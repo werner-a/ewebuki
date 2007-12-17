@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( priv_check("/".$cfg["righted"]["subdir"]."/".$cfg["righted"]["name"],$cfg["righted"]["right"]) ||
+        priv_check_old("",$cfg["righted"]["right"]) ) {
 
         // page basics
         // ***
@@ -66,9 +66,9 @@
 
         $ausgaben["url"] = $url;
 
-        $sql = "SELECT * FROM ".$cfg["db"]["content"]["entries"]." 
-                INNER JOIN ".$cfg["db"]["group"]["entries"]." ON ( ".$cfg["db"]["content"]["entries"].".gid=".$cfg["db"]["group"]["entries"].".gid) 
-                INNER JOIN ".$cfg["db"]["priv"]["entries"]." ON ( ".$cfg["db"]["content"]["entries"].".pid=".$cfg["db"]["priv"]["entries"].".pid ) 
+        $sql = "SELECT * FROM ".$cfg["righted"]["db"]["content"]["entries"]." 
+                INNER JOIN ".$cfg["righted"]["db"]["group"]["entries"]." ON ( ".$cfg["righted"]["db"]["content"]["entries"].".gid=".$cfg["righted"]["db"]["group"]["entries"].".gid) 
+                INNER JOIN ".$cfg["righted"]["db"]["priv"]["entries"]." ON ( ".$cfg["righted"]["db"]["content"]["entries"].".pid=".$cfg["righted"]["db"]["priv"]["entries"].".pid ) 
                 WHERE tname='".$url."'";
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
@@ -79,21 +79,21 @@
                                         );
         }
 
-        $sql ="SELECT * FROM ".$cfg["db"]["group"]["entries"];
+        $sql ="SELECT * FROM ".$cfg["righted"]["db"]["group"]["entries"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
                 $dataloop["group"][] = array(
-                                            "value" => $all[$cfg["db"]["group"]["key"]],
-                                            "name" => $all[$cfg["db"]["group"]["name"]]
+                                            "value" => $all[$cfg["righted"]["db"]["group"]["key"]],
+                                            "name" => $all[$cfg["righted"]["db"]["group"]["name"]]
                                         );
         }
 
-        $sql ="SELECT * FROM ".$cfg["db"]["priv"]["entries"];
+        $sql ="SELECT * FROM ".$cfg["righted"]["db"]["priv"]["entries"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
                 $dataloop["priv"][] = array(
-                                            "value" => $all[$cfg["db"]["priv"]["key"]],
-                                            "name" => $all[$cfg["db"]["priv"]["name"]]
+                                            "value" => $all[$cfg["righted"]["db"]["priv"]["key"]],
+                                            "name" => $all[$cfg["righted"]["db"]["priv"]["name"]]
                                         );
         }
 
@@ -102,7 +102,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["content"]["entries"], $form_values );
+        $element = form_elements( $cfg["righted"]["db"]["content"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -128,7 +128,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
         $sql = "SELECT refid FROM site_menu WHERE mid=".$environment["parameter"][1];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -189,11 +189,11 @@
 
                 // recht hinzufuegen
                 if ( $HTTP_POST_VARS["add"] ) {
-                        $sql = "SELECT * FROM ".$cfg["db"]["content"]["entries"]."
+                        $sql = "SELECT * FROM ".$cfg["righted"]["db"]["content"]["entries"]."
                                 WHERE tname='".$url."' AND gid=".$HTTP_POST_VARS["group"]." AND pid=".$HTTP_POST_VARS["priv"];
                         $result = $db -> query($sql);
                         if ( $db -> num_rows($result) == 0 ) {
-                            $sql = "INSERT INTO ".$cfg["db"]["content"]["entries"]."
+                            $sql = "INSERT INTO ".$cfg["righted"]["db"]["content"]["entries"]."
                                                 (gid,pid,tname)
                                         VALUES ('".$HTTP_POST_VARS["group"]."','".$HTTP_POST_VARS["priv"]."','".$url."')";
 
@@ -205,7 +205,7 @@
 
                         #if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
 
-                    $header = $cfg["basis"]."/edit,".$environment["parameter"][1].".html";
+                    $header = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].".html";
                 }
                 if ( $HTTP_POST_VARS["del"] ) {
                     $del = explode(",",key($HTTP_POST_VARS["del"]));
@@ -213,10 +213,10 @@
                     $pid = $del[1];
                     $sql = "DELETE FROM auth_content WHERE tname='".$url."' AND gid=".$gid." AND pid=".$pid;
                     $result = $db -> query($sql);
-                    $header = $cfg["basis"]."/edit,".$environment["parameter"][1].".html";
+                    $header = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].".html";
                 }
 
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["righted"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
@@ -225,7 +225,7 @@
             }
         }
     } else {
-       # header("Location: ".$pathvars["virtual"]."/");
+        header("Location: ".$pathvars["virtual"]."/");
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
