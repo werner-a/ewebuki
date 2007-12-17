@@ -757,7 +757,8 @@
                             } elseif ( $tag_param[3] == "a" ) {
                                 $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
                                 foreach ( $files as $row ) {
-                                    $tn = $cfg["file"]["base"]["webdir"]
+                                    $tn = $pathvars["subdir"]
+                                         .$cfg["file"]["base"]["webdir"]
                                          .$cfg["file"]["base"]["pic"]["root"]
                                          .$cfg["file"]["base"]["pic"]["tn"]
                                          ."tn_".$row["fid"].".".$row["ffart"];
@@ -773,7 +774,8 @@
                                 $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
                                 foreach ( $files as $row ) {
                                     if ( !in_array( $row["fid"], $tag_extra ) ) continue;
-                                    $tn = $cfg["file"]["base"]["webdir"]
+                                    $tn = $pathvars["subdir"]
+                                         .$cfg["file"]["base"]["webdir"]
                                          .$cfg["file"]["base"]["pic"]["root"]
                                          .$cfg["file"]["base"]["pic"]["tn"]
                                          ."tn_".$row["fid"].".".$row["ffart"];
