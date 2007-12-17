@@ -61,25 +61,25 @@
           "fileopt" => array(
                       "img" => array(
                              "name" => "img",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"],
-                           "tnpath" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
+                             "path" => $pathvars["fileroot"]."file/picture/",
+                           "tnpath" => $pathvars["fileroot"]."file/new/",
                         "thumbnail" => "set"
                                ),
                       "pdf" => array(
                              "name" => "doc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
-                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                             "path" => $pathvars["fileroot"]."file/document/",
+                           "tnpath" => $pathvars["fileroot"]."file/", # see function thumbnail()
                         "thumbnail" => "icon_pdf.png"
                               ),
                       "arc" => array(
                              "name" => "arc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
+                             "path" => $pathvars["fileroot"]."file/archiv/",
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
                         "thumbnail" => "icon_zip.jpg"
                                ),
                       "odf" => array(
                              "name" => "doc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
+                             "path" => $pathvars["fileroot"]."file/document/",
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
                         "thumbnail" => "icon_odf.png"
                                ),
