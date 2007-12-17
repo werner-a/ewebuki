@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["new"] = array(
            "subdir" => "admin",
              "name" => "new",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]

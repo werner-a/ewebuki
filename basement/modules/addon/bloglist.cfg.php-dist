@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["bloglist"] = array(
            "subdir" => "addon",
              "name" => "bloglist",
             "basis" => $pathvars["virtual"]."/blog", /* $pathvars["virtual"].$environment["ebene"], */

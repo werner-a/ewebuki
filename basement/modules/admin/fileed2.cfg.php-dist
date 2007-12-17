@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -103,61 +103,61 @@
                                ),
                        ),
          "filesize" => "5000000",
-          #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "odg", "bz2", "gz"),
-          "filetyp" => array( "gif" => "img",
-                              "jpg" => "img",
-                             "jpeg" => "img",
-                              "png" => "img",
-                              "pdf" => "pdf",
-                              "zip" => "arc",
-                              "bz2" => "arc",
-                               "gz" => "arc",
-                              "odt" => "odf",
-                              "ods" => "odf",
-                              "odp" => "odf",
-                              "odg" => "odf",
-                       ),
-          "fileopt" => array(
-                      "img" => array(
-                             "name" => "img",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"],
-                           "tnpath" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"],
-                        "thumbnail" => "set"
-                               ),
-                      "pdf" => array(
-                             "name" => "doc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
-                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "icon_pdf.png"
-                              ),
-                      "arc" => array(
-                             "name" => "arc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["arc"],
-                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "icon_zip.jpg"
-                               ),
-                      "odf" => array(
-                             "name" => "doc",
-                             "path" => $pathvars["filebase"]["maindir"].$pathvars["filebase"]["doc"],
-                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
-                        "thumbnail" => "icon_odf.png"
-                               ),
-             "preview_size" => "tn",
-                       ),
+//           #"filetyp" => array("jpg", "png", "pdf", "zip", "gif", "odt", "ods", "odp", "odg", "bz2", "gz"),
+//           "filetyp" => array( "gif" => "img",
+//                               "jpg" => "img",
+//                              "jpeg" => "img",
+//                               "png" => "img",
+//                               "pdf" => "pdf",
+//                               "zip" => "arc",
+//                               "bz2" => "arc",
+//                                "gz" => "arc",
+//                               "odt" => "odf",
+//                               "ods" => "odf",
+//                               "odp" => "odf",
+//                               "odg" => "odf",
+//                        ),
+//           "fileopt" => array(
+//                       "img" => array(
+//                              "name" => "img",
+//                              "path" => $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["pic"]["root"],
+//                            "tnpath" => $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"],
+//                         "thumbnail" => "set"
+//                                ),
+//                       "pdf" => array(
+//                              "name" => "doc",
+//                              "path" => $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["doc"],
+//                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+//                         "thumbnail" => "icon_pdf.png"
+//                               ),
+//                       "arc" => array(
+//                              "name" => "arc",
+//                              "path" => $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["arc"],
+//                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+//                         "thumbnail" => "icon_zip.jpg"
+//                                ),
+//                       "odf" => array(
+//                              "name" => "doc",
+//                              "path" => $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["doc"],
+//                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+//                         "thumbnail" => "icon_odf.png"
+//                                ),
+//              "preview_size" => "tn",
+//                        ),
      "zip_handling" => array(
              "sektions" => array(
                      "unterschrift" => "funder",
                      "beschreibung" => "fdesc",
                                )
                        ),
-             "size" => array(
-                        "b" => "580",
-                        "m" => "250",
-                        "s" => "150",
-                       "tn" => "96",
-                      "max" => "580", # leer bedeutet, orginal bleibt erhalten
-    #to be implemeted "may" => "",    # wenn gesetzt, wird auch höhe geaendert
-                       ),
+//              "size" => array(
+//                         "b" => "580",
+//                         "m" => "250",
+//                         "s" => "150",
+//                        "tn" => "96",
+//                       "max" => "580", # leer bedeutet, orginal bleibt erhalten
+//     #to be implemeted "may" => "",    # wenn gesetzt, wird auch höhe geaendert
+//                        ),
            "upload" => array(
                    "inputs" => 5,
                        ),

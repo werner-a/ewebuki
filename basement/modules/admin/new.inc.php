@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["new"]["right"] == "" || $rechte[$cfg["new"]["right"]] == -1 ) {
 
         ////////////////////////////////////////////////////////////////////
         // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!
@@ -59,7 +59,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+        if ( $cfg["new"]["iconpath"] == "" ) $cfg["new"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -88,7 +88,7 @@
         foreach ( $work as $value ) {
             if ( $value == "" || $value == "auth" ) continue;
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["menu"]["entries"]."
+                      FROM ".$cfg["new"]["db"]["menu"]["entries"]."
                      WHERE entry = '".$value."'
                        AND refid = ".$data["mid"];
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -104,7 +104,7 @@
         header("Location: ".$header);
 
 /*        $sql = "SELECT *
-                  FROM ".$cfg["db"]["menu"]["entries"]."
+                  FROM ".$cfg["new"]["db"]["menu"]["entries"]."
                  WHERE entry = ".$value;
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
@@ -130,7 +130,7 @@
         }
 
         // navigation erstellen
-        $ausgaben["add"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["add"] = $cfg["new"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
         #$mapping["navi"] = "leer";
 
         // hidden values

@@ -42,7 +42,7 @@
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
-    $cfg = array(
+    $cfg["bloged"] = array(
            "subdir" => "admin",
              "name" => "bloged",
             "basis" => $pathvars["virtual"]."/admin/bloged",

@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["kontakt"]["right"]] == "" || $rechte[$cfg["kontakt"]["right"]] == -1 ) {
 
         // page basics
         // ***
@@ -54,7 +54,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+        if ( $cfg["kontakt"]["iconpath"] == "" ) $cfg["kontakt"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -72,13 +72,13 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["entries"], $form_values );
+        $element = form_elements( $cfg["kontakt"]["db"]["entries"], $form_values );
 
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["kontakt"]["basis"].",verify.html";
         $ausgaben["form_break"] = "index.html";
 
         // hidden values
@@ -125,18 +125,18 @@
                 $message2 = parser("kontakt-email2","");
 
                 // happy bouncing
-                ini_set("sendmail_from",$cfg["email"]["robot"]);
+                ini_set("sendmail_from",$cfg["kontakt"]["email"]["robot"]);
 
                 // mail an betreiber
-                $subject1 = $cfg["email"]["subj1"].$ausgaben["name"];
-                $header1  = "From: ".$cfg["email"]["robot"]."\r\n";
+                $subject1 = $cfg["kontakt"]["email"]["subj1"].$ausgaben["name"];
+                $header1  = "From: ".$cfg["kontakt"]["email"]["robot"]."\r\n";
                 $header1 .= "Reply-To: ".$email_adresse."\r\n";
-                $result = mail($cfg["email"]["owner"],$subject1,$message1,$header1);
-                if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (". htmlspecialchars($cfg["email"]["owner"]).")</font><br />";
+                $result = mail($cfg["kontakt"]["email"]["owner"],$subject1,$message1,$header1);
+                if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (". htmlspecialchars($cfg["kontakt"]["email"]["owner"]).")</font><br />";
 
                 // kopie an kunden
-                $subject2 = $cfg["email"]["subj2"].$ausgaben["name"];;
-                $header2  = "From: ".$cfg["email"]["owner"]."\r\n";
+                $subject2 = $cfg["kontakt"]["email"]["subj2"].$ausgaben["name"];;
+                $header2  = "From: ".$cfg["kontakt"]["email"]["owner"]."\r\n";
                 $result = mail($email_adresse,$subject2,$message2,$header2);
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
@@ -158,7 +158,7 @@
             // info anlegen
             if ( $ausgaben["form_error"] == ""  ) {
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/danke.html";
+                if ( $header == "" ) $header = $cfg["kontakt"]["basis"]."/danke.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

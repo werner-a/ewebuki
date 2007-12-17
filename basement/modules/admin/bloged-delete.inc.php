@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -51,8 +51,8 @@
         ### put your code here ###
 
         /* z.B. evtl. auf verknuepften datensatz pruefen
-        $sql = "SELECT ".$cfg["db"]["menu"]["key"]."
-                  FROM ".$cfg["db"]["menu"]["entries"]."
+        $sql = "SELECT ".$cfg["bloged"]["db"]["menu"]["key"]."
+                  FROM ".$cfg["bloged"]["db"]["menu"]["entries"]."
                  WHERE refid='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
@@ -68,14 +68,14 @@
             $mapping["navi"] = "leer";
 
             // wohin schicken
-            header("Location: ".$cfg["basis"]."/list.html?error=1");
+            header("Location: ".$cfg["bloged"]["basis"]."/list.html?error=1");
 
         } else {
 
             // datensatz holen
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["bloged"]["entries"]."
-                     WHERE ".$cfg["db"]["bloged"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
+                     WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,$nop);
@@ -89,8 +89,8 @@
 
             /* z.B. evtl. verknuepfte datensatze holen
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["more"]["entries"]."
-                     WHERE $cfg["db"]["more"]["id"] ='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["bloged"]["db"]["more"]["entries"]."
+                     WHERE $cfg["bloged"]["db"]["more"]["id"] ='".$environment["parameter"][1]."'";
             $result = $db -> query($sql);
             while ( $data2 = $db -> fetch_array($result,$nop) ) {
                 if ( $ids != "" ) $ids .= ",";
@@ -112,8 +112,8 @@
             $ausgaben["form_error"] = "";
 
             // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-            $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+            $ausgaben["form_aktion"] = $cfg["bloged"]["basis"]."/delete,".$environment["parameter"][1].".html";
+            $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
 
             // hidden values
             $ausgaben["form_hidden"] = "";
@@ -161,7 +161,7 @@
 
                 // datensatz loeschen
                 if ( $ausgaben["form_error"] == "" ) {
-                    $sql = "DELETE FROM ".$cfg["db"]["bloged"]["entries"]." WHERE ".$cfg["db"]["bloged"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
+                    $sql = "DELETE FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]." WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result)<br />");
@@ -171,7 +171,7 @@
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/list.html");
+                    header("Location: ".$cfg["bloged"]["basis"]."/list.html");
                 }
             }
             // +++

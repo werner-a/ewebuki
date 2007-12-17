@@ -49,7 +49,7 @@
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warning register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
     // path fuer die schaltflaechen anpassen
-    if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+    if ( $cfg["passed"]["iconpath"] == "" ) $cfg["passed"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
     if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -61,7 +61,7 @@
     if ( $_SESSION["auth"] == -1 ) {
 
         if ( count($HTTP_POST_VARS) == 0 ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["entries"]." WHERE ".$cfg["db"]["key"]."='".$_SESSION["uid"]."'";
+            $sql = "SELECT * FROM ".$cfg["passed"]["db"]["entries"]." WHERE ".$cfg["passed"]["db"]["key"]."='".$_SESSION["uid"]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,$nop);
         } else {
@@ -72,13 +72,13 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["entries"], $form_values );
+        $element = form_elements( $cfg["passed"]["db"]["entries"], $form_values );
 
         // form elemente erweitern
-        $element["oldpass"] = str_replace($cfg["db"]["pass"]."\"","oldpass\"",$element[$cfg["db"]["pass"]]);
-        $element["newpass"] = str_replace($cfg["db"]["pass"]."\"","newpass\"",$element[$cfg["db"]["pass"]]);
-        $element["chkpass"] = str_replace($cfg["db"]["pass"]."\"","chkpass\"",$element[$cfg["db"]["pass"]]);
-        $element[$cfg["db"]["pass"]] = "";
+        $element["oldpass"] = str_replace($cfg["passed"]["db"]["pass"]."\"","oldpass\"",$element[$cfg["passed"]["db"]["pass"]]);
+        $element["newpass"] = str_replace($cfg["passed"]["db"]["pass"]."\"","newpass\"",$element[$cfg["passed"]["db"]["pass"]]);
+        $element["chkpass"] = str_replace($cfg["passed"]["db"]["pass"]."\"","chkpass\"",$element[$cfg["passed"]["db"]["pass"]]);
+        $element[$cfg["passed"]["db"]["pass"]] = "";
 
         // was anzeigen
         #$mapping["main"] = crc32($environment["ebene"]).".modify";
@@ -86,7 +86,7 @@
 
         // wohin schicken
         $ausgaben["form_error"] = "";
-        $ausgaben["form_aktion"] = $cfg["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["passed"]["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html";
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -113,16 +113,16 @@
             form_errors( $form_options, $form_values );
 
             // altes salt aus der user tabelle holen
-            $sql = "SELECT ".$cfg["db"]["pass"]."
-                      FROM ".$cfg["db"]["entries"]."
-                     WHERE ".$cfg["db"]["key"]."='".$_SESSION["uid"]."'";
+            $sql = "SELECT ".$cfg["passed"]["db"]["pass"]."
+                      FROM ".$cfg["passed"]["db"]["entries"]."
+                     WHERE ".$cfg["passed"]["db"]["key"]."='".$_SESSION["uid"]."'";
             $result  = $db -> query($sql);
             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             $data = $db -> fetch_array($result,0);
-            $salt = substr($data[$cfg["db"]["pass"]],0,2);
+            $salt = substr($data[$cfg["passed"]["db"]["pass"]],0,2);
 
             // ist passwort db = gesendetes altes passwort
-            if ( $data[$cfg["db"]["pass"]] == crypt($HTTP_POST_VARS["oldpass"],$salt) ) {
+            if ( $data[$cfg["passed"]["db"]["pass"]] == crypt($HTTP_POST_VARS["oldpass"],$salt) ) {
                 // neues passwort vorhanden und die wiederholung stimmt
                 if ( $HTTP_POST_VARS["newpass"] != ""
                     && ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] ) ) {
@@ -147,9 +147,9 @@
 
             // ohne fehler sql bauen und ausfuehren
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "UPDATE ".$cfg["db"]["entries"]."
-                           SET ".$cfg["db"]["pass"]." = '".$checked_password."'
-                         WHERE ".$cfg["db"]["key"]." = ".$_SESSION["uid"];
+                $sql = "UPDATE ".$cfg["passed"]["db"]["entries"]."
+                           SET ".$cfg["passed"]["db"]["pass"]." = '".$checked_password."'
+                         WHERE ".$cfg["passed"]["db"]["key"]." = ".$_SESSION["uid"];
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");

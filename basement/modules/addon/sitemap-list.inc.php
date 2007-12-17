@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["sitemap"]["right"] == "" || $rechte[$cfg["sitemap"]["right"]] == -1 ) {
 
         // funktions bereich
         // ***
@@ -71,8 +71,8 @@
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        #$cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        #$mapping["main"] = crc32($cfg["path"]).".list";
+        #$cfg["sitemap"]["path"] = str_replace($pathvars["virtual"],"",$cfg["sitemap"]["basis"]);
+        #$mapping["main"] = crc32($cfg["sitemap"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

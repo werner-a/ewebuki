@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["bloglink"]["right"]] == "" || $rechte[$cfg["bloglink"]["right"]] == -1 ) {
 
         // page basics
         // ***
@@ -59,7 +59,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+        if ( $cfg["bloglink"]["iconpath"] == "" ) $cfg["bloglink"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         #if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -75,9 +75,9 @@
         // funktions bereich
         // ***
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["entries"]."
-                 WHERE ".$cfg["db"]["key"]." LIKE '1692582295.%'
-              ORDER BY ".$cfg["db"]["order"]."
+                  FROM ".$cfg["bloglink"]["db"]["entries"]."
+                 WHERE ".$cfg["bloglink"]["db"]["key"]." LIKE '1692582295.%'
+              ORDER BY ".$cfg["bloglink"]["db"]["order"]."
                  LIMIT 0,10";
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -112,7 +112,7 @@
         }
 
         // navigation erstellen
-        #$ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add.html\">#(new)</a>";
+        #$ausgaben["new"] = "<a href=\"".$cfg["bloglink"]["basis"]."/add.html\">#(new)</a>";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";

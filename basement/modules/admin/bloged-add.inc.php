@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
         // page basics
         // ***
@@ -57,7 +57,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["bloged"]["entries"], $form_values );
+        $element = form_elements( $cfg["bloged"]["db"]["bloged"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["name"] = "<input type=\"text\" maxlength=\"40\" class=\"\" name=\"name\"  value=\"\"";
@@ -83,8 +83,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["bloged"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -148,7 +148,7 @@
                 #$sqlb .= ", password('".$checked_password."')";
 
                 function create( $number ) {
-                global $cfg, $db, $header, $debugging, $HTTP_POST_VARS;
+                global $cfg["bloged"], $db, $header, $debugging, $HTTP_POST_VARS;
 
                 $sqla  = "lang";
                 $sqlb  = "'de'";
@@ -183,11 +183,11 @@
                 $sqla .= ", content";
                 $sqlb .= ", '".$content."'";
 
-                $sql = "insert into ".$cfg["db"]["bloged"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "insert into ".$cfg["bloged"]["db"]["bloged"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["bloged"]["basis"]."/list.html";
 
                 }
 

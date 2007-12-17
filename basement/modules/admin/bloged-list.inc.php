@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,18 +43,18 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
         // funktions bereich
         // ***
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["bloged"]["entries"]."
-                 WHERE ".$cfg["db"]["bloged"]["key"]." LIKE '1692582295.%'
-              ORDER BY ".$cfg["db"]["bloged"]["order"];                 ;
+                  FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
+                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '1692582295.%'
+              ORDER BY ".$cfg["bloged"]["db"]["bloged"]["order"];                 ;
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["bloged"]["rows"], $parameter, 1, 4, $getvalues );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["bloged"]["db"]["bloged"]["rows"], $parameter, 1, 4, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
@@ -68,12 +68,12 @@
             #$debugging["ausgabe"] .= "<pre>".print_r($match,True)."</pre>";
 
             // tabellen farben wechseln
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
+            if ( $cfg["bloged"]["color"]["set"] == $cfg["bloged"]["color"]["a"]) {
+                $cfg["bloged"]["color"]["set"] = $cfg["bloged"]["color"]["b"];
             } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
+                $cfg["bloged"]["color"]["set"] = $cfg["bloged"]["color"]["a"];
             }
-            $dataloop["list"][$match[1][1]]["color"] = $cfg["color"]["set"];
+            $dataloop["list"][$match[1][1]]["color"] = $cfg["bloged"]["color"]["set"];
 
             $dataloop["list"][$match[1][1]]["teaser"] = $match[1][1];
 
@@ -91,12 +91,12 @@
 
             #http://dev0/auth/cms/edit,develop,1692582295.3,inhalt.html
 
-            #$dataloop["list"][$match[1][1]]["editlink"] = $cfg["basis"]."/edit,".$data["id"].".html";
+            #$dataloop["list"][$match[1][1]]["editlink"] = $cfg["bloged"]["basis"]."/edit,".$data["id"].".html";
             $dataloop["list"][$match[1][1]]["editlink"] = $pathvars["virtual"]."/cms/edit,develop,".$data["tname"].",inhalt.html";
             $dataloop["list"][$match[1][1]]["edittitel"] = "#(edittitel)";
 
-            #$dataloop["list"][$match[1][1]]["deletelink"] = $cfg["basis"]."/delete,".$data["id"].".html";
-            $dataloop["list"][$match[1][1]]["deletelink"] = $cfg["basis"]."/delete,".$data["tname"].".html";
+            #$dataloop["list"][$match[1][1]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["id"].".html";
+            $dataloop["list"][$match[1][1]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["tname"].".html";
             $dataloop["list"][$match[1][1]]["deletetitel"] = "#(deletetitel)";
 
         }
@@ -118,7 +118,7 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
+        $ausgaben["link_new"] = $cfg["bloged"]["basis"]."/add.html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
