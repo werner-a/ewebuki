@@ -45,7 +45,7 @@
     // content umschaltung verhindern
     $specialvars["dynlock"] = True;
 
-    $cfg = array(
+    $cfg["leveled"] = array(
            "subdir" => "admin",
              "name" => "leveled",
             "basis" => $pathvars["virtual"]."/admin/leveled",

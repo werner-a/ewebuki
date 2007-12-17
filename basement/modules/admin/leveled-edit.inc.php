@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["leveled"]["right"] == "" ||
+        priv_check("/".$cfg["leveled"]["subdir"]."/".$cfg["leveled"]["name"],$cfg["leveled"]["right"]) ||
+        priv_check_old("",$cfg["leveled"]["right"]) ) {
 
         $hidedata["edit"]["ii"] = "on";
 
@@ -54,8 +54,8 @@
 
         if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["level"]["entries"]."
-                     WHERE ".$cfg["db"]["level"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["leveled"]["db"]["level"]["entries"]."
+                     WHERE ".$cfg["leveled"]["db"]["level"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
@@ -67,7 +67,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["level"]["entries"], $form_values );
+        $element = form_elements( $cfg["leveled"]["db"]["level"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -109,8 +109,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["leveled"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["leveled"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -151,26 +151,26 @@
                 // user hinzufuegen
                 if ( $HTTP_POST_VARS["add"] ) {
                     foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
-                        $sql = "INSERT INTO ".$cfg["db"]["right"]["entries"]."
-                                            (".$cfg["db"]["right"]["level"].",".$cfg["db"]["right"]["user"].")
+                        $sql = "INSERT INTO ".$cfg["leveled"]["db"]["right"]["entries"]."
+                                            (".$cfg["leveled"]["db"]["right"]["level"].",".$cfg["leveled"]["db"]["right"]["user"].")
                                      VALUES ('".$environment["parameter"][1]."','".$value."')";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
-                    $header = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+                    $header = $cfg["leveled"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
                 }
 
                 // user entfernen
                 if ( $HTTP_POST_VARS["del"] ) {
                     foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
-                        $sql = "DELETE FROM ".$cfg["db"]["right"]["entries"]."
-                                      WHERE ".$cfg["db"]["right"]["user"]."='".$value."' AND ".$cfg["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
+                        $sql = "DELETE FROM ".$cfg["leveled"]["db"]["right"]["entries"]."
+                                      WHERE ".$cfg["leveled"]["db"]["right"]["user"]."='".$value."' AND ".$cfg["leveled"]["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
-                    $header = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+                    $header = $cfg["leveled"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
                 }
 
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -195,7 +195,7 @@
                 #$sqla .= ", ldate='".$ldate."'";
 
                 // level aendern
-                $sql = "UPDATE ".$cfg["db"]["level"]["entries"]."
+                $sql = "UPDATE ".$cfg["leveled"]["db"]["level"]["entries"]."
                             SET level = '".$HTTP_POST_VARS["level"]."',
                                 beschreibung = '".$HTTP_POST_VARS["beschreibung"]."'
                             WHERE lid='".$environment["parameter"][1]."'";
@@ -203,7 +203,7 @@
                 $result  = $db -> query($sql);
 
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["leveled"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

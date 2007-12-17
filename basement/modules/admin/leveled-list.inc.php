@@ -43,42 +43,42 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+      if ( $cfg["leveled"]["right"] == "" ||
+        priv_check("/".$cfg["leveled"]["subdir"]."/".$cfg["leveled"]["name"],$cfg["leveled"]["right"]) ||
+        priv_check_old("",$cfg["leveled"]["right"]) ) {
 
         // funktions bereich
         // ***
 
         /* db query */
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["level"]["entries"]."
-              ORDER BY ".$cfg["db"]["level"]["order"];
+                  FROM ".$cfg["leveled"]["db"]["level"]["entries"]."
+              ORDER BY ".$cfg["leveled"]["db"]["level"]["order"];
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["level"]["rows"], $parameter, 1, 3, $getvalues );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["leveled"]["db"]["level"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
             // tabellen farben wechseln
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
+            if ( $cfg["leveled"]["color"]["set"] == $cfg["leveled"]["color"]["a"]) {
+                $cfg["leveled"]["color"]["set"] = $cfg["leveled"]["color"]["b"];
             } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
+                $cfg["leveled"]["color"]["set"] = $cfg["leveled"]["color"]["a"];
             }
             $dataloop["list"][] = array(
-                        "color" => $cfg["color"]["set"],
-                  "bezeichnung" => $data[$cfg["db"]["level"]["order"]],
-                 "beschreibung" => $data[$cfg["db"]["level"]["desc"]],
-                     "editlink" => $cfg["basis"]."/edit,".$data[$cfg["db"]["level"]["key"]].".html",
+                        "color" => $cfg["leveled"]["color"]["set"],
+                  "bezeichnung" => $data[$cfg["leveled"]["db"]["level"]["order"]],
+                 "beschreibung" => $data[$cfg["leveled"]["db"]["level"]["desc"]],
+                     "editlink" => $cfg["leveled"]["basis"]."/edit,".$data[$cfg["leveled"]["db"]["level"]["key"]].".html",
                     "edittitel" => "#(edittitel)",
-                   "deletelink" => $cfg["basis"]."/delete,".$data[$cfg["db"]["level"]["key"]].".html",
+                   "deletelink" => $cfg["leveled"]["basis"]."/delete,".$data[$cfg["leveled"]["db"]["level"]["key"]].".html",
                   "deletetitel" => "#(deletetitel)",
-                   "detaillink" => $cfg["basis"]."/details,".$data[$cfg["db"]["level"]["key"]].".html",
+                   "detaillink" => $cfg["leveled"]["basis"]."/details,".$data[$cfg["leveled"]["db"]["level"]["key"]].".html",
                   "detailtitel" => "#(detailtitel)",
             );
         }
@@ -100,14 +100,14 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
+        $ausgaben["link_new"] = $cfg["leveled"]["basis"]."/add.html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        $mapping["main"] = crc32($cfg["path"]).".list";
+        $cfg["leveled"]["path"] = str_replace($pathvars["virtual"],"",$cfg["leveled"]["basis"]);
+        $mapping["main"] = crc32($cfg["leveled"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

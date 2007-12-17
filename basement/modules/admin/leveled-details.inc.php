@@ -45,9 +45,9 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["leveled"]["right"] == "" ||
+        priv_check("/".$cfg["leveled"]["subdir"]."/".$cfg["leveled"]["name"],$cfg["leveled"]["right"]) ||
+        priv_check_old("",$cfg["leveled"]["right"]) ) {
 
         ////////////////////////////////////////////////////////////////////
         // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!
@@ -61,7 +61,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+        if ( $cfg["leveled"]["iconpath"] == "" ) $cfg["leveled"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($HTTP_GET_VARS["edit"]) ) {
@@ -81,8 +81,8 @@
 
 
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["level"]["entries"]."
-                 WHERE ".$cfg["db"]["level"]["key"]."='".$environment["parameter"][1]."'";
+                  FROM ".$cfg["leveled"]["db"]["level"]["entries"]."
+                 WHERE ".$cfg["leveled"]["db"]["level"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -90,11 +90,11 @@
             $ausgaben["beschreibung"] = $data["beschreibung"];
 
 
-        $sql = "SELECT ".$cfg["db"]["user"]["order"]."
-                 FROM ".$cfg["db"]["right"]["entries"]."
-                 INNER JOIN ".$cfg["db"]["user"]["entries"]."
-                 ON ( auth_right.uid=auth_user.uid )
-                WHERE ".$cfg["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
+        $sql = "SELECT ".$cfg["leveled"]["db"]["user"]["order"]."
+                  FROM ".$cfg["leveled"]["db"]["right"]["entries"]."
+            INNER JOIN ".$cfg["leveled"]["db"]["user"]["entries"]."
+                    ON ( auth_right.uid=auth_user.uid )
+                 WHERE ".$cfg["leveled"]["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         while ( $members = $db -> fetch_array($result,1) ) {
             ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
@@ -119,8 +119,8 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_edit"] = $cfg["basis"]."/edit,".$environment["parameter"][1].".html";
-        $ausgaben["link_list"] = $cfg["basis"]."/list.html";
+        $ausgaben["link_edit"] = $cfg["leveled"]["basis"]."/edit,".$environment["parameter"][1].".html";
+        $ausgaben["link_list"] = $cfg["leveled"]["basis"]."/list.html";
         #$mapping["navi"] = "leer";
 
         // hidden values

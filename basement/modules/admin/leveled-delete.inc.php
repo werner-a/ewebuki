@@ -43,15 +43,15 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["leveled"]["right"] == "" ||
+        priv_check("/".$cfg["leveled"]["subdir"]."/".$cfg["leveled"]["name"],$cfg["leveled"]["right"]) ||
+        priv_check_old("",$cfg["leveled"]["right"]) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
 
         // ausgaben variablen bauen
-        $sql = "SELECT * FROM ".$cfg["db"]["level"]["entries"]." WHERE lid='".$environment["parameter"][1]."'";
+        $sql = "SELECT * FROM ".$cfg["leveled"]["db"]["level"]["entries"]." WHERE lid='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         $field = $db -> fetch_array($result,$nop);
         foreach($field as $name => $value) {
@@ -59,11 +59,11 @@
         }
 
          //z.B. evtl. auf verknuepften datensatz pruefen
-        $sql = "SELECT ".$cfg["db"]["user"]["order"]."
-                 FROM ".$cfg["db"]["right"]["entries"]."
-                 INNER JOIN ".$cfg["db"]["user"]["entries"]."
+        $sql = "SELECT ".$cfg["leveled"]["db"]["user"]["order"]."
+                 FROM ".$cfg["leveled"]["db"]["right"]["entries"]."
+                 INNER JOIN ".$cfg["leveled"]["db"]["user"]["entries"]."
                  ON ( auth_right.uid=auth_user.uid )
-                WHERE ".$cfg["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
+                WHERE ".$cfg["leveled"]["db"]["right"]["level"]."='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
         while ( $members = $db -> fetch_array($result,1) ) {
             ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
@@ -75,8 +75,8 @@
 
         // datensatz holen
         $sql = "SELECT *
-                    FROM ".$cfg["db"]["level"]["entries"]."
-                    WHERE ".$cfg["db"]["level"]["key"]."='".$environment["parameter"][1]."'";
+                    FROM ".$cfg["leveled"]["db"]["level"]["entries"]."
+                    WHERE ".$cfg["leveled"]["db"]["level"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,$nop);
@@ -94,8 +94,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["leveled"]["basis"]."/delete,".$environment["parameter"][1].".html";
+        $ausgaben["form_break"] = $cfg["leveled"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] = "";
@@ -136,8 +136,8 @@
                 ### put your code here ###
 
                 // z.B. evtl. verknuepfte datensatze loeschen
-                $sql = "DELETE FROM ".$cfg["db"]["right"]["entries"]."
-                                WHERE ".$cfg["db"]["right"]["level"]." = '".$environment["parameter"][1]."'";
+                $sql = "DELETE FROM ".$cfg["leveled"]["db"]["right"]["entries"]."
+                                WHERE ".$cfg["leveled"]["db"]["right"]["level"]." = '".$environment["parameter"][1]."'";
 
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
@@ -149,8 +149,8 @@
 
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "DELETE FROM ".$cfg["db"]["level"]["entries"]."
-                                WHERE ".$cfg["db"]["level"]["key"]."='".$environment["parameter"][1]."';";
+                $sql = "DELETE FROM ".$cfg["leveled"]["db"]["level"]["entries"]."
+                                WHERE ".$cfg["leveled"]["db"]["level"]["key"]."='".$environment["parameter"][1]."';";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
@@ -158,7 +158,7 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$cfg["basis"]."/list.html");
+                header("Location: ".$cfg["leveled"]["basis"]."/list.html");
             }
             // +++
             // das loeschen wurde bestaetigt, loeschen!

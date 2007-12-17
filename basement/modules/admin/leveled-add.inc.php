@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["leveled"]["right"] == "" ||
+        priv_check("/".$cfg["leveled"]["subdir"]."/".$cfg["leveled"]["name"],$cfg["leveled"]["right"]) ||
+        priv_check_old("",$cfg["leveled"]["right"]) ) {
 
         // page basics
         // ***
@@ -59,7 +59,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["level"]["entries"], $form_values );
+        $element = form_elements( $cfg["leveled"]["db"]["level"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = "";
@@ -74,8 +74,8 @@
 
         // user holen und mit dataloop ausgeben
         $sql = "SELECT uid, username
-                  FROM ".$cfg["db"]["user"]["entries"]."
-              ORDER BY ".$cfg["db"]["user"]["order"];
+                  FROM ".$cfg["leveled"]["db"]["user"]["entries"]."
+              ORDER BY ".$cfg["leveled"]["db"]["user"]["order"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
             $dataloop["avail"][] = array(
@@ -95,8 +95,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["leveled"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["leveled"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -136,7 +136,7 @@
 
                // gibt es diesen level bereits?
                 $sql = "SELECT level
-                          FROM ".$cfg["db"]["level"]["entries"]."
+                          FROM ".$cfg["leveled"]["db"]["level"]["entries"]."
                          WHERE level = '".$HTTP_POST_VARS["level"]."'";
                 $result  = $db -> query($sql);
                 $num_rows = $db -> num_rows($result);
@@ -166,7 +166,7 @@
                 #$sqlb .= ", password('".$checked_password."')";
 
                 // level hinzufuegen
-                $sql = "insert into ".$cfg["db"]["level"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "insert into ".$cfg["leveled"]["db"]["level"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -185,7 +185,7 @@
                 }
 
 
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["leveled"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
