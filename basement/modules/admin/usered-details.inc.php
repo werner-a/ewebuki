@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -45,24 +45,24 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["usered"]["right"] == "" ||
+        priv_check("/".$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"],$cfg["usered"]["right"]) ||
+        priv_check_old("",$cfg["usered"]["right"]) ) {
 
         // funktions bereich
         // ***
 
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["user"]["entries"]."
-                 WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
+                  FROM ".$cfg["usered"]["db"]["user"]["entries"]."
+                 WHERE ".$cfg["usered"]["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
 
-        $ausgaben["login"]    = $data[$cfg["db"]["user"]["login"]];
-        $ausgaben["surname"]  = $data[$cfg["db"]["user"]["surname"]];
-        $ausgaben["forename"] = $data[$cfg["db"]["user"]["forename"]];
-        $ausgaben["email"]    = $data[$cfg["db"]["user"]["email"]];
+        $ausgaben["login"]    = $data[$cfg["usered"]["db"]["user"]["login"]];
+        $ausgaben["surname"]  = $data[$cfg["usered"]["db"]["user"]["surname"]];
+        $ausgaben["forename"] = $data[$cfg["usered"]["db"]["user"]["forename"]];
+        $ausgaben["email"]    = $data[$cfg["usered"]["db"]["user"]["email"]];
 
         // level management form form elemente begin
         // ***
@@ -106,7 +106,7 @@
 
         // wohin schicken
         $ausgaben["back"] = $_SERVER["HTTP_REFERER"];
-        $ausgaben["edit"] = $cfg["basis"]."/edit,".$environment["parameter"][1].".html";
+        $ausgaben["edit"] = $cfg["usered"]["basis"]."/edit,".$environment["parameter"][1].".html";
 
         // was wird angezeigt
         $mapping["main"] = crc32($environment["ebene"]).".details";

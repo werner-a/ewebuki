@@ -49,7 +49,7 @@
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
     // path fuer die schaltflaechen anpassen
-    if ( $cfg["iconpath"] == "" ) $cfg["iconpath"] = "/images/default/";
+    if ( $cfg["usered"]["iconpath"] == "" ) $cfg["usered"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
     if ( isset($_GET["edit"]) ) {
@@ -59,13 +59,13 @@
     }
 
     // include function loader
-    if ( is_array($cfg["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-functions.inc.php";
+    if ( is_array($cfg["usered"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"]."-functions.inc.php";
 
     // magic include loader
-    if ( array_key_exists($environment["kategorie"], $cfg["function"]) ) {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-".$environment["kategorie"].".inc.php";
+    if ( array_key_exists($environment["kategorie"], $cfg["usered"]["function"]) ) {
+        include $pathvars["moduleroot"].$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"]."-".$environment["kategorie"].".inc.php";
     } else {
-        include $pathvars["moduleroot"].$cfg["subdir"]."/".$cfg["name"]."-list.inc.php";
+        include $pathvars["moduleroot"].$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"]."-list.inc.php";
     }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];

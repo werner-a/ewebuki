@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,20 +43,20 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["usered"]["right"] == "" ||
+        priv_check("/".$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"],$cfg["usered"]["right"]) ||
+        priv_check_old("",$cfg["usered"]["right"]) ) {
 
         // funktions bereich
         // ***
 
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["user"]["entries"]."
-              ORDER BY ".$cfg["db"]["user"]["order"];
+                  FROM ".$cfg["usered"]["db"]["user"]["entries"]."
+              ORDER BY ".$cfg["usered"]["db"]["user"]["order"];
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["db"]["user"]["rows"], $parameter, 1, 3, $getvalues );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["usered"]["db"]["user"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
@@ -65,20 +65,20 @@
         while ( $data = $db -> fetch_array($result,1) ) {
 
             // tabellen farben wechseln
-            if ( $cfg["color"]["set"] == $cfg["color"]["a"]) {
-                $cfg["color"]["set"] = $cfg["color"]["b"];
+            if ( $cfg["usered"]["color"]["set"] == $cfg["usered"]["color"]["a"]) {
+                $cfg["usered"]["color"]["set"] = $cfg["usered"]["color"]["b"];
             } else {
-                $cfg["color"]["set"] = $cfg["color"]["a"];
+                $cfg["usered"]["color"]["set"] = $cfg["usered"]["color"]["a"];
             }
 
             $dataloop["user"][] = array(
-                        "login" => $data[$cfg["db"]["user"]["login"]],
-                     "forename" => $data[$cfg["db"]["user"]["forename"]],
-                      "surname" => $data[$cfg["db"]["user"]["surname"]],
-                         "edit" => $cfg["basis"]."/edit,".$data[$cfg["db"]["user"]["key"]].".html",
-                       "delete" => $cfg["basis"]."/delete,".$data[$cfg["db"]["user"]["key"]].".html",
-                      "details" => $cfg["basis"]."/details,".$data[$cfg["db"]["user"]["key"]].".html",
-                        "color" => $cfg["color"]["set"]
+                        "login" => $data[$cfg["usered"]["db"]["user"]["login"]],
+                     "forename" => $data[$cfg["usered"]["db"]["user"]["forename"]],
+                      "surname" => $data[$cfg["usered"]["db"]["user"]["surname"]],
+                         "edit" => $cfg["usered"]["basis"]."/edit,".$data[$cfg["usered"]["db"]["user"]["key"]].".html",
+                       "delete" => $cfg["usered"]["basis"]."/delete,".$data[$cfg["usered"]["db"]["user"]["key"]].".html",
+                      "details" => $cfg["usered"]["basis"]."/details,".$data[$cfg["usered"]["db"]["user"]["key"]].".html",
+                        "color" => $cfg["usered"]["color"]["set"]
             );
         }
 
@@ -99,11 +99,11 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["basis"]."/add.html";
+        $ausgaben["link_new"] = $cfg["usered"]["basis"]."/add.html";
 
         // was anzeigen
-        $cfg["path"] = str_replace($pathvars["virtual"],"",$cfg["basis"]);
-        $mapping["main"] = crc32($cfg["path"]).".list";
+        $cfg["usered"]["path"] = str_replace($pathvars["virtual"],"",$cfg["usered"]["basis"]);
+        $mapping["main"] = crc32($cfg["usered"]["path"]).".list";
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($_GET["edit"]) ) {

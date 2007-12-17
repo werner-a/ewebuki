@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,9 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["usered"]["right"] == "" ||
+        priv_check("/".$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"],$cfg["usered"]["right"]) ||
+        priv_check_old("",$cfg["usered"]["right"]) ) {
 
         // page basics
         // ***
@@ -56,7 +56,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".modify");
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["user"]["entries"], $form_values );
+        $element = form_elements( $cfg["usered"]["db"]["user"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["newpass"] = str_replace("pass\"","newpass\"",$element["pass"]);
@@ -100,8 +100,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/add,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["usered"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["usered"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -184,7 +184,7 @@
                 $sqla .= ", pass";
                 $sqlb .= ", '".$checked_password."'";
 
-                $sql = "INSERT INTO ".$cfg["db"]["user"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "INSERT INTO ".$cfg["usered"]["db"]["user"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
                 if ($result  = $db -> query($sql)) {
@@ -203,7 +203,7 @@
                     // level management sql end
 
                     if ( $_POST["add"] != "" || $_POST["del"] != "" ) {
-                        $header = $cfg["basis"]."/edit,".$uid.".html";
+                        $header = $cfg["usered"]["basis"]."/edit,".$uid.".html";
                     }else{
                         $header = $ausgaben["form_referer"];
                     }
@@ -220,7 +220,7 @@
                     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $error.$debugging["char"];
                 }
 
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["usered"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

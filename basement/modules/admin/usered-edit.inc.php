@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,17 +43,17 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["usered"]["right"] == "" ||
+        priv_check("/".$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"],$cfg["usered"]["right"]) ||
+        priv_check_old("",$cfg["usered"]["right"]) ) {
 
         // page basics
         // ***
 
         if ( count($_POST) == 0 ) {
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["user"]["entries"]."
-                     WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["usered"]["db"]["user"]["entries"]."
+                     WHERE ".$cfg["usered"]["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
@@ -65,7 +65,7 @@
         $form_options = form_options(crc32($environment["ebene"]).".modify");
 
         // form elememte bauen
-        $element = form_elements( $cfg["db"]["user"]["entries"], $form_values );
+        $element = form_elements( $cfg["usered"]["db"]["user"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["newpass"] = str_replace("pass\"","newpass\"",$element["pass"]);
@@ -117,8 +117,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["usered"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["usered"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -140,7 +140,7 @@
         #n/a
 
         // referer im form mit hidden element mitschleppen
-        $ausgaben["form_referer"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_referer"] = $cfg["usered"]["basis"]."/list.html";
         $ausgaben["form_break"] = $ausgaben["form_referer"];
 
         // +++
@@ -197,7 +197,7 @@
                     $sqla .= ", pass='".$checked_password."'";
                 }
 
-                $sql = "UPDATE ".$cfg["db"]["user"]["entries"]." SET ".$sqla." WHERE uid='".$environment["parameter"][1]."'";
+                $sql = "UPDATE ".$cfg["usered"]["db"]["user"]["entries"]." SET ".$sqla." WHERE uid='".$environment["parameter"][1]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
                 if ($result  = $db -> query($sql)) {
@@ -223,7 +223,7 @@
                     // level management sql end
 
                     if ( $_POST["add"] != "" || $_POST["del"] != "" ) {
-                        $header = $cfg["basis"]."/edit,".$environment["parameter"][1].".html";
+                        $header = $cfg["usered"]["basis"]."/edit,".$environment["parameter"][1].".html";
                     }else{
                         $header = $ausgaben["form_referer"];
                     }
@@ -240,7 +240,7 @@
                     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $error.$debugging["char"];
                 }
 
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["usered"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

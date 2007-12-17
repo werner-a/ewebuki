@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,17 +43,17 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" ||
-        priv_check("/".$cfg["subdir"]."/".$cfg["name"],$cfg["right"]) ||
-        priv_check_old("",$cfg["right"]) ) {
+    if ( $cfg["usered"]["right"] == "" ||
+        priv_check("/".$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"],$cfg["usered"]["right"]) ||
+        priv_check_old("",$cfg["usered"]["right"]) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
 
         // datensatz holen
         $sql ="SELECT *
-                 FROM ".$cfg["db"]["user"]["entries"]."
-                WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
+                 FROM ".$cfg["usered"]["db"]["user"]["entries"]."
+                WHERE ".$cfg["usered"]["db"]["user"]["key"]."='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -69,10 +69,10 @@
         // evtl. zusaetzlichen datensatz anzeigen
         // rechte
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["right"]["entries"]."
-                  JOIN ".$cfg["db"]["level"]["entries"]."
-                    ON (".$cfg["db"]["level"]["entries"].".".$cfg["db"]["right"]["level"]."=".$cfg["db"]["right"]["entries"].".".$cfg["db"]["level"]["key"].")
-                 WHERE ".$cfg["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
+                  FROM ".$cfg["usered"]["db"]["right"]["entries"]."
+                  JOIN ".$cfg["usered"]["db"]["level"]["entries"]."
+                    ON (".$cfg["usered"]["db"]["level"]["entries"].".".$cfg["usered"]["db"]["right"]["level"]."=".$cfg["usered"]["db"]["right"]["entries"].".".$cfg["usered"]["db"]["level"]["key"].")
+                 WHERE ".$cfg["usered"]["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $ausgaben["rights"] = "---";
@@ -81,14 +81,14 @@
             $ausgaben["rights"] = "";
             while ( $data = $db -> fetch_array($result,1) ) {
                 if ( $ausgaben["rights"] != "" ) $ausgaben["rights"] .= ", ";
-                $ausgaben["rights"] .= $data[$cfg["db"]["level"]["level"]];
+                $ausgaben["rights"] .= $data[$cfg["usered"]["db"]["level"]["level"]];
             }
         }
 
         // spezial-rechte
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["special"]["entries"]."
-                 WHERE ".$cfg["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
+                  FROM ".$cfg["usered"]["db"]["special"]["entries"]."
+                 WHERE ".$cfg["usered"]["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $ausgaben["special"] = "---";
@@ -97,7 +97,7 @@
             $ausgaben["special"] = "";
             while ( $data = $db -> fetch_array($result,1) ) {
                 if ( $ausgaben["special"] != "" ) $ausgaben["special"] .= "<br />";
-                $ausgaben["special"] .= $data[$cfg["db"]["special"]["tname"]];
+                $ausgaben["special"] .= $data[$cfg["usered"]["db"]["special"]["tname"]];
             }
         }
 
@@ -112,8 +112,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["usered"]["basis"]."/delete,".$environment["parameter"][1].".html";
+        $ausgaben["form_break"] = $cfg["usered"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] = "";
@@ -147,18 +147,18 @@
         if ( $_POST["delete"] != "" ) {
 
             // evtl. zusaetzlichen datensatz loeschen
-            $sql = "DELETE FROM ".$cfg["db"]["right"]["entries"]."
-                          WHERE ".$cfg["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
+            $sql = "DELETE FROM ".$cfg["usered"]["db"]["right"]["entries"]."
+                          WHERE ".$cfg["usered"]["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
             if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
 
-            $sql = "DELETE FROM ".$cfg["db"]["special"]["entries"]."
-                          WHERE ".$cfg["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
+            $sql = "DELETE FROM ".$cfg["usered"]["db"]["special"]["entries"]."
+                          WHERE ".$cfg["usered"]["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
             if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
 
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "DELETE FROM ".$cfg["db"]["user"]["entries"]."
-                              WHERE ".$cfg["db"]["user"]["key"]."='".$environment["parameter"][1]."';";
+                $sql = "DELETE FROM ".$cfg["usered"]["db"]["user"]["entries"]."
+                              WHERE ".$cfg["usered"]["db"]["user"]["key"]."='".$environment["parameter"][1]."';";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
@@ -166,7 +166,7 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$cfg["basis"]."/list.html");
+                header("Location: ".$cfg["usered"]["basis"]."/list.html");
             }
         }
         // +++
