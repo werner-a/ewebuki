@@ -86,8 +86,8 @@
                     "file" => "base.name",
                        ),
             "ghost" => array(
-               "contented" => "admin",
-                 "righted" => "admin",
+               "contented" => "cms_admin",
+                 "righted" => "cms_admin",
                        ),
              "menu" => array(
                  "grouped" => array("list", "cms_admin"),
