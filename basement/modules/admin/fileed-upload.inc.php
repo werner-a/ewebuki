@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["right"] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $cfg["fileed"]["right"] == "" || $rechte[$cfg["fileed"]["right"]] == -1 ) {
 
         // page basics
         // ***
@@ -57,7 +57,7 @@
         #$form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        #$element = form_elements( $cfg["db"]["leer"]["entries"], $form_values );
+        #$element = form_elements( $cfg["fileed"]["db"]["leer"]["entries"], $form_values );
 
         // form elemente erweitern
         #$element["extension1"] = "";
@@ -86,8 +86,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["basis"]."/upload,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/upload,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -128,7 +128,7 @@
                 ### put your code here ###
 
                 foreach ( $_FILES as $key => $value ) {
-                    $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["filesize"], $cfg["filetyp"], $pathvars["filebase"]["maindir"] );
+                    $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["file"]["filesize"], $cfg["file"]["filetyp"], $pathvars["filebase"]["maindir"] );
                     if ( $file["returncode"] == 0 ) {
                         rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
                     } else {
@@ -138,10 +138,10 @@
                 }
 
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/add,".$environment["parameter"][1].".html");
+                    header("Location: ".$cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].".html");
                     exit(); ### laut guenther wird es gebraucht, warum?
                 } else {
-                    $ausgaben["form_error"] .= "<br><br><a href=\"".$cfg["basis"]."/add,".$environment["parameter"][1].".html\">Trotzdem weiter</a>";
+                    $ausgaben["form_error"] .= "<br><br><a href=\"".$cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].".html\">Trotzdem weiter</a>";
                     #$mapping["main"] = "default1";
                 }
 
@@ -167,11 +167,11 @@
                 #$sqla .= ", pass";
                 #$sqlb .= ", password('".$checked_password."')";
 
-                $sql = "insert into ".$cfg["db"]["leer"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "insert into ".$cfg["fileed"]["db"]["leer"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 #$result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

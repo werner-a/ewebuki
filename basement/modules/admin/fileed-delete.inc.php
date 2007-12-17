@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["right"]] == "" || $rechte[$cfg["right"]] == -1 ) {
+    if ( $rechte[$cfg["fileed"]["right"]] == "" || $rechte[$cfg["fileed"]["right"]] == -1 ) {
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -51,7 +51,7 @@
         if ( count($_SESSION["file_memo"]) > 0 ) {
             $environment["parameter"][1] = current($_SESSION["file_memo"]);
         } else  {
-            header("Location: ".$cfg["basis"]."/list.html");
+            header("Location: ".$cfg["fileed"]["basis"]."/list.html");
             exit();
         }
 
@@ -62,9 +62,9 @@
         $new = "/".$environment["parameter"][1]."/";
         #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
         $sql = "SELECT *
-                  FROM ".$cfg["db"]["content"]["entries"]."
-                 WHERE ".$cfg["db"]["content"]["content"]." LIKE '%".$old."%'
-                    OR ".$cfg["db"]["content"]["content"]." LIKE '%".$new."%'";
+                  FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
+                 WHERE ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
+                    OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
@@ -79,14 +79,14 @@
             $mapping["navi"] = "leer";
 
             // wohin schicken
-            header("Location: ".$cfg["basis"]."/list.html?error=1");
+            header("Location: ".$cfg["fileed"]["basis"]."/list.html?error=1");
 
         } else {
 
             // datensatz holen
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["file"]["entries"]."
-                     WHERE ".$cfg["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                     WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,$nop);
@@ -101,16 +101,16 @@
 
             ### put your code here ###
 
-            if ( $_SESSION["uid"] != $data["fuid"] && in_array( $environment["kategorie"], $cfg["restrict"]) ) { # nur eigene dateien duerfen gelöscht werden
-                header("Location: ".$cfg["basis"]."/list.html?error=2");
+            if ( $_SESSION["uid"] != $data["fuid"] && in_array( $environment["kategorie"], $cfg["fileed"]["restrict"]) ) { # nur eigene dateien duerfen gelöscht werden
+                header("Location: ".$cfg["fileed"]["basis"]."/list.html?error=2");
                 exit();
             }
 
 
             /* z.B. evtl. verknuepfte datensatze holen
             $sql = "SELECT *
-                      FROM ".$cfg["db"]["more"]["entries"]."
-                     WHERE ".$cfg["db"]["more"]["key"]." ='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["fileed"]["db"]["more"]["entries"]."
+                     WHERE ".$cfg["fileed"]["db"]["more"]["key"]." ='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             while ( $data2 = $db -> fetch_array($result,$nop) ) {
@@ -133,8 +133,8 @@
             $ausgaben["form_error"] = "";
 
             // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["basis"]."/delete,".$environment["parameter"][1].".html";
-            $ausgaben["form_break"] = $cfg["basis"]."/list.html";
+            $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/delete,".$environment["parameter"][1].".html";
+            $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
             // hidden values
             $ausgaben["form_hidden"] = "";
@@ -176,8 +176,8 @@
                     ### put your code here ###
 
                     /* z.B. evtl. verknuepfte datensatze loeschen
-                    $sql = "DELETE FROM ".$cfg["db"]["more"]["entries"]."
-                                  WHERE ".$cfg["db"]["more"]["key"]." = '".$HTTP_POST_VARS["id2"]."'";
+                    $sql = "DELETE FROM ".$cfg["fileed"]["db"]["more"]["entries"]."
+                                  WHERE ".$cfg["fileed"]["db"]["more"]["key"]." = '".$HTTP_POST_VARS["id2"]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
@@ -196,11 +196,11 @@
                     $result = $db -> query($sql);
                     $data = $db -> fetch_array($result,$nop);
 
-                    $type = $cfg["filetyp"][$data["ffart"]];
+                    $type = $cfg["file"]["filetyp"][$data["ffart"]];
                     if ( $type == "img" ) {
                         $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                         foreach ( $art as $key => $value ) {
-                            $return = unlink($cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$value."_".$id.".".$data["ffart"]);
+                            $return = unlink($cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$value."_".$id.".".$data["ffart"]);
                             ### sollte evtl. anderst gelöst werden, existiert nur ein file nicht
                             ### laesst sich der datensatz nie löschen!
                             if ( $return != 1 ) {
@@ -209,7 +209,7 @@
                             }
                         }
                     } else {
-                        $return = unlink($cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.".".$data["ffart"]);
+                        $return = unlink($cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$data["ffart"]);
                         if ( $return != "1" ) {
                             $ausgaben["form_error"] = "error delete file";
                         }
@@ -219,8 +219,8 @@
 
                 // datensatz loeschen
                 if ( $ausgaben["form_error"] == "" ) {
-                    $sql = "DELETE FROM ".$cfg["db"]["file"]["entries"]."
-                                  WHERE ".$cfg["db"]["file"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
+                    $sql = "DELETE FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                                  WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");
@@ -229,7 +229,7 @@
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["basis"]."/delete.html");
+                    header("Location: ".$cfg["fileed"]["basis"]."/delete.html");
                 }
             }
             // +++

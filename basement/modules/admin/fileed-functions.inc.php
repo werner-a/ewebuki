@@ -50,14 +50,14 @@
     */
 
     // beschreibung der funktion
-    if ( in_array("function_name", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("function_name", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
         function function_name(  $var1, $var2 = "") {
            ### put your code here ###
         }
     }
 
     // flexible thumbnail builder
-    if ( in_array("thumbnail", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("thumbnail", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
 
         function thumbnail() {
 
@@ -69,13 +69,13 @@
                 $info  = explode( "_", $file, 2 );
                 if ( $info[0] == $_SESSION["uid"] ) {
                     $extension = strtolower(substr(strrchr($info[1],"."),1));
-                    $type = $cfg["filetyp"][$extension];
+                    $type = $cfg["file"]["filetyp"][$extension];
                     if ( $type == "img" ) {
-                        $path = $cfg["fileopt"][$type]["tnpath"];
+                        $path = $cfg["file"]["fileopt"][$type]["tnpath"];
                         $filename = $file;
                     } else {
-                        $path = $cfg["fileopt"][$type]["tnpath"].ltrim($cfg["iconpath"],"/");
-                        $filename = $cfg["fileopt"][$type]["thumbnail"];
+                        $path = $cfg["file"]["fileopt"][$type]["tnpath"].ltrim($cfg["fileed"]["iconpath"],"/");
+                        $filename = $cfg["file"]["fileopt"][$type]["thumbnail"];
                     }
                     $thumbnail = $pathvars["webroot"]."/images/magic.php?path=".$path.$filename."&size=280";
                     break;
@@ -88,7 +88,7 @@
 
 
     // picture resize
-    if ( in_array("resize", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("resize", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
 
         function resize( $img_org, $img_id, $img_src, $max_size, $img_path, $img_name ) {
 
@@ -173,14 +173,14 @@
 
 
     // file arrange
-    if ( in_array("resize", $cfg["function"][$environment["kategorie"]]) ) {
+    if ( in_array("resize", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
 
         function arrange( $id, $source, $file ) {
 
             global $cfg, $pathvars;
 
             $extension = strtolower(substr(strrchr($file,"."),1));
-            $type = $cfg["filetyp"][$extension];
+            $type = $cfg["file"]["filetyp"][$extension];
             if ( $type == "img" ) {
                 // quellbild in speicher einlesen
                 switch ( $extension ) {
@@ -198,23 +198,23 @@
                 }
                 $art = array( "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                 foreach ( $art as $key => $value ) {
-                    resize( $source, $id, $img_src, $cfg["size"][$key], $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key], $value );
+                    resize( $source, $id, $img_src, $cfg["file"]["size"][$key], $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key], $value );
                 }
 
                 // orginal bild nach max resizen oder loeschen
-                #if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] || imagesy($img_src) <= $cfg["size"]["max"] ) {
-                #if ( $cfg["size"]["max"] == "" || (imagesx($img_src) <= $cfg["size"]["max"] && imagesy($img_src) <= $cfg["size"]["max"] )) {
-                if ( $cfg["size"]["max"] == "" || imagesx($img_src) <= $cfg["size"]["max"] ) {
-                    rename( $source, $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                #if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $cfg["file"]["size"]["max"] || imagesy($img_src) <= $cfg["file"]["size"]["max"] ) {
+                #if ( $cfg["file"]["size"]["max"] == "" || (imagesx($img_src) <= $cfg["file"]["size"]["max"] && imagesy($img_src) <= $cfg["file"]["size"]["max"] )) {
+                if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $cfg["file"]["size"]["max"] ) {
+                    rename( $source, $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
                 } else {
-                    resize( $source, $id, $img_src, $cfg["size"]["max"], $cfg["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"], $cfg["fileopt"][$type]["name"] );
+                    resize( $source, $id, $img_src, $cfg["file"]["size"]["max"], $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"], $cfg["file"]["fileopt"][$type]["name"] );
                     unlink( $source );
                 }
 
                 // speicher des quellbild freigeben
                 imagedestroy($img_src);
             } else {
-                rename($source, $cfg["fileopt"][$type]["path"].$cfg["fileopt"][$type]["name"]."_".$id.".".$extension);
+                rename($source, $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
             }
 
 
