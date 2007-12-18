@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -60,7 +60,7 @@
         // wird die datei im content verwendet?
         $old = "\_".$environment["parameter"][1].".";
         $new = "/".$environment["parameter"][1]."/";
-        #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
+        #$new = "=".$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
         $sql = "SELECT *
                   FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
                  WHERE ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
@@ -101,7 +101,7 @@
 
             ### put your code here ###
 
-            if ( $_SESSION["uid"] != $data["fuid"] && in_array( $environment["kategorie"], $cfg["fileed"]["restrict"]) ) { # nur eigene dateien duerfen gelöscht werden
+            if ( $_SESSION["uid"] != $data["fuid"] && in_array( $environment["kategorie"], $cfg["fileed"]["restrict"]) ) { # nur eigene dateien duerfen gelï¿½scht werden
                 header("Location: ".$cfg["fileed"]["basis"]."/list.html?error=2");
                 exit();
             }
@@ -200,9 +200,9 @@
                     if ( $type == "img" ) {
                         $art = array( "o" => "img", "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                         foreach ( $art as $key => $value ) {
-                            $return = unlink($cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key].$value."_".$id.".".$data["ffart"]);
-                            ### sollte evtl. anderst gelöst werden, existiert nur ein file nicht
-                            ### laesst sich der datensatz nie löschen!
+                            $return = unlink($cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"][$key].$value."_".$id.".".$data["ffart"]);
+                            ### sollte evtl. anderst gelï¿½st werden, existiert nur ein file nicht
+                            ### laesst sich der datensatz nie lï¿½schen!
                             if ( $return != 1 ) {
                                 #$ausgaben["form_error"] = "error delete files";
                                 break;

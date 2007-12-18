@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -84,7 +84,7 @@
         // form elemente erweitern
         #$element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
         #$element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
-        #$ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$pathvars["filebase"]["maindir"].$pathvars["filebase"]["pic"]["root"].$pathvars["filebase"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280";
+        #$ausgaben["thumbnail"] = $pathvars["webroot"]."/images/magic.php?path=".$cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["o"]."img_".$form_values["fid"].".".$form_values["ffart"]."&size=280";
 
         $type = $cfg["file"]["filetyp"][$form_values["ffart"]];
         if ( $type == "img" ) {
@@ -112,7 +112,7 @@
         // wo im content wird die datei verwendet
         $old = "\_".$environment["parameter"][1].".";
         $new = "/".$environment["parameter"][1]."/";
-        #$new = "=".$pathvars["filebase"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
+        #$new = "=".$cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/";
         $sql = "SELECT *
                   FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
                  WHERE ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
@@ -181,7 +181,7 @@
                 || $HTTP_POST_VARS["extension1"] != ""
                 || $HTTP_POST_VARS["extension2"] != "" ) ) {
 
-            // form eingaben prüfen
+            // form eingaben prï¿½fen
             form_errors( $form_options, $HTTP_POST_VARS );
 
             // evtl. zusaetzliche datensatz aendern
@@ -192,10 +192,10 @@
 
                 // file ersetzen
                 if ( $_FILES["upload"]["name"] != "" ) {
-                    $file = file_verarbeitung($pathvars["filebase"]["new"], "upload", $cfg["file"]["filesize"], array( $form_values["ffart"] ), $pathvars["filebase"]["maindir"]);
+                    $file = file_verarbeitung($cfg["file"]["base"]["new"], "upload", $cfg["file"]["filesize"], array( $form_values["ffart"] ), $cfg["file"]["base"]["maindir"]);
                     if ( $file["returncode"] == 0 ) {
                         $file_id = $form_values["fid"];
-                        $source = $pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"];
+                        $source = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file["name"];
                         arrange( $file_id, $source, $file["name"] );
                     } else {
                         $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ".file_error($file["returncode"]);

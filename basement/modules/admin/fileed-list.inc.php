@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -202,12 +202,12 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         if ( $db->num_rows($result) == 0 ) {
-            #$ausgaben["result"] .= " keine Einträge gefunden.";
+            #$ausgaben["result"] .= " keine Eintrï¿½ge gefunden.";
             $ausgaben["result"] .= " #(answerc_no)";
         } else {
             // nur erweitern wenn bereits was drin steht
             if ( $ausgaben["result"] ) {
-                #$ausgaben["result"] .= " folgende Einträge gefunden.";
+                #$ausgaben["result"] .= " folgende Eintrï¿½ge gefunden.";
                 $ausgaben["result"] .= " #(answerc_yes)";
             } else {
                 $ausgaben["result"]  = "";
@@ -238,8 +238,8 @@
             $dataloop["list"][$data["fid"]]["ehref"] = "edit,".$data["fid"].".html";
 
             $type = $cfg["file"]["filetyp"][$data["ffart"]];
-            $dataloop["list"][$data["fid"]]["dhref"] = $pathvars["filebase"]["webdir"].
-                                                       $pathvars["filebase"][$cfg["fileopt"][$type]["name"]].
+            $dataloop["list"][$data["fid"]]["dhref"] = $cfg["file"]["base"]["webdir"].
+                                                       $cfg["file"]["base"][$cfg["fileopt"][$type]["name"]].
                                                        $cfg["file"]["fileopt"][$type]["name"]."_".
                                                        $data["fid"].".".$data["ffart"];
             if ( $data["ffart"] == "pdf" ) {
@@ -249,9 +249,9 @@
             }
 
 
-            $dataloop["list"][$data["fid"]]["src"] = $pathvars["filebase"]["webdir"].
-                                                     $pathvars["filebase"]["pic"]["root"].
-                                                     $pathvars["filebase"]["pic"]["tn"]."tn_".
+            $dataloop["list"][$data["fid"]]["src"] = $cfg["file"]["base"]["webdir"].
+                                                     $cfg["file"]["base"]["pic"]["root"].
+                                                     $cfg["file"]["base"]["pic"]["tn"]."tn_".
                                                      $data["fid"].".".$data["ffart"];
 
             $dataloop["list"][$data["fid"]]["alt"] = $data["ffname"];
@@ -265,7 +265,7 @@
             $dataloop["list"][$data["fid"]]["shref"] = "list/view,s,".$data["fid"].".html";
 
             $i++;
-            $even = $i / $cfg["db"]["file"]["line"];
+            $even = $i / $cfg["fileed"]["db"]["file"]["line"];
             if ( is_int($even) ) {
                 $dataloop["list"][$data["fid"]]["newline"] = $cfg["fileed"]["db"]["file"]["newline"];
             } else {

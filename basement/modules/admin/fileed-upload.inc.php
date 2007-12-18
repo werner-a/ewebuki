@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -116,7 +116,7 @@
                 || $HTTP_POST_VARS["extension1"] != ""
                 || $HTTP_POST_VARS["extension2"] != "" ) ) {
 
-            // form eigaben prüfen
+            // form eigaben prï¿½fen
             form_errors( $form_options, $HTTP_POST_VARS );
 
             // evtl. zusaetzliche datensatz anlegen
@@ -128,9 +128,9 @@
                 ### put your code here ###
 
                 foreach ( $_FILES as $key => $value ) {
-                    $file = file_verarbeitung( $pathvars["filebase"]["new"], $key, $cfg["file"]["filesize"], $cfg["file"]["filetyp"], $pathvars["filebase"]["maindir"] );
+                    $file = file_verarbeitung( $cfg["file"]["base"]["new"], $key, $cfg["file"]["filesize"], $cfg["file"]["filetyp"], $cfg["file"]["base"]["maindir"] );
                     if ( $file["returncode"] == 0 ) {
-                        rename($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$file["name"],$pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"].$_SESSION["uid"]."_".$file["name"]);
+                        rename($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file["name"],$cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$_SESSION["uid"]."_".$file["name"]);
                     } else {
                         $ausgaben["form_error"] .= "Ergebnis: ".$file["name"]." ";
                         $ausgaben["form_error"] .= file_error($file["returncode"])."<br>";

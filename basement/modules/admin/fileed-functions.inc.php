@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -64,7 +64,7 @@
             global $_SESSION, $cfg, $pathvars, $file;
 
             $thumbnail = "";
-            $dp = opendir($pathvars["filebase"]["maindir"].$pathvars["filebase"]["new"]);
+            $dp = opendir($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]);
             while ( $file = readdir($dp) ) {
                 $info  = explode( "_", $file, 2 );
                 if ( $info[0] == $_SESSION["uid"] ) {
@@ -198,16 +198,16 @@
                 }
                 $art = array( "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                 foreach ( $art as $key => $value ) {
-                    resize( $source, $id, $img_src, $cfg["file"]["size"][$key], $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"][$key], $value );
+                    resize( $source, $id, $img_src, $cfg["file"]["size"][$key], $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"][$key], $value );
                 }
 
                 // orginal bild nach max resizen oder loeschen
                 #if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $cfg["file"]["size"]["max"] || imagesy($img_src) <= $cfg["file"]["size"]["max"] ) {
                 #if ( $cfg["file"]["size"]["max"] == "" || (imagesx($img_src) <= $cfg["file"]["size"]["max"] && imagesy($img_src) <= $cfg["file"]["size"]["max"] )) {
                 if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $cfg["file"]["size"]["max"] ) {
-                    rename( $source, $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
+                    rename( $source, $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
                 } else {
-                    resize( $source, $id, $img_src, $cfg["file"]["size"]["max"], $cfg["file"]["fileopt"][$type]["path"].$pathvars["filebase"]["pic"]["o"], $cfg["file"]["fileopt"][$type]["name"] );
+                    resize( $source, $id, $img_src, $cfg["file"]["size"]["max"], $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"]["o"], $cfg["file"]["fileopt"][$type]["name"] );
                     unlink( $source );
                 }
 
