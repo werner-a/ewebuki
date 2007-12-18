@@ -56,7 +56,7 @@
          "function" => array(
               "list,shared" => array("menutree"),
                       "list"=> array("locate","make_ebene"),
-                      "add" => array(""),
+                      "add" => array("make_ebene"),
                      "edit" => array("make_ebene", "update_tname"),
                    "delete" => array("make_ebene"),
                      "sort" => array("sitemap", "renumber"),
