@@ -135,12 +135,12 @@
                        AND lang='".$environment["language"]."' AND content LIKE '%[SEL=".$environment["parameter"][3].";%'
                   ORDER BY version DESC LIMIT 0,1";
             $result = $db -> query($sql);
-            $galery = "";
+            $gallery = array();
             while ( $data = $db -> fetch_array($result,1) ) {
                 preg_match("/\[SEL=".$environment["parameter"][3].";.*\](.*)\[\/SEL\]/Ui",$data["content"],$match);
-                $galery[] = $match[1];
+                $gallery[] = $match[1];
             }
-            if ( count($galery) > 0 ) $hidedata["gallery"]["title"] = implode(", ",$galery);
+            if ( count($gallery) > 0 ) $hidedata["gallery"]["title"] = implode(", ",$gallery);
 
             // thumbs sortieren
             foreach ($dataloop["thumbs"] as $key => $row) {

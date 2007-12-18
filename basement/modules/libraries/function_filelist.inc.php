@@ -144,14 +144,12 @@
                                             "color" => $cfg[$script_name]["color"]["set"],
                                           "checked" => $checked,
                                             "ehref" => "edit,".$data["fid"].".html",
-                                            "dhref" => $pathvars["subdir"].
-                                                       $cfg["file"]["base"]["webdir"].
+                                            "dhref" => $cfg["file"]["base"]["webdir"].
                                                        $cfg["file"]["base"][$cfg["file"]["fileopt"][$type]["name"]].
                                                        $cfg["file"]["fileopt"][$type]["name"]."_".
                                                        $data["fid"].".".$data["ffart"],
                                             "vhref" => $environment["allparameter"]."/view,o,".$data["fid"].",".$group.".html",
-                                              "src" => $pathvars["subdir"].
-                                                       $cfg["file"]["base"]["webdir"].
+                                              "src" => $cfg["file"]["base"]["webdir"].
                                                        $cfg["file"]["base"]["pic"]["root"].
                                                        $cfg["file"]["base"]["pic"]["tn"]."tn_".
                                                        $data["fid"].".".$data["ffart"],

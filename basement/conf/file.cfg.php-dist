@@ -95,7 +95,7 @@
                        ),
              "base" => array(
                   "maindir" => $pathvars["fileroot"]."file/",
-                   "webdir" => "/file/",
+                   "webdir" => $pathvars["subdir"]."/file/",
                  "realname" => True,
                       "new" => "new/",
                       "pic" => array(
@@ -110,6 +110,7 @@
                       "arc" => "archiv/",
                        ),
     );
+echo "<pre>---".print_r($cfg["file"],true)."</pre>";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
