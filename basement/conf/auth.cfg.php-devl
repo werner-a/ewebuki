@@ -86,7 +86,7 @@
                     "file" => "base.name",
                        ),
             "ghost" => array(
-               "contented" => "admin",
+               "contented" => "edit",
                  "righted" => "admin",
                        ),
              "menu" => array(
