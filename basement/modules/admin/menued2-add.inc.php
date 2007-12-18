@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
+    if ( priv_check(make_ebene($environment["parameter"][1]),$cfg["menued"]["modify"]["add"][2]) ||
         priv_check_old("",$cfg["menued"]["right"]) ) {
         // page basics
         // ***
