@@ -276,7 +276,7 @@
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-//                 header("Location: ".$header);
+                 header("Location: ".$header);
             }
         }
     } else {
