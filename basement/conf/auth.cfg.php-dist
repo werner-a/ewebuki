@@ -90,13 +90,13 @@
                  "righted" => "cms_admin",
                        ),
              "menu" => array(
-                 "grouped" => array("list", "cms_admin"),
+                 "grouped" => array("list", "disabled"),
                  "leveled" => array("list", "cms_admin"),
                   "usered" => array("list", "cms_admin"),
                   "menued" => array("list", "cms_admin"),
                   "fileed" => array("list", "cms_edit"),
                   "passed" => array("modify","cms_edit"),
-                  "bloged" => array("list","cms_edit"),
+                  "bloged" => array("list","disabled"),
              # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
             "inplace" => array(
