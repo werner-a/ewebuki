@@ -199,11 +199,12 @@
 
                     // file ersetzen
                     if ( $_FILES["upload"]["name"] != "" ) {
-                            $error = file_validate($_FILES["upload"]["tmp_name"], $_FILES["upload"]["size"], $cfg["file"]["filesize"], $cfg["file"]["filetyp"], "upload");
+                            $error = file_validate($_FILES["upload"]["tmp_name"], $_FILES["upload"]["size"], $cfg["file"]["filesize"], array($form_values["ffart"]), "upload");
                             if ( $error == 0 ) {
+                                $newname = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$_SESSION["uid"]."_".$_FILES["upload"]["name"];
+                                rename($_FILES["upload"]["tmp_name"],$newname);
                                 $file_id = $form_values["fid"];
-                                $source = $_FILES["upload"]["tmp_name"];
-                                arrange( $file_id, $source, $_FILES["upload"]["name"] );
+                                arrange( $file_id, $newname, $_FILES["upload"]["name"] );
                             } else {
                                 $ausgaben["form_error"] .= "#(error_replace) ".$file["name"]." g(file_error".$error.")";
                             }
@@ -275,7 +276,7 @@
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$header);
+//                 header("Location: ".$header);
             }
         }
     } else {
