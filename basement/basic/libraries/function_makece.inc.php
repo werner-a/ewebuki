@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function makece($ce_formname, $ce_name, $ce_inhalt) {
-        global $debugging, $db, $pathvars, $ausgaben, $specialvars, $defaults;
+        global $debugging, $db, $pathvars, $cfg, $ausgaben, $specialvars, $defaults;
         $ausgaben["ce_name"] = $ce_name;
 
         // vogelwilde regex die alte & neue file links findet
