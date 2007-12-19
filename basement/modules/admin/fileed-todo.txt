@@ -4,6 +4,8 @@ ToDo:
 -----
 - feature: bildunterschrift = beschreibung > wenn leer
 - feature: groessenaenderung einstellbar (extra x, extra y)
+- feature: benutzer soll eine selektionen nur mit einer bestimmten anzahl von bildern auswählen können
+- feature: rechtestruktur (z.B.: Benutzer gelöscht - datei herrenlos)
 
 
 to be tested:
