@@ -238,7 +238,7 @@
         if ( substr( $path, -1 ) != '/') $path = $path."/";
 
         foreach ( $cfg["auth"]["inplace"] as $key => $value ) {
-            if ( priv_check_old("","cms_admin") == True  || priv_check($environment["ebene"]."/".$environment["kategorie"],$value) ) {
+            if ( priv_check_old("",$value) == True  || priv_check($environment["ebene"]."/".$environment["kategorie"],$value) ) {
                 $hidedata["authInPlace"]["newlink"] = $path.basename($pathvars["requested"],".html")."/".$key.".html";
             }
         }
