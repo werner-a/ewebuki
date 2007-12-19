@@ -45,6 +45,8 @@
 
     function sitemap($refid, $script_name, $art = "", $modify = "", $self = "") {
         global $hidedata,$design,$opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $buffer,$positionArray;
+            
+        if ( !$ausgaben["path"] ) $ausgaben["path"] = "";
 
         switch($art) {
             case menued:
@@ -234,7 +236,7 @@
 
             // refid radio button
             if ( $radiorefid != "" ) {
-                if ( ($array["mid"] == $environment["parameter"][2]) || $array["refid"] == $environment["parameter"][2]  ) {
+                if ( ($array["mid"] == $environment["parameter"][2])  ) {
                     $radio_disabled = " disabled";
                 } else {
                     $radio_disabled = "";

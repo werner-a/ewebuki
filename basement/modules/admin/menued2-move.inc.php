@@ -86,6 +86,10 @@
 
         // page basics
         // ***
+
+        // design
+        $ausgaben["design"] = "";
+    
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
