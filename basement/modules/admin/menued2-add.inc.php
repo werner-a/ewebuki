@@ -201,9 +201,14 @@
                 $header = $cfg["menued"]["basis"]."/edit,".$lastid.",verify.html";
             } else {
                 if ( $_SESSION["REFERER"] != "" ) {
-                    #$header = $_SESSION["REFERER"]."/".$fixed_entry.".html";
-                    $crc = crc32(str_replace( $pathvars["virtual"], "", $_SESSION["REFERER"]));
-                    $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.".".$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
+                    $crc = crc32(str_replace( $pathvars["virtual"], "", $_SESSION["REFERER"])).".";
+                    // ausnahme fuer die startseite hier wird die crc geleert und index aus dem referer entfernt
+                    if ( $_SESSION["REFERER"] == "/auth/index" ) {
+                        $crc = ""; 
+                        $_SESSION["REFERER"] = str_replace("/index","",$_SESSION["REFERER"]);
+                    }
+                    $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
+
                     unset($_SESSION["referer"]);
                 } else {
                     $sql = "SELECT refid FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."=".$lastid;
