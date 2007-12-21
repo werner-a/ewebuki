@@ -216,6 +216,12 @@
                     $c = "else if";
                 }
 
+                if ( $value[3] != "" ) {
+                    $k = "[KEY-".$value[1]."]";
+                } else {
+                    $k = "";
+                }
+
                 if ( $value[2] == False ) {
                     $s = "' + selText + '";
                 } else {
@@ -260,7 +266,7 @@
                 $ausgaben["njs"] .= "ebButtons[ebButtons.length] = new ebButton(\n";
                 $ausgaben["njs"] .= "'eb_".$key."'
                                     ,'".strtoupper($key)."'
-                                    ,'".$label[$key]." [KEY-".$value[1]."]'
+                                    ,'".$label[$key].$k."'
                                     ,'".$value[0]."'
                                     ,'".$value[1]."'
                                     ,'noSelect'
