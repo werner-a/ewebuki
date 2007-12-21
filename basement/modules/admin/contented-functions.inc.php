@@ -59,7 +59,7 @@
     if ( in_array("makece", $cfg["contented"]["function"][$environment["kategorie"]]) ) {
 
         function makece($ce_formname, $ce_name, $ce_inhalt) {
-            global $debugging, $db, $cfg, $pathvars, $ausgaben, $specialvars, $defaults;
+            global $debugging, $environment, $db, $cfg, $pathvars, $ausgaben, $specialvars, $defaults;
 
             // vogelwilde regex die alte & neue file links findet
             // und viel arbeit erspart
@@ -195,6 +195,17 @@
 
             #$debugging["ausgabe"] .= "<pre>".print_r($cfg["contented"]["tags"],True)."</pre>";
 
+            // label fuer neue buttons fuellen
+            $sql = "SELECT label, content
+                      FROM ". SITETEXT ."
+                     WHERE tname='".crc32($environment["ebene"]).".modify'
+                       AND lang='".$environment["language"]."'";
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+            $result  = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result) ) {
+                $label[$data["label"]] = $data["content"];
+            }
+
             $cms_old_mode = False;
             foreach( $cfg["contented"]["tags"] as $key => $value ) {
 
@@ -249,7 +260,7 @@
                 $ausgaben["njs"] .= "ebButtons[ebButtons.length] = new ebButton(\n";
                 $ausgaben["njs"] .= "'eb_".$key."'
                                     ,'".strtoupper($key)."'
-                                    ,'".strtoupper($key)." [KEY-".$value[1]."]'
+                                    ,'".$label[$key]." [KEY-".$value[1]."]'
                                     ,'".$value[0]."'
                                     ,'".$value[1]."'
                                     ,'noSelect'
