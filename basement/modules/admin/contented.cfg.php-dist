@@ -135,7 +135,7 @@
                    "hs"     => array( "" ),
                    "hl"     => array( "", "_", True ),
                    "imgb"   => array( "", "X", False, "=image.typ;l|r;0;b;20;20;10]" ),
-//                    "sel"    => array( "T", "S", False, "=1;m;True;1:2]" ),
+                   "sel"    => array( "", "S", False, "=1;m;True;1:2]" ),
                    "in"     => array( "" ),
                    "m0"     => array( "B", "-" ),
                    "m1"     => array( "B", "=" ),
