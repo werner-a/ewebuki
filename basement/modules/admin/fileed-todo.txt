@@ -2,12 +2,16 @@
 
 ToDo:
 -----
+- bug: beim klick auf ein bild in den compilations, wird das bild nicht angezeigt
+- bug: bei zip, pdf u.s.w. wird der noch der alte name beim download verwendet
+- ???: wenn zip ausgepackt wird, ist der name des archiv im filenamen, warum?
+
+
 - feature: bildunterschrift = beschreibung > wenn leer
 - feature: groessenaenderung einstellbar (extra x, extra y)
 - feature: benutzer soll eine selektionen nur mit einer bestimmten anzahl von bildern auswählen können
 - feature: rechtestruktur (z.B.: Benutzer gelöscht - datei herrenlos)
-- bug: beim klick auf ein bild in den compilations, wird das bild nicht angezeigt
-- schoenheitsfehler: beim download werden die "alten" dateinamen angeboten 
+- schoenheitsfehler: beim download werden die "alten" dateinamen angeboten
 
 to be tested:
 -------------
@@ -37,4 +41,3 @@ zip-handling:
 - filecollect: benutzer muß neue CompilationId eingeben -> soll system übernehmen
 - feature: die max. upload groesse anzeigen
 - welche selektionen wurden ausgewählt?
-
