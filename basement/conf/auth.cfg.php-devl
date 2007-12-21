@@ -91,7 +91,7 @@
                        ),
              "menu" => array(
                  "grouped" => array("list", "admin"),
-                 "leveled" => array("list", "admin"),
+                 "leveled" => array("list", "disabled"),
                   "usered" => array("list", "admin"),
                   "menued" => array("list", "admin"),
                   "fileed" => array("list", "edit"),
