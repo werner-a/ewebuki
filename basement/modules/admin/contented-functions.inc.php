@@ -216,7 +216,7 @@
                     $c = "else if";
                 }
 
-                if ( $value[3] != "" ) {
+                if ( $value[1] != "" ) {
                     $k = "[KEY-".$value[1]."]";
                 } else {
                     $k = "";
