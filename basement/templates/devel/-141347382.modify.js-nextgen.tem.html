@@ -108,8 +108,8 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
             ebShowButton(ebButtons[i], i, position);
         }
         if ( position == 'T' ) {
-            document.write('<input type="submit" name="sel[]" id="eb_submit" value="SEL" title="#(sel)" class="buttag"/>');
-            document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="#(add)" class="buttag"/>');
+            document.write('<input type="submit" name="sel[]" id="eb_submit" value="GRP" title="#(add_grp)" class="buttag"/>');
+            document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="#(add_file)" class="buttag"/>');
         }
         if ( position == 'B' ) {
             document.write('<input type="button" id="eb_close" value="X" title="Schliesse alle Tags" onclick="ebCloseAllTags();" class="buttag" />');
@@ -258,7 +258,7 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         ebInsertContent(myField, myValue);
     }
 
-    function ebInsertsel(myField, id, art, defaultTitle, pics, thumbs) {
+    function ebInsertSel(myField, id, art, defaultTitle, pics, thumbs) {
         var myThumbs = prompt('Bilderstrecke mit Thumbnails anzeigen:', thumbs);
         if ( myThumbs != "TRUE" ) {
             myThumbs = "";
@@ -275,7 +275,6 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
             ebInsertContent(myField, myValue);
         }
     }
-
 
     function ebInsertLink(myField, i, defaultValue) {
         if (!defaultValue) {
