@@ -221,7 +221,7 @@
                     // beim ersten aufruf eine class menued setzen
                     if ( $self == "" ) {
                         $tree .= "<ul class=\"menued\">\n";
-                        if ( $art == "select" ) {
+                        if ( $art == "select" && priv_check(make_ebene(0),$cfg["menued"]["modify"]["move"][2]) ) {
                             $tree .= "<li><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />#(root)</li>";
                         }
                     } else {
@@ -236,7 +236,7 @@
 
             // refid radio button
             if ( $radiorefid != "" ) {
-                if ( ($array["mid"] == $environment["parameter"][2])  ) {
+                if ( ($array["mid"] == $environment["parameter"][2]) || !priv_check(make_ebene($array["mid"]),$cfg["menued"]["modify"]["move"][2])  ) {
                     $radio_disabled = " disabled";
                 } else {
                     $radio_disabled = "";
