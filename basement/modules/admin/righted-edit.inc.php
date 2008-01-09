@@ -72,7 +72,7 @@
                 WHERE tname='".$url."'";
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
-            $dataloop["actual"][] = array("group" => $all["beschreibung"], 
+            $dataloop["actual"][] = array("group" => $all["ggroup"], 
                                           "priv" => $all["priv"],
                                           "gid" => $all["gid"],
                                           "pid" => $all["pid"]
