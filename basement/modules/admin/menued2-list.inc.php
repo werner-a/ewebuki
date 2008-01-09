@@ -138,7 +138,7 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["menued"]["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        if ( priv_check(make_ebene($environment["parameter"][1]),$cfg["menued"]["right"]) || priv_check_old("",$cfg["menued"]["right"])) {
+        if ( priv_check("/",$cfg["menued"]["right"]) || priv_check_old("",$cfg["menued"]["right"])) {
             $ausgaben["new"] = "<a href=\"".$cfg["menued"]["basis"]."/add,0.html\">g(new)</a>";
         } else {
             $ausgaben["new"] = "";
