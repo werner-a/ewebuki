@@ -154,7 +154,7 @@
                 foreach($HTTP_POST_VARS as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
-                        $sqla .= " `".$name."`";
+                        $sqla .= $name;
                         if ( $sqlb != "" ) $sqlb .= ",";
                         $sqlb .= " '".$value."'";
                     }
