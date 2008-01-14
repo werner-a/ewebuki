@@ -221,11 +221,12 @@
 
     // daten fuer login, logout formular setzen
     if ( $_SESSION["auth"] != -1 ) {
+        if ( $cfg["auth"]["hidden"]["set"] != True || $environment["kategorie"] == $cfg["auth"]["hidden"]["kategorie"] ) {
             if ( $cfg["auth"]["hidden"]["set"] != True ) {
                 $hidedata["authArea"]["message"] = "";
+            } else {
+                $hidedata["authArea"]["message"] = "#(secret)";
             }
-        if ( $cfg["auth"]["hidden"]["set"] != True || $environment["kategorie"] == $cfg["auth"]["hidden"]["kategorie"] ) {
-            $hidedata["authArea"]["message"] = "#(secret)";
             $hidedata["authLogin"]["nop"] = "";
         }
     } else {
