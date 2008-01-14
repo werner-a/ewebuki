@@ -361,7 +361,6 @@ ALTER TABLE public.site_form OWNER TO postgres;
 --
 
 CREATE SEQUENCE site_form_fid_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -381,7 +380,7 @@ ALTER SEQUENCE site_form_fid_seq OWNED BY site_form.fid;
 -- Name: site_form_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('site_form_fid_seq', 1, false);
+SELECT pg_catalog.setval('site_form_fid_seq', 11, true);
 
 
 --
@@ -396,7 +395,7 @@ CREATE TABLE site_form_lang (
     fwerte character varying(255) NOT NULL,
     ferror character varying(255) NOT NULL,
     fdberror character varying(255) NOT NULL,
-    fchkerror character(255) NOT NULL
+    fchkerror character varying(255) NOT NULL
 );
 
 
@@ -407,7 +406,6 @@ ALTER TABLE public.site_form_lang OWNER TO postgres;
 --
 
 CREATE SEQUENCE site_form_lang_flid_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -427,7 +425,7 @@ ALTER SEQUENCE site_form_lang_flid_seq OWNED BY site_form_lang.flid;
 -- Name: site_form_lang_flid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('site_form_lang_flid_seq', 1, false);
+SELECT pg_catalog.setval('site_form_lang_flid_seq', 7, true);
 
 
 --
@@ -735,17 +733,21 @@ INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, freq
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (8, 'fhit', '-939795212.modify', '30', '', '', NULL, 0, '');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (9, 'entry', '-555504947.add', '0', '', '', NULL, -1, 'PREG:^[a-z_\\-\\.0-9]+$');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (10, 'entry', '-555504947.edit', '0', '', '', NULL, -1, 'PREG:^[a-z_\\-\\.0-9]+$');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (11, 'mandatory', '-555504947.edit', '0', '', '', 'pgenum', -1, '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (12, 'hide', '-555504947.edit', '0', '', '', 'pgenum', -1, '');
 
 
 --
 -- Data for Name: site_form_lang; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', '                                                                                                                                                                                                                                                               ');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '                                                                                                                                                                                                                                                               ');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '                                                                                                                                                                                                                                                               ');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (9, 9, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.                                                                                                                                                                                                                             ');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.                                                                                                                                                                                                                             ');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (9, 9, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (11, 11, 'de', '''-1''', '', '', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (12, 12, 'de', '''-1''', '', '', '', '');
 
 
 --
