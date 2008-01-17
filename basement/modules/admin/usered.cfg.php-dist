@@ -49,7 +49,7 @@
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
             "color" => array(
                         "a" => "#eeeeee",
-                        "b" => "#eeefff",
+                        "b" => "#ffffff",
                        ),
          "function" => array(
                   "details" => "",
