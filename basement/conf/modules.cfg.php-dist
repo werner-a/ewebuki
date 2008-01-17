@@ -154,7 +154,7 @@
 #        include $pathvars["moduleroot"]."addon/search.inc.php";
 #    }
 
-#    // addon: sitemap for testing only!
+#    // addon: sitemap 
 #    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "sitemap" )
 #       || ( $environment["ebene"] == "/sitemap" ))
 #    {
