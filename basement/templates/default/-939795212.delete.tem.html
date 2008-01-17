@@ -14,11 +14,17 @@
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <fieldset>
-        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
-        <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
-        <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
-        <input name="delete" type="hidden" value="!#ausgaben_form_delete" class="hidden" />
         <div class="clearer">&nbsp;</div>
+        <ul style="padding-left:40px;">
+            <!--##loop-list-->
+            <li>
+                <a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}
+            </li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <input type="submit" name="send[]" value="g(send)" class="first" />
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>

@@ -2,30 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
-<title>fileed.delete</title>
+<title>fileed.upload</title>
 <link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
 </head>
 <body>
 <!--##begin-->
 <!--$Id$-->
-<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" enctype="multipart/form-data">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <fieldset>
-        <div class="clearer">&nbsp;</div>
-        <ul style="padding-left:40px;">
-            <!--##loop-list-->
-            <li>
-                <a href="!{link}" title="!{item}">!{item}</a>&nbsp;!{reason}
-            </li>
-            <!--##cont-->
-        </ul>
-    </fieldset>
-    <fieldset>
+        <!--##loop-upload-->
+        <label>#(inhalt)</label>
+        <input type="file" name="!{name}" />
+        <!--##cont-->
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" class="next" />
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>

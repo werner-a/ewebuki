@@ -2,41 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
-<title>fileed.upload</title>
+<title>fileed.delete</title>
 <link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
 </head>
 <body>
 <!--##begin-->
-<!--$Id: -939795212.upload.tem.html 789 2007-09-14 12:14:02Z chaot $-->
-<form method="post" action="!#ausgaben_form_aktion" id="eEd" enctype="multipart/form-data">
+<!--$Id$-->
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
-    <div class="tabbed" style="">
-        <ul style="">
-            <!--##loop-tabs-->
-            <li style="!{style}">
-                <a href="!{link}" class="!{class}" style="">!{label}</a>
-            </li>
-            <!--##cont-->
-        </ul>
-    </div>
-    <div style="clear:both;border-top:1px solid #666666;"></div>
     <p>#(inhalt)</p>
-    <div class="clearer">&nbsp;</div>
     <p>!#ausgaben_form_error</p>
-    <!--##hide-modus-->
-    <p><a href="!{link}">!{text}</a></p>
-    <!--##show-->
-    #(file_specs)
     <fieldset>
-        <!--##loop-upload-->
-        <label>#(file)</label>
-        <input type="file" name="!{name}" />
-        <!--##cont-->
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <input type="hidden" name="id1" value="!#ausgaben_form_id1" class="hidden" />
+        <input type="hidden" name="id2" value="!#ausgaben_form_id2" class="hidden" />
+        <input name="delete" type="hidden" value="!#ausgaben_form_delete" class="hidden" />
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />
-        <input type="reset" name="reset" value="g(reset)" class="next" />
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>
