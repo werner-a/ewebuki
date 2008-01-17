@@ -11,29 +11,32 @@
 <!--$Id$-->
 <h1>#(ueberschrift)</h1>
 <p>!#ausgaben_new</p>
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="0" cellpadding="2">
-        <tr>
-          <td>#(inhalt)</td>
-        </tr>
-        <tr>
-          <td><img src="../../images/net/pos.gif" width="1" height="1">!#ausgaben_form_error</td>
-        </tr>
-        <tr>
-          <td>!#ausgaben_output</td>
-        </tr>
-        <tr>
-          <td>!#ausgaben_renumber</td>
-        </tr>
-        <tr>
-          <td>!#ausgaben_inaccessible</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+<p><span style="float:right">!#ausgaben_design</span>
+<!--##hide-back-->
+<a href="!{link}"><img src="../../images/default/up.png" border="0" alt="Zurück" title="Zurück" width="24\" height="18"></a>
+<!--##show-->
+ <b>!#ausgaben_path</b></p>
+<div class="clearer">&nbsp;</div>
+<div id="eEd">
+<!--##hide-move-->
+    <form method="post" action="!#ausgaben_form_aktion">
+        <p class="red">!#ausgaben_form_error</p>
+        <p>!#element_entry</p>
+<!--##show-->
+        !#ausgaben_show_menu
+<!--##hide-move-->
+        <fieldset>
+            <div class="clearer">&nbsp;</div>
+            <input type="submit" name="send[]" value="g(send)" class="first" />
+            <input type="reset" name="reset" value="g(reset)" class="next" />
+            <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+            <div class="clearer">&nbsp;</div>
+        </fieldset>
+    </form>
+<!--##show-->
+</div>
+<p>!#ausgaben_renumber</p>
+<p>!#ausgaben_inaccessible</p>
 <!--##end-->
 </body>
 </html>
