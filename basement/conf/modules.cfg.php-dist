@@ -55,21 +55,37 @@
         include $pathvars["moduleroot"]."basic/view.cfg.php";
         include $pathvars["moduleroot"]."basic/view.inc.php";
     }
-    
+
+    // admin: contented
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "contented" )
+       || ( $environment["ebene"] == "/admin/contented" ))
+    {
+        include $pathvars["moduleroot"]."admin/contented.cfg.php";
+        include $pathvars["moduleroot"]."admin/contented-ctrl.inc.php";
+    }
+
 #    // admin: new for testing only !!
 #    if ( $environment["kategorie"] == "new" ) {
 #        include $pathvars["moduleroot"]."admin/new.cfg.php";
 #        include $pathvars["moduleroot"]."admin/new.inc.php";
 #    }
 
-    // admin: grouped
+    // admin: grouped (development)
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "grouped" )
        || ( $environment["ebene"] == "/admin/grouped" ))
     {
         include $pathvars["moduleroot"]."admin/grouped.cfg.php";
         include $pathvars["moduleroot"]."admin/grouped-ctrl.inc.php";
     }
-    
+
+    // admin: righted (development)
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "righted" )
+       || ( $environment["ebene"] == "/admin/righted" ))
+    {
+        include $pathvars["moduleroot"]."admin/righted.cfg.php";
+        include $pathvars["moduleroot"]."admin/righted-ctrl.inc.php";
+    }
+
     // admin: leveled
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "leveled" )
        || ( $environment["ebene"] == "/admin/leveled" ))
@@ -90,8 +106,8 @@
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued" )
        || ( $environment["ebene"] == "/admin/menued" ))
     {
-        include $pathvars["moduleroot"]."admin/menued.cfg.php";
-        include $pathvars["moduleroot"]."admin/menued-ctrl.inc.php";
+        include $pathvars["moduleroot"]."admin/menued2.cfg.php";
+        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
     }
 
     // admin: fileed
@@ -160,31 +176,6 @@
 #    {
 #        include $pathvars["moduleroot"]."customer/leer.cfg.php";
 #        include $pathvars["moduleroot"]."customer/leer-ctrl.inc.php"; # erweitertes modul
-#    }
-
-#    // admin - develop: contented-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "contented" )
-#       || ( $environment["ebene"] == "/admin/contented" ))
-#    {
-#        include $pathvars["moduleroot"]."admin/contented.cfg.php";
-#        include $pathvars["moduleroot"]."admin/contented-ctrl.inc.php";
-#    }
-
-
-#    // admin - develop: menued-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "menued" )
-#       || ( $environment["ebene"] == "/admin/menued" ))
-#    {
-#        include $pathvars["moduleroot"]."admin/menued2.cfg.php";
-#        include $pathvars["moduleroot"]."admin/menued2-ctrl.inc.php";
-#    }
-
-#    // admin - develop: righted-modul for testing only !!
-#    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "righted" )
-#       || ( $environment["ebene"] == "/admin/righted" ))
-#    {
-#        include $pathvars["moduleroot"]."admin/righted.cfg.php";
-#        include $pathvars["moduleroot"]."admin/righted-ctrl.inc.php";
 #    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
