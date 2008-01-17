@@ -112,7 +112,7 @@
     require $pathvars["libraries"]."function_form_errors.inc.php"; // formular elemente pruefen
     require $pathvars["libraries"]."function_inhalt_selector.inc.php"; // seiten umschalter bauen
     require $pathvars["libraries"]."function_file_verarbeitung.inc.php"; // upload verarbeitung
-    if ( $specialvars["contented"] != True ) {
+    if ( $specialvars["old_contented"] == True ) {
         require $pathvars["libraries"]."function_makece.inc.php"; // content editor erstellen
     }
     require $pathvars["libraries"]."function_parser.inc.php"; // parser funktion

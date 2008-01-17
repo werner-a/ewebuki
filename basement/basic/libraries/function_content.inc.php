@@ -223,7 +223,7 @@
                         $convert = "";
                         $signal = "e";
                     }
-                    if ( $specialvars["contented"] != True ) {
+                    if ( $specialvars["old_contented"] == True ) {
                         $editurl = $pathvars["virtual"]."/cms/edit,".$db->getDb().",".$dbtname.",".$label;
                     } else {
                         $editurl = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$dbtname.",".$label;

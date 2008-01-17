@@ -70,6 +70,7 @@
     $specialvars["default_template"] = "default1"; // basis name des default template
     $specialvars["menu_level0_start"] = 1; // erste zufall startseite
     $specialvars["menu_level0_end"] = 0; // letzte zufall startseite (0 = disable)
+    $specialvars["old_contented"] = 0; // alten contented verwenden
     $specialvars["crc32"] = -1; // ablage des content mit crc32.tname
     $specialvars["denyhtml"] = -1; // html im content verbieten
     $specialvars["denyspace"] = -1; // leerzeichen im content verbieten
