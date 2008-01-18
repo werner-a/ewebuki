@@ -380,7 +380,7 @@ ALTER SEQUENCE site_form_fid_seq OWNED BY site_form.fid;
 -- Name: site_form_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('site_form_fid_seq', 11, true);
+SELECT pg_catalog.setval('site_form_fid_seq', 13, true);
 
 
 --
@@ -425,7 +425,7 @@ ALTER SEQUENCE site_form_lang_flid_seq OWNED BY site_form_lang.flid;
 -- Name: site_form_lang_flid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('site_form_lang_flid_seq', 7, true);
+SELECT pg_catalog.setval('site_form_lang_flid_seq', 9, true);
 
 
 --
@@ -453,15 +453,15 @@ CREATE TABLE site_menu (
     entry character varying(30) NOT NULL,
     picture character varying(128),
     sort integer DEFAULT 1000 NOT NULL,
-    hide integer DEFAULT 0,
+    hide character varying(2) DEFAULT 0,
     "level" character varying(10),
-    mandatory integer DEFAULT 0,
+    mandatory character varying(2) DEFAULT 0,
     defaulttemplate character varying(20) DEFAULT 'default1'::character varying NOT NULL,
     dynamiccss character varying(5),
     dynamicbg character varying(128),
     CONSTRAINT site_menu_defaulttemplate_check CHECK ((((((defaulttemplate)::text = 'default1'::text) OR ((defaulttemplate)::text = 'default2'::text)) OR ((defaulttemplate)::text = 'default3'::text)) OR ((defaulttemplate)::text = 'default4'::text))),
-    CONSTRAINT site_menu_hide_check CHECK (((hide = -1) OR (hide = 0))),
-    CONSTRAINT site_menu_mandatory_check CHECK (((mandatory = -1) OR (mandatory = 0)))
+    CONSTRAINT site_menu_hide_check CHECK (((hide = -1) OR (hide = ''))),
+    CONSTRAINT site_menu_mandatory_check CHECK (((mandatory = -1) OR (mandatory = '')))
 );
 
 
@@ -733,9 +733,10 @@ INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, freq
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (8, 'fhit', '-939795212.modify', '30', '', '', NULL, 0, '');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (9, 'entry', '-555504947.add', '0', '', '', NULL, -1, 'PREG:^[a-z_\\-\\.0-9]+$');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (10, 'entry', '-555504947.edit', '0', '', '', NULL, -1, 'PREG:^[a-z_\\-\\.0-9]+$');
-INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (11, 'mandatory', '-555504947.edit', '0', '', '', 'pgenum', -1, '');
-INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (12, 'hide', '-555504947.edit', '0', '', '', 'pgenum', -1, '');
-
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (11, 'mandatory', '-555504947.edit', '0', '', '', 'pgenum', 0, '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (12, 'hide', '-555504947.edit', '0', '', '', 'pgenum', 0, '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (13, 'mandatory', '-555504947.add', '0', '', '', 'pgenum', 0, '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (14, 'hide', '-555504947.add', '0', '', '', 'pgenum', 0, '');
 
 --
 -- Data for Name: site_form_lang; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -748,7 +749,8 @@ INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror,
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (11, 11, 'de', '''-1''', '', '', '', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (12, 12, 'de', '''-1''', '', '', '', '');
-
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (13, 13, 'de', '''-1''', '', '', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (14, 14, 'de', '''-1''', '', '', '', '');
 
 --
 -- Data for Name: site_lock; Type: TABLE DATA; Schema: public; Owner: postgres
