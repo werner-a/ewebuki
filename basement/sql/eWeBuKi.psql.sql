@@ -332,7 +332,7 @@ ALTER SEQUENCE site_file_fid_seq OWNED BY site_file.fid;
 -- Name: site_file_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('site_file_fid_seq', 10, true);
+SELECT pg_catalog.setval('site_file_fid_seq', 39, true);
 
 
 --
@@ -460,8 +460,8 @@ CREATE TABLE site_menu (
     dynamiccss character varying(5),
     dynamicbg character varying(128),
     CONSTRAINT site_menu_defaulttemplate_check CHECK ((((((defaulttemplate)::text = 'default1'::text) OR ((defaulttemplate)::text = 'default2'::text)) OR ((defaulttemplate)::text = 'default3'::text)) OR ((defaulttemplate)::text = 'default4'::text))),
-    CONSTRAINT site_menu_hide_check CHECK (((hide = -1) OR (hide = ''))),
-    CONSTRAINT site_menu_mandatory_check CHECK (((mandatory = -1) OR (mandatory = '')))
+    CONSTRAINT site_menu_hide_check CHECK ((((hide)::text = (-1)::text) OR ((hide)::text = ''::text))),
+    CONSTRAINT site_menu_mandatory_check CHECK ((((mandatory)::text = (-1)::text) OR ((mandatory)::text = ''::text)))
 );
 
 
@@ -709,15 +709,6 @@ INSERT INTO db_leer (id, field1, field2) VALUES (2, 'Zweiter Eintrag', 'Zweite S
 --
 
 INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (1, 0, 1, '0', '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo Beschreibung', 'eWeBuKi Logo Unterschift', '', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (2, 0, 1, '0', '', 'upload--alex.jpg', 'jpg', 'Der Alex in Berlin', 'Der Alex in Berlin', '#p2,10# #p1,10#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (3, 0, 1, '0', '', 'upload--dark.jpg', 'jpg', 'Unwetter naht', ' Unwetter naht', '#p1,20#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (4, 0, 1, '0', '', 'upload--dust.jpg', 'jpg', 'Staub im PC', 'Staub im PC', '#p2,20#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (5, 0, 1, '0', '', 'upload--hummel.jpg', 'jpg', 'Hummelflug', 'Hummelflug', '#p2,30#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (6, 0, 1, '0', '', 'upload--italy.jpg', 'jpg', 'Süditalien', 'Süditalien', '#p1,30#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (7, 0, 1, '0', '', 'upload--karibik.jpg', 'jpg', 'Karibik Blick', 'Karibik Blick', '#p1,40#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (8, 0, 1, '0', '', 'upload--palenque.jpg', 'jpg', 'Maya Ruine', 'Maya Ruine', '#p1,50#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (9, 0, 1, '0', '', 'upload--rose.jpg', 'jpg', 'Rose blüht', 'Rose blüht', '#p2,40#', NULL);
-INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (10, 0, 1, '0', '', 'upload--wolken.jpg', 'jpg', 'Wolkenblick', 'Wolkenblick', '#p1,60#', NULL);
 
 
 --
@@ -738,6 +729,7 @@ INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, freq
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (13, 'mandatory', '-555504947.add', '0', '', '', 'pgenum', 0, '');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (14, 'hide', '-555504947.add', '0', '', '', 'pgenum', 0, '');
 
+
 --
 -- Data for Name: site_form_lang; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -751,6 +743,7 @@ INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror,
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (12, 12, 'de', '''-1''', '', '', '', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (13, 13, 'de', '''-1''', '', '', '', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (14, 14, 'de', '''-1''', '', '', '', '');
+
 
 --
 -- Data for Name: site_lock; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -784,8 +777,6 @@ INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES (5, 5, 'de', 
 -- Data for Name: site_text; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'hr', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Trennlinie', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'div', '-141347382.modify', 0, '', 'index', -1, 0, 'Style Element', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'abort', '-555504947.delete', 0, '/admin/menued', 'delete', -1, 0, 'Abbrechen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'content', '-555504947.delete', 0, '/admin/menued', 'delete', -1, 0, 'Inhalt', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'entry', '-555504947.delete', 0, '/admin/menued', 'delete', -1, 0, 'Eintrag', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
@@ -895,6 +886,7 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'h1', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Überschrift Klasse 1', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'h2', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Überschrift Klasse 2', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'hl', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Spezielle Trennlinie', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'hr', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Trennlinie', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'i', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Kursiv', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'img', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Bild', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'imgb', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Bild mit Rahmen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
@@ -922,18 +914,10 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'u', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Unterstrichen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'up', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Zurück-Link', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'upload', 'cms.edit.cmstag', 0, '', 'index', -1, 0, 'Hinaufladen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', '404', 0, '', 'fehlt', -1, 0, '[H1]Fehler 404 - Nicht gefunden.[/H1]
-
-[P]Die Uri !#ausgaben_404seite wurde nicht gefunden.
-
-Leider konnte das System nicht feststellen woher sie gekommen sind[/P].', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', '404', 0, '', 'fehlt', -1, 0, '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind[/P].', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'modcol', 'global', 0, '/admin/leveled', 'list', -1, 0, 'Funktionen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'error_dupe', '-555504947.edit-single', 0, '/admin/menued', 'add', -1, 0, 'Der Eintrag ist bereits vorhanden.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', '404referer', 0, '', 'fehlt', -1, 0, '[H1]Fehler 404 - Nicht gefunden.[/H1]
-
-[P]Die Uri: !#ausgaben_404seite wurde nicht gefunden.
-
-Die [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', '404referer', 0, '', 'fehlt', -1, 0, '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'error_dupe', '-555504947.edit-multi', 0, '/admin/menued', 'edit', -1, 0, 'Der Eintrag ist bereits vorhanden.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'error_dupe', '-555504947.move', 0, '/admin/menued', 'move', -1, 0, 'In dieser Ebene existiert bereits ein Eintrag mit gleichem Namen.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'logout', 'auth', 0, '', 'auth.login', -1, 0, 'Abgemeldet', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
@@ -1053,30 +1037,7 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'ueberschrift', '-1468826685.details', 0, '/dir/my', 'details', -1, 0, 'Modul Beispiel "my" erweitert - Details', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'field1', '-1468826685.details', 0, '/dir/my', 'details', -1, 0, 'Feld 1', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'field2', '-1468826685.details', 0, '/dir/my', 'details', -1, 0, 'Feld 2', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'demo', 0, '', 'demo', -1, 0, '[H1]Erstes Kapitel[/H1]
-
-[H2]Erster Absatz[/H2]
-
-[P]Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht – ein geradezu unorthographisches Leben.[/P]
-
-
-[H2]Zweiter Absatz[/H2]
-
-
-[P]Eines Tages aber beschloß eine kleine Zeile Blindtext, ihr Name war Lorem Ipsum, hinaus zu gehen in die weite Grammatik. Der große Oxmox riet ihr davon ab, da es dort wimmele von bösen Kommata, wilden Fragezeichen und hinterhältigen Semikoli, doch das Blindtextchen ließ sich nicht beirren. Es packte seine sieben Versalien, schob sich sein Initial in den Gürtel und machte sich auf den Weg.[/P]
-
-
-[H1]Zweites Kapitel[/H1]
-
-[H2]Erster Absatz[/H2]
-
-[P]Als es die ersten Hügel des Kursivgebirges erklommen hatte, warf es einen letzten Blick zurück auf die Skyline seiner Heimatstadt Buchstabhausen, die Headline von Alphabetdorf und die Subline seiner eigenen Straße, der Zeilengasse. Wehmütig lief ihm eine rethorische Frage über die Wange, dann setzte es seinen Weg fort.[/P]
-
-[P=box]Unterwegs traf es eine Copy. Die Copy warnte das Blindtextchen, da, wo sie herkäme wäre sie zigmal umgeschrieben worden und alles, was von ihrem Ursprung noch übrig wäre, sei das Wort "und" und das Blindtextchen solle umkehren und wieder in sein eigenes, sicheres Land zurückkehren.[/P]
-
-[H2]Dritter Absatz[/H2]
-
-[P]Doch alles Gutzureden konnte es nicht überzeugen und so dauerte es nicht lange, bis ihm ein paar heimtückische Werbetexter auflauerten, es mit Longe und Parole betrunken machten und es dann in ihre Agentur schleppten, wo sie es für ihre Projekte wieder und wieder mißbrauchten. Und wenn es nicht umgeschrieben wurde, dann benutzen Sie es immernoch.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'demo', 0, '', 'demo', -1, 0, '[H1]Erstes Kapitel[/H1]\r\n\r\n[H2]Erster Absatz[/H2]\r\n\r\n[P]Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht - ein geradezu unorthographisches Leben.[/P]\r\n\r\n\r\n[H2]Zweiter Absatz[/H2]\r\n\r\n\r\n[P]Eines Tages aber beschloß eine kleine Zeile Blindtext, ihr Name war Lorem Ipsum, hinaus zu gehen in die weite Grammatik. Der große Oxmox riet ihr davon ab, da es dort wimmele von bösen Kommata, wilden Fragezeichen und hinterhältigen Semikoli, doch das Blindtextchen ließ sich nicht beirren. Es packte seine sieben Versalien, schob sich sein Initial in den Gürtel und machte sich auf den Weg.[/P]\r\n\r\n\r\n[H1]Zweites Kapitel[/H1]\r\n\r\n[H2]Erster Absatz[/H2]\r\n\r\n[P]Als es die ersten Hügel des Kursivgebirges erklommen hatte, warf es einen letzten Blick zurück auf die Skyline seiner Heimatstadt Buchstabhausen, die Headline von Alphabetdorf und die Subline seiner eigenen Straße, der Zeilengasse. Wehmütig lief ihm eine rethorische Frage über die Wange, dann setzte es seinen Weg fort.[/P]\r\n\r\n[P=box]Unterwegs traf es eine Copy. Die Copy warnte das Blindtextchen, da, wo sie herkäme wäre sie zigmal umgeschrieben worden und alles, was von ihrem Ursprung noch übrig wäre, sei das Wort "und" und das Blindtextchen solle umkehren und wieder in sein eigenes, sicheres Land zurückkehren.[/P]\r\n\r\n[H2]Dritter Absatz[/H2]\r\n\r\n[P]Doch alles Gutzureden konnte es nicht überzeugen und so dauerte es nicht lange, bis ihm ein paar heimtückische Werbetexter auflauerten, es mit Longe und Parole betrunken machten und es dann in ihre Agentur schleppten, wo sie es für ihre Projekte wieder und wieder mißbrauchten. Und wenn es nicht umgeschrieben wurde, dann benutzen Sie es immernoch.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'ueberschrift', '-102562964.list', 1, '/admin/grouped', 'list', -1, 0, 'Gruppen-Editor - Übersicht', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'filelist', 'global', 1, '/admin/fileed', 'list', -1, 0, 'Datei-Editor', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'filecompilation', 'global', 3, '/admin/fileed', 'list', -1, 0, 'Gruppierung', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
@@ -1142,36 +1103,11 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'sel_show', '-939795212.compilation', 1, '/admin/fileed', 'compilation', -1, 0, 'Nur diese anzeigen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'num_pics', '-939795212.compilation', 1, '/admin/fileed', 'compilation', -1, 0, 'Bilder insgesamt: ', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'all_names', '-939795212.compilation', 1, '/admin/fileed', 'compilation', -1, 0, 'Alle verwendeten Titel', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'bilderstrecke', 0, '', 'bilderstrecke', -1, 0, '[H1]Überschrift[/H1]
-
-[P]Demo des "Selection Tag".[/P]
-
-[DIV=box][LINK=http://ewebuki.de/auth/dokumentation/tags/spezial.html#SEL]Beschreibung des "Tag"[/LINK][/DIV]
-
-[HS][/HS]
-
-[P]Das ist ein [SEL=1;m;;]Textlink[/SEL] zu der Bilderstrecke.
-[E][SEL=1;m;;]Textlink[/SEL][/E][/P]
-
-[HS][/HS]
-
-[P]Bitte nur ein Bild.
-[E][SEL=1;b;True;8]Gruppierung, ein Bild[/SEL][/E][/P]
-
-[SEL=1;b;True;8]Gruppierung, ein Bild[/SEL][HS][/HS]
-
-[P]Oder doch ein paar "Teaser Thumbs"?
-[E][SEL=1;b;;3:7:10]Gruppierung, viele Bilder[/SEL][/E][/P]
-
-[SEL=1;b;;3:7:10]Gruppierung, viele Bilder[/SEL]
-
-
-[HS][/HS]
-
-[P]Und jetzt die "Thumbs" aller Bilder?
-[E][SEL=1;b;;a]Gruppierung, alle Bilder[/SEL][/E][/P]
-
-[SEL=1;b;;a]Gruppierung, alle Bilder[/SEL]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'bilderstrecke', 0, '', 'bilderstrecke', -1, 0, '[H1]Überschrift[/H1]\r\n\r\n[P]Demo des "Selection Tag".[/P]\r\n\r\n[DIV=box][LINK=http://ewebuki.de/auth/dokumentation/tags/spezial.html#SEL]Beschreibung des "Tag"[/LINK][/DIV]\r\n\r\n[HS][/HS]\r\n\r\n[P]Das ist ein [SEL=1;m;;]Textlink[/SEL] zu der Bilderstrecke.\r\n[E][SEL=1;m;;]Textlink[/SEL][/E][/P]\r\n\r\n[HS][/HS]\r\n\r\n[P]Bitte nur ein Bild.\r\n[E][SEL=1;b;True;8]Gruppierung, ein Bild[/SEL][/E][/P]\r\n\r\n[SEL=1;b;True;8]Gruppierung, ein Bild[/SEL][HS][/HS]\r\n\r\n[P]Oder doch ein paar "Teaser Thumbs"?\r\n[E][SEL=1;b;;3:7:10]Gruppierung, viele Bilder[/SEL][/E][/P]\r\n\r\n[SEL=1;b;;3:7:10]Gruppierung, viele Bilder[/SEL]\r\n\r\n\r\n[HS][/HS]\r\n\r\n[P]Und jetzt die "Thumbs" aller Bilder?\r\n[E][SEL=1;b;;a]Gruppierung, alle Bilder[/SEL][/E][/P]\r\n\r\n[SEL=1;b;;a]Gruppierung, alle Bilder[/SEL]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'fehler', 0, '', 'fehler', -1, 0, '[H1]404 Test[/H1]\r\n\r\n\r\n[P]Hiermit wird die 404 Fehlerseite angezeigt.\r\n\r\n[LINK=fehlt.html]404 Fehler mit Referer[/LINK]\r\n\r\nUm die zweite 404 Fehlermeldung (Referer unbekannt) sichtbar zu machen,\r\nin der Eingabezeile der obigen 404 Fehlermeldung einfach Enter drücken.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'impressum', 0, '', 'impressum', -1, 0, '[H1]Impressum[/H1]\r\n\r\n\r\n[P]eWeBuKi - Copyright 2003-2007\r\nby [EMAIL=w.ammon(at)chaos.de]Werner Ammon[/EMAIL][/P]\r\n\r\n\r\n[H2]Weitere Infoseiten:[/H2]\r\n\r\n\r\n[P][LINK=http://www.ewebuki.de/]www.ewebuki.de[/LINK]\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK][/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'index', 0, '', 'index', -1, 0, '[H1]Glückwunsch Ihr eWeBuKi läuft![/H1]\r\n\r\n[P]Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki[/P]\r\n\r\n[P=box][B]ACHTUNG:[/B] Passwort ändern nicht vergessen![/P]\r\n\r\n[P]Weitere Infoseiten:\r\n[LINK=http://www.ewebuki.de/]www.ewebuki.de[/LINK]\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK][/P]\r\n', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'show', 0, '', 'show', -1, 0, '[H1]eWeBuKi Show[/H1]\r\n\r\n\r\n[H2]Tabellen Positionen[/H2]\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL]1,1[/COL]\r\n[COL=;;u]1,2[/COL]\r\n[COL=r]1,3\r\n\r\n\r\n[/COL]\r\n[/ROW][ROW]\r\n[COL=m]2,1[/COL]\r\n[COL=;;g]2,2[/COL]\r\n[COL=r;;m]2,3\r\n\r\n\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\n[H2]Easy Template Links[/H2]\r\n\r\n[P]!#lnk_1\r\n!#lnk_2\r\n!#lnk_3[/P]\r\n\r\n[H2]Menu oberhalb (M1,mit Bez.)[/H2]\r\n[M1]nach oben[/M1]\r\n\r\n[H2]Menu oberhalb als Liste (M1=l,ohne Bez.)[/H2]\r\n[M1=l][/M1]\r\n\r\n[H2]Menu gleiche Ebene (M2,mit Bez.)[/H2]\r\n[M2]nach oben[/M2]\r\n\r\n[H2]Menu gleiche Ebene als Liste (M2=l,mit Bez.)[/H2]\r\n[M2=l][/M2]\r\n\r\n\r\n\r\n[H2]Tabellen Abstände[/H2]\r\n[P]Tabellen Abstände (abstand text - tabelle 1)[/P]\r\n\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n\r\n[COL=l;150]links oben\r\n[/COL]\r\n\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n\r\n[/ROW]\r\n[/TAB]\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n\r\n[COL=l;150]links oben\r\n[/COL]\r\n\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\n[P]Tabellen Abstände (abstand text - tabelle 2)[/P]\r\n\r\n[IN]I[/IN]nitial fuer Texte\r\n\r\n[H1][B][EM]Bold EM Tag[/EM][/B] im H1 Tag[/H1]\r\n\r\nText zwischen Linien:\r\n[HL][/HL]\r\nHier kommt der Text.\r\n[HL][/HL]\r\n\r\n[H2]Bilder im Text[/H2]\r\n\r\n[P][IMG=/file/picture/small/img_1.png;l;;;20;;20]eWeBuKi Logo[/IMG]Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht - ein geradezu unorthographisches Leben.[/P]\r\n\r\n[H2]Mehrere Bilder rechts[/H2]\r\n\r\n[P]Bei mehreren Bildern rechts gibt es Abstand Probleme. Um das zu umgehen muss der Umlauf mit dem Tag BR=a angehalten werden.[/P]\r\n\r\n[IMGB=/file/picture/small/img_1.png;r;0;b]Logo[/IMGB]Text neben Bild 1[BR=a][/BR]\r\n\r\n[IMGB=/file/picture/small/img_1.png;r]Logo[/IMGB]Text neben Bild 2[BR=a][/BR]\r\n\r\n[P]Nicht nur Bilder sondern auch Text kann mit diesem Trick unter das Bild geschoben werden.[/P]\r\n[H1]ueberschrift h1[/H1]\r\n[H2]ueberschrift h2[/H2]\r\n[H3]ueberschrift h3[/H3]\r\n[H4]ueberschrift h4[/H4]\r\n[H5]ueberschrift h5[/H5]\r\n[H6]ueberschrift h6[/H6]\r\n\r\nAbsaetze mit css einstellen:\r\n[P]Im Absatz ist es Schoen[/P]\r\n\r\nDIV=class jeder css im Content:\r\n[DIV=anderst]Dieser Text ist schoener als der Rest[/DIV]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'cmslink', 'global', 0, '/admin/fileed', 'list', -1, 0, 'zum Content Editor', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'filecollect', '-939795212.list', 0, '/admin/fileed', 'list', -1, 0, 'Gruppieren', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'ueberschrift', '-939795212.compilation', 0, '/admin/fileed', 'compilation', -1, 0, 'Gruppierung - Übersicht', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
@@ -1254,6 +1190,7 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'h5', '-141347382.modify', 0, '', 'index', -1, 0, 'Überschrift Gr. 5', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'h6', '-141347382.modify', 0, '', 'index', -1, 0, 'Überschrift Gr. 6', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'pre', '-141347382.modify', 0, '', 'index', -1, 0, 'Vorformatiert', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'div', '-141347382.modify', 0, '', 'index', -1, 0, 'Style Element', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'list', '-141347382.modify', 0, '', 'index', -1, 0, 'Liste', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'hr', '-141347382.modify', 0, '', 'index', -1, 0, 'Trennlinie', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'table', '-141347382.modify', 0, '', 'index', -1, 0, 'Tabelle komplett', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
@@ -1296,10 +1233,6 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'next', '-141347382.modify', 0, '', 'index', -1, 0, 'Nächster Menüpunkt', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'int', '-141347382.modify', 0, '', 'index', -1, 0, 'Intelligenter Link (deprecated)', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'center', '-141347382.modify', 0, '', 'index', -1, 0, 'Zentriert', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'fehler', 0, '', 'fehler', -1, 0, '[H1]404 Test[/H1]\r\n\r\n\r\n[P]Hiermit wird die 404 Fehlerseite angezeigt.\r\n\r\n[LINK=fehlt.html]404 Fehler mit Referer[/LINK]\r\n\r\nUm die zweite 404 Fehlermeldung (Referer unbekannt) sichtbar zu machen,\r\nin der Eingabezeile der obigen 404 Fehlermeldung einfach Enter drücken.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'impressum', 0, '', 'impressum', -1, 0, '[H1]Impressum[/H1]\r\n\r\n\r\n[P]eWeBuKi - Copyright 2003-2007\r\nby [EMAIL=w.ammon(at)chaos.de]Werner Ammon[/EMAIL][/P]\r\n\r\n\r\n[H2]Weitere Infoseiten:[/H2]\r\n\r\n\r\n[P][LINK=http://www.ewebuki.de/]www.ewebuki.de[/LINK]\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK][/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'index', 0, '', 'index', -1, 0, '[H1]Glückwunsch Ihr eWeBuKi läuft![/H1]\r\n\r\n[P]Um sich am System anzumelden benutzen Sie bitte folgende Daten:\r\n\r\nuser: ewebuki\r\npass: ewebuki[/P]\r\n\r\n[P=box][B]ACHTUNG:[/B] Passwort ändern nicht vergessen![/P]\r\n\r\n[P]Weitere Infoseiten:\r\n[LINK=http://www.ewebuki.de/]www.ewebuki.de[/LINK]\r\n[LINK=http://developer.berlios.de/projects/ewebuki/]developer.berlios.de/projects/ewebuki/[/LINK][/P]\r\n', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
-INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'inhalt', 'show', 0, '', 'show', -1, 0, '[H1]eWeBuKi Show[/H1]\r\n\r\n\r\n[H2]Tabellen Positionen[/H2]\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n[COL]1,1[/COL]\r\n[COL=;;u]1,2[/COL]\r\n[COL=r]1,3\r\n\r\n\r\n[/COL]\r\n[/ROW][ROW]\r\n[COL=m]2,1[/COL]\r\n[COL=;;g]2,2[/COL]\r\n[COL=r;;m]2,3\r\n\r\n\r\n[/COL]\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\n[H2]Easy Template Links[/H2]\r\n\r\n[P]!#lnk_1\r\n!#lnk_2\r\n!#lnk_3[/P]\r\n\r\n[H2]Menu oberhalb (M1,mit Bez.)[/H2]\r\n[M1]nach oben[/M1]\r\n\r\n[H2]Menu oberhalb als Liste (M1=l,ohne Bez.)[/H2]\r\n[M1=l][/M1]\r\n\r\n[H2]Menu gleiche Ebene (M2,mit Bez.)[/H2]\r\n[M2]nach oben[/M2]\r\n\r\n[H2]Menu gleiche Ebene als Liste (M2=l,mit Bez.)[/H2]\r\n[M2=l][/M2]\r\n\r\n\r\n\r\n[H2]Tabellen Abstände[/H2]\r\n[P]Tabellen Abstände (abstand text - tabelle 1)[/P]\r\n\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n\r\n[COL=l;150]links oben\r\n[/COL]\r\n\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n\r\n[/ROW]\r\n[/TAB]\r\n\r\n[TAB=;300;1]\r\n[ROW]\r\n\r\n[COL=l;150]links oben\r\n[/COL]\r\n\r\n[COL=l;150]rechts oben\r\n[/COL]\r\n\r\n[/ROW]\r\n[/TAB]\r\n\r\n\r\n[P]Tabellen Abstände (abstand text - tabelle 2)[/P]\r\n\r\n[IN]I[/IN]nitial fuer Texte\r\n\r\n[H1][B][EM]Bold EM Tag[/EM][/B] im H1 Tag[/H1]\r\n\r\nText zwischen Linien:\r\n[HL][/HL]\r\nHier kommt der Text.\r\n[HL][/HL]\r\n\r\n[H2]Bilder im Text[/H2]\r\n\r\n[P][IMG=/file/picture/small/img_1.png;l;;;20;;20]eWeBuKi Logo[/IMG]Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allmächtigen Interpunktion werden die Blindtexte beherrscht - ein geradezu unorthographisches Leben.[/P]\r\n\r\n[H2]Mehrere Bilder rechts[/H2]\r\n\r\n[P]Bei mehreren Bildern rechts gibt es Abstand Probleme. Um das zu umgehen muss der Umlauf mit dem Tag BR=a angehalten werden.[/P]\r\n\r\n[IMGB=/file/picture/small/img_1.png;r;0;b]Logo[/IMGB]Text neben Bild 1[BR=a][/BR]\r\n\r\n[IMGB=/file/picture/small/img_1.png;r]Logo[/IMGB]Text neben Bild 2[BR=a][/BR]\r\n\r\n[P]Nicht nur Bilder sondern auch Text kann mit diesem Trick unter das Bild geschoben werden.[/P]\r\n[H1]ueberschrift h1[/H1]\r\n[H2]ueberschrift h2[/H2]\r\n[H3]ueberschrift h3[/H3]\r\n[H4]ueberschrift h4[/H4]\r\n[H5]ueberschrift h5[/H5]\r\n[H6]ueberschrift h6[/H6]\r\n\r\nAbsaetze mit css einstellen:\r\n[P]Im Absatz ist es Schoen[/P]\r\n\r\nDIV=class jeder css im Content:\r\n[DIV=anderst]Dieser Text ist schoener als der Rest[/DIV]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 
 
 --
