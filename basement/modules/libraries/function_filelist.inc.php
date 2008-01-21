@@ -122,6 +122,19 @@
                 $lb = $data["ffname"];
             }
 
+            // download-link
+            if ( $cfg["file"]["base"]["realname"] == True ) {
+                $download = $cfg["file"]["base"]["webdir"].
+                            $data["ffart"]."/".
+                            $data["fid"]."/".
+                            $data["ffname"];
+            } else {
+                $download = $cfg["file"]["base"]["webdir"].
+                            $cfg["file"]["base"][$cfg["file"]["fileopt"][$type]["name"]].
+                            $cfg["file"]["fileopt"][$type]["name"]."_".
+                            $data["fid"].".".$data["ffart"];
+            }
+
             // sortierkritierium fuer die compilations
             if ( $group != "" ) {
                 preg_match("/#p".$group."[,]*([0-9]*)#/i",$data["fhit"],$match);
@@ -137,17 +150,13 @@
                 $name = "list_other";
             }
 
-//             $dataloop["list"][$data["fid"]] = array (
             $dataloop[$name][$data["fid"]] = array (
                                                "id" => $data["fid"],
                                               "art" => $data["ffart"],
                                             "color" => $cfg[$script_name]["color"]["set"],
                                           "checked" => $checked,
                                             "ehref" => "edit,".$data["fid"].".html",
-                                            "dhref" => $cfg["file"]["base"]["webdir"].
-                                                       $cfg["file"]["base"][$cfg["file"]["fileopt"][$type]["name"]].
-                                                       $cfg["file"]["fileopt"][$type]["name"]."_".
-                                                       $data["fid"].".".$data["ffart"],
+                                            "dhref" => $download,
                                             "vhref" => $environment["allparameter"]."/view,o,".$data["fid"].",".$group.".html",
                                               "src" => $cfg["file"]["base"]["webdir"].
                                                        $cfg["file"]["base"]["pic"]["root"].
