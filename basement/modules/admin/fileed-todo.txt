@@ -2,24 +2,17 @@
 
 ToDo:
 -----
-- bug: beim klick auf ein bild in den compilations, wird das bild nicht angezeigt
-- bug: bei zip, pdf u.s.w. wird der noch der alte name beim download verwendet
-- ???: wenn zip ausgepackt wird, ist der name des archiv im filenamen, warum?
-
-
 - feature: bildunterschrift = beschreibung > wenn leer
 - feature: groessenaenderung einstellbar (extra x, extra y)
 - feature: benutzer soll eine selektionen nur mit einer bestimmten anzahl von bildern auswählen können
 - feature: rechtestruktur (z.B.: Benutzer gelöscht - datei herrenlos)
-- schoenheitsfehler: beim download werden die "alten" dateinamen angeboten
+- feature: freigabe von dateien für andere benutzer (ersezten!)
+
+
 
 to be tested:
 -------------
 - transparent geht beim resizen verloren
-
-
-
-
 
 
 
@@ -34,6 +27,7 @@ zip-handling:
 - funktionalität auch bei edit
 - möglichkeit, die felder (fdesc, fhit) vorzubelegen
 - nach fehlerfreien extrahieren soll die zip-datei geloescht werden
+
 - automatisch gallerien bilden
 - dateibeschreibung aus mitgegebenen textfile lesen
 - zurück-sprungziel nach bearbeiten von compilations
@@ -41,3 +35,8 @@ zip-handling:
 - filecollect: benutzer muß neue CompilationId eingeben -> soll system übernehmen
 - feature: die max. upload groesse anzeigen
 - welche selektionen wurden ausgewählt?
+- bug: bei zip, pdf u.s.w. wird der noch der alte name beim download verwendet
+- bug: beim klick auf ein bild in den compilations, wird das bild nicht angezeigt
+- bug: nach entpacken von zips leerzeichen in den vorbelegungen
+- ???: wenn zip ausgepackt wird, ist der name des archiv im filenamen, warum?
+- schoenheitsfehler: beim download werden die "alten" dateinamen angeboten
