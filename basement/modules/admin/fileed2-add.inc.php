@@ -248,7 +248,7 @@
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
 
-                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder" );
+                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet", "fdesc", "zip_fdesc", "zip_fhit", "zip_funder" );
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
@@ -267,6 +267,13 @@
                 $sqlb .= ", '".$_SESSION["uid"]."'";
                 $sqla .= ", fdid";
                 $sqlb .= ", '".$_SESSION["custom"]."'";
+                if ( trim($_POST["fdesc"]) == "" ) {
+                    $sqla .= ", fdesc";
+                    $sqlb .= ", '".$_POST["funder"]."'";
+                } else {
+                    $sqla .= ", fdesc";
+                    $sqlb .= ", '".$_POST["fdesc"]."'";
+                }
 
 
                 $sql = "INSERT INTO ".$cfg["fileed"]["db"]["file"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";

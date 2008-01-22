@@ -8,6 +8,18 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 21. Januar 2008
+
+In der $cfg["file"] kann man jetzt breite und hoehe der zielgroessen angeben:
+z.B.:
+$cfg["file"]["size"]["tn"] = 96;            => Breite und Hoehe der Thumbnails 96px
+$cfg["file"]["size"]["tn"] = 96:60;         => Breite: 96px, Hoehe: 60px
+
+Standardmässig wird das bild so verkleinert bzw. vergroessert dass es in die angegebene Breite und Hoehe passt.
+Soll das Bild so zugeschnitten werden, dass es die festgelegte Breite und Hoehe kompett ausfuellt kann man die
+$cfg["file"]["size"]-Variable um den Schalter "crop" ergaenzen.
+z.B.:
+$cfg["file"]["size"]["tn"] = 96:60:crop;    => Thumbnail hat 96:60 Pixel ohne weisse Raender
 
 --- 20. November 2007
 
@@ -20,11 +32,11 @@ WHERE `lang` = 'de' AND `tname` LIKE 'auth%';
 
 INSERT INTO `site_text`
 (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`,
-`changed`, `bysurname`, `byforename`, `byemail`, `byalias`) 
+`changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
 VALUES
-( 'de', 'secret', 'auth', '', 'auth', '-1', 'Hintereingang', 
+( 'de', 'secret', 'auth', '', 'auth', '-1', 'Hintereingang',
 '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki'),
-( 'de', 'grouped', 'auth', '', 'auth', '-1', 'Gruppen-Editor', 
+( 'de', 'grouped', 'auth', '', 'auth', '-1', 'Gruppen-Editor',
 '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 
 --- 20. November 2007

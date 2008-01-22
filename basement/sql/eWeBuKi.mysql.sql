@@ -277,7 +277,7 @@ INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`,
 (3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', ''),
 (4, 'fid', '-939795212.modify', '0', 'hidden', '', 'hidden', '-1', ''),
 (6, 'fdesc', '-939795212.modify', '25', '', '', NULL, '0', ''),
-(7, 'funder', '-939795212.modify', '30', '', '', NULL, '0', ''),
+(7, 'funder', '-939795212.modify', '30', '', '', NULL, '-1', ''),
 (8, 'fhit', '-939795212.modify', '30', '', '', NULL, '0', ''),
 (9, 'entry', '-555504947.add', '0', '', '', NULL, '-1', 'PREG:^[a-z_\\-\\.0-9]+$'),
 (10, 'entry', '-555504947.edit', '0', '', '', NULL, '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
@@ -298,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `site_form_lang` (
   `fdberror` varchar(255) NOT NULL default '',
   `fchkerror` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`flid`)
-) TYPE=MyISAM AUTO_INCREMENT=11 ;
+) TYPE=MyISAM AUTO_INCREMENT=12 ;
 
 --
 -- Daten für Tabelle `site_form_lang`
@@ -309,7 +309,8 @@ INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fpgenum`, `fwerte`, `ferr
 (2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
 (3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
 (9, 9, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.'),
-(10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+(10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.'),
+(11, 7, 'de', NULL, '', '', '', 'Bildunterschrift darf nicht leer sein.');
 
 -- --------------------------------------------------------
 

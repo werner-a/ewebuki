@@ -62,15 +62,8 @@ feature: eine (extra tabelle?) mit username, timestamp, content-text
 
 -> fileed (filled2 in arbeit)
 
-bugfix: falsche fehlermeldungen im fileed in php5, ueberarbeiten
-
-feature: gemeinsame lib mit contented fuer anzeige der files
-feature: bildunterschrift = beschreibung > wenn leer
-feature: upload menge auf 10 erweitern, default wie jetzt
 feature: beschreibung des bild im viewer?
-feature: die max. upload groesse anzeigen
 feature: ueber die groessenaenderungen informieren
-feature: groessenaenderung einstellbar (extra x, extra y)
 feature: moeglichkeit bilder auf dem server erneut zu aendern
 feature: wenn orginal bilder erhalten bleiben, diese in einem neuen fenster oeffnen
 feature: language support fuer hochgeladenen bilder?

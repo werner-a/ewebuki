@@ -83,7 +83,7 @@
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
                         "thumbnail" => "icon_odf.png"
                                ),
-             "preview_size" => "tn",
+             "preview_size" => "s",
                        ),
              "size" => array(
                         "b" => "580",
@@ -91,7 +91,6 @@
                         "s" => "150",
                        "tn" => "96",
                       "max" => "580", # leer bedeutet, orginal bleibt erhalten
-    #to be implemeted "may" => "",    # wenn gesetzt, wird auch höhe geaendert
                        ),
              "base" => array(
                   "maindir" => $pathvars["fileroot"]."file/",

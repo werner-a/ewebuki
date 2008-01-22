@@ -245,7 +245,7 @@
                     // +++
                     // funktions bereich fuer erweiterungen
 
-                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder" );
+                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder" );
                     foreach($_POST as $name => $value) {
                         if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                             if ( $sqla != "" ) $sqla .= ", ";
@@ -257,6 +257,11 @@
                     #$ldate = $_POST["ldate"];
                     #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                     #$sqla .= ", ldate='".$ldate."'";
+                    if ( trim($_POST["fdesc"]) == "" ) {
+                        $sqla .= ", fdesc='".$_POST["funder"]."'";
+                    } else {
+                        $sqla .= ", fdesc='".$_POST["fdesc"]."'";
+                    }
 
                     $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
                                SET ".$sqla." WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";

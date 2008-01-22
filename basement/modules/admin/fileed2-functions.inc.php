@@ -92,15 +92,45 @@
 
         function resize( $img_org, $img_id, $img_src, $max_size, $img_path, $img_name ) {
 
-            // hochformat oder querformat
             $src_width = imagesx($img_src);
             $src_height = imagesy($img_src);
-            if ( $src_width > $src_height ) {
-                $dest_width = $max_size;
-                $dest_height = (int)(($max_size * $src_height) / $src_width );
+            // maximale breite und hoehe bestimmen
+            $dest_size = explode(":",$max_size);
+            if ( count($dest_size) == 1 ) {
+                $max_width = $max_size;
+                $max_height = $max_size;
+            } elseif ( $dest_size[1] == "" ) {
+                $max_width = $dest_size[0];
+                $max_height = $dest_size[0];
             } else {
-                $dest_height = $max_size;
-                $dest_width = (int)(($max_size * $src_width) / $src_height );
+                $max_width = $dest_size[0];
+                $max_height = $dest_size[1];
+            }
+            $src_ratio = $src_width/$src_height;
+            $max_ratio = $max_width/$max_height;
+            // groesse des zielbildes bestimmen
+            $src_x = 0;
+            $src_y = 0;
+            if ( $src_ratio <= $max_ratio  ) {
+                $dest_height = $max_height;
+                $dest_width = $src_ratio*$max_height;
+                if ( $dest_size[2] == "crop" ) {
+                    // bildausschnitt
+                    $dest_width = $max_width;
+                    $dest_height = $max_height;
+                    $src_y = ($src_height - $src_width/$max_ratio )/2;
+                    $src_height = $src_width/$max_ratio;
+                }
+            } else {
+                $dest_height = $max_width/$src_ratio;
+                $dest_width = $max_width;
+                if ( $dest_size[2] == "crop" ) {
+                    // bildausschnitt
+                    $dest_width = $max_width;
+                    $dest_height = $max_height;
+                    $src_x = ($src_width - $src_height*$max_ratio )/2;
+                    $src_width = $src_height*$max_ratio;
+                }
             }
             $file_ext = strtolower(substr(strrchr($img_org,"."),1));
 
@@ -124,7 +154,7 @@
                 }
 
                 // groesse aendern
-                imagecopyresampled($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height, $src_width, $src_height);
+                imagecopyresampled($img_dst, $img_src, 0, 0, $src_x, $src_y, $dest_width, $dest_height, $src_width, $src_height);
 
             } else {
 
@@ -144,7 +174,7 @@
                 imagecolortransparent($img_dst, $colorTrans);
 
                 // groesse aendern
-                imagecopyresized($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height, $src_width, $src_height);
+                imagecopyresized($img_dst, $img_src, 0, 0, $src_x, $src_y, $dest_width, $dest_height, $src_width, $src_height);
             }
 
             switch ( $file_ext ) {
@@ -193,13 +223,19 @@
                 }
                 $art = array( "s" => "img", "m" => "img", "b" => "img", "tn" => "tn" );
                 foreach ( $art as $key => $value ) {
-                    resize( $source, $id, $img_src, $cfg["file"]["size"][$key], $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"][$key], $value );
+                    resize( $source, $id, $img_src, $cfg["file"]["size"][$key], $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"][$key], $value, $cfg["file"]["resize"][$key] );
                 }
 
                 // orginal bild nach max resizen oder loeschen
-                #if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $cfg["file"]["size"]["max"] || imagesy($img_src) <= $cfg["file"]["size"]["max"] ) {
-                #if ( $cfg["file"]["size"]["max"] == "" || (imagesx($img_src) <= $cfg["file"]["size"]["max"] && imagesy($img_src) <= $cfg["file"]["size"]["max"] )) {
-                if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $cfg["file"]["size"]["max"] ) {
+                $max_size = explode(":",$cfg["file"]["size"]["max"]);
+                if ( count($dest_size) == 1 ) {
+                    $max_width = $max_size[0];
+                    $max_height = $max_size[1];
+                } else {
+                    $max_width = $cfg["file"]["size"]["max"];
+                    $max_height = $cfg["file"]["size"]["max"];
+                }
+                if ( $cfg["file"]["size"]["max"] == "" || imagesx($img_src) <= $max_width || imagesy($img_src) <= $max_height ) {
                     if ( $move == -1 ) {
                         rename( $source, $cfg["file"]["fileopt"][$type]["path"].$cfg["file"]["base"]["pic"]["o"].$cfg["file"]["fileopt"][$type]["name"]."_".$id.".".$extension);
                     } else {

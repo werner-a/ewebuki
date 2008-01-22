@@ -22,7 +22,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: auth_content; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_content; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_content (
@@ -39,7 +39,7 @@ CREATE TABLE auth_content (
 ALTER TABLE public.auth_content OWNER TO postgres;
 
 --
--- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_group (
@@ -79,7 +79,7 @@ SELECT pg_catalog.setval('auth_group_gid_seq', 2, true);
 
 
 --
--- Name: auth_level; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_level; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_level (
@@ -120,7 +120,7 @@ SELECT pg_catalog.setval('auth_level_lid_seq', 1, false);
 
 
 --
--- Name: auth_member; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_member; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_member (
@@ -132,7 +132,7 @@ CREATE TABLE auth_member (
 ALTER TABLE public.auth_member OWNER TO postgres;
 
 --
--- Name: auth_priv; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_priv; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_priv (
@@ -144,7 +144,7 @@ CREATE TABLE auth_priv (
 ALTER TABLE public.auth_priv OWNER TO postgres;
 
 --
--- Name: auth_right; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_right; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_right (
@@ -156,7 +156,7 @@ CREATE TABLE auth_right (
 ALTER TABLE public.auth_right OWNER TO postgres;
 
 --
--- Name: auth_special; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_special; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_special (
@@ -202,7 +202,7 @@ SELECT pg_catalog.setval('auth_special_sid_seq', 1, false);
 
 
 --
--- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE auth_user (
@@ -246,7 +246,7 @@ SELECT pg_catalog.setval('auth_user_uid_seq', 1, false);
 
 
 --
--- Name: db_leer; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: db_leer; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE db_leer (
@@ -287,7 +287,7 @@ SELECT pg_catalog.setval('db_leer_id_seq', 1, false);
 
 
 --
--- Name: site_file; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_file; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE site_file (
@@ -336,7 +336,7 @@ SELECT pg_catalog.setval('site_file_fid_seq', 39, true);
 
 
 --
--- Name: site_form; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE site_form (
@@ -384,7 +384,7 @@ SELECT pg_catalog.setval('site_form_fid_seq', 13, true);
 
 
 --
--- Name: site_form_lang; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form_lang; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE site_form_lang (
@@ -425,11 +425,11 @@ ALTER SEQUENCE site_form_lang_flid_seq OWNED BY site_form_lang.flid;
 -- Name: site_form_lang_flid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('site_form_lang_flid_seq', 9, true);
+SELECT pg_catalog.setval('site_form_lang_flid_seq', 15, true);
 
 
 --
--- Name: site_lock; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_lock; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE site_lock (
@@ -444,7 +444,7 @@ CREATE TABLE site_lock (
 ALTER TABLE public.site_lock OWNER TO postgres;
 
 --
--- Name: site_menu; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE site_menu (
@@ -468,7 +468,7 @@ CREATE TABLE site_menu (
 ALTER TABLE public.site_menu OWNER TO postgres;
 
 --
--- Name: site_menu_lang; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_lang; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE site_menu_lang (
@@ -537,7 +537,7 @@ SELECT pg_catalog.setval('site_menu_mid_seq', 5, true);
 
 
 --
--- Name: site_text; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_text; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE site_text (
@@ -720,7 +720,7 @@ INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, freq
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (3, 'pass', '852881080.modify', '0', '', '', 'password', -1, '');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (4, 'fid', '-939795212.modify', '0', 'hidden', '', 'hidden', -1, '');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (6, 'fdesc', '-939795212.modify', '25', '', '', NULL, 0, '');
-INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (7, 'funder', '-939795212.modify', '30', '', '', NULL, 0, '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (7, 'funder', '-939795212.modify', '30', '', '', NULL, -1, '');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (8, 'fhit', '-939795212.modify', '30', '', '', NULL, 0, '');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (9, 'entry', '-555504947.add', '0', '', '', NULL, -1, 'PREG:^[a-z_\\-\\.0-9]+$');
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (10, 'entry', '-555504947.edit', '0', '', '', NULL, -1, 'PREG:^[a-z_\\-\\.0-9]+$');
@@ -743,6 +743,7 @@ INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror,
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (12, 12, 'de', '''-1''', '', '', '', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (13, 13, 'de', '''-1''', '', '', '', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (14, 14, 'de', '''-1''', '', '', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (15, 7, 'de', NULL, '', 'Bildunterschrift darf nicht leer sein.', '', '');
 
 
 --
@@ -1236,7 +1237,7 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 
 
 --
--- Name: auth_content_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_content_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_content
@@ -1244,7 +1245,7 @@ ALTER TABLE ONLY auth_content
 
 
 --
--- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_group
@@ -1252,7 +1253,7 @@ ALTER TABLE ONLY auth_group
 
 
 --
--- Name: auth_level_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_level_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_level
@@ -1260,7 +1261,7 @@ ALTER TABLE ONLY auth_level
 
 
 --
--- Name: auth_member_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_member_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_member
@@ -1268,7 +1269,7 @@ ALTER TABLE ONLY auth_member
 
 
 --
--- Name: auth_priv_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_priv_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_priv
@@ -1276,7 +1277,7 @@ ALTER TABLE ONLY auth_priv
 
 
 --
--- Name: auth_right_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_right_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_right
@@ -1284,7 +1285,7 @@ ALTER TABLE ONLY auth_right
 
 
 --
--- Name: auth_special_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_special_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_special
@@ -1292,7 +1293,7 @@ ALTER TABLE ONLY auth_special
 
 
 --
--- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY auth_user
@@ -1300,7 +1301,7 @@ ALTER TABLE ONLY auth_user
 
 
 --
--- Name: db_leer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: db_leer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY db_leer
@@ -1308,7 +1309,7 @@ ALTER TABLE ONLY db_leer
 
 
 --
--- Name: site_file_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_file_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_file
@@ -1316,7 +1317,7 @@ ALTER TABLE ONLY site_file
 
 
 --
--- Name: site_form_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_form_lang
@@ -1324,7 +1325,7 @@ ALTER TABLE ONLY site_form_lang
 
 
 --
--- Name: site_form_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_form
@@ -1332,7 +1333,7 @@ ALTER TABLE ONLY site_form
 
 
 --
--- Name: site_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_lock
@@ -1340,7 +1341,7 @@ ALTER TABLE ONLY site_lock
 
 
 --
--- Name: site_menu_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_menu_lang
@@ -1348,7 +1349,7 @@ ALTER TABLE ONLY site_menu_lang
 
 
 --
--- Name: site_menu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_menu
@@ -1356,7 +1357,7 @@ ALTER TABLE ONLY site_menu
 
 
 --
--- Name: site_menu_refid_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_refid_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_menu
@@ -1364,7 +1365,7 @@ ALTER TABLE ONLY site_menu
 
 
 --
--- Name: site_text_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_text_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY site_text
