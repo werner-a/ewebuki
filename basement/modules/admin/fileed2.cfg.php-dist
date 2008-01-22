@@ -50,7 +50,7 @@
              "name" => "fileed2",
             "basis" => $pathvars["virtual"]."/admin/fileed",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
-       "ajax-modus" => TRUE,
+       "ajax-modus" => True,
          #"function" => array("describe", "list", "note", "preview", "select"),
          "function" => array(
                      "list" => "", # array( "function_name" ),
@@ -98,9 +98,6 @@
                             "field" => "addbase",
                             "where" => "addbase != ''",
                                ),
-              "compilation" => array(
-                            "items" => "5",
-                               ),
                        ),
      "zip_handling" => array(
              "sektions" => array(
@@ -110,6 +107,9 @@
                        ),
            "upload" => array(
                    "inputs" => 5,
+                       ),
+      "compilation" => array(
+                    "items" => "3",
                        ),
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),

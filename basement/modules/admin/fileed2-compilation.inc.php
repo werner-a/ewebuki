@@ -50,12 +50,30 @@
         // funktions bereich
         // ***
 
+        $hidedata["check_error"] = array(
+            "display" => "none",
+              "count" => ""
+        );
+
         if ( is_numeric($environment["parameter"][2]) ){
 
             if ( $_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]] != "" ) {
                 unset($_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]]);
             } else {
-                $_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]] = $environment["parameter"][2];
+                if ( count($_SESSION["compilation_memo"][$environment["parameter"][1]]) < $cfg["fileed"]["compilation"]["items"] ) {
+                    $_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]] = $environment["parameter"][2];
+                } else {
+                    if ( isset($_GET["ajax"]) ){
+                        header("HTTP/1.0 404 Not Found");
+                        echo $cfg["fileed"]["compilation"]["items"];
+                        exit;
+                    } else {
+                        $hidedata["check_error"] = array(
+                            "display" => "block",
+                              "count" => $cfg["fileed"]["compilation"]["items"]
+                        );
+                    }
+                }
             }
 
             if ( count($_SESSION["compilation_memo"][$environment["parameter"][1]]) == 0 ) unset($_SESSION["compilation_memo"][$environment["parameter"][1]]);
@@ -65,10 +83,7 @@
                     header("HTTP/1.0 404 Not Found");
                 }
                 exit;
-            } else {
-                header("Location: ".$cfg["fileed"]["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].".html");
             }
-            exit;
         }
 
         $ausgaben["compid"] = $environment["parameter"][1];
@@ -210,6 +225,8 @@
             $ausgaben["inaccessible"] .= "# (img_plural) #(img_plural)<br />";
             $ausgaben["inaccessible"] .= "# (img_sing) #(img_sing)<br />";
             $ausgaben["inaccessible"] .= "# (all_names) #(all_names)<br />";
+            $ausgaben["inaccessible"] .= "# (check_error1) #(check_error1)<br />";
+            $ausgaben["inaccessible"] .= "# (check_error2) #(check_error2)<br />";
 
             $ausgaben["inaccessible"] .= "# (answera) #(answera)<br />";
             $ausgaben["inaccessible"] .= "# (answerb) #(answerb)<br />";
