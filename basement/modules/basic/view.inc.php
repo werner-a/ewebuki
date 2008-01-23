@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 KÃ¶nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -110,10 +110,47 @@
             }
 
             if ( $data["fid"] == $environment["parameter"][2] ) {
+                // kontrolle, ob content vorhanden ist
+                $ebene = $environment["ebene"]."/view";
+                $kategorie = "desc-".$environment["parameter"][2];
+                $tname = crc32($ebene).".".$kategorie;
+                $sql = "SELECT *
+                          FROM site_text
+                         WHERE lang='".$environment["language"]."'
+                           AND label='inhalt' AND tname='".$tname."'
+                      ORDER BY version DESC LIMIT 0,1";
+                $res_content = $db -> query($sql);
+                $content = $db -> fetch_array($res_content,1);
+                if ( $content["content"] != "" ) {
+                    $ausgaben["beschreibung"] = tagreplace($content["content"]);
+                } else {
+                    $ausgaben["beschreibung"] = $data["fdesc"];
+                }
+                // rechte-check
+                $check = "";
+                if ( $specialvars["security"]["new"] == -1 ) {
+                    $check = priv_check($ebene."/".$kategorie,$specialvars["security"]["content"]);
+                } elseif ( $specialvars["security"]["enable"] == -1) {
+                    if ( $katzugriff == -1 && $dbzugriff == -1 ) $check = True;
+                } else {
+                    if ( $rechte["cms_edit"] == -1 ) $check = True;
+                }
+                // edit-haken setzen
+                if ( $check == True ) {
+                    if ( $specialvars["old_contented"] == -1 ) {
+                        $editurl = $pathvars["virtual"]."/cms/edit,".$db->getDb().",".$tname;
+                    } else {
+                        $editurl = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$tname;
+                    }
+                    if ( $defaults["cms-tag"]["signal"] == "" ) {
+                        $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";
+                        $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" />";
+                    }
+                    $ausgaben["beschreibung"] .= "<a href=\"".$editurl.",inhalt.html\">".$defaults["cms-tag"]["signal"]."e".$defaults["cms-tag"]["/signal"]."</a>";
+                }
                 $filename = $data["ffname"];
                 $filetyp = $data["ffart"];
                 $ausgaben["beschriftung"] = $data["funder"];
-                $ausgaben["beschreibung"] = $data["fdesc"];
             }
         }
 
