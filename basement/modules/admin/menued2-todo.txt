@@ -1,4 +1,4 @@
-
+blacklist einfuehren fuer site namen die probleme hervorrufen koennen wie z.b view
 
 auf session umgestellt ->
 
