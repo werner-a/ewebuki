@@ -120,47 +120,63 @@
     }
 
 
-    // funktion um den content unterhalb eine eintrags zu verschieben
+    // funktion um den content eines eintrags, sowie aller unterpunkte und aller viewer-contents zu verschieben
     if ( in_array("update_tname", $cfg["menued"]["function"][$environment["kategorie"]]) ) {
 
-        function update_tname($refid, /*$new = "",*/ $suchmuster = "", $ersatz = "") {
+        function update_tname($mid, $new_url) {
             global $db, $cfg, $debugging, $ausgaben;
-            $sql = "SELECT mid, refid, entry FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE refid ='".$refid."'";
+
+            $sql = "SELECT mid, refid, entry
+                      FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
+                     WHERE mid ='".$mid."'";
+            $result = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
+
+            $extend = "";
+            $old_level = explode("/",make_ebene($data["mid"]));
+            $old_kategorie = array_pop($old_level);
+            $old_ebene = implode("/",$old_level);
+            if ( count($old_level) > 1 ) $extend = crc32($old_ebene).".";
+            $old_tname = $extend.$data["entry"];
+
+            // neuer tname
+            $extend = "";
+            $new_level = explode("/",$new_url);
+            $new_kategorie = array_pop($new_level);
+            $new_ebene = implode("/",$new_level);
+            if ( count($new_level) > 1 ) $extend = crc32($new_ebene).".";
+            $new_tname = $extend.$new_kategorie;
+
+            $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
+                       SET tname = '".$new_tname."',
+                           ebene = '".$new_ebene."',
+                           kategorie = '".$new_kategorie."'
+                     WHERE tname = '".$old_tname."'";
+            $subresult = $db -> query($sql);
+
+            // view-check
+            $old_view_ebene = $old_ebene."/".$old_kategorie."/view";
+            $new_view_ebene = $new_ebene."/".$new_kategorie."/view";
+            $sql = "SELECT *
+                      FROM ".$cfg["menued"]["db"]["text"]["entries"]."
+                     WHERE tname LIKE '".crc32($old_view_ebene)."%'";
             $result = $db -> query($sql);
             while ( $data = $db -> fetch_array($result,1) ) {
-
-                // aktuelle ebene suchen
-                $ebene = make_ebene($data["refid"]);
-
-                // eindeutiges suchmuster erstellen
-                #if ( $suchmuster == "" ) {
-                #    $suchmuster = $ebene;
-                #    $ersatz = substr($ebene,0,strrpos($ebene,"/"))."/".$new;
-                #}
-
-                // alter tname
-                if ( $ebene != "/" ) $extend = crc32($ebene).".";
-                $old_tname = $extend.$data["entry"];
-                #echo $ebene.":".$old_tname."<br>";
-
-                // neuer tname
-                $ebene = str_replace($suchmuster, $ersatz, $ebene);
-                if ( $ebene != "/" ) $extend = crc32($ebene).".";
-                $new_tname = $extend.$data["entry"];
-                #echo $ebene.":".$new_tname."<br>";
-
                 $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
-                            SET tname = '".$new_tname."',
-                                ebene = '".$ebene."',
-                                kategorie = '".$data["entry"]."'
-                            WHERE tname = '".$old_tname."'";
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                           SET tname='".str_replace(crc32($old_view_ebene),crc32($new_view_ebene),$data["tname"])."'
+                         WHERE tname='".$data["tname"]."'";
                 $subresult = $db -> query($sql);
-                if ( !$subresult ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
-
-                // und das gleiche fuer alle unterpunkte
-                update_tname($data["mid"], /*$new,*/ $suchmuster, $ersatz);
             }
+
+            $sql = "SELECT mid, refid, entry
+                      FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
+                     WHERE refid ='".$mid."'";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+                $next_item = $new_ebene."/".$new_kategorie."/".$data["entry"];
+                update_tname($data["mid"], /*$new = "",*/ $next_item);
+            }
+
         }
     }
 

@@ -89,7 +89,7 @@
 
         // design
         $ausgaben["design"] = "";
-    
+
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
@@ -136,50 +136,24 @@
                      WHERE refid = '".$HTTP_POST_VARS["refid"]."'
                        AND entry = '".$HTTP_POST_VARS["entry"]."'";
             $result = $db -> query($sql);
-            #$data = $db -> fetch_array($result,1);
             $num_rows = $db -> num_rows($result);
             if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
 
             // content tabellen aenderungen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "SELECT refid, entry FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
+                $sql = "SELECT refid, entry
+                          FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
+                         WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
                 $result = $db -> query($sql);
                 $data = $db -> fetch_array($result,1);
 
-                // content aktuelle seite aendern (alle sprachen)
-                $ebene = make_ebene($data["refid"]);
-                if ( $ebene != "/" ) {
-                    $extend = crc32($ebene).".";
-                } else {
-                    $ebene = "";
-                    $extend = "";
+                $new_url = make_ebene($_POST["refid"]);
+                if ( $new_url == "/" ) {
+                    $new_url = "";
                 }
-                $old_tname = $extend.$data["entry"];
-                #echo $ebene.":".$old_tname."<br>";
-                $suchmuster = $ebene."/".$data["entry"];
+                $new_url .= "/".$_POST["entry"];
+                update_tname($environment["parameter"][2], $new_url);
 
-                $ebene = make_ebene($HTTP_POST_VARS["refid"]);
-                if ( $ebene != "/" ) {
-                    $extend = crc32($ebene).".";
-                } else {
-                    $ebene = "";
-                    $extend = "";
-                }
-                $new_tname = $extend.$HTTP_POST_VARS["entry"];
-                #echo $ebene.":".$new_tname."<br>";
-                $ersatz = $ebene."/".$HTTP_POST_VARS["entry"];
-
-                $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
-                            SET tname = '".$new_tname."',
-                                ebene = '".$ebene."',
-                                kategorie = '".$HTTP_POST_VARS["entry"]."'
-                            WHERE tname = '".$old_tname."';";
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                $result  = $db -> query($sql);
-                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
-
-                // content der unterpunkte aendern (alle sprachen)
-                update_tname($environment["parameter"][2], $suchmuster, $ersatz);
             }
 
 

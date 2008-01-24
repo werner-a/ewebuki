@@ -307,33 +307,14 @@
                     if ( $test["entry"] == $fixed_entry ) $ausgaben["form_error"] .= "#(error_dupe)";
 
                     if ( $ausgaben["form_error"] == ""  ) {
-                        // content aktuelle seite aendern (alle sprachen)
-                        $ebene = make_ebene($HTTP_POST_VARS["refid"]);
-                        if ( $ebene != "/" ) {
-                            $crc32 = crc32($ebene).".";
-                        } else {
-                            $crc32 = "";
-                            $ebene = "";
+
+                        $new_url = make_ebene($_POST["refid"]);
+                        if ( $new_url == "/" ) {
+                            $new_url = "";
                         }
-                        $old_tname = $crc32.$data["entry"];
-                        #echo $ebene.":".$old_tname."<br>";
-                        $suchmuster = $ebene."/".$data["entry"];
+                        $new_url .= "/".$fixed_entry;
+                        update_tname($environment["parameter"][1], $new_url);
 
-                        $new_tname = $crc32.$fixed_entry;
-                        #echo $ebene.":".$new_tname."<br>";
-                        $ersatz = $ebene."/".$fixed_entry;
-
-                        $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
-                                SET tname = '".$new_tname."',
-                                    ebene = '".$ebene."',
-                                    kategorie = '".$fixed_entry."'
-                                WHERE tname = '".$old_tname."';";
-                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                        $result  = $db -> query($sql);
-                        if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-
-                        // content der unterpunkte aendern (alle sprachen)
-                        update_tname($environment["parameter"][1], $suchmuster, $ersatz);
                     }
                 }
             }
