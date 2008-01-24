@@ -511,13 +511,30 @@
                         break;
                     //
                     // Inline Elemente - Logische Auszeichnungen
-                    // EM | STRONG | -code- | CITE | -q-
+                    // AKR | EM | STRONG | CODE | CITE | -q-
                     //
+                    case "[/ACR]":
+                        if ( $sign == "]" ) {
+                            $ausgabewert = "<acronym>".$tagwert."</acronym>";
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $acrwerte = explode(";",$tagwerte[0]);
+                            $attrib = "";
+                            if ( $acrwerte[0] != "" ) {
+                                $attrib = " title=\"".$acrwerte[0]."\"";
+                            }
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<acronym".$attrib.">".$tagwerte[1]."</acronym>",$replace);
+                        }
+                        break;
                     case "[/EM]":
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<em>".$tagwert."</em>",$replace);
                         break;
                     case "[/STRONG]":
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<strong>".$tagwert."</strong>",$replace);
+                        break;
+                    case "[/CODE]":
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,"<code>".$tagwert."</code>",$replace);
                         break;
                     case "[/CITE]":
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<blockquote>".$tagwert."</blockquote>",$replace);

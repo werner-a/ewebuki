@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -111,8 +111,10 @@
                    "link"   => array( "T", "L", False, "=http:\/\/]" ),
 
                    // inline-elemente - logische auszeichnugen
+                   "acr"    => array( "B", "", False, "=bedeutung]" ),
                    "em"     => array( "" ),
                    "strong" => array( "" ),
+                   "code"   => array( "B" ),
                    "cite"   => array( "" ),
 
                    // inline-elemente - physische auszeichnungen
