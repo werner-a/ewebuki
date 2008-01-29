@@ -147,6 +147,9 @@
                     unset($arrEbene[1]);
                     $arrEbene = array_values($arrEbene);
 
+                    $ausgaben["pagetitle"] = $data["label"];
+                    if ( $cfg["menu"]["level".$level]["extend"] == "-1" ) $ausgaben["extenddesc"] = $data["extend"];
+
                     // naechste ebene abarbeiten
                     $next_level = menu_generate($data["mid"],$level + 1,$arrEbene, $url."/".$data["entry"]);
 
