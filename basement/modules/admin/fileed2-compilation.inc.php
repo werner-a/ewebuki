@@ -184,7 +184,7 @@
             $sql = "SELECT *
                     FROM site_file
                     WHERE fhit
-                    LIKE '%#p".$environment["parameter"][1]."%'
+                    LIKE '%#p".$environment["parameter"][1].",%'
                 ORDER BY fid";
             $result = $db -> query($sql);
             filelist($result, "fileed", $environment["parameter"][1]);
