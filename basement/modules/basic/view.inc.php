@@ -75,7 +75,7 @@
             // selection mode
             $sql = "SELECT *
                       FROM ".$cfg["view"]["db"]["entries"]."
-                     WHERE fhit like '%#p".$environment["parameter"][3]."%'
+                     WHERE fhit like '%#p".$environment["parameter"][3].",%'
                   ORDER BY ".$cfg["view"]["db"]["order"];
         } else {
             // picture mode
