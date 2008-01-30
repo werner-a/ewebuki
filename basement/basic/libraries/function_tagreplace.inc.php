@@ -458,7 +458,7 @@
                                         $imgsize = getimagesize($imgfile);
                                         $imgsize = " ".$imgsize[3];
                                     }
-                                    if ( $imgwerte[7] != "" ) {
+                                    if ( $imgwerte[3] != "" ) {
                                         $bilderstrecke = ",".$imgwerte[7];
                                     } else {
                                         $bilderstrecke = "";
@@ -475,6 +475,9 @@
                                         if ( substr( $path, -1 ) != '/') $path = $path."/";
                                         $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
                                         $linka = "<a href=\"".$imglnk."\">";
+                                        if ( $imgwerte[3] == "l" ) {
+                                            $linka = "<a href=\"".str_replace("/s/", "/b/", $imgurl)."\" rel=\"lightbox[own]\">";;
+                                        }
                                         $linkb = "</a>";
                                     }
                                 } else {
