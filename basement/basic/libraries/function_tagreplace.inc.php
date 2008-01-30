@@ -476,7 +476,7 @@
                                         $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
                                         $linka = "<a href=\"".$imglnk."\">";
                                         if ( $imgwerte[3] == "l" ) {
-                                            $linka = "<a href=\"".str_replace("/s/", "/b/", $imgurl)."\" rel=\"lightbox[own]\">";;
+                                            $linka = "<a href=\"".str_replace("/s/", "/b/", $imgurl)."\" title=\"".$beschriftung."\" rel=\"lightbox[own]\">";;
                                         }
                                         $linkb = "</a>";
                                     }
