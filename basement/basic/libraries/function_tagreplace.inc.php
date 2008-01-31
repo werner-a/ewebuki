@@ -751,57 +751,58 @@
                             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,größe,bild,selektion,thumbs
 
                             if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div class=\"selection_teaser\">\n<b>##title##</b>\n<div>\n<ul>\n";
-                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n<a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
+                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##funder##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
                             if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n</div>\n<span>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
+
                             $sql = "SELECT *
                                         FROM site_file
                                         WHERE fhit like '%#p".$tag_param[0]."%'";
                             $result = $db -> query($sql);
                             $files = array();
-                            $sort = array();
                             while ( $data = $db -> fetch_array($result,1) ) {
                                 preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
                                 $files[] = array(
-                                            "fid" => $data["fid"],
-                                            "sort" => $match[1],
-                                            "ffart" => $data["ffart"]
+                                            "fid"    => $data["fid"],
+                                            "sort"   => $match[1],
+                                            "ffart"  => $data["ffart"],
+                                            "funder" => $data["funder"]
                                             );
                             }
+                            $sort = array();
                             foreach ($files as $key => $row) {
                                 $sort[$key]  = $row['sort'];
                             }
                             array_multisort($sort, $files);
+
                             if ( $tag_param[3] == "" ) {
                                 $changed = str_replace( "#", $files[0]["fid"], $link);
                                 $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
-                            } elseif ( $tag_param[3] == "a" ) {
-                                $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
-                                foreach ( $files as $row ) {
-                                    $tn = $cfg["file"]["base"]["webdir"]
-                                         .$cfg["file"]["base"]["pic"]["root"]
-                                         .$cfg["file"]["base"]["pic"]["tn"]
-                                         ."tn_".$row["fid"].".".$row["ffart"];
-
-                                    $changed = str_replace( "#", $row["fid"], $link);
-
-                                    $s = array("##link##", "##tn##");
-                                    $r = array($changed, $tn);
-                                    $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
-                                }
-                                $sel .= str_replace("##count##",count($files),$defaults["tag"]["/sel"]);
                             } else {
                                 $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
                                 foreach ( $files as $row ) {
-                                    if ( !in_array( $row["fid"], $tag_extra ) ) continue;
+
+                                    $img = $cfg["file"]["base"]["webdir"]
+                                         .$cfg["file"]["base"]["pic"]["root"]
+                                         .$cfg["file"]["base"]["pic"]["b"]
+                                         ."img_".$row["fid"].".".$row["ffart"];
+
+                                    if ( !in_array( $row["fid"], $tag_extra ) ) {
+                                        if ( $tag_param[4] == "l" ) $sel .= "<a href=\"".$img."\" rel=\"lightbox[group]\" title=\"".$row["funder"]."\"></a>";
+                                        if ( $tag_param[3] != "a" && !in_array( $row["fid"], $tag_extra ) ) continue;
+                                    }
+
                                     $tn = $cfg["file"]["base"]["webdir"]
                                          .$cfg["file"]["base"]["pic"]["root"]
                                          .$cfg["file"]["base"]["pic"]["tn"]
                                          ."tn_".$row["fid"].".".$row["ffart"];
 
-                                    $changed = str_replace( "#", $row["fid"], $link);
-
-                                    $s = array("##link##", "##tn##");
-                                    $r = array($changed, $tn);
+                                    if ( $tag_param[4] == "l" ) {
+                                        $changed = $img;
+                                    } else {
+                                        $changed = str_replace( "#", $row["fid"], $link);
+                                    }
+                                    $s = array("##link##", "##lb##", "##tn##", "##funder##",);
+                                    $r = array($changed, "rel=\"lightbox[group]\" ", $tn, $row["funder"]);
                                     $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
                                 $sel .= str_replace("##count##",count($files),$defaults["tag"]["/sel"]);
