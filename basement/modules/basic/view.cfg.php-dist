@@ -54,6 +54,7 @@
                         "b" => "#ffffff",
                  "selected" => "#FFE2CF"
                        ),
+            "lightbox" => array("m","s"),   // bildergroessen, bei denen der lightbox-link eingefuegt wird
     );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////

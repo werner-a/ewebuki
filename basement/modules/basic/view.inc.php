@@ -224,13 +224,13 @@
             $ausgaben["href"] = $ausgaben["referer"];
         }
 
-
         // img werte
         if ( $cfg["file"]["base"]["realname"] == True ) {
             $img = $filetyp."/".$environment["parameter"][2]."/".$environment["parameter"][1]."/".$filename;
         } else {
             $img = $cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"][$environment["parameter"][1]]."img_".$environment["parameter"][2].".".$filetyp;
         }
+
 
         $imgfile = $cfg["file"]["base"]["maindir"].$img;
         $ausgaben["imgurl"] = $pathvars["webroot"].$cfg["file"]["base"]["webdir"].$img;
@@ -242,6 +242,14 @@
         // thumbs mode
         if ( $environment["parameter"][4] != "" ) {
             $hidedata["thumbs"][0] = "enable";
+        }
+
+        // lightbox-versuch
+        if ( is_array($cfg["view"]["lightbox"]) && in_array($environment["parameter"][1],$cfg["view"]["lightbox"]) ) {
+            $ausgaben["href"] = str_replace("/".$environment["parameter"][1]."/","/b/",$ausgaben["imgurl"]);
+            $ausgaben["lightbox"] = " rel=\"lightbox[]\"";
+        } else {
+            $ausgaben["lightbox"] = "";
         }
 
         // +++
