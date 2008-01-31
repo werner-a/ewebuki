@@ -779,6 +779,7 @@
                                 $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
                             } else {
                                 $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
+                                $lb_helper = "";
                                 foreach ( $files as $row ) {
 
                                     $img = $cfg["file"]["base"]["webdir"]
@@ -787,7 +788,7 @@
                                          ."img_".$row["fid"].".".$row["ffart"];
 
                                     if ( !in_array( $row["fid"], $tag_extra ) ) {
-                                        if ( $tag_param[4] == "l" ) $sel .= "<a href=\"".$img."\" rel=\"lightbox[group]\" title=\"".$row["funder"]."\"></a>";
+                                        if ( $tag_param[4] == "l" ) $lb_helper .= "<a href=\"".$img."\" rel=\"lightbox[group]\" title=\"".$row["funder"]."\"></a>";
                                         if ( $tag_param[3] != "a" && !in_array( $row["fid"], $tag_extra ) ) continue;
                                     }
 
@@ -798,16 +799,18 @@
 
                                     if ( $tag_param[4] == "l" ) {
                                         $changed = $img;
+                                        $lb = "rel=\"lightbox[group]\" ";
                                     } else {
                                         $changed = str_replace( "#", $row["fid"], $link);
+                                        $lb = "";
                                     }
                                     $s = array("##link##", "##lb##", "##tn##", "##funder##",);
-                                    $r = array($changed, "rel=\"lightbox[group]\" ", $tn, $row["funder"]);
+                                    $r = array($changed, $lb, $tn, $row["funder"]);
                                     $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
                                 $sel .= str_replace("##count##",count($files),$defaults["tag"]["/sel"]);
                             }
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$sel.$lb_helper,$replace);
                         }
                     case "[/IN]":
                         if ( $defaults["tag"]["in"] == "" ) {
