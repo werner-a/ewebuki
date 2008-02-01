@@ -29,6 +29,14 @@ a img{
 /*----------------------
   default styles
   ----------------------*/
+ins {
+    color:green;
+}
+
+del {
+    color:red;
+}
+
 
 #eEd {
     float: left;
@@ -170,6 +178,7 @@ div.clearer {
     margin-right: 10px;
     margin-top: 3px !important;
     margin-top: 0px; /*to fix ie6 position*/
+    margin-bottom:0px;
 }
 
 /* ---------------------*/

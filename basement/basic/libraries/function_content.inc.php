@@ -85,11 +85,19 @@
 
             if ( strpos($label,",") !== false ) break; // javascript fix
 
+            if ( preg_match("/^v[0-9]*$/",$environment["parameter"][1],$regs) ) {
+                $version_sql = "AND version=".substr($environment["parameter"][1],1);
+                $version = substr($environment["parameter"][1],1);
+            } else {
+                $version = "";
+                $version_sql = "";
+            } 
             $sql = "SELECT html, content
                       FROM ". SITETEXT ."
                      WHERE tname='".$dbtname."'
                        AND lang='".$environment["language"]."'
-                       AND label='$label'
+                       AND label='".$label."'
+                        ".$version_sql."
                   ORDER BY version DESC
                      LIMIT 0,1";
             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -226,7 +234,8 @@
                     if ( $specialvars["old_contented"] == True ) {
                         $editurl = $pathvars["virtual"]."/cms/edit,".$db->getDb().",".$dbtname.",".$label;
                     } else {
-                        $editurl = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$dbtname.",".$label;
+                        $editurl_key = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$dbtname.",".$label;
+                        $editurl = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$dbtname.",".$label.",,,".$version;
                     }
 
                     if ( $defaults["cms-tag"]["signal"] == "" ) {
@@ -238,7 +247,7 @@
 
                     if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
                         foreach ( $allcontent as $key => $value ) {
-                            $replace = str_replace( "{".$key."}", "<a href=\"".$editurl.",".$key.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>", $replace);
+                            $replace = str_replace( "{".$key."}", "<a href=\"".$editurl_key.",".$key.",,".$version.",.html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>", $replace);
                         }
                     }
 

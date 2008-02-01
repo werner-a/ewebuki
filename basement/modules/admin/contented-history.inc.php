@@ -43,21 +43,82 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["contented"]["right"] == "" || $rechte[$cfg["contented"]["right"]] == -1 ) {
+
+// Zeilen-Array aus den Texten machen
+#$lines1 = explode("\n", $hallo);
+#$lines2 = explode("\n", $hallo1);
+
+// Objekte erstellen
+#$diff = new Text_Diff('auto', array($lines1, $lines2));
+#$renderer = new Text_Diff_Renderer_inline();
+    #$renderer1 = $diff -> reverse();
+    #$renderer =& new Text_Diff_Renderer_unified();
+    #$renderer =& new Text_Diff_Renderer_context();
+    #$renderer =& new Text_Diff_Engine_native();
+// Ausgabe
+
+
+#echo "<pre>";
+#print_r($renderer1);
+#print_r ($renderer->render($diff));
+#echo "</pre>";
+
+
+    if ( priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
+        priv_check_old("",$cfg["contented"]["right"]) ) {
 
         // page basics
         // ***
-
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        $ausgaben["diff"] = "";
+        #if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT *
-                      FROM ".$cfg["contented"]["db"]["leer"]["entries"]."
-                     WHERE ".$cfg["contented"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM site_text
+                     WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' ORDER BY version DESC";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
-            $form_values = $db -> fetch_array($result,1);
-        } else {
-            $form_values = $HTTP_POST_VARS;
+
+            while ( $form_values = $db -> fetch_array($result,1) ) {
+                $dataloop["list"][$form_values["version"]]["url"] = $_SESSION["REFERER"].",v".$form_values["version"].".html";
+                $dataloop["list"][$form_values["version"]]["date"] = $form_values["changed"];
+                $dataloop["list"][$form_values["version"]]["name"] = $form_values["bysurname"];
+                $dataloop["list"][$form_values["version"]]["cb1"] = $form_values["version"];
+                $dataloop["list"][$form_values["version"]]["cb2"] = $form_values["version"];
+            }
+        #} else {
+           # $form_values = $HTTP_POST_VARS;
+        #}
+
+        if ( $_POST["old"] != "" && $_POST["new"]!= "" ) {
+            $sql = "SELECT content,version FROM site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["old"];
+            $result = $db -> query($sql);
+            $data_old = $db -> fetch_array($result,1);
+            $sql = "SELECT content,version FROM site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["new"];
+            $result = $db -> query($sql);
+            $data_new = $db -> fetch_array($result,1);
+
+            if ( $data_new["version"] > $data_old["version"] ) {
+                $first = $data_new["content"];
+                $second = $data_old["content"];
+            } else {
+                $first = $data_old["content"];
+                $second = $data_new["content"];
+            }
+
+            $lines1 = explode("\n", $second);
+            $lines2 = explode("\n", $first);
+
+            $diff = new Text_Diff('auto', array($lines1, $lines2));
+            $renderer = new Text_Diff_Renderer_inline();
+
+            $ausgaben["diff"] = str_replace("\n","<br>",$renderer->render($diff));
+
         }
+
+        #if ( $environment["parameter"][4] ) {
+        #    $sql = "SELECT * FROM site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' AND version='".$environment["parameter"][4]."'";
+        #    $result = $db -> query($sql);
+        #    $form_values = $db -> fetch_array($result,1);
+        #}
 
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
@@ -89,7 +150,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+
+        $ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/history,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",verify.html";
         $ausgaben["form_break"] = $cfg["contented"]["basis"]."/list.html";
 
         // hidden values

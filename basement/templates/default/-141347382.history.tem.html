@@ -16,19 +16,23 @@
   }
 //-->
 </script>
+<div if="left">!#ausgaben_diff</div>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <fieldset>
-        <label for="field1">#(field1)</label>
-        !#element_field1
-        <label for="field2">#(field2)</label>
-        !#element_field2
+    <fieldset class="cbra">
+        <ul>
+            <li>Versionen</li>
+    <!--##loop-list-->
+            <li><input type="radio" name="old" value="!{cb1}"></input> <input type="radio" name="new" value="!{cb2}"></input><a href="!{url}">!{date}</a> !{name} </li>
+    <!--##cont-->
+        </ul>
+
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />
-        <input type="reset" name="reset" value="g(reset)" class="next" />
+<!--        <input type="reset" name="reset" value="g(reset)" class="next" />-->
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>

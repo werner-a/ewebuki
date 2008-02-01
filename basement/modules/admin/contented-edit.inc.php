@@ -69,6 +69,8 @@
         // page basics
         // ***
 
+        $environment["parameter"][6] != "" ? $version = " AND version=".$environment["parameter"][6] : $version = "";
+
         if ( count($_POST) == 0 ) {
 
             #$sql = "SELECT *
@@ -80,10 +82,12 @@
                      WHERE lang = '".$environment["language"]."'
                        AND label ='".$environment["parameter"][3]."'
                        AND tname ='".$environment["parameter"][2]."'
+                       $version
                      ORDER BY version DESC
                      LIMIT 0,1";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
+
             #$data = $db -> fetch_array($result, $nop);
             $form_values = $db -> fetch_array($result,1);
 
@@ -355,9 +359,9 @@
         #$ausgaben["form_break"] = $cfg["contented"]["basis"]."/list.html";
 
         #$ausgaben["form_aktion"] = $cfg["contented"]["basis"]."edit/save,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
-        $ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,verify.html";
+        $ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,,verify.html";
         #$ausgaben["form_abbrechen"] = $_SESSION["page"];
-        $ausgaben["form_break"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,unlock.html";
+        $ausgaben["form_break"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,,unlock.html";
 
 
         // hidden values
@@ -388,7 +392,7 @@
         // page basics
 
         // lock aufheben
-        if ( $environment["parameter"][6] != "" ) {
+        if ( $environment["parameter"][7] != "" ) {
             $sql = "DELETE FROM site_lock
                           WHERE label ='".$environment["parameter"][3]."'
                             AND tname ='".$environment["parameter"][2]."'
@@ -397,7 +401,7 @@
             header("Location: ".$_SESSION["page"]."");
         }
 
-        if ( $environment["parameter"][6] == "verify"
+        if ( $environment["parameter"][7] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["add"] != ""
                 || $HTTP_POST_VARS["sel"] != ""
@@ -581,6 +585,8 @@
                     }
 
                 } else {
+                    $pattern = ",v[0-9]*\.html$";
+                    $ausgaben["form_referer"] = preg_replace("/".$pattern."/",".html",$ausgaben["form_referer"] ); 
                     header("Location: ".$ausgaben["form_referer"]."");
                 }
 

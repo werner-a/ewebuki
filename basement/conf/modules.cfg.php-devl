@@ -70,6 +70,12 @@
         include $pathvars["moduleroot"]."admin/new.inc.php";
     }
 
+    // admin: history for testing only !!
+    if ( $environment["allparameter"] == "history" ) {
+        include $pathvars["moduleroot"]."admin/history.cfg.php";
+        include $pathvars["moduleroot"]."admin/history.inc.php";
+    }
+
     // admin: grouped (development)
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "grouped" )
        || ( $environment["ebene"] == "/admin/grouped" ))
