@@ -8,6 +8,20 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 01. Februar 2008
+die "authInPlace" tools werden jetzt mit dataloop eingebunden.
+das tool "history" wurde hinzugefuegt, um es sichtbar zu machen bitte unten
+angefuegten sql ausführen!
+
+sql:
+
+INSERT INTO `site_text`
+(`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`,
+`changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES
+( 'de', 'history', 'global', '', 'auth', '-1', 'Historie',
+'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki')
+
 --- 21. Januar 2008
 
 In der $cfg["file"] kann man jetzt breite und hoehe der zielgroessen angeben:

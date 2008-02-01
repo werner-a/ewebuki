@@ -100,8 +100,8 @@
              # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
             "inplace" => array(
-                 "new" => "add",
-                 #"delete" => array("add"),
+                 "new" => array("add","g(new)"),
+                 "history" => array("add","g(history)")
                  #"move" => array("add")
                        ),
     );
