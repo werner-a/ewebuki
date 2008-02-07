@@ -85,6 +85,7 @@
 
             "right" => $cfg["auth"]["ghost"]["contented"],
             #"tagjs" => "-141347382.modify.js-classic",
+          "letters" => "1000",
             "tagjs" => "-141347382.modify.js-nextgen",
              "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts, eingener tag
                               // block-elemente

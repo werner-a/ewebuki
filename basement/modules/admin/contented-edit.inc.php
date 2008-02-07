@@ -271,8 +271,12 @@
             // ce editor bauen
 
             $ausgaben["name"] = "content";
-            $ausgaben["eventh2"] = "onsubmit=\"chk('content',1000);\"";
-            $ausgaben["eventh2"] = "onKeyDown=\"count('content',1000);\" onChange=\"chk('content',1000);\"";
+            if ( $cfg["contented"]["letters"] != "" ) {
+                $ausgaben["charakters"] = "#(charakters)";
+                $ausgaben["eventh2"] = "onKeyDown=\"count('content',".$cfg["contented"]["letters"].");\" onChange=\"chk('content',".$cfg["contented"]["letters"].");\"";
+            } else {
+                $ausgaben["charakters"] = "";
+            }
             $ausgaben["inhalt"] = $form_values["content"];
 
 
