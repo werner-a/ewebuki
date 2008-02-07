@@ -107,11 +107,13 @@
             $lines1 = explode("\n", $second);
             $lines2 = explode("\n", $first);
 
-            $diff = new Text_Diff('auto', array($lines1, $lines2));
-            $renderer = new Text_Diff_Renderer_inline();
-
-            $ausgaben["diff"] = str_replace("\n","<br>",$renderer->render($diff));
-
+            if ( $cfg["contented"]["diff_engine"] == "phpdiff" ) {
+                $ausgaben["diff"] = arr_diff($lines1,$lines2);
+            } else {
+                $diff = new Text_Diff('auto', array($lines1, $lines2));
+                $renderer = new Text_Diff_Renderer_inline();
+                $ausgaben["diff"] = str_replace("\n","<br>",$renderer->render($diff));
+            }
         }
 
         #if ( $environment["parameter"][4] ) {
