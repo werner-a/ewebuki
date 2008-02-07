@@ -77,6 +77,7 @@
     $specialvars["nosections"] = 0; // bearbeiten marke pro absatz verhindern
     $specialvars["newbrmode"] = -1; // \r\n wird nur noch innerhalb von [DIV und [P durch </ br> ersetzt
     $specialvars["newbrblock"] = ""; // \r\n -> </ br> verhindern (zur zeit nur DIV möglich)
+    $specialvars["w3c"] = "strict";
     $specialvars["404"]["enable"] = 0; // 404 fehlermeldungen aktivieren
     $specialvars["404"]["nochk"]["ebene"] = array("/cms","/admin"); // ebenen ohne 404 meldung
     $specialvars["404"]["nochk"]["kategorie"] = array("index","view"); // kategorien ohne 404 meldung

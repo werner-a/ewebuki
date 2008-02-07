@@ -340,16 +340,23 @@
                             $tagwerte = explode("]",$tagwert,2);
                             $brwerte = explode(";",$tagwerte[0]);
                             if ( $brwerte[0] == "a" ) {
-                                $clear = "all";
+                                $clear = "clear=\"all\"";
+                                $style_clear = "style=\"clear:both;\"";
                             } elseif ( $brwerte[0] == "l" ) {
-                                $clear = "left";
+                                $clear = "clear=\"left\"";
+                                $style_clear = "style=\"clear:left;\"";
                             } elseif ( $brwerte[0] == "r" ) {
-                                $clear = "right";
+                                $clear = "clear=\"right\"";
+                                $style_clear = "style=\"clear:right;\"";
                             } else {
                                 $clear = "";
+                                $style_clear = "";
                             }
-                            if ( $clear != "" ) $clear = " clear=\"".$clear."\"";
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<br ".$clear."/>",$replace);
+                            if ( $specialvars["w3c"] == "strict" ) {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<br ".$style_clear."/>",$replace);
+                            } else {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<br ".$clear."/>",$replace);
+                            }
                         }
                         break;
                     case "[/IMG]":
@@ -393,34 +400,49 @@
                             $extrawerte = explode(":",$imgwerte[1]);
                             if ( $extrawerte[1] != "" ) $imgwerte[1] = $extrawerte[1];
                             if ( $extrawerte[0] == "id" ) {
-                                $art = "id";
+                                $art = " id";
                             } else {
-                                $art = "class";
+                                $art = " class";
                             }
-                            $align = ""; $attrib = "";
+                            $align = ""; $attrib = ""; $style_align = "";
                             if ( $imgwerte[1] == "r" ) {
                                 $align = " align=\"right\"";
+                                $style_align = "float:right;";
                             } elseif ( $imgwerte[1] == "l" ) {
                                 $align = " align=\"left\"";
+                                $style_align = "float:left;";
                             } elseif ( $imgwerte[1] != "" ) {
                                 $attrib = " ".$art."=\"".$imgwerte[1]."\"";
                             }
                             if ( $imgwerte[2] == "0" ) {
                                 $border = " border=\"0\"";
+                                $style_border = "border-width:0;";
                             } elseif ( $imgwerte[2] > 0 ) {
                                 $border = " border=\"".$imgwerte[2]."\"";
+                                $style_border = "border-width:".$imgwerte[2]."px;";
                             } else {
                                 $border = "";
+                                $style_border = "";
                             }
                             if ($imgwerte[4] == "" ) {
                                 $vspace = "";
+                                $style_vspace = "";
                             } else {
                                 $vspace = " vspace=\"".$imgwerte[4]."\"";
+                                $style_vspace = "margin-top:".$imgwerte[4]."px;margin-bottom:".$imgwerte[4]."px;";
                             }
                             if ($imgwerte[6] == "" ) {
                                 $hspace = "";
+                                $style_hspace = "";
                             } else {
                                 $hspace = " hspace=\"".$imgwerte[6]."\"";
+                                if ( $imgwerte[1] == "r" ) {
+                                    $style_hspace = "margin-left:".$imgwerte[6]."px;margin-right:0px;";
+                                } elseif ( $imgwerte[1] == "l" ) {
+                                    $style_hspace = "margin-left:0px;margin-right:".$imgwerte[6]."px;";
+                                } else {
+                                    $style_hspace = "margin-left:".$imgwerte[6]."px;margin-right:".$imgwerte[6]."px;";
+                                }
                             }
                             if ( $tagwerte[1] == "" ) {
                                 $beschriftung = $imgwerte[0];
@@ -484,7 +506,11 @@
                                     $imgsize = "";
                                 }
                             }
-                            $ausgabewert = $linka."<img src=\"".$imgurl."\"".$attrib.$vspace.$hspace." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
+                            if ( $specialvars["w3c"] == "strict" ) {
+                                $ausgabewert = $linka."<img src=\"".$imgurl."\""." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$imgsize." style=\"".$style_align.$style_border.$style_hspace.$style_vspace."\"".$attrib." />".$linkb;
+                            } else {
+                                $ausgabewert = $linka."<img src=\"".$imgurl."\"".$attrib.$vspace.$hspace." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
+                            }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
                         break;
@@ -650,9 +676,9 @@
                             $ausgaben["imgstyle"] = $imgwerte[1];
                         }
                         if ( $imgwerte[2] == "0" ) {
-                            $ausgaben["border"] = " border=\"0\"";
+                            $ausgaben["border"] = "border-width:0;";
                         } elseif ( $imgwerte[2] > 0 ) {
-                            $ausgaben["border"] = " border=\"".$imgwerte[2]."\"";
+                            $ausgaben["border"] = "border-width:".$imgwerte[2].";";
                         } else {
                             $ausgaben["border"] = "";
                         }
@@ -720,6 +746,9 @@
                                     if ( substr( $path, -1 ) != '/') $path = $path."/";
                                     $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
                                     $ausgaben["linka"] = "<a href=\"".$imglnk."\">";
+                                    if ( $imgwerte[3] == "l" ) {
+                                        $ausgaben["linka"] = "<a href=\"".str_replace("/s/", "/b/", $imgurl)."\" title=\"".$beschriftung."\" rel=\"lightbox[own]\">";;
+                                    }
                                     $ausgaben["linkb"] = "</a>";
                                 } else {
                                     $ausgaben["linka"] = "";
@@ -898,7 +927,7 @@
                             } else {
                                 $label = $tagwerte[1];
                             }
-                        if ( $m2werte[0] == "l" ) {
+                            if ( $m2werte[0] == "l" ) {
                                 $m2 = "";
                                 if ( $m2werte[1] == "b" ) {
                                     $m2 = $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br />";
