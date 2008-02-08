@@ -83,7 +83,7 @@
             }
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$startfile."\" overwrite, using: ".$template.$debugging["char"];
         }
-        // reset template overwrite
+        // reset template overwrite inner recursive procedure
         $overwrite_template = "";
 
         if ( file_exists($template) ) {
@@ -386,7 +386,7 @@
                                 // parser nochmal aufrufen um untertemplate mit dem namen: "$token".tem.html zu parsen
                                 rparser($newstartfile, $default_template, $overwrite_template);
 
-                                // reset template overwrite
+                                // reset template overwrite outer recursive procedure
                                 $overwrite_template = "";
 
                                 if ( strpos($rline,"###switchback###") !== false ) {
@@ -415,7 +415,7 @@
         } else {
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser error: template ".$template." not found!!!".$debugging["char"];
         } # ende der file existenz pruefung
-    }# ende der rcfilein funktion
+    }# ende der rparser funktion
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
