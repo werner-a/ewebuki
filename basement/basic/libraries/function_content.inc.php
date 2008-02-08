@@ -91,7 +91,7 @@
             } else {
                 $version = "";
                 $version_sql = "";
-            } 
+            }
             $sql = "SELECT html, content
                       FROM ". SITETEXT ."
                      WHERE tname='".$dbtname."'
@@ -205,20 +205,38 @@
                     if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
 
                     if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
-                        $allcontent = explode($defaults["section"]["tag"], $replace);
-                        foreach ($allcontent as $key => $value) {
-                            if ( $key == 0 ) {
-                                $join[] = $value;
-                            } else {
-                                $parts = explode( "]", $value, 2);
-                                $join[] = $parts[0]."]{".$key."}".$parts[1];
+
+                        if ( is_array($specialvars["section_tags"]) ) {
+                            // neue section-edit-marken
+                            $preg_search = str_replace(
+                                            array("[", "]", "/"),
+                                            array("\[","\]","\/"),
+                                            implode("|",$specialvars["section_tags"])
+                            );
+                            $allcontent = preg_split("/(".$preg_search.")/",$replace,-1,PREG_SPLIT_DELIM_CAPTURE);
+                            $i = 0;
+                            foreach ( $allcontent as $key=>$value ) {
+                                if ( in_array($value,$specialvars["section_tags"]) ) {
+                                    $join[$i] = $value."{".$i."}";
+                                } else {
+                                    $join[$i] .= $value;
+                                    $i++;
+                                }
                             }
+                            $replace = implode("",$join);
+                        } else {
+                            $allcontent = explode($defaults["section"]["tag"], $replace);
+                            foreach ($allcontent as $key => $value) {
+                                if ( $key == 0 ) {
+                                    $join[] = $value;
+                                } else {
+                                    $parts = explode( "]", $value, 2);
+                                    $join[] = $parts[0]."]{".$key."}".$parts[1];
+                                }
+                            }
+                            $replace = implode($defaults["section"]["tag"], $join);
                         }
-                        $replace = implode($defaults["section"]["tag"], $join);
                     }
-
-
-
 
                     // konvertieren ?
                     if ( $specialvars["wysiwyg"] == "" && $row[0] == -1 ) {

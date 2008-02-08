@@ -194,9 +194,31 @@
 
 
         // evtl. spezielle section
-        $alldata = explode($defaults["section"]["tag"], $form_values["content"]);
-        if ( $environment["parameter"][4] != "" ) {
-            $form_values["content"] = $defaults["section"]["tag"].$alldata[$environment["parameter"][4]];
+        if ( is_array($specialvars["section_tags"]) ) {
+            $preg_search = str_replace(
+                            array("[", "]", "/"),
+                            array("\[","\]","\/"),
+                            implode("|",$specialvars["section_tags"])
+            );
+            $allcontent = preg_split("/(".$preg_search.")/",$form_values["content"],-1,PREG_SPLIT_DELIM_CAPTURE);
+            $i = 0;
+            foreach ( $allcontent as $key=>$value ) {
+                if ( in_array($value,$specialvars["section_tags"]) ) {
+                    $join[$i] = $value."{".$i."}";
+                } else {
+                    $join[$i] .= $value;
+                    $i++;
+                }
+            }
+
+            if ( $environment["parameter"][4] != "" ) {
+                $form_values["content"] = preg_replace("/\{[0-9]+\}/U","",$join[$environment["parameter"][4]]);
+            }
+        } else {
+            $alldata = explode($defaults["section"]["tag"], $form_values["content"]);
+            if ( $environment["parameter"][4] != "" ) {
+                $form_values["content"] = $defaults["section"]["tag"].$alldata[$environment["parameter"][4]];
+            }
         }
 
 
@@ -444,25 +466,58 @@
                     }
                 }
 
-                $allcontent = explode($defaults["section"]["tag"], addslashes($data["content"]) );
-                $content = "";
-                foreach ($allcontent as $key => $value) {
-                    if ( $key == $environment["parameter"][4] ) {
-                        $length = strlen( $defaults["section"]["tag"] );
-                        if ( substr($HTTP_POST_VARS["content"],0,$length) == $defaults["section"]["tag"] ) {
-                            $content .= $defaults["section"]["tag"].substr($HTTP_POST_VARS["content"],$length);
+                if ( is_array($specialvars["section_tags"]) ) {
+
+                    $preg_search = str_replace(
+                                    array("[", "]", "/"),
+                                    array("\[","\]","\/"),
+                                    implode("|",$specialvars["section_tags"])
+                    );
+                    $allcontent = preg_split("/(".$preg_search.")/",$data["content"],-1,PREG_SPLIT_DELIM_CAPTURE);
+                    $i = 0;
+                    foreach ( $allcontent as $key=>$value ) {
+                        if ( in_array($value,$specialvars["section_tags"]) ) {
+                            $join[$i] = $value."{".$i."}";
                         } else {
-                            $content .= $HTTP_POST_VARS["content"];
+                            $join[$i] .= $value;
+                            $i++;
                         }
-                    } elseif ( $key > 0 ) {
-                        $content .= $defaults["section"]["tag"].$value;
-                    } else {
-                        $content .= $value;
                     }
 
-                // eWeBuKi tag schutz - sections 2
-                $content = str_replace( $hide, $mark, $content );
+                    $content = "";
+                    foreach ( $join as $key=>$value ) {
+                        if ( $key == $environment["parameter"][4] ) {
+                            $content .= $_POST["content"];
+                        } elseif ( $key > 0 ) {
+                            $content .= preg_replace("/\{[0-9]+\}/U","",$value);
+                        } else {
+                            $content .= $value;
+                        }
+                    }
+                    // eWeBuKi tag schutz - sections 2
+                    $content = str_replace( $hide, $mark, $content );
 
+                } else {
+                    $allcontent = explode($defaults["section"]["tag"], addslashes($data["content"]) );
+                    $content = "";
+                    foreach ($allcontent as $key => $value) {
+                        if ( $key == $environment["parameter"][4] ) {
+                            $length = strlen( $defaults["section"]["tag"] );
+                            if ( substr($HTTP_POST_VARS["content"],0,$length) == $defaults["section"]["tag"] ) {
+                                $content .= $defaults["section"]["tag"].substr($HTTP_POST_VARS["content"],$length);
+                            } else {
+                                $content .= $HTTP_POST_VARS["content"];
+                            }
+                        } elseif ( $key > 0 ) {
+                            $content .= $defaults["section"]["tag"].$value;
+                        } else {
+                            $content .= $value;
+                        }
+
+                    // eWeBuKi tag schutz - sections 2
+                    $content = str_replace( $hide, $mark, $content );
+
+                    }
                 }
             } else {
                 $content = $HTTP_POST_VARS["content"];
@@ -590,7 +645,7 @@
 
                 } else {
                     $pattern = ",v[0-9]*\.html$";
-                    $ausgaben["form_referer"] = preg_replace("/".$pattern."/",".html",$ausgaben["form_referer"] ); 
+                    $ausgaben["form_referer"] = preg_replace("/".$pattern."/",".html",$ausgaben["form_referer"] );
                     header("Location: ".$ausgaben["form_referer"]."");
                 }
 
