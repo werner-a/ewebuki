@@ -194,17 +194,17 @@
 
 
         // evtl. spezielle section
-        if ( is_array($specialvars["section_tags"]) ) {
+        if ( is_array($defaults["section"]["tag"]) ) {
             $preg_search = str_replace(
                             array("[", "]", "/"),
                             array("\[","\]","\/"),
-                            implode("|",$specialvars["section_tags"])
+                            implode("|",$defaults["section"]["tag"])
             );
             $allcontent = preg_split("/(".$preg_search.")/",$form_values["content"],-1,PREG_SPLIT_DELIM_CAPTURE);
             $i = 0;
             foreach ( $allcontent as $key=>$value ) {
-                if ( in_array($value,$specialvars["section_tags"]) ) {
-                    $join[$i] = $value."{".$i."}";
+                if ( in_array($value,$defaults["section"]["tag"]) ) {
+                    $join[$i] = "{".$i."}".$value;
                 } else {
                     $join[$i] .= $value;
                     $i++;
@@ -466,18 +466,18 @@
                     }
                 }
 
-                if ( is_array($specialvars["section_tags"]) ) {
+                if ( is_array($defaults["section"]["tag"]) ) {
 
                     $preg_search = str_replace(
                                     array("[", "]", "/"),
                                     array("\[","\]","\/"),
-                                    implode("|",$specialvars["section_tags"])
+                                    implode("|",$defaults["section"]["tag"])
                     );
                     $allcontent = preg_split("/(".$preg_search.")/",$data["content"],-1,PREG_SPLIT_DELIM_CAPTURE);
                     $i = 0;
                     foreach ( $allcontent as $key=>$value ) {
-                        if ( in_array($value,$specialvars["section_tags"]) ) {
-                            $join[$i] = $value."{".$i."}";
+                        if ( in_array($value,$defaults["section"]["tag"]) ) {
+                            $join[$i] = "{".$i."}".$value;
                         } else {
                             $join[$i] .= $value;
                             $i++;

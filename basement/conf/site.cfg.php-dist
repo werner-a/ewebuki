@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -75,7 +75,6 @@
     $specialvars["denyhtml"] = -1; // html im content verbieten
     $specialvars["denyspace"] = -1; // leerzeichen im content verbieten
     $specialvars["nosections"] = 0; // bearbeiten marke pro absatz verhindern
-    $specialvars["section_tags"] = array("[H1]","[H2]","[H3]","[P]");  // die tags, bei denen bearbeiten-marken gesetzt werden
     $specialvars["newbrmode"] = -1; // \r\n wird nur noch innerhalb von [DIV und [P durch </ br> ersetzt
     $specialvars["newbrblock"] = ""; // \r\n -> </ br> verhindern (zur zeit nur DIV möglich)
     $specialvars["w3c"] = "strict";
