@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -48,34 +48,40 @@
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    function rparser($startfile, $default_template) {
+
+    function rparser($startfile, $default_template, $overwrite_template="") {
+
         global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $dataloop, $hidedata, $mapping, $loopcheck;
 
-        // original template find
-        #$template = $pathvars["templates"].$startfile;
-        if ( file_exists($pathvars["templates"].$startfile) ) {
-        $template = $pathvars["templates"].$startfile;
-        } else {
-        $template = $pathvars["fileroot"]."templates/default/".$startfile;
-        }
-
-        // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
-        if ( !file_exists($template) && $default_template != "" ) {
-            if ( $startfile == $loopcheck ) {
-            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found. Loop detect!!!".$debugging["char"];
+        if ( $overwrite_template == "" ) {
+            if ( file_exists($pathvars["templates"].$startfile) ) {
+                $template = $pathvars["templates"].$startfile;
             } else {
-                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found using: ".$default_template.$debugging["char"];
-                // original template find
-                #$template = $pathvars["templates"].$default_template;
-                if ( file_exists($pathvars["templates"].$default_template) ) {
-                    $template = $pathvars["templates"].$default_template;
-                } else {
-                    $template = $pathvars["fileroot"]."templates/default/".$default_template;
-                }
+                $template = $pathvars["fileroot"]."templates/default/".$startfile;
             }
-            $loopcheck = $startfile;
+            // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
+            if ( !file_exists($template) && $default_template != "" ) {
+                if ( $startfile == $loopcheck ) {
+                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found. Loop detect!!!".$debugging["char"];
+                } else {
+                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found, using: ".$default_template.$debugging["char"];
+                    if ( file_exists($pathvars["templates"].$default_template) ) {
+                        $template = $pathvars["templates"].$default_template;
+                    } else {
+                        $template = $pathvars["fileroot"]."templates/default/".$default_template;
+                    }
+                }
+                $loopcheck = $startfile;
+            } else {
+                unset($loopcheck);
+            }
         } else {
-            unset($loopcheck);
+            if ( file_exists($pathvars["templates"].$overwrite_template) ) {
+                $template = $pathvars["templates"].$overwrite_template;
+            } else {
+                $template = $pathvars["fileroot"]."templates/default/".$overwrite_template;
+            }
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$startfile."\" overwrite, using: ".$template.$debugging["char"];
         }
         if ( file_exists($template) ) {
             $fd = fopen($template, "r");
@@ -329,27 +335,29 @@
 
                                 if ( $specialvars["crc32"] == -1 ) {
                                     if ( $environment["ebene"] != "" && $token_name == $environment["kategorie"] ) {
-                                        $path_element = explode("/", substr($environment["ebene"]."/",1));
-
+                                        // das normale template ist!
+                                        $newstartfile = crc32($environment["ebene"]).".".$token_name.".tem.html";
+                                        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 template/content basis: ".$newstartfile." for ebene (".$environment["ebene"].")".$debugging["char"];
+                                        // gibt es ein overwrite template?
+                                        $path_element = explode("/", substr($environment["ebene"]."/",1).$environment["kategorie"]);
                                         foreach ( $path_element as $value ) {
-                                            array_pop($path_element); // thanks @ Günther Morhart
+                                            $find_kategorie =  array_pop($path_element);
                                             if ( $value != "" ) {
                                                 $find_ebene = "/".implode("/",$path_element);
-                                                $newstartfile = crc32($find_ebene).".".$token_name.".tem.html";
-                                                if ( !file_exists($pathvars["templates"].$newstartfile) ) {
-                                                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$newstartfile." crc32 template found for ebene (".$find_ebene.")".$debugging["char"];
+                                                if ( $find_ebene != "/" ) {
+                                                    $overwrite_template = crc32($find_ebene).".".$find_kategorie.".tem.html";
                                                 } else {
-                                                break; // thanks @ Günther Wach
+                                                    $overwrite_template = $find_kategorie.".tem.html";
                                                 }
-                                            } else {
-                                                global $HTTP_GET_VARS;
-                                                if ( $HTTP_GET_VARS["lost"] == "" ) {
-                                                    $newstartfile = crc32($environment["ebene"]).".".$token_name.".tem.html";
-                                                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "reset to: ".$newstartfile." crc32 content for ebene (".$environment["ebene"].")".$debugging["char"];
+                                                if ( !file_exists($pathvars["templates"].$overwrite_template) ) {
+                                                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 overwrite template search: ".$overwrite_template." for ebene (".$find_ebene.")".$debugging["char"];
+                                                    $overwrite_template = "";
+                                                } else {
+                                                    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 overwrite template found: ".$overwrite_template." for ebene (".$find_ebene.")".$debugging["char"];
+                                                    break;
                                                 }
                                             }
                                         }
-
                                     } else {
                                         // token name und template endung zusammen bauen
                                         $newstartfile = $token_name.".tem.html";
@@ -361,8 +369,8 @@
                                         $newstartfile = $token_name.".".$environment["subkatid"].".tem.html";
                                         // es gibt kein besonderes template
                                         if ( !file_exists($pathvars["templates"].$newstartfile)) {
-                                        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$newstartfile." template found using ".$token_name.".tem.html".$debugging["char"];
-                                        $newstartfile = $token_name.".tem.html";
+                                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$newstartfile." template found using ".$token_name.".tem.html".$debugging["char"];
+                                            $newstartfile = $token_name.".tem.html";
                                         }
                                     } else {
                                         // token name und template endung zusammen bauen
@@ -373,7 +381,10 @@
                                 // gemerkten zeilen anfang ausgeben
                                 echo ltrim($lline);
                                 // parser nochmal aufrufen um untertemplate mit dem namen: "$token".tem.html zu parsen
-                                rparser($newstartfile, $default_template);
+                                rparser($newstartfile, $default_template, $overwrite_template);
+
+                                // reset template overwrite
+                                $overwrite_template = "";
 
                                 if ( strpos($rline,"###switchback###") !== false ) {
                                     $db -> selectDb(DATABASE,FALSE);
@@ -399,7 +410,7 @@
             } # ende der file while schleife
             fclose($fd);
         } else {
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser error: template ".$template." not found!!!".$debugging["char"];
+            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser error: template ".$template." not found!!!".$debugging["char"];
         } # ende der file existenz pruefung
     }# ende der rcfilein funktion
 
