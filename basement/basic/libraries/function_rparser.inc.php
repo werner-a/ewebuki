@@ -83,6 +83,9 @@
             }
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$startfile."\" overwrite, using: ".$template.$debugging["char"];
         }
+        // reset template overwrite
+        $overwrite_template = "";
+
         if ( file_exists($template) ) {
             $fd = fopen($template, "r");
             while (!feof($fd)) {
