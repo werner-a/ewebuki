@@ -66,7 +66,8 @@
 
     if ( priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
         priv_check_old("",$cfg["contented"]["right"]) ) {
-
+        if ( $environment["parameter"][3] == "" )  $environment["parameter"][3] = $cfg["contented"]["default_label"];
+        $environment["parameter"][2] = preg_replace("/^0./","",$environment["parameter"][2]);
         // page basics
         // ***
         $ausgaben["diff"] = "";
@@ -104,13 +105,18 @@
                 $second = $data_new["content"];
             }
 
-            $lines1 = explode("\n", $second);
-            $lines2 = explode("\n", $first);
+            $old_array = explode("\n", $second);
+            $new_array = explode("\n", $first);
 
-            if ( $cfg["contented"]["diff_engine"] == "phpdiff" ) {
-                $ausgaben["diff"] = arr_diff($lines1,$lines2);
+            if ( strstr($cfg["contented"]["diff_engine"],"phpdiff") ) {
+                if ( $cfg["contented"]["diff_engine"] == "phpdiff3" ) {
+                    $diff = phpdiff3($second,$first);
+                } else {
+                    $diff = arr_diff($old_array,$new_array);
+                }
+                $ausgaben["diff"] = $diff;
             } else {
-                $diff = new Text_Diff('auto', array($lines1, $lines2));
+                $diff = new Text_Diff('auto', array($old_array, $new_array));
                 $renderer = new Text_Diff_Renderer_inline();
                 $ausgaben["diff"] = str_replace("\n","<br>",$renderer->render($diff));
             }
