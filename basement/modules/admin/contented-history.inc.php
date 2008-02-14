@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: leer-edit.inc.php 667 2007-08-10 18:13:18Z chaot $";
+// "$Id$";
 // "contented - history";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -43,57 +43,44 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-// Zeilen-Array aus den Texten machen
-#$lines1 = explode("\n", $hallo);
-#$lines2 = explode("\n", $hallo1);
-
-// Objekte erstellen
-#$diff = new Text_Diff('auto', array($lines1, $lines2));
-#$renderer = new Text_Diff_Renderer_inline();
-    #$renderer1 = $diff -> reverse();
-    #$renderer =& new Text_Diff_Renderer_unified();
-    #$renderer =& new Text_Diff_Renderer_context();
-    #$renderer =& new Text_Diff_Engine_native();
-// Ausgabe
-
-
-#echo "<pre>";
-#print_r($renderer1);
-#print_r ($renderer->render($diff));
-#echo "</pre>";
-
-
     if ( priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
         priv_check_old("",$cfg["contented"]["right"]) ) {
+
+        // label steuerung wenn kein para dann wird default-label aus cfg hergenommen
         if ( $environment["parameter"][3] == "" )  $environment["parameter"][3] = $cfg["contented"]["default_label"];
-        $environment["parameter"][2] = preg_replace("/^0./","",$environment["parameter"][2]);
+
+        // als tname werden die SESSIONS "ebene" u. "kategorie" verwendet
+        if ( $_SESSION["ebene"] != "" ) {
+            $trenner = "/";
+            $tname = crc32($_SESSION["ebene"]).".".$_SESSION["kategorie"];
+        } else {
+            $trenner = "";
+            $tname = $_SESSION["kategorie"];
+        }
+
         // page basics
         // ***
         $ausgaben["diff"] = "";
-        #if ( count($HTTP_POST_VARS) == 0 ) {
-            $sql = "SELECT *
-                      FROM site_text
-                     WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' ORDER BY version DESC";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
+        $sql = "SELECT *
+                    FROM site_text
+                    WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' ORDER BY version DESC";
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
 
-            while ( $form_values = $db -> fetch_array($result,1) ) {
-                $dataloop["list"][$form_values["version"]]["url"] = $_SESSION["REFERER"].",v".$form_values["version"].".html";
-                $dataloop["list"][$form_values["version"]]["date"] = $form_values["changed"];
-                $dataloop["list"][$form_values["version"]]["name"] = $form_values["bysurname"];
-                $dataloop["list"][$form_values["version"]]["cb1"] = $form_values["version"];
-                $dataloop["list"][$form_values["version"]]["cb2"] = $form_values["version"];
-            }
-        #} else {
-           # $form_values = $HTTP_POST_VARS;
-        #}
+        while ( $form_values = $db -> fetch_array($result,1) ) {
+            $dataloop["list"][$form_values["version"]]["url"] = $pathvars["virtual"]."/".$_SESSION["ebene"].$trenner.$_SESSION["kategorie"].",v".$form_values["version"].".html";
+            $dataloop["list"][$form_values["version"]]["date"] = $form_values["changed"];
+            $dataloop["list"][$form_values["version"]]["name"] = $form_values["bysurname"];
+            $dataloop["list"][$form_values["version"]]["cb1"] = $form_values["version"];
+            $dataloop["list"][$form_values["version"]]["cb2"] = $form_values["version"];
+        }
 
+        // hier erfolgt der diff
         if ( $_POST["old"] != "" && $_POST["new"]!= "" ) {
-            $sql = "SELECT content,version FROM site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["old"];
+            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["old"];
             $result = $db -> query($sql);
             $data_old = $db -> fetch_array($result,1);
-            $sql = "SELECT content,version FROM site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["new"];
+            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["new"];
             $result = $db -> query($sql);
             $data_new = $db -> fetch_array($result,1);
 
@@ -121,12 +108,6 @@
                 $ausgaben["diff"] = str_replace("\n","<br>",$renderer->render($diff));
             }
         }
-
-        #if ( $environment["parameter"][4] ) {
-        #    $sql = "SELECT * FROM site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' AND version='".$environment["parameter"][4]."'";
-        #    $result = $db -> query($sql);
-        #    $form_values = $db -> fetch_array($result,1);
-        #}
 
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);

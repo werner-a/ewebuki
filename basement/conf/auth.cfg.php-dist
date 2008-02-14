@@ -101,7 +101,7 @@
                        ),
             "inplace" => array(
                  "new" => array("add","g(new)"),
-                 #"history" => array("add","g(history)")
+#"/admin/contented/history,," => array("add","g(history)")
                  #"move" => array("add")
                        ),
     );

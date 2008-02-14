@@ -53,7 +53,7 @@
                         "a" => "#eee",
                         "b" => "#fff",
                        ),*/
-       "diff_engine"=> "phpdiff3",
+       "diff_engine"=> "phpdiff",
          "function" => array(
 //                       "add" => "",
                      "edit" => array("makece"),
