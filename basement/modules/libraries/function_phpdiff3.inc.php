@@ -185,11 +185,11 @@ function prepare($work,$lines2,$lines1) {
 
     ## damit es schoen aussieht
     foreach ( $display as $key => $value ) {
-        $finish .= "<div class=box>";
+        $finish .= "<div class=box>\n";
         foreach ( $value as $key1 => $value1 ) {
             if ( $key1 == "0" ) {
                 $art = $value1[0];
-                $finish .= $value1."<br>";
+                $finish .= $value1."<br>\n";
             } else {
                 if ( is_array($value1) ){
                     $finish .= "<div class=".$key1." >";
@@ -199,7 +199,7 @@ function prepare($work,$lines2,$lines1) {
                     $finish .= "</div>";
                 } else {
                     ( $art == "D" ) ? $class = "old" : $class = "new";
-                    $finish .= "<div class=\"".$class."\">".$value1."</div>";
+                    $finish .= "<div class=\"".$class."\">".$value1."&nbsp</div>";
                 }
             }
         }
