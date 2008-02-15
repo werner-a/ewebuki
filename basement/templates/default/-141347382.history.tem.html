@@ -10,30 +10,65 @@
 <!--##begin-->
 <!--$Id: -1468826685.modify.tem.html 789 2007-09-14 12:14:02Z chaot $-->
 <script type="text/javascript">
-<!--
-  function resetForm(){
-     document.forms[0].reset();
-  }
-//-->
+    function make_hidden(id,art,max,inh_sel) {
+        if (document.getElementById('n0')){
+            halt=0;
+        } else {
+            halt=1;
+        }
+        counter='';
+        if (art=='old') {
+            id=id+1
+            for(var i=max; i>=halt ;i--) {
+                if (counter==inh_sel) break;
+                counter++;
+                if (i>=id) {
+                    document.getElementById('n'+i).style.visibility = "visible"
+                    continue;
+                }
+                if (i<=id) {
+                   document.getElementById('n'+i).style.visibility = "hidden"
+                    continue;
+                }
+            } 
+        }
+        if (art=='new') {
+            id=id-1
+            for(var i=max; i>=halt ;i--) {
+                if (counter==inh_sel) break;
+                counter++;
+                if (i<=id) {
+                    document.getElementById('o'+i).style.visibility = "visible"
+                    continue;
+                }
+                if (i>=id) {
+                   document.getElementById('o'+i).style.visibility = "hidden"
+                   continue;
+                }
+
+            } 
+        }
+
+    }
 </script>
-<div if="left">!#ausgaben_diff</div>
+<h1>!#ausgaben_url</h1>
+!#ausgaben_diff
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
-    <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <fieldset class="cbra">
         <ul>
             <li>Versionen</li>
     <!--##loop-list-->
-            <li style="clear:both"><input type="radio" name="old" value="!{cb1}"></input> <input type="radio" name="new" value="!{cb2}"></input><a href="!{url}">!{date}</a> !{name} </li>
+            <li style="clear:both"><input id =o!{cb1} type="radio" name="old" value="!{cb1}" onclick="make_hidden(!{cb1},'old',!{max_id},!{rows})" !{selected_old} style="visibility: !{visible_old}"></input> <input id =n!{cb1} type="radio" name="new" value="!{cb2}" onclick="make_hidden(!{cb1},'new',!{max_id},!{rows})" !{selected_new} style="visibility: !{visible_new}"></input><a href="!{url}">!{date}</a> !{name} </li>
     <!--##cont-->
         </ul>
-
-        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+    <div>#(gesamt) !#ausgaben_gesamt !#ausgaben_inhalt_selector</div>
+<!--        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />-->
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />
 <!--        <input type="reset" name="reset" value="g(reset)" class="next" />-->
-        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+<!--        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />-->
         <div class="clearer">&nbsp;</div>
     </fieldset>
     <p>!#ausgaben_output</p>

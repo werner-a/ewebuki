@@ -42,6 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $position = $environment["parameter"][1]+0;
 
     if ( priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
         priv_check_old("",$cfg["contented"]["right"]) ) {
@@ -58,6 +59,9 @@
             $tname = $_SESSION["kategorie"];
         }
 
+        // ueberschrift
+        $ausgaben["url"] = $_SESSION["ebene"]."/".$_SESSION["kategorie"];
+
         // page basics
         // ***
         $ausgaben["diff"] = "";
@@ -65,14 +69,45 @@
                     FROM site_text
                     WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' ORDER BY version DESC";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
 
+        // Inhalt Selector erstellen und SQL modifizieren
+        $inhalt_selector = inhalt_selector( $sql, $position, $cfg["contented"]["history_rows"], $parameter );
+        $ausgaben["inhalt_selector"] .= $inhalt_selector[0];
+        $sql = $inhalt_selector[1];
+        $ausgaben["gesamt"] = $inhalt_selector[2];
+
+        $result = $db -> query($sql);
+        $counter = "";
         while ( $form_values = $db -> fetch_array($result,1) ) {
+            $counter++;
+            $mxa_id = "";
+            $visible_old = "visible";
+            $visible_new = "visible";
+            if ( $counter == 1 ) {
+                $max_id = $form_values["version"];
+                $visible_old = "hidden";
+                $selected_new = "checked";
+            } elseif ( $counter == 2 ) {
+                $selected_old = "checked";
+                $selected_new = "";
+            } else {
+                $selected_new = "";
+                $selected_old = "";
+            }
+#echo "<pre>";
+#print_r($form_values);
+#echo "</pre>";
             $dataloop["list"][$form_values["version"]]["url"] = $pathvars["virtual"]."/".$_SESSION["ebene"].$trenner.$_SESSION["kategorie"].",v".$form_values["version"].".html";
             $dataloop["list"][$form_values["version"]]["date"] = $form_values["changed"];
             $dataloop["list"][$form_values["version"]]["name"] = $form_values["bysurname"];
             $dataloop["list"][$form_values["version"]]["cb1"] = $form_values["version"];
             $dataloop["list"][$form_values["version"]]["cb2"] = $form_values["version"];
+            $dataloop["list"][$form_values["version"]]["visible_old"] = $visible_old;
+            $dataloop["list"][$form_values["version"]]["visible_new"] = $visible_new;
+            $dataloop["list"][$form_values["version"]]["selected_old"] = $selected_old;
+            $dataloop["list"][$form_values["version"]]["selected_new"] = $selected_new;
+            $dataloop["list"][$form_values["version"]]["max_id"] = $max_id;
+            $dataloop["list"][$form_values["version"]]["rows"] = $cfg["contented"]["history_rows"];
         }
 
         // hier erfolgt der diff
