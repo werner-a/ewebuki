@@ -136,47 +136,49 @@ function prepare($work,$lines2,$lines1) {
         $dtype=$d;
     }
     $counter = "";
-    foreach ( $hits as $key => $value ) {
-        $counter++;
-        if ( $value[4] == "c" ) {
-            if ( !strstr($value[0],",") ) {
-                $display[$counter][] = "Changed line". ($value[1])." to ".($value[5]);
-                $display[$counter]["old"][] = $lines2[$value[1]-1];
-                $display[$counter]["new"][] = $lines1[$value[5]-1];
-            } else {
-                $display[$counter][] = "Changed line ". $value[1]." - ".$value[3]." to ".$value[5]." - ".$value[7];
-               foreach ( $lines2 as $key1 => $inhalt ) {
-                    if ( $key1 == $value[1]-1 || ($key1 >= $value[1]-1 && $key1 <= $value[3]-1)  ){
-                        $display[$counter]["old"][] = $inhalt;
-                    }
-                }
-                foreach ( $lines1 as $key1 => $inhalt ) {
-                    if ( $key1 == $value[5]-1 || $key1 >= $value[5]-1 && $key1 <= $value[7]-1  ){
-                        $display[$counter]["new"][] = $inhalt;
-                    }
-                }
-            }
-        } elseif ( $value[4] == "a" ) {
-            if ( !strstr($value[0],",") ) {
-                $display[$counter][] = "Add line". ($value[1]);
-                $display[$counter][] = $lines1[$value[5]-1];
-            }else {
-                $display[$counter][] = "Add line". ($value[5]." to ".$value[7]);
-                foreach ( $lines1 as $key1 => $inhalt ) {
-                    if ( $key1 == $value[5]-1 || $key1 >= $value[5]-1 && $key1 <= $value[7]-1  ){
-                        $display[$counter][] = $inhalt;
-                    }
-                }
-            }
-        } elseif ( $value[4] == "d" ) {
-            if ( !strstr($value[0],",") ) {
-                $display[$counter][] = "Delete line". ($value[1]);
-                $display[$counter][] = $lines2[$value[1]-1];
-            }else {
-                $display[$counter][] = "Delete line". ($value[1]." to ".$value[3]);
+    if ( is_array($hits) ) {
+        foreach ( $hits as $key => $value ) {
+            $counter++;
+            if ( $value[4] == "c" ) {
+                if ( !strstr($value[0],",") ) {
+                    $display[$counter][] = "Changed line". ($value[1])." to ".($value[5]);
+                    $display[$counter]["old"][] = $lines2[$value[1]-1];
+                    $display[$counter]["new"][] = $lines1[$value[5]-1];
+                } else {
+                    $display[$counter][] = "Changed line ". $value[1]." - ".$value[3]." to ".$value[5]." - ".$value[7];
                 foreach ( $lines2 as $key1 => $inhalt ) {
-                    if ( $key1 == $value[5]-1 || $key1 >= $value[1]-1 && $key1 <= $value[3]-1  ){
-                        $display[$counter][] = $inhalt;
+                        if ( $key1 == $value[1]-1 || ($key1 >= $value[1]-1 && $key1 <= $value[3]-1)  ){
+                            $display[$counter]["old"][] = $inhalt;
+                        }
+                    }
+                    foreach ( $lines1 as $key1 => $inhalt ) {
+                        if ( $key1 == $value[5]-1 || $key1 >= $value[5]-1 && $key1 <= $value[7]-1  ){
+                            $display[$counter]["new"][] = $inhalt;
+                        }
+                    }
+                }
+            } elseif ( $value[4] == "a" ) {
+                if ( !strstr($value[0],",") ) {
+                    $display[$counter][] = "Add line". ($value[1]);
+                    $display[$counter][] = $lines1[$value[5]-1];
+                }else {
+                    $display[$counter][] = "Add line". ($value[5]." to ".$value[7]);
+                    foreach ( $lines1 as $key1 => $inhalt ) {
+                        if ( $key1 == $value[5]-1 || $key1 >= $value[5]-1 && $key1 <= $value[7]-1  ){
+                            $display[$counter][] = $inhalt;
+                        }
+                    }
+                }
+            } elseif ( $value[4] == "d" ) {
+                if ( !strstr($value[0],",") ) {
+                    $display[$counter][] = "Delete line". ($value[1]);
+                    $display[$counter][] = $lines2[$value[1]-1];
+                }else {
+                    $display[$counter][] = "Delete line". ($value[1]." to ".$value[3]);
+                    foreach ( $lines2 as $key1 => $inhalt ) {
+                        if ( $key1 == $value[5]-1 || $key1 >= $value[1]-1 && $key1 <= $value[3]-1  ){
+                            $display[$counter][] = $inhalt;
+                        }
                     }
                 }
             }
@@ -184,26 +186,30 @@ function prepare($work,$lines2,$lines1) {
     }
 
     ## damit es schoen aussieht
-    foreach ( $display as $key => $value ) {
-        $finish .= "<div class=box>\n";
-        foreach ( $value as $key1 => $value1 ) {
-            if ( $key1 == "0" ) {
-                $art = $value1[0];
-                $finish .= $value1."<br>\n";
-            } else {
-                if ( is_array($value1) ){
-                    $finish .= "<div class=".$key1." >";
-                    foreach ( $value1 as $key2 => $value2 ) {
-                        $finish .= $value2."<br>";
-                    }
-                    $finish .= "</div>";
+    if ( is_array($display) ) {
+        foreach ( $display as $key => $value ) {
+            $finish .= "<div class=box>\n";
+            foreach ( $value as $key1 => $value1 ) {
+                if ( $key1 == "0" ) {
+                    $art = $value1[0];
+                    $finish .= $value1."<br>\n";
                 } else {
-                    ( $art == "D" ) ? $class = "old" : $class = "new";
-                    $finish .= "<div class=\"".$class."\">".$value1."&nbsp</div>";
+                    if ( is_array($value1) ){
+                        $finish .= "<div class=".$key1." >";
+                        foreach ( $value1 as $key2 => $value2 ) {
+                            $finish .= $value2."<br>";
+                        }
+                        $finish .= "</div>";
+                    } else {
+                        ( $art == "D" ) ? $class = "old" : $class = "new";
+                        $finish .= "<div class=\"".$class."\">".$value1."&nbsp</div>";
+                    }
                 }
             }
+            $finish .= "</div>";
         }
-        $finish .= "</div>";
+    } else {
+        $finish = "Keine Änderungen";
     }
 
     return $finish;
