@@ -60,10 +60,10 @@
         <ul>
             <li>Versionen</li>
     <!--##loop-list-->
-            <li style="clear:both"><input id =o!{cb1} type="radio" name="old" value="!{cb1}" onclick="make_hidden(!{cb1},'old',!{max_id},!{rows})" !{selected_old} style="visibility: !{visible_old}"></input> <input id =n!{cb1} type="radio" name="new" value="!{cb2}" onclick="make_hidden(!{cb1},'new',!{max_id},!{rows})" !{selected_new} style="visibility: !{visible_new}"></input><a href="!{url}">!{date}</a> !{name} </li>
+            <li style="clear:both"><a href="!{current}" style="float:left;text-decoration:none;visibility:!{visible_current}">(Aktuell)</a><a href="!{previous}" style="float:left;text-decoration:none;visibility:!{visible_previous}">&nbsp(Vorherige)</a><input id =o!{cb1} type="radio" name="old" value="!{cb1}" onclick="make_hidden(!{cb1},'old',!{max_id},!{rows})" !{selected_old} style="visibility: !{visible_old}"></input> <input id =n!{cb1} type="radio" name="new" value="!{cb2}" onclick="make_hidden(!{cb1},'new',!{max_id},!{rows})" !{selected_new} style="visibility: !{visible_new}"></input><a href="!{url}">!{date}</a> !{name} </li>
     <!--##cont-->
         </ul>
-    <div>#(gesamt) !#ausgaben_gesamt !#ausgaben_inhalt_selector</div>
+        <div style="float:left">#(gesamt) !#ausgaben_gesamt</div><div style="float:right">!#ausgaben_inhalt_selector</div>
 <!--        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />-->
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />

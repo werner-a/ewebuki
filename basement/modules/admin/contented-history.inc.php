@@ -69,6 +69,8 @@
                     FROM site_text
                     WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' ORDER BY version DESC";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        $newest_id =  $db -> fetch_array($result,1);
 
         // Inhalt Selector erstellen und SQL modifizieren
         $inhalt_selector = inhalt_selector( $sql, $position, $cfg["contented"]["history_rows"], $parameter );
@@ -77,10 +79,11 @@
         $ausgaben["gesamt"] = $inhalt_selector[2];
 
         $result = $db -> query($sql);
+        $last_version = $newest_id["version"]-$ausgaben["gesamt"]+1;
         $counter = "";
         while ( $form_values = $db -> fetch_array($result,1) ) {
             $counter++;
-            $mxa_id = "";
+            $max_id = "";
             $visible_old = "visible";
             $visible_new = "visible";
             if ( $counter == 1 ) {
@@ -94,11 +97,9 @@
                 $selected_new = "";
                 $selected_old = "";
             }
-#echo "<pre>";
-#print_r($form_values);
-#echo "</pre>";
+
             $dataloop["list"][$form_values["version"]]["url"] = $pathvars["virtual"]."/".$_SESSION["ebene"].$trenner.$_SESSION["kategorie"].",v".$form_values["version"].".html";
-            $dataloop["list"][$form_values["version"]]["date"] = $form_values["changed"];
+            $dataloop["list"][$form_values["version"]]["date"] = substr($form_values["changed"],8,2).". ".gerdate("gml",substr($form_values["changed"],5,2))." ".substr($form_values["changed"],0,4)." ".substr($form_values["changed"],11,5);
             $dataloop["list"][$form_values["version"]]["name"] = $form_values["bysurname"];
             $dataloop["list"][$form_values["version"]]["cb1"] = $form_values["version"];
             $dataloop["list"][$form_values["version"]]["cb2"] = $form_values["version"];
@@ -108,14 +109,24 @@
             $dataloop["list"][$form_values["version"]]["selected_new"] = $selected_new;
             $dataloop["list"][$form_values["version"]]["max_id"] = $max_id;
             $dataloop["list"][$form_values["version"]]["rows"] = $cfg["contented"]["history_rows"];
+
+            $dataloop["list"][$form_values["version"]]["current"] = "?old=".$form_values["version"]."&new=".$newest_id["version"];
+            $dataloop["list"][$form_values["version"]]["previous"] = "?new=".$form_values["version"]."&old=".($form_values["version"]-1);
+
+            ( $last_version == $form_values["version"] ) ? $dataloop["list"][$form_values["version"]]["visible_previous"] = "hidden" : $dataloop["list"][$form_values["version"]]["visible_previous"] = "visible";
+            ( $newest_id["version"] == $form_values["version"] ) ? $dataloop["list"][$form_values["version"]]["visible_current"] = "hidden" : $dataloop["list"][$form_values["version"]]["visible_current"] = "visible";
+
         }
 
         // hier erfolgt der diff
-        if ( $_POST["old"] != "" && $_POST["new"]!= "" ) {
-            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["old"];
+        if ( ( $_POST["old"] != "" && $_POST["new"]!= "" ) || ( $_GET["old"] != "" && $_GET["new"]!= "" ) ) {
+            $_POST["old"] != "" ? $old = $_POST["old"] : $old = $_GET["old"];
+            $_POST["new"] != "" ? $new = $_POST["new"] : $new = $_GET["new"];
+
+            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$old;
             $result = $db -> query($sql);
             $data_old = $db -> fetch_array($result,1);
-            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$_POST["new"];
+            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$new;
             $result = $db -> query($sql);
             $data_new = $db -> fetch_array($result,1);
 
