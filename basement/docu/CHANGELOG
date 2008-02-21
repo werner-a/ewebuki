@@ -8,6 +8,12 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 21. Februar 2008
+Beim Link-Tag kann jetzt ein zusaetzliches attribut "title" hinzugefuegt werden:
+[LINK=url;target;titel]bezeichnung[/LINK]
+Beispiel:
+[LINK=http://www.google.de;_blank;Link zu Google]Eine Suchmaschine[/LINK]
+
 --- 01. Februar 2008
 die "authInPlace" tools werden jetzt mit dataloop eingebunden.
 das tool "history" wurde hinzugefuegt, um es sichtbar zu machen bitte unten

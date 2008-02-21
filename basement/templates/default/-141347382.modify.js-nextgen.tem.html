@@ -283,7 +283,9 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         if (!ebCheckOpenTags(i)) {
             var URL = prompt('URL:' ,defaultValue);
             if (URL) {
-                ebButtons[i].tagStart = '[LINK=' + URL + ']';
+                var TARGET = prompt('TARGET:' ,'');
+                var TITLE = prompt('TITLE:' ,'');
+                ebButtons[i].tagStart = '[LINK=' + URL + ';' + TARGET + ';' + TITLE + ']';
                 ebInsertTak(myField, i);
             }
         } else {

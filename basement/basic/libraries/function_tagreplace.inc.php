@@ -516,25 +516,34 @@
                         break;
                     case "[/LINK]":
                         if ( $sign == "]" ) {
-                            $ausgabewert  = "<a href=\"".$tagwert."\">".$tagwert."</a>";
+                            $ausgabewert  = "<a href=\"".$tagwert."\" title=\"".$tagwert."\">".$tagwert."</a>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
-                            $pos = strrpos($tagwerte[0],";");
-                            if ( $pos >= 1 ) {
-                                $target = substr($tagwerte[0],$pos+1);
-                                $href = substr($tagwerte[0],0,$pos);
-                                $target = " target=\"".$target."\"";
-                            } else {
-                                $target = "";
-                                $href = $tagwerte[0];
-                            }
+                            $linkwerte = explode(";",$tagwerte[0]);
+                            $href = $linkwerte[0];
                             if ( $tagwerte[1] == "" ) {
                                 $beschriftung = $href;
                             } else {
                                 $beschriftung = $tagwerte[1];
                             }
-                            $ausgabewert  = "<a href=\"".$href."\"".$target.">".$beschriftung."</a>";
+                            // ziel
+                            if ( $linkwerte[1] != "" ) {
+                                $target = " target=\"".$linkwerte[1]."\"";
+                            } else {
+                                $target = "";
+                            }
+                            // title-tag
+                            if ( $linkwerte[2] != "" ) {
+                                $title = $linkwerte[2];
+                            } else {
+                                if ( $linkwerte[1] == "_blank" ) {
+                                    $title = "Link in neuem Fenster: ".str_replace("http://","",$href);
+                                } else {
+                                    $title = $beschriftung;
+                                }
+                            }
+                            $ausgabewert  = "<a href=\"".$href."\"".$target." title=\"".$title."\">".$beschriftung."</a>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
                         break;
