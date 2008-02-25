@@ -309,16 +309,15 @@
                                 while ( ($data = fgetcsv ($handle, 1000, ";")) !== FALSE ) {
                                     $row = "";
                                     foreach ( $data as $value ) {
-                                        if ( $value == "" ) $value = "&nbsp;";
                                         $row .= "<td>".$value."</td>\n";
                                     }
                                     if ( $row != "" ) $table .= "<tr>\n".$row."</tr>\n";
                                 }
-                                // Beschriftung
+                                // summary
                                 if ( $tagwerte[1] != "" ) {
-                                    $caption = "<caption>".$tagwerte[1]."</caption>\n";
+                                    $summary = " summary=\"".$tagwerte[1]."\"";
                                 } else {
-                                    $caption = "";
+                                    $summary = "";
                                 }
                                 // breite
                                 if ( $tabwerte[1] != "" ) {
@@ -332,7 +331,7 @@
                                 } else {
                                     $border = "";
                                 }
-                                if ( $table != "" ) $table = "<table".$border.$width.">\n".$caption.$table."</table>\n";
+                                if ( $table != "" ) $table = "<table".$border.$width.$summary.">\n".$caption.$table."</table>\n";
                             } else {
                                 $table = "";
                             }
