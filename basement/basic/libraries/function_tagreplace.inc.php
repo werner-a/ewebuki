@@ -52,6 +52,7 @@
             $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "/HR]",     "AB]",     "OW]",     "OL]",     "IV]",);
             $replace = str_replace($sear,$repl,$replace);
         }
+// echo "halllo";
 
         $preg = "|\[\/[!A-Z0-9]{1,6}\]|";
         while ( preg_match($preg, $replace, $match ) ) {
@@ -286,6 +287,53 @@
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"<table".$cellspacing.$cellpadding.$width.$align.$border.">".$tagwerte[1]."</table>",$replace);
                             $replace = tagreplace($replace);
+                        }
+                        break;
+                    case "[/TABCSV]":
+                        if ( $sign != "]" ) {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $tabwerte = explode(";",$tagwerte[0]);
+                            // csv-datei
+                            $file_path = explode("/",$tabwerte[0]);
+                            $extension = $cfg["file"]["filetyp"][$file_path[3]];
+                            $directory = $cfg["file"]["fileopt"][$extension]["path"];
+                            $file_name = $extension."_".$file_path[4].".".$file_path[3];
+                            if ( file_exists($directory.$file_name) ) {
+                                $table = "";
+                                $handle = fopen ($directory.$file_name,"r");
+                                while ( ($data = fgetcsv ($handle, 1000, ";")) !== FALSE ) {
+                                    $row = "";
+                                    foreach ( $data as $value ) {
+                                        if ( $value == "" ) $value = "&nbsp;";
+                                        $row .= "<td>".$value."</td>\n";
+                                    }
+                                    if ( $row != "" ) $table .= "<tr>\n".$row."</tr>\n";
+                                }
+                                // Beschriftung
+                                if ( $tagwerte[1] != "" ) {
+                                    $caption = "<caption>".$tagwerte[1]."</caption>\n";
+                                } else {
+                                    $caption = "";
+                                }
+                                // breite
+                                if ( $tabwerte[1] != "" ) {
+                                    $width = " width=\"".$tabwerte[1]."%\"";
+                                } else {
+                                    $width = "";
+                                }
+                                // border
+                                if ( $tabwerte[2] != "" ) {
+                                    $border = " border=\"".$tabwerte[2]."\"";
+                                } else {
+                                    $border = "";
+                                }
+                                if ( $table != "" ) $table = "<table".$border.$width.">\n".$caption.$table."</table>\n";
+                            } else {
+                                $table = "";
+                            }
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$table,$replace);
+                        } else {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,"",$replace);
                         }
                         break;
                     case "[/ROW]":

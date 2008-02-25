@@ -258,6 +258,17 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         ebInsertContent(myField, myValue);
     }
 
+    function ebInsertCVS(myField, i, defaultLink, defaultTitle, defaultEnd) {
+        var Title = prompt('Titel:', defaultTitle);
+        var myValue = '[TABCSV'
+                + defaultLink + ';'
+                + prompt('Breite (in %):', '100') + ';'
+                + prompt('Rand (in px):', '1')
+                + ']' + Title
+                + '[/TABCSV' + defaultEnd + ']';
+        ebInsertContent(myField, myValue);
+    }
+
     function ebInsertSel(myField, id, art, defaultTitle, pics, thumbs) {
         var myThumbs = prompt('Bilderstrecke mit Thumbnails anzeigen:', thumbs);
         if ( myThumbs != "TRUE" ) {

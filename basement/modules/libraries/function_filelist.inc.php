@@ -122,6 +122,15 @@
                 $lb = $data["ffname"];
             }
 
+            // csv-datei?
+            if ( $data["ffart"] == "csv" ) {
+                $cvs_click = "ebInsertCVS(ebCanvas, '', '".$la.$lb."', '".$data["funder"]."', '');";
+                $cvs_title = "[Datei als Tabelle einf&uuml;gen]";
+             } else {
+                $cvs_click = "";
+                $cvs_title = "";
+            }
+
             // download-link
             if ( $cfg["file"]["base"]["realname"] == True ) {
                 $download = $cfg["file"]["base"]["webdir"].
@@ -176,6 +185,8 @@
                                            "mclick" => "ebInsertImage(ebCanvas, '', '".$la."m/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",
                                            "sclick" => "ebInsertImage(ebCanvas, '', '".$la."s/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",
                                            "fclick" => "ebInsertother(ebCanvas, '', '".$la.$lb."', '".$data["funder"]."', '');",
+                                        "cvs_click" => $cvs_click,
+                                        "cvs_title" => $cvs_title,
                                           "newline" => $newline,
                                              "sort" => $sort,
                                               );

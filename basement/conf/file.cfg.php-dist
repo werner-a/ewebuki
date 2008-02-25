@@ -57,6 +57,7 @@
                               "ods" => "odf",
                               "odp" => "odf",
                               "odg" => "odf",
+                              "csv" => "txt",
                        ),
           "fileopt" => array(
                       "img" => array(
@@ -79,6 +80,12 @@
                                ),
                       "odf" => array(
                              "name" => "doc",
+                             "path" => $pathvars["fileroot"]."file/document/",
+                           "tnpath" => $pathvars["fileroot"], # see function thumbnail()
+                        "thumbnail" => "icon_odf.png"
+                               ),
+                      "txt" => array(
+                             "name" => "txt",
                              "path" => $pathvars["fileroot"]."file/document/",
                            "tnpath" => $pathvars["fileroot"], # see function thumbnail()
                         "thumbnail" => "icon_odf.png"

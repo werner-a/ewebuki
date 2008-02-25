@@ -99,7 +99,7 @@
                     #                        "fdesc" =>  $data["fdesc"],
                     #                        );
                     switch ( $data["ffart"] ) {
-                        case "pdf": case "odt":  case "ods": case "odp":
+                        case "pdf": case "odt":  case "ods": case "odp": case "csv":
                             // die boese schneide ab funktion
                             if ( strlen($data["funder"]) > 6 ) {
                                 $funder = substr($data["funder"],0,5)." ...";

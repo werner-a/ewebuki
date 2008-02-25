@@ -76,6 +76,7 @@
     }
 
     $path["doc"] = $cfg["file"]["base"]["doc"]."doc_";
+    $path["txt"] = $cfg["file"]["base"]["doc"]."txt_";
     $path["arc"] = $cfg["file"]["base"]["arc"]."arc_";
 
 
@@ -104,6 +105,10 @@
         case "odt":
             $type ="application/odt";
             $filepath = $path["doc"];
+            break;
+        case "csv":
+            $type ="text/csv";
+            $filepath = $path["txt"];
             break;
         case "pdf":
             $type ="application/pdf";
