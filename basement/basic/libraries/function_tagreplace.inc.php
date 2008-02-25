@@ -294,10 +294,15 @@
                             $tagwerte = explode("]",$tagwert,2);
                             $tabwerte = explode(";",$tagwerte[0]);
                             // csv-datei
-                            $file_path = explode("/",$tabwerte[0]);
-                            $extension = $cfg["file"]["filetyp"][$file_path[3]];
+                            if ( $specialvars["subdir"] != "" ) {
+                                $pfad = str_replace( $specialvars["subdir"]."/", "", $tabwerte[0] );
+                            } else {
+                                $pfad = $tabwerte[0];
+                            }
+                            $file_path = explode("/",$pfad);
+                            $extension = $cfg["file"]["filetyp"][$file_path[2]];
                             $directory = $cfg["file"]["fileopt"][$extension]["path"];
-                            $file_name = $extension."_".$file_path[4].".".$file_path[3];
+                            $file_name = $extension."_".$file_path[3].".".$file_path[2];
                             if ( file_exists($directory.$file_name) ) {
                                 $table = "";
                                 $handle = fopen ($directory.$file_name,"r");
