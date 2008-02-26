@@ -306,12 +306,27 @@
                             if ( file_exists($directory.$file_name) ) {
                                 $table = "";
                                 $handle = fopen ($directory.$file_name,"r");
+                                // enthaelt die erste zeile spaltenueberschriften
+                                if ( $tabwerte[3] != "" ) {
+                                    $cell_tag1 = "<th scope=\"col\">"; $cell_tag2 = "</th>\n";
+                                    $row_tag1 = "<thead>\n<tr>"; $row_tag2 = "</tr>\n</thead>";
+                                } else {
+                                    $cell_tag1 = "<td>"; $cell_tag2 = "</td>\n";
+                                    $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
+                                }
+                                $thead = "";
                                 while ( ($data = fgetcsv ($handle, 1000, ";")) !== FALSE ) {
                                     $row = "";
                                     foreach ( $data as $value ) {
-                                        $row .= "<td>".$value."</td>\n";
+                                        $row .= $cell_tag1.$value.$cell_tag2;
                                     }
-                                    if ( $row != "" ) $table .= "<tr>\n".$row."</tr>\n";
+                                    if ( $row != "" ) $table .= $row_tag1.$row.$row_tag2;
+                                    if ( strstr($cell_tag1,"<th") ) {
+                                        $thead = $table;
+                                        $table = "";
+                                        $cell_tag1 = "<td>"; $cell_tag2 = "</td>\n";
+                                        $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
+                                    }
                                 }
                                 // summary
                                 if ( $tagwerte[1] != "" ) {
@@ -331,7 +346,7 @@
                                 } else {
                                     $border = "";
                                 }
-                                if ( $table != "" ) $table = "<table".$border.$width.$summary.">\n".$caption.$table."</table>\n";
+                                if ( $table != "" ) $table = "<table".$border.$width.$summary.">\n".$thead."<tbody>\n".$table."</tbody>\n</table>\n";
                             } else {
                                 $table = "";
                             }
@@ -591,8 +606,10 @@
                             } else {
                                 if ( $linkwerte[1] == "_blank" ) {
                                     $title = "Link in neuem Fenster: ".str_replace("http://","",$href);
-                                } else {
+                                } elseif ( !strstr($beschriftung,"<") ) {
                                     $title = $beschriftung;
+                                } else {
+                                    $title = "";
                                 }
                             }
                             $ausgabewert  = "<a href=\"".$href."\"".$target." title=\"".$title."\">".$beschriftung."</a>";
