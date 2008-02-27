@@ -8,6 +8,21 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 27. Februar 2008
+ACHTUNG: Neue Spalte ist erforderlich!
+
+Vergebene Rechte koennen jetzt in tiefer liegenden Menupunkten wieder aufgehoben werden,
+hierzu muss die Tabelle "auth_content" um eine Spalte erweitert werden:
+
+sql fuer mysql:
+
+ALTER TABLE `auth_content` ADD `neg` ENUM( '-1','' ) DEFAULT '' AFTER `pid`;
+
+sql fuer postgres:
+
+ALTER TABLE auth_content ADD neg character varying(2) DEFAULT '';
+ALTER TABLE auth_content ADD CONSTRAINT auth_content_neg_check CHECK ((((neg)::text = (-1)::text) OR ((neg)::text = ''::text)));
+
 --- 21. Februar 2008
 Beim Link-Tag kann jetzt ein zusaetzliches attribut "title" hinzugefuegt werden:
 [LINK=url;target;titel]bezeichnung[/LINK]

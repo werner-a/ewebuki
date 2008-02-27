@@ -48,23 +48,45 @@
 
     function priv_check($url,$required) {
         if ( !function_exists(priv_check_path) ) {
-            function priv_check_path($url,$required,&$hit) {
+            function priv_check_path($url,$required,&$hit,&$del) {
                 if ( is_array($_SESSION["content"] ) ){
                     $array = explode(";",$required);
                     foreach ( $array as $value ) {
-                        if ( strpos($_SESSION["content"][$url],$value) !== False ) {
+                        if ( strpos($_SESSION["content"][$url]["del"],$value) !== False ) {
+                            $del[$value] = -1;
+                        }
+                        if ( strpos($_SESSION["content"][$url]["add"],$value) !== False && $del[$value] != -1) {
                             $hit = True;
                         }
                     }
                 }
                 if ( $url != "/" ) {
                     $url = dirname($url);
-                    priv_check_path($url,$required,$hit);
+                    priv_check_path($url,$required,$hit,$del);
                 }
             }
         }
         $hit = "";
-        priv_check_path($url,$required,$hit);
+        $del= array();
+        priv_check_path($url,$required,$hit,$del);
+        return $hit;
+    }
+
+    function priv_info($url,&$hit) {
+        global $db;
+        $sql = "SELECT * FROM auth_content INNER JOIN auth_group ON (auth_content.gid=auth_group.gid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE tname='".$url."'";
+        $result = $db -> query($sql);
+        while ( $all = $db -> fetch_array($result,1) ) {
+            if ( $all["neg"] == -1 ) {
+                $hit[$url]["del"][$all["ggroup"]] .= $all["priv"].",";
+            } else {
+                $hit[$url]["add"][$all["ggroup"]] .= $all["priv"].",";
+            }
+        }
+        if ( $url != "/" ) {
+            $url = dirname($url);
+            priv_info($url,$hit);
+        }
         return $hit;
     }
 

@@ -43,60 +43,79 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["righted"]["subdir"]."/".$cfg["righted"]["name"],$cfg["righted"]["right"]) ||
+    function make_ebene($mid, $ebene="") {
+        # call: make_ebene(refid);
+        global $db, $cfg;
+        $sql = "SELECT refid, entry
+                FROM site_menu
+                WHERE mid='".$mid."'";
+        $result = $db -> query($sql);
+        $array = $db -> fetch_array($result,$nop);
+        $ebene = "/".$array["entry"].$ebene;
+        if ( $array["refid"] != 0 ) {
+            $ebene = make_ebene($array["refid"],$ebene);
+        }
+        return $ebene;
+    }
+
+    $url = make_ebene($environment["parameter"][1]);
+
+    if ( priv_check($url,$cfg["righted"]["right"]) ||
         priv_check_old("",$cfg["righted"]["right"]) ) {
 
-        // page basics
-        // ***
-        function make_ebene($mid, $ebene="") {
-            # call: make_ebene(refid);
-            global $db, $cfg;
-            $sql = "SELECT refid, entry
-                    FROM site_menu
-                    WHERE mid='".$mid."'";
-            $result = $db -> query($sql);
-            $array = $db -> fetch_array($result,$nop);
-            $ebene = "/".$array["entry"].$ebene;
-            if ( $array["refid"] != 0 ) {
-                $ebene = make_ebene($array["refid"],$ebene);
-            }
-            return $ebene;
-        }
-        $url = make_ebene($environment["parameter"][1]);
-
+        // ausgeben der url wo man sich gerade befindet
         $ausgaben["url"] = $url;
 
-        $sql = "SELECT * FROM ".$cfg["righted"]["db"]["content"]["entries"]." 
-                INNER JOIN ".$cfg["righted"]["db"]["group"]["entries"]." ON ( ".$cfg["righted"]["db"]["content"]["entries"].".gid=".$cfg["righted"]["db"]["group"]["entries"].".gid) 
-                INNER JOIN ".$cfg["righted"]["db"]["priv"]["entries"]." ON ( ".$cfg["righted"]["db"]["content"]["entries"].".pid=".$cfg["righted"]["db"]["priv"]["entries"].".pid ) 
-                WHERE tname='".$url."'";
-        $result = $db -> query($sql);
-        while ( $all = $db -> fetch_array($result,1) ) {
-            $dataloop["actual"][] = array("group" => $all["ggroup"], 
-                                          "priv" => $all["priv"],
-                                          "gid" => $all["gid"],
-                                          "pid" => $all["pid"]
-                                        );
+        $url2 = $url;
+        $infos = "";
+        // erstellen der info - box
+        $infos = priv_info($url,$infos);
+
+        // wenn parameter 2 gesetzt ist, info-box oeffnen
+        if ( $environment["parameter"][2] != "" ) {
+            $ausgaben["display"] = "visible";
+        } else {
+            $ausgaben["display"] = "none";
         }
 
-        $sql ="SELECT * FROM ".$cfg["righted"]["db"]["group"]["entries"];
-        $result = $db -> query($sql);
-        while ( $all = $db -> fetch_array($result,1) ) {
-                $dataloop["group"][] = array(
-                                            "value" => $all[$cfg["righted"]["db"]["group"]["key"]],
-                                            "name" => $all[$cfg["righted"]["db"]["group"]["name"]]
-                                        );
-        }
-
+        // holen aller rechte
         $sql ="SELECT * FROM ".$cfg["righted"]["db"]["priv"]["entries"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
-                $dataloop["priv"][] = array(
-                                            "value" => $all[$cfg["righted"]["db"]["priv"]["key"]],
-                                            "name" => $all[$cfg["righted"]["db"]["priv"]["name"]]
-                                        );
+            $all_rights[] = $all[$cfg["righted"]["db"]["priv"]["name"]];
         }
 
+        // holen aller gruppen
+        $sql ="SELECT * FROM ".$cfg["righted"]["db"]["group"]["entries"];
+        $result = $db -> query($sql);
+        while ( $all = $db -> fetch_array($result,1) ) {
+            $all_groups[] = $all[$cfg["righted"]["db"]["group"]["name"]];
+        }
+
+        $infos = array_reverse($infos);
+
+        $counter = 0;
+        foreach ( $all_groups as $group_value ) {
+            $counter++;
+            $dataloop["infos"][$counter]["url"] = $group_value;
+            foreach ( $all_rights as $rights_value ) {
+                $background = "white";
+                foreach ( $infos as $info_key => $info_value ) {
+
+                    if ( is_array($info_value["add"]) ) {
+                        if ( preg_match("/".$rights_value.",/",$info_value["add"][$group_value]) ) {
+                            $background = "green";
+                        } 
+                   }
+                    if ( is_array($info_value["del"]) ) {
+                        if ( preg_match("/".$rights_value.",/",$info_value["del"][$group_value]) ) {
+                            $background = "red";
+                        } 
+                   }
+                }
+                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$background."#".$group_value."\" value=\"".$rights_value."\" style=width:35px;background:".$background." type=\"submit\"></input>";
+            }
+        }
 
         // form options holen
         $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
@@ -108,27 +127,11 @@
         $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
         $element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
 
-        // +++
-        // page basics
-
-
-        // funktions bereich fuer erweiterungen
-        // ***
-
-        ### put your code here ###
-
-        // +++
-        // funktions bereich fuer erweiterungen
-
-
-        // page basics
-        // ***
-
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
         $sql = "SELECT refid FROM site_menu WHERE mid=".$environment["parameter"][1];
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -155,68 +158,46 @@
 
         // +++
         // page basics
-        if ( $environment["parameter"][2] == "verify"
-            &&  ( ( $HTTP_POST_VARS["add"] != ""
-                && ($HTTP_POST_VARS["group"] != "" && $HTTP_POST_VARS["priv"] != "" ))
-            ||  $HTTP_POST_VARS["del"] != "" ) ){
+        if ( $environment["parameter"][3] == "verify" && preg_match("/^white#|^red#|^green#/",key($HTTP_POST_VARS)) ){
 
             // form eingaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );
 
             // evtl. zusaetzliche datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
-
-                // funktions bereich fuer erweiterungen
-                // ***
-
-                ### put your code here ###
-
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                // +++
-                // funktions bereich fuer erweiterungen
             }
 
             // datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
 
-                $kick = array( "PHPSESSID", "form_referer", "send" );
-                foreach($HTTP_POST_VARS as $name => $value) {
-                    if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
-                        if ( $sqla != "" ) $sqla .= ", ";
-                        $sqla .= $name."='".$value."'";
-                    }
-                }
-
                 // recht hinzufuegen
-                if ( $HTTP_POST_VARS["add"] ) {
-                        $sql = "SELECT * FROM ".$cfg["righted"]["db"]["content"]["entries"]."
-                                WHERE tname='".$url."' AND gid=".$HTTP_POST_VARS["group"]." AND pid=".$HTTP_POST_VARS["priv"];
-                        $result = $db -> query($sql);
-                        if ( $db -> num_rows($result) == 0 ) {
-                            $sql = "INSERT INTO ".$cfg["righted"]["db"]["content"]["entries"]."
-                                                (gid,pid,tname)
-                                        VALUES ('".$HTTP_POST_VARS["group"]."','".$HTTP_POST_VARS["priv"]."','".$url."')";
-
-                            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                            $result = $db -> query($sql);
-                        } else {
-                            $ausgaben["form_error"] = "#(error_result)<br />";
-                        }
-
-                        #if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-
-                    $header = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].".html";
+                $raute = strpos(key($HTTP_POST_VARS),"#");
+                $gruppe = substr(key($HTTP_POST_VARS),$raute+1);
+                $recht = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+                $sql = "SELECT gid FROM auth_group WHERE ggroup='".$gruppe."'";
+                $result = $db -> query($sql);
+                $data_group = $db -> fetch_array($result,1);
+                $sql = "SELECT pid FROM auth_priv WHERE priv='".$recht."'";
+                $result = $db -> query($sql);
+                $data_priv = $db -> fetch_array($result,1);
+                if ( substr(key($HTTP_POST_VARS),0,$raute) == "green" ) {
+                    $sql = "SELECT * FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg !='-1'";
+                    $result_pruef = $db -> query($sql);
+                    $treffer = $db -> num_rows($result_pruef,1);
+                    if ( $treffer == 1 && $url == $url2 ) {
+                        $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg!='-1'";
+                    } else {
+                        $sql = "INSERT INTO auth_content (gid,pid,tname,neg) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','-1')";
+                    }
+                } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "red" ) {
+                    $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
+                } else {
+                    $sql = "INSERT INTO auth_content (gid,pid,tname,neg) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','')";
                 }
-                if ( $HTTP_POST_VARS["del"] ) {
-                    $del = explode(",",key($HTTP_POST_VARS["del"]));
-                    $gid =  $del[0];
-                    $pid = $del[1];
-                    $sql = "DELETE FROM auth_content WHERE tname='".$url."' AND gid=".$gid." AND pid=".$pid;
-                    $result = $db -> query($sql);
-                    $header = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].".html";
-                }
+                $result = $db -> query($sql);
 
-                if ( $header == "" ) $header = $cfg["righted"]["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].".html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

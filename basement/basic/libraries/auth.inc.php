@@ -108,14 +108,17 @@
             $_SESSION["custom"] = $AUTH[$cfg["auth"]["db"]["user"]["custom"]];
 
              if ( $specialvars["security"]["new"] == True ) {
-                 $sql = "SELECT tname,auth_priv.priv FROM auth_content
+                 $sql = "SELECT neg,tname,auth_priv.priv FROM auth_content
                          INNER JOIN auth_member ON (auth_content.gid=auth_member.gid )
                          INNER JOIN auth_priv ON ( auth_priv.pid=auth_content.pid )
                          WHERE auth_member.uid=".$AUTH[$cfg["auth"]["db"]["user"]["id"]];
                  $result = $db -> query($sql);
                  while ( $data = $db -> fetch_array($result,$nop) ) {
-
-                    $_SESSION["content"][$data["tname"]] .= $data["priv"].",";
+                    if ( $data["neg"] != -1 ) {
+                        $_SESSION["content"][$data["tname"]]["add"] .= $data["priv"].",";
+                    } else {
+                        $_SESSION["content"][$data["tname"]]["del"] .= $data["priv"].",";
+                    }
                  }
 
              }

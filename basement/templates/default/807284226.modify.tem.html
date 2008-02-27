@@ -13,46 +13,42 @@
   function resetForm(){
      document.forms['modify'].reset();
   }
+
+function anzeigen(id) {
+show = document.getElementById(id).style.display;
+if ( show == 'none' ) {
+new Effect.BlindDown(id);
+} else {
+new Effect.BlindUp(id)
+}
+return false;
+}
+
 </script>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
-    <fieldset>
-        #(url)!#ausgaben_url
+    <h2>#(url) !#ausgaben_url</h2>
+
+    <fieldset id="infoss">
+
+        <!--##loop-infos-->
         <div class="clearer"></div>
-    </fieldset>
-    <fieldset>
-        #(actual)<br /><br />
-        <ul>
-        <!--##loop-actual-->
-        <li><input class="icon" type="submit" name="del[!{gid},!{pid}]" value="-">&nbsp;!{group}&nbsp;!{priv}</li>
+        <div style="border:1px solid">
+        !{url} !{info}
         <div class="clearer"></div>
+        </div>
         <!--##cont-->
-        </ul>
-        <div class="clearer"></div>
+
     </fieldset>
-    <fieldset class="float">
-        <label>#(group)
-            <select name="group" size="10">
-            <!--##loop-group-->
-                <option value="!{value}">!{name}</option>
-            <!--##cont-->
-            </select>
-        </label>
-        <label>#(priv)
-            <select name="priv" size="10">
-            <!--##loop-priv-->
-                <option value="!{value}">!{name}</option>
-            <!--##cont-->
-            </select>
-        </label>
-        <input type="submit" name="add[]" value="#(add)" class="next"  />
-    </fieldset>
+
+
     <fieldset>
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="first" />
         <div class="clearer"></div>
     </fieldset>
+
 </form>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
