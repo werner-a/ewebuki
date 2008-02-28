@@ -147,6 +147,15 @@
             if ( count($new_level) > 1 ) $extend = crc32($new_ebene).".";
             $new_tname = $extend.$new_kategorie;
 
+            // aktualisierung der content-rechte
+            $old_rights_url = $old_ebene."/".$old_kategorie;
+            $new_rights_url = $new_ebene."/".$new_kategorie;
+            $sql_rights = "UPDATE ".$cfg["menued"]["db"]["content"]["entries"]."
+                       SET tname = '".$new_rights_url."'
+                     WHERE tname = '".$old_rights_url."'";
+            $result_rights = $db -> query($sql_rights);
+            // aktualisierung der content-rechte
+
             $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
                        SET tname = '".$new_tname."',
                            ebene = '".$new_ebene."',
