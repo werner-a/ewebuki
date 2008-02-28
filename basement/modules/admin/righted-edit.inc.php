@@ -63,6 +63,24 @@
     if ( priv_check($url,$cfg["righted"]["right"]) ||
         priv_check_old("",$cfg["righted"]["right"]) ) {
 
+        // bauen der legende
+        foreach ( $cfg["righted"]["button"]  as $key => $value ) {
+            switch ($key) {
+                case "new":
+                    $dataloop["legende"][$key]["color"] = $value["color"];
+                    $dataloop["legende"][$key]["text"] = "Kein Recht";
+                    break;
+                case "add":
+                    $dataloop["legende"][$key]["color"] = $value["color"];
+                    $dataloop["legende"][$key]["text"] = "Zugewiesenes Recht";
+                    break;
+                case "del":
+                    $dataloop["legende"][$key]["color"] = $value["color"];
+                    $dataloop["legende"][$key]["text"] = "Negiertes Recht";
+                    break;
+            }
+        } 
+
         // ausgeben der url wo man sich gerade befindet
         $ausgaben["url"] = $url;
 
@@ -99,21 +117,24 @@
             $counter++;
             $dataloop["infos"][$counter]["url"] = $group_value;
             foreach ( $all_rights as $rights_value ) {
-                $background = "white";
+                $background = $cfg["righted"]["button"]["new"]["color"];
+                $name = "new";
                 foreach ( $infos as $info_key => $info_value ) {
 
                     if ( is_array($info_value["add"]) ) {
                         if ( preg_match("/".$rights_value.",/",$info_value["add"][$group_value]) ) {
-                            $background = "green";
+                            $background = $cfg["righted"]["button"]["add"]["color"];
+                            $name = "add";
                         } 
                    }
                     if ( is_array($info_value["del"]) ) {
                         if ( preg_match("/".$rights_value.",/",$info_value["del"][$group_value]) ) {
-                            $background = "red";
+                            $background = $cfg["righted"]["button"]["del"]["color"];
+                            $name = "del";
                         } 
                    }
                 }
-                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$background."#".$group_value."\" value=\"".$rights_value."\" style=width:35px;background:".$background." type=\"submit\"></input>";
+                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$name."#".$group_value."\" value=\"".$rights_value."\" style=width:35px;background:".$background." type=\"submit\"></input>";
             }
         }
 
@@ -158,7 +179,7 @@
 
         // +++
         // page basics
-        if ( $environment["parameter"][3] == "verify" && preg_match("/^white#|^red#|^green#/",key($HTTP_POST_VARS)) ){
+        if ( $environment["parameter"][3] == "verify" && preg_match("/^new#|^del#|^add#/",key($HTTP_POST_VARS)) ){
 
             // form eingaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );
@@ -181,7 +202,7 @@
                 $sql = "SELECT pid FROM auth_priv WHERE priv='".$recht."'";
                 $result = $db -> query($sql);
                 $data_priv = $db -> fetch_array($result,1);
-                if ( substr(key($HTTP_POST_VARS),0,$raute) == "green" ) {
+                if ( substr(key($HTTP_POST_VARS),0,$raute) == "add" ) {
                     $sql = "SELECT * FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg !='-1'";
                     $result_pruef = $db -> query($sql);
                     $treffer = $db -> num_rows($result_pruef,1);
@@ -190,7 +211,7 @@
                     } else {
                         $sql = "INSERT INTO auth_content (gid,pid,tname,neg) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','-1')";
                     }
-                } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "red" ) {
+                } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "del" ) {
                     $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
                 } else {
                     $sql = "INSERT INTO auth_content (gid,pid,tname,neg) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','')";

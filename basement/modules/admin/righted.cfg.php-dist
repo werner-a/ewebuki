@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: leer.cfg.php 865 2007-09-26 11:21:21Z chaot $";
+// "$Id: righted.cfg.php 865 2007-09-26 11:21:21Z chaot $";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -56,24 +56,35 @@
                      "edit" => array(""),
                    "delete" => array(""),
                   "details" => array(""),
-              #"edit,shared" => array("shared1", "shared2"),
-              #"edit,global" => array("global1", "global2"),
+             #"edit,shared" => array("shared1", "shared2"),
+             #"edit,global" => array("global1", "global2"),
                        ),
                "db" => array(
-                     "content" => array(
-                          "entries" => "auth_content",
-                     ),
-                     "group" => array(
-                          "entries" => "auth_group",
-                              "key" => "gid",
-                             "name" => "ggroup",
-                     ),
-                     "priv" => array(
-                          "entries" => "auth_priv",
-                              "key" => "pid",
-                             "name" => "priv",
-                     ),
-              ),
+                    "content" => array(
+                            "entries" => "auth_content",
+                                 ),
+                      "group" => array(
+                            "entries" => "auth_group",
+                                "key" => "gid",
+                               "name" => "ggroup",
+                                 ),
+                       "priv" => array(
+                            "entries" => "auth_priv",
+                                "key" => "pid",
+                               "name" => "priv",
+                                 ),
+                        ),
+           "button" => array(
+                        "new" => array(
+                                "color" => ""
+                                 ),
+                        "add" => array(
+                                "color" => "#A9C0CE"
+                                 ),
+                        "del" => array(
+                                "color" => "#E0691A"
+                                )
+                       ),
             "right" => $cfg["auth"]["ghost"]["righted"],
     );
 

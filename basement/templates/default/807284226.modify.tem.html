@@ -28,21 +28,23 @@ return false;
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
+    <a style="cursor: pointer" onclick="anzeigen('legende');">[ Legende ]</a>
+    <div id="legende" style="display:none;margin-left:10px">
+    <!--##loop-legende-->
+        <div class="clearer"></div>
+        <div style="background:!{color};border:1px solid ;width:1.5em;height:1.5em;float:left"></div>&nbsp;!{text}
+    <!--##cont-->
+    </div>
     <p>!#ausgaben_form_error</p>
     <h2>#(url) !#ausgaben_url</h2>
 
-    <fieldset id="infoss">
-
-        <!--##loop-infos-->
-        <div class="clearer"></div>
-        <div style="border:1px solid">
-        !{url} !{info}
-        <div class="clearer"></div>
-        </div>
-        <!--##cont-->
-
-    </fieldset>
-
+    <!--##loop-infos-->
+    <div class="clearer"></div>
+    <div style="border:1px solid;margin-left:10px">
+    !{url} !{info}
+    <div class="clearer"></div>
+    </div>
+    <!--##cont-->
 
     <fieldset>
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="first" />
