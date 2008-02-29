@@ -43,9 +43,10 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function calendar($tag="") {
+function calendar($tag="",$class="") {
 
     $tage = array("So", "Mo", "Di", "Mi","Do", "Fr", "Sa");
+    setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
     if ( $tag == "" ) {
         $heute = getdate();
     } else {
@@ -66,32 +67,51 @@ function calendar($tag="") {
     $start =  $start["wday"];
     // start-tag
 
-    $ausgabe = "<table border =\"1\">";
+    $ausgabe = "<table class=\"".$class."\">";
     $counter=0;
     $int_counter = "";
 
     // bauen er tabellenbeschriftung
+    $ausgabe .= "<thead><tr><th colspan=\"7\" scope=\"col\" class=\"monat\">".strftime ("%B", $heute[0])."</th></tr>";
     $ausgabe .= "<tr>";
     foreach ( $tage as $key => $value ) {
-        $ausgabe .= "<td>".$value."</td>";
+        // ersten und letzten tag kennzeichnen
+        if ( $key == 0 ) {
+            $class = "first";
+        } elseif ( $key == 6 ) {
+            $class = "last";
+        } else {
+            $class = "";
+        }
+        $ausgabe .= "<th scope=\"col\" class=\"".$class."\">".$value."</th>";
     }
-    $ausgabe .= "</tr>";
+    $ausgabe .= "</tr></thead>\n";
     // bauen er tabellenbeschriftung
 
+    $ausgabe .= "<tbody>";
     while ( $stop != "-1" ) {
         $ausgabe .= "<tr>";
         foreach ( $tage as $key => $value ) {
+            // ersten und letzten tag kennzeichnen
+            if ( $key == 0 ) {
+                $class = "first";
+            } elseif ( $key == 6 ) {
+                $class = "last";
+            } else {
+                $class = "";
+            }
             $counter++;
             if ( $counter > $start && $counter <= ($heute["mday"]+$start) ) {
                 $int_counter++;
             } else {
                 $int_counter = "";
             }
-            $ausgabe .= "<td>".$int_counter."</td>";
+            $ausgabe .= "<td class=\"".$class."\">".$int_counter."</td>";
         }
         $ausgabe .= "</tr>";
         if ( $counter >= $tage_monat) $stop = -1;
     }
+    $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";
 
     return $ausgabe;
