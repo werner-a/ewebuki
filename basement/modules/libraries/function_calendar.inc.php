@@ -45,7 +45,7 @@
 
 function calendar($tag="",$class="") {
 
-    $tage = array("So", "Mo", "Di", "Mi","Do", "Fr", "Sa");
+    $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
     setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
     if ( $tag == "" ) {
         $heute = getdate();
@@ -65,6 +65,9 @@ function calendar($tag="",$class="") {
     $start = mktime ( 0, 0, 0, $monat_id, 1, $jahr );
     $start = getdate($start);
     $start =  $start["wday"];
+    // das hier ist notwendig um den sonntag nach hinten zu verschieben
+    if ( $start == 0 ) $start = 7;
+    $start = $start -1;
     // start-tag
 
     $ausgabe = "<table class=\"".$class."\">";
@@ -109,7 +112,7 @@ function calendar($tag="",$class="") {
             $ausgabe .= "<td class=\"".$class."\">".$int_counter."</td>";
         }
         $ausgabe .= "</tr>";
-        if ( $counter >= $tage_monat) $stop = -1;
+        if ( $counter >= $tage_monat+7) $stop = -1;
     }
     $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";
