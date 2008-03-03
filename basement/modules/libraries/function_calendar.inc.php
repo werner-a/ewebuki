@@ -43,16 +43,17 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function calendar($tag="",$class="") {
+function calendar($monat="",$jahr="",$class="") {
 
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
     setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
-    if ( $tag == "" ) {
-        $heute = getdate();
-    } else {
-        $heute = getdate($tag);
+    if ( $monat == "" && $jahr == "" ) {
+        $aktuell = getdate();
+        $jahr = $aktuell["year"];
+        $monat = $aktuell["mon"];
     }
 
+    $heute = getdate(mktime(0, 0, 0, ($monat+1), 0, $jahr));
     // einige daten die spaeter vielleicht noch nuetzlich sind :)
     $tage_monat = $heute["mday"];
     $wochentag_ziffer = $heute["wday"];
