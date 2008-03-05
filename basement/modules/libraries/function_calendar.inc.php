@@ -43,10 +43,12 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function calendar($monat="",$jahr="",$class="") {
+function calendar($monat="",$jahr="",$class="",$extendend="") {
 
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
+    $monate = array( "Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
     setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
+
     if ( $monat == "" && $jahr == "" ) {
         $aktuell = getdate();
         $jahr = $aktuell["year"];
@@ -54,16 +56,9 @@ function calendar($monat="",$jahr="",$class="") {
     }
 
     $heute = getdate(mktime(0, 0, 0, ($monat+1), 0, $jahr));
-    // einige daten die spaeter vielleicht noch nuetzlich sind :)
-    $tage_monat = $heute["mday"];
-    $wochentag_ziffer = $heute["wday"];
-    $wochentag = $heute["weekday"];
-    $monat = $heute["month"];
-    $monat_id = $heute["mon"];
-    $jahr = $heute["year"];
 
     // start-tag
-    $start = mktime ( 0, 0, 0, $monat_id, 1, $jahr );
+    $start = mktime ( 0, 0, 0, $heute["mon"], 1, $heute["year"] );
     $start = getdate($start);
     $start =  $start["wday"];
     // das hier ist notwendig um den sonntag nach hinten zu verschieben
@@ -71,11 +66,34 @@ function calendar($monat="",$jahr="",$class="") {
     $start = $start -1;
     // start-tag
 
-    $ausgabe = "<table class=\"".$class."\">";
+    if ( $extendend == -1 ) {
+        // array mit den monaten zurechtlegen
+        for ( $i=1;$i<$heute["mon"];$i++ ) {
+            $shift = array_shift($monate);
+            array_push($monate,$shift);
+        }
+        // bauen der monatstabelle
+        $ausgabe = "<table class=\"".$class."\" >\n<tr >";
+        $ausgabe .= "<th class=\"monat\" colspan=\"4\"></th>";
+        foreach ( $monate as $key => $value ) {
+            $class_m = "";
+            if ( is_int($key/4) ) {
+                $ausgabe .= "</tr><tr>";
+                $class_m = "first";
+            }
+            if ( !strstr($key/4-0.75,",") ) {
+                $class_m = "last";
+            }
+            $ausgabe .= "<th class=\"".$class_m."\">".$value."</th>";
+        }
+        $ausgabe .= "</tr></table>";
+    }
+
+    $ausgabe .= "<table class=\"".$class."\">";
     $counter=0;
     $int_counter = "";
-
-    // bauen er tabellenbeschriftung
+    
+    // bauen der tabellenbeschriftung
     $ausgabe .= "<thead><tr><th colspan=\"7\" scope=\"col\" class=\"monat\">".strftime ("%B", $heute[0])."</th></tr>";
     $ausgabe .= "<tr>";
     foreach ( $tage as $key => $value ) {
@@ -113,7 +131,7 @@ function calendar($monat="",$jahr="",$class="") {
             $ausgabe .= "<td class=\"".$class."\">".$int_counter."</td>";
         }
         $ausgabe .= "</tr>";
-        if ( $counter >= $tage_monat+7) $stop = -1;
+        if ( $counter >= $heute["mday"]+7) $stop = -1;
     }
     $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";
