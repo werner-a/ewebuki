@@ -49,8 +49,8 @@ function calendar($monat="",$jahr="",$class="",$extendend="") {
     $monate = array( "Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
     setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
 
+    $aktuell = getdate();
     if ( $monat == "" && $jahr == "" ) {
-        $aktuell = getdate();
         $jahr = $aktuell["year"];
         $monat = $aktuell["mon"];
     }
@@ -128,7 +128,8 @@ function calendar($monat="",$jahr="",$class="",$extendend="") {
             } else {
                 $int_counter = "";
             }
-            $ausgabe .= "<td class=\"".$class."\">".$int_counter."</td>";
+            ( $aktuell["mday"] == $int_counter ) ? $class_today=" today " : $class_today="";
+            $ausgabe .= "<td class=\"".$class.$class_today."\">".$int_counter."</td>";
         }
         $ausgabe .= "</tr>";
         if ( $counter >= $heute["mday"]+7) $stop = -1;
