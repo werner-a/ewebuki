@@ -84,7 +84,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="") {
             if ( !strstr($key/4-0.75,",") ) {
                 $class_m = "last";
             }
-            $ausgabe .= "<td class=\"".$class_m."\"><a href=\"\">".$value."</a></td>";
+            $ausgabe .= "<td class=\"".$class_m."\">".$value."</td>";
         }
         $ausgabe .= "</tr></table>";
     }
