@@ -73,18 +73,18 @@ function calendar($monat="",$jahr="",$class="",$extendend="") {
             array_push($monate,$shift);
         }
         // bauen der monatstabelle
-        $ausgabe = "<table class=\"".$class."\" >\n<tr >";
-        $ausgabe .= "<th class=\"monat\" colspan=\"4\"></th>";
+        $ausgabe = "<table class=\"".$class." ".$class."_months\" >\n";
+        $ausgabe .= "<tr class=\"first_line\" >\n";
         foreach ( $monate as $key => $value ) {
             $class_m = "";
-            if ( is_int($key/4) ) {
-                $ausgabe .= "</tr><tr>";
+            if ( is_int($key/4)  ) {
+                if ( $key != 0 ) $ausgabe .= "</tr><tr>";
                 $class_m = "first";
             }
             if ( !strstr($key/4-0.75,",") ) {
                 $class_m = "last";
             }
-            $ausgabe .= "<th class=\"".$class_m."\">".$value."</th>";
+            $ausgabe .= "<td class=\"".$class_m."\"><a href=\"\">".$value."</a></td>";
         }
         $ausgabe .= "</tr></table>";
     }
@@ -92,7 +92,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="") {
     $ausgabe .= "<table class=\"".$class."\">";
     $counter=0;
     $int_counter = "";
-    
+
     // bauen der tabellenbeschriftung
     $ausgabe .= "<thead><tr><th colspan=\"7\" scope=\"col\" class=\"monat\">".strftime ("%B", $heute[0])."</th></tr>";
     $ausgabe .= "<tr>";
