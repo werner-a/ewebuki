@@ -59,9 +59,9 @@
     }
 
     //weiterleitung nach list, only a test!!!
-    $begin = strrpos($pathvars["uri"],"/")+1;
-    $end = strrpos($pathvars["uri"],".");
-    if ( !array_key_exists(substr($pathvars["uri"],$begin,$end-$begin),$cfg["bloged"]["function"] ) ){
+    $preg = "([^\/\,]*)(,)?([^\/\,]*).html$";
+    preg_match_all("/$preg/",$pathvars["uri"],$match);
+    if ( !array_key_exists($match[1][0],$cfg["bloged"]["function"] ) ){
         header("Location: ".$environment["ebene"]."/".$environment["kategorie"]."/list.html");
     }
 
