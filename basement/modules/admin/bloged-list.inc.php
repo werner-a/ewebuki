@@ -95,7 +95,7 @@
             $dataloop["list"][$match[1][0]]["detaillink"] = substr($data["tname"],strrpos($data["tname"],".")+1).".html";
 
             #$dataloop["list"][$match[1][1]]["editlink"] = $cfg["bloged"]["basis"]."/edit,".$data["id"].".html";
-            $dataloop["list"][$match[1][0]]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,ewebuki,".$data["tname"].",inhalt.html";
+            $dataloop["list"][$match[1][0]]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".$data["tname"].",inhalt.html";
             $dataloop["list"][$match[1][0]]["edittitel"] = "#(edittitel)";
 
             #$dataloop["list"][$match[1][1]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["id"].".html";
