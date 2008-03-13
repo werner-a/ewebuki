@@ -45,6 +45,15 @@
 
     if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
+        $laenge = strlen(crc32($environment["ebene"]))+2;
+        $sql = "SELECT (SUBSTRING(tname,".$laenge.")+0) AS tname
+                  FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
+                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".crc32($environment["ebene"]).".%'
+              ORDER BY tname DESC";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,1);
+        $id = $data["tname"]+1;
+
         // page basics
         // ***
 
@@ -148,7 +157,7 @@
                 #$sqlb .= ", password('".$checked_password."')";
 
                 function create( $number ) {
-                global $cfg["bloged"], $db, $header, $debugging, $HTTP_POST_VARS;
+                global $cfg,$db, $header, $debugging, $HTTP_POST_VARS,$environment,$id;
 
                 $sqla  = "lang";
                 $sqlb  = "'de'";
@@ -157,7 +166,7 @@
                 $sqlb .= ", 'inhalt'";
 
                 $sqla .= ", tname";
-                $sqlb .= ", '1692582295.".$number."'";
+                $sqlb .= ", '".crc32($environment["ebene"]).".".$id."'";
 
                 $sqla .= ", crc32";
                 $sqlb .= ", '-1'";
@@ -177,6 +186,7 @@
                     $content .= "[P]".$number.". Textinhalt ohne Ende[/P]\n";
                 } else {
                     $content  = "[!]".date("Y-m-d G:i:s")."[/!]\n";
+                    $content .= "[H1]".$number."[/H1]\n";
                     $content .= $HTTP_POST_VARS["content"];
                 }
 

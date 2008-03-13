@@ -47,10 +47,11 @@
 
         // funktions bereich
         // ***
-        $sql = "SELECT *
+        $sql = "SELECT DISTINCT tname,content
                   FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
-                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '1692582295.%'
-              ORDER BY ".$cfg["bloged"]["db"]["bloged"]["order"];                 ;
+                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".crc32($environment["ebene"]).".%'
+                GROUP BY tname
+              ORDER BY ".$cfg["bloged"]["db"]["bloged"]["order"];
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
@@ -63,8 +64,8 @@
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
 
-            $preg = "|\[[^\]]+\](.*)\[/[^\]]+\]|U";
-            preg_match_all($preg, $data["content"], $match, PREG_PATTERN_ORDER );
+            $preg = "|\[[^\]]+\](.*)\[[^\]]+\]|U";
+            if ( !preg_match_all($preg, $data["content"], $match) ) continue;
             #$debugging["ausgabe"] .= "<pre>".print_r($match,True)."</pre>";
 
             // tabellen farben wechseln
@@ -73,9 +74,9 @@
             } else {
                 $cfg["bloged"]["color"]["set"] = $cfg["bloged"]["color"]["a"];
             }
-            $dataloop["list"][$match[1][1]]["color"] = $cfg["bloged"]["color"]["set"];
+            $dataloop["list"][$match[1][0]]["color"] = $cfg["bloged"]["color"]["set"];
 
-            $dataloop["list"][$match[1][1]]["teaser"] = $match[1][1];
+            $dataloop["list"][$match[1][0]]["teaser"] = $match[1][1];
 
             $dt = $match[1][0];
             $dtn = sprintf("%02d.%02d.%04d %02d:%02d ",
@@ -86,18 +87,20 @@
                          substr($dt, 14, 2));
             #list($jahr, $monat, $tag) = explode("-", $datum);
 
-            $dataloop["list"][$match[1][1]]["date"] = $dtn;
+            $dataloop["list"][$match[1][0]]["date"] = $dtn;
 
 
             #http://dev0/auth/cms/edit,develop,1692582295.3,inhalt.html
 
+            $dataloop["list"][$match[1][0]]["detaillink"] = substr($data["tname"],strrpos($data["tname"],".")+1).".html";
+
             #$dataloop["list"][$match[1][1]]["editlink"] = $cfg["bloged"]["basis"]."/edit,".$data["id"].".html";
-            $dataloop["list"][$match[1][1]]["editlink"] = $pathvars["virtual"]."/cms/edit,develop,".$data["tname"].",inhalt.html";
-            $dataloop["list"][$match[1][1]]["edittitel"] = "#(edittitel)";
+            $dataloop["list"][$match[1][0]]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,ewebuki,".$data["tname"].",inhalt.html";
+            $dataloop["list"][$match[1][0]]["edittitel"] = "#(edittitel)";
 
             #$dataloop["list"][$match[1][1]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["id"].".html";
-            $dataloop["list"][$match[1][1]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["tname"].".html";
-            $dataloop["list"][$match[1][1]]["deletetitel"] = "#(deletetitel)";
+            $dataloop["list"][$match[1][0]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["tname"].".html";
+            $dataloop["list"][$match[1][0]]["deletetitel"] = "#(deletetitel)";
 
         }
         #echo sprintf("<pre>%s</pre>",print_r($dataloop,True));
