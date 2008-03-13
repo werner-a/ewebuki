@@ -127,7 +127,7 @@
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        #$mapping["main"] = crc32($environment["ebene"]).".list";
+        $mapping["main"] = crc32($environment["ebene"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

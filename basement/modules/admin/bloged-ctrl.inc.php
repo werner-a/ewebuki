@@ -58,6 +58,13 @@
         $specialvars["editlock"] = -1;
     }
 
+    //weiterleitung nach list, only a test!!!
+    $begin = strrpos($pathvars["uri"],"/")+1;
+    $end = strrpos($pathvars["uri"],".");
+    if ( !array_key_exists(substr($pathvars["uri"],$begin,$end-$begin),$cfg["bloged"]["function"] ) ){
+        header("Location: ".$environment["ebene"]."/".$environment["kategorie"]."/list.html");
+    }
+
     // include function loader
     if ( is_array($cfg["bloged"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["bloged"]["subdir"]."/".$cfg["bloged"]["name"]."-functions.inc.php";
 
