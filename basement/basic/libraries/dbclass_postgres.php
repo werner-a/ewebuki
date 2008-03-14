@@ -171,6 +171,9 @@
                 $sql = str_replace($oldlimit, $newlimit, $sql);
             }
 
+            // nun kann auch postgres regex :)
+            $sql = preg_replace("/REGEXP/Ui","~",$sql);
+
             // was fuer ein bloedsinn case sensitive? - also umbauen
             if ( stristr($sql,"LIKE") ) {
                 $sql = str_replace("LIKE","ILIKE",$sql);
