@@ -46,9 +46,9 @@
     if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
         $laenge = strlen(crc32($environment["ebene"]))+2;
-        $sql = "SELECT (SUBSTRING(tname,".$laenge.")+0) AS tname
+        $sql = "SELECT (SUBSTR(tname,".$laenge.")) AS tname
                   FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
-                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".crc32($environment["ebene"]).".%'
+                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".crc32($environment["ebene"]).".%' AND tname REGEXP '[0-9]$'
               ORDER BY tname DESC";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -92,14 +92,14 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["bloged"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = "add,verify.html";
         $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".modify";
+        $mapping["main"] = "-2051315182.modify";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
@@ -117,7 +117,7 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][1] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["extension1"] != ""
                 || $HTTP_POST_VARS["extension2"] != "" ) ) {
@@ -157,7 +157,7 @@
                 #$sqlb .= ", password('".$checked_password."')";
 
                 function create( $number ) {
-                global $cfg,$db, $header, $debugging, $HTTP_POST_VARS,$environment,$id;
+                global $cfg,$db, $header, $debugging, $HTTP_POST_VARS,$environment,$id,$pathvars;
 
                 $sqla  = "lang";
                 $sqlb  = "'de'";
@@ -177,6 +177,20 @@
                 $sqla .= ", kategorie";
                 $sqlb .= ", '".$number."'";
 
+                $sqla .= ", bysurname";
+                $sqlb .= ", '".$_SESSION["surname"]."'";
+
+                $sqla .= ", byforename";
+                $sqlb .= ", '".$_SESSION["forename"]."'";
+
+                $sqla .= ", byemail";
+                $sqlb .= ", '".$_SESSION["email"]."'";
+
+                $sqla .= ", byalias";
+                $sqlb .= ", '".$_SESSION["alias"]."'";
+
+                $sqla .= ", changed";
+                $sqlb .= ", '".date("Y-m-d H:i:s")."'";
 
                 if ( $HTTP_POST_VARS["content"] == "" ) {
                     $content  = "[!]".date("Y-m-d G:i:s")."[/!]\n";
@@ -197,7 +211,7 @@
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["bloged"]["basis"]."/list.html";
+                if ( $header == "" ) $header = $pathvars["virtual"].$environment["ebene"]."/list.html";
 
                 }
 

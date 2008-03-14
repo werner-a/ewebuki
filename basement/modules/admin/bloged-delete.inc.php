@@ -112,7 +112,7 @@
             $ausgaben["form_error"] = "";
 
             // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["bloged"]["basis"]."/delete,".$environment["parameter"][1].".html";
+            $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].".html";
             $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
 
             // hidden values
@@ -120,7 +120,7 @@
             $ausgaben["form_delete"] = True;
 
             // was anzeigen
-            #$mapping["main"] = crc32($environment["ebene"]).".delete";
+            $mapping["main"] = "-2051315182.delete";
             #$mapping["navi"] = "leer";
 
             // unzugaengliche #(marken) sichtbar machen
@@ -171,7 +171,7 @@
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["bloged"]["basis"]."/list.html");
+                    header("Location: ".$pathvars["virtual"].$environment["ebene"]."/list.html");
                 }
             }
             // +++

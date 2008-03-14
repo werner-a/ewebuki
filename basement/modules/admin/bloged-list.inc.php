@@ -47,11 +47,9 @@
 
         // funktions bereich
         // ***
-        $sql = "SELECT DISTINCT tname,content
-                  FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
-                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".crc32($environment["ebene"]).".%'
-                GROUP BY tname
-              ORDER BY ".$cfg["bloged"]["db"]["bloged"]["order"];
+        $sql = "SELECT tname, max(version) as version FROM site_text 
+                WHERE tname LIKE '".crc32($environment["ebene"]).".%' AND tname REGEXP '[0-9]$' 
+                GROUP BY tname ORDER BY tname DESC";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
@@ -62,48 +60,39 @@
 
 
         $result = $db -> query($sql);
+        $counter = 0;
         while ( $data = $db -> fetch_array($result,1) ) {
+            $counter++;
+            $sql_in = "SELECT content,tname FROM site_text WHERE tname ='".$data["tname"]."' and version ='".$data["version"]."'";
+            $result_in = $db -> query($sql_in);
+            $data_in  = $db -> fetch_array($result_in,1);
+            $preg = "^\[!\]([0-9]{4})-([0-9]{2})-([0-9]{2})\40([0-9]{1,2}):([0-9]{2}):([0-9]{2})\[\/!\][\r\n|\40]*\[H1\](.*)\[\/H1\]";
 
-            $preg = "|\[[^\]]+\](.*)\[[^\]]+\]|U";
-            if ( !preg_match_all($preg, $data["content"], $match) ) continue;
-            #$debugging["ausgabe"] .= "<pre>".print_r($match,True)."</pre>";
-
-            // tabellen farben wechseln
-            if ( $cfg["bloged"]["color"]["set"] == $cfg["bloged"]["color"]["a"]) {
-                $cfg["bloged"]["color"]["set"] = $cfg["bloged"]["color"]["b"];
-            } else {
-                $cfg["bloged"]["color"]["set"] = $cfg["bloged"]["color"]["a"];
+            if ( preg_match("/$preg/",$data_in["content"],$regs) ) {
+                $dataloop["list"][$counter]["date_mk"] = mktime($regs[4],$regs[5],$regs[6],$regs[3],$regs[2],$regs[1]);
+                $dataloop["list"][$counter]["date"] = $regs[3].".".$regs[2].".".$regs[1];
+                $dataloop["list"][$counter]["teaser"] = $regs[7];
+                $dataloop["list"][$counter]["detaillink"] = substr($data_in["tname"],strrpos($data_in["tname"],".")+1).".html"; 
+                $dataloop["list"][$counter]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".$data_in["tname"].",inhalt.html";
+                $dataloop["list"][$counter]["edittitel"] = "#(edittitel)";
+                $dataloop["list"][$counter]["deletelink"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$data_in["tname"].".html";
+                $dataloop["list"][$counter]["deletetitel"] = "#(deletetitel)";
             }
-            $dataloop["list"][$match[1][0]]["color"] = $cfg["bloged"]["color"]["set"];
-
-            $dataloop["list"][$match[1][0]]["teaser"] = $match[1][1];
-
-            $dt = $match[1][0];
-            $dtn = sprintf("%02d.%02d.%04d %02d:%02d ",
-                         substr($dt, 8, 2),
-                         substr($dt, 5, 2),
-                         substr($dt, 0, 4),
-                         substr($dt, 11, 2),
-                         substr($dt, 14, 2));
-            #list($jahr, $monat, $tag) = explode("-", $datum);
-
-            $dataloop["list"][$match[1][0]]["date"] = $dtn;
-
-
-            #http://dev0/auth/cms/edit,develop,1692582295.3,inhalt.html
-
-            $dataloop["list"][$match[1][0]]["detaillink"] = substr($data["tname"],strrpos($data["tname"],".")+1).".html";
-
-            #$dataloop["list"][$match[1][1]]["editlink"] = $cfg["bloged"]["basis"]."/edit,".$data["id"].".html";
-            $dataloop["list"][$match[1][0]]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".$data["tname"].",inhalt.html";
-            $dataloop["list"][$match[1][0]]["edittitel"] = "#(edittitel)";
-
-            #$dataloop["list"][$match[1][1]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["id"].".html";
-            $dataloop["list"][$match[1][0]]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["tname"].".html";
-            $dataloop["list"][$match[1][0]]["deletetitel"] = "#(deletetitel)";
-
         }
-        #echo sprintf("<pre>%s</pre>",print_r($dataloop,True));
+        if ( is_array($dataloop["list"]) ) {
+            sort($dataloop["list"]);
+            $dataloop["list"] = array_reverse($dataloop["list"]);
+        }
+
+        for ( $i=0; $i <= count($dataloop["list"])-1;$i++) {
+            if (is_int($i/2) ) {
+                $color = $cfg["bloged"]["color"]["a"];
+            } else {
+                $color = $cfg["bloged"]["color"]["b"];
+            }
+            $dataloop["list"][$i]["color"] = $color;
+        }
+
         // +++
         // funktions bereich
 
@@ -121,7 +110,7 @@
         }
 
         // navigation erstellen
-        $ausgaben["link_new"] = $cfg["bloged"]["basis"]."/add.html";
+        $ausgaben["link_new"] = "add.html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";

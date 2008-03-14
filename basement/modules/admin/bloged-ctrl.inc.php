@@ -59,7 +59,7 @@
     }
 
     //weiterleitung nach list, only a test!!!
-    if ( !array_key_exists($environment["kategorie"],$cfg["bloged"]["function"] ) ){
+    if ( !array_key_exists($environment["kategorie"],$cfg["bloged"]["function"]) && !preg_match("/[0-9*]/",$environment["kategorie"],$regi) ){
         header("Location: ".$environment["ebene"]."/".$environment["kategorie"]."/list.html");
     }
 
@@ -70,7 +70,7 @@
     if ( array_key_exists($environment["kategorie"], $cfg["bloged"]["function"]) ) {
         include $pathvars["moduleroot"].$cfg["bloged"]["subdir"]."/".$cfg["bloged"]["name"]."-".$environment["kategorie"].".inc.php";
     } else {
-        include $pathvars["moduleroot"].$cfg["bloged"]["subdir"]."/".$cfg["bloged"]["name"]."-list.inc.php";
+        #include $pathvars["moduleroot"].$cfg["bloged"]["subdir"]."/".$cfg["bloged"]["name"]."-list.inc.php";
     }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
