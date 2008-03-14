@@ -52,6 +52,7 @@
                         "b" => "#999999",
                        ),
          "function" => array(
+                     "list" => "",
                       "add" => "",
                      "edit" => "",
                    "delete" => "",
