@@ -46,13 +46,13 @@
     if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
         $laenge = strlen(crc32($environment["ebene"]))+2;
-        $sql = "SELECT (SUBSTR(tname,".$laenge.")) AS tname
+        $sql = "SELECT (SUBSTR(tname,".$laenge.")) AS id 
                   FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
                  WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".crc32($environment["ebene"]).".%' AND tname REGEXP '[0-9]$'
-              ORDER BY tname DESC";
+                 ORDER BY CAST(id AS UNSIGNED) DESC";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-        $id = $data["tname"]+1;
+        $id = $data["id"]+1;
 
         // page basics
         // ***
