@@ -45,6 +45,8 @@
 
     if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
+        $hidedata["list"]["on"] = "on";
+
         // funktions bereich
         // ***
         $sql = "SELECT tname, max(version) as version FROM site_text 
@@ -116,7 +118,7 @@
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".list";
+#        $mapping["main"] = crc32($environment["ebene"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

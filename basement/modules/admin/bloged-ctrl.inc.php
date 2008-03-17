@@ -60,7 +60,7 @@
 
     //weiterleitung nach list, only a test!!!
     if ( !array_key_exists($environment["kategorie"],$cfg["bloged"]["function"]) && !preg_match("/[0-9*]/",$environment["kategorie"],$regi) ){
-        header("Location: ".$environment["ebene"]."/".$environment["kategorie"]."/list.html");
+        header("Location: ".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"]."/list.html");
     }
 
     // include function loader
