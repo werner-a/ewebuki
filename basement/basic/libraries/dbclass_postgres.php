@@ -171,6 +171,11 @@
                 $sql = str_replace($oldlimit, $newlimit, $sql);
             }
 
+            // typenkonvertierung
+            if ( preg_match("/(CAST)(\(.*)\40(AS)\40(unsigned)\)/i",$sql,$cast) ){
+                $sql = preg_replace("/AS UNSIGNED/i","AS INTEGER",$sql);
+            }
+
             // nun kann auch postgres regex :)
             $sql = preg_replace("/REGEXP/Ui","~",$sql);
 
