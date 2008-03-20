@@ -1,0 +1,6 @@
+
+
+automatische generierung von x-datensaetzen
+evtl. artikelname in der url -> like heise
+
+titel,teaser u. bild aus content holen
