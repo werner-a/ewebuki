@@ -59,6 +59,10 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
                 document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertImage(ebCanvas);" value="' + button.key + '" />');
             } else if (button.id == 'eb_link') {
                 document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertLink(ebCanvas, ' + i + ');" value="' + button.key + '" />');
+            } else if (button.id == 'eb_file') {
+                document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="Datei auswaehlen" class="buttag"/>');
+            } else if (button.id == 'eb_grp') {
+                document.write('<input type="submit" name="sel[]" id="eb_submit" value="GRP" title="Gruppe auswaehlen" class="buttag"/>');
             } else {
                 document.write('<input type="button" id="' + button.id + '" accesskey="' + button.access + '" title="' + button.tit + '" class="buttag" onclick="ebInsertTak(ebCanvas, ' + i + ');" value="' + button.key + '"  />');
             }
@@ -108,8 +112,8 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
             ebShowButton(ebButtons[i], i, position);
         }
         if ( position == 'T' ) {
-            document.write('<input type="submit" name="sel[]" id="eb_submit" value="GRP" title="Gruppe auswaehlen" class="buttag"/>');
-            document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="Datei auswaehlen" class="buttag"/>');
+//             document.write('<input type="submit" name="sel[]" id="eb_submit" value="GRP" title="Gruppe auswaehlen" class="buttag"/>');
+//             document.write('<input type="submit" name="add[]" id="eb_submit" value="FILE" title="Datei auswaehlen" class="buttag"/>');
         }
         if ( position == 'B' ) {
             document.write('<input type="button" id="eb_close" value="X" title="Schliesse alle Tags" onclick="ebCloseAllTags();" class="buttag" />');

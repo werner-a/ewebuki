@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function tagremove( $replace, $legende = False ) {
+    function tagremove( $replace, $legende = False, $allowed_tags = "all" ) {
         global $image_ausgabe, $links_ausgabe, $defaults;
         $image_ausgabe = "";
         $links_ausgabe = "";
@@ -51,6 +51,12 @@
         while ( preg_match("/$preg/", $replace, $match ) ) {
 
             $closetag = $match[0];
+
+//             if ( is_array($allowed_tags) ) {
+//
+//                 $replace = str_replace($opentag.$tagwert.$closetag,$removed,$replace);
+//                 continue;
+//             }
             if ( strstr($replace, $closetag) ){
 
                 // wo beginnt der closetag
@@ -86,60 +92,75 @@
                 // opentag komplettieren
                 $opentag = $opentag.$sign;
 
-                switch ($closetag) {
-                    case "[/IMGB]": case "[/IMG]":
-                        if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
-                            $removed = "";
-                        } else {
-                            $j++;
-                            $tagwerte = explode("]",$tagwert,2);
-                            $parameter = explode(";",$tagwerte[0],2);
-                            // legende erzeugen
-                            if ( $legende == true ) $image[$j] = $parameter[0];
-                            $removed = " {BILD ".$j."} ";
-                        }
-                        $replace = str_replace($opentag.$tagwert.$closetag,$removed,$replace);
-                        break;
-                    case "[/LINK]":
-                        if ( substr($tagwert,0,1) == "#" ) {
-                            $removed = "";
-                        } else {
-                            $l++;
-                            $tagwerte = explode("]",$tagwert,2);
-                            $parameter = explode(";",$tagwerte[0],2);
-                            // legende erzeugen
-                            if ( $legende == true ) $links[$l] = $parameter[0];
-                            $removed = " {LINK ".$l."} ";
-                        }
-
-                        break;
-                    case "[/LIST]":
-                        if ( $sign == "]" ) {
-                            $removed = str_replace("[*]"," ",$tagwert);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $removed = str_replace("[*]"," ",$tagwerte[1]);
-                        }
-                        break;
-                    case "[/EMAIL]":
-                        if ( $sign == "]" ) {
-                            $removed = $tagwert;
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $removed = $tagwerte[0];
-                        }
-                    break;
-                    default:
+                if ( is_array($allowed_tags) ) {
+                    if ( in_array($closetag,$allowed_tags) ) {
+                        $removed = $opentag.$tagwert.str_replace("]","---]",$closetag);
+                    } else {
                         if ( $sign == "=" ) {
                             $tagwerte = explode("]",$tagwert,2);
                             $removed = $tagwerte[1];
                         } else {
                             $removed = $tagwert;
                         }
+                    }
+                } else {
+                    switch ($closetag) {
+                        case "[/IMGB]": case "[/IMG]":
+                            if (strstr($tagwert,"schlagzeile.") || strstr($tagwert,"extlink.gif") || strstr($tagwert,"bullet.gif") || strstr($tagwert,"space20.gif")) {
+                                $removed = "";
+                            } else {
+                                $j++;
+                                $tagwerte = explode("]",$tagwert,2);
+                                $parameter = explode(";",$tagwerte[0],2);
+                                // legende erzeugen
+                                if ( $legende == true ) $image[$j] = $parameter[0];
+                                $removed = " {BILD ".$j."} ";
+                            }
+                            $replace = str_replace($opentag.$tagwert.$closetag,$removed,$replace);
+                            break;
+                        case "[/LINK]":
+                            if ( substr($tagwert,0,1) == "#" ) {
+                                $removed = "";
+                            } else {
+                                $l++;
+                                $tagwerte = explode("]",$tagwert,2);
+                                $parameter = explode(";",$tagwerte[0],2);
+                                // legende erzeugen
+                                if ( $legende == true ) $links[$l] = $parameter[0];
+                                $removed = " {LINK ".$l."} ";
+                            }
+
+                            break;
+                        case "[/LIST]":
+                            if ( $sign == "]" ) {
+                                $removed = str_replace("[*]"," ",$tagwert);
+                            } else {
+                                $tagwerte = explode("]",$tagwert,2);
+                                $removed = str_replace("[*]"," ",$tagwerte[1]);
+                            }
+                            break;
+                        case "[/EMAIL]":
+                            if ( $sign == "]" ) {
+                                $removed = $tagwert;
+                            } else {
+                                $tagwerte = explode("]",$tagwert,2);
+                                $removed = $tagwerte[0];
+                            }
+                        break;
+                        default:
+                            if ( $sign == "=" ) {
+                                $tagwerte = explode("]",$tagwert,2);
+                                $removed = $tagwerte[1];
+                            } else {
+                                $removed = $tagwert;
+                            }
+                    }
                 }
+
                 $replace = str_replace($opentag.$tagwert.$closetag,$removed,$replace);
             }
         }
+        $replace = str_replace("---]","]",$replace);
         // links und bilder nach text wandeln
         $i = 0;
         if ( $legende == True ) {

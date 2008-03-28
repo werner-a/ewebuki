@@ -86,10 +86,10 @@
 
             "right" => $cfg["auth"]["ghost"]["contented"],
             #"tagjs" => "-141347382.modify.js-classic",
-          "letters" => "1000",
+          "letters" => "",
             "tagjs" => "-141347382.modify.js-nextgen",
              "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts, eingener tag
-                              // block-elemente
+                   // block-elemente
                    "h1"     => array( "T", "1" ),
                    "h2"     => array( "T", "2" ),
                    "h3"     => array( "T", "3" ),
@@ -151,6 +151,9 @@
                    "next"   => array( "B", ">", True ),
                    "quote"  => array( "" ),
                    "sp"     => array( "", "", True ),
+
+                   "file"   => array( "T", "", True ),
+                   "grp"    => array( "T", "", True ),
 
                    // deprecated (automatic don't work)
                    "int"    => array( "", "", "", "", "" ),
