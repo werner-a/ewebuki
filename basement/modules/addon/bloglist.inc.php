@@ -168,7 +168,15 @@
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $mapping["main"] = "-2051315182.list";
+        if ( $cfg["bloged"]["own_list_template"] == -1 ) {
+            if ( crc32($environment["ebene"]) == 0 ) {
+                $mapping["main"] = $environment["kategorie"];
+            } else {
+                $mapping["main"] = crc32($environment["ebene"]).".".$environment["kategorie"];
+            }
+        } else {
+            $mapping["main"] = "-2051315182.list";
+        }
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

@@ -51,6 +51,7 @@
                         "a" => "#cccccc",
                         "b" => "#999999",
                        ),
+            "own_list_template" => 0,
          "function" => array(
                       "list" => "",
                       "add" => "",
