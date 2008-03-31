@@ -63,28 +63,88 @@
             $specialvars["editlock"] = -1;
         }
 
+        $leer[] = "";
+        $test = split("/",$environment["ebene"]."/".$environment["kategorie"]);
+        $cleaned_up = array_diff($test, $leer);
+
+        $data["mid"] = 0;
+        foreach ( $cleaned_up as $value ) {
+            $sql = "SELECT *
+                      FROM site_menu
+                     WHERE entry = '".$value."'
+                       AND refid = ".$data["mid"];
+            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+            $result = $db -> query($sql);
+            if ( $db -> num_rows($result) == 1 ) {
+                $data = $db -> fetch_array($result,1);
+            } else {
+                break;
+            }
+        }
+        $new = $data["mid"];
+
         // +++
         // page basics
 
+        if ( $environment["ebene"] == "" ) {
+            $kat = "/".$environment["kategorie"];
+        } else {
+            $kat = $environment["ebene"]."/".$environment["kategorie"];
+        }
+        $crc = crc32($kat);
 
         // funktions bereich
         // ***
-        $sql = "SELECT *
-                  FROM ".$cfg["bloglist"]["db"]["entries"]."
-                 WHERE ".$cfg["bloglist"]["db"]["key"]." LIKE '1692582295.%'
-              ORDER BY ".$cfg["bloglist"]["db"]["order"]."
-                 LIMIT 0,10";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-        while ( $data = $db -> fetch_array($result,1) ) {
-            $preg = "|\[[^\]]+\](.*)\[/[^\]]+\]|U";
-            preg_match_all($preg, $data["content"], $match, PREG_PATTERN_ORDER );
-            #$debugging["ausgabe"] .= "<pre>".print_r($match,True)."</pre>";
 
-            $dataloop["list"][$match[1][1]][0] = $match[1][1];
-            $dataloop["list"][$match[1][1]][1] = $match[1][2];
-            $dataloop["list"][$match[1][1]][2] = $pathvars["virtual"]."/blog/".$data["kategorie"].".html";
+        // kurzer test ohne inhalt-selector , bringt zeitlich ein bisschen was
+#        $sql = "SELECT Cast(SUBSTR(content,6,19) as TIMESTAMP) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".$crc.".%' order by date DESC";
+#        $result = $db -> query($sql);
+#        echo $db -> num_rows($result);
+
+        $sql = "SELECT Cast(SUBSTR(content,6,19) as TIMESTAMP) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".$crc.".%' order by date DESC";
+
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+
+        // seiten umschalter
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["bloged"]["db"]["bloged"]["rows"], $parameter, 1, 4, $getvalues );
+        $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
+        $sql = $inhalt_selector[1];
+        $ausgaben["anzahl"] = $inhalt_selector[2];
+        $counter = 0;
+
+        $result = $db -> query($sql);
+        $preg1 = "\.([0-9])*$";
+        while ( $data = $db -> fetch_array($result,1) ) {
+            $counter++;
+            $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
+            foreach ( $cfg["bloged"]["blogs"][$kat]["tags"] as $key => $value ) {
+                (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
+                if ( $endtag == "IMG" ) {
+                    $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
+                } else {
+                    $preg = "\[".$value."\](.*)\[\/".$endtag."\]";
+                }
+                if ( preg_match("/$preg/U",$test,$regs) ) {
+                    if ( $endtag == "IMG" ) {
+                        $$key = $regs[2].".".$regs[1];
+                    } else {
+                        $$key = str_replace('\r\n',"<br>",$regs[1]);
+                    }
+                } else {
+                    $$key = "unknown";
+                }
+                $dataloop["list"][$counter][$key] = $$key;
+            }
+
+            preg_match("/$preg1/",$data["tname"],$regs);  
+
+            $dataloop["list"][$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
+            $dataloop["list"][$counter]["detaillink"] = $pathvars["virtual"].$kat."/".$regs[1].".html";
+            $dataloop["list"][$counter]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["tname"].",".$new.".html";
+            $dataloop["list"][$counter]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".$data["tname"].",inhalt.html";
+
         }
+
         // +++
         // funktions bereich
 
@@ -102,13 +162,13 @@
         }
 
         // navigation erstellen
-        #$ausgaben["new"] = "<a href=\"".$cfg["bloglist"]["basis"]."/add.html\">#(new)</a>";
+        $ausgaben["link_new"] = $pathvars["virtual"]."/admin/bloged/add,".$new.".html";
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        #$mapping["main"] = crc32($environment["ebene"]).".list";
+        $mapping["main"] = "-2051315182.list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

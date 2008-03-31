@@ -618,6 +618,12 @@
                 #$sqla .= ", ldate='".$ldate."'";
 
 //                 $sql = "update ".$cfg["contented"]["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["contented"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+
+                // notwendig fuer die artikelverwaltung alle artikel des gleichen tname's werden auf inaktiv gesetzt
+                if ( preg_match("/^\[!\]/",$content,$regs) ) {
+                    $sql_regex = "UPDATE ". SITETEXT ." SET content=regexp_replace(content,'!]1','!]0') WHERE tname like '".$environment["parameter"][2]."'";
+                    $result_regex  = $db -> query($sql_regex);
+                }
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 #if ( !$result ) die($db -> error("DB ERROR: "));

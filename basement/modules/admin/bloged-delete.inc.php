@@ -112,7 +112,7 @@
             $ausgaben["form_error"] = "";
 
             // navigation erstellen
-            $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].".html";
+            $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].",".$environment["parameter"][2].".html";
             $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
 
             // hidden values
@@ -171,7 +171,7 @@
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$pathvars["virtual"].$environment["ebene"]."/list.html");
+                    header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][2]).".html");
                 }
             }
             // +++

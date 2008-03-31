@@ -52,10 +52,11 @@
                         "b" => "#999999",
                        ),
          "function" => array(
-                     "list" => "",
+                      "list" => "",
                       "add" => "",
                      "edit" => "",
                    "delete" => "",
+            "delete,shared" => array("menu_convert"),
                        ),
                "db" => array(
                    "bloged" => array(
@@ -64,6 +65,13 @@
                             "order" => "CONTENT DESC",
                              "rows" => 10,
                                ),
+                       ),
+            "blogs" => array(
+                    "/dummy_url" => array(
+                                        "tags"  => array("titel" => "H1",
+                                                        "teaser" => "P=teaser"
+                                                    ),
+                                            ),
                        ),
             "right" => "",
            );

@@ -13,29 +13,15 @@
 <p>#(inhalt)</p>
 <p>!#ausgaben_form_error</p>
 <p><a href="!#ausgaben_link_new">g(new)</a></p>
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-    <thead>
-        <tr>
-            <th align="left">#(teaser)</th>
-            <th align="left">#(date)</th>
-            <th align="left">g(modcol)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!--##loop-list-->
-        <tr style="background:!{color}">
-            <td>
-                <a href="!{detaillink}">!{teaser}</a>
-            </td>
-            <td>!{date}</td>
-            <td style="white-space:nowrap">
-                <a href="!{editlink}"><img src="../../images/default/edit.png" alt="!{edittitel}" title="!{edittitel}" height="18" width="24" /></a>
-                <a href="!{deletelink}"><img src="../../images/default/delete.png" alt="!{deletetitel}" title="!{deletetitel}" height="18" width="24" /></a>
-            </td>
-        </tr>
-        <!--##cont-->
-    </tbody>
-</table>
+
+<!--##loop-list-->
+<h2>!{datum} - <a href="!{detaillink}">!{titel}</a></h2>
+<div id="eEd"><img style="float:right" src=/file/picture/small/img_!{image}></img>!{teaser}
+<p><a href="!{editlink}">
+edit</a> <a href="!{deletelink}">delete</a></p></div>
+
+<!--##cont-->
+
 <p style="float:left">g(anzahl) !#ausgaben_anzahl</p>
 <p style="float:right">!#ausgaben_inhalt_selector</p>
 <p>!#ausgaben_output</p>
@@ -43,3 +29,12 @@
 <!--##end-->
 </body>
 </html>
+
+
+
+        <tr style="background:!{color}">
+            <td>
+                <a href="!{detaillink}">!{titel}</a>
+            </td>
+            <td>!{date}</td>
+        </tr>
