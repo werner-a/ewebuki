@@ -168,7 +168,7 @@
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        if ( $cfg["bloged"]["own_list_template"] == -1 ) {
+        if ($cfg["bloged"]["blogs"][$kat]["own_list_template"] == -1 ) {
             if ( crc32($environment["ebene"]) == 0 ) {
                 $mapping["main"] = $environment["kategorie"];
             } else {

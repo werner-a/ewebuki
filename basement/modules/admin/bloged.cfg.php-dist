@@ -51,7 +51,6 @@
                         "a" => "#cccccc",
                         "b" => "#999999",
                        ),
-            "own_list_template" => 0,
          "function" => array(
                       "list" => "",
                       "add" => "",
@@ -69,6 +68,8 @@
                        ),
             "blogs" => array(
                     "/dummy_url" => array(
+                                       "wizard" => 0,
+                            "own_list_template" => 0,
                                         "tags"  => array("titel" => "H1",
                                                         "teaser" => "P=teaser"
                                                     ),

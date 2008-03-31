@@ -97,7 +97,11 @@
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result  = $db -> query($sql);
             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-            if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
+            if ( $cfg["bloged"]["blogs"][$kat]["wizard"] == -1 ) {
+                if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
+            } else {
+                if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
+            }
         }
 
         function make_ebene($mid, $ebene="") {
