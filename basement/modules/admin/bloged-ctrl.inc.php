@@ -58,13 +58,15 @@
         $specialvars["editlock"] = -1;
     }
 
-    //weiterleitung nach list, only a test!!!
-    if ( !array_key_exists($environment["kategorie"],$cfg["bloged"]["function"]) && !preg_match("/[0-9*]/",$environment["kategorie"],$regi) ){
-        header("Location: ".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"]."/list.html");
-    }
-
     // include function loader
     if ( is_array($cfg["bloged"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["bloged"]["subdir"]."/".$cfg["bloged"]["name"]."-functions.inc.php";
+
+    // shared function include loader
+    if ( is_array($cfg["bloged"]["function"][$environment["kategorie"].",shared"]) ) {
+        foreach ( $cfg["bloged"]["function"][$environment["kategorie"].",shared"] as $value ) {
+            include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
+        }
+    }
 
     // magic include loader
     if ( array_key_exists($environment["kategorie"], $cfg["bloged"]["function"]) ) {
