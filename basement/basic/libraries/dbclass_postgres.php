@@ -177,7 +177,9 @@
             }
 
             // nun kann auch postgres regex :)
-            $sql = preg_replace("/REGEXP/Ui","~",$sql);
+            if ( !preg_match("/REGEXP_/Ui",$sql,$regs) ) {
+                $sql = preg_replace("/REGEXP/Ui","~",$sql);
+            }
 
             // was fuer ein bloedsinn case sensitive? - also umbauen
             if ( stristr($sql,"LIKE") ) {
