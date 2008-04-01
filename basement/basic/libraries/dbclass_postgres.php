@@ -172,8 +172,9 @@
             }
 
             // typenkonvertierung
-            if ( preg_match("/(CAST)(\(.*)\40(AS)\40(unsigned)\)/i",$sql,$cast) ){
+            if ( preg_match("/(CAST)(.*)\40(AS)/i",$sql,$cast) ){
                 $sql = preg_replace("/AS UNSIGNED/i","AS INTEGER",$sql);
+                $sql = preg_replace("/AS DATETIME/i","AS TIMESTAMP",$sql);
             }
 
             // nun kann auch postgres regex :)
