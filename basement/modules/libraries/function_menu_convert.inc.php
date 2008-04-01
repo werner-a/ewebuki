@@ -46,7 +46,7 @@
     function make_id($url) {
         global $db;
         $leer[] = "";
-        $test = split($url);
+        $test = split("/",$url);
         $cleaned_up = array_diff($test, $leer);
 
         $data["mid"] = 0;
