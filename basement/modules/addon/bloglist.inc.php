@@ -42,7 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#echo make_id("/buffy");
+
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
     if ( $rechte[$cfg["bloglist"]["right"]] == "" || $rechte[$cfg["bloglist"]["right"]] == -1 ) {
@@ -101,7 +101,7 @@
 #        $result = $db -> query($sql);
 #        echo $db -> num_rows($result);
 
-        $sql = "SELECT Cast(SUBSTR(content,6,19) as TIMESTAMP) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".$crc.".%' order by date DESC";
+        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".$crc.".%' order by date DESC";
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
