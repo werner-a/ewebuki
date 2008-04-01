@@ -114,6 +114,11 @@
 
         $result = $db -> query($sql);
         $preg1 = "\.([0-9]*)$";
+        if ( $cfg["bloged"]["blogs"][$kat]["wizard"] == -1 ) {
+            $editlink = "/wizard/show,";
+        } else {
+            $editlink = "/admin/contented/edit,";
+        }
         while ( $data = $db -> fetch_array($result,1) ) {
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
@@ -141,7 +146,7 @@
             $dataloop["list"][$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
             $dataloop["list"][$counter]["detaillink"] = $pathvars["virtual"].$kat."/".$regs[1].".html";
             $dataloop["list"][$counter]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["tname"].",".$new.".html";
-            $dataloop["list"][$counter]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".$data["tname"].",inhalt.html";
+            $dataloop["list"][$counter]["editlink"] = $pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html";
 
         }
 
