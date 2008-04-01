@@ -42,7 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+#echo make_id("/buffy");
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
     if ( $rechte[$cfg["bloglist"]["right"]] == "" || $rechte[$cfg["bloglist"]["right"]] == -1 ) {
@@ -113,7 +113,7 @@
         $counter = 0;
 
         $result = $db -> query($sql);
-        $preg1 = "\.([0-9])*$";
+        $preg1 = "\.([0-9]*)$";
         while ( $data = $db -> fetch_array($result,1) ) {
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
