@@ -168,15 +168,12 @@
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        if ($cfg["bloged"]["blogs"][$kat]["own_list_template"] == -1 ) {
-            if ( crc32($environment["ebene"]) == 0 ) {
-                $mapping["main"] = $environment["kategorie"];
-            } else {
-                $mapping["main"] = crc32($environment["ebene"]).".".$environment["kategorie"];
-            }
+        if ($cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
+            $template = $cfg["bloged"]["blogs"][$kat]["own_list_template"];
         } else {
-            $mapping["main"] = "-2051315182.list";
+            $template = "list";
         }
+        $mapping["main"] = "-2051315182.".$template;
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

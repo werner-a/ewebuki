@@ -69,7 +69,7 @@
             "blogs" => array(
                     "/dummy_url" => array(
                                        "wizard" => 0,
-                            "own_list_template" => 0,
+                            "own_list_template" => "",
                                         "tags"  => array("titel" => "H1",
                                                         "teaser" => "P=teaser"
                                                     ),
