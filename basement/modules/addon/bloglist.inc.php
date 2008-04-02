@@ -145,7 +145,7 @@
 
             $dataloop["list"][$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
             $dataloop["list"][$counter]["detaillink"] = $pathvars["virtual"].$kat."/".$regs[1].".html";
-            $dataloop["list"][$counter]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$data["tname"].",".$new.".html";
+            $dataloop["list"][$counter]["deletelink"] = $cfg["bloged"]["basis"]."/delete,".$new.",".$regs[1].".html";
             $dataloop["list"][$counter]["editlink"] = $pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html";
 
         }

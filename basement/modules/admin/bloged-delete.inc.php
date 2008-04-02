@@ -45,138 +45,94 @@
 
     if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
 
-        // funktions bereich fuer erweiterungen
+        // datensatz holen
+        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname
+                    FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
+                    WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][2]."' AND
+                    content REGEXP '^\\\[!\\\]1'";
+
+        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,$nop);
+        $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
+        foreach ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"] as $key => $value ) {
+
+            (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
+            if ( $endtag == "IMG" ) {
+                $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
+            } else {
+                $preg = "\[".$value."\](.*)\[\/".$endtag."\]";
+            }
+            if ( preg_match("/$preg/U",$test,$regs) ) {
+                if ( $endtag == "IMG" ) {
+                    $$key = $regs[2].".".$regs[1];
+                } else {
+                    $$key = str_replace('\r\n',"<br>",$regs[1]);
+                }
+            } else {
+                $$key = "unknown";
+            }
+            $dataloop["list"][$counter][$key] = $$key;
+        }
+            $dataloop["list"][$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
+
+        // page basics
         // ***
 
-        ### put your code here ###
+        // fehlermeldungen
+        $ausgaben["form_error"] = "";
 
-        /* z.B. evtl. auf verknuepften datensatz pruefen
-        $sql = "SELECT ".$cfg["bloged"]["db"]["menu"]["key"]."
-                  FROM ".$cfg["bloged"]["db"]["menu"]["entries"]."
-                 WHERE refid='".$environment["parameter"][1]."'";
-        $result = $db -> query($sql);
-        $num_rows = $db -> num_rows($result);
-        */
+        // navigation erstellen
+        $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].",".$environment["parameter"][2].".html";
+        $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
+
+        // hidden values
+        $ausgaben["form_hidden"] = "";
+        $ausgaben["form_delete"] = True;
+
+        // was anzeigen
+        $mapping["main"] = "-2051315182.delete";
+        #$mapping["navi"] = "leer";
+
+        // unzugaengliche #(marken) sichtbar machen
+        // ***
+        if ( isset($HTTP_GET_VARS["edit"]) ) {
+            $ausgaben["inaccessible"] = "inaccessible values:<br />";
+            $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
+        } else {
+            $ausgaben["inaccessible"] = "";
+        }
+        // +++
+        // unzugaengliche #(marken) sichtbar machen
+
+        // wohin schicken
+        #n/a
 
         // +++
-        // funktions bereich fuer erweiterungen
+        // page basics
 
-        if ( $num_rows > 0 ) {
-
-            // was anzeigen
-            $mapping["main"] = crc32($environment["ebene"]).".list";
-            $mapping["navi"] = "leer";
+        // das loeschen wurde bestaetigt, loeschen!
+        // ***
+        if (  $HTTP_POST_VARS["send"] != "" ) {
+            $data["content"] = preg_replace("/^\[!\]1/","[!]0",$data["content"]);
+            // datensatz loeschen
+            if ( $ausgaben["form_error"] == "" ) {
+                $sql = "UPDATE ".$cfg["bloged"]["db"]["bloged"]["entries"]." SET content = '".$data["content"]."' WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][2]."' AND content REGEXP '^\\\[!\\\]1'";
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $result  = $db -> query($sql);
+                if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result)<br />");
+            }
+            // +++
+            // ohne fehler menupunkte loeschen
 
             // wohin schicken
-            header("Location: ".$cfg["bloged"]["basis"]."/list.html?error=1");
-
-        } else {
-
-            // datensatz holen
-            $sql = "SELECT *
-                      FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
-                     WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".$environment["parameter"][1]."'";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,$nop);
-            $ausgaben["form_id1"] = $data["tname"];
-            $ausgaben["teaser"] = $data["content"];
-            $ausgaben["entry"] = $data["entry"];
-            // funktions bereich fuer erweiterungen
-            // ***
-
-            ### put your code here ###
-
-            /* z.B. evtl. verknuepfte datensatze holen
-            $sql = "SELECT *
-                      FROM ".$cfg["bloged"]["db"]["more"]["entries"]."
-                     WHERE $cfg["bloged"]["db"]["more"]["id"] ='".$environment["parameter"][1]."'";
-            $result = $db -> query($sql);
-            while ( $data2 = $db -> fetch_array($result,$nop) ) {
-                if ( $ids != "" ) $ids .= ",";
-                $ids .= $array["id"];
-                $ausgaben["field3"] .= $array["field1"]." ";
-                $ausgaben["field3"] .= $array["field2"]."<br />";
+            if ( $ausgaben["form_error"] == "" ) {
+                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][2]).".html");
             }
-            $ausgaben["form_id2"] .= $ids;
-            */
-
-            // +++
-            // funktions bereich fuer erweiterungen
-
-
-            // page basics
-            // ***
-
-            // fehlermeldungen
-            $ausgaben["form_error"] = "";
-
-            // navigation erstellen
-            $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].",".$environment["parameter"][2].".html";
-            $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
-
-            // hidden values
-            $ausgaben["form_hidden"] = "";
-            $ausgaben["form_delete"] = True;
-
-            // was anzeigen
-            $mapping["main"] = "-2051315182.delete";
-            #$mapping["navi"] = "leer";
-
-            // unzugaengliche #(marken) sichtbar machen
-            // ***
-            if ( isset($HTTP_GET_VARS["edit"]) ) {
-                $ausgaben["inaccessible"] = "inaccessible values:<br />";
-                $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
-            } else {
-                $ausgaben["inaccessible"] = "";
-            }
-            // +++
-            // unzugaengliche #(marken) sichtbar machen
-
-            // wohin schicken
-            #n/a
-
-            // +++
-            // page basics
-
-
-            // das loeschen wurde bestaetigt, loeschen!
-            // ***
-            if ( $HTTP_POST_VARS["delete"] != ""
-                && $HTTP_POST_VARS["send"] != "" ) {
-
-                // evtl. zusaetzlichen datensatz loeschen
-                if ( $HTTP_POST_VARS["verknuepfung"] != "" ) {
-
-                    // funktions bereich fuer erweiterungen
-                    // ***
-
-                    ### put your code here ###
-
-                    if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                    // +++
-                    // funktions bereich fuer erweiterungen
-                }
-
-                // datensatz loeschen
-                if ( $ausgaben["form_error"] == "" ) {
-                    $sql = "DELETE FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]." WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
-                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                    $result  = $db -> query($sql);
-                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result)<br />");
-                }
-                // +++
-                // ohne fehler menupunkte loeschen
-
-                // wohin schicken
-                if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][2]).".html");
-                }
-            }
-            // +++
-            // das loeschen wurde bestaetigt, loeschen!
         }
+        // +++
+        // das loeschen wurde bestaetigt, loeschen!
+
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
