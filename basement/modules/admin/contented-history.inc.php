@@ -52,10 +52,10 @@
 
         // als tname werden die SESSIONS "ebene" u. "kategorie" verwendet
         if ( $_SESSION["ebene"] != "" ) {
-            $trenner = "/";
+            $pfad = $_SESSION["ebene"]."/".$_SESSION["kategorie"];
             $tname = crc32($_SESSION["ebene"]).".".$_SESSION["kategorie"];
         } else {
-            $trenner = "";
+            $pfad = "/".$_SESSION["kategorie"];
             $tname = $_SESSION["kategorie"];
         }
 
@@ -98,7 +98,7 @@
                 $selected_old = "";
             }
 
-            $dataloop["list"][$form_values["version"]]["url"] = $pathvars["virtual"]."/".$_SESSION["ebene"].$trenner.$_SESSION["kategorie"].",v".$form_values["version"].".html";
+            $dataloop["list"][$form_values["version"]]["url"] = $pathvars["virtual"].$pfad.",v".$form_values["version"].".html";
             $dataloop["list"][$form_values["version"]]["date"] = substr($form_values["changed"],8,2).". ".gerdate("gml",substr($form_values["changed"],5,2))." ".substr($form_values["changed"],0,4)." ".substr($form_values["changed"],11,5);
             $dataloop["list"][$form_values["version"]]["name"] = $form_values["bysurname"];
             $dataloop["list"][$form_values["version"]]["cb1"] = $form_values["version"];
