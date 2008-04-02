@@ -124,7 +124,7 @@
             $ausgaben["form_error"] = "";
 
             // navigation erstellen
-            $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/delete,".$environment["parameter"][1].".html";
+            $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/delete,".$environment["parameter"][1].",".$environment["parameter"][2].".html";
             $ausgaben["form_break"] = $cfg["menued"]["basis"]."/list.html";
 
             // hidden values
@@ -200,7 +200,7 @@
 
                 // wohin schicken
                 if ( $ausgaben["form_error"] == "" ) {
-                    header("Location: ".$cfg["menued"]["basis"]."/list.html");
+                    header("Location: ".$cfg["menued"]["basis"]."/list,".$environment["parameter"][2].".html");
                 }
             }
             // +++
