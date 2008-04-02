@@ -127,7 +127,7 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][2]).".html");
+                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][1]).".html");
             }
         }
         // +++
