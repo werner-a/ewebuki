@@ -62,7 +62,7 @@
                 break;
             }
         }
-        return $data["mid"];
+        return $data;
     }
 
     function make_ebene($mid, $ebene="") {

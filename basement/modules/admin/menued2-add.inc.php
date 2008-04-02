@@ -47,11 +47,11 @@
         priv_check_old("",$cfg["menued"]["right"]) ) {
         // page basics
         // ***
-        #if ( count($HTTP_POST_VARS) == 0 ) {
+        #if ( count($_POST) == 0 ) {
         #    $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";            $result = $db -> query($sql);
         #    $form_values = $db -> fetch_array($result,1);
         #} else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         #}
 
         // form options holen
@@ -62,10 +62,10 @@
 
         // form elemente erweitern
         $element = array_merge($element, form_elements( $cfg["menued"]["db"]["lang"]["entries"], $form_values ));
-        if ( $HTTP_POST_VARS["refid"] == "" ) {
+        if ( $_POST["refid"] == "" ) {
             $value = $environment["parameter"][1];
         } else {
-            $value = $HTTP_POST_VARS["refid"];
+            $value = $_POST["refid"];
         }
         $element["refid"] = str_replace("refid\"","refid\" value=\"".$value."\" readonly",$element["refid"]);
         $element["new_lang"] = "<input name=\"new_lang\" type=\"text\" maxlength=\"5\" size=\"3\" value=\"n/a\" readonly>";
@@ -76,7 +76,7 @@
         /*
         // lang management form elemente begin
         // ***
-        $element_lang = form_elements( $cfg["menued"]["db"]["lang"]["entries"], $HTTP_POST_VARS );
+        $element_lang = form_elements( $cfg["menued"]["db"]["lang"]["entries"], $_POST );
         $element_lang["lang"] = str_replace("lang\"","lang\" value=\"".$environment["language"]."\"",$element_lang["lang"]);
 
         $ausgaben["langtabelle"]  = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
@@ -101,7 +101,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/add,verify.html";
+        $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/add,,,verify.html";
         $ausgaben["form_break"] = $cfg["menued"]["basis"]."/list.html";
 
         // hidden values
@@ -129,22 +129,22 @@
         // page basics
 
 
-        #$fixed_entry = str_replace(" ", "", $HTTP_POST_VARS["entry"]);
-        $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
+        #$fixed_entry = str_replace(" ", "", $_POST["entry"]);
+        $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $_POST["entry"]);  // PREG:^[a-z_.-0-9]+$
 
-        if ( $environment["parameter"][1] == "verify"
-            && ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["image"]
-                || $HTTP_POST_VARS["add"] ) ) {
+        if ( $environment["parameter"][3] == "verify"
+            && ( $_POST["send"] != ""
+                || $_POST["image"]
+                || $_POST["add"] ) ) {
 
             // form eigaben prüfen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
             // gibt es einen solchen entry bereits?
             if ( $fixed_entry != "" ) {
                 $sql = "SELECT entry
                         FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
-                        WHERE refid = '".$HTTP_POST_VARS["refid"]."'
+                        WHERE refid = '".$_POST["refid"]."'
                         AND entry = '".$fixed_entry."'";
                 $result = $db -> query($sql);
                 $test = $db -> fetch_array($result,1);
@@ -155,8 +155,8 @@
             if ( $ausgaben["form_error"] == "" ) {
                 $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y",
                                "add_x", "add_y", "add", "form_referer", "lang", "label", "extend",
-                               "exturl", "new_lang", "entry");
-                foreach($HTTP_POST_VARS as $name => $value) {
+                               "exturl", "new_lang", "entry", "wizard");
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
                         $sqla .= " ".$name;
@@ -166,7 +166,7 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                #$entry = strtolower($HTTP_POST_VARS["entry"]); // wird jetzt mit einer regex erledigt
+                #$entry = strtolower($_POST["entry"]); // wird jetzt mit einer regex erledigt
                 #$entry = str_replace(" ", "", $entry); // siehe $fixed_entry
                 $sqla .= ", entry";
                 $sqlb .= ", '".$fixed_entry."'";
@@ -182,38 +182,52 @@
                 $lastid = $db -> lastid();
                 if ( checkext() != "" ) {
                     $extenda = "extend, ";
-                    $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
+                    $extendb = "'".$_POST["extend"]."', ";
                 }
                 $sql = "INSERT INTO ".$cfg["menued"]["db"]["lang"]["entries"]."
                                     ( mid, lang, label, ".$extenda." exturl )
                              VALUES ( '".$lastid."',
-                                      '".$HTTP_POST_VARS["lang"]."',
-                                      '".$HTTP_POST_VARS["label"]."',
+                                      '".$_POST["lang"]."',
+                                      '".$_POST["label"]."',
                                       ".$extendb."
-                                      '".$HTTP_POST_VARS["exturl"]."' )";
+                                      '".$_POST["exturl"]."' )";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             }
 
             // wohin schicken
-            if ( $HTTP_POST_VARS["add"] ) {
+            if ( $_POST["add"] ) {
                 $header = $cfg["menued"]["basis"]."/edit,".$lastid.",verify.html";
             } else {
                 if ( $_SESSION["REFERER"] != "" ) {
                     $crc = crc32(str_replace( $pathvars["virtual"], "", $_SESSION["REFERER"])).".";
                     // ausnahme fuer die startseite hier wird die crc geleert und index aus dem referer entfernt
                     if ( $_SESSION["REFERER"] == "/auth/index" ) {
-                        $crc = ""; 
+                        $crc = "";
                         $_SESSION["REFERER"] = str_replace("/index","",$_SESSION["REFERER"]);
                     }
-                    $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
+                    if ( preg_match("/wizard$/",dirname($_SERVER["HTTP_REFERER"])) ) {
+                        if ( $ausgaben["form_error"] == "" ) {
+                            $_SESSION["form_referer"] = $_SESSION["REFERER"]."/".$fixed_entry.".html";
+                            $header = $pathvars["virtual"]."/wizard/add,". DATABASE . ",".$crc.$fixed_entry.",inhalt,".$_POST["wizard"].".html";
+                        } else {
+                            $header = $pathvars["virtual"]."/wizard/add,,,,".$_POST["wizard"].".html";
+                            $_SESSION["form_error"] = array(
+                                "desc" => $ausgaben["form_error"],
+                                "post" => $_POST,
+                            );
+                        }
+                        header("Location: ".$header);
+                    } else {
+                        $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
+                    }
 
                     unset($_SESSION["referer"]);
                 } else {
                     $sql = "SELECT refid FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."=".$lastid;
                     $result  = $db -> query($sql);
-                    $lastrefid = $db -> fetch_array($result,1); 
+                    $lastrefid = $db -> fetch_array($result,1);
                     $header = $cfg["menued"]["basis"]."/list,".$lastrefid["refid"].".html";
                 }
             }

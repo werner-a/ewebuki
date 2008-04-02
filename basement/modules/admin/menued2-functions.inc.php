@@ -196,8 +196,8 @@
             global $db, $cfg;
 
             // extend - db test
-            $sql = "select extend from ".$cfg["db"]["lang"]["entries"] ;
-            $result = $db -> query($sql);
+            $sql = "select extend from ".$cfg["menued"]["db"]["lang"]["entries"] ;
+            $result = @$db -> query($sql);
             return $result;
         }
     #}
