@@ -97,8 +97,9 @@
         // ***
         $where = "";
         if ( $_GET["year"] || $_GET["month"] || $_GET["day"] ) {
+            $heute = getdate(mktime(0, 0, 0, ($_GET["month"])+1, 0, $_GET["year"]));
             if ( !$_GET["day"] ) {  
-                $day1 = "31";
+                $day1 = $heute["mday"];
                 $day2 = "1";
             } else {
                 $day1 = $_GET["day"];
