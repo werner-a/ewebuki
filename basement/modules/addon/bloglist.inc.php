@@ -95,13 +95,19 @@
 
         // funktions bereich
         // ***
+        $where = "";
+        if ( $_GET["year"] || $_GET["month"] || $_GET["day"] ) {
+            if ( !$_GET["day"] ) {  
+                $day1 = "31";
+                $day2 = "1";
+            } else {
+                $day1 = $_GET["day"];
+                $day2 = $_GET["day"];
+            }
+            $where = "AND ( Cast(SUBSTR(content,6,19) as DATETIME) < '".$_GET["year"]."-".$_GET["month"]."-".$day1." 23:59:59' AND Cast(SUBSTR(content,6,19) as DATETIME) > '".$_GET["year"]."-".$_GET["month"]."-".$day2." 00:00:00'    )";
+        }
 
-        // kurzer test ohne inhalt-selector , bringt zeitlich ein bisschen was
-#        $sql = "SELECT Cast(SUBSTR(content,6,19) as TIMESTAMP) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".$crc.".%' order by date DESC";
-#        $result = $db -> query($sql);
-#        echo $db -> num_rows($result);
-
-        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".$crc.".%' order by date DESC";
+        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".$crc.".%' order by date DESC";
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
