@@ -43,7 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
+    if ( $cfg["bloged"]["blogs"][$kat]["right"] == "" || 
+    ( priv_check(make_ebene($environment["parameter"][1]),$cfg["bloged"]["blogs"][$kat]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$kat]["right"]) ) )
+    ) {
 
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $HTTP_POST_VARS,$environment,$pathvars,$ebene;
@@ -102,22 +104,6 @@
             } else {
                 if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
             }
-        }
-
-        function make_ebene($mid, $ebene="") {
-            # call: make_ebene(refid);
-            global $db, $cfg;
-            $sql = "SELECT refid, entry
-                    FROM site_menu
-                    WHERE mid='".$mid."'";
-
-            $result = $db -> query($sql);
-            $array = $db -> fetch_array($result,$nop);
-            $ebene = "/".$array["entry"].$ebene;
-            if ( $array["refid"] != 0 ) {
-                $ebene = make_ebene($array["refid"],$ebene);
-            }
-            return $ebene;
         }
 
         $ebene = make_ebene($environment["parameter"][1]);

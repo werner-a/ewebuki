@@ -43,7 +43,9 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
+    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["right"] == "" || 
+    ( priv_check(make_ebene($environment["parameter"][1]),$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["right"]) ) )
+    ) {
 
         // datensatz holen
         $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname

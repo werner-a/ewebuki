@@ -53,7 +53,9 @@
                        ),
          "function" => array(
                       "list" => "",
+                      "list,shared" => array("menu_convert"),
                       "add" => "",
+                      "add,shared" => array("menu_convert"),
                      "edit" => "",
                    "delete" => "",
             "delete,shared" => array("menu_convert"),
@@ -68,6 +70,7 @@
                        ),
             "blogs" => array(
                     "/dummy_url" => array(
+                                        "right" => "",
                                        "wizard" => 0,
                             "own_list_template" => "",
                                         "tags"  => array("titel" => "H1",
@@ -75,7 +78,6 @@
                                                     ),
                                             ),
                        ),
-            "right" => "",
            );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
