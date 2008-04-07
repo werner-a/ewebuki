@@ -43,57 +43,103 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["bloged"]["right"]] == "" || $rechte[$cfg["bloged"]["right"]] == -1 ) {
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-        $hidedata["list"]["on"] = "on";
+    if ( $rechte[$cfg["bloglist"]["right"]] == "" || $rechte[$cfg["bloglist"]["right"]] == -1 ) {
 
-        // funktions bereich
+        // page basics
         // ***
-        $sql = "SELECT tname, max(version) as version FROM site_text 
-                WHERE tname LIKE '".crc32($environment["ebene"]).".%' AND tname REGEXP '[0-9]$' 
-                GROUP BY tname ORDER BY tname DESC";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
-        // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["bloged"]["db"]["bloged"]["rows"], $parameter, 1, 4, $getvalues );
-        $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
-        $sql = $inhalt_selector[1];
-        $ausgaben["anzahl"] = $inhalt_selector[2];
+        // warnung ausgeben
+        if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
+
+        // path fuer die schaltflaechen anpassen
+        if ( $cfg["bloglist"]["iconpath"] == "" ) $cfg["bloglist"]["iconpath"] = "/images/default/";
+
+        // label bearbeitung aktivieren
+        if ( isset($HTTP_GET_VARS["edit"]) ) {
+            $specialvars["editlock"] = 0;
+        } else {
+            $specialvars["editlock"] = -1;
+        }
 
 
-        $result = $db -> query($sql);
+
         $counter = 0;
-        while ( $data = $db -> fetch_array($result,1) ) {
-            $counter++;
-            $sql_in = "SELECT content,tname FROM site_text WHERE tname ='".$data["tname"]."' and version ='".$data["version"]."'";
-            $result_in = $db -> query($sql_in);
-            $data_in  = $db -> fetch_array($result_in,1);
-            $preg = "^\[!\]([0-9]{4})-([0-9]{2})-([0-9]{2})\40([0-9]{1,2}):([0-9]{2}):([0-9]{2})\[\/!\][\r\n|\40]*\[H1\](.*)\[\/H1\]";
+        if ( $environment["parameter"][1] ) {
+            switch($environment["parameter"][2]) {
+                case "recover":
+                    $sql = "SELECT * FROM site_text WHERE tname ='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."' ORDER BY version DESC";
+                    $result = $db -> query($sql);
+                    $data = $db -> fetch_array($result,1);
+                    $new_content =  preg_replace("/\[!\]0/","[!]1",$data["content"]);
+                    $sql = "UPDATE site_text SET content='".$new_content."' WHERE tname ='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."' AND version='".$data["version"]."'";
+                    $result = $db -> query($sql);
+                    header("Location: ".$pathvars["virtual"]."/admin/bloged/list,".$environment["parameter"][1].".html");
+                    break;
+                case "delete":
+                    $trenner = "=";
+                    if ( $environment["parameter"][3] == "all" ) {
+                        $environment["parameter"][3] = "%";
+                        $trenner = " like ";
+                    }
+                    $sql = "DELETE FROM site_text WHERE tname ".$trenner."'".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."'";
+                    $result = $db -> query($sql);
+                    header("Location: ".$pathvars["virtual"]."/admin/bloged/list,".$environment["parameter"][1].".html");
+                    break;
+                default:
+                    $hidedata["admin"]["beschriftung1"] = "Pfad";
+                    $hidedata["admin"]["beschriftung2"] = "sichtbare Einträge";
+                    $hidedata["admin"]["beschriftung3"] = "alle Einträge";
+                    $hidedata["admin_clear"]["beschriftung4"] = "<a href=\"list,".$environment["parameter"][1].",delete,all.html\">blog leeren</a>";
+                    // liste der geloeschten artikel
+                    $tag = array_shift($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"]);
+                    $sql = "SELECT max(version) as version,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".crc32(make_ebene($environment["parameter"][1])).".%' GROUP by tname having max(SUBSTR(content,4,1)) < '1'";
 
-            if ( preg_match("/$preg/",$data_in["content"],$regs) ) {
-                $dataloop["list"][$counter]["date_mk"] = mktime($regs[4],$regs[5],$regs[6],$regs[3],$regs[2],$regs[1]);
-                $dataloop["list"][$counter]["date"] = $regs[3].".".$regs[2].".".$regs[1];
-                $dataloop["list"][$counter]["teaser"] = $regs[7];
-                $dataloop["list"][$counter]["detaillink"] = substr($data_in["tname"],strrpos($data_in["tname"],".")+1).".html"; 
-                $dataloop["list"][$counter]["editlink"] = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".$data_in["tname"].",inhalt.html";
-                $dataloop["list"][$counter]["edittitel"] = "#(edittitel)";
-                $dataloop["list"][$counter]["deletelink"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$data_in["tname"].".html";
-                $dataloop["list"][$counter]["deletetitel"] = "#(deletetitel)";
+                    $result = $db -> query($sql);
+                    $ausgaben["anzahl"] = $db->num_rows($result);
+                    while ( $data = $db -> fetch_array($result,1) ) {
+                        $counter++;
+                        $sql_in = "SELECT * from site_text WHERE tname ='".$data["tname"]."' AND version='".$data["version"]."' AND SUBSTR(content,4,1) = 0";
+                        $result_in = $db -> query($sql_in);
+                        $data_in = $db -> fetch_array($result_in,1);
+                        $preg = "\[".$tag."\](.*)\[\/".$tag."\]";
+                        $preg1 = "\.([0-9]*)$";
+                        $test = preg_replace("|\r\n|","\\r\\n",$data_in["content"]);
+                        preg_match("/$preg/U",$test,$regs);
+                        if ( $regs[1] == "" ) $regs[1] = "unknown";
+                        $dataloop["blogs"][$counter]["name"] = $regs[1];
+                        preg_match("/$preg1/",$data_in["tname"],$regs);
+                        $dataloop["blogs"][$counter]["link"] = $pathvars["virtual"].make_ebene($environment["parameter"][1])."/".$regs[1].".html";
+                        $dataloop["blogs"][$counter]["anzahl1"] = "<a href=\"list,".$environment["parameter"][1].",recover,".$regs[1].".html\">wiederherstellen</a>";
+                        $dataloop["blogs"][$counter]["anzahl2"] = "<a href=\"list,".$environment["parameter"][1].",delete,".$regs[1].".html\">loeschen</a>";
+                    }
             }
-        }
-        if ( is_array($dataloop["list"]) ) {
-            sort($dataloop["list"]);
-            $dataloop["list"] = array_reverse($dataloop["list"]);
-        }
+        } else {
+            $hidedata["admin"]["beschriftung1"] = "Pfad";
+            $hidedata["admin"]["beschriftung2"] = "sichtbare Einträge";
+            $hidedata["admin"]["beschriftung3"] = "alle Einträge";
+            foreach ( $cfg["bloged"]["blogs"] as $key => $value ) {
+                $id = make_id($key);
+                $counter++;
+                $dataloop["blogs"][$counter]["link"] = "list,".$id["mid"].".html";
+                $dataloop["blogs"][$counter]["name"] = $key;
+                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".crc32($key).".%' order by date DESC";
+                $result = $db -> query($sql);
+                $dataloop["blogs"][$counter]["anzahl1"] = $db ->num_rows($result);
+                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".crc32($key).".%' order by date DESC";
+                $result = $db -> query($sql);
+                $dataloop["blogs"][$counter]["anzahl2"] = $db ->num_rows($result);
+            }
 
-        for ( $i=0; $i <= count($dataloop["list"])-1;$i++) {
-            if (is_int($i/2) ) {
-                $color = $cfg["bloged"]["color"]["a"];
-            } else {
-                $color = $cfg["bloged"]["color"]["b"];
-            }
-            $dataloop["list"][$i]["color"] = $color;
+            $ausgaben["anzahl"] = count($cfg["bloged"]["blogs"]);
+
         }
+        // seiten umschalter
+        #$inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["bloged"]["db"]["bloged"]["rows"], $parameter, 1, 4, $getvalues );
+        $ausgaben["inhalt_selector"] = "";
+        #$sql = $inhalt_selector[1];
+
 
         // +++
         // funktions bereich
@@ -111,22 +157,17 @@
             $ausgaben["form_error"] = "";
         }
 
-        // navigation erstellen
-        $ausgaben["link_new"] = "add.html";
-
         // hidden values
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-#        $mapping["main"] = crc32($environment["ebene"]).".list";
+        $mapping["main"] = "-2051315182.list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
-            $ausgaben["inaccessible"] .= "# (edittitel) #(edittitel)<br />";
-            $ausgaben["inaccessible"] .= "# (deletetitel) #(deletetitel)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -140,6 +181,8 @@
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
+
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
