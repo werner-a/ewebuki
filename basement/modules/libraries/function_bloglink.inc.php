@@ -47,6 +47,7 @@
         global $db;
         $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".crc32($url).".%' order by date DESC Limit 0,5";
         $result = $db -> query($sql);
+        $links = "<ul>";
         while ( $data = $db -> fetch_array($result,1) ) {
             $preg1 = "\.([0-9]*)$";
             preg_match("/$preg1/",$data["tname"],$id);
@@ -56,8 +57,9 @@
             if ( $regs[1] == "" ) continue;
             $regs[1] = preg_replace("|\\\\r\\\\n|","",$regs[1]);   
             $regs[1] = substr($regs[1],0,$length);
-            $links .= "<a href=\"".$url."/".$id[1].".html\">".$regs[1]."<a/><br>";
+            $links .= "<li><a href=\"".$url."/".$id[1].".html\">".$regs[1]."</a></li>";
         }
+        $links .= "</ul>";
         return $links;
     }
 
