@@ -100,7 +100,7 @@
             }
             unset($buffer);
             fclose($fp);
-        } elseif (strstr($file_result[0],"text")) {
+        } elseif ($weitere[$file_extension] == "txt" && strstr($file_result[0],"text")) {
             $array["returncode"] = 11;
         // sonstiges ablehnen
         } elseif ( $error_code == 0 ) {
