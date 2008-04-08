@@ -117,9 +117,12 @@
                     $label = substr($data["label"],0,$cfg["menu"]["level".$level]["length"]-3)."...";
                 }
 
+                $titel = $data["label"];
+                if ( $data["extend"] != "" ) $titel = $data["extend"];
+
                 // was wird wodurch ersetzt
                 $marken = array("##target##", "##link##", "##title##", "##label##", "##picture##", "##extend##", "##aktiv##");
-                $ersatz = array($target, $link, $data["label"], $label, $data["picture"], $data["extend"], $aktiv);
+                $ersatz = array($target, $link, $titel, $label, $data["picture"], $data["extend"], $aktiv);
 
                 // version mit template
                 if ( $cfg["menu"]["generate"] == false ) {
