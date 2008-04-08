@@ -80,5 +80,29 @@
         return $ebene;
     }
 
+    // findet zu einem tname die passende url
+    function tname2path($tname,$refid=0,$ebene="") {
+        global $db;
+
+        $sql = "SELECT * FROM site_menu WHERE refid=".$refid;
+        $result = $db -> query($sql);
+        while ( $data = $db -> fetch_array($result) ) {
+            if ( $ebene == "" ) {
+                $tmp_tname = $data["entry"];
+            } else {
+                $tmp_tname = crc32($ebene).".".$data["entry"];
+            }
+            $path = $ebene."/".$data["entry"];
+            $return_value = "";
+            if ( $tname == $tmp_tname ) {
+                return $path;
+            } else {
+                $return_value = tname2path($tname,$data["mid"],$path);
+            }
+            if ( $return_value != "" ) return $return_value;
+        }
+        return $return_value;
+    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
