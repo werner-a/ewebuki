@@ -92,12 +92,20 @@
                 $version = "";
                 $version_sql = "";
             }
+
+            if ( $specialvars["content_release"] == -1 ) {
+                $content_release = "AND hide=0";
+            } else {
+                $content_release = "";
+            }
+
             $sql = "SELECT html, content
                       FROM ". SITETEXT ."
                      WHERE tname='".$dbtname."'
                        AND lang='".$environment["language"]."'
                        AND label='".$label."'
                         ".$version_sql."
+                        ".$content_release."
                   ORDER BY version DESC
                      LIMIT 0,1";
             #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
