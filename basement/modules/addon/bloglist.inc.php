@@ -42,7 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    include $pathvars["moduleroot"]."admin/bloged.cfg.php";
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
     #if ( $rechte[$cfg["bloglist"]["right"]] == "" || $rechte[$cfg["bloglist"]["right"]] == -1 ) {
@@ -63,29 +63,12 @@
         $specialvars["editlock"] = -1;
     }
 
-    $leer[] = "";
-    $test = split("/",$environment["ebene"]."/".$environment["kategorie"]);
-    $cleaned_up = array_diff($test, $leer);
-
-    $data["mid"] = 0;
-    foreach ( $cleaned_up as $value ) {
-        $sql = "SELECT *
-                    FROM site_menu
-                    WHERE entry = '".$value."'
-                    AND refid = ".$data["mid"];
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-        if ( $db -> num_rows($result) == 1 ) {
-            $data = $db -> fetch_array($result,1);
-        } else {
-            break;
-        }
-    }
+    // herausfinden der id,noetig fuer neueintrag
+    include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
+    make_id($environment["ebene"]."/".$environment["kategorie"]);
     $new = $data["mid"];
 
-    // +++
-    // page basics
-
+    // erstellen der crc
     if ( $environment["ebene"] == "" ) {
         $kat = "/".$environment["kategorie"];
     } else {
@@ -93,8 +76,8 @@
     }
     $crc = crc32($kat);
 
-    // funktions bereich
-    // ***
+    // erster test einer suchanfrage per kalender
+    //
     $where = "";
     if ( $_GET["year"] || $_GET["month"] || $_GET["day"] ) {
         $heute = getdate(mktime(0, 0, 0, ($_GET["month"])+1, 0, $_GET["year"]));
@@ -107,6 +90,8 @@
         }
         $where = "AND ( Cast(SUBSTR(content,6,19) as DATETIME) < '".$_GET["year"]."-".$_GET["month"]."-".$day1." 23:59:59' AND Cast(SUBSTR(content,6,19) as DATETIME) > '".$_GET["year"]."-".$_GET["month"]."-".$day2." 00:00:00'    )";
     }
+    //
+    // erster test einer suchanfrage per kalender
 
     $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".$crc.".%' order by date DESC";
 
@@ -118,14 +103,16 @@
     $sql = $inhalt_selector[1];
     $ausgaben["anzahl"] = $inhalt_selector[2];
     $counter = 0;
-
     $result = $db -> query($sql);
     $preg1 = "\.([0-9]*)$";
+
+    // evtl wizard einbinden
     if ( $cfg["bloged"]["blogs"][$kat]["wizard"] == -1 ) {
         $editlink = "/wizard/show,";
     } else {
         $editlink = "/admin/contented/edit,";
     }
+
     while ( $data = $db -> fetch_array($result,1) ) {
         $counter++;
         $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
@@ -159,13 +146,6 @@
             $dataloop["list"][$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
         }
     }
-
-    // +++
-    // funktions bereich
-
-
-    // page basics
-    // ***
 
     // fehlermeldungen
     if ( $HTTP_GET_VARS["error"] != "" ) {
