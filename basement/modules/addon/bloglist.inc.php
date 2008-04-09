@@ -63,18 +63,24 @@
         $specialvars["editlock"] = -1;
     }
 
-    // herausfinden der id,noetig fuer neueintrag
-    include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
-    $id = make_id($environment["ebene"]."/".$environment["kategorie"]);
-    $new = $id["mid"];
-
     // erstellen der crc
     if ( $environment["ebene"] == "" ) {
         $kat = "/".$environment["kategorie"];
     } else {
         $kat = $environment["ebene"]."/".$environment["kategorie"];
     }
-    $crc = crc32($kat);
+
+    if ( array_key_exists($kat,$cfg["bloged"]["blogs"]) ) {
+        $crc = crc32($kat);
+    } else {
+        $crc = crc32($cfg["bloged"]["exclusion"][$kat]);
+        $kat = $cfg["bloged"]["exclusion"][$kat];
+    }
+
+    // herausfinden der id,noetig fuer neueintrag
+    include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
+    $id = make_id($kat);
+    $new = $id["mid"];
 
     // erster test einer suchanfrage per kalender
     //
