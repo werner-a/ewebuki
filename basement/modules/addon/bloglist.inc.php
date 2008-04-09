@@ -65,8 +65,8 @@
 
     // herausfinden der id,noetig fuer neueintrag
     include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
-    make_id($environment["ebene"]."/".$environment["kategorie"]);
-    $new = $data["mid"];
+    $id = make_id($environment["ebene"]."/".$environment["kategorie"]);
+    $new = $id["mid"];
 
     // erstellen der crc
     if ( $environment["ebene"] == "" ) {
