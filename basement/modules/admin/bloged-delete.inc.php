@@ -59,11 +59,11 @@
         $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
         foreach ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"] as $key => $value ) {
 
-            (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
+            (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
             if ( $endtag == "IMG" ) {
                 $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
             } else {
-                $preg = "\[".$value."\](.*)\[\/".$endtag."\]";
+                $preg = "\[".$value["name"]."\](.*)\[\/".$endtag."\]";
             }
             if ( preg_match("/$preg/U",$test,$regs) ) {
                 if ( $endtag == "IMG" ) {

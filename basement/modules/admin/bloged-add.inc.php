@@ -84,11 +84,17 @@
             $sqlb .= ", '".date("Y-m-d H:i:s")."'";
 
 
-            $content  = "[!]1;".date("Y-m-d H:i:s")."[/!]\n";
-
+            $content  = "[!]1;".date("Y-m-d H:i:s");
+            if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
+                foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
+                    (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
+                    $content .= "\r\n[".$value["name"]."][/".$endtag."]";
+                }
+            }
+            $content .= "[/!]\r\n";
             foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
-                (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-                $content .= "[".$value."][/".$endtag."]\n";
+                (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
+                $content .= "[".$value["name"]."][/".$endtag."]\r\n";
             }
 
             $sqla .= ", content";
