@@ -101,11 +101,13 @@
             }
 
             // new line?
-            $i++; $even = $i / $cfg[$script_name]["db"]["file"]["line"];
-            if ( is_int($even) ) {
-                $newline = $cfg[$script_name]["db"]["file"]["newline"];
-            } else {
-                $newline = "";
+            if ( $cfg[$script_name]["db"]["file"]["line"] != "" ) {
+                $i++; $even = $i / $cfg[$script_name]["db"]["file"]["line"];
+                if ( is_int($even) ) {
+                    $newline = $cfg[$script_name]["db"]["file"]["newline"];
+                } else {
+                    $newline = "";
+                }
             }
 
             // onclick link start / end
