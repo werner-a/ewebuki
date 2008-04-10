@@ -75,7 +75,7 @@
                             "own_list_template" => "",
 #                                      "addons"  => array("entry1" => array("name" =>"tag1", "show" => 0),
 #                                                         "entry2" => array("name" =>"tag2", "show" => 0)
-                                    ),
+#                                           ),
                                         "tags"  => array("titel" => array("name" => "H1", "show" => 1),
                                                         "teaser" => array("name" => "P=teaser", "show" => 1)
                                                     ),
