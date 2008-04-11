@@ -85,6 +85,7 @@
 
 
             $content  = "[!]1;".date("Y-m-d H:i:s");
+
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
                     (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
@@ -92,6 +93,7 @@
                 }
             }
             $content .= "[/!]\r\n";
+            if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) $content .= "[!]wizard:".$cfg["bloged"]["blogs"][$ebene]["wizard"]."[/!]\r\n";
             foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
                 (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
                 $content .= "[".$value["name"]."][/".$endtag."]\r\n";
@@ -105,7 +107,7 @@
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result  = $db -> query($sql);
             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-            if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] == -1 ) {
+            if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) {
                 if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
             } else {
                 if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
