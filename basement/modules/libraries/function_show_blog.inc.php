@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-     function show_blog($url,$tags,$right="",$wizard="",$template="") {
+     function show_blog($url,$tags,$right="",$wizard="",$template="",$limit="") {
         global $db,$pathvars,$ausgaben,$mapping,$hidedata;
 
         $id = make_id($url);
@@ -72,17 +72,21 @@
 
         $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".crc32($url).".%' order by date DESC";
 
-        // seiten umschalter
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], 4, $parameter, 1, 4, $getvalues );
-        $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
-        $sql = $inhalt_selector[1];
-        $ausgaben["anzahl"] = $inhalt_selector[2];
+        if ( $limit == "" ) {
+            // seiten umschalter
+            $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], 4, $parameter, 1, 4, $getvalues );
+            $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
+            $sql = $inhalt_selector[1];
+            $ausgaben["anzahl"] = $inhalt_selector[2];
+        } else {
+            $sql = $sql." LIMIT ".$limit;
+        }
         $counter = 0;
         $result = $db -> query($sql);
         $preg1 = "\.([0-9]*)$";
 
         // evtl wizard einbinden
-        if ( $wizard == -1 ) {
+        if ( $wizard != "" ) {
             $editlink = "/wizard/show,";
         } else {
             $editlink = "/admin/contented/edit,";
@@ -123,7 +127,7 @@
             if ( $right == "" || 
             ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
             ) {
-                $array[$counter]["deletelink"] = "<a href=\"admin/bloged/delete,".$new.",".$regs[1].".html\">delete</a>";
+                $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,".$new.",".$regs[1].".html\">delete</a>";
                 $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
             }
         }
