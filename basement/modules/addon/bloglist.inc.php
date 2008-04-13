@@ -81,7 +81,14 @@
         }
     }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$cfg["bloged"]["blogs"][$kat]["own_list_template"]);
+    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"]);
+
+    // was anzeigen
+    if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] == "" ) {
+        $mapping["main"] = "-2051315182.list";
+    } else {
+        $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];
+    }
 
     // fehlermeldungen
     if ( $HTTP_GET_VARS["error"] != "" ) {

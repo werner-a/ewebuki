@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-     function show_blog($url,$tags,$right="",$wizard="",$template="",$limit="") {
+     function show_blog($url,$tags,$right="",$wizard="",$limit="") {
         global $db,$pathvars,$ausgaben,$mapping,$hidedata;
 
         $id = make_id($url);
@@ -90,12 +90,6 @@
             $editlink = "/wizard/show,";
         } else {
             $editlink = "/admin/contented/edit,";
-        }
-
-        if ( $template == "" ) {
-            $mapping["main"] = "-2051315182.list";
-        } else {
-            $mapping["main"] = "-2051315182.".$template;
         }
 
         while ( $data = $db -> fetch_array($result,1) ) {
