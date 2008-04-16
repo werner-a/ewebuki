@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
      function show_blog($url,$tags,$right="",$wizard="",$limit="") {
-        global $db,$pathvars,$ausgaben,$mapping,$hidedata;
+        global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment;
 
         $id = make_id($url);
         $new = $id["mid"];
@@ -70,7 +70,13 @@
         //
         // erster test einer suchanfrage per kalender
 
-        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".crc32($url).".%' order by date DESC";
+        $tname = crc32($url).".%";
+
+        if ( $environment["parameter"][2] != "" ) {
+            $tname = crc32($url).".".$environment["parameter"][2];
+        }
+
+        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".$tname."' order by date DESC";
 
         if ( $limit == "" ) {
             // seiten umschalter
