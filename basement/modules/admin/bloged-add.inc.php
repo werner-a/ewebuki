@@ -48,7 +48,7 @@
     ) {
 
         function create( $id ) {
-            global $cfg,$db, $header, $debugging, $HTTP_POST_VARS,$environment,$pathvars,$ebene;
+            global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
 
             $sqla  = "lang";
             $sqlb  = "'de'";
@@ -86,6 +86,16 @@
 
             $content  = "[!]1;".date("Y-m-d H:i:s");
 
+
+            // fuellen per posts
+            if ( $_POST["send"] != "" ) {
+                foreach ( $_POST as $key => $value ) {
+                    if ( $key == "send" ) continue;
+                    $content .= "\r\n[".$key."]".$value."[/".$key."]";
+                }
+                $header = $pathvars["virtual"].$ebene.".html";
+            }
+
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
                     (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
@@ -94,9 +104,11 @@
             }
             $content .= "[/!]\r\n";
             if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) $content .= "[!]wizard:".$cfg["bloged"]["blogs"][$ebene]["wizard"]."[/!]\r\n";
-            foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
-                (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
-                $content .= "[".$value["name"]."][/".$endtag."]\r\n";
+            if ( is_array($cfg["bloged"]["blogs"][$ebene]["tags"]) ) {
+                foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
+                    (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
+                    $content .= "[".$value["name"]."][/".$endtag."]\r\n";
+                }
             }
 
             $sqla .= ", content";
