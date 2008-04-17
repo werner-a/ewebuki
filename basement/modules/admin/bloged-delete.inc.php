@@ -57,24 +57,26 @@
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,$nop);
         $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
-        foreach ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"] as $key => $value ) {
-
-            (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
-            if ( $endtag == "IMG" ) {
-                $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
-            } else {
-                $preg = "\[".$value["name"]."\](.*)\[\/".$endtag."\]";
-            }
-            if ( preg_match("/$preg/U",$test,$regs) ) {
+        if ( is_array($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"]) ){
+            foreach ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"] as $key => $value ) {
+    
+                (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
                 if ( $endtag == "IMG" ) {
-                    $$key = $regs[2].".".$regs[1];
+                    $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
                 } else {
-                    $$key = str_replace('\r\n',"<br>",$regs[1]);
+                    $preg = "\[".$value["name"]."\](.*)\[\/".$endtag."\]";
                 }
-            } else {
-                $$key = "unknown";
+                if ( preg_match("/$preg/U",$test,$regs) ) {
+                    if ( $endtag == "IMG" ) {
+                        $$key = $regs[2].".".$regs[1];
+                    } else {
+                        $$key = str_replace('\r\n',"<br>",$regs[1]);
+                    }
+                } else {
+                    $$key = "unknown";
+                }
+                $dataloop["list"][$counter][$key] = $$key;
             }
-            $dataloop["list"][$counter][$key] = $$key;
         }
             $dataloop["list"][$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
 
