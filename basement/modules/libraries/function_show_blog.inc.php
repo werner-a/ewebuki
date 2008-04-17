@@ -129,6 +129,7 @@
             ) {
                 $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,".$new.",".$regs[1].".html\">delete</a>";
                 $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
+                $array[$counter]["id"] = $regs[1];
             }
         }
         return $array;
