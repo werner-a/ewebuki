@@ -124,12 +124,12 @@
 
             $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
             $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
+            $array[$counter]["id"] = $regs[1];
             if ( $right == "" || 
             ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
             ) {
                 $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,".$new.",".$regs[1].".html\">delete</a>";
                 $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
-                $array[$counter]["id"] = $regs[1];
             }
         }
         return $array;
