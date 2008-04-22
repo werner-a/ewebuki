@@ -60,11 +60,11 @@
         if ( is_array($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"]) ){
             foreach ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"] as $key => $value ) {
     
-                (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
+                (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
                 if ( $endtag == "IMG" ) {
                     $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
                 } else {
-                    $preg = "\[".$value["name"]."\](.*)\[\/".$endtag."\]";
+                    $preg = "\[".$value."\](.*)\[\/".$endtag."\]";
                 }
                 if ( preg_match("/$preg/U",$test,$regs) ) {
                     if ( $endtag == "IMG" ) {

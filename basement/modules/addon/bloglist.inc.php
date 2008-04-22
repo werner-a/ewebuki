@@ -76,9 +76,7 @@
 
     // erstellen der tags die angezeigt werden
     foreach ( $cfg["bloged"]["blogs"][$kat]["tags"] as $key => $value) {
-        if ( $value["show"] == 1 ) {
-            $tags[$key] = $value["name"];
-        }
+        $tags[$key] = $value;
     }
 
     $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"]);

@@ -98,16 +98,16 @@
 
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
-                    (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
-                    $content .= "\r\n[".$value["name"]."][/".$endtag."]";
+                    (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
+                    $content .= "\r\n[".$value."][/".$endtag."]";
                 }
             }
             $content .= "[/!]\r\n";
             if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) $content .= "[!]wizard:".$cfg["bloged"]["blogs"][$ebene]["wizard"]."[/!]\r\n";
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["tags"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
-                    (strpos($value["name"],"=")) ? $endtag= substr($value["name"],0,strpos($value["name"],"=")): $endtag=$value["name"];
-                    $content .= "[".$value["name"]."][/".$endtag."]\r\n";
+                    (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
+                    $content .= "[".$value."][/".$endtag."]\r\n";
                 }
             }
 
