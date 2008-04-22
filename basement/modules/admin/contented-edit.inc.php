@@ -305,17 +305,19 @@
             $ausgaben["tn"] = makece("ceform", "content", $form_values["content"]);
 
 
-            // vogelwilde regex die alte & neue file links findet
+            // vogelwilde regexen die alte & neue links zu ewebuki-files findet
             // und viel arbeit erspart
-            preg_match_all("/[_\/]([0-9]+)[.\/]/",$form_values["content"],$found);
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",$form_values["content"],$found1);
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",$form_values["content"],$found2);
+            $found = array_merge($found1[1],$found2[1]);
             $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
 
             // file memo auslesen und zuruecksetzen
             if ( is_array($_SESSION["file_memo"]) ) {
-                $array = array_merge($_SESSION["file_memo"],$found[1]);
+                $array = array_merge($_SESSION["file_memo"],$found);
 //                 unset($_SESSION["file_memo"]);
             } else {
-                $array = $found[1];
+                $array = $found;
             }
 
             // wenn es thumbnails gibt, anzeigen
