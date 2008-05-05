@@ -77,8 +77,9 @@
 
         $tname = crc32($url).".%";
 
-        if ( $environment["parameter"][3] != "" ) {
-            $tname = crc32($url).".".$environment["parameter"][3];
+        if ( $environment["parameter"][2] != "" ) {
+
+            $tname = crc32($url).".".$environment["parameter"][2];
         }
 
         $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".$tname."' order by date DESC";
@@ -108,9 +109,9 @@
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
             foreach ( $tags as $key => $value ) {
+
                 (is_array($value)) ? $value = $value["tag"] : $nop = "";
                 (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-
                 $preg = "(\[".$value.".*\])(.*)\[\/".$endtag."\]";
                 if ( preg_match("/$preg/U",$test,$regs) ) {
                     $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
@@ -119,6 +120,11 @@
                     $$key = "unknown";
                 }
                 $array[$counter][$key] = tagreplace($rep_tag);
+                if ( preg_match("/^\[IMG/",$rep_tag,$regs) ) {
+                    $image_para = explode("/",$rep_tag);
+                    $array[$counter][$key."_img_art"] = $image_para[2];
+                    $array[$counter][$key."_img_id"] = $image_para[3];
+                }
                 $array[$counter][$key."_org"] = $org_tag;
             }
 
@@ -138,7 +144,7 @@
             if ( $right == "" || 
             ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
             ) {
-                $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,,".$regs[1].",".$new.".html\">delete</a>";
+                $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",,".$new.".html\">delete</a>";
                 $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
             }
         }
