@@ -12,9 +12,10 @@
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <fieldset>
         <!--##loop-list-->
-        <h2>!{datum} - <a href="!{detaillink}">!{titel}</a></h2>
-        <div id="eEd"><img style="float:right" src=/file/picture/small/img_!{image}></img>!{teaser}
-        </div>
+        <h2>!{datum} - <a href="!{detaillink}">!{titel_org}</a></h2>
+        !{image}
+        !{teaser}
+
         <!--##cont-->
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />

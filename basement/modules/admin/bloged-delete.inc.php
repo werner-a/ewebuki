@@ -43,51 +43,17 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["right"] == "" || 
-    ( priv_check(make_ebene($environment["parameter"][1]),$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["right"]) ) )
+    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"] == "" || 
+    ( priv_check(make_ebene($environment["parameter"][4]),$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) ) )
     ) {
-
-        // datensatz holen
-        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname
-                    FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
-                    WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][2]."' AND
-                    content REGEXP '^\\\[!\\\]1'";
-
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-        $data = $db -> fetch_array($result,$nop);
-        $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
-        if ( is_array($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"]) ){
-            foreach ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"] as $key => $value ) {
-    
-                (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-                if ( $endtag == "IMG" ) {
-                    $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
-                } else {
-                    $preg = "\[".$value."\](.*)\[\/".$endtag."\]";
-                }
-                if ( preg_match("/$preg/U",$test,$regs) ) {
-                    if ( $endtag == "IMG" ) {
-                        $$key = $regs[2].".".$regs[1];
-                    } else {
-                        $$key = str_replace('\r\n',"<br>",$regs[1]);
-                    }
-                } else {
-                    $$key = "unknown";
-                }
-                $dataloop["list"][$counter][$key] = $$key;
-            }
-        }
-            $dataloop["list"][$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
-
-        // page basics
-        // ***
+        $url = make_ebene($environment["parameter"][4]);
+        $dataloop["list"] = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"],"","","");
 
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].",".$environment["parameter"][2].".html";
+        $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
         $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
 
         // hidden values
@@ -109,29 +75,24 @@
         // +++
         // unzugaengliche #(marken) sichtbar machen
 
-        // wohin schicken
-        #n/a
-
-        // +++
-        // page basics
-
         // das loeschen wurde bestaetigt, loeschen!
         // ***
         if (  $HTTP_POST_VARS["send"] != "" ) {
+            $sql = "SELECT content FROM site_text WHERE tname like '".crc32(make_ebene($environment["parameter"][4])).".".$environment["parameter"][3]."'";
+            $result  = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
             $data["content"] = preg_replace("/^\[!\]1/","[!]0",$data["content"]);
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "UPDATE ".$cfg["bloged"]["db"]["bloged"]["entries"]." SET content = '".$data["content"]."' WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][2]."' AND content REGEXP '^\\\[!\\\]1'";
+                $sql = "UPDATE ".$cfg["bloged"]["db"]["bloged"]["entries"]." SET content = '".$data["content"]."' WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".crc32(make_ebene($environment["parameter"][4])).".".$environment["parameter"][3]."' AND content REGEXP '^\\\[!\\\]1'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result)<br />");
             }
-            // +++
-            // ohne fehler menupunkte loeschen
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][1]).".html");
+                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][4]).".html");
             }
         }
         // +++
@@ -140,6 +101,5 @@
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

@@ -79,8 +79,9 @@
         $tags[$key] = $value;
     }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"]);
+    $limit=$environment["parameter"][1]+0;
 
+    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit);
     // was anzeigen
     if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] == "" ) {
         $mapping["main"] = "-2051315182.list";

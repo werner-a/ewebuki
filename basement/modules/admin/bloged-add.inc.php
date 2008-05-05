@@ -83,6 +83,8 @@
             $sqla .= ", changed";
             $sqlb .= ", '".date("Y-m-d H:i:s")."'";
 
+            $sqla .= ", html";
+            $sqlb .= ", 0";
 
             $content  = "[!]1;".date("Y-m-d H:i:s");
 
@@ -94,20 +96,28 @@
                     $content .= "\r\n[".$key."]".$value."[/".$key."]";
                 }
                 $header = $pathvars["virtual"].$ebene.".html";
-            }
-
-            if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
-                foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
-                    (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-                    $content .= "\r\n[".$value."][/".$endtag."]";
+            } else {
+                if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
+                    foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
+                        (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
+                        $content .= "\r\n[".$value."][/".$endtag."]";
+                    }
                 }
             }
             $content .= "[/!]\r\n";
             if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) $content .= "[!]wizard:".$cfg["bloged"]["blogs"][$ebene]["wizard"]."[/!]\r\n";
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["tags"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
+                    if (is_array($value)) {
+                        $cont = $value["content"];
+                        $para = $value["parameter"];
+                        $value = $value["tag"];
+                    } else {
+                        $cont = "";
+                        $para = "";
+                    }
                     (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-                    $content .= "[".$value."][/".$endtag."]\r\n";
+                    $content .= "[".$value.$para."]".$cont."[/".$endtag."]\r\n";
                 }
             }
 

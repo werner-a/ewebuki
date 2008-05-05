@@ -46,6 +46,11 @@
      function show_blog($url,$tags,$right="",$wizard="",$limit="") {
         global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment;
 
+        // parameter-erklaerung
+        // 1: vorgesehen fuer inhalt_selector
+        // 2: aufruf eines einzigen contents
+        // 3: faqlink
+
         $id = make_id($url);
         $new = $id["mid"];
 
@@ -72,21 +77,22 @@
 
         $tname = crc32($url).".%";
 
-        if ( $environment["parameter"][2] != "" ) {
-            $tname = crc32($url).".".$environment["parameter"][2];
+        if ( $environment["parameter"][3] != "" ) {
+            $tname = crc32($url).".".$environment["parameter"][3];
         }
 
         $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".$tname."' order by date DESC";
 
-        if ( $limit == "" ) {
+        if ( !strpos($limit,"," ) ){
             // seiten umschalter
-            $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], 4, $parameter, 1, 4, $getvalues );
+            $inhalt_selector = inhalt_selector( $sql, $limit, 4, $parameter, 1, 10, $getvalues );
             $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
             $sql = $inhalt_selector[1];
             $ausgaben["anzahl"] = $inhalt_selector[2];
         } else {
             $sql = $sql." LIMIT ".$limit;
         }
+
         $counter = 0;
         $result = $db -> query($sql);
         $preg1 = "\.([0-9]*)$";
@@ -102,33 +108,37 @@
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
             foreach ( $tags as $key => $value ) {
+                (is_array($value)) ? $value = $value["tag"] : $nop = "";
                 (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-                if ( $endtag == "IMG" ) {
-                    $preg = "\[IMG=\/file\/(png|jpg|gif)\/([0-9]*)\/(.*)\[\/".$endtag."\]";
-                } else {
-                    $preg = "(\[".$value.".*\])(.*)\[\/".$endtag."\]";
-                }
+
+                $preg = "(\[".$value.".*\])(.*)\[\/".$endtag."\]";
                 if ( preg_match("/$preg/U",$test,$regs) ) {
-                    if ( $endtag == "IMG" ) {
-                        $$key = $regs[2].".".$regs[1];
-                    } else {
-                        $$key = str_replace('\r\n',"<br>",$regs[2]);
-                    }
+                    $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
+                    $org_tag = str_replace('\r\n',"<br>",$regs[2]);
                 } else {
                     $$key = "unknown";
                 }
-                $array[$counter][$key] = $$key;
+                $array[$counter][$key] = tagreplace($rep_tag);
+                $array[$counter][$key."_org"] = $org_tag;
             }
 
             preg_match("/$preg1/",$data["tname"],$regs);
 
             $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
             $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
+            $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
             $array[$counter]["id"] = $regs[1];
+            if ( $environment["parameter"][3] == $regs[1] ) {
+                #$array[$counter]["faqcontent"] = tagreplace($teaser)."<br>";
+                $array[$counter]["faqcontent"] = $array[$counter]["faq"];
+            } else {
+                $array[$counter]["faqcontent"] = "";
+            }
+
             if ( $right == "" || 
             ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
             ) {
-                $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,".$new.",".$regs[1].".html\">delete</a>";
+                $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,,".$regs[1].",".$new.".html\">delete</a>";
                 $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
             }
         }
