@@ -78,13 +78,13 @@
         // das loeschen wurde bestaetigt, loeschen!
         // ***
         if (  $HTTP_POST_VARS["send"] != "" ) {
-            $sql = "SELECT content FROM site_text WHERE tname like '".crc32(make_ebene($environment["parameter"][4])).".".$environment["parameter"][3]."'";
+            $sql = "SELECT content FROM site_text WHERE tname like '".crc32(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."'";
             $result  = $db -> query($sql);
             $data = $db -> fetch_array($result,1);
             $data["content"] = preg_replace("/^\[!\]1/","[!]0",$data["content"]);
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "UPDATE ".$cfg["bloged"]["db"]["bloged"]["entries"]." SET content = '".$data["content"]."' WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".crc32(make_ebene($environment["parameter"][4])).".".$environment["parameter"][3]."' AND content REGEXP '^\\\[!\\\]1'";
+                $sql = "UPDATE ".$cfg["bloged"]["db"]["bloged"]["entries"]." SET content = '".$data["content"]."' WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".crc32(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."' AND content REGEXP '^\\\[!\\\]1'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result)<br />");
