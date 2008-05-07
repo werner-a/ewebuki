@@ -119,6 +119,7 @@
                 } else {
                     $$key = "unknown";
                 }
+                $array[$counter][$key."_org"] = $org_tag;
                 $array[$counter][$key] = tagreplace($rep_tag);
                 if ( preg_match("/^\[IMG/",$rep_tag,$regs) ) {
                     $image_para = explode("/",$rep_tag);

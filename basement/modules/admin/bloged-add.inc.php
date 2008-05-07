@@ -93,6 +93,14 @@
             if ( $_POST["send"] != "" ) {
                 foreach ( $_POST as $key => $value ) {
                     if ( $key == "send" ) continue;
+                    if ( is_array($value) ) {
+                        $time = mktime(0,0,0,(int)$value[1],(int)$value[0],(int)$value[2]);
+                        if ( $value[0] == "" ) {
+                            $time = mktime(1,0,0,1,1,1970);
+                        }
+                        $value = $time;
+                    }
+
                     $content .= "\r\n[".$key."]".$value."[/".$key."]";
                 }
                 $header = $pathvars["virtual"].$ebene.".html";
