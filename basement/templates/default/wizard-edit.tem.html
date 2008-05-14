@@ -1,0 +1,355 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Wizard-Edit</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+
+<div id="vorschau" style="display:none;"></div>
+<div class="clearer"></div>
+<div id="wizard">
+    !#ausgaben_ce_script
+    <form method="post" action="!#ausgaben_form_aktion" enctype="multipart/form-data" id="cEd">
+
+        <div id="wiz_ed">
+            #(inhalt)
+            <p>!#ausgaben_form_error</p>
+
+<!--  IMG-Tag bearbeiten  -->
+            <!--##hide-img-->
+            #(img_inhalt)
+            <!--##show-->
+            <!--##hide-imgpreview-->
+            <img src="!{src}" alt="Preview" style="float:right;margin:0 0 10px 10px;" />
+            <!--##show-->
+            <!--##hide-img-->
+            <fieldset >
+                <label>#(description)</label>
+                <input type="text" name="description" value="!{description}" /><br />
+                <input type="submit" id="eb_submit" name="add[]" value="#(get_file)" title="Datei auswaehlen" class="button" />
+            </fieldset>
+
+            <fieldset>
+                <legend>#(values)</legend>
+                <label>#(top)</label>
+                <input type="text" name="tagwerte[4]" value="!#ausgaben_tagwerte4" class="small" /><br />
+                <label>#(bottom)</label>
+                <input type="text" name="tagwerte[5]" value="!#ausgaben_tagwerte5" class="small" /><br />
+                <label>#(side)</label>
+                <input type="text" name="tagwerte[6]" value="!#ausgaben_tagwerte6" class="small" /><br />
+                <label>#(border)</label>
+                <input type="text" name="tagwerte[2]" value="!#ausgaben_tagwerte2" class="small" />
+            </fieldset>
+
+            <fieldset>
+                <fieldset >
+                    <legend>#(size)</legend>
+                    <!--##loop-show-->
+                    <label class="cbra">
+                        <input type="radio" name="tagwerte[0]" value="!{value}"!{check} />!{label}
+                    </label>
+                    <!--##cont-->
+                </fieldset>
+
+                <fieldset >
+                    <legend>#(align)</legend>
+                    <!--##loop-align-->
+                    <label class="cbra">
+                        <input type="radio" name="tagwerte[1]" value="!{value}"!{check} />!{label}
+                    </label>
+                    <!--##cont-->
+                </fieldset>
+
+                <fieldset >
+                    <legend>#(detail_size)</legend>
+                    <!--##loop-size-->
+                    <label class="cbra">
+                        <input type="radio" name="tagwerte[3]" value="!{value}"!{check} />!{label}
+                    </label>
+                    <!--##cont-->
+                </fieldset>
+            </fieldset>
+            <!--##show-->
+
+<!--  TAB-Tag bearbeiten  -->
+            <!--##hide-tab-->
+            #(tab_inhalt)
+            <fieldset>
+                <legend>#(csvtab)</legend>
+                <input type="file" name="csv_upload"/><br />
+                <input type="submit" name="refresh[]" value="#(refresh)" class="button" />
+            </fieldset>
+
+            <fieldset>
+                <legend>#(edit_cells)</legend>
+                !#ausgaben_tabelle
+            </fieldset>
+
+            <fieldset>
+                <legend>#(dimension)</legend>
+                <label>#(num_col)</label>
+                <input type="text" name="num_col" value="!#ausgaben_num_col" class="small" /><br />
+                <label>#(num_row)</label>
+                <input type="text" name="num_row" value="!#ausgaben_num_row" class="small" /><br />
+                <input type="submit" name="refresh[]" value="#(refresh)" class="button" />
+            </fieldset>
+
+            <fieldset>
+                <legend>#(attributes)</legend>
+                <label>#(align)</label>
+                <input type="text" name="tagwerte[0]" value="!#ausgaben_tagwerte0" class="small" /><br />
+                <label>#(width)</label>
+                <input type="text" name="tagwerte[1]" value="!#ausgaben_tagwerte1" class="small" /><br />
+                <label>#(border)</label>
+                <input type="text" name="tagwerte[2]" value="!#ausgaben_tagwerte2" class="small" /><br />
+                <label>#(cellspacing)</label>
+                <input type="text" name="tagwerte[3]" value="!#ausgaben_tagwerte3" class="small" /><br />
+                <label>#(cellpadding)</label>
+                <input type="text" name="tagwerte[4]" value="!#ausgaben_tagwerte4" class="small" /><br />
+            </fieldset>
+            <!--##show-->
+
+<!--  SEL-Tag bearbeiten  -->
+            <!--##hide-sel-->
+            #(sel_inhalt)
+            <fieldset>
+                <label>#(description)</label>
+                <input type="text" name="description" value="!#ausgaben_description" /><br />
+                <input type="hidden" name="tagwerte[0]" value="!#ausgaben_tagwerte0" />
+            </fieldset>
+
+            <fieldset>
+                <label>#(add_sel)</label>
+                <input type="file" name="new_sel" value="hallo" /><br />
+                <button type="submit" name="sel[]" value="#(get_sel)" class="button">#(get_sel)</button>
+            </fieldset>
+
+            <fieldset>
+                <fieldset >
+                    <legend>#(detail_size)</legend>
+                    <!--##loop-size-->
+                    <label class="cbra">
+                        <input type="radio" name="tagwerte[1]" value="!{value}"!{check} />!{label}
+                    </label>
+                    <!--##cont-->
+                </fieldset>
+
+                <fieldset >
+                    <legend>#(attributes)</legend>
+                    <label class="cbra">
+                        <input type="checkbox" name="tagwerte[2]" value="TRUE"!{check_thumb} />#(show_thumbs)
+                    </label>
+                    <label class="cbra">
+                        <input type="checkbox" name="tagwerte[4]" value="l"!{check_lbox} />#(lightbox)
+                    </label>
+                </fieldset>
+            </fieldset>
+
+            <fieldset >
+                <legend>#(grid)</legend>
+                <ul id="grid_list">
+                    <!--##loop-list_images-->
+                    <li class="thumbs">
+                        <img src="!{src}" alt="!{alt}" title="!{title} g(edit)" />
+                        <p>
+                            <input type="checkbox" name="tagwerte[3][]" value="!{id}"!{checked} onclick="session_update(!#ausgaben_tagwerte0,!{id});" />
+                        </p>
+                    </li>
+                    <!--##cont-->
+                </ul>
+            </fieldset>
+
+            <script type="text/javascript">
+                function session_update(compid,fileid) {
+                    new Ajax.Request('/auth/admin/fileed/compilation,' + compid + ',' + fileid + '.html?ajax',
+                                    {asynchronous:true
+                                    }
+                    );
+                }
+            </script>
+            <!--##show-->
+
+<!-- Standard-Editor-Bereich -->
+            <!--##hide-default-->
+            <fieldset class="ce">
+                <div style="float:left"><script type="text/javascript">ebToolbar('T');</script></div>
+                <textarea id="content" name="!#ausgaben_name" class="ta_norm" cols="80" rows="15" style="width:100%" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
+                <div style="float:left"><script type="text/javascript">ebToolbar('B');</script></div>
+                <script type="text/javascript" language="JavaScript">
+                    <!--
+                    // This is for toolbar plugins
+                    var ebCanvas = document.getElementById('content');
+                    //-->
+                </script>
+            </fieldset>
+            <!--##show-->
+
+<!--  LINK-Tag bearbeiten  -->
+            <!--##hide-link-->
+            #(link_inhalt)
+            <fieldset >
+                <label>#(description)</label>
+                <input type="text" name="description" value="!#ausgaben_description" /><br />
+                <label>#(link)</label>
+                <input type="text" name="tagwerte[0]" value="!#ausgaben_tagwerte0" /><br />
+                <label>#(title)</label>
+                <input type="text" name="tagwerte[2]" value="!#ausgaben_tagwerte2" /><br />
+            </fieldset>
+
+            <fieldset>
+                <legend>#(target)</legend>
+                <!--##loop-target-->
+                <label class="cbra">
+                    <input type="radio" name="tagwerte[1]" value="!{value}"!{check} />!{label}
+                </label>
+                <!--##cont-->
+            </fieldset>
+            <!--##show-->
+
+            <div class="clearer"></div>
+
+        </div>
+
+
+        <fieldset class="buttons">
+            <button type="button" onclick="preview();" class="button">g(preview)</button>
+            <button type="submit" name="send[]" value="g(send)" accesskey="s" class="button">g(send)</button>
+            <button type="reset" name="reset" value="g(reset)" accesskey="r" class="button">g(reset)</button>
+            <button type="submit" name="cancel[]" value="g(abort)" accesskey="a" class="button">g(abort)</button>
+            <div class="clearer">&nbsp;</div>
+        </fieldset>
+
+    </form>
+</div>
+<script type="text/javascript">
+    function preview() {
+        if ( $('vorschau').style.display == 'none' ) {
+            var update = new Ajax.Updater('vorschau',
+                                        '!#ausgaben_form_aktion',
+                                        {
+                                            asynchronous:true,
+                                            parameters: 'ajax=on&send[]=send&' + Form.serialize('cEd'),
+                                            onSuccess:function(){
+                                                new Effect.Parallel(
+                                                    [
+                                                        new Effect.BlindDown('vorschau'),
+                                                        new Effect.BlindUp('wiz_ed')
+                                                    ]
+                                                );
+                                            }
+                                        }
+            );
+            return false;
+        } else {
+            new Effect.Parallel(
+                [
+                    new Effect.BlindUp('vorschau'),
+                    new Effect.BlindDown('wiz_ed')
+                ]
+            );
+        }
+    }
+</script>
+!#ausgaben_output
+!#ausgaben_inaccessible
+<!--##end-->
+
+
+
+
+<hr />
+    <div id="substance" class="wizard">
+        !#ausgaben_ce_script
+        <form method="post" action="!#ausgaben_form_aktion" enctype="multipart/form-data" id="cEd">
+
+        <div id="wiz_ed">
+            #(inhalt)
+            <p>!#ausgaben_form_error</p>
+
+
+
+
+
+            <!--##hide-list-->
+            <fieldset class="ce">
+                Einzelne Listenpunkte bitte durch Leerzeile trennen!
+            </fieldset>
+            <!--##show-->
+
+            <div class="clearer">&nbsp;</div>
+
+        </div>
+
+            <div class="clearer">&nbsp;</div>
+
+        </form>
+
+        <script type="text/javascript">
+//             var update = new Ajax.PeriodicalUpdater('preview',
+//                                                     '!#ausgaben_form_aktion',
+//                                                     {
+//                                                         asynchronous:true,
+//                                                         parameters: 'ajax=on&send[]=send&' + Form.serialize('cEd'),
+//                                                         frequency: 2,
+//                                                         encoding: 'LATIN9',
+// //                                                         encoding: 'UTF-8',
+//                                                         onSuccess:function(){
+// //                                                             new Effect.Highlight('preview');
+//                                                             update.options.parameters = 'ajax=on&send[]=send&' + Form.serialize('cEd');
+//                                                         }
+//                                                     }
+//             );
+            function preview() {
+                if ( $('vorschau').style.display == 'none' ) {
+                    var update = new Ajax.Updater('vorschau',
+                                                '!#ausgaben_form_aktion',
+                                                {
+                                                    asynchronous:true,
+                                                    parameters: 'ajax=on&send[]=send&' + Form.serialize('cEd'),
+                                                    onSuccess:function(){
+                                                        new Effect.Parallel(
+                                                            [
+                                                                new Effect.BlindDown('vorschau'),
+                                                                new Effect.BlindUp('wiz_ed')
+                                                            ]
+                                                        );
+                                                    }
+                                                }
+                    );
+                    return false;
+//                     new Effect.BlindDown('vorschau');
+//                     new Effect.BlindUp('wiz_ed');
+                } else {
+                    new Effect.Parallel(
+                        [
+                            new Effect.BlindUp('vorschau'),
+                            new Effect.BlindDown('wiz_ed')
+                        ]
+                    );
+//                     new Effect.BlindUp('vorschau');
+//                     new Effect.BlindDown('wiz_ed');
+                }
+//                 new Effect.Highlight('pre');
+//                 new Effect.Highlight('pre');
+//                 var update = new Ajax.Updater('preview',
+//                                             '!#ausgaben_form_aktion',
+//                                             {
+//                                                 asynchronous:true,
+//                                                 parameters: 'ajax=on&send[]=send&' + Form.serialize('cEd'),
+//                                             }
+//                 );
+            }
+//             preview();
+        </script>
+
+        !#ausgaben_output
+        !#ausgaben_inaccessible
+
+    </div>
+<!--##end-->
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Wizard-Edit</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+
+<div id="vorschau" style="display:none;"></div>
+<div class="clearer"></div>
+<div id="wizard">
+
+            #(inhalt)
+
+            <!--##hide-releases-->
+            #(release)
+            <ul style="list-style:none;padding:1px;border:1px solid #eeeeee;width:500px;">
+                <!--##loop-releases-->
+                <li style="background-color:!{color};margin:0;padding:0.2em;">
+                    <a href="!{unlock}" style="float:right;">[unlock]</a>
+                    <a href="!{release}" style="float:right;">[release]</a>
+                    <b>!{titel}</b><br />
+                    (<a href="!{view}">!{path}</a>)
+                </li>
+                <!--##cont-->
+            </ul>
+            <!--##show-->
+
+            <!--##hide-nop-->
+            #(leer)
+            <!--##show-->
+
+            !#ausgaben_output
+
+</div>
+<!--##end-->
+</body>
+</html>

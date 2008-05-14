@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Wizard-Edit</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+
+<div id="vorschau" style="display:none;"></div>
+<div class="clearer"></div>
+<div id="wizard">
+            #(inhalt)
+            <!--##hide-add_menu-->
+            <form method="post" action="!#ausgaben_form_aktion" id="">
+                <p>!#ausgaben_form_error</p>
+                <fieldset>
+                    <legend>#(menued)</legend>
+                    <label for="entry">#(entry)</label>
+                    !#element_entry<br />
+                    <label for="label">#(label)</label>
+                    !#element_label<br />
+            <!--##show-->
+            <!--##hide-extend-->
+                    <label for="label">#(extend)</label>
+                    !#element_extend<br />
+            <!--##show-->
+            <!--##hide-add_menu-->
+                </fieldset>
+
+                <fieldset>
+                    <legend>#(wizard)</legend>
+                    <ul class="no-style" style="width:90%">
+                        <!--##loop-wizards_admin-->
+                        <li>
+                            <label class="cbra" style="width:80%"><input type="radio" name="wizard" value="!{value}"!{check} />!{name} <a href="!{link}">#(edit_default)</a></label>
+                            <div class="clearer"></div>
+                        </li>
+                        <!--##cont-->
+                        <!--##loop-wizards_default-->
+                        <li>
+                            <label class="cbra"><input type="radio" name="wizard" value="!{value}"!{check} />!{name}</label>
+                            <div class="clearer"></div>
+                        </li>
+                        <!--##cont-->
+                    </ul>
+                </fieldset>
+
+                <fieldset class="buttons">
+                    <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+                    <input type="hidden" name="refid" value="!#ausgaben_refid" class="hidden" />
+                    <input type="hidden" name="lang" value="de" class="hidden" />
+                    <button type="submit" name="send[]" value="g(send)" accesskey="s" class="button">g(send)</button>
+                    <button type="button" name="cancel[]" value="g(abort)" accesskey="a" class="button" onclick="location='!#ausgaben_form_referer'">g(abort)</button>
+                    <div class="clearer">&nbsp;</div>
+                </fieldset>
+            </form>
+            <!--##show-->
+
+            !#ausgaben_output
+            !#ausgaben_inaccessible
+</div>
+<!--##end-->
+
+</body>
+</html>

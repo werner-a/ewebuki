@@ -94,7 +94,7 @@
             }
 
             if ( $specialvars["content_release"] == -1 ) {
-                $content_release = "AND hide=0";
+                $content_release = "AND hide=1";
             } else {
                 $content_release = "";
             }

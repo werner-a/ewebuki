@@ -1,0 +1,170 @@
+/* project: eWeBuKi stylesheet template for eWeBuKi wizard styles
+   based on a design from: luka cvrk (www.solucija.com)
+
+   $Id: eed.css 1230 2008-02-01 09:44:04Z buffy1860 $ */
+
+
+
+/*----------------------
+  alien styles
+  ----------------------*/
+/*
+body, p, form, ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+ul, ol {
+    list-style : none;
+}
+
+a img{
+    border:0px;
+}
+*/
+/* ---------------------*/
+
+
+
+/*----------------------
+  wizard styles
+  ----------------------*/
+
+    #wizard form label {
+        display:block;
+        float:left;
+        margin:2px 0;
+        padding:1px;
+        width:180px;
+    }
+
+        #wizard form label.cbra {
+            clear:both;
+            text-align:left;
+            width:100%;
+        }
+
+            #wizard form .cbra input, #wizard form .thumbs input {
+                margin:0.3em 5px;
+                width:auto;
+            }
+
+            #wizard form table input {
+/*                 border:none; */
+                margin:0;
+                padding:0;
+                width:100%;
+            }
+
+    #wizard form br {
+        clear:both;
+    }
+
+    #wizard form input, #wizard form button, #wizard form textarea {
+        border:1px solid #DDDDDD;
+        color:inherit;
+        float:left;
+        font-size:0.95em;
+        line-height:1.4em;
+        margin:2px 0;
+        padding:1px;
+        width:250px;
+    }
+
+        #wizard form input.small {
+            width:50px;
+        }
+
+    #wizard fieldset {
+        border:1px solid #CCCCCC;
+        margin:5px 0;
+        padding:5px;
+    }
+
+        #wizard fieldset fieldset {
+            float:left;
+            margin-right:15px;
+            width:170px;
+        }
+
+    #wizard fieldset.buttons {
+        text-align:right;
+    }
+
+        #wizard fieldset.buttons input, #wizard fieldset.buttons button {
+            float:none;
+        }
+
+
+
+
+
+
+
+
+
+    #wizard .button {
+        background-color:#EEEEEE;
+        border:1px solid #CCCCCC;
+        color:inherit;
+        cursor:pointer;
+        margin-right:5px;
+        padding:0.5ex 1ex;
+        text-decoration:none;
+        width:auto;
+    }
+
+        #content_blocks li {
+            background:no-repeat right top;
+            border:1px solid #DDDDDD;
+            list-style:none;
+            margin:0 0 3px;
+            padding:20px 4px 0;
+        }
+
+            #content_blocks li.ajax_move {
+                border-color:#FF9148;
+            }
+
+                #content_blocks li .block_edit {
+                    text-align:right;
+                }
+
+                #content_blocks li div.wiz_edit {
+                    border:1px solid #DDDDDD;
+                    float:left;
+                }
+
+                    #content_blocks li div.wiz_edit div.buttons {
+                        clear:both;
+                        padding:0.5ex 0;
+                    }
+
+                #content_blocks li span.wiz_edit {
+                    border:1px solid #DDDDDD;
+                    position:relative;
+                }
+
+                    #content_blocks li span.wiz_edit span.buttons {
+                        display:none;
+                        font-weight:normal;
+                    }
+
+                    #content_blocks li span.wiz_edit:hover span.buttons {
+                        background:#FFFFFF;
+                        border:1px solid #DDDDDD;
+                        display:block;
+                        left:0;
+                        position:absolute;
+                        top:1.2em;
+                    }
+
+                        #content_blocks li span.wiz_edit:hover span.buttons .button {
+                            clear:both;
+                            display:block;
+                            margin:3px;
+                            padding:0;
+                            width:200px;
+                        }
+
+/* ---------------------*/
