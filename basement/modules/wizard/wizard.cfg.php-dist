@@ -45,7 +45,7 @@
     $cfg["wizard"] = array(
            "subdir" => "wizard",
              "name" => "wizard",
-            "basis" => $pathvars["virtual"]."/wizard", # crc = -1468826685 *
+            "basis" => $pathvars["virtual"]."/wizard",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
           "archive" => array( "inhalt" ),
             "color" => array(
@@ -56,7 +56,7 @@
                      "show" => array("makece"),
               "show,shared" => array("menu_convert","filelist"),
                       "add" => array(""),
-              "add,shared" => array("menu_convert"),
+               "add,shared" => array("menu_convert"),
                    "editor" => array("makece"),
             "editor,shared" => array("filelist","phpdiff","zip_handling"),
                    "modify" => array("makece"),
@@ -133,38 +133,28 @@
                                     array()
                             ),
                 ),
-     "allowed_tags" => array(
+     "allowed_tags" => array(       // definiert welche Tags wo benutzt werden duerfen
                            "H" => array(),
                            "P" => array("link","b","i","acr"),
-                    "P=teaser" => array("link","b","file"),
-                        "LIST" => array("link","b","i","acr"),
-                           "B" => array(),
                 ),
 
-        // alle elemente die eingefuegt werden koennen
+        // alle elemente die eingefuegt werden koennen, mit standardinhalt
          "add_tags" => array(
                        "H1" => "[H1]&Uuml;berschrift Ebene 1[/H1]",
                        "H2" => "[H2]&Uuml;berschrift Ebene 2[/H2]",
                        "H3" => "[H3]&Uuml;berschrift Ebene 3[/H3]",
                    "Absatz" => "[P]Absatz[/P]",
-                   "Teaser" => "[P=teaser]Teaser-Absatz[/P]",
                   "Tabelle" => "[TAB=;100%;;5;]\n[/TAB]",
                     "Liste" => "[LIST]Listeneintrag[/LIST]",
                 "Selection" => "[SEL]Gruppierung[/SEL]",
-                "3er-Kombi" => "[DIV=present]
-                                [IMG=/file/jpg/2/s/dummy.jpg;l;0;l;0;0;5][/IMG]
-                                [H2]&Uuml;berschrift[/H2]
-                                [P]Beschreibung[/P]
-                                [BR=a][/BR]
-                                [/DIV]",
                 ),
 
         "wizardtyp" => array(
                   "default" => array(
-//                              "add_tags" => array("Absatz"),           // array mit allen tags die eingefuegt werden koennen (leer=alle)
-                       "section_block" => array(0,0),           // gibt an, wieviele sichtbaren bereich von oben,unten nicht verschoben werden koennen
-                           "def_label" => "inhalt",
-//                             "show_add" => False,                // muss false gesetzt sein, wenn es nicht in der add-liste auftauchen soll
+                             "add_tags" => array("Absatz"),         // array mit allen tags die eingefuegt werden koennen (leer=alle)
+                       "section_block" => array(0,0),               // gibt an, wieviele sichtbaren bereich von oben,unten nicht verschoben werden koennen
+                           "def_label" => "inhalt",                 // marke die bearbeitet wird
+                            "show_add" => False,                    // muss false gesetzt sein, wenn es nicht in der add-liste auftauchen soll
                         ),
                   "dummy" => array(
                             "add_tags" => array("H2","Absatz"),
@@ -213,16 +203,6 @@
                                "_self" => "_self",
                         ),
                 ),
-
-
-
-
-
-
-
-
-
-
 
             "right" => "edit",
     );
