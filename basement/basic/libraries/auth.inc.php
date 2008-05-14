@@ -240,6 +240,7 @@
         $path = dirname($pathvars["requested"]);
         if ( substr( $path, -1 ) != '/') $path = $path."/";
 
+        $hidedata["authInPlace"]["links"] = "on";
         foreach ( $cfg["auth"]["inplace"] as $key => $value ) {
             if ( priv_check_old("",$value[0]) == True  || priv_check($environment["ebene"]."/".$environment["kategorie"],$value[0]) ) {
                 if ( strstr($key,"/") ){
