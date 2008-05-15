@@ -290,7 +290,7 @@
                 } elseif ( in_array($line,$split_tags["close"]) ) {
                     $close--; $mark = -1;
                 }
-                $allcontent[$i] .= trim($line);
+                $allcontent[$i] .= trim($line,"\n");
             }
 
             return array_merge($allcontent);

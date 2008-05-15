@@ -319,7 +319,7 @@
                     || (count($allcontent) - $key) <= $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]) {
                         continue;
                     } else {
-                        $sort_array[($key*10)] = "sort_content[]=".$key;
+                        $sort_array[($key*10)] = "content_blocks[]=".$key;
                         $i = $i +10;
                     }
                 }

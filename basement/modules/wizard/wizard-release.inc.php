@@ -50,8 +50,29 @@
     // 4: [leer]
     // 5: version
 
-// echo "<h1>".tname2path($environment["parameter"][2])."</h1>";
-// echo "<pre>".print_r(wizard_release(tname2path($environment["parameter"][2])),true)."</pre>";
+    // get-aufruf um das neue eingefuegte markierungsfeld automatisch richtig zu fuellen
+    if ( $_GET["transform"] == "mark_content" ) {
+        $sql = "SELECT *
+                  FROM site_text
+              ORDER BY lang, label, tname, version DESC";
+        $result = $db -> query($sql);
+        $unique = "";
+        while ( $data = $db -> fetch_array($result,1) ) {
+            if ( $data["hide"] < 0 ) continue;
+            if ( $unique != $data["lang"]."|".$data["label"]."|".$data["tname"]
+               && $data["hide"] == 0 ) {
+                $sql = "UPDATE site_text
+                           SET hide=1
+                         WHERE lang='".$data["lang"]."'
+                           AND label='".$data["label"]."'
+                           AND tname='".$data["tname"]."'
+                           AND version=".$data["version"];
+                $res = $db -> query($sql);
+            }
+            $unique = $data["lang"]."|".$data["label"]."|".$data["tname"];
+        }
+    }
+
     // erlaubnis bei intrabvv speziell setzen
     $database = $environment["parameter"][1];
     if ( is_array($_SESSION["katzugriff"]) ) {
