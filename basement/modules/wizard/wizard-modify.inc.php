@@ -151,8 +151,8 @@
                     $allcontent = content_level1($form_values["content"]);
                     $i = 0;
                     foreach ( $allcontent as $key=>$value ) {
-                        if ( in_array($key,$_GET["sort_content"]) ) {
-                            $buffer[] = trim($allcontent[$_GET["sort_content"][$i]]);
+                        if ( in_array($key,$_GET["content_blocks"]) ) {
+                            $buffer[] = trim($allcontent[$_GET["content_blocks"][$i]]);
                             $i++;
                         } else {
                             $buffer[] = trim($value);

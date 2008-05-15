@@ -84,7 +84,10 @@
     function tname2path($tname,$refid=0,$ebene="") {
         global $db;
 
-        $sql = "SELECT * FROM site_menu WHERE refid=".$refid;
+        $sql = "SELECT *
+                  FROM site_menu
+                 WHERE refid=".$refid."
+              ORDER BY mid";
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result) ) {
             if ( $ebene == "" ) {
@@ -96,6 +99,8 @@
             $return_value = "";
             if ( $tname == $tmp_tname ) {
                 return $path;
+            } elseif ( strstr($tname,crc32($ebene."/".$data["entry"]).".") ) {
+                return $path."/".substr($tname,(strpos($tname,".")+1));
             } else {
                 $return_value = tname2path($tname,$data["mid"],$path);
             }

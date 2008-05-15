@@ -267,7 +267,7 @@
                     $display = "";
                     $inline = array("LINK","IMG","Fett");
                     if ( in_array($tag,$inline) ) {
-                        $display = "display:inline;";
+//                         $display = "display:inline;";
                     }
                     // knoepfe
                     $button = "";
@@ -552,6 +552,18 @@
                                         '".$_SESSION["alias"]."'
                                         ".$hide2.")";
                 } elseif ($_POST["send"][0] == "save" || $_SESSION["form_send"] == "save") {
+                    // preview mit ajax
+                    if ( $_POST["ajax"] == "on" ) {
+                        $content = tagreplace($form_values["content"]);
+                        $content = tagremove($content);
+                        if ( get_magic_quotes_gpc() == 1 ) {
+                            $content = stripslashes($content);
+                        }
+                        $content = utf8_encode($content);
+                        echo preg_replace(array("/#\{.+\}/U","/g\(.+\)/U"),"",$content);
+                        die ;
+                    }
+
                     // freigabe-test
                     if ( $specialvars["content_release"] == -1 ) {
                         if ( $_POST["release_mark"] == -1 ) {

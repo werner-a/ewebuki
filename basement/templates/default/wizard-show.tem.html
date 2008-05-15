@@ -24,7 +24,16 @@
                 | <a href="!{link_next}">&gt;</a> | <a href="!{link_last}">&gt;&gt;</a> |
                 <!--##show-->
             </span>
-            <div class="clearer"></div>
+
+            <div class="clearer">
+                <a name="preview">&nbsp;</a>
+            </div>
+
+
+            <div id="vorschau" style="display:none;">
+                <div id="substance"></div>
+                <div class="clearer"></div>
+            </div>
 
             <ul id="content_blocks">
                 <!--##loop-sort_content-->
@@ -53,6 +62,7 @@
             <!--##hide-default-->
             <fieldset class="buttons">
                 <form method="post" action="!#ausgaben_form_aktion">
+                    <button type="button" onclick="preview();" class="button">g(preview)</button>
                     <button type="submit" name="send[]" value="save" class="button">g(save)</button>
                     <button type="submit" name="send[]" value="version" class="button">g(versioning)</button>
                     <button type="submit" name="send[]" value="cancel" class="button">g(abort)</button>
@@ -63,6 +73,7 @@
             <!--##hide-edit-->
             <fieldset class="buttons">
                 <form method="post" action="!#ausgaben_form_aktion">
+                    <button type="button" onclick="preview();" class="button">g(preview)</button>
                     <button type="submit" name="send[]" value="version" class="button">g(versioning)</button>
                     <button type="submit" name="send[]" value="cancel" class="button">g(abort)</button><br />
                     <label class="cbra"><input type="checkbox" name="release_mark" value="-1" class="button" />#(ask_release)</label>
@@ -78,7 +89,6 @@
 
 </div>
 <div id="info_box"></div>
-
 
 !#ausgaben_output
 !#ausgaben_inaccessible
@@ -99,6 +109,34 @@
             }
         }
     );
+    function preview() {
+        if ( $('vorschau').style.display == 'none' ) {
+            var update = new Ajax.Updater('substance',
+                                        '!#ausgaben_form_aktion',
+                                        {
+                                            asynchronous:true,
+                                            parameters: 'ajax=on&send[]=save',
+                                            onSuccess:function(){
+                                                new Effect.Parallel(
+                                                    [
+                                                        new Effect.BlindDown('vorschau'),
+                                                        new Effect.BlindUp('content_blocks')
+                                                    ]
+                                                );
+                                                self.location.href = '#preview';
+                                            }
+                                        }
+            );
+            return false;
+        } else {
+            new Effect.Parallel(
+                [
+                    new Effect.BlindUp('vorschau'),
+                    new Effect.BlindDown('content_blocks')
+                ]
+            );
+        }
+    }
 </script>
 <!--##end-->
 </body>
