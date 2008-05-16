@@ -150,11 +150,11 @@
                 ),
 
         "wizardtyp" => array(
-                  "default" => array(
-                             "add_tags" => array("Absatz"),         // array mit allen tags die eingefuegt werden koennen (leer=alle)
-                       "section_block" => array(0,0),               // gibt an, wieviele sichtbaren bereich von oben,unten nicht verschoben werden koennen
-                           "def_label" => "inhalt",                 // marke die bearbeitet wird
-                            "show_add" => False,                    // muss false gesetzt sein, wenn es nicht in der add-liste auftauchen soll
+                  "standard" => array(
+//                              "add_tags" => array(),             // array mit allen tags die eingefuegt werden koennen (leer=keine, nicht gesetzt=alle)
+                       "section_block" => array(0,0),           // gibt an, wieviele sichtbaren bereich von oben,unten nicht verschoben werden koennen
+                           "def_label" => "inhalt",             // marke die bearbeitet wird
+                            "show_add" => False,                // muss false gesetzt sein, wenn es nicht in der add-liste auftauchen soll
                         ),
                   "dummy" => array(
                             "add_tags" => array("H2","Absatz"),

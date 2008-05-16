@@ -108,7 +108,7 @@
         if ( $match[1] != "" && is_array($cfg["wizard"]["wizardtyp"][$match[1]]) ) {
             $wizard_name = $match[1];
         } else {
-            $wizard_name = "default";
+            $wizard_name = "standard";
         }
 
         // evtl. spezielle section

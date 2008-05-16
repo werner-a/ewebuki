@@ -118,6 +118,13 @@
                 unset($_SESSION["form_error"]);
             }
 
+            // freigabe-test
+            if ( $specialvars["content_release"] == -1 ) {
+                $hidedata["add_menu"]["hide"] = -1;
+            } else {
+                $hidedata["add_menu"]["hide"] = 0;
+            }
+
             // rausfinden, welcher menupunkt einen unterpunkt bekommen soll
             if ( $environment["parameter"][5] != "" ) {
                 $mid = $environment["parameter"][5];
@@ -131,6 +138,8 @@
                 $point = make_id($url);
                 $mid = $point["mid"];
             }
+
+            //wohin schicken
             $ausgaben["form_aktion"] = $pathvars["virtual"]."/admin/menued/add,".$point["mid"].",,verify.html";
             $ausgaben["refid"] = $point["mid"];
 
