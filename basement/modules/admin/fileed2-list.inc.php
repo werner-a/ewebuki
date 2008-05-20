@@ -112,10 +112,10 @@
 
         // bearbeiten- und loeschen link erstellen
         $hidedata["file"] = array(
-                "edit" => $cfg["fileed"]["basis"]."/edit.html",
+                  "edit" => $cfg["fileed"]["basis"]."/edit.html",
                 "delete" => $cfg["fileed"]["basis"]."/delete.html",
-            "collect" => $cfg["fileed"]["basis"]."/collect.html",
-            "display" => "inline"
+               "collect" => $cfg["fileed"]["basis"]."/collect.html",
+               "display" => "inline"
         );
         if ( count($_SESSION["file_memo"]) == 0 ) {
             $hidedata["file"]["display"] = "none";
@@ -143,7 +143,7 @@
             $ausgaben["search"] = $_SESSION["fileed_search"];
             $ausgaben["result"] = "#(answera) \"".$_SESSION["fileed_search"]."\" #(answerb) ";
             $array1 = explode( " ", $_SESSION["fileed_search"] );
-            $array2 = array( "ffname", "fdesc", "fhit" );
+            $array2 = array( "ffname", "fdesc", "fhit", "fid" );
 
             foreach ( $array1 as $value1 ) {
                 if ( $value1 != "" ) {
