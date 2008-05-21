@@ -77,12 +77,19 @@
             #          FROM ".$cfg["contented"]["db"]["leer"]["entries"]."
             #         WHERE ".$cfg["contented"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
 
+            if ( $specialvars["content_release"] == -1 && $version == "" ) {
+                $content_release = "AND status>0";
+            } else {
+                $content_release = "";
+            }
+
             $sql = "SELECT version, html, content, changed, byalias
                       FROM ". SITETEXT ."
                      WHERE lang = '".$environment["language"]."'
                        AND label ='".$environment["parameter"][3]."'
                        AND tname ='".$environment["parameter"][2]."'
-                       $version
+                       ".$content_release.
+                       $version."
                      ORDER BY version DESC
                      LIMIT 0,1";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -394,7 +401,8 @@
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
-        $ausgaben["form_hidden"] .= $form_values["html"];
+        $ausgaben["form_hidden_html"] .= $form_values["html"];
+        $ausgaben["form_hidden_version"] .= $form_values["version"];
 
         // was anzeigen
         $mapping["main"] = crc32($environment["ebene"]).".modify".$art;
@@ -408,6 +416,10 @@
             $ausgaben["inaccessible"] .= "# (upload) #(upload)<br />";
             $ausgaben["inaccessible"] .= "# (file) #(file)<br />";
             $ausgaben["inaccessible"] .= "# (files) #(files)<br />";
+            $ausgaben["inaccessible"] .= "g (overwrite) g(overwrite)<br />";
+            $ausgaben["inaccessible"] .= "g (versioning) g(versioning)<br />";
+            $ausgaben["inaccessible"] .= "g (reset) g(reset)<br />";
+            $ausgaben["inaccessible"] .= "g (abort) g(abort)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -559,35 +571,51 @@
             // datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
 
-                if ( $content_exist == 1 && !in_array($environment["parameter"][3], $cfg["contented"]["archive"]) ) {
-                    if ( $environment["parameter"][4] == "" && $HTTP_POST_VARS["content"] == "" ) {
+                $mark = "";$marka = "";$markb = "";
+                if ( $specialvars["content_release"] == -1 ) {
+                    $mark = ", status=1";
+                    $marka = ", status";
+                    $markb = ", 1";
+                    // alle freigegeben versionen erstmal historisieren
+                    $sql = "UPDATE ". SITETEXT ." SET
+                                    status=0
+                                WHERE lang = '".$environment["language"]."'
+                                AND label ='".$environment["parameter"][3]."'
+                                AND tname ='".$environment["parameter"][2]."'
+                                AND status>=0";
+                    $result  = $db -> query($sql);
+                }
+
+                if ( $content_exist == 1 && isset($_POST["send"]["save"]) ) {
+                    if ( $environment["parameter"][4] == "" && $_POST["content"] == "" ) {
                         $sql = "DELETE FROM ". SITETEXT ."
                                       WHERE lang = '".$environment["language"]."'
                                         AND label ='".$environment["parameter"][3]."'
                                         AND tname ='".$environment["parameter"][2]."'";
                     } else {
-                        $sql = "UPDATE ". SITETEXT ." set
-                                       version = ".++$data["version"].",
+                        $sql = "UPDATE ". SITETEXT ." SET
                                        ebene = '".$_SESSION["ebene"]."',
                                        kategorie = '".$_SESSION["kategorie"]."',
                                        crc32 = '".$specialvars["crc32"]."',
-                                       html = '".$HTTP_POST_VARS["html"]."',
+                                       html = '".$_POST["html"]."',
                                        content = '".$content."',
                                        changed = '".date("Y-m-d H:i:s")."',
                                        bysurname = '".$_SESSION["surname"]."',
                                        byforename = '".$_SESSION["forename"]."',
                                        byemail = '".$_SESSION["email"]."',
                                        byalias = '".$_SESSION["alias"]."'
+                                     ".$mark."
                                  WHERE lang = '".$environment["language"]."'
                                    AND label ='".$environment["parameter"][3]."'
-                                   AND tname ='".$environment["parameter"][2]."'";
+                                   AND tname ='".$environment["parameter"][2]."'
+                                   AND version=".$_POST["version"];
                     }
                 } else {
                     $sql = "INSERT INTO ". SITETEXT ."
                                         (lang, label, tname, version,
                                         ebene, kategorie,
                                         crc32, html, content,
-                                        changed, bysurname, byforename, byemail, byalias)
+                                        changed, bysurname, byforename, byemail, byalias".$marka.")
                                  VALUES (
                                          '".$environment["language"]."',
                                          '".$environment["parameter"][3]."',
@@ -602,17 +630,9 @@
                                          '".$_SESSION["surname"]."',
                                          '".$_SESSION["forename"]."',
                                          '".$_SESSION["email"]."',
-                                         '".$_SESSION["alias"]."')";
+                                         '".$_SESSION["alias"]."'".
+                                            $markb.")";
                 }
-
-
-//                 $kick = array( "PHPSESSID", "form_referer", "send" );
-//                 foreach($HTTP_POST_VARS as $name => $value) {
-//                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
-//                         if ( $sqla != "" ) $sqla .= ", ";
-//                         $sqla .= $name."='".$value."'";
-//                     }
-//                 }
 
                 // Sql um spezielle Felder erweitern
                 #$ldate = $HTTP_POST_VARS["ldate"];

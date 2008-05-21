@@ -105,10 +105,12 @@
 <!--         !#ausgaben_ce_upload -->
 <!--         !#ausgaben_ce_dropdown -->
 
-        <input type="hidden" name="html" value="!#ausgaben_form_hidden" class="hidden" />
+        <input type="hidden" name="html" value="!#ausgaben_form_hidden_html" class="hidden" />
+        <input type="hidden" name="version" value="!#ausgaben_form_hidden_version" class="hidden" />
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
-        <input type="submit" name="send[]" value="g(send)" accesskey="s" class="first" />
+        <input type="submit" name="send[save]" value="g(overwrite)" accesskey="s" class="first" />
+        <input type="submit" name="send[versioning]" value="g(versioning)" accesskey="b" class="next" />
         <input type="reset" name="reset" value="g(reset)" accesskey="r" class="next" />
         <input type="button" name="abort" value="g(abort)" accesskey="a" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>
