@@ -162,13 +162,9 @@
             $conn = $this->CONN;
 
             // wir drehen fuer postgresql < 7.3 das limit :(
-            if ( preg_match("/LIMIT [0-9]+,[0-9]+/Ui",$sql) ) {
-                $limit = explode(" ", strstr($sql,"LIMIT"),2);
-                $oldlimit = $limit[0]." ".$limit[1];
-                $orglimitvalue = $limit[1];
-                $limitarray = explode(",", $orglimitvalue,2);
-                $newlimit = "LIMIT ".$limitarray[1]." OFFSET ".$limitarray[0];
-                $sql = str_replace($oldlimit, $newlimit, $sql);
+            if ( preg_match("/LIMIT ([0-9]+),([0-9]+)/i",$sql,$limit) ) {
+                $newlimit = "LIMIT ".$limit[2]." OFFSET ".$limit[1];
+                $sql = str_replace($limit[0], $newlimit, $sql);
             }
 
             // typenkonvertierung
