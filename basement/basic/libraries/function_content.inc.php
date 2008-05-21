@@ -93,8 +93,8 @@
                 $version_sql = "";
             }
 
-            if ( $specialvars["content_release"] == -1 ) {
-                $content_release = "AND hide=1";
+            if ( $specialvars["content_release"] == -1 && $version == "" ) {
+                $content_release = "AND status>0";
             } else {
                 $content_release = "";
             }
@@ -122,6 +122,7 @@
                          WHERE tname='$dbtname'
                            AND lang='".$specialvars["default_language"]."'
                            AND label='$label'
+                            ".$content_release."
                       ORDER BY version DESC
                          LIMIT 0,1";
                 $result  = $db -> query($sql);
