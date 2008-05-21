@@ -2,18 +2,12 @@
 -- PostgreSQL database dump
 --
 
+
 SET client_encoding = 'LATIN9';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON SCHEMA public IS 'Standard public schema';
-
 
 SET search_path = public, pg_catalog;
 
@@ -22,7 +16,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: auth_content; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_content; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_content (
@@ -38,10 +32,8 @@ CREATE TABLE auth_content (
 );
 
 
-ALTER TABLE public.auth_content OWNER TO postgres;
-
 --
--- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_group (
@@ -51,10 +43,8 @@ CREATE TABLE auth_group (
 );
 
 
-ALTER TABLE public.auth_group OWNER TO postgres;
-
 --
--- Name: auth_group_gid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: auth_group_gid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE auth_group_gid_seq
@@ -64,24 +54,15 @@ CREATE SEQUENCE auth_group_gid_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_group_gid_seq OWNER TO postgres;
-
 --
--- Name: auth_group_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE auth_group_gid_seq OWNED BY auth_group.gid;
-
-
---
--- Name: auth_group_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: auth_group_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('auth_group_gid_seq', 2, true);
 
 
 --
--- Name: auth_level; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_level; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_level (
@@ -91,10 +72,8 @@ CREATE TABLE auth_level (
 );
 
 
-ALTER TABLE public.auth_level OWNER TO postgres;
-
 --
--- Name: auth_level_lid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: auth_level_lid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE auth_level_lid_seq
@@ -105,24 +84,15 @@ CREATE SEQUENCE auth_level_lid_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_level_lid_seq OWNER TO postgres;
-
 --
--- Name: auth_level_lid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE auth_level_lid_seq OWNED BY auth_level.lid;
-
-
---
--- Name: auth_level_lid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: auth_level_lid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('auth_level_lid_seq', 1, false);
 
 
 --
--- Name: auth_member; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_member; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_member (
@@ -131,10 +101,8 @@ CREATE TABLE auth_member (
 );
 
 
-ALTER TABLE public.auth_member OWNER TO postgres;
-
 --
--- Name: auth_priv; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_priv; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_priv (
@@ -143,10 +111,8 @@ CREATE TABLE auth_priv (
 );
 
 
-ALTER TABLE public.auth_priv OWNER TO postgres;
-
 --
--- Name: auth_right; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_right; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_right (
@@ -155,10 +121,8 @@ CREATE TABLE auth_right (
 );
 
 
-ALTER TABLE public.auth_right OWNER TO postgres;
-
 --
--- Name: auth_special; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_special; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_special (
@@ -173,10 +137,8 @@ CREATE TABLE auth_special (
 );
 
 
-ALTER TABLE public.auth_special OWNER TO postgres;
-
 --
--- Name: auth_special_sid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: auth_special_sid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE auth_special_sid_seq
@@ -187,24 +149,15 @@ CREATE SEQUENCE auth_special_sid_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_special_sid_seq OWNER TO postgres;
-
 --
--- Name: auth_special_sid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE auth_special_sid_seq OWNED BY auth_special.sid;
-
-
---
--- Name: auth_special_sid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: auth_special_sid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('auth_special_sid_seq', 1, false);
 
 
 --
--- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE auth_user (
@@ -217,10 +170,8 @@ CREATE TABLE auth_user (
 );
 
 
-ALTER TABLE public.auth_user OWNER TO postgres;
-
 --
--- Name: auth_user_uid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: auth_user_uid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE auth_user_uid_seq
@@ -231,24 +182,15 @@ CREATE SEQUENCE auth_user_uid_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_user_uid_seq OWNER TO postgres;
-
 --
--- Name: auth_user_uid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE auth_user_uid_seq OWNED BY auth_user.uid;
-
-
---
--- Name: auth_user_uid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: auth_user_uid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('auth_user_uid_seq', 1, false);
 
 
 --
--- Name: db_leer; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: db_leer; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE db_leer (
@@ -258,10 +200,8 @@ CREATE TABLE db_leer (
 );
 
 
-ALTER TABLE public.db_leer OWNER TO postgres;
-
 --
--- Name: db_leer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: db_leer_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE db_leer_id_seq
@@ -272,24 +212,15 @@ CREATE SEQUENCE db_leer_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.db_leer_id_seq OWNER TO postgres;
-
 --
--- Name: db_leer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE db_leer_id_seq OWNED BY db_leer.id;
-
-
---
--- Name: db_leer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: db_leer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('db_leer_id_seq', 1, false);
 
 
 --
--- Name: site_file; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_file; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE site_file (
@@ -308,10 +239,8 @@ CREATE TABLE site_file (
 );
 
 
-ALTER TABLE public.site_file OWNER TO postgres;
-
 --
--- Name: site_file_fid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: site_file_fid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE site_file_fid_seq
@@ -321,24 +250,15 @@ CREATE SEQUENCE site_file_fid_seq
     CACHE 1;
 
 
-ALTER TABLE public.site_file_fid_seq OWNER TO postgres;
-
 --
--- Name: site_file_fid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE site_file_fid_seq OWNED BY site_file.fid;
-
-
---
--- Name: site_file_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: site_file_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('site_file_fid_seq', 39, true);
 
 
 --
--- Name: site_form; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE site_form (
@@ -356,10 +276,8 @@ CREATE TABLE site_form (
 );
 
 
-ALTER TABLE public.site_form OWNER TO postgres;
-
 --
--- Name: site_form_fid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: site_form_fid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE site_form_fid_seq
@@ -369,24 +287,15 @@ CREATE SEQUENCE site_form_fid_seq
     CACHE 1;
 
 
-ALTER TABLE public.site_form_fid_seq OWNER TO postgres;
-
 --
--- Name: site_form_fid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE site_form_fid_seq OWNED BY site_form.fid;
-
-
---
--- Name: site_form_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: site_form_fid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('site_form_fid_seq', 13, true);
 
 
 --
--- Name: site_form_lang; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form_lang; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE site_form_lang (
@@ -401,10 +310,8 @@ CREATE TABLE site_form_lang (
 );
 
 
-ALTER TABLE public.site_form_lang OWNER TO postgres;
-
 --
--- Name: site_form_lang_flid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: site_form_lang_flid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE site_form_lang_flid_seq
@@ -414,24 +321,15 @@ CREATE SEQUENCE site_form_lang_flid_seq
     CACHE 1;
 
 
-ALTER TABLE public.site_form_lang_flid_seq OWNER TO postgres;
-
 --
--- Name: site_form_lang_flid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE site_form_lang_flid_seq OWNED BY site_form_lang.flid;
-
-
---
--- Name: site_form_lang_flid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: site_form_lang_flid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('site_form_lang_flid_seq', 15, true);
 
 
 --
--- Name: site_lock; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_lock; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE site_lock (
@@ -443,10 +341,8 @@ CREATE TABLE site_lock (
 );
 
 
-ALTER TABLE public.site_lock OWNER TO postgres;
-
 --
--- Name: site_menu; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE site_menu (
@@ -467,10 +363,8 @@ CREATE TABLE site_menu (
 );
 
 
-ALTER TABLE public.site_menu OWNER TO postgres;
-
 --
--- Name: site_menu_lang; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_lang; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE site_menu_lang (
@@ -482,10 +376,8 @@ CREATE TABLE site_menu_lang (
 );
 
 
-ALTER TABLE public.site_menu_lang OWNER TO postgres;
-
 --
--- Name: site_menu_lang_mlid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: site_menu_lang_mlid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE site_menu_lang_mlid_seq
@@ -495,24 +387,15 @@ CREATE SEQUENCE site_menu_lang_mlid_seq
     CACHE 1;
 
 
-ALTER TABLE public.site_menu_lang_mlid_seq OWNER TO postgres;
-
 --
--- Name: site_menu_lang_mlid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE site_menu_lang_mlid_seq OWNED BY site_menu_lang.mlid;
-
-
---
--- Name: site_menu_lang_mlid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: site_menu_lang_mlid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('site_menu_lang_mlid_seq', 5, true);
 
 
 --
--- Name: site_menu_mid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: site_menu_mid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE site_menu_mid_seq
@@ -522,24 +405,15 @@ CREATE SEQUENCE site_menu_mid_seq
     CACHE 1;
 
 
-ALTER TABLE public.site_menu_mid_seq OWNER TO postgres;
-
 --
--- Name: site_menu_mid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE site_menu_mid_seq OWNED BY site_menu.mid;
-
-
---
--- Name: site_menu_mid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: site_menu_mid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('site_menu_mid_seq', 5, true);
 
 
 --
--- Name: site_text; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_text; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE site_text (
@@ -560,80 +434,78 @@ CREATE TABLE site_text (
 );
 
 
-ALTER TABLE public.site_text OWNER TO postgres;
-
 --
--- Name: gid; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: gid; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE auth_group ALTER COLUMN gid SET DEFAULT nextval('auth_group_gid_seq'::regclass);
+ALTER TABLE auth_group ALTER COLUMN gid SET DEFAULT nextval('auth_group_gid_seq');
 
 
 --
--- Name: lid; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: lid; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE auth_level ALTER COLUMN lid SET DEFAULT nextval('auth_level_lid_seq'::regclass);
-
-
---
--- Name: sid; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE auth_special ALTER COLUMN sid SET DEFAULT nextval('auth_special_sid_seq'::regclass);
+ALTER TABLE auth_level ALTER COLUMN lid SET DEFAULT nextval('auth_level_lid_seq');
 
 
 --
--- Name: uid; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: sid; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE auth_user ALTER COLUMN uid SET DEFAULT nextval('auth_user_uid_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE db_leer ALTER COLUMN id SET DEFAULT nextval('db_leer_id_seq'::regclass);
+ALTER TABLE auth_special ALTER COLUMN sid SET DEFAULT nextval('auth_special_sid_seq');
 
 
 --
--- Name: fid; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: uid; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE site_file ALTER COLUMN fid SET DEFAULT nextval('site_file_fid_seq'::regclass);
-
-
---
--- Name: fid; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE site_form ALTER COLUMN fid SET DEFAULT nextval('site_form_fid_seq'::regclass);
+ALTER TABLE auth_user ALTER COLUMN uid SET DEFAULT nextval('auth_user_uid_seq');
 
 
 --
--- Name: flid; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE site_form_lang ALTER COLUMN flid SET DEFAULT nextval('site_form_lang_flid_seq'::regclass);
-
-
---
--- Name: mid; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE site_menu ALTER COLUMN mid SET DEFAULT nextval('site_menu_mid_seq'::regclass);
+ALTER TABLE db_leer ALTER COLUMN id SET DEFAULT nextval('db_leer_id_seq');
 
 
 --
--- Name: mlid; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: fid; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE site_menu_lang ALTER COLUMN mlid SET DEFAULT nextval('site_menu_lang_mlid_seq'::regclass);
+ALTER TABLE site_file ALTER COLUMN fid SET DEFAULT nextval('site_file_fid_seq');
 
 
 --
--- Data for Name: auth_content; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Name: fid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE site_form ALTER COLUMN fid SET DEFAULT nextval('site_form_fid_seq');
+
+
+--
+-- Name: flid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE site_form_lang ALTER COLUMN flid SET DEFAULT nextval('site_form_lang_flid_seq');
+
+
+--
+-- Name: mid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE site_menu ALTER COLUMN mid SET DEFAULT nextval('site_menu_mid_seq');
+
+
+--
+-- Name: mlid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE site_menu_lang ALTER COLUMN mlid SET DEFAULT nextval('site_menu_lang_mlid_seq');
+
+
+--
+-- Data for Name: auth_content; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO auth_content (uid, gid, pid, db, tname, ebene, kategorie, neg) VALUES (0, 1, 1, '', '/', '', '', '');
@@ -644,14 +516,14 @@ INSERT INTO auth_content (uid, gid, pid, db, tname, ebene, kategorie, neg) VALUE
 
 
 --
--- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO auth_group (gid, ggroup, beschreibung) VALUES (1, 'manager', 'manager');
 
 
 --
--- Data for Name: auth_level; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_level; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO auth_level (lid, "level", beschreibung) VALUES (1, 'cms_edit', 'berechtigt zum bearbeiten der templates');
@@ -659,7 +531,7 @@ INSERT INTO auth_level (lid, "level", beschreibung) VALUES (2, 'cms_admin', 'ber
 
 
 --
--- Data for Name: auth_member; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_member; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO auth_member (uid, gid) VALUES (1, 1);
@@ -667,7 +539,7 @@ INSERT INTO auth_member (uid, gid) VALUES (1, 2);
 
 
 --
--- Data for Name: auth_priv; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_priv; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO auth_priv (pid, priv) VALUES (1, 'view');
@@ -678,7 +550,7 @@ INSERT INTO auth_priv (pid, priv) VALUES (5, 'add');
 
 
 --
--- Data for Name: auth_right; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_right; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO auth_right (uid, lid) VALUES (1, 1);
@@ -686,20 +558,20 @@ INSERT INTO auth_right (uid, lid) VALUES (1, 2);
 
 
 --
--- Data for Name: auth_special; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_special; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO auth_user (uid, nachname, vorname, email, username, pass) VALUES (1, 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 'WFffxluy26Lew');
 
 
 --
--- Data for Name: db_leer; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: db_leer; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO db_leer (id, field1, field2) VALUES (1, 'Erster Eintrag', 'Zweite Spalte');
@@ -707,14 +579,14 @@ INSERT INTO db_leer (id, field1, field2) VALUES (2, 'Zweiter Eintrag', 'Zweite S
 
 
 --
--- Data for Name: site_file; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: site_file; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel) VALUES (1, 0, 1, '0', '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo Beschreibung', 'eWeBuKi Logo Unterschift', '', NULL);
 
 
 --
--- Data for Name: site_form; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: site_form; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES (1, 'username', '210295197.modify', '0', '', '', NULL, -1, '');
@@ -733,7 +605,7 @@ INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, freq
 
 
 --
--- Data for Name: site_form_lang; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: site_form_lang; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES (1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', '');
@@ -749,13 +621,13 @@ INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror,
 
 
 --
--- Data for Name: site_lock; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: site_lock; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- Data for Name: site_menu; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: site_menu; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, "level", mandatory, defaulttemplate, dynamiccss, dynamicbg) VALUES (1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'default1', NULL, NULL);
@@ -766,7 +638,7 @@ INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, "level", mandator
 
 
 --
--- Data for Name: site_menu_lang; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: site_menu_lang; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES (1, 1, 'de', 'Demo', NULL);
@@ -777,7 +649,7 @@ INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES (5, 5, 'de', 
 
 
 --
--- Data for Name: site_text; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: site_text; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, html, content, changed, bysurname, byforename, byemail, byalias) VALUES ('de', 'abort', '-555504947.delete', 0, '/admin/menued', 'delete', -1, 0, 'Abbrechen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
@@ -1240,7 +1112,7 @@ INSERT INTO site_text (lang, label, tname, version, ebene, kategorie, crc32, htm
 
 
 --
--- Name: auth_content_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_content_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_content
@@ -1248,7 +1120,7 @@ ALTER TABLE ONLY auth_content
 
 
 --
--- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_group
@@ -1256,7 +1128,7 @@ ALTER TABLE ONLY auth_group
 
 
 --
--- Name: auth_level_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_level_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_level
@@ -1264,7 +1136,7 @@ ALTER TABLE ONLY auth_level
 
 
 --
--- Name: auth_member_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_member_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_member
@@ -1272,7 +1144,7 @@ ALTER TABLE ONLY auth_member
 
 
 --
--- Name: auth_priv_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_priv_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_priv
@@ -1280,7 +1152,7 @@ ALTER TABLE ONLY auth_priv
 
 
 --
--- Name: auth_right_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_right_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_right
@@ -1288,7 +1160,7 @@ ALTER TABLE ONLY auth_right
 
 
 --
--- Name: auth_special_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_special_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_special
@@ -1296,7 +1168,7 @@ ALTER TABLE ONLY auth_special
 
 
 --
--- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY auth_user
@@ -1304,7 +1176,7 @@ ALTER TABLE ONLY auth_user
 
 
 --
--- Name: db_leer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: db_leer_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY db_leer
@@ -1312,7 +1184,7 @@ ALTER TABLE ONLY db_leer
 
 
 --
--- Name: site_file_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_file_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_file
@@ -1320,7 +1192,7 @@ ALTER TABLE ONLY site_file
 
 
 --
--- Name: site_form_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_form_lang
@@ -1328,7 +1200,7 @@ ALTER TABLE ONLY site_form_lang
 
 
 --
--- Name: site_form_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_form_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_form
@@ -1336,7 +1208,7 @@ ALTER TABLE ONLY site_form
 
 
 --
--- Name: site_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_lock
@@ -1344,7 +1216,7 @@ ALTER TABLE ONLY site_lock
 
 
 --
--- Name: site_menu_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_lang_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_menu_lang
@@ -1352,7 +1224,7 @@ ALTER TABLE ONLY site_menu_lang
 
 
 --
--- Name: site_menu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_menu
@@ -1360,7 +1232,7 @@ ALTER TABLE ONLY site_menu
 
 
 --
--- Name: site_menu_refid_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_menu_refid_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_menu
@@ -1368,21 +1240,11 @@ ALTER TABLE ONLY site_menu
 
 
 --
--- Name: site_text_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: site_text_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY site_text
     ADD CONSTRAINT site_text_pkey PRIMARY KEY (lang, label, tname, version);
-
-
---
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
