@@ -51,25 +51,25 @@
     // 5: version
 
     // get-aufruf um das neue eingefuegte markierungsfeld automatisch richtig zu fuellen
-    if ( $_GET["transform"] == "mark_content" ) {
+    if ( $_GET["transform"] == "mark_content" && priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],"admin") ) {
         $sql = "SELECT *
                   FROM site_text
               ORDER BY lang, label, tname, version DESC";
         $result = $db -> query($sql);
         $unique = "";
         while ( $data = $db -> fetch_array($result,1) ) {
-            if ( $data["hide"] < 0 ) continue;
-            if ( $unique != $data["lang"]."|".$data["label"]."|".$data["tname"]
-               && $data["hide"] == 0 ) {
+            if ( $data["status"] < 0 ) continue;
+            if ( $unique != $data["lang"]."::".$data["label"]."::".$data["tname"]
+               && $data["status"] == 0 ) {
                 $sql = "UPDATE site_text
-                           SET hide=1
+                           SET status=1
                          WHERE lang='".$data["lang"]."'
                            AND label='".$data["label"]."'
                            AND tname='".$data["tname"]."'
                            AND version=".$data["version"];
                 $res = $db -> query($sql);
             }
-            $unique = $data["lang"]."|".$data["label"]."|".$data["tname"];
+            $unique = $data["lang"]."::".$data["label"]."::".$data["tname"];
         }
     }
 
@@ -88,16 +88,17 @@
     }
     $ausgaben["form_referer"] = $_SESSION["form_referer"];
 
-
     // leere parameter abfangen
     // * * *
     $reload = 0;
+    /* fehlende datenbank */
     if ( $environment["parameter"][1] != "" ) {
         $db->selectDb($database,FALSE);
     } else {
         $reload = -1;
     }
     $environment["parameter"][1] = $db->getDb();
+    /* fehlender tname */
     if ( $environment["parameter"][2] == "" ) {
         $path = explode("/",str_replace($pathvars["menuroot"],"",$_SERVER["HTTP_REFERER"]));
         $kategorie = str_replace(".html","", array_pop($path));
@@ -111,13 +112,13 @@
         }
         $reload = -1;
     }
+    /* fehlende label-beizeichnung */
     if ( $environment["parameter"][3] == "" ) {
         $environment["parameter"][3] = $cfg["wizard"]["wizardtyp"]["default"]["def_label"];
         $reload = -1;
     }
     if ( $reload == -1 ) header("Location: ".$cfg["wizard"]["basis"]."/".implode(",",$environment["parameter"]).".html");
     // + + +
-
 
     if ( $cfg["wizard"]["right"] == "" ||
         priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
@@ -133,6 +134,7 @@
             $version = "";
         }
 
+        // freizugebene seiten finden
         $url = tname2path($environment["parameter"][2]);
         $buffer = find_marked_content($url, $cfg["wizard"], $cfg["wizard"]["default_label"]);
         $dataloop["releases"] = $buffer[-2];
@@ -146,29 +148,39 @@
             if ( $environment["parameter"][4] == "release" ) {
                 // naechste nicht versteckte versions-nummer finden
                 $sql = "SELECT max(version) as max_version
-                        FROM ". SITETEXT ."
-                        WHERE lang = '".$environment["language"]."'
-                        AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".$environment["parameter"][2]."' AND hide=0";
+                          FROM ". SITETEXT ."
+                         WHERE lang = '".$environment["language"]."'
+                           AND label ='".$environment["parameter"][3]."'
+                           AND tname ='".$environment["parameter"][2]."'
+                           AND status>=0";
                 $result = $db -> query($sql);
                 $data = $db -> fetch_array($result,1);
                 $next_version = $data["max_version"] + 1;
                 // alle "unnoetigen" versionen loeschen
                 $sql = "DELETE
-                        FROM ". SITETEXT ."
-                        WHERE lang = '".$environment["language"]."'
-                        AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".$environment["parameter"][2]."'
-                        AND hide<0
-                        AND version<>".$environment["parameter"][5];
+                          FROM ". SITETEXT ."
+                         WHERE lang = '".$environment["language"]."'
+                           AND label ='".$environment["parameter"][3]."'
+                           AND tname ='".$environment["parameter"][2]."'
+                           AND status<0
+                           AND version<>".$environment["parameter"][5];
                 $result = $db -> query($sql);
+                // bisher aktuelle inhalte historisieren
+                $sql = "UPDATE ". SITETEXT ." SET
+                                status=0
+                         WHERE lang = '".$environment["language"]."'
+                           AND label ='".$environment["parameter"][3]."'
+                           AND tname ='".$environment["parameter"][2]."'
+                           AND status>=0";
+                $result  = $db -> query($sql);
                 // freigegebenen Datensatz aktualisieren
                 $sql = "UPDATE ". SITETEXT ."
-                        SET version=".$next_version.", hide=1
-                        WHERE lang = '".$environment["language"]."'
-                        AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".$environment["parameter"][2]."'
-                        AND version=".$environment["parameter"][5];
+                           SET version=".$next_version.",
+                               status=1
+                         WHERE lang = '".$environment["language"]."'
+                           AND label ='".$environment["parameter"][3]."'
+                           AND tname ='".$environment["parameter"][2]."'
+                           AND version=".$environment["parameter"][5];
                 $result = $db -> query($sql);
                 // checken, ob menuepunkt aktivert ist
                 $menu_entry = make_id(tname2path($environment["parameter"][2]));
@@ -179,127 +191,26 @@
             } elseif ( $environment["parameter"][4] == "unlock" ) {
                 // version wird wieder entsperrt
                 $sql = "UPDATE ". SITETEXT ."
-                        SET hide=-1
-                        WHERE lang = '".$environment["language"]."'
-                        AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".$environment["parameter"][2]."'
-                        AND version=".$environment["parameter"][5];
+                           SET status=-1
+                         WHERE lang = '".$environment["language"]."'
+                           AND label ='".$environment["parameter"][3]."'
+                           AND tname ='".$environment["parameter"][2]."'
+                           AND version=".$environment["parameter"][5];
                 $result = $db -> query($sql);
             }
-            header("Location: ".$_SERVER["HTTP_REFERER"]);
+
+            if ( $_SESSION["form_referer"] != "" ) {
+                $header = $_SESSION["form_referer"];
+                unset($_SESSION["form_referer"]);
+            } else {
+                $header = $_SERVER["HTTP_REFERER"];
+            }
+            header("Location: ".$header);
         }
 
         // was anzeigen
         $mapping["main"] = "wizard-release";
         #$mapping["navi"] = "leer";
-
-//         // freigabe-test
-//         if ( $specialvars["content_release"] == -1 ) {
-//             $hidedata["edit"] = array();
-//         } else {
-//             $hidedata["default"] = array();
-//         }
-//
-//         // unzugaengliche #(marken) sichtbar machen
-//         // ***
-//         if ( isset($_GET["edit"]) ) {
-//             $ausgaben["inaccessible"] = "inaccessible values:<br />";
-//             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
-//             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
-//         } else {
-//             $ausgaben["inaccessible"] = "";
-//         }
-//
-//         if ( $environment["parameter"][6] == "verify"
-//             && $_POST["send"] != "" ) {
-//
-//             $ebene = str_replace(array($pathvars["virtual"],$pathvars["webroot"]),"",dirname($_SESSION["form_referer"]));
-//             $kategorie = str_replace(".html","",basename($_SESSION["form_referer"]));
-//             if ( strstr($kategorie,",") ) $kategorie = substr($kategorie,0,strpos($kategorie,","));
-//
-//             if ( $content_exists == 0 || $_POST["send"][0] == "version" ) {
-//                 // notwendig fuer die artikelverwaltung , der bisher aktive artikel wird auf inaktiv gesetzt
-//                 if ( preg_match("/^\[!\]/",$content,$regs) ) {
-//                     $sql_regex = "SELECT * FROM ". SITETEXT ." WHERE content REGEXP '^\\\[!\\\]1' AND tname like '".$environment["parameter"][2]."'";
-//                     $result_regex  = $db -> query($sql_regex);
-//                     $data_regex = $db -> fetch_array($result_regex,1);
-//                     $new_content = preg_replace("/\[!\]1/","[!]0",$data_regex["content"]);
-//                     $sql_regex = "UPDATE ". SITETEXT ." SET content ='".$new_content."' WHERE content REGEXP '^\\\[!\\\]1' AND tname like '".$environment["parameter"][2]."'";
-//                     $result_regex  = $db -> query($sql_regex);
-//                 }
-//                 // freigabe-test
-//                 if ( $specialvars["content_release"] == -1 ) {
-//                     $hide1 = ",hide";
-//                     if ( $_POST["release_mark"] == -1 ) {
-//                         $hide2 = ",-2";
-//                     } else {
-//                         $hide2 = ",-1";
-//                     }
-//                 } else {
-//                     $hide1 = "";
-//                     $hide2 = "";
-//                 }
-//
-//                 $sql = "INSERT INTO ". SITETEXT ."
-//                                     (lang, label, tname, version,
-//                                     ebene, kategorie,
-//                                     crc32, html, content,
-//                                     changed, bysurname, byforename, byemail, byalias".$hide1.")
-//                             VALUES (
-//                                     '".$environment["language"]."',
-//                                     '".$environment["parameter"][3]."',
-//                                     '".$environment["parameter"][2]."',
-//                                     '".++$form_values["version"]."',
-//                                     '".$ebene."',
-//                                     '".$kategorie."',
-//                                     '".$specialvars["crc32"]."',
-//                                     '0',
-//                                     '".$form_values["content"]."',
-//                                     '".date("Y-m-d H:i:s")."',
-//                                     '".$_SESSION["surname"]."',
-//                                     '".$_SESSION["forename"]."',
-//                                     '".$_SESSION["email"]."',
-//                                     '".$_SESSION["alias"]."'
-//                                     ".$hide2.")";
-//             } elseif ($_POST["send"][0] == "save") {
-//                 // freigabe-test
-//                 if ( $specialvars["content_release"] == -1 ) {
-//                     if ( $_POST["release_mark"] == -1 ) {
-//                         $hide = ",hide=-2";
-//                     } else {
-//                         $hide = ",hide=-1";
-//                     }
-//                 } else {
-//                     $hide = "";
-//                 }
-//                 $sql = "UPDATE ". SITETEXT ." SET
-//                                     ebene = '".$ebene."',
-//                                     kategorie = '".$kategorie."',
-//                                     crc32 = '".$specialvars["crc32"]."',
-//                                     html = '0',
-//                                     content = '".$form_values["content"]."',
-//                                     changed = '".date("Y-m-d H:i:s")."',
-//                                     bysurname = '".$_SESSION["surname"]."',
-//                                     byforename = '".$_SESSION["forename"]."',
-//                                     byemail = '".$_SESSION["email"]."',
-//                                     byalias = '".$_SESSION["alias"]."'
-//                                     ".$hide."
-//                               WHERE lang = '".$environment["language"]."'
-//                                 AND label ='".$environment["parameter"][3]."'
-//                                 AND tname ='".$environment["parameter"][2]."'
-//                                 AND version ='".$form_values["version"]."'";
-//             } elseif ($_POST["send"][0] == "cancel") {
-//                 unset($_SESSION["wizard_content"]);
-//             }
-//             if ( $result  = $db -> query($sql) ) {
-//                 unset($_SESSION["wizard_content"]);
-//             }
-//             $header = $_SESSION["form_referer"];
-//             unset($_SESSION["form_referer"]);
-//             header("Location: ".$header);
-//
-//         }
-
 
     } else {
         header("Location: ".$pathvars["virtual"]."/");

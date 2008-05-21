@@ -65,18 +65,20 @@
     }
     $ausgaben["form_referer"] = $_SESSION["form_referer"];
 
+    // welche seite wird bearbeitet
     $ausgaben["url"] = $pathvars["webroot"].tname2path($environment["parameter"][2]).".html";
-
 
     // leere parameter abfangen
     // * * *
     $reload = 0;
+    /* fehlende datenbank */
     if ( $environment["parameter"][1] != "" ) {
         $db->selectDb($database,FALSE);
     } else {
         $reload = -1;
     }
     $environment["parameter"][1] = $db->getDb();
+    /* fehlender tname */
     if ( $environment["parameter"][2] == "" ) {
         // wo kommt der nutzer her
         $path = explode("/",str_replace($pathvars["menuroot"],"",$_SERVER["HTTP_REFERER"]));
@@ -98,6 +100,7 @@
         }
         $reload = -1;
     }
+    /* fehlende label-beizeichnung */
     if ( $environment["parameter"][3] == "" ) {
         // standard-labelname einfuegen
         $environment["parameter"][3] = $cfg["wizard"]["wizardtyp"]["default"]["def_label"];
@@ -136,7 +139,6 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $content_exists = $db -> num_rows($result);
-
         $form_values = $db -> fetch_array($result,1);
 
         // falls content in session zwischengespeichert ist, diesen holen
@@ -151,7 +153,7 @@
 
         } else {
 
-            // versionen-link
+            // versionen-links
             // * * *
             $ausgaben["vaktuell"] = $form_values["version"];
             $sql = "SELECT version, html, content, changed, byalias
@@ -206,19 +208,23 @@
             // * * *
             $blocked = 0;
             if ( $specialvars["content_release"] == -1 ) {
-                // ist bereits eine freigabe angefordert
-                $sql = "SELECT *
-                          FROM ". SITETEXT ."
-                         WHERE lang = '".$environment["language"]."'
-                           AND label ='".$environment["parameter"][3]."'
-                           AND tname ='".$environment["parameter"][2]."'
-                           AND hide=-2";
-                $result = $db -> query($sql);
-                $blocked = $db->num_rows($result);
-                if ( $blocked > 0 ) {
-                    $hidedata["blocked"] = array();
+                if ( priv_check(tname2path($environment["parameter"][2]),"publish") ) {
+                    $hidedata["publish"] = array();
                 } else {
-                    $hidedata["edit"] = array();
+                    // ist bereits eine freigabe angefordert, dann blocken
+                    $sql = "SELECT *
+                            FROM ". SITETEXT ."
+                            WHERE lang = '".$environment["language"]."'
+                            AND label ='".$environment["parameter"][3]."'
+                            AND tname ='".$environment["parameter"][2]."'
+                            AND status=-2";
+                    $result = $db -> query($sql);
+                    $blocked = $db->num_rows($result);
+                    if ( $blocked > 0 ) {
+                        $hidedata["blocked"] = array();
+                    } else {
+                        $hidedata["edit"] = array();
+                    }
                 }
             } else {
                 $hidedata["default"] = array();
@@ -263,12 +269,12 @@
                     $pre_section  = preg_replace("/[ ]$/","&nbsp;",$pre_section);
                     $post_section = substr($content,$tmp_tag_meat[$tag][$key]["end"]);
                     $post_section  = preg_replace("/^[ ]/","&nbsp;",$post_section);
-                    // test: inline-elemente als solche umzusetzen
-                    $display = "";
-                    $inline = array("LINK","IMG","Fett");
-                    if ( in_array($tag,$inline) ) {
+//                     // test: inline-elemente als solche umzusetzen
+//                     $display = "";
+//                     $inline = array("LINK","IMG","Fett");
+//                     if ( in_array($tag,$inline) ) {
 //                         $display = "display:inline;";
-                    }
+//                     }
                     // knoepfe
                     $button = "";
                     if ( is_array($tmp_tag_meat[$tag][$key]["buttons"]) ) {
@@ -323,6 +329,7 @@
                         $i = $i +10;
                     }
                 }
+                // verschiebt die array-elemente
                 function arrange_elements($sort_array, $key, $direction) {
                     global $environment, $cfg;
 
@@ -363,10 +370,11 @@
                     }
                     $i++;
                     $ajax_class = array();
-                    // links bauen
+                    // links zum verschieben bauen
                     if ( $i < $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]
-                    || (count($allcontent) - $key) <= $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]
-                    || $next != "" || $blocked > 0 ) {
+                      || (count($allcontent) - $key) <= $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]
+                      || $next != ""
+                      || $blocked > 0 ) {
                         $ajax_class = "";
                         $modify_class = " style=\"display:none;\"";
                         $link_up = "";
@@ -377,6 +385,14 @@
                         $link_up = arrange_elements($sort_array, $key, "up");
                         $link_down = arrange_elements($sort_array, $key, "down");
                     }
+                    // loeschen-link
+                    $del = $cfg["wizard"]["basis"]."/modify,".
+                        $environment["parameter"][1].",".
+                        $environment["parameter"][2].",".
+                        $environment["parameter"][3].",".
+                        "section:".$key.",".
+                        $environment["parameter"][5].",".
+                        "delete.html";
                     // hintergrundbild-schnickschnack
                     preg_match("/\[(.+)\]/U",$value,$match);
                     $pic = strtolower(str_replace("=","-",$match[1]));
@@ -395,14 +411,6 @@
                             array_pop($pic_array);
                         }
                     }
-                    // loeschen-link
-                    $del = $cfg["wizard"]["basis"]."/modify,".
-                        $environment["parameter"][1].",".
-                        $environment["parameter"][2].",".
-                        $environment["parameter"][3].",".
-                        "section:".$key.",".
-                        $environment["parameter"][5].",".
-                        "delete.html";
 
                     $dataloop["sort_content"][] = array(
                                 "key"       => $key,
@@ -434,7 +442,7 @@
             // * * *
             foreach ( $cfg["wizard"]["add_tags"] as $key=>$value ) {
                 if ( is_array($cfg["wizard"]["wizardtyp"][$wizard_name]["add_tags"])
-                && !in_array($key,$cfg["wizard"]["wizardtyp"][$wizard_name]["add_tags"]) ) {
+                  && !in_array($key,$cfg["wizard"]["wizardtyp"][$wizard_name]["add_tags"]) ) {
                     continue;
                 }
                 $dataloop["add_buttons"][] = array(
@@ -444,7 +452,9 @@
                             $environment["parameter"][3].",".
                             $key.":".strlen($form_values["content"]).",".
                             $environment["parameter"][5].",".
-                            "add.html",
+                            "add,".
+                            (count($dataloop["sort_content"]) - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]).
+                            ".html",
                     "item" => $key
                 );
             }
@@ -481,12 +491,15 @@
                 $ausgaben["inaccessible"] = "";
             }
 
+            $publisher = 0;
+            if ( priv_check($ebene."/".$kategorie,"publish") ) $publisher = -1;
 
             if ( ($environment["parameter"][6] == "verify"
                 && $_POST["send"] != "") || $_SESSION["form_send"] != "" ) {
 
+                // ebene und kategorie aus tname ableiten
                 $tname2path = tname2path($environment["parameter"][2]);
-                if ( $tname2path != "" ) {
+                if ( $ausgaben["url"] != "" ) {
                     $url = explode("/",$tname2path);
                     $kategorie = array_pop($url);
                     $ebene = implode("/",$url);
@@ -494,7 +507,6 @@
                     $ebene = str_replace(array($pathvars["virtual"],$pathvars["webroot"]),"",dirname($_SESSION["form_referer"]));
                     $kategorie = str_replace(".html","",basename($_SESSION["form_referer"]));
                 }
-
                 if ( strstr($kategorie,",") ) $kategorie = substr($kategorie,0,strpos($kategorie,","));
 
                 // die naechste freie versionsnummer finden
@@ -518,23 +530,23 @@
                         $result_regex  = $db -> query($sql_regex);
                     }
                     // freigabe-test
-                    if ( $specialvars["content_release"] == -1 ) {
-                        $hide1 = ",hide";
+                    if ( $specialvars["content_release"] == -1 || $publisher == -1 ) {
+                        $status1 = ",status";
                         if ( $_POST["release_mark"] == -1 ) {
-                            $hide2 = ",-2";
+                            $status2 = ",-2";
                         } else {
-                            $hide2 = ",-1";
+                            $status2 = ",-1";
                         }
                     } else {
-                        $hide1 = "";
-                        $hide2 = "";
+                        $status1 = "";
+                        $status2 = "";
                     }
 
                     $sql = "INSERT INTO ". SITETEXT ."
                                         (lang, label, tname, version,
                                         ebene, kategorie,
                                         crc32, html, content,
-                                        changed, bysurname, byforename, byemail, byalias".$hide1.")
+                                        changed, bysurname, byforename, byemail, byalias".$status1.")
                                 VALUES (
                                         '".$environment["language"]."',
                                         '".$environment["parameter"][3]."',
@@ -550,7 +562,9 @@
                                         '".$_SESSION["forename"]."',
                                         '".$_SESSION["email"]."',
                                         '".$_SESSION["alias"]."'
-                                        ".$hide2.")";
+                                        ".$status2.")";
+                    $release_version = $next_version;
+
                 } elseif ($_POST["send"][0] == "save" || $_SESSION["form_send"] == "save") {
                     // preview mit ajax
                     if ( $_POST["ajax"] == "on" ) {
@@ -565,53 +579,69 @@
                     }
 
                     // freigabe-test
-                    if ( $specialvars["content_release"] == -1 ) {
+                    if ( $specialvars["content_release"] == -1 || $publisher == -1 ) {
                         if ( $_POST["release_mark"] == -1 ) {
-                            $hide = ",hide=-2";
+                            $status = ",status=-2";
                         } else {
-                            $hide = ",hide=-1";
+                            $status = ",status=-1";
                         }
                     } else {
-                        $hide = "";
+                        $status = "";
                     }
-                    $sql = "UPDATE ". SITETEXT ." SET
-                                        ebene = '".$ebene."',
-                                        kategorie = '".$kategorie."',
-                                        crc32 = '".$specialvars["crc32"]."',
-                                        html = '0',
-                                        content = '".addslashes($form_values["content"])."',
-                                        changed = '".date("Y-m-d H:i:s")."',
-                                        bysurname = '".$_SESSION["surname"]."',
-                                        byforename = '".$_SESSION["forename"]."',
-                                        byemail = '".$_SESSION["email"]."',
-                                        byalias = '".$_SESSION["alias"]."'
-                                        ".$hide."
-                                WHERE lang = '".$environment["language"]."'
-                                    AND label ='".$environment["parameter"][3]."'
-                                    AND tname ='".$environment["parameter"][2]."'
-                                    AND version ='".$form_values["version"]."'";
+
+                    $sql = "UPDATE ". SITETEXT ."
+                               SET ebene = '".$ebene."',
+                                   kategorie = '".$kategorie."',
+                                   crc32 = '".$specialvars["crc32"]."',
+                                   html = '0',
+                                   content = '".addslashes($form_values["content"])."',
+                                   changed = '".date("Y-m-d H:i:s")."',
+                                   bysurname = '".$_SESSION["surname"]."',
+                                   byforename = '".$_SESSION["forename"]."',
+                                   byemail = '".$_SESSION["email"]."',
+                                   byalias = '".$_SESSION["alias"]."'
+                                   ".$status."
+                             WHERE lang = '".$environment["language"]."'
+                               AND label ='".$environment["parameter"][3]."'
+                               AND tname ='".$environment["parameter"][2]."'
+                               AND version ='".$form_values["version"]."'";
+                    $release_version = $form_values["version"];
+
                 } elseif ($_POST["send"][0] == "cancel") {
                     unset($_SESSION["wizard_content"]);
                 }
+
                 if ( $result  = $db -> query($sql) ) {
                     unset($_SESSION["wizard_content"]);
                 }
+
+                // sprungziele definieren
                 $header = $_SESSION["form_referer"];
-                unset($_SESSION["form_referer"]);
                 unset($_SESSION["form_send"]);
-                header("Location: ".$header);
+                // content ggf. sofort freigeben
+                if ( $specialvars["content_release"] == -1
+                  && $publisher == -1
+                  && $_POST["release_mark"] == -1 ) {
+                    $header = $cfg["wizard"]["basis"]."/release,".
+                                $environment["parameter"][1].",".
+                                $environment["parameter"][2].",".
+                                $environment["parameter"][3].",release,".
+                                $release_version.".html";
+                    header("Location: ".$header);
+                } else {
+                    unset($_SESSION["form_referer"]);
+                    header("Location: ".$header);
+                }
 
             }
 
         }
 
-
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
 
-
-
+    //
     $db -> selectDb(DATABASE,FALSE);
 
 

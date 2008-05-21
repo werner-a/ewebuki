@@ -50,6 +50,7 @@
     // 4: marke
     // 5: version
     // 6: modus
+    // 7: anker-name
 
     // erlaubnis bei intrabvv speziell setzen
     $database = $environment["parameter"][1];
@@ -63,19 +64,19 @@
 
     $db->selectDb($database,FALSE);
 
-
-
     if ( $cfg["wizard"]["right"] == "" ||
         priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
         priv_check_old("",$cfg["wizard"]["right"]) ||
         $rechte["administration"] == -1 ||
         $erlaubnis == -1 ) {
 
-
         // page basics
         // ***
-
-        $environment["parameter"][5] != "" ? $version = " AND version=".$environment["parameter"][5] : $version = "";
+        if ( $environment["parameter"][5] != "" ) {
+            $version = " AND version=".$environment["parameter"][5];
+        } else {
+            $version = "";
+        }
 
         if ( count($_POST) == 0 ) {
 
@@ -102,7 +103,6 @@
             $form_values["content"] = $_SESSION["wizard_content"][$identifier];
         }
 
-
         // wizard-typ rausfinden
         preg_match("/\[!\]wizard:(.*)\[\/!\]/i",$form_values["content"],$match);
         if ( $match[1] != "" && is_array($cfg["wizard"]["wizardtyp"][$match[1]]) ) {
@@ -111,7 +111,7 @@
             $wizard_name = "standard";
         }
 
-        // evtl. spezielle section
+        // was soll modifiziert werden
         $tag_marken = explode(":",$environment["parameter"][4]);
         $tag_meat = content_split_all($form_values["content"]);
 
@@ -169,7 +169,9 @@
         }
 
         if ( strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) ) {
-            header("Location: ".$_SERVER["HTTP_REFERER"]);
+            $anker = "";
+            if ( $environment["parameter"][7] != "" ) $anker = "#item_".$environment["parameter"][7];
+            header("Location: ".$_SERVER["HTTP_REFERER"].$anker);
         } else {
             header("Location: ".$cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html");
         }

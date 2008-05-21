@@ -81,13 +81,6 @@
                     continue;
                 }
 
-//                 // js code erstellen
-//                 if ( $ausgaben["js"] == "" ) {
-//                     $c = "if";
-//                 } else {
-//                     $c = "else if";
-//                 }
-//
                 if ( $value[1] != "" ) {
                     $k = " [KEY-".$value[1]."]";
                 } else {
@@ -111,14 +104,6 @@
                 } else {
                     $keyX = $value[6];
                 }
-
-//              else if (st=='b')
-//              st='[B]' + selText + '[\/B]';
-//
-//                 $ausgaben["js"] .= "    ".$c." (st=='".$key."')\n";
-//                 $ausgaben["js"] .= "        st='[".strtoupper($key).$l.$s.$value[4]."[\/".strtoupper($key)."]'\n";
-
-
 
                 if ( $value[0] == "" && $cfg["wizard"]["debug"] == True ) $value[0] = "T";
 
@@ -147,58 +132,22 @@
                                     ,'".$value[5]."[/".strtoupper($keyX)."]'\n";
                 $ausgaben["njs"] .= ");\n";
 
-
-
-//                 // buttons bauen
-//                 if ( $value[0] == "T" ) {
-//                     if ( $cms_old_mode == True ) {
-//                         #$ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[3]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[3]."\" title=\"".$value[3]."\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
-//                         $ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='#(".$key.")';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"#(".$key.")\" title=\"#(".$key.")\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
-//                     } else {
-//                         $ausgaben["ce_button"] .= "<a class=\"buttag\" href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" alt=\"#(".$key.")\" title=\"#(".$key.")\" onMouseOver=\"status='#(".$key.")';return true;\" onMouseOut=\"status='';return true;\">".strtoupper($key)."</a>\n ";
-//                     }
-//                 } elseif ( $value[0] == "B" ) {
-//                     $ausgaben["ce_bottom_button"] .= "<a class=\"buttag\" href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" alt=\"#(".$key.")\" title=\"#(".$key.")\" onMouseOver=\"status='#(".$key.")';return true;\" onMouseOut=\"status='';return true;\">".strtoupper($key)."</a>\n ";
-//                 }
-
-//                 // dropdown bauen
-//                 if ( $value[5] == "" ) {
-//                     $ausgaben["ce_dropdown"] .= "<option value=\"".$key."\">".strtoupper($key)." #(".$key.")</option>\n";
-//                 }
-//                 #ce_anker
             }
 
-#echo "<pre>".$ausgaben["njs"]."</pre>";
-
-//             $ausgaben["ce_dropdown"] .= "</select>";
-
             // script in seite parsen
-            #echo "<pre>".$ausgaben["js"]."</pre>";
             $ausgaben["ce_script"] = parser($cfg["wizard"]["tagjs"],"");
-
-//             if ( $cms_old_mode == True ) {
-//                 $ausgaben["ce_button"] .= "<input name=\"add[]\" type=\"image\" id=\"image\" value=\"add\" src=\"".$defaults["cms-tag"]["path"]."cms-tag-imgb.png\" title=\"#(add)\" width=\"23\" height=\"22\">";
-//             } else {
-//                 $ausgaben["ce_button"] .= "<input type=\"submit\" name=\"add[]\" value=\"FILE\" title=\"#(add)\" class=\"butoth\">";
-//             }
-
-//             $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";
-//             $ausgaben["ce_upload"] .= "<option value=\"\">#(upload)</option>";
-//             $ausgaben["ce_upload"] .= "<option value=\"1\">1 #(file)</option>";
-//             $ausgaben["ce_upload"] .= "<option value=\"2\">2 #(files)</option>";
-//             $ausgaben["ce_upload"] .= "<option value=\"3\">3 #(files)</option>";
-//             $ausgaben["ce_upload"] .= "<option value=\"4\">4 #(files)</option>";
-//             $ausgaben["ce_upload"] .= "<option value=\"5\">5 #(files)</option>";
-//             $ausgaben["ce_upload"] .= "</select>";
 
             return $tn;
         }
 
+        // erzeugt ein array mit den informationen aller gesuchten tags (inhalt der tags, position,...)
+        // aufbau: $tag_meat[tagname][index] ( z.B. $tag_meat["H"][1] )
         function content_split_all($content) {
             global $cfg;
 
             $tag_meat = array();
             foreach ( $cfg["wizard"]["ed_boxed"] as $tag=>$preg ) {
+                // tag-marken festlegen und content aufbrechen
                 $open_tag = $preg[0][0];
                 $close_tag = $preg[0][1];
                 if ( $close_tag == "" ) $close_tag = str_replace("[","[/",$open_tag);
@@ -213,7 +162,6 @@
                                 $close_tag
                 );
                 $match = preg_split("/(".implode(")|(",$preg_tag).")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
-                $index = 0;
 
                 $level = 0; $index = -1; $max = -1; $mark = 0; $work = $match; $pre = "";$buffer = array(); $ind_lev = array();
                 foreach ( $match as $value ) {
@@ -260,6 +208,7 @@
             return $tag_meat;
         }
 
+        // aufteilung in bloecke der "ersten ebene", ohne verschachtlung
         function content_level1($content) {
             global $cfg;
 
@@ -280,7 +229,7 @@
             }
             $separate = preg_split("/(".implode("|",$preg).")|(<!--edit_begin-->)|(<!--edit_end-->)/",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
 
-            $end = "--"; $i = 0; $close = 0; $mark = 0;
+            $i = 0; $close = 0;
             $allcontent = array();
             foreach ( $separate as $index => $line ) {
                 if ( trim($line) == "" ) continue;
@@ -298,7 +247,7 @@
 
     }
 
-        // welche seiten unterhalb der url sind zur freigabe vorgesehen
+        // welche seiten sind in bearbeitung und welche warten auf freigabe
         function find_marked_content( $url = "/", $cfg, $label, $ignore = array() ) {
             global $db, $pathvars, $environment;
 
@@ -321,12 +270,13 @@
                             OR (ebene='".$ebene."' AND kategorie='".$kategorie."')
                            )".$where."
                        AND label='".$label."'
-                       AND hide<0
-                  ORDER BY tname, hide ASC, version DESC";
+                       AND status<0
+                  ORDER BY tname, status ASC, version DESC";
             $result = $db -> query($sql);
 
             $dataset = "";
             while ( $data = $db -> fetch_array($result) ) {
+                // weiterspringen, falls es von diesen content bereits eine freizugebene version gibt
                 if ( $dataset == $data["tname"]."::".$label ) continue;
                 $dataset = $data["tname"]."::".$label;
 
@@ -338,9 +288,9 @@
                 $path = $data["ebene"]."/".$data["kategorie"];
 
                 // rechte checken
-                if ( $data["hide"] == -2 && !priv_check($path,"publish") ) {
+                if ( $data["status"] == -2 && !priv_check($path,"publish") ) {
                     continue;
-                } elseif ( $data["hide"] == -1 && !priv_check($path,"edit") ) {
+                } elseif ( $data["status"] == -1 && !priv_check($path,"edit") ) {
                     continue;
                 }
 
@@ -352,19 +302,20 @@
                 }
 
                 // tabellen farben wechseln
-                if ( $cfg[$data["hide"]]["color"]["set"] == $cfg["color"]["a"]) {
-                    $cfg[$data["hide"]]["color"]["set"] = $cfg["color"]["b"];
+                if ( $cfg[$data["status"]]["color"]["set"] == $cfg["color"]["a"]) {
+                    $cfg[$data["status"]]["color"]["set"] = $cfg["color"]["b"];
                 } else {
-                    $cfg[$data["hide"]]["color"]["set"] = $cfg["color"]["a"];
+                    $cfg[$data["status"]]["color"]["set"] = $cfg["color"]["a"];
                 }
-                $new_releases[$data["hide"]][] = array(
+
+                $new_releases[$data["status"]][] = array(
                     "path" => $path,
                    "titel" => $titel,
                     "view" => $pathvars["menuroot"].$data["ebene"]."/".$data["kategorie"].",v".$data["version"].".html",
                     "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt.html",
                   "unlock" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",unlock,".$data["version"].".html",
                  "release" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",release,".$data["version"].".html",
-                   "color" => $cfg[$data["hide"]]["color"]["set"],
+                   "color" => $cfg[$data["status"]]["color"]["set"],
                 );
             }
 

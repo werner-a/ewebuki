@@ -8,87 +8,97 @@
 </head>
 <body>
 <!--##begin-->
-
-
 <div id="wizard">
 
-            #(inhalt)
+    #(inhalt)
 
-            <!--versions-umschalter-->
-            <span style="float:right;">
-                <!--##hide-version_prev-->
-                | <a href="!{link_first}">&lt;&lt;</a> | <a href="!{link_prev}">&lt;</a> |
-                <!--##show-->
-                g(version) !#ausgaben_vaktuell g(of) !#ausgaben_vgesamt
-                <!--##hide-version_next-->
-                | <a href="!{link_next}">&gt;</a> | <a href="!{link_last}">&gt;&gt;</a> |
-                <!--##show-->
-            </span>
+    <!--versions-umschalter-->
+    <span style="float:right;">
+        <!--##hide-version_prev-->
+        | <a href="!{link_first}">&lt;&lt;</a> | <a href="!{link_prev}">&lt;</a> |
+        <!--##show-->
+        g(version) !#ausgaben_vaktuell g(of) !#ausgaben_vgesamt
+        <!--##hide-version_next-->
+        | <a href="!{link_next}">&gt;</a> | <a href="!{link_last}">&gt;&gt;</a> |
+        <!--##show-->
+    </span>
 
-            <div class="clearer">
-                <a name="preview">&nbsp;</a>
-            </div>
+    <div class="clearer">
+        <a name="preview">&nbsp;</a>
+    </div>
 
 
-            <div id="vorschau" style="display:none;">
-                <div id="substance"></div>
-                <div class="clearer"></div>
-            </div>
+    <div id="vorschau" style="display:none;">
+        <div id="substance"></div>
+        <div class="clearer"></div>
+    </div>
 
-            <ul id="content_blocks">
-                <!--##loop-sort_content-->
-                <li id="item_!{key}" class="!{class}" style="!{style}">
-                    !{value}
-                    <div class="clearer"></div>
-                    <p class="block_edit" !{modify}>
-                        <a href="!{link_up}" class="button" title="#(wiz_moveup_desc)">#(wiz_moveup)</a>
-                        <a href="!{link_down}" class="button" title="#(wiz_movedown_desc)">#(wiz_movedown)</a>
-                        <a href="!{delete}" class="button" title="#(wiz_delete_desc)">#(wiz_delete)</a>
-                    </p>
-                    <div class="clearer"></div>
-                </li>
-                <!--##cont-->
-            </ul>
+    <ul id="content_blocks">
+        <!--##loop-sort_content-->
+        <li id="item_!{key}" class="!{class}" style="!{style}">
+            <a name="item_!{key}"></a>
+            !{value}
             <div class="clearer"></div>
+            <p class="block_edit" !{modify}>
+                <a href="!{link_up}" class="button" title="#(wiz_moveup_desc)">#(wiz_moveup)</a>
+                <a href="!{link_down}" class="button" title="#(wiz_movedown_desc)">#(wiz_movedown)</a>
+                <a href="!{delete}" class="button" title="#(wiz_delete_desc)">#(wiz_delete)</a>
+            </p>
+            <div class="clearer"></div>
+        </li>
+        <!--##cont-->
+    </ul>
+    <div class="clearer"></div>
 
-            <fieldset>
-                <legend>#(add_block)</legend>
-                <!--##loop-add_buttons-->
-                    <a href="!{link}" class="button">!{item}</a>
-                <!--##cont-->
-                <div class="clearer"></div>
-            </fieldset>
+    <fieldset>
+        <legend>#(add_block)</legend>
+        <!--##loop-add_buttons-->
+            <a href="!{link}" class="button">!{item}</a>
+        <!--##cont-->
+        <div class="clearer"></div>
+    </fieldset>
 
-            <!--##hide-default-->
-            <fieldset class="buttons">
-                <form method="post" action="!#ausgaben_form_aktion">
-                    <button type="button" onclick="preview();" class="button">g(preview)</button>
-                    <button type="submit" name="send[]" value="save" class="button">g(save)</button>
-                    <button type="submit" name="send[]" value="version" class="button">g(versioning)</button>
-                    <button type="submit" name="send[]" value="cancel" class="button">g(abort)</button>
-                </form>
-            </fieldset>
-            <!--##show-->
+    <!--##hide-default-->
+    <fieldset class="buttons">
+        <form method="post" action="!#ausgaben_form_aktion">
+            <button type="button" onclick="preview();" class="button">g(preview)</button>
+            <button type="submit" name="send[]" value="save" class="button">g(save)</button>
+            <button type="submit" name="send[]" value="version" class="button">g(versioning)</button>
+            <button type="submit" name="send[]" value="cancel" class="button">g(abort)</button>
+        </form>
+    </fieldset>
+    <!--##show-->
 
-            <!--##hide-edit-->
-            <fieldset class="buttons">
-                <form method="post" action="!#ausgaben_form_aktion">
-                    <button type="button" onclick="preview();" class="button">g(preview)</button>
-                    <button type="submit" name="send[]" value="version" class="button">g(versioning)</button>
-                    <button type="submit" name="send[]" value="cancel" class="button">g(abort)</button><br />
-                    <label class="cbra"><input type="checkbox" name="release_mark" value="-1" class="button" />#(ask_release)</label>
-                </form>
-            </fieldset>
-            <!--##show-->
+    <!--##hide-edit-->
+    <fieldset class="buttons">
+        <form method="post" action="!#ausgaben_form_aktion">
+            <button type="button" onclick="preview();" class="button">g(preview)</button>
+            <button type="submit" name="send[]" value="version" class="button">g(save)</button>
+            <button type="submit" name="send[]" value="cancel" class="button">g(abort)</button><br />
+            <label class="cbra"><input type="checkbox" name="release_mark" value="-1" class="button" />#(ask_release)</label>
+        </form>
+    </fieldset>
+    <!--##show-->
 
-            <!--##hide-blocked-->
-            <fieldset>
-                <input type="checkbox" name="release_mark" value="-1" checked="true" disabled="true" />#(blocked_release)
-            </fieldset>
-            <!--##show-->
+    <!--##hide-publish-->
+    <fieldset class="buttons">
+        <form method="post" action="!#ausgaben_form_aktion">
+            <button type="button" onclick="preview();" class="button">g(preview)</button>
+            <button type="submit" name="send[]" value="save" class="button">g(save)</button>
+            <button type="submit" name="send[]" value="version" class="button">g(versioning)</button>
+            <button type="submit" name="send[]" value="cancel" class="button">g(abort)</button>
+            <label class="cbra"><input type="checkbox" name="release_mark" value="-1" class="button" />#(release)</label>
+        </form>
+    </fieldset>
+    <!--##show-->
+
+    <!--##hide-blocked-->
+    <fieldset>
+        <input type="checkbox" name="release_mark" value="-1" checked="true" disabled="true" />#(blocked_release)
+    </fieldset>
+    <!--##show-->
 
 </div>
-<div id="info_box"></div>
 
 !#ausgaben_output
 !#ausgaben_inaccessible
@@ -102,7 +112,7 @@
                     {
                         onComplete:function(){
                             new Effect.Highlight("content_blocks",{startcolor: '#FEF6DE'});
-                                        location.reload(true);
+                            location.reload(true);
                         }
                     }
                 );
