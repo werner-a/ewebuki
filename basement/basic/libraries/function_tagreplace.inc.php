@@ -891,7 +891,7 @@
 
                                     $img = $cfg["file"]["base"]["webdir"]
                                          .$cfg["file"]["base"]["pic"]["root"]
-                                         .$cfg["file"]["base"]["pic"]["b"]
+                                         .$cfg["file"]["base"]["pic"][$tag_param[1]]
                                          ."img_".$row["fid"].".".$row["ffart"];
 
                                     if ( !in_array( $row["fid"], $tag_extra ) ) {
