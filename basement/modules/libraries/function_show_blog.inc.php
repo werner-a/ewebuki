@@ -109,10 +109,18 @@
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
             foreach ( $tags as $key => $value ) {
+                if (is_array($value)) {
+                    $tag_parameter= $value["parameter"];
+                    $value = $value["tag"];
+                }
+                if (strpos($value,"=")) {
+                     $endtag= substr($value,0,strpos($value,"="));
+                     $value = $value.$tag_parameter;
+                } else {
+                    $endtag=$value;
+                }
+                $preg = "(\[".$value."\])(.*)\[\/".$endtag."\]";
 
-                (is_array($value)) ? $value = $value["tag"] : $nop = "";
-                (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-                $preg = "(\[".$value.".*\])(.*)\[\/".$endtag."\]";
                 if ( preg_match("/$preg/U",$test,$regs) ) {
                     $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
                     $org_tag = str_replace('\r\n',"<br>",$regs[2]);
@@ -121,6 +129,7 @@
                 }
                 $array[$counter][$key."_org"] = $org_tag;
                 $array[$counter][$key] = tagreplace($rep_tag);
+                if ( $org_tag == "" ) $array[$counter][$key] = "";
                 if ( preg_match("/^\[IMG/",$rep_tag,$regs) ) {
                     $image_para = explode("/",$rep_tag);
                     $array[$counter][$key."_img_art"] = $image_para[2];
