@@ -52,10 +52,10 @@
                         "b" => "#999999",
                        ),
          "function" => array(
-                      "list" => "",
-                      "list,shared" => array("menu_convert"),
+                     "list" => "",
+              "list,shared" => array("menu_convert"),
                       "add" => "",
-                      "add,shared" => array("menu_convert"),
+               "add,shared" => array("menu_convert"),
                      "edit" => "",
                    "delete" => "",
             "delete,shared" => array("menu_convert"),
@@ -69,17 +69,18 @@
                                ),
                        ),
             "blogs" => array(
-                    "/dummy_url" => array(
-                                        "right" => "",
-                                       "wizard" => 0,
-                            "own_list_template" => "",
-#                                      "addons"  => array("entry1" => "tag1"),
-#                                                         "entry2" => "tag2")
-#                                           ),
-                                        "tags"  => array("titel" => "H1"),
-                                                        "teaser" => "P=teaser")
-                                                    ),
-                                            ),
+               "/dummy_url" => array(
+                            "right" => "",
+                           "wizard" => 0,
+                "own_list_template" => "",
+                            "tags"  => array(
+			            "titel" => "H1",
+                                   "teaser" => "P=teaser",
+                                       ),
+#                          "addons" => array(
+#                                  "entry1" => "tag1",
+#                                  "entry2" => "tag2",
+#                                      ),
                        ),
            );
 
