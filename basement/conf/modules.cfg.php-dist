@@ -141,11 +141,9 @@
 #    }
 
 #    // addon: bloged (link, list) 
-#    include $pathvars["moduleroot"]."addon/bloglink.inc.php";
-#    if (  ( $environment["ebene"] == "/" && $environment["kategorie"] == "blog" )
-#       || ( $environment["ebene"] == "/blog" ))
-#    {
-#    include $pathvars["moduleroot"]."addon/bloglist.inc.php";
+#    #include $pathvars["moduleroot"]."addon/bloglink.inc.php";
+#    if ( $environment["ebene"] == "" && $environment["kategorie"] == "blog" ) {
+#        include $pathvars["moduleroot"]."addon/bloglist.inc.php";
 #    }
 
 #    // addon: changed
