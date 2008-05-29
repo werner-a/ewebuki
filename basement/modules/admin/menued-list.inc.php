@@ -75,7 +75,7 @@
         $ausgaben["new"] = "<a href=\"".$cfg["basis"]."/add,0.html\">g(new)</a>";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".list";
+        $mapping["main"] = eCRC($environment["ebene"]).".list";
         $mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

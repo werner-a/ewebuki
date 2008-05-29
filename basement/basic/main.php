@@ -180,8 +180,8 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg kategorie: ".$environment["kategorie"].$debugging["char"];
 
     // neu: ausgabe template
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg ebene crc32: ".crc32($environment["ebene"]).$debugging["char"];
-    $environment["template"] = crc32($environment["ebene"]).".".$environment["kategorie"].".tem.html";
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg ebene crc32: ".eCRC($environment["ebene"]).$debugging["char"];
+    $environment["template"] = eCRC($environment["ebene"]).".".$environment["kategorie"].".tem.html";
     $template_link = "<a href=\"file://".$environment["template"]."\">".$environment["template"]."</a>";
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg template (auto): ".$template_link.$debugging["char"];
 
@@ -315,7 +315,7 @@
         if ( $HTTP_GET_VARS["edit"] == "" ) {
             $tname = $mapping["main"];
         } else {
-            $tname = crc32($environment["ebene"]).".".$HTTP_GET_VARS["edit"];
+            $tname = eCRC($environment["ebene"]).".".$HTTP_GET_VARS["edit"];
         }
         $sql = "SELECT * FROM ". SITETEXT ."
                 WHERE tname='".$tname."'
@@ -341,7 +341,7 @@
     // template overwrite?
     if ( $debugging["html_enable"] ) {
         $main_auto = $environment["template"];
-        $main_new = str_replace(".".crc32($environment["ebene"]),"",crc32($environment["ebene"]).".".$mapping["main"].".tem.html");
+        $main_new = str_replace(".".eCRC($environment["ebene"]),"",eCRC($environment["ebene"]).".".$mapping["main"].".tem.html");
         if ( $main_auto != $main_new ) {
             $debugging["ausgabe"] .= "<B>ATTENTION: template overwrite -> ".$mapping["main"].".tem.html</B>".$debugging["char"];
         }

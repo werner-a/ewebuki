@@ -1,6 +1,11 @@
 
 
-automatische generierung von x-datensaetzen
+automatische generierung von x-datensaetzen -> done
 evtl. artikelname in der url -> like heise
 
 titel,teaser u. bild aus content holen
+
+
+
+performance test
+100.000 eintraege: mysql:1,5 sec; postgres: 2,1 sec

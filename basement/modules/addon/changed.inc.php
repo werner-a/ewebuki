@@ -58,7 +58,7 @@
         }
 
         if ( $environment["ebene"] != ""  ) {
-            $tname = crc32($environment["ebene"]).".".$environment["kategorie"];
+            $tname = eCRC($environment["ebene"]).".".$environment["kategorie"];
         } else {
             $tname = $environment["kategorie"];
         }

@@ -137,7 +137,7 @@
         $ausgaben["form_delete"] = "true";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".delete";
+        $mapping["main"] = eCRC($environment["ebene"]).".delete";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

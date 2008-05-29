@@ -59,7 +59,7 @@
         if ( $num_rows > 0 ) {
 
             // was anzeigen
-            $mapping["main"] = crc32($environment["ebene"]).".list";
+            $mapping["main"] = eCRC($environment["ebene"]).".list";
             $mapping["navi"] = "leer";
 
             // wohin schicken
@@ -101,7 +101,7 @@
             // content holen (alle sprachen)
             // ***
             $ebene = make_ebene($refid);
-            if ( $ebene != "/" ) $extend = crc32($ebene).".";
+            if ( $ebene != "/" ) $extend = eCRC($ebene).".";
             $tname = $extend.$kategorie;
             $sql = "SELECT lang, label, tname, content
                       FROM ".$cfg["menued"]["db"]["text"]["entries"]."
@@ -131,7 +131,7 @@
             $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"delete\" value=\"true\" class=\"hidden\"/>";
 
             // was anzeigen
-            $mapping["main"] = crc32($environment["ebene"]).".delete";
+            $mapping["main"] = eCRC($environment["ebene"]).".delete";
             $mapping["navi"] = "leer";
 
             // unzugaengliche #(marken) sichtbar machen

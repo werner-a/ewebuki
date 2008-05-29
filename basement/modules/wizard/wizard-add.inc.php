@@ -101,7 +101,7 @@
             if ( $mark == 0 ) $dataloop["wizards"][0]["check"] = " checked=\"checked\"";
 
             // form options holen
-            $form_options = form_options(crc32("/admin/menued").".add");
+            $form_options = form_options(eCRC("/admin/menued").".add");
 
             // fehlermeldungen
             $ausgaben["form_error"] = $_SESSION["form_error"]["desc"];
@@ -159,7 +159,7 @@
                         FROM ". SITETEXT ."
                         WHERE lang = '".$environment["language"]."'
                         AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".crc32($environment["ebene"]."/default_content").".".$environment["parameter"][4]."'
+                        AND tname ='".eCRC($environment["ebene"]."/default_content").".".$environment["parameter"][4]."'
                     ORDER BY version DESC
                         LIMIT 0,1";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];

@@ -109,7 +109,7 @@
         $ausgaben["edit"] = $cfg["usered"]["basis"]."/edit,".$environment["parameter"][1].".html";
 
         // was wird angezeigt
-        $mapping["main"] = crc32($environment["ebene"]).".details";
+        $mapping["main"] = eCRC($environment["ebene"]).".details";
 
         // +++
         // page basics

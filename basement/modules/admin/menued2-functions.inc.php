@@ -136,7 +136,7 @@
             $old_level = explode("/",make_ebene($data["mid"]));
             $old_kategorie = array_pop($old_level);
             $old_ebene = implode("/",$old_level);
-            if ( count($old_level) > 1 ) $extend = crc32($old_ebene).".";
+            if ( count($old_level) > 1 ) $extend = eCRC($old_ebene).".";
             $old_tname = $extend.$data["entry"];
 
             // neuer tname
@@ -144,7 +144,7 @@
             $new_level = explode("/",$new_url);
             $new_kategorie = array_pop($new_level);
             $new_ebene = implode("/",$new_level);
-            if ( count($new_level) > 1 ) $extend = crc32($new_ebene).".";
+            if ( count($new_level) > 1 ) $extend = eCRC($new_ebene).".";
             $new_tname = $extend.$new_kategorie;
 
             // aktualisierung der content-rechte
@@ -168,11 +168,11 @@
             $new_view_ebene = $new_ebene."/".$new_kategorie."/view";
             $sql = "SELECT *
                       FROM ".$cfg["menued"]["db"]["text"]["entries"]."
-                     WHERE tname LIKE '".crc32($old_view_ebene)."%'";
+                     WHERE tname LIKE '".eCRC($old_view_ebene)."%'";
             $result = $db -> query($sql);
             while ( $data = $db -> fetch_array($result,1) ) {
                 $sql = "UPDATE ".$cfg["menued"]["db"]["text"]["entries"]."
-                           SET tname='".str_replace(crc32($old_view_ebene),crc32($new_view_ebene),$data["tname"])."'
+                           SET tname='".str_replace(eCRC($old_view_ebene),eCRC($new_view_ebene),$data["tname"])."'
                          WHERE tname='".$data["tname"]."'";
                 $subresult = $db -> query($sql);
             }

@@ -69,11 +69,11 @@
         if ( $environment["parameter"][1] ) {
             switch($environment["parameter"][2]) {
                 case "recover":
-                    $sql = "SELECT * FROM site_text WHERE tname ='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."' ORDER BY version DESC";
+                    $sql = "SELECT * FROM site_text WHERE tname ='".eCRC(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."' ORDER BY version DESC";
                     $result = $db -> query($sql);
                     $data = $db -> fetch_array($result,1);
                     $new_content =  preg_replace("/\[!\]0/","[!]1",$data["content"]);
-                    $sql = "UPDATE site_text SET content='".$new_content."' WHERE tname ='".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."' AND version='".$data["version"]."'";
+                    $sql = "UPDATE site_text SET content='".$new_content."' WHERE tname ='".eCRC(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."' AND version='".$data["version"]."'";
                     $result = $db -> query($sql);
                     header("Location: ".$pathvars["virtual"]."/admin/bloged/list,".$environment["parameter"][1].".html");
                     break;
@@ -83,7 +83,7 @@
                         $environment["parameter"][3] = "%";
                         $trenner = " like ";
                     }
-                    $sql = "DELETE FROM site_text WHERE tname ".$trenner."'".crc32(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."'";
+                    $sql = "DELETE FROM site_text WHERE tname ".$trenner."'".eCRC(make_ebene($environment["parameter"][1])).".".$environment["parameter"][3]."'";
                     $result = $db -> query($sql);
                     header("Location: ".$pathvars["virtual"]."/admin/bloged/list,".$environment["parameter"][1].".html");
                     break;
@@ -94,7 +94,7 @@
                     $hidedata["admin_clear"]["beschriftung4"] = "<a href=\"list,".$environment["parameter"][1].",delete,all.html\">blog leeren</a>";
                     // liste der geloeschten artikel
                     $tag = array_shift($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"]);
-                    $sql = "SELECT max(version) as version,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".crc32(make_ebene($environment["parameter"][1])).".%' GROUP by tname having max(SUBSTR(content,4,1)) < '1'";
+                    $sql = "SELECT max(version) as version,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".eCRC(make_ebene($environment["parameter"][1])).".%' GROUP by tname having max(SUBSTR(content,4,1)) < '1'";
 
                     $result = $db -> query($sql);
                     $ausgaben["anzahl"] = $db->num_rows($result);
@@ -124,10 +124,10 @@
                 $counter++;
                 $dataloop["blogs"][$counter]["link"] = "list,".$id["mid"].".html";
                 $dataloop["blogs"][$counter]["name"] = $key;
-                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".crc32($key).".%' order by date DESC";
+                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".eCRC($key).".%' order by date DESC";
                 $result = $db -> query($sql);
                 $dataloop["blogs"][$counter]["anzahl1"] = $db ->num_rows($result);
-                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".crc32($key).".%' order by date DESC";
+                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".eCRC($key).".%' order by date DESC";
                 $result = $db -> query($sql);
                 $dataloop["blogs"][$counter]["anzahl2"] = $db ->num_rows($result);
             }

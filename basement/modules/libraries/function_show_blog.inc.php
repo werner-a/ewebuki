@@ -75,11 +75,11 @@
         //
         // erster test einer suchanfrage per kalender
 
-        $tname = crc32($url).".%";
+        $tname = eCRC($url).".%";
 
         if ( $environment["parameter"][2] != "" ) {
 
-            $tname = crc32($url).".".$environment["parameter"][2];
+            $tname = eCRC($url).".".$environment["parameter"][2];
         }
 
         $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".$tname."' order by date DESC";

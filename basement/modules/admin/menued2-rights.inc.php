@@ -71,7 +71,7 @@
     foreach ( $entry as $key => $value ) {
         $crc_part .= "/".$value;
     }
-    $crc = crc32($crc_part).".".$last_element;
+    $crc = eCRC($crc_part).".".$last_element;
 
     // in auth_special wird immer die aktuelle db eingetragen
     $base = $db -> getdb();
@@ -80,13 +80,13 @@
     $ausgaben["database"] = $base;
 
     // form options holen
-    $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+    $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
     // form elememte bauen
     #$element = form_elements( $cfg["menued"]["db"]["menu"]["entries"], $form_values );
 
     // was anzeigen
-    $mapping["main"] = crc32($environment["ebene"]).".rights";
+    $mapping["main"] = eCRC($environment["ebene"]).".rights";
 
     // wohin schicken
     $ausgaben["form_error"] = "";

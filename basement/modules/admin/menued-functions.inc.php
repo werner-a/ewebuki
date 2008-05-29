@@ -264,13 +264,13 @@
                 #}
 
                 // alter tname
-                if ( $ebene != "/" ) $extend = crc32($ebene).".";
+                if ( $ebene != "/" ) $extend = eCRC($ebene).".";
                 $old_tname = $extend.$data["entry"];
                 #echo $ebene.":".$old_tname."<br>";
 
                 // neuer tname
                 $ebene = str_replace($suchmuster, $ersatz, $ebene);
-                if ( $ebene != "/" ) $extend = crc32($ebene).".";
+                if ( $ebene != "/" ) $extend = eCRC($ebene).".";
                 $new_tname = $extend.$data["entry"];
                 #echo $ebene.":".$new_tname."<br>";
 

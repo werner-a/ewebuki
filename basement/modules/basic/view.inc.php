@@ -113,7 +113,7 @@
                 // kontrolle, ob content vorhanden ist
                 $ebene = $environment["ebene"]."/view";
                 $kategorie = "desc-".$environment["parameter"][2];
-                $tname = crc32($ebene).".".$kategorie;
+                $tname = eCRC($ebene).".".$kategorie;
                 $sql = "SELECT *
                           FROM site_text
                          WHERE lang='".$environment["language"]."'
@@ -164,7 +164,7 @@
             if ( $ebene == "" ) {
                 $tname = $kategorie;
             } else {
-                $tname = crc32($ebene).".".$kategorie;
+                $tname = eCRC($ebene).".".$kategorie;
             }
             $sql = "SELECT *
                       FROM site_text
@@ -276,7 +276,7 @@
         #$ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        #$mapping["main"] = crc32($environment["ebene"]).".list";
+        #$mapping["main"] = eCRC($environment["ebene"]).".list";
         #$mapping["main"] = "viewer";
         #$mapping["navi"] = "leer";
 

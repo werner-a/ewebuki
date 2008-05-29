@@ -49,7 +49,7 @@
 
         if ( $specialvars["crc32"] == -1 ) {
             if ( $environment["ebene"] != "" && $tname == $environment["kategorie"] ) {
-                $tname = crc32($environment["ebene"]).".".$tname;
+                $tname = eCRC($environment["ebene"]).".".$tname;
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 tname \"".$tname."\" forced!!!".$debugging["char"];
             }
         } else {

@@ -339,7 +339,7 @@
                                 if ( $specialvars["crc32"] == -1 ) {
                                     if ( $environment["ebene"] != "" && $token_name == $environment["kategorie"] ) {
                                         // das normale template ist!
-                                        $newstartfile = crc32($environment["ebene"]).".".$token_name.".tem.html";
+                                        $newstartfile = eCRC($environment["ebene"]).".".$token_name.".tem.html";
                                         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 template/content basis: ".$newstartfile." for ebene (".$environment["ebene"].")".$debugging["char"];
                                         // gibt es ein overwrite template?
                                         $path_element = explode("/", substr($environment["ebene"]."/",1).$environment["kategorie"]);
@@ -348,7 +348,7 @@
                                             if ( $value != "" ) {
                                                 $find_ebene = "/".implode("/",$path_element);
                                                 if ( $find_ebene != "/" ) {
-                                                    $overwrite_template = crc32($find_ebene).".".$find_kategorie.".tem.html";
+                                                    $overwrite_template = eCRC($find_ebene).".".$find_kategorie.".tem.html";
                                                 } else {
                                                     $overwrite_template = $find_kategorie.".tem.html";
                                                 }

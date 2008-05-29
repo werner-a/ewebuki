@@ -66,7 +66,7 @@
         }
 
         // form options holen
-        $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+        $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
         $element = form_elements( $cfg["menued"]["db"]["menu"]["entries"], $form_values );
@@ -105,7 +105,7 @@
         $ausgaben["new"] = "";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".list";
+        $mapping["main"] = eCRC($environment["ebene"]).".list";
         $mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

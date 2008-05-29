@@ -56,7 +56,7 @@
         #}
 
         // form options holen
-        #$form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+        #$form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
         #$element = form_elements( $cfg["fileed"]["db"]["leer"]["entries"], $form_values );
@@ -108,7 +108,7 @@
         $ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".upload";
+        $mapping["main"] = eCRC($environment["ebene"]).".upload";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

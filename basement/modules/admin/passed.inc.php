@@ -69,7 +69,7 @@
         }
 
         // form otions holen
-        $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+        $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
         $element = form_elements( $cfg["passed"]["db"]["entries"], $form_values );
@@ -81,7 +81,7 @@
         $element[$cfg["passed"]["db"]["pass"]] = "";
 
         // was anzeigen
-        #$mapping["main"] = crc32($environment["ebene"]).".modify";
+        #$mapping["main"] = eCRC($environment["ebene"]).".modify";
         $mapping["navi"] = "leer";
 
         // wohin schicken

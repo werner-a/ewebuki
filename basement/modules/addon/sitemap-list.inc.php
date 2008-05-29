@@ -72,7 +72,7 @@
 
         // was anzeigen
         #$cfg["sitemap"]["path"] = str_replace($pathvars["virtual"],"",$cfg["sitemap"]["basis"]);
-        #$mapping["main"] = crc32($cfg["sitemap"]["path"]).".list";
+        #$mapping["main"] = eCRC($cfg["sitemap"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

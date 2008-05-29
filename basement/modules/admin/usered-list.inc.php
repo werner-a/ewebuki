@@ -103,7 +103,7 @@
 
         // was anzeigen
         $cfg["usered"]["path"] = str_replace($pathvars["virtual"],"",$cfg["usered"]["basis"]);
-        $mapping["main"] = crc32($cfg["usered"]["path"]).".list";
+        $mapping["main"] = eCRC($cfg["usered"]["path"]).".list";
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($_GET["edit"]) ) {

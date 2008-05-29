@@ -185,7 +185,7 @@
 
             // content navigation erstellen
             // ***
-            $ausgaben["M3"] = crc32($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
+            $ausgaben["M3"] = eCRC($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
 
             // M0 -> ebene darueber
             if ( $path == $environment["ebene"] ) {

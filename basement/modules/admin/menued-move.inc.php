@@ -56,7 +56,7 @@
         }
 
         // form options holen
-        $form_options = form_options(crc32($environment["ebene"]).".".$environment["kategorie"]);
+        $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
         $element = form_elements( $cfg["db"]["menu"]["entries"], $form_values );
@@ -83,7 +83,7 @@
         $ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $mapping["main"] = crc32($environment["ebene"]).".move";
+        $mapping["main"] = eCRC($environment["ebene"]).".move";
         $mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
@@ -127,7 +127,7 @@
                 // content aktuelle seite aendern (alle sprachen)
                 $ebene = make_ebene($data["refid"]);
                 if ( $ebene != "/" ) {
-                    $extend = crc32($ebene).".";
+                    $extend = eCRC($ebene).".";
                 } else {
                     $ebene = "";
                     $extend = "";
@@ -138,7 +138,7 @@
 
                 $ebene = make_ebene($HTTP_POST_VARS["refid"]);
                 if ( $ebene != "/" ) {
-                    $extend = crc32($ebene).".";
+                    $extend = eCRC($ebene).".";
                 } else {
                     $ebene = "";
                     $extend = "";

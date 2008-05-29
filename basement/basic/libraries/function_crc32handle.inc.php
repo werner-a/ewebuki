@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
-  $Script["desc"] = "rechte in bereichen pruefen";
+  $script["name"] = "$Id: leer.inc.php 1131 2007-12-12 08:45:50Z chaot $";
+  $Script["desc"] = "crc32/crc64 handling";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -43,27 +43,18 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // aufruf: $berechtigt_in = right_check( $art, $ebene, $kategorie );
-    // $art = 0 - artikel
-    // $art = 1 - content
-
-    function right_check($art, $ebene, $kategorie="",$database=DATABASE) {
-        global $db;
-
-        $url = explode("/", $ebene."/".$kategorie);
-        foreach ($url as $key => $value) {
-            if ( $key > 0 ) $trenner = "/";
-            $chkurl .= $trenner.$value;
-            if ( $url[$key+1] == "" ) break;
-            $stname = eCRC($chkurl).".".$url[$key+1];
-            if ( is_array($_SESSION["katzugriff"]) ) {
-                if ( in_array($art.":".$database.":".$stname,$_SESSION["katzugriff"]) ) {
-                    $berechtigt = $stname;
-                    break;
-                }
+    function eCRC($ebene) {
+        global $specialvars;
+        if ( $specialvars["crc32force"] == -1 ) {
+            $crc = abs(crc32($ebene));
+            if( $crc & 0x80000000){
+                $crc ^= 0xffffffff;
+                $crc += 1;
             }
+        } else {
+            $crc = crc32($ebene);
         }
-        return $berechtigt;
+        return $crc;
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

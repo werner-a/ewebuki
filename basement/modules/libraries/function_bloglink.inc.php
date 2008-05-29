@@ -45,7 +45,7 @@
 
     function bloglink($url,$anzahl,$tag,$length=25) {
         global $db;
-        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".crc32($url).".%' order by date DESC Limit 0,5";
+        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' AND tname like '".eCRC($url).".%' order by date DESC Limit 0,5";
         $result = $db -> query($sql);
         $links = "<ul>";
         while ( $data = $db -> fetch_array($result,1) ) {

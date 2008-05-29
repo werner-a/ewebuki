@@ -200,7 +200,7 @@
             // label fuer neue buttons fuellen
             $sql = "SELECT label, content
                       FROM ". SITETEXT ."
-                     WHERE tname='".crc32($environment["ebene"]).".modify'
+                     WHERE tname='".eCRC($environment["ebene"]).".modify'
                        AND lang='".$environment["language"]."'";
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result  = $db -> query($sql);

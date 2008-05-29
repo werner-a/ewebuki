@@ -210,7 +210,7 @@
 
         // was anzeigen
         $cfg["fileed"]["path"] = str_replace($pathvars["virtual"],"",$cfg["fileed"]["basis"]);
-        $mapping["main"] = crc32($cfg["fileed"]["path"]).".compilation";
+        $mapping["main"] = eCRC($cfg["fileed"]["path"]).".compilation";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

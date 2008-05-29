@@ -72,6 +72,7 @@
     $specialvars["menu_level0_end"] = 0; // letzte zufall startseite (0 = disable)
     $specialvars["old_contented"] = 0; // alten contented verwenden
     $specialvars["crc32"] = -1; // ablage des content mit crc32.tname
+    $specialvars["crc32force"] = 0; // schreibt crc32 auf 64-bit systemen
     $specialvars["denyhtml"] = -1; // html im content verbieten
     $specialvars["denyspace"] = -1; // leerzeichen im content verbieten
     $specialvars["nosections"] = 0; // bearbeiten marke pro absatz verhindern

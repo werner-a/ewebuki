@@ -107,7 +107,7 @@
 
         // was anzeigen
         $cfg["leer"]["path"] = str_replace($pathvars["virtual"],"",$cfg["leer"]["basis"]);
-        $mapping["main"] = crc32($cfg["leer"]["path"]).".list";
+        $mapping["main"] = eCRC($cfg["leer"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

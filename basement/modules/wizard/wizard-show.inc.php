@@ -96,7 +96,7 @@
         if ( count($path) == 0 || (count($path) == 1 && $path[0]=="") ) {
             $environment["parameter"][2] = $kategorie;
         } else {
-            $environment["parameter"][2] = crc32($ebene).".".$kategorie;
+            $environment["parameter"][2] = eCRC($ebene).".".$kategorie;
         }
         $reload = -1;
     }

@@ -93,13 +93,13 @@
             if ( $ebene == "" ) {
                 $tmp_tname = $data["entry"];
             } else {
-                $tmp_tname = crc32($ebene).".".$data["entry"];
+                $tmp_tname = eCRC($ebene).".".$data["entry"];
             }
             $path = $ebene."/".$data["entry"];
             $return_value = "";
             if ( $tname == $tmp_tname ) {
                 return $path;
-            } elseif ( strstr($tname,crc32($ebene."/".$data["entry"]).".") ) {
+            } elseif ( strstr($tname,eCRC($ebene."/".$data["entry"]).".") ) {
                 return $path."/".substr($tname,(strpos($tname,".")+1));
             } else {
                 $return_value = tname2path($tname,$data["mid"],$path);

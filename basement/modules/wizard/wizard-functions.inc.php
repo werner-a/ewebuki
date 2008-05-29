@@ -283,7 +283,7 @@
                 if ( $data["ebene"] == "" ) {
                     $tname = $data["kategorie"];
                 } else {
-                    $tname = crc32($data["ebene"]).".".$data["kategorie"];
+                    $tname = eCRC($data["ebene"]).".".$data["kategorie"];
                 }
                 $path = $data["ebene"]."/".$data["kategorie"];
 

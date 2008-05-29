@@ -57,7 +57,7 @@
             $sqlb .= ", 'inhalt'";
     
             $sqla .= ", tname";
-            $sqlb .= ", '".crc32(make_ebene($environment["parameter"][1])).".".$id."'";
+            $sqlb .= ", '".eCRC(make_ebene($environment["parameter"][1])).".".$id."'";
     
             $sqla .= ", crc32";
             $sqlb .= ", '-1'";
@@ -138,18 +138,18 @@
             $result  = $db -> query($sql);
             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) {
-                if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
+                if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".eCRC(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
             } else {
-                if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".crc32(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
+                if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".eCRC(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
             }
         }
 
         $ebene = make_ebene($environment["parameter"][1]);
 
-        $laenge = strlen(crc32(make_ebene($environment["parameter"][1])))+2;
+        $laenge = strlen(eCRC(make_ebene($environment["parameter"][1])))+2;
         $sql = "SELECT Cast(SUBSTR(tname,".$laenge.") as unsigned) AS id 
                   FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
-                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".crc32(make_ebene($environment["parameter"][1])).".%' AND tname REGEXP '[0-9]$'
+                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".eCRC(make_ebene($environment["parameter"][1])).".%' AND tname REGEXP '[0-9]$'
                  ORDER BY id DESC";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
