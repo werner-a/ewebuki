@@ -50,6 +50,7 @@
             if( $crc & 0x80000000){
                 $crc ^= 0xffffffff;
                 $crc += 1;
+                $crc = -$crc;
             }
         } else {
             $crc = crc32($ebene);
