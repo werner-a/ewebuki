@@ -83,7 +83,7 @@
                 $content_release = "";
             }
 
-            $sql = "SELECT version, html, content, status, changed, byalias
+            $sql = "SELECT *
                       FROM ". SITETEXT ."
                      WHERE lang = '".$environment["language"]."'
                        AND label ='".$environment["parameter"][3]."'

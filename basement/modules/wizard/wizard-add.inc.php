@@ -122,7 +122,7 @@
             if ( $specialvars["content_release"] == -1 ) {
                 $hidedata["add_menu"]["hide"] = -1;
             } else {
-                $hidedata["add_menu"]["hide"] = 0;
+                $hidedata["add_menu"]["hide"] = "";
             }
 
             // rausfinden, welcher menupunkt einen unterpunkt bekommen soll
