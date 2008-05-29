@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 KÃ¶nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -63,6 +63,13 @@
         include $pathvars["moduleroot"]."admin/contented.cfg.php";
         include $pathvars["moduleroot"]."admin/contented-ctrl.inc.php";
     }
+
+#    // wizard: for testing only !!
+#    if ( $environment["ebene"] == "/wizard" ) {
+#        include $pathvars["moduleroot"]."admin/contented.cfg.php";
+#        include $pathvars["moduleroot"]."wizard/wizard.cfg.php";
+#        include $pathvars["moduleroot"]."wizard/wizard-ctrl.inc.php";
+#    }
 
 #    // admin: new for testing only !!
 #    if ( $environment["kategorie"] == "new" ) {

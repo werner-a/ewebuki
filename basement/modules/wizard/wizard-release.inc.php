@@ -52,24 +52,22 @@
 
     // get-aufruf um das neue eingefuegte markierungsfeld automatisch richtig zu fuellen
     if ( $_GET["transform"] == "mark_content" && priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],"admin") ) {
-        $sql = "SELECT *
-                  FROM site_text
-              ORDER BY lang, label, tname, version DESC";
+        // alle auf historisch setzten
+        $sql = "UPDATE site_text SET status=0";
         $result = $db -> query($sql);
-        $unique = "";
+        // die hoechsten versionen auf aktiv setzen
+        $sql = "SELECT lang, label, tname, max(version) as version
+                  FROM site_text
+              GROUP BY lang,label,tname;";
+        $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
-            if ( $data["status"] < 0 ) continue;
-            if ( $unique != $data["lang"]."::".$data["label"]."::".$data["tname"]
-               && $data["status"] == 0 ) {
-                $sql = "UPDATE site_text
-                           SET status=1
-                         WHERE lang='".$data["lang"]."'
-                           AND label='".$data["label"]."'
-                           AND tname='".$data["tname"]."'
-                           AND version=".$data["version"];
-                $res = $db -> query($sql);
-            }
-            $unique = $data["lang"]."::".$data["label"]."::".$data["tname"];
+            $sql = "UPDATE site_text
+                       SET status=1
+                     WHERE lang='".$data["lang"]."'
+                       AND label='".$data["label"]."'
+                       AND tname='".$data["tname"]."'
+                       AND version=".$data["version"];
+            $res = $db -> query($sql);
         }
     }
 
@@ -114,7 +112,7 @@
     }
     /* fehlende label-beizeichnung */
     if ( $environment["parameter"][3] == "" ) {
-        $environment["parameter"][3] = $cfg["wizard"]["wizardtyp"]["default"]["def_label"];
+        $environment["parameter"][3] = $cfg["wizard"]["wizardtyp"]["standard"]["def_label"];
         $reload = -1;
     }
     if ( $reload == -1 ) header("Location: ".$cfg["wizard"]["basis"]."/".implode(",",$environment["parameter"]).".html");

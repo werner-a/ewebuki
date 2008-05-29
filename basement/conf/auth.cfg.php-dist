@@ -100,9 +100,12 @@
              # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
             "inplace" => array(
-                 "new" => array("add","g(new)"),
-#"/admin/contented/history,," => array("add","g(history)")
-                 #"move" => array("add")
+                              "new" => array("add","g(new)"),
+       #"/admin/contented/history,," => array("add","g(history)"),
+                      #"/wizard/add" => array("edit;publish;admin","g(wizard-add)"),
+                     #"/wizard/show" => array("edit;publish;admin","g(wizard-show)"),
+                  #"/wizard/release" => array("edit;publish;admin","g(wizard-release)"),
+                             #"move" => array("add")
                        ),
     );
 

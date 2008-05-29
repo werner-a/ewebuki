@@ -103,22 +103,19 @@
     /* fehlende label-beizeichnung */
     if ( $environment["parameter"][3] == "" ) {
         // standard-labelname einfuegen
-        $environment["parameter"][3] = $cfg["wizard"]["wizardtyp"]["default"]["def_label"];
+        $environment["parameter"][3] = $cfg["wizard"]["wizardtyp"]["standard"]["def_label"];
         $reload = -1;
     }
     if ( $reload == -1 ) {
         ksort($environment["parameter"]);
-        header("Location: ".$cfg["wizard"]["basis"]."/".implode(",",$environment["parameter"]).".html");
+        header("Location: ".$pathvars["webroot"].$cfg["wizard"]["basis"]."/".implode(",",$environment["parameter"]).".html");
     }
     // + + +
     // leere parameter abfangen
 
 
-    if ( $cfg["wizard"]["right"] == "" ||
-        priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
-        priv_check_old("",$cfg["wizard"]["right"]) ||
-        $rechte["administration"] == -1 ||
-        $erlaubnis == -1 ) {
+    if ( priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
+         priv_check_old("",$cfg["wizard"]["right"]) ) {
 
         // page basics
         // ***
@@ -492,7 +489,7 @@
             }
 
             $publisher = 0;
-            if ( priv_check($ebene."/".$kategorie,"publish") ) $publisher = -1;
+            if ( priv_check(tname2path($environment["parameter"][2]),"publish") ) $publisher = -1;
 
             if ( ($environment["parameter"][6] == "verify"
                 && $_POST["send"] != "") || $_SESSION["form_send"] != "" ) {
@@ -530,16 +527,15 @@
                         $result_regex  = $db -> query($sql_regex);
                     }
                     // freigabe-test
-                    if ( $specialvars["content_release"] == -1 || $publisher == -1 ) {
+                    $status1 = "";
+                    $status2 = "";
+                    if ( $specialvars["content_release"] == -1 ) {
                         $status1 = ",status";
                         if ( $_POST["release_mark"] == -1 ) {
                             $status2 = ",-2";
                         } else {
                             $status2 = ",-1";
                         }
-                    } else {
-                        $status1 = "";
-                        $status2 = "";
                     }
 
                     $sql = "INSERT INTO ". SITETEXT ."
@@ -579,14 +575,13 @@
                     }
 
                     // freigabe-test
-                    if ( $specialvars["content_release"] == -1 || $publisher == -1 ) {
+                    $status = "";
+                    if ( $specialvars["content_release"] == -1 ) {
                         if ( $_POST["release_mark"] == -1 ) {
                             $status = ",status=-2";
                         } else {
                             $status = ",status=-1";
                         }
-                    } else {
-                        $status = "";
                     }
 
                     $sql = "UPDATE ". SITETEXT ."

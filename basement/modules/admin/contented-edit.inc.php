@@ -83,7 +83,7 @@
                 $content_release = "";
             }
 
-            $sql = "SELECT version, html, content, changed, byalias
+            $sql = "SELECT version, html, content, status, changed, byalias
                       FROM ". SITETEXT ."
                      WHERE lang = '".$environment["language"]."'
                        AND label ='".$environment["parameter"][3]."'
@@ -111,6 +111,10 @@
         // form elemente erweitern
         #$element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
         #$element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
+        $hidedata["overwrite"] = array();
+        if ( $form_values["status"] <= 0 ) {
+            unset($hidedata["overwrite"]);
+        }
 
         // +++
         // page basics
@@ -339,7 +343,10 @@
                     if ( $where != "" ) $where .= " OR ";
                     $where .= "fid = '".$value."'";
                 }
-                $sql = "SELECT * FROM site_file WHERE ".$where." ORDER BY ffname, funder";
+                $sql = "SELECT *
+                          FROM site_file
+                         WHERE ".$where."
+                      ORDER BY ffname, funder";
                 $result = $db -> query($sql);
 
 
@@ -403,6 +410,7 @@
         #$ausgaben["form_hidden"] .= "";
         $ausgaben["form_hidden_html"] .= $form_values["html"];
         $ausgaben["form_hidden_version"] .= $form_values["version"];
+        $ausgaben["form_hidden_status"] .= $form_values["status"];
 
         // was anzeigen
         $mapping["main"] = crc32($environment["ebene"]).".modify".$art;
@@ -417,7 +425,7 @@
             $ausgaben["inaccessible"] .= "# (file) #(file)<br />";
             $ausgaben["inaccessible"] .= "# (files) #(files)<br />";
             $ausgaben["inaccessible"] .= "g (overwrite) g(overwrite)<br />";
-            $ausgaben["inaccessible"] .= "g (versioning) g(versioning)<br />";
+            $ausgaben["inaccessible"] .= "g (version) g(version)<br />";
             $ausgaben["inaccessible"] .= "g (reset) g(reset)<br />";
             $ausgaben["inaccessible"] .= "g (abort) g(abort)<br />";
         } else {

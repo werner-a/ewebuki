@@ -86,6 +86,7 @@
     $specialvars["security"]["overwrite"] = "cms_admin"; // wer ist content admin
     #$specialvars["security"]["new"] = -1;
     #$specialvars["security"]["content"] = "edit;publish";
+    #$specialvars["content_release"] = -1;
 
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.
