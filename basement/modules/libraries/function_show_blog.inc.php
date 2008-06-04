@@ -96,8 +96,8 @@
         } else {
             $art = "DATETIME";
         }
-        $sql = "SELECT ".$kat_sql."Cast(SUBSTR(content,4,POSITION(';' IN content)-4) as ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
-
+        $sql = "SELECT ".$kat_sql."Cast(SUBSTR(content,4,POSITION(';' IN content)-4) AS ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
+#echo $sql;
         if ( strpos($limit,"," ) ){
             $sql = $sql." LIMIT ".$limit;
         } else {
@@ -132,12 +132,16 @@
                 }
                 if (strpos($value,"=")) {
                      $endtag= substr($value,0,strpos($value,"="));
-                     $value = $value.$tag_parameter;
+                    if ( $value == "IMG=") {
+                        $value .= ".*";
+                    } else {
+                        $value = $value.$tag_parameter;
+                    }
                 } else {
                     $endtag=$value;
                 }
-                $preg = "(\[".addcslashes($value,"/.")."\])(.*)\[\/".$endtag."\]";
 
+                $preg = "(\[".addcslashes($value,"/")."\])(.*)\[\/".$endtag."\]";
                 if ( preg_match("/$preg/U",$test,$regs) ) {
                     $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
                     $org_tag = str_replace('\r\n',"<br>",$regs[2]);
