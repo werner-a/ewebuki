@@ -74,14 +74,20 @@
     // laden der eigentlichen funktion
     include $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
+    if ( $kategorie != "" ) {
+        $kat = $kategorie;
+    }
+
     // erstellen der tags die angezeigt werden
     foreach ( $cfg["bloged"]["blogs"][$kat]["tags"] as $key => $value) {
         $tags[$key] = $value;
     }
 
-    $limit=$environment["parameter"][1]+0;
+    if ( $cfg["bloged"]["blogs"][$kat]["rows"] != "" ) {
+        $limit = $cfg["bloged"]["blogs"][$kat]["rows"];
+    }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit);
+    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$kategorie);
     // was anzeigen
     if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] == "" ) {
         $mapping["main"] = "-2051315182.list";

@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-     function show_blog($url,$tags,$right="",$wizard="",$limit="") {
+     function show_blog($url,$tags,$right="",$wizard="",$limit="",$sort="",$kategorie="") {
         global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment;
 
         // parameter-erklaerung
@@ -53,9 +53,14 @@
 
         $id = make_id($url);
         $new = $id["mid"];
+        $kat2 = $kategorie;
 
         if ( $right == "" || ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) ) {
-            $hidedata["new"]["link"] = $pathvars["virtual"]."/admin/bloged/add,".$new.".html";
+            if ( $kategorie != "" ) {
+                $kategorie = make_id($environment["ebene"]."/".$environment["kategorie"]);
+                $new_kat = ",".$kategorie["mid"];
+            }
+            $hidedata["new"]["link"] = $pathvars["virtual"]."/admin/bloged/add,".$new.$new_kat.".html";
         }
 
         // erster test einer suchanfrage per kalender
@@ -74,7 +79,11 @@
         }
         //
         // erster test einer suchanfrage per kalender
-
+        if ( $kat2 != "" ) {
+            $where .= " AND content REGEXP '^\\\[!\\\][0-9]*;".eCRC(make_ebene($kategorie["mid"]))."'";
+        } else {
+            $kat_sql == "";
+        }
         $tname = eCRC($url).".%";
 
         if ( $environment["parameter"][2] != "" ) {
@@ -82,16 +91,24 @@
             $tname = eCRC($url).".".$environment["parameter"][2];
         }
 
-        $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]1;' ".$where." AND tname like '".$tname."' order by date DESC";
-
-        if ( !strpos($limit,"," ) ){
-            // seiten umschalter
-            $inhalt_selector = inhalt_selector( $sql, $limit, 4, $parameter, 1, 10, $getvalues );
-            $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
-            $sql = $inhalt_selector[1];
-            $ausgaben["anzahl"] = $inhalt_selector[2];
+        if ( $sort == "-1" ) {
+            $art = "SIGNED";
         } else {
+            $art = "DATETIME";
+        }
+        $sql = "SELECT ".$kat_sql."Cast(SUBSTR(content,4,POSITION(';' IN content)-4) as ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
+
+        if ( strpos($limit,"," ) ){
             $sql = $sql." LIMIT ".$limit;
+        } else {
+            if ( $limit != "" ) {
+                $p=$environment["parameter"][1]+0;
+                // seiten umschalter
+                $inhalt_selector = inhalt_selector( $sql, $p, $limit, $parameter, 1, 10, $getvalues );
+                $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
+                $sql = $inhalt_selector[1];
+                $ausgaben["anzahl"] = $inhalt_selector[2];
+            }
         }
 
         $counter = 0;
@@ -119,7 +136,7 @@
                 } else {
                     $endtag=$value;
                 }
-                $preg = "(\[".$value."\])(.*)\[\/".$endtag."\]";
+                $preg = "(\[".addcslashes($value,"/.")."\])(.*)\[\/".$endtag."\]";
 
                 if ( preg_match("/$preg/U",$test,$regs) ) {
                     $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
@@ -142,8 +159,13 @@
 
             $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
             $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
+            if ( $kategorie != "" ) $url = "/".$environment["ebene"].$environment["kategorie"];
             $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
             $array[$counter]["id"] = $regs[1];
+            if ( $sort == "-1" ) {
+                $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",,".$new.".html\">nach oben</a>";
+                $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
+            }
             if ( $environment["parameter"][3] == $regs[1] ) {
                 #$array[$counter]["faqcontent"] = tagreplace($teaser)."<br>";
                 $array[$counter]["faqcontent"] = $array[$counter]["faq"];

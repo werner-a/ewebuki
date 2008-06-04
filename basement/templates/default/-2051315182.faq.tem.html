@@ -8,7 +8,7 @@
 </head>
 <body>
 <!--##begin-->
-<!--$Id$-->
+<!--$Id: -2051315182.list.tem.html 1311 2008-04-08 08:55:20Z buffy1860 $-->
 <h1>#(ueberschrift)</h1>
 <p>#(inhalt)</p>
 <p>!#ausgaben_form_error</p>
@@ -16,29 +16,11 @@
 <p><a href="!{link}">g(new)</a></p>
 <!--##show-->
 <!--##loop-list-->
-<h3>!{datum} - !{titel_org}</h3>
-    !{image}
-    !{teaser}
-    <p>
-    <a href="!{detaillink}">mehr</a> !{editlink} !{deletelink}
-    </p>
-<div class="clearer"></div><hr />
+<a href="!{faqlink}">!{titel}</a>
+<div style="background:#EEEEEE">!{faqcontent}</div>
+<p> !{editlink} !{deletelink} !{sort}</p>
 <!--##cont-->
-<!--##hide-admin-->
-<table width="100%" border="1">
-<tr><td>!{beschriftung1}</td><td>!{beschriftung2}</td><td>!{beschriftung3}</td></tr>
-<!--##show-->
-<!--##hide-admin_clear-->
-<tr><td colspan="3"><a href="!{link}">!{beschriftung4}</a></td></tr>
-<!--##show-->
-<!--##loop-blogs-->
-<tr><td><a href="!{link}">!{name}</a></td><td>!{anzahl1}</td><td>!{anzahl2}</td></tr>
-<!--##cont-->
-<!--##hide-admin-->
-</table>
-<!--##show-->
-<p style="float:left">g(anzahl) !#ausgaben_anzahl</p>
-<p style="float:right">!#ausgaben_inhalt_selector</p>
+!#ausgaben_inhalt_selector
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
 <!--##end-->

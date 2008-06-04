@@ -52,13 +52,15 @@
                         "b" => "#999999",
                        ),
          "function" => array(
-                     "list" => "",
-              "list,shared" => array("menu_convert"),
+                      "list" => "",
+                      "list,shared" => array("menu_convert"),
                       "add" => "",
-               "add,shared" => array("menu_convert"),
+                      "add,shared" => array("menu_convert"),
                      "edit" => "",
                    "delete" => "",
-            "delete,shared" => array("menu_convert"),
+            "delete,shared" => array("menu_convert","show_blog"),
+                     "sort" => "",
+               "sort,shared" => array("menu_convert"),
                        ),
                "db" => array(
                    "bloged" => array(

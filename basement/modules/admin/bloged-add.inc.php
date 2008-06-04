@@ -50,6 +50,12 @@
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
 
+            if ( $cfg["bloged"]["blogs"][$ebene]["sortable"] == -1 ) {
+                $sort = "0";
+            } else {
+                $sort = date("Y-m-d H:i:s");
+            }
+
             $sqla  = "lang";
             $sqlb  = "'de'";
     
@@ -63,10 +69,10 @@
             $sqlb .= ", '-1'";
     
             $sqla .= ", ebene";
-            $sqlb .= ", '/blog'";
+            $sqlb .= ", '".make_ebene($environment["parameter"][1])."'";
     
             $sqla .= ", kategorie";
-            $sqlb .= ", '".make_ebene($environment["parameter"][1])."'";
+            $sqlb .= ", '".$id."'";
     
             $sqla .= ", bysurname";
             $sqlb .= ", '".$_SESSION["surname"]."'";
@@ -86,8 +92,14 @@
             $sqla .= ", html";
             $sqlb .= ", 0";
 
-            $content  = "[!]1;".date("Y-m-d H:i:s");
+            if ( $cfg["bloged"]["blogs"][$ebene]["kategorie"] == -1 ) {
+                if ( $environment["parameter"][2] == "") $environment["parameter"][2] = $environment["parameter"][1];
+                $kategorie = eCRC(make_ebene($environment["parameter"][2]));
+            } else {
+                $kategorie = "";
+            }
 
+            $content  = "[!]".$sort.";".$kategorie;
 
             // fuellen per posts
             if ( $_POST["send"] != "" ) {
@@ -113,7 +125,14 @@
                 }
             }
             $content .= "[/!]\r\n";
-            if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) $content .= "[!]wizard:".$cfg["bloged"]["blogs"][$ebene]["wizard"]."[/!]\r\n";
+            if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) {
+                $content .= "[!]wizard:".$cfg["bloged"]["blogs"][$ebene]["wizard"]."[/!]\r\n";
+                $sqla .= ", status";
+                $sqlb .= ", -1";
+            } else {
+                $sqla .= ", status";
+                $sqlb .= ", 1";
+            }
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["tags"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
                     if (is_array($value)) {
@@ -159,7 +178,7 @@
         // ***
 
         // automatische generierung von beliebigen datensaetzen, durch parameter[2]
-        if ( $environment["parameter"][2] != "" ) {
+        if ( $environment["parameter"][3] != "" ) {
             for ( $i = 1; $i <= $environment["parameter"][2]; $i++ ) {
                 create($id+$i);
             }
