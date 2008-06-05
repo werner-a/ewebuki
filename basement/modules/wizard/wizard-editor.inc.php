@@ -188,7 +188,9 @@
             // auf spezial-wizard-editor testen
             $wizard_file = $pathvars["moduleroot"].$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"]."-".$environment["kategorie"]."-".strtolower($tag_marken[0]).".inc.php";
             if ( file_exists($wizard_file) ) {
+
                 include $wizard_file;
+
             } else {
                 // was anzeigen
                 $mapping["main"] = "wizard-edit";
@@ -240,6 +242,7 @@
                 $content = $pre_content.
                         $to_insert.
                         $post_content;
+echo "\$to_insert: $to_insert<br>";
 
                 // html killer :)
                 if ( $specialvars["denyhtml"] == -1 ) {
@@ -270,9 +273,10 @@
                 }
                 $_SESSION["wizard_content"][$identifier] = $content;
 
-                if ( $_POST["add"] || $_POST["sel"] ) {
+                if ( $_POST["add"] || $_POST["sel"] || $_POST["upload"] ) {
 
                     $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
+                    $_SESSION["wizard_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
 
                     $_SESSION["cms_last_referer"] = $ausgaben["form_referer"];
                     $_SESSION["cms_last_ebene"] = $_SESSION["ebene"];
@@ -281,6 +285,8 @@
                     if ( $_POST["sel"] != "" ) {
                         unset($_SESSION["compilation_memo"]);
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/compilation.html");
+                    } elseif ( $_POST["upload"] != "" ) {
+                        if ( $error == 0 ) header("Location: ".$pathvars["virtual"]."/admin/fileed/add.html");
                     } else {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
                     }
@@ -308,6 +314,7 @@
 
             $ausgaben["inaccessible"] .= "# (description) #(description)<br />";
             $ausgaben["inaccessible"] .= "# (get_file) #(get_file)<br />";
+            $ausgaben["inaccessible"] .= "# (upload_file) #(upload_file)<br />";
             $ausgaben["inaccessible"] .= "# (get_sel) #(get_sel)<br />";
 
             $ausgaben["inaccessible"] .= "# (refresh) #(refresh)<br />";

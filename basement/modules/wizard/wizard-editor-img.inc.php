@@ -50,6 +50,7 @@
     // beschreibung
     $hidedata["img"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
     if ( $_POST["description"] != "" ) $hidedata["img"]["description"] = $_POST["description"];
+
     // tag-attribute
     $opentag = str_replace(array("[","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]);
     $tag_werte = explode(";",trim(strstr($opentag,"="),"="));
@@ -62,6 +63,7 @@
             $ausgaben["tagwerte".$i] = "";
         }
     }
+
     // preview-bild holen
     $pic_info = str_replace($cfg["file"]["base"]["webdir"],"",$ausgaben["tagwerte0"]);
     $pic_array = explode("/",$pic_info);
@@ -71,23 +73,30 @@
         } else {
             $fid = $pic_array[1];
         }
-        $sql = "SELECT * FROM site_file WHERE fid=".$fid;
+        $sql = "SELECT *
+                  FROM site_file
+                 WHERE fid=".$fid;
         $result = $db -> query($sql);
         if ( $db -> num_rows($result) == 1 ) {
             $data = $db -> fetch_array($result);
-            $hidedata["imgpreview"]["src"] = $cfg["file"]["base"]["webdir"].
-                                                $data["ffart"]."/".
-                                                $fid."/s/".
-                                                $data["ffname"];
+            $hidedata["imgpreview"] = array(
+                       "src" => $cfg["file"]["base"]["webdir"].
+                                $data["ffart"]."/".
+                                $fid."/s/".
+                                $data["ffname"],
+            );
             $target_src = $cfg["file"]["base"]["webdir"].
                             $data["ffart"]."/".
                             $fid."/".
                             $pic_array[count($pic_array)-2]."/".
                             $data["ffname"];
+            // falls noch keine bildbeschriftung vorhanden ist, bildunterschrift einsetzen
+            if ( is_array($_SESSION["file_memo"]) && $hidedata["img"]["description"] == "" ) $hidedata["img"]["description"] = $data["funder"];
             if ( is_array($_SESSION["file_memo"]) && $hidedata["img"]["meat"] == "" ) $hidedata["img"]["meat"] = $data["funder"];
         }
         unset($_SESSION["file_memo"]);
     }
+
     // anzeigen-groesse-radiobutton
     if ( count($cfg["wizard"]["img_edit"]["cb_show_size"]) >0 ) {
         foreach ( $cfg["wizard"]["img_edit"]["cb_show_size"] as $value=>$label ) {
@@ -107,6 +116,7 @@
             "check" => " checked=\"checked\"",
         );
     }
+
     // align-radiobutton
     if ( count($cfg["wizard"]["img_edit"]["cb_align"]) >0 ) {
         foreach ( $cfg["wizard"]["img_edit"]["cb_align"] as $value=>$label ) {
@@ -125,6 +135,7 @@
             "check" => " checked=\"checked\"",
         );
     }
+
     // size-radiobutton
     if ( count($cfg["wizard"]["img_edit"]["cb_link_size"]) > 0 ) {
         foreach ( $cfg["wizard"]["img_edit"]["cb_link_size"] as $value=>$label ) {
@@ -153,6 +164,13 @@
             || $_POST["sel"] != ""
             || $_POST["refresh"] != ""
             || $_POST["upload"] != "" ) ) {
+
+        // ggf bild einfuegen
+        $error = file_validate($_FILES["new_file"]["tmp_name"], $_FILES["new_file"]["size"], $cfg["file"]["filesize"], $cfg["file"]["filetyp"], "new_file");
+        if ( $error == 0 ) {
+            $newname = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$_SESSION["uid"]."_".$_FILES["new_file"]["name"];
+            rename($_FILES["new_file"]["tmp_name"],$newname);
+        }
 
         // einzubauender content
         $tag_werte = array();

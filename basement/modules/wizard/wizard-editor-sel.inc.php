@@ -49,7 +49,7 @@
 
     // ausgabenwerte werden belegt
     $ausgaben["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
-    $tag_werte = explode(";",str_replace(array("[SEL=","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]));
+    $tag_werte = explode(";",str_replace(array("[SEL=","[SEL","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]));
     for ($i=0;$i<=4;$i++) {
         $ausgaben["tagwerte".$i] = $tag_werte[$i];
     }
@@ -84,19 +84,24 @@
         }
 
         $sql = "SELECT *
-                    FROM site_file
-                    WHERE fhit
-                    LIKE '%p".$ausgaben["tagwerte0"].",%'";
+                  FROM site_file
+                 WHERE fhit
+                  LIKE '%p".$ausgaben["tagwerte0"].",%'";
         $result = $db -> query($sql);
         // dataloop wird ueber eine share-funktion aufgebaut
-        filelist($result, "fileed");
+        filelist($result, "fileed",$ausgaben["tagwerte0"]);
 
-        foreach ( $dataloop["list_images"] as $key=>$value ) {
-            if ( in_array($key,$array) ) {
-                $dataloop["list_images"][$key]["checked"] = " checked=\"true\"";
-            } else {
-                $dataloop["list_images"][$key]["checked"] = "";
+        if ( count($dataloop["list_images"]) > 0 ) {
+            foreach ( $dataloop["list_images"] as $key=>$value ) {
+                $buffer[$value["sort"]] = $value;
+                if ( in_array($key,$array) ) {
+                    $buffer[$value["sort"]]["checked"] = " checked=\"true\"";
+                } else {
+                    $buffer[$value["sort"]]["checked"] = "";
+                }
             }
+            ksort($buffer);
+            $dataloop["list_images"] = $buffer;
         }
     }
 
@@ -109,6 +114,13 @@
             || $_POST["sel"] != ""
             || $_POST["refresh"] != ""
             || $_POST["upload"] != "" ) ) {
+
+        // ggf bild einfuegen
+        $error = file_validate($_FILES["new_file"]["tmp_name"], $_FILES["new_file"]["size"], $cfg["file"]["filesize"], $cfg["file"]["filetyp"], "new_file");
+        if ( $error == 0 ) {
+            $newname = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$_SESSION["uid"]."_".$_FILES["new_file"]["name"];
+            rename($_FILES["new_file"]["tmp_name"],$newname);
+        }
 
         if ( is_array($_POST["tagwerte"][3]) ) $_POST["tagwerte"][3] = implode(":",$_POST["tagwerte"][3]);
         $tag_werte = array();

@@ -50,11 +50,21 @@
         // funktions bereich fuer erweiterungen
         // ***
 
+        if ( strstr($_SERVER["HTTP_REFERER"],$pathvars["virtual"]."/wizard") ) {
+            $_SESSION["wizard_last_edit"] = $_SERVER["HTTP_REFERER"];
+        }
+
         if ( $environment["parameter"][1] == "" ) {
             if ( count($_SESSION["file_memo"]) > 0 ) {
                 $environment["parameter"][1] = current($_SESSION["file_memo"]);
             } else {
-                header("Location: ".$cfg["fileed"]["basis"]."/list.html");
+                if ( $_SESSION["wizard_last_edit"] != "" ) {
+                    $header = $_SESSION["wizard_last_edit"];
+                    unset($_SESSION["wizard_last_edit"]);
+                } else {
+                    $header = $cfg["fileed"]["basis"]."/list.html";
+                }
+                header("Location: ".$header);
             }
         }
 

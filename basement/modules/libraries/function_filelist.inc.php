@@ -176,6 +176,7 @@
                                           "dtarget" => $target,
                                               "alt" => $data["ffname"],
                                             "title" => $data["ffname"],
+                                            "under" => $data["funder"],
                                                "cb" => $cb,
                                             "ohref" => "list/view,o,".$data["fid"].".html",
                                             "bhref" => "list/view,b,".$data["fid"].".html",

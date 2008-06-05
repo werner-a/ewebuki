@@ -66,7 +66,14 @@
         // keine files in dem new-ordner
         if ( $file == "" ) {
             unset($_SESSION["zip_extracted"]);
-            header("Location: ".$cfg["fileed"]["basis"]."/list.html");
+            // falls man von wizard kommt, zurueck dahin
+            if ( $_SESSION["wizard_last_edit"] != "" ) {
+                $header = $_SESSION["wizard_last_edit"];
+                unset($_SESSION["wizard_last_edit"]);
+            } else {
+                $header = $cfg["fileed"]["basis"]."/list.html";
+            }
+            header("Location: ".$header);
         }
 
         // page basics
@@ -227,6 +234,12 @@
                         }
                         $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
                     } else {
+                        // falls man von wizard kommt, wird die compilation gleich ausgewaehlt
+                        if ( $_SESSION["wizard_last_edit"] != "" ) {
+                            unset($_SESSION["file_memo"]);
+                            unset($_SESSION["compilation_memo"]);
+                            $_SESSION["compilation_memo"][$compid] = array();
+                        }
                         unlink( $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file );
                         header("Location: ".$cfg["fileed"]["basis"]."/add.html");
                         exit;
@@ -286,6 +299,12 @@
                     arrange( $file_id, $source, $file );
                     if ( file_exists($thumb_srv) ) unlink( $thumb_srv );
                     unset($_SESSION["zip_extracted"][$file]);
+
+                    // falls man von wizard kommt, wird das bild gleich ausgewaehlt
+                    if ( $_SESSION["wizard_last_edit"] != "" ) {
+                        unset($_SESSION["file_memo"]);
+                        $_SESSION["file_memo"][$file_id] = $file_id;
+                    }
                 } else {
                     $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 }

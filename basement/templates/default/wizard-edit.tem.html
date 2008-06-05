@@ -30,7 +30,15 @@
             <fieldset >
                 <label>#(description)</label>
                 <input type="text" name="description" value="!{description}" /><br />
-                <input type="submit" id="eb_submit" name="add[]" value="#(get_file)" title="Datei auswaehlen" class="button" />
+            </fieldset>
+
+            <fieldset >
+                <label></label>
+                <input type="submit" id="eb_submit" name="add[]" value="#(get_file)" title="Datei auswaehlen" class="button" /><br />
+                <label></label>
+                <input type="file" name="new_file" />
+                <label></label>
+                <input type="submit" name="upload[]" value="#(upload_file)" title="Datei auswaehlen" class="button" /><br />
             </fieldset>
 
             <fieldset>
@@ -116,7 +124,25 @@
 <!--  SEL-Tag bearbeiten  -->
             <!--##hide-sel-->
             #(sel_inhalt)
-            <fieldset>
+
+            <fieldset >
+                <label>#(description)</label>
+                <input type="text" name="description" value="!{description}" /><br />
+                <input type="hidden" name="tagwerte[0]" value="!#ausgaben_tagwerte0" />
+            </fieldset>
+
+            <fieldset >
+                <label></label>
+                <button type="submit" name="sel[]" value="#(get_sel)" class="button">#(get_sel)</button><br />
+                <label></label>
+                <input type="file" name="new_file" />
+                <label></label>
+                <input type="submit" name="upload[]" value="#(upload_file)" title="Datei auswaehlen" class="button" /><br />
+            </fieldset>
+
+
+
+<!--            <fieldset>
                 <label>#(description)</label>
                 <input type="text" name="description" value="!#ausgaben_description" /><br />
                 <input type="hidden" name="tagwerte[0]" value="!#ausgaben_tagwerte0" />
@@ -126,7 +152,7 @@
                 <label>#(add_sel)</label>
                 <input type="file" name="new_sel" value="hallo" /><br />
                 <button type="submit" name="sel[]" value="#(get_sel)" class="button">#(get_sel)</button>
-            </fieldset>
+            </fieldset>-->
 
             <fieldset>
                 <fieldset >
@@ -154,8 +180,9 @@
                 <ul id="grid_list">
                     <!--##loop-list_images-->
                     <li class="thumbs">
-                        <img src="!{src}" alt="!{alt}" title="!{title} g(edit)" />
+                        <a href="!#pathvars_virtual/admin/fileed/!{ehref}"><img src="!{src}" alt="!{under} g(edit)" title="!{under} g(edit)" /></a>
                         <p>
+                            !{under}
                             <input type="checkbox" name="tagwerte[3][]" value="!{id}"!{checked} onclick="session_update(!#ausgaben_tagwerte0,!{id});" />
                         </p>
                     </li>
