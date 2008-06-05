@@ -54,18 +54,24 @@
         $id = make_id($url);
         $new = $id["mid"];
         $kat2 = $kategorie;
-
+        $where = "";
         if ( $right == "" || ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) ) {
             if ( $kategorie != "" ) {
+                $where = "  AND SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) ='[KATEGORIE]".$kategorie."'";
                 $kategorie = make_id($environment["ebene"]."/".$environment["kategorie"]);
                 $new_kat = ",".$kategorie["mid"];
             }
             $hidedata["new"]["link"] = $pathvars["virtual"]."/admin/bloged/add,".$new.$new_kat.".html";
         }
 
+        // falls kategorie , werden nur diese angezeigt
+        if ( $kategorie != "" ) {
+            $where = "  AND SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) ='[KATEGORIE]".$kategorie."'";
+        }
+
         // erster test einer suchanfrage per kalender
         //
-        $where = "";
+
         if ( $_GET["year"] || $_GET["month"] || $_GET["day"] ) {
             $heute = getdate(mktime(0, 0, 0, ($_GET["month"])+1, 0, $_GET["year"]));
             if ( !$_GET["day"] ) {  
@@ -79,11 +85,6 @@
         }
         //
         // erster test einer suchanfrage per kalender
-        if ( $kat2 != "" ) {
-            $where .= " AND content REGEXP '^\\\[!\\\][0-9]*;".eCRC(make_ebene($kategorie["mid"]))."'";
-        } else {
-            $kat_sql == "";
-        }
         $tname = eCRC($url).".%";
 
         if ( $environment["parameter"][2] != "" ) {
@@ -96,8 +97,9 @@
         } else {
             $art = "DATETIME";
         }
-        $sql = "SELECT ".$kat_sql."Cast(SUBSTR(content,4,POSITION(';' IN content)-4) AS ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
-#echo $sql;
+
+        $sql = "SELECT Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
+
         if ( strpos($limit,"," ) ){
             $sql = $sql." LIMIT ".$limit;
         } else {

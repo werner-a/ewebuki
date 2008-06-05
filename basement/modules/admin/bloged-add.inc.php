@@ -92,14 +92,14 @@
             $sqla .= ", html";
             $sqlb .= ", 0";
 
-            if ( $cfg["bloged"]["blogs"][$ebene]["kategorie"] == -1 ) {
+            if ( is_array($cfg["bloged"]["blogs"][$ebene]["kategorie"]) ) {
                 if ( $environment["parameter"][2] == "") $environment["parameter"][2] = $environment["parameter"][1];
-                $kategorie = eCRC(make_ebene($environment["parameter"][2]));
+                $kategorie = "[KATEGORIE]".make_ebene($environment["parameter"][2])."[/KATEGORIE]";
             } else {
                 $kategorie = "";
             }
 
-            $content  = "[!]".$sort.";".$kategorie;
+            $content  = "[!][SORT]".$sort."[/SORT]".$kategorie;
 
             // fuellen per posts
             if ( $_POST["send"] != "" ) {
@@ -119,8 +119,8 @@
             } else {
                 if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
                     foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
-                        (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
-                        $content .= "\r\n[".$value."][/".$endtag."]";
+                        (strpos($value["tag"],"=")) ? $endtag= substr($value["tag"],0,strpos($value["tag"],"=")): $endtag=$value["tag"];
+                        $content .= "\r\n[".$value["tag"]."]".$value["content"]."[/".$endtag."]";
                     }
                 }
             }
@@ -179,7 +179,7 @@
 
         // automatische generierung von beliebigen datensaetzen, durch parameter[2]
         if ( $environment["parameter"][3] != "" ) {
-            for ( $i = 1; $i <= $environment["parameter"][2]; $i++ ) {
+            for ( $i = 1; $i <= $environment["parameter"][3]; $i++ ) {
                 create($id+$i);
             }
         }

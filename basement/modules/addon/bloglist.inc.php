@@ -58,7 +58,7 @@
         $specialvars["editlock"] = -1;
     }
 
-    // erstellen der crc
+    // pfad des blog - inhalts
     if ( $environment["ebene"] == "" ) {
         $kat = "/".$environment["kategorie"];
     } else {
@@ -68,15 +68,22 @@
     // rechte werden aus der bloged.cfg gelesen
     include $pathvars["moduleroot"]."admin/bloged.cfg.php";
 
+    // automatisches erkennen der kategorie 
+    $show_kat = "";
+    foreach ( $cfg["bloged"]["blogs"] as $key => $value ) {
+        if ( is_array($value["kategorie"]) ) {
+            if ( in_array($kat,$value["kategorie"]) ) {
+                $show_kat = $kat;
+                $kat = $key;
+            }
+        }
+    }
+
     // herausfinden der id,noetig fuer neueintrag
     include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
 
     // laden der eigentlichen funktion
     include $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
-
-    if ( $kategorie != "" ) {
-        $kat = $kategorie;
-    }
 
     // erstellen der tags die angezeigt werden
     foreach ( $cfg["bloged"]["blogs"][$kat]["tags"] as $key => $value) {
@@ -87,12 +94,16 @@
         $limit = $cfg["bloged"]["blogs"][$kat]["rows"];
     }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$kategorie);
+    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
     // was anzeigen
-    if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] == "" ) {
-        $mapping["main"] = "-2051315182.list";
-    } else {
+    if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
         $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];
+    } else {
+        if ( $cfg["bloged"]["blogs"][$kat]["sortable"] == -1 ) {
+            $mapping["main"] = "-2051315182.faq";
+        } else {
+            $mapping["main"] = "-2051315182.list";
+        }
     }
 
     // fehlermeldungen
