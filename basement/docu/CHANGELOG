@@ -8,6 +8,19 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 05. Juni 2008
+Anscheinend fehlten beim fileed-add Inhalte der Marken in dem Zip-Entpack-Bereich:
+
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'zip', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H1]Archiv-Inhalt[/H1]\r\n[P]Das Archiv enthält folgende Dateien:[/P]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'zip_stdval', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H2]Standardwerte für die entpackten Dateien[/H2]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'bundle_zip', '-939795212.modify', '/admin/fileed', 'add', '-1', 'Dateien zu einer Gruppe zusammenfassen', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'extract', 'global', '', '', '-1', 'Entpacken', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+
+
 --- 27. Februar 2008
 ACHTUNG: Neue Spalte ist erforderlich!
 
@@ -41,7 +54,7 @@ INSERT INTO `site_text`
 `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
 VALUES
 ( 'de', 'history', 'global', '', 'auth', '-1', 'Historie',
-'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki')
+'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 
 --- 21. Januar 2008
 

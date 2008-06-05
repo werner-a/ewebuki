@@ -203,60 +203,55 @@
             // form eigaben prüfen
             form_errors( $form_options, $_POST );
 
-            // evtl. zusaetzliche datensatz anlegen
-            if ( $ausgaben["form_error"] == ""  ) {
+            // funktions bereich fuer erweiterungen
+            // ***
 
-                // funktions bereich fuer erweiterungen
-                // ***
-
-                ### put your code here ###
-                if ( $_POST["extract"] != "" ){
-                    // naechste freie compilation-id suchen
-                    if ( $_POST["selection"] == -1 ){
-                        $buffer = compilation_list();
-                        reset($buffer);
-                        $compid = key($buffer) + 1;
-                    } else {
-                        $compid = "";
-                    }
-                    // zip auspacken
-                    $not_extracted = zip_handling($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file,
-                                                 $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"],
-                                                 $cfg["file"]["filetyp"],
-                                                 $cfg["file"]["filesize"],
-                                                 "",
-                                                 $compid
-                    );
-                    if ( count($not_extracted) > 0 ) {
-                        $buffer = array();
-                        foreach ( $not_extracted as $value ){
-                            $buffer[] = $value["name"];
-                        }
-                        $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
-                    } else {
-                        // falls man von wizard kommt, wird die compilation gleich ausgewaehlt
-                        if ( $_SESSION["wizard_last_edit"] != "" ) {
-                            unset($_SESSION["file_memo"]);
-                            unset($_SESSION["compilation_memo"]);
-                            $_SESSION["compilation_memo"][$compid] = array();
-                        }
-                        unlink( $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file );
-                        header("Location: ".$cfg["fileed"]["basis"]."/add.html");
-                        exit;
-                    }
+            if ( $_POST["extract"] != "" ){
+                // naechste freie compilation-id suchen
+                if ( $_POST["selection"] == -1 ){
+                    $buffer = compilation_list();
+                    reset($buffer);
+                    $compid = key($buffer) + 1;
+                } else {
+                    $compid = "";
                 }
-
-                if ( $file_buffer["wave_thru"] == -1 ) {
-                    $_POST["ffname"] = str_replace($_SESSION["uid"]."_","",$file_buffer["name"]);
-                    $_POST["funder"] = $file_buffer["funder"];
-                     $_POST["fdesc"] = $file_buffer["fdesc"];
-                      $_POST["fhit"] = $file_buffer["fhit"];
+                // zip auspacken
+                $not_extracted = zip_handling($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file,
+                                                $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"],
+                                                $cfg["file"]["filetyp"],
+                                                $cfg["file"]["filesize"],
+                                                "",
+                                                $compid
+                );
+                if ( count($not_extracted) > 0 ) {
+                    $buffer = array();
+                    foreach ( $not_extracted as $value ){
+                        $buffer[] = $value["name"];
+                    }
+                    $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
+                } else {
+                    // falls man von wizard kommt, wird die compilation gleich ausgewaehlt
+                    if ( $_SESSION["wizard_last_edit"] != "" ) {
+                        unset($_SESSION["file_memo"]);
+                        unset($_SESSION["compilation_memo"]);
+                        $_SESSION["compilation_memo"][$compid] = array();
+                    }
+                    unlink( $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file );
+                    header("Location: ".$cfg["fileed"]["basis"]."/add.html");
+                    exit;
                 }
-
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                // +++
-                // funktions bereich fuer erweiterungen
             }
+
+            if ( $file_buffer["wave_thru"] == -1 ) {
+                $_POST["ffname"] = str_replace($_SESSION["uid"]."_","",$file_buffer["name"]);
+                $_POST["funder"] = $file_buffer["funder"];
+                    $_POST["fdesc"] = $file_buffer["fdesc"];
+                    $_POST["fhit"] = $file_buffer["fhit"];
+            }
+
+            if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+            // +++
+            // funktions bereich fuer erweiterungen
 
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {

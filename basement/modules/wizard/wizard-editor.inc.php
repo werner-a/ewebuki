@@ -242,7 +242,6 @@
                 $content = $pre_content.
                         $to_insert.
                         $post_content;
-echo "\$to_insert: $to_insert<br>";
 
                 // html killer :)
                 if ( $specialvars["denyhtml"] == -1 ) {

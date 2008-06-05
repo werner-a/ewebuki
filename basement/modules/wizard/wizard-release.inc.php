@@ -183,7 +183,7 @@
                 // checken, ob menuepunkt aktivert ist
                 $menu_entry = make_id(tname2path($environment["parameter"][2]));
                 $sql = "UPDATE site_menu
-                           SET hide='0'
+                           SET hide=NULL
                          WHERE mid=".$menu_entry["mid"];
                 $result = $db -> query($sql);
             } elseif ( $environment["parameter"][4] == "unlock" ) {
