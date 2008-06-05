@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 KÃ¶nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -846,7 +846,7 @@
                         break;
                     case "[/SEL]":
                         if ( $sign == "]" ) {
-                            $sel = "not ready";
+                            $sel = "selection not ready";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         } else {
                             $tag_value = explode("]",$tagwert,2);
@@ -855,26 +855,27 @@
 
                             $path = dirname($pathvars["requested"]);
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
-                            $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,größe,bild,selektion,thumbs
+                            $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,grÃ¶ÃŸe,bild,selektion,thumbs
 
                             if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div class=\"selection_teaser\">\n<b>##title##</b>\n<div>\n<ul>\n";
-                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##funder##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
+                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##funder##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
                             if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n</div>\n<span>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
 
                             $sql = "SELECT *
-                                        FROM site_file
-                                        WHERE fhit like '%#p".$tag_param[0]."%'";
+                                     FROM site_file
+                                    WHERE fhit like '%#p".$tag_param[0]."%'";
                             $result = $db -> query($sql);
                             $files = array();
                             while ( $data = $db -> fetch_array($result,1) ) {
                                 preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
-                                $files[] = array(
+                                $files[$match[1]] = array(
                                             "fid"    => $data["fid"],
                                             "sort"   => $match[1],
                                             "ffart"  => $data["ffart"],
                                             "funder" => $data["funder"]
                                             );
                             }
+                            ksort($files);
                             $sort = array();
                             foreach ($files as $key => $row) {
                                 $sort[$key]  = $row['sort'];
@@ -894,9 +895,13 @@
                                          .$cfg["file"]["base"]["pic"][$tag_param[1]]
                                          ."img_".$row["fid"].".".$row["ffart"];
 
+                                    $style = "";
                                     if ( !in_array( $row["fid"], $tag_extra ) ) {
-                                        if ( $tag_param[4] == "l" ) $lb_helper .= "<a href=\"".$img."\" rel=\"lightbox[group]\" title=\"".$row["funder"]."\"></a>";
-                                        if ( $tag_param[3] != "a" && !in_array( $row["fid"], $tag_extra ) ) continue;
+                                        if ( $tag_param[4] == "l" ) {
+                                            $style = " style=\"display:none;\"";
+                                        } else {
+                                            continue;
+                                        }
                                     }
 
                                     $tn = $cfg["file"]["base"]["webdir"]
@@ -911,13 +916,13 @@
                                         $changed = str_replace( "#", $row["fid"], $link);
                                         $lb = "";
                                     }
-                                    $s = array("##link##", "##lb##", "##tn##", "##funder##",);
-                                    $r = array($changed, $lb, $tn, $row["funder"]);
+                                    $s = array("##link##", "##lb##", "##tn##", "##funder##","##style##");
+                                    $r = array($changed, $lb, $tn, $row["funder"],$style);
                                     $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
                                 $sel .= str_replace("##count##",count($files),$defaults["tag"]["/sel"]);
                             }
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$sel.$lb_helper,$replace);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         }
                     case "[/IN]":
                         if ( $defaults["tag"]["in"] == "" ) {
