@@ -169,6 +169,7 @@
 
             // typenkonvertierung
             if ( preg_match("/(CAST)(.*)\40(AS)/i",$sql,$cast) ){
+                $sql = preg_replace("/AS SIGNED/i","AS INTEGER",$sql);
                 $sql = preg_replace("/AS UNSIGNED/i","AS INTEGER",$sql);
                 $sql = preg_replace("/AS DATETIME/i","AS TIMESTAMP",$sql);
             }
