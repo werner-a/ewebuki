@@ -313,6 +313,7 @@ li.thumbs a.pic {
 /* compilation */
 .selection_teaser {
     background:#eee;
+    clear:both;
     margin:5px 0;
     padding:0 3px;
 }
