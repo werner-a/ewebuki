@@ -166,7 +166,13 @@
 
             $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
             $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
-            if ( $kategorie != "" ) $url = "/".$environment["ebene"].$environment["kategorie"];
+            if ( $kategorie != "" ) {
+                if ( $environment["ebene"] == "" ) {
+                    $url = "/".$environment["kategorie"];
+                } else {
+                    $url = $environment["ebene"]."/".$environment["kategorie"];
+                }
+            }
             $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
             $array[$counter]["id"] = $regs[1];
             if ( $sort == "-1" ) {
