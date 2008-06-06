@@ -51,22 +51,23 @@
         // 2: aufruf eines einzigen contents
         // 3: faqlink
 
+        // aus der url eine id machen
         $id = make_id($url);
         $new = $id["mid"];
-        $kat2 = $kategorie;
         $where = "";
-        if ( $right == "" || ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) ) {
-            if ( $kategorie != "" ) {
-                $where = "  AND SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) ='[KATEGORIE]".$kategorie."'";
-                $kategorie = make_id($environment["ebene"]."/".$environment["kategorie"]);
-                $new_kat = ",".$kategorie["mid"];
-            }
-            $hidedata["new"]["link"] = $pathvars["virtual"]."/admin/bloged/add,".$new.$new_kat.".html";
-        }
 
         // falls kategorie , werden nur diese angezeigt
         if ( $kategorie != "" ) {
             $where = "  AND SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) ='[KATEGORIE]".$kategorie."'";
+        }
+
+        // hier erfolgt der rechte-check, um den new-link einzublenden
+        if ( $right == "" || ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) ) {
+            if ( $kategorie != "" ) {
+                $kategorie = make_id($environment["ebene"]."/".$environment["kategorie"]);
+                $new_kat = ",".$kategorie["mid"];
+            }
+            $hidedata["new"]["link"] = $pathvars["virtual"]."/admin/bloged/add,".$new.$new_kat.".html";
         }
 
         // erster test einer suchanfrage per kalender
@@ -85,10 +86,10 @@
         }
         //
         // erster test einer suchanfrage per kalender
+
         $tname = eCRC($url).".%";
 
         if ( $environment["parameter"][2] != "" ) {
-
             $tname = eCRC($url).".".$environment["parameter"][2];
         }
 
@@ -173,7 +174,6 @@
                 $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
             }
             if ( $environment["parameter"][3] == $regs[1] ) {
-                #$array[$counter]["faqcontent"] = tagreplace($teaser)."<br>";
                 $array[$counter]["faqcontent"] = $array[$counter]["faq"];
             } else {
                 $array[$counter]["faqcontent"] = "";
