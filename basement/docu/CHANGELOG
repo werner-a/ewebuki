@@ -12,11 +12,13 @@ $Id$
 Anscheinend fehlten beim fileed-add Inhalte der Marken in dem Zip-Entpack-Bereich:
 
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
-VALUES ( 'de', 'zip', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H1]Archiv-Inhalt[/H1]\r\n[P]Das Archiv enthält folgende Dateien:[/P]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+VALUES ( 'de', 'zip', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H1]Archiv-Inhalt[/H1]\r\n[P]Das Archiv enthÃ¤lt folgende Dateien:[/P]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
-VALUES ( 'de', 'zip_stdval', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H2]Standardwerte für die entpackten Dateien[/H2]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+VALUES ( 'de', 'zip_stdval', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H2]Standardwerte fÃ¼r die entpackten Dateien[/H2]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
 VALUES ( 'de', 'bundle_zip', '-939795212.modify', '/admin/fileed', 'add', '-1', 'Dateien zu einer Gruppe zusammenfassen', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'continue', '-939795212.modify', '/admin/fileed', 'add', '-1', 'Ãœberspringen', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
 VALUES ( 'de', 'extract', 'global', '', '', '-1', 'Entpacken', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 
@@ -45,7 +47,7 @@ Beispiel:
 --- 01. Februar 2008
 die "authInPlace" tools werden jetzt mit dataloop eingebunden.
 das tool "history" wurde hinzugefuegt, um es sichtbar zu machen bitte unten
-angefuegten sql ausführen!
+angefuegten sql ausfï¿½hren!
 
 sql:
 
@@ -63,7 +65,7 @@ z.B.:
 $cfg["file"]["size"]["tn"] = 96;            => Breite und Hoehe der Thumbnails 96px
 $cfg["file"]["size"]["tn"] = 96:60;         => Breite: 96px, Hoehe: 60px
 
-Standardmässig wird das bild so verkleinert bzw. vergroessert dass es in die angegebene Breite und Hoehe passt.
+Standardmï¿½ssig wird das bild so verkleinert bzw. vergroessert dass es in die angegebene Breite und Hoehe passt.
 Soll das Bild so zugeschnitten werden, dass es die festgelegte Breite und Hoehe kompett ausfuellt kann man die
 $cfg["file"]["size"]-Variable um den Schalter "crop" ergaenzen.
 z.B.:
@@ -181,7 +183,7 @@ aus "stylesheet" wird "default"
 
 um die *ed mit css informationen zu versorgen, einfach den eed.css
 aus default ins eigene design css verzeichnis kopieren und diese
-datei einbinden. je nach design ist es nötig, die alien section
+datei einbinden. je nach design ist es nï¿½tig, die alien section
 im eed.css teiweise oder ganz zu verwenden.
 
 
@@ -239,12 +241,12 @@ und link2 in der ersten ebene entfernen.
 --- 26. juli 2007
 
 achtung unbedingt menued aktualisieren! wird der entry mit
-großbuchstaben ergaenzt/geaendert und enthaelt site_form keinen
+groï¿½buchstaben ergaenzt/geaendert und enthaelt site_form keinen
 eintrag der das verhindert, wird der content nicht mehr gefunden.
 
 die neue version verhindert das und filtert grundsaetzlich mit
 /[^A-Za-z_\-\.0-9]/. will man die zeichen noch weiter einschraenken ist
-mit folgenden fcheck eintraegen möglich:
+mit folgenden fcheck eintraegen mï¿½glich:
 
 -> z.B. PREG:^[a-z_\-\.0-9]+$
 
@@ -253,12 +255,12 @@ sql:
 INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
  VALUES ('entry', '-555504947.add', '0', '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
 INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
- VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungültige Zeichen im Feld Eintrag.');
+ VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungï¿½ltige Zeichen im Feld Eintrag.');
 
 INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
  VALUES ('entry', '-555504947.edit', '0', '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
 INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
- VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungültige Zeichen im Feld Eintrag.');
+ VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ungï¿½ltige Zeichen im Feld Eintrag.');
 
 
 --- 24. juli 2007
@@ -268,10 +270,10 @@ design namen. es wird empfohlen die dateien zu verschieben!
 
 das dynamic css handling funtioniert nur noch in diesen
 unterverzeichnissen. neu: alle *_default.css werden nun mit den
-werten aus dynamic css ergänzt.
+werten aus dynamic css ergï¿½nzt.
 
-es gibt ein js verzeichnis für javascript dateien, welches auch
-desigen unterordner enthält.
+es gibt ein js verzeichnis fï¿½r javascript dateien, welches auch
+desigen unterordner enthï¿½lt.
 
 
 --- 17. mai 2007
@@ -279,7 +281,7 @@ desigen unterordner enthält.
 jetzt funtioniert !#lnk_0, !#ausgaben_UP auch auf der startseite.
 bei diesem fix habe ich auch gleich die kekse.inc.php umgebaut.
 
-achtung: eine neue kekse.cfg.php(-dist) wird benötigt!
+achtung: eine neue kekse.cfg.php(-dist) wird benï¿½tigt!
 
 
 das ewebuki menu funktioniert nun auch wenn https verwendet wird.
@@ -302,19 +304,19 @@ der parameter $specialvars["subdir"] in der site.cfg.php wird ignoriert.
 
 --- 06. okt 2006
 
-fileed: beschränkung von löschen und bearbeiten auf userid ist einstellbar.
+fileed: beschrï¿½nkung von lï¿½schen und bearbeiten auf userid ist einstellbar.
 (siehe restrict in der konfig datei)
 
-fileed: vor dem löschen von dateien wird der content geprüft.
-(noch nicht multi db fähig)
+fileed: vor dem lï¿½schen von dateien wird der content geprï¿½ft.
+(noch nicht multi db fï¿½hig)
 
 neue label sind notwendig
 
 sql:
 
 INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'error1', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild wird bereits verwendet - Bearbeiten zeigt wo.', '2006-10-06 20:07:05', '', '', '', 'ewebuki'),
-('de', 'error2', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild kann nur vom Eigentümer gelöscht werden.', '2006-10-06 20:22:05', '', '', '', 'ewebuki'),
-('de', 'error_edit', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Bild kann nur vom Eigentümer bearbeitet werden.', '2006-10-06 20:44:19', '', '', '', 'ewebuki'),
+('de', 'error2', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild kann nur vom Eigentï¿½mer gelï¿½scht werden.', '2006-10-06 20:22:05', '', '', '', 'ewebuki'),
+('de', 'error_edit', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Bild kann nur vom Eigentï¿½mer bearbeitet werden.', '2006-10-06 20:44:19', '', '', '', 'ewebuki'),
 ('de', 'references', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Ist enthalten in:', '2006-10-06 19:59:07', '', '', '', 'ewebuki');
 
 
@@ -328,8 +330,8 @@ sql:
 
 INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'answera', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Ihre Schnellsuche nach', '2006-09-26 12:18:44', '', '', '', 'ewebuki'),
 ('de', 'answerb', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'hat', '2006-09-26 12:18:58', '', '', '', 'ewebuki'),
-('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Einträge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
-('de', 'answerc_yes', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'folgende Einträge gefunden.', '2006-09-26 12:20:01', '', '', '', 'ewebuki'),
+('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Eintrï¿½ge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
+('de', 'answerc_yes', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'folgende Eintrï¿½ge gefunden.', '2006-09-26 12:20:01', '', '', '', 'ewebuki'),
 ('de', 'next', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Vorherige Seite', '2006-09-26 12:22:25', '', '', '', 'ewebuki'),
 ('de', 'prev', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Nexte Seite', '2006-09-26 12:22:35', '', '', '', 'ewebuki');
 
@@ -371,9 +373,9 @@ subdir support endlich komplett
 
 --- 14. sep 2006
 
-warnung: fileed komplett überarbeitet!
+warnung: fileed komplett ï¿½berarbeitet!
 
-cfg, files, templates und db haben sich geändert
+cfg, files, templates und db haben sich geï¿½ndert
 
 -- geloescht werden kann
 
@@ -411,7 +413,7 @@ UPDATE `site_text` SET `tname` = '-939795212.modify' WHERE `tname` = '-939795212
 
 --- 31. jul 2006 05
 
-eingabe möglichkeiten im menued einschränken
+eingabe mï¿½glichkeiten im menued einschrï¿½nken
 
 case-insensitiv: ^[A-Za-z_\.\-0-9]+$ (ist default im add, edit script!)
 case-sensitiv: ^[a-z_\.\-0-9]+$
@@ -421,7 +423,7 @@ sql:
 INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
 VALUES ( NULL , 'entry', '-555504947.edit', '0', '', '', NULL , '-1', 'PREG:^[a-z_\\.\\-0-9]+$' );
 INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` )
-VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', '', 'Ungültige Zeichen im Feld Eintrag.' );
+VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', '', 'Ungï¿½ltige Zeichen im Feld Eintrag.' );
 
 
 --- 31. jul 2006 04
@@ -516,7 +518,7 @@ speed hack: strstr() -> strpos() !== false
 
 --- 18.03.2005 01
 
-neue marke g(label) eine möglichkeit ein label global zu markieren.
+neue marke g(label) eine mï¿½glichkeit ein label global zu markieren.
 z.B. bei buttons -> einmal beschriften, immer wieder verwenden.
 
 
@@ -557,11 +559,11 @@ dateien im sql/ verzeichnis:
 um den original zustand der labels wiederherzustellen, einfach
 mit phpmyadmin die datei "site_text_labl.sql" importieren.
 
-wenn sie bereits eigene seiten erstellt haben, löschen die
+wenn sie bereits eigene seiten erstellt haben, lï¿½schen die
 naechsten befehle ihren inhalt!!!
 
 um alle original inhalt texte loszuwerden, ewebuki site_text leeren
-und mit der datei "site_text_labl.sql" neu befüllen.
+und mit der datei "site_text_labl.sql" neu befï¿½llen.
 
 die original texte kann man mit der datei "site_text_text.sql"
 wiederherstellen.

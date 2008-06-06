@@ -140,20 +140,6 @@
                 <input type="submit" name="upload[]" value="#(upload_file)" title="Datei auswaehlen" class="button" /><br />
             </fieldset>
 
-
-
-<!--            <fieldset>
-                <label>#(description)</label>
-                <input type="text" name="description" value="!#ausgaben_description" /><br />
-                <input type="hidden" name="tagwerte[0]" value="!#ausgaben_tagwerte0" />
-            </fieldset>
-
-            <fieldset>
-                <label>#(add_sel)</label>
-                <input type="file" name="new_sel" value="hallo" /><br />
-                <button type="submit" name="sel[]" value="#(get_sel)" class="button">#(get_sel)</button>
-            </fieldset>-->
-
             <fieldset>
                 <fieldset >
                     <legend>#(detail_size)</legend>
@@ -180,9 +166,14 @@
                 <ul id="grid_list">
                     <!--##loop-list_images-->
                     <li class="thumbs">
-                        <a href="!#pathvars_virtual/admin/fileed/!{ehref}"><img src="!{src}" alt="!{under} g(edit)" title="!{under} g(edit)" /></a>
+                        <a href="!#pathvars_virtual/admin/fileed/!{ehref}">
+                            <img src="!{src}" alt="!{under} g(edit)" title="!{under} g(edit)" />
+                            <span>
+                                <b>#(description)</b><br />
+                                !{under}
+                            </span>
+                        </a>
                         <p>
-                            !{under}
                             <input type="checkbox" name="tagwerte[3][]" value="!{id}"!{checked} onclick="session_update(!#ausgaben_tagwerte0,!{id});" />
                         </p>
                     </li>

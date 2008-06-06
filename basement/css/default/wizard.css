@@ -24,11 +24,11 @@ a img{
 */
 /* ---------------------*/
 
-
-
 /*----------------------
   wizard styles
   ----------------------*/
+
+    /* allgemeine definitionen */
 
     #wizard form label {
         display:block;
@@ -50,7 +50,6 @@ a img{
             }
 
             #wizard form table input {
-/*                 border:none; */
                 margin:0;
                 padding:0;
                 width:100%;
@@ -95,14 +94,6 @@ a img{
             float:none;
         }
 
-
-
-
-
-
-
-
-
     #wizard .button {
         background-color:#EEEEEE;
         border:1px solid #CCCCCC;
@@ -114,57 +105,79 @@ a img{
         width:auto;
     }
 
-        #content_blocks li {
-            background:no-repeat right top;
-            border:1px solid #DDDDDD;
-            list-style:none;
-            margin:0 0 3px;
-            padding:20px 4px 0;
+    /* beschriftungen der selektions-bilder */
+    #wizard #grid_list a {
+        display:block;
+        position:relative;
+        text-decoration:none;
+    }
+
+        #wizard #grid_list a span {
+            background-color:#EEEEEE;
+            border:1px solid #CCCCCC;
+            display:none;
+            position:absolute;
+            text-align:left;
+            top:0;
+            width:100px;
         }
 
-            #content_blocks li.ajax_move {
-                border-color:#FF9148;
+            #wizard #grid_list a:hover span {
+                display:block;
             }
 
-                #content_blocks li .block_edit {
-                    text-align:right;
+    /* definitionen der uebersichtsseite */
+    #content_blocks li {
+        background:no-repeat right top;
+        border:1px solid #DDDDDD;
+        list-style:none;
+        margin:0 0 3px;
+        padding:20px 4px 0;
+    }
+
+        #content_blocks li.ajax_move {
+            border-color:#FF9148;
+        }
+
+            #content_blocks li .block_edit {
+                text-align:right;
+            }
+
+            #content_blocks li div.wiz_edit {
+                border:1px solid #DDDDDD;
+                float:left;
+            }
+
+                #content_blocks li div.wiz_edit div.buttons {
+                    clear:both;
+                    padding:0.5ex 0;
                 }
 
-                #content_blocks li div.wiz_edit {
+            #content_blocks li span.wiz_edit {
+                border:1px solid #DDDDDD;
+                position:relative;
+            }
+
+                #content_blocks li span.wiz_edit span.buttons {
+                    display:none;
+                    font-weight:normal;
+                }
+
+                #content_blocks li span.wiz_edit:hover span.buttons {
+                    background:#FFFFFF;
                     border:1px solid #DDDDDD;
-                    float:left;
+                    display:block;
+                    left:0;
+                    position:absolute;
+                    top:1.2em;
                 }
 
-                    #content_blocks li div.wiz_edit div.buttons {
+                    #content_blocks li span.wiz_edit:hover span.buttons .button {
                         clear:both;
-                        padding:0.5ex 0;
-                    }
-
-                #content_blocks li span.wiz_edit {
-                    border:1px solid #DDDDDD;
-                    position:relative;
-                }
-
-                    #content_blocks li span.wiz_edit span.buttons {
-                        display:none;
-                        font-weight:normal;
-                    }
-
-                    #content_blocks li span.wiz_edit:hover span.buttons {
-                        background:#FFFFFF;
-                        border:1px solid #DDDDDD;
                         display:block;
-                        left:0;
-                        position:absolute;
-                        top:1.2em;
+                        margin:3px;
+                        padding:0;
+                        width:200px;
                     }
-
-                        #content_blocks li span.wiz_edit:hover span.buttons .button {
-                            clear:both;
-                            display:block;
-                            margin:3px;
-                            padding:0;
-                            width:200px;
-                        }
 
 /* ---------------------*/
