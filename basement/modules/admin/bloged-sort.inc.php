@@ -68,12 +68,16 @@
         renumber_blog();
 
         // dann punkt hoch oder runter
-        $sql = "SELECT Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
+        $sql = "SELECT SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) AS kategorie,Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
                 FROM site_text 
                 WHERE status = 1 AND tname ='".eCRC(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-
+        if ( $data["kategorie"] != "" ) {
+            $jump = substr($data["kategorie"],11);
+        } else {
+            $jump = make_ebene($environment["parameter"][4]);
+        }
         if ( $environment["parameter"][1] == "down" ) {
             $sort = $data["date"]-11;
         } else {
@@ -86,7 +90,7 @@
 
         renumber_blog();
 
-         header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][4]).".html");
+         header("Location: ".$pathvars["virtual"].$jump.".html");
 
     } else {
         header("Location: ".$pathvars["virtual"]."/");
