@@ -151,7 +151,8 @@
                     $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
                     $org_tag = str_replace('\r\n',"<br>",$regs[2]);
                 } else {
-                    $$key = "unknown";
+                    $rep_tag = "";
+                    $org_tag = "";
                 }
                 $array[$counter][$key."_org"] = $org_tag;
                 $array[$counter][$key] = tagreplace($rep_tag);
