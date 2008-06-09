@@ -51,7 +51,7 @@
 
         function renumber_blog () {
             global $db,$environment;
-            $sql = "SELECT Cast(SUBSTR(content,4,POSITION(';' IN content)-4) as SIGNED) AS date,content,tname 
+            $sql = "SELECT Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
                     FROM site_text 
                     WHERE status = 1 AND tname like '".eCRC(make_ebene($environment["parameter"][4])).".%' order by date ASC";
             $result = $db -> query($sql);
@@ -59,7 +59,7 @@
             $preg = "^\[!\][0-9]*";
             while ( $data = $db -> fetch_array($result,1) ) {
                 $count = $count+10;
-                $content = preg_replace("|^\[!\][0-9]*|","[!]".$count,$data["content"]);
+                $content = preg_replace("|\[SORT\][0-9]*\[\/SORT\]|","\[SORT\]".$count."[\/SORT\]",$data["content"]);
                 $sql_update = "UPDATE site_text SET content='".$content."' WHERE status = 1 and tname ='".$data["tname"]."'";
                 $result_update = $db -> query($sql_update);
             }
@@ -68,7 +68,7 @@
         renumber_blog();
 
         // dann punkt hoch oder runter
-        $sql = "SELECT Cast(SUBSTR(content,4,POSITION(';' IN content)-4) as SIGNED) AS date,content,tname 
+        $sql = "SELECT Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
                 FROM site_text 
                 WHERE status = 1 AND tname ='".eCRC(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
@@ -80,7 +80,7 @@
             $sort = $data["date"]+11;
         }
 
-        $content = preg_replace("|^\[!\][0-9]*|","[!]".$sort,$data["content"]);
+        $content = preg_replace("|\[SORT\][0-9]*\[\/SORT\]|","\[SORT\]".$sort."[\/SORT\]",$data["content"]);
         $sql = "UPDATE site_text SET content='".$content."' WHERE status = 1 and tname ='".$data["tname"]."'";
         $result = $db -> query($sql);
 
