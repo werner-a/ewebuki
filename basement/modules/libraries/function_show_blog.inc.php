@@ -61,8 +61,10 @@
             $where = "  AND SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) ='[KATEGORIE]".$kategorie."'";
         }
 
+        $erlaubnis = "";
         // hier erfolgt der rechte-check, um den new-link einzublenden
         if ( $right == "" || ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) ) {
+            $erlaubnis = -1;
             if ( $kategorie != "" ) {
                 $kategorie = make_id($environment["ebene"]."/".$environment["kategorie"]);
                 $new_kat = ",".$kategorie["mid"];
@@ -175,7 +177,7 @@
             }
             $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
             $array[$counter]["id"] = $regs[1];
-            if ( $sort == "-1" ) {
+            if ( $sort == "-1" && $erlaubnis == -1) {
                 $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",,".$new.".html\">nach oben</a>";
                 $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
             }
