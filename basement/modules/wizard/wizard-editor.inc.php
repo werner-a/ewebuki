@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -125,6 +125,49 @@
         $ausgaben["tn"] = makece("ceform", "content", $form_values["content"], $allowed_tags);
         // + + +
 
+            // vogelwilde regexen die alte & neue links zu ewebuki-files findet
+            // und viel arbeit erspart
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",$form_values["content"],$found1);
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",$form_values["content"],$found2);
+            $found = array_merge($found1[1],$found2[1]);
+            $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
+
+            // file memo auslesen und zuruecksetzen
+            if ( is_array($_SESSION["file_memo"]) ) {
+                $array = array_merge($_SESSION["file_memo"],$found);
+//                 unset($_SESSION["file_memo"]);
+            } else {
+                $array = $found;
+            }
+$ausgaben["output"] .= "<pre>".$form_values["content"].print_r($_SESSION["file_memo"],True).print_r($found,True).print_r($array,True)."</pre>";
+
+            // wenn es thumbnails gibt, anzeigen
+            if ( count($array) >= 1 ) {
+
+                $merken = $db -> getDb();
+                if ( $merken != DATABASE ) {
+                    $db -> selectDB( DATABASE ,"");
+                }
+
+                foreach ( $array as $value ) {
+                    if ( $where != "" ) $where .= " OR ";
+                    $where .= "fid = '".$value."'";
+                }
+                $sql = "SELECT *
+                          FROM site_file
+                         WHERE ".$where."
+                      ORDER BY ffname, funder";
+$ausgaben["output"] .= "\$sql: $sql<br>";
+                $result = $db -> query($sql);
+
+
+                if ( $merken != DATABASE ) {
+                    $db -> selectDB($merken,"");
+                }
+
+                filelist($result, "contented");
+            }
+
         // referer in SESSION mitschleppen
         if ( $_SESSION["form_referer"] == "" && !strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) ) {
             $_SESSION["form_referer"] = $_SERVER["HTTP_REFERER"];
@@ -157,7 +200,7 @@
                     || $_POST["refresh"] != ""
                     || $_POST["upload"] != "" ) ) {
 
-                // form eingaben prüfen
+                // form eingaben prï¿½fen
                 form_errors( $form_options, $_POST );
                 if ( $ausgaben["form_error"] == ""  ) {
                     // falls content in session steht diesen holen, ansonsten aus der db
