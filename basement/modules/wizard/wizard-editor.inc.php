@@ -139,7 +139,6 @@
             } else {
                 $array = $found;
             }
-$ausgaben["output"] .= "<pre>".$form_values["content"].print_r($_SESSION["file_memo"],True).print_r($found,True).print_r($array,True)."</pre>";
 
             // wenn es thumbnails gibt, anzeigen
             if ( count($array) >= 1 ) {
@@ -157,7 +156,6 @@ $ausgaben["output"] .= "<pre>".$form_values["content"].print_r($_SESSION["file_m
                           FROM site_file
                          WHERE ".$where."
                       ORDER BY ffname, funder";
-$ausgaben["output"] .= "\$sql: $sql<br>";
                 $result = $db -> query($sql);
 
 
