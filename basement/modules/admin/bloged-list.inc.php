@@ -126,10 +126,10 @@
                 $counter++;
                 $dataloop["blogs"][$counter]["link"] = "list,".$id["mid"].".html";
                 $dataloop["blogs"][$counter]["name"] = $key;
-                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]'AND status = '1' AND tname like '".eCRC($key).".%' order by date DESC";
+                $sql = "SELECT content,tname from site_text WHERE content REGEXP '^\\\[!\\\]'AND status = '1' AND tname like '".eCRC($key).".%'";
                 $result = $db -> query($sql);
                 $dataloop["blogs"][$counter]["anzahl1"] = $db ->num_rows($result);
-                $sql = "SELECT Cast(SUBSTR(content,6,19) as DATETIME) AS date,content,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".eCRC($key).".%' order by date DESC";
+                $sql = "SELECT content,tname from site_text WHERE content REGEXP '^\\\[!\\\]' AND tname like '".eCRC($key).".%'";
                 $result = $db -> query($sql);
                 $dataloop["blogs"][$counter]["anzahl2"] = $db ->num_rows($result);
             }
