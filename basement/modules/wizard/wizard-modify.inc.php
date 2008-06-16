@@ -149,16 +149,27 @@
                     break;
                 case "move":
                     $allcontent = content_level1($form_values["content"]);
+                    if ( is_array($_GET["content_blocks"]) ) {
+echo "hallo1";
+                        $order = $_GET["content_blocks"];
+                    } elseif ( is_array($_GET["img_map"]) ) {
+echo "hallo2";
+                        $order = $_GET["img_map"];
+                    }
                     $i = 0;
                     foreach ( $allcontent as $key=>$value ) {
-                        if ( in_array($key,$_GET["content_blocks"]) ) {
-                            $buffer[] = trim($allcontent[$_GET["content_blocks"][$i]]);
+                        if ( in_array($key,$order) ) {
+                            $buffer[] = trim($allcontent[$order[$i]]);
                             $i++;
                         } else {
                             $buffer[] = trim($value);
                         }
                     }
                     $content = implode(chr(13).chr(10).chr(13).chr(10),$buffer);
+echo "<pre>".print_r($buffer,true)."</pre>";
+// echo "\$content: $content<br>";
+echo "\$identifier: $identifier<br>";
+// die("hallo");
                     break;
                 default:
                     header("Location: ".$_SERVER["HTTP_REFERER"]);

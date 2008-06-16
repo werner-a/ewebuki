@@ -113,6 +113,10 @@
     // + + +
     // leere parameter abfangen
 
+    $ausgaben["empty_show_url"] = $cfg["wizard"]["basis"]."/".implode( ",", array_slice($environment["parameter"],0,6) ).",none.html";
+//     for ( $i=0;$i<5;$i++ ) {
+//         $ausgaben["empty_show_url"] .= $environment["parameter"][$i].",";
+//     }
 
     if ( priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
          priv_check_old("",$cfg["wizard"]["right"]) ) {
@@ -313,6 +317,7 @@
             // bauen der "uebergeordneten" bereiche (keine verschachtelung)
             // * * *
             $allcontent = content_level1($content);
+// echo "\$content: $content";
             if ( count($allcontent) > 0 ) {
                 // vorbereitung fuer die array-sortierung fuer das verschieben
                 // * * *
@@ -408,21 +413,85 @@
                             array_pop($pic_array);
                         }
                     }
+                    // welcher tag ist es
+                    preg_match("/\[(.+)\]/U",$value,$tag_match);
 
                     $dataloop["sort_content"][] = array(
-                                "key"       => $key,
-                                "value"     => tagreplace($value),
-                                "class"     => $ajax_class,
-                                "style"     => $style,
-                                "modify"    => $modify_class,
-                                "link_up"   => $link_up,
-                                "link_down" => $link_down,
-                                "delete"    => $del,
+                                "key"        => $key,
+                                "tag"        => $tag_match[1],
+                                "value"      => $value,
+                                "value_html" => tagreplace($value),
+                                "class"      => $ajax_class,
+                                "style"      => $style,
+                                "modify"     => $modify_class,
+                                "link_up"    => $link_up,
+                                "link_down"  => $link_down,
+                                "delete"     => $del,
                     );
                 }
             }
             // + + +
             // bereiche in eine liste pressen
+
+            $mapping["image_map"] = "leer";
+            if ( file_exists($pathvars["templates"]."img_map_".$wizard_name.".tem.html")
+              || file_exists($pathvars["fileroot"]."templates/default/"."img_map_".$wizard_name.".tem.html") ) {
+                $mapping["image_map"] = "img_map_".$wizard_name;
+                // anzahl der uebergeordneten bereiche
+                $num_cont_blocks = count($dataloop["sort_content"]);
+    //             for ( $i = ($cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]) ; $i <= ($num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] - 1) ; $i++ ) {
+                foreach ($dataloop["sort_content"] as $i=>$value) {
+    // echo "$i: ".$dataloop["sort_content"][$i]["tag"]."<br>";
+                    $src_tag = strtolower($dataloop["sort_content"][$i]["tag"]);
+// echo "\$src_tag: $src_tag<br>";
+                    $src_tag_tmp = "";
+                    if ( strstr($src_tag,"=") ) {
+                        $src_tag_tmp    = str_replace("=","-",$src_tag);
+                        if ( strstr($src_tag_tmp,";") ) {
+                            $src_tag_tmp    = substr($src_tag_tmp,0,strpos($src_tag_tmp,";") );
+                        }
+//                         $src_tag = substr($src_tag,0,strpos($src_tag,"=") );
+                    }
+                    if ( strstr($src_tag,"=") ) $src_tag = substr($src_tag,0,strpos($src_tag,"=") );
+                    $src = "";
+                    if ( file_exists($pathvars["fileroot"]."images/".$environment["design"]."/img_map_part_".$src_tag_tmp.".png") ) {
+                        $src = "/images/".$environment["design"]."/img_map_part_".$src_tag_tmp.".png";
+                    } elseif ( file_exists($pathvars["fileroot"]."images/default/img_map_part_".$src_tag_tmp.".png") ) {
+                        $src = "/images/default/img_map_part_".$src_tag_tmp.".png";
+                    } elseif ( file_exists($pathvars["fileroot"]."images/".$environment["design"]."/img_map_part_".$src_tag.".png") ) {
+                        $src = "/images/default/".$environment["design"]."/img_map_part_".$src_tag.".png";
+                    } elseif ( file_exists($pathvars["fileroot"]."images/default/img_map_part_".$src_tag.".png") ) {
+                        $src = "/images/default/img_map_part_".$src_tag.".png";
+                    }
+// echo "\$src_tag: $src_tag<br>";
+// echo "\$src_tag_tmp: $src_tag_tmp<br>";
+// echo "\$src: $src<br>-----------------------<br>";
+                    $link = $cfg["wizard"]["basis"]."/".
+                            $environment["parameter"][0].",".
+                            $environment["parameter"][1].",".
+                            $environment["parameter"][2].",".
+                            $environment["parameter"][3].",".
+                            /*$i.*/",".
+                            $environment["parameter"][5].",".$i.".html";
+                    $ausgaben["item_".$i."_link"] = $link;
+                    if ( $i >=  $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]
+                    && $i < $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
+                        $dataloop["img_map"][] = array(
+                            "key"  => $dataloop["sort_content"][$i]["key"],
+                            "src"  => "/images/".$environment["design"]."/img_map_part_".strtolower($src_tag).".png",
+                            "link" => $link,
+                        );
+                    }
+                    if ( ($environment["parameter"][6] != "" && $i != $environment["parameter"][6])
+                    || $environment["parameter"][6] == "none" ) {
+                        unset($dataloop["sort_content"][$i]);
+                    }
+                }
+                if ( $environment["parameter"][6] == "none" ) {
+                    $hidedata["no_sort_content"] = array();
+                }
+            }
+            if ( count($dataloop["sort_content"]) > 0 ) $hidedata["sort_content"] = array();
 
             // link-ziel fuer die ajax-verschieb-sache
             // * * *

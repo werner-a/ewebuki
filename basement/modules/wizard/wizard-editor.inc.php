@@ -64,7 +64,7 @@
 
         // daten holen
         // ***
-        $environment["parameter"][6] != "" ? $version = " AND version=".$environment["parameter"][6] : $version = "";
+        $environment["parameter"][5] != "" ? $version = " AND version=".$environment["parameter"][5] : $version = "";
         $sql = "SELECT version, html, content, changed, byalias
                     FROM ". SITETEXT ."
                     WHERE lang = '".$environment["language"]."'
@@ -125,49 +125,10 @@
         $ausgaben["tn"] = makece("ceform", "content", $form_values["content"], $allowed_tags);
         // + + +
 
-            // vogelwilde regexen die alte & neue links zu ewebuki-files findet
-            // und viel arbeit erspart
-            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",$form_values["content"],$found1);
-            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",$form_values["content"],$found2);
-            $found = array_merge($found1[1],$found2[1]);
-            $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
-
-            // file memo auslesen und zuruecksetzen
-            if ( is_array($_SESSION["file_memo"]) ) {
-                $array = array_merge($_SESSION["file_memo"],$found);
-//                 unset($_SESSION["file_memo"]);
-            } else {
-                $array = $found;
-            }
-
-            // wenn es thumbnails gibt, anzeigen
-            if ( count($array) >= 1 ) {
-
-                $merken = $db -> getDb();
-                if ( $merken != DATABASE ) {
-                    $db -> selectDB( DATABASE ,"");
-                }
-
-                foreach ( $array as $value ) {
-                    if ( $where != "" ) $where .= " OR ";
-                    $where .= "fid = '".$value."'";
-                }
-                $sql = "SELECT *
-                          FROM site_file
-                         WHERE ".$where."
-                      ORDER BY ffname, funder";
-                $result = $db -> query($sql);
-
-
-                if ( $merken != DATABASE ) {
-                    $db -> selectDB($merken,"");
-                }
-
-                filelist($result, "contented");
-            }
-
         // referer in SESSION mitschleppen
-        if ( $_SESSION["form_referer"] == "" && !strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) ) {
+        if ( $_SESSION["form_referer"] == ""
+          && !strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"])
+          && !strstr($_SERVER["HTTP_REFERER"],"/admin/") ) {
             $_SESSION["form_referer"] = $_SERVER["HTTP_REFERER"];
             $_SESSION["form_send"] = "version";
         }
@@ -180,12 +141,14 @@
                                                             $environment["parameter"][1].",".
                                                             $environment["parameter"][2].",".
                                                             $environment["parameter"][3].",".
-                                                            $environment["parameter"][4].",,,verify.html";
+                                                            $environment["parameter"][4].",,".
+                                                            $environment["parameter"][6].",verify.html";
         $ausgaben["form_break"] = $cfg["wizard"]["basis"]."/show,".
                                                             $environment["parameter"][1].",".
                                                             $environment["parameter"][2].",".
                                                             $environment["parameter"][3].",".
-                                                            $environment["parameter"][4].",,,unlock.html";
+                                                            $environment["parameter"][4].",,".
+                                                            $environment["parameter"][6].",unlock.html";
 
         if ( count($tag_marken) > 0 ) {
 
@@ -237,6 +200,47 @@
                 $mapping["main"] = "wizard-edit";
                 $hidedata["default"] = array();
 
+                // vogelwilde regexen die alte & neue links zu ewebuki-files findet
+                // und viel arbeit erspart
+                preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",$form_values["content"],$found1);
+                preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",$form_values["content"],$found2);
+                $found = array_merge($found1[1],$found2[1]);
+                $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
+
+                // file memo auslesen und zuruecksetzen
+                if ( is_array($_SESSION["file_memo"]) ) {
+                    $array = array_merge($_SESSION["file_memo"],$found);
+    //                 unset($_SESSION["file_memo"]);
+                } else {
+                    $array = $found;
+                }
+
+                // wenn es thumbnails gibt, anzeigen
+                if ( count($array) >= 1 ) {
+
+                    $merken = $db -> getDb();
+                    if ( $merken != DATABASE ) {
+                        $db -> selectDB( DATABASE ,"");
+                    }
+
+                    foreach ( $array as $value ) {
+                        if ( $where != "" ) $where .= " OR ";
+                        $where .= "fid = '".$value."'";
+                    }
+                    $sql = "SELECT *
+                            FROM site_file
+                            WHERE ".$where."
+                        ORDER BY ffname, funder";
+                    $result = $db -> query($sql);
+
+
+                    if ( $merken != DATABASE ) {
+                        $db -> selectDB($merken,"");
+                    }
+
+                    filelist($result, "contented");
+                }
+
                 // abspeichern, part 2
                 // * * *
                 if ( $environment["parameter"][7] == "verify"
@@ -263,7 +267,8 @@
                                                     $environment["parameter"][2].",".
                                                     $environment["parameter"][3].",".
                                                     ",".
-                                                    $environment["parameter"][5].".html";
+                                                    $environment["parameter"][5].",".
+                                                    $environment["parameter"][6].".html";
                 header("Location: ".$header);
             }
 
@@ -325,8 +330,8 @@
                     if ( $_POST["sel"] != "" ) {
                         unset($_SESSION["compilation_memo"]);
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/compilation.html");
-                    } elseif ( $_POST["upload"] != "" ) {
-                        if ( $error == 0 ) header("Location: ".$pathvars["virtual"]."/admin/fileed/add.html");
+                    } elseif ( $_POST["upload"] != "" && $error == 0 ) {
+                        header("Location: ".$pathvars["virtual"]."/admin/fileed/add.html");
                     } else {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
                     }
@@ -338,7 +343,9 @@
                                                         $environment["parameter"][2].",".
                                                         $environment["parameter"][3].",".
                                                         ",".
-                                                        $environment["parameter"][5].".html";
+                                                        $environment["parameter"][5].",".
+                                                        $environment["parameter"][6].".html";
+echo "\$header2: $header<br>";
                     header("Location: ".$header);
                 }
             }

@@ -221,6 +221,43 @@
                 <div style="float:left"><script type="text/javascript">ebToolbar('T');</script></div>
                 <textarea id="content" name="!#ausgaben_name" class="ta_norm" cols="80" rows="15" style="width:100%" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
                 <div style="float:left"><script type="text/javascript">ebToolbar('B');</script></div>
+                <div style="clear:both"></div>
+                <ul>
+                <!--##loop-list_images-->
+                    <li class="thumbs">
+                        <p>
+                            <input type="button" id="eb_imgo" value="O" title="Einf&uuml;gen Original (original)" onclick="!{oclick}" class="butfil" />
+                            <input type="button" id="eb_imgs" value="B" title="Einf&uuml;gen Gross (big)" onclick="!{bclick}" class="butfil" />
+                            <input type="button" id="eb_imgm" value="M" title="Einf&uuml;gen Mittel (middle)" onclick="!{mclick}" class="butfil" />
+                            <input type="button" id="eb_imgb" value="S" title="Einf&uuml;gen Klein (small)" onclick="!{sclick}" class="butfil" />
+                        </p>
+                        <img src="!{src}" !{size} alt="!{alt}" title="!{title}" onclick="!{oclick}" />
+                    </li>
+                <!--##cont-->
+                </ul>
+                <div style="clear:both"></div>
+                <ul>
+                <!--##loop-list_other-->
+                    <li class="files" style="background:!{color};">
+                        <a title="!{title} einf&uuml;gen" onclick="!{fclick}">!{title}</a>
+                        <a title="!{title} einf&uuml;gen" onclick="!{cvs_click}">!{cvs_title}</a>
+                        <div style="clear:both"></div>
+                    </li>
+                <!--##cont-->
+                </ul>
+                <div style="clear:both"></div>
+                <ul>
+                <!--##loop-selection-->
+                    <li class="files">
+                        <input type="button" id="eb_imgo" value="S" title="Einf&uuml;gen Original (original)" onclick="ebInsertSel(ebCanvas, '!{id}', 's', '', '!{pics}', 'TRUE')" class="butfil" />
+                        <input type="button" id="eb_imgo" value="M" title="Einf&uuml;gen Gross (big)" onclick="ebInsertSel(ebCanvas, '!{id}', 'm', '', '!{pics}', 'TRUE')" class="butfil" />
+                        <input type="button" id="eb_imgo" value="B" title="Einf&uuml;gen Mittel (middle)" onclick="ebInsertSel(ebCanvas, '!{id}', 'b', '', '!{pics}', 'TRUE')" class="butfil" />
+                        <input type="button" id="eb_imgo" value="O" title="Einf&uuml;gen Klein (small)" onclick="ebInsertSel(ebCanvas, '!{id}', 'o', '', '!{pics}', 'TRUE')" class="butfil" />
+                        &nbsp;# !{id}
+                        <div style="clear:both"></div>
+                    </li>
+                <!--##cont-->
+                </ul>
                 <script type="text/javascript" language="JavaScript">
                     <!--
                     // This is for toolbar plugins
@@ -228,50 +265,6 @@
                     //-->
                 </script>
             </fieldset>
-            <!--##show-->
-
-<!-- ausgewaehlte dateien anzeigen -->
-            <!--##hide-list_images-->
-            <ul>
-            <!--##loop-list_images-->
-                <li class="thumbs">
-                    <p>
-                        <input type="button" id="eb_imgo" value="O" title="Einf&uuml;gen Original (original)" onclick="!{oclick}" class="butfil" />
-                        <input type="button" id="eb_imgs" value="B" title="Einf&uuml;gen Gross (big)" onclick="!{bclick}" class="butfil" />
-                        <input type="button" id="eb_imgm" value="M" title="Einf&uuml;gen Mittel (middle)" onclick="!{mclick}" class="butfil" />
-                        <input type="button" id="eb_imgb" value="S" title="Einf&uuml;gen Klein (small)" onclick="!{sclick}" class="butfil" />
-                    </p>
-                    <img src="!{src}" !{size} alt="!{alt}" title="!{title}" onclick="!{oclick}" />
-                </li>
-            <!--##cont-->
-            </ul>
-            <!--##show-->
-            <div style="clear:both"></div>
-            <!--##hide-list_other-->
-            <ul>
-            <!--##loop-list_other-->
-                <li class="files" style="background:!{color};">
-                    <a title="!{title} einf&uuml;gen" onclick="!{fclick}">!{title}</a>
-                    <a title="!{title} einf&uuml;gen" onclick="!{cvs_click}">!{cvs_title}</a>
-                    <div style="clear:both"></div>
-                </li>
-            <!--##cont-->
-            </ul>
-            <!--##show-->
-            <div style="clear:both"></div>
-            <!--##hide-selection-->
-            <ul>
-            <!--##loop-selection-->
-                <li class="files">
-                    <input type="button" id="eb_imgo" value="S" title="Einf&uuml;gen Original (original)" onclick="ebInsertSel(ebCanvas, '!{id}', 's', '', '!{pics}', 'TRUE')" class="butfil" />
-                    <input type="button" id="eb_imgo" value="M" title="Einf&uuml;gen Gross (big)" onclick="ebInsertSel(ebCanvas, '!{id}', 'm', '', '!{pics}', 'TRUE')" class="butfil" />
-                    <input type="button" id="eb_imgo" value="B" title="Einf&uuml;gen Mittel (middle)" onclick="ebInsertSel(ebCanvas, '!{id}', 'b', '', '!{pics}', 'TRUE')" class="butfil" />
-                    <input type="button" id="eb_imgo" value="O" title="Einf&uuml;gen Klein (small)" onclick="ebInsertSel(ebCanvas, '!{id}', 'o', '', '!{pics}', 'TRUE')" class="butfil" />
-                    &nbsp;# !{id}
-                    <div style="clear:both"></div>
-                </li>
-            <!--##cont-->
-            </ul>
             <!--##show-->
 
         </div>

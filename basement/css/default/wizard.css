@@ -30,6 +30,10 @@ a img{
 
     /* allgemeine definitionen */
 
+    #wizard {
+        background-color:#FFFFFF;
+    }
+
     #wizard form label {
         display:block;
         float:left;
@@ -94,7 +98,7 @@ a img{
             float:none;
         }
 
-    #wizard .button {
+    #wizard .button, #content_blocks .buttons a {
         background-color:#EEEEEE;
         border:1px solid #CCCCCC;
         color:inherit;
@@ -127,57 +131,79 @@ a img{
             }
 
     /* definitionen der uebersichtsseite */
-    #content_blocks li {
-        background:no-repeat right top;
-        border:1px solid #DDDDDD;
-        list-style:none;
-        margin:0 0 3px;
-        padding:20px 4px 0;
+    #content_blocks {
+        padding:0;
     }
 
-        #content_blocks li.ajax_move {
-            border-color:#FF9148;
+        #content_blocks li {
+            background:no-repeat right top;
+            border:1px solid #DDDDDD;
+            list-style:none;
+            margin:0 0 3px;
+            padding:20px 4px 0;
         }
 
-            #content_blocks li .block_edit {
-                text-align:right;
+            #content_blocks li.ajax_move {
+                border-color:#FF9148;
             }
 
-            #content_blocks li div.wiz_edit {
-                border:1px solid #DDDDDD;
-                float:left;
-            }
-
-                #content_blocks li div.wiz_edit div.buttons {
-                    clear:both;
-                    padding:0.5ex 0;
+                #content_blocks li .block_edit {
+                    text-align:right;
                 }
 
-            #content_blocks li span.wiz_edit {
-                border:1px solid #DDDDDD;
-                position:relative;
-            }
-
-                #content_blocks li span.wiz_edit span.buttons {
-                    display:none;
-                    font-weight:normal;
-                }
-
-                #content_blocks li span.wiz_edit:hover span.buttons {
-                    background:#FFFFFF;
+                #content_blocks li div.wiz_edit {
                     border:1px solid #DDDDDD;
-                    display:block;
-                    left:0;
-                    position:absolute;
-                    top:1.2em;
+                    float:left;
                 }
 
-                    #content_blocks li span.wiz_edit:hover span.buttons .button {
+                    #content_blocks li div.wiz_edit div.buttons {
                         clear:both;
-                        display:block;
-                        margin:3px;
-                        padding:0;
-                        width:200px;
+                        padding:0.5ex 0;
                     }
+
+                #content_blocks li span.wiz_edit {
+                    border:1px solid #DDDDDD;
+                    position:relative;
+                }
+
+                    #content_blocks li span.wiz_edit span.buttons {
+                        display:none;
+                        font-weight:normal;
+                    }
+                    #content_blocks li span.wiz_edit:hover span.buttons {
+                        background:#FFFFFF;
+                        border:1px solid #DDDDDD;
+                        display:block;
+                        left:0;
+                        position:absolute;
+                        top:1.2em;
+                    }
+
+                        #content_blocks li span.wiz_edit:hover span.buttons .button {
+                            clear:both;
+                            display:block;
+                            margin:3px;
+                            padding:0;
+                            width:200px;
+                        }
+
+    #wizard #img_map {
+        margin:0;
+        padding:0;
+    }
+
+    #wizard #img_map li {
+        clear:both;
+        float:left;
+        list-style:none;
+    }
+
+    #wizard #img_map li img {
+        clear:both;
+        float:left;
+        list-style:none;
+        margin:0;
+        padding:0;
+    }
 
 /* ---------------------*/
