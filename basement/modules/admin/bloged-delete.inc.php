@@ -66,6 +66,7 @@
 
         // unzugaengliche #(marken) sichtbar machen
         // ***
+
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
@@ -88,7 +89,12 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][4]).".html");
+                if ( preg_match("/^".str_replace("/","\/",$pathvars["webroot"].$pathvars["subdir"]."/auth/")."/",$_SESSION["admin_back_link"]) ) {
+                    $jump = $_SESSION["admin_back_link"];
+                } else {
+                    $jump = str_replace($pathvars["webroot"].$pathvars["subdir"],$pathvars["webroot"].$pathvars["subdir"]."/auth",$_SESSION["admin_back_link"]);
+                }
+                header("Location: ".$jump);
             }
         }
         // +++
