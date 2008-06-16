@@ -181,6 +181,8 @@
             if ( $sort == "-1" && $erlaubnis == -1) {
                 $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",,".$new.".html\">nach oben</a>";
                 $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
+            } else {
+                $array[$counter]["sort"] = "";
             }
             if ( $environment["parameter"][3] == $regs[1] ) {
                 $array[$counter]["faqcontent"] = $array[$counter]["faq"];
@@ -193,6 +195,9 @@
             ) {
                 $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",,".$new.".html\">delete</a>";
                 $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
+            } else {
+                $array[$counter]["editlink"] = "";
+                $array[$counter]["deletelink"] = "";
             }
         }
         return $array;
