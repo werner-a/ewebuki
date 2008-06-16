@@ -433,24 +433,22 @@
             // + + +
             // bereiche in eine liste pressen
 
+            // bauen des dataloops fuer die image map
             $mapping["image_map"] = "leer";
             if ( file_exists($pathvars["templates"]."img_map_".$wizard_name.".tem.html")
               || file_exists($pathvars["fileroot"]."templates/default/"."img_map_".$wizard_name.".tem.html") ) {
                 $mapping["image_map"] = "img_map_".$wizard_name;
                 // anzahl der uebergeordneten bereiche
                 $num_cont_blocks = count($dataloop["sort_content"]);
-    //             for ( $i = ($cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]) ; $i <= ($num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] - 1) ; $i++ ) {
                 foreach ($dataloop["sort_content"] as $i=>$value) {
-    // echo "$i: ".$dataloop["sort_content"][$i]["tag"]."<br>";
+                    // moegliche vorschau-bild-namen durchgehen
                     $src_tag = strtolower($dataloop["sort_content"][$i]["tag"]);
-// echo "\$src_tag: $src_tag<br>";
                     $src_tag_tmp = "";
                     if ( strstr($src_tag,"=") ) {
                         $src_tag_tmp    = str_replace("=","-",$src_tag);
                         if ( strstr($src_tag_tmp,";") ) {
                             $src_tag_tmp    = substr($src_tag_tmp,0,strpos($src_tag_tmp,";") );
                         }
-//                         $src_tag = substr($src_tag,0,strpos($src_tag,"=") );
                     }
                     if ( strstr($src_tag,"=") ) $src_tag = substr($src_tag,0,strpos($src_tag,"=") );
                     $src = "";
@@ -463,9 +461,7 @@
                     } elseif ( file_exists($pathvars["fileroot"]."images/default/img_map_part_".$src_tag.".png") ) {
                         $src = "/images/default/img_map_part_".$src_tag.".png";
                     }
-// echo "\$src_tag: $src_tag<br>";
-// echo "\$src_tag_tmp: $src_tag_tmp<br>";
-// echo "\$src: $src<br>-----------------------<br>";
+                    // link
                     $link = $cfg["wizard"]["basis"]."/".
                             $environment["parameter"][0].",".
                             $environment["parameter"][1].",".
@@ -474,14 +470,16 @@
                             /*$i.*/",".
                             $environment["parameter"][5].",".$i.".html";
                     $ausgaben["item_".$i."_link"] = $link;
+                    // dataloop bauen
                     if ( $i >=  $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]
-                    && $i < $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
+                      && $i < $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
                         $dataloop["img_map"][] = array(
                             "key"  => $dataloop["sort_content"][$i]["key"],
                             "src"  => "/images/".$environment["design"]."/img_map_part_".strtolower($src_tag).".png",
                             "link" => $link,
                         );
                     }
+                    // falls nur eine section angezeigt werden soll die anderen aus dem dataloop loeschen
                     if ( ($environment["parameter"][6] != "" && $i != $environment["parameter"][6])
                     || $environment["parameter"][6] == "none" ) {
                         unset($dataloop["sort_content"][$i]);
