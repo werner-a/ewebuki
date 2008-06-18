@@ -147,12 +147,6 @@
         include $pathvars["moduleroot"]."admin/bloged-ctrl.inc.php";
     }
 
-#    // addon: bloged (link, list) 
-    #include $pathvars["moduleroot"]."addon/bloglink.inc.php";
-    if ( $environment["ebene"] == "" && $environment["kategorie"] == "blog" ) {
-        include $pathvars["moduleroot"]."addon/bloglist.inc.php";
-    }
-
 #    // addon: changed
     include $pathvars["moduleroot"]."addon/changed.cfg.php";
     include $pathvars["moduleroot"]."addon/changed.inc.php";
