@@ -50,7 +50,7 @@
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
 
-            if ( $cfg["bloged"]["blogs"][$ebene]["sortable"] == -1 ) {
+            if ( $cfg["bloged"]["blogs"][$ebene]["faq"] == -1 ) {
                 $sort = "0";
             } else {
                 $sort = date("Y-m-d H:i:s");
@@ -92,7 +92,7 @@
             $sqla .= ", html";
             $sqlb .= ", 0";
 
-            if ( is_array($cfg["bloged"]["blogs"][$ebene]["kategorie"]) ) {
+            if ( $cfg["bloged"]["blogs"][$ebene]["include"] == -1 ) {
                 if ( $environment["parameter"][2] == "") $environment["parameter"][2] = $environment["parameter"][1];
                 $kategorie = "[KATEGORIE]".make_ebene($environment["parameter"][2])."[/KATEGORIE]";
             } else {

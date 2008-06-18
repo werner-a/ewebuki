@@ -85,7 +85,34 @@
 #                                      ),
                                ),
                        ),
+# beispiel eintrag fuer eine FAQ
+#            "faq" => array(
+#                    "/blog" => array(
+#                            "right" => "",
+#                           "wizard" => 0,
+#                              "faq" => -1,
+#                          "include" => -1,
+#                "own_list_template" => "",
+#                            "tags"  => array("titel" => array( "tag" => "B", "content" => "Hier bitte die Frage eingeben"),
+#                                            "faq" => array( "tag" => "CITE", "content" => "Hier bitte die Antwort eingeben"),
+#                                       ),
+#                               ),
+#                       ),
            );
+
+    // blogs werden automatisch eingebunden, eintrag in der modules.cfg nicht mehr noetig 
+    foreach ( $cfg["bloged"]["blogs"] as $key => $value ) {
+        $blogs = explode("/",substr($key,1));
+        $blog_kategorie = array_pop($blogs);
+        if ( count($blogs) > 0 ) {
+            $blog_ebene = "/".implode("/",$blogs);
+        } else {
+            $blog_ebene = "";
+        }
+        if ( $environment["ebene"] == $blog_ebene && $environment["kategorie"] == $blog_kategorie ) {
+            include $pathvars["moduleroot"]."addon/bloglist.inc.php";
+        }
+    }
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>

@@ -59,23 +59,11 @@
     }
 
     // pfad des blog - inhalts
-    if ( $environment["ebene"] == "" ) {
-        $kat = "/".$environment["kategorie"];
-    } else {
-        $kat = $environment["ebene"]."/".$environment["kategorie"];
-    }
-
-    // rechte werden aus der bloged.cfg gelesen
-    include $pathvars["moduleroot"]."admin/bloged.cfg.php";
-
-    // automatisches erkennen der kategorie 
-    $show_kat = "";
-    foreach ( $cfg["bloged"]["blogs"] as $key => $value ) {
-        if ( is_array($value["kategorie"]) ) {
-            if ( in_array($kat,$value["kategorie"]) ) {
-                $show_kat = $kat;
-                $kat = $key;
-            }
+    if ( $kat == "" ) {
+        if ( $environment["ebene"] == "" ) {
+            $kat = "/".$environment["kategorie"];
+        } else {
+            $kat = $environment["ebene"]."/".$environment["kategorie"];
         }
     }
 
@@ -86,20 +74,21 @@
     include $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
     // erstellen der tags die angezeigt werden
-    foreach ( $cfg["bloged"]["blogs"][$kat]["tags"] as $key => $value) {
-        $tags[$key] = $value;
+    if ( is_array($cfg["bloged"]["blogs"][$kat]["tags"]) ) {
+            foreach ( $cfg["bloged"]["blogs"][$kat]["tags"] as $key => $value) {
+                $tags[$key] = $value;
+            }
     }
-
     if ( $cfg["bloged"]["blogs"][$kat]["rows"] != "" ) {
         $limit = $cfg["bloged"]["blogs"][$kat]["rows"];
     }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
+    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["faq"],$show_kat);
     // was anzeigen
     if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
         $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];
     } else {
-        if ( $cfg["bloged"]["blogs"][$kat]["sortable"] == -1 ) {
+        if ( $cfg["bloged"]["blogs"][$kat]["faq"] == -1 ) {
             $mapping["main"] = "-2051315182.faq";
         } else {
             $mapping["main"] = "-2051315182.list";

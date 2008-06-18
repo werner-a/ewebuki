@@ -140,10 +140,10 @@
     }
 
 #    // bloged
+    include $pathvars["moduleroot"]."admin/bloged.cfg.php";
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "bloged" )
        || ( $environment["ebene"] == "/admin/bloged" ))
     {
-        include $pathvars["moduleroot"]."admin/bloged.cfg.php";
         include $pathvars["moduleroot"]."admin/bloged-ctrl.inc.php";
     }
 

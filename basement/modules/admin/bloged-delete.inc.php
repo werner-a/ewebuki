@@ -48,7 +48,7 @@
     ) {
         $url = make_ebene($environment["parameter"][4]);
 
-        $dataloop["list"] = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"],"","","",$cfg["bloged"]["blogs"][$url]["sortable"]);
+        $dataloop["list"] = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"],"","","",$cfg["bloged"]["blogs"][$url]["faq"]);
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 

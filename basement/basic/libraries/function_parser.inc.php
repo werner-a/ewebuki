@@ -67,7 +67,7 @@
     function parser($parse_name, $parse_path) {
 
         // variableninit
-        global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben;
+        global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben,$dataloop,$hidedata;
 
         // original template find
         #$template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";
@@ -119,6 +119,61 @@
                                 #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: \$element[$name]".$debugging["char"];
                                 $parse_mod = str_replace("!#element_$name",$value,$parse_mod);
                             }
+                        }
+                    }
+
+                    if ( strpos($parse_mod,"##loop")  !== false ) {
+                        $loop   = "1";
+                        $loop_mark   = explode("-",strstr($parse_mod,"##loop"),3);
+                        $loop_label  = $loop_mark[1];
+                        $loop_buffer = "";
+                        continue; // marke ebenfalls kicken!
+                    } else {
+                        if ( strpos($parse_mod,"##cont") !== false ) {
+                            $loop  = "0";
+                            $loop_block = "";
+                            $labelloop = $dataloop[$loop_label];
+                            foreach ( (array) $labelloop as $data ) {
+                                $loop_work = $loop_buffer;
+                                foreach ( (array)$data as $name => $value ) {
+
+                                    $loop_work = str_replace("!{".$name."}",$value,$loop_work);
+                                }
+                                $loop_work = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$loop_work);
+                                $loop_block .= $loop_work;
+                            }
+                            $parse_mod = $loop_block.trim($parse_mod)."\n";
+                        } elseif ( $loop == "1" ) {
+                            $loop_buffer .= trim($parse_mod)."\n";
+                            continue;
+                        }
+                    }
+
+                    // ##hide-??? - ##show bereich bearbeiten
+                    // nur wenn $hidedata["???"] verfuegbar ist einblenden
+                    if ( strpos($parse_mod,"##hide") !== false ) {
+                        $hide   = "1";
+                        $hide_mark   = explode("-",strstr($parse_mod,"##hide"),3);
+                        $hide_label  = $hide_mark[1];
+                        $hide_buffer = "";
+                        continue; // marke ebenfalls kicken!
+                    } else {
+                        if ( strpos($parse_mod,"##show") !== false ) {
+                            $hide  = "0";
+                            $hide_block = "";
+                            if ( is_array($hidedata[$hide_label]) ) {
+                                foreach ( $hidedata[$hide_label] as $name => $value ) {
+                                    $hide_buffer = str_replace("!{".$name."}",$value,$hide_buffer);
+                                }
+                                $hide_block = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$hide_buffer);
+                            }
+                            #$line = $block.trim($line)."\n";
+                            $parse_mod = $hide_block; // marke ebenfalls kicken!
+
+                        } elseif ( $hide == "1" ) {
+                            $hide_buffer .= trim($parse_mod)."\n";
+
+                            continue;
                         }
                     }
 

@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tagreplace($replace) {
-        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars;
+        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars,$dataloop;
 
         // cariage return + linefeed fix
         if ( $specialvars["newbrmode"] != True ) {
@@ -52,7 +52,6 @@
             $repl = array("[TA",     "[RO",     "[CO",     "/H1]",     "/H2]",     "/H3]",     "/H4]",     "/H5]",     "/H6]",      "/HR]",     "AB]",     "OW]",     "OL]",     "IV]",);
             $replace = str_replace($sear,$repl,$replace);
         }
-// echo "halllo";
 
         $preg = "|\[\/[!A-Z0-9]{1,6}\]|";
         while ( preg_match($preg, $replace, $match ) ) {
@@ -1054,6 +1053,25 @@
                         break;
                     case "[/SP]":
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"&nbsp;",$replace);
+                        break;
+                    case "[/BLOG]":
+                        // pfad des blog - inhalts
+                        if ( $environment["ebene"] == "" ) {
+                            $show_kat = "/".$environment["kategorie"];
+                        } else {
+                            $show_kat = $environment["ebene"]."/".$environment["kategorie"];
+                        }
+                        $tagwerte = explode("]",$tagwert,2);
+                        $kat = $tagwerte[0];
+                        if ( $cfg["bloged"]["blogs"][$kat]["include"] == -1 ) {
+                            include $pathvars["moduleroot"]."addon/bloglist.inc.php";
+                            $temp = "list";
+                            if ( $cfg["bloged"]["blogs"][$kat]["faq"] == -1 ) $temp = "faq";
+                            if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) $temp = $cfg["bloged"]["blogs"][$kat]["own_list_template"];
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,parser("-2051315182.".$temp,""),$replace);
+                        } else {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,"not allowed",$replace);
+                        }
                         break;
                     default:
                         // unbekannte tags verstecken
