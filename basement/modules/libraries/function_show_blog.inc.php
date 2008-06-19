@@ -65,11 +65,8 @@
         // hier erfolgt der rechte-check, um den new-link einzublenden
         if ( $right == "" || ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) ) {
             $erlaubnis = -1;
-            if ( $kategorie != "" ) {
-                $kategorie = make_id($environment["ebene"]."/".$environment["kategorie"]);
-                $new_kat = ",".$kategorie["mid"];
-            }
-            $hidedata["new"]["link"] = $pathvars["virtual"]."/admin/bloged/add,".$new.$new_kat.".html";
+            $hidedata["new"]["link"] = $url;
+            $hidedata["new"]["kategorie"] = $kategorie;
         }
 
         // erster test einer suchanfrage per kalender

@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if ( $cfg["bloged"]["blogs"][$kat]["right"] == "" || 
-    ( priv_check(make_ebene($environment["parameter"][1]),$cfg["bloged"]["blogs"][$kat]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$kat]["right"]) ) )
+    ( priv_check($_POST["link"],$cfg["bloged"]["blogs"][$kat]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$kat]["right"]) ) )
     ) {
 
         function create( $id ) {
@@ -63,13 +63,13 @@
             $sqlb .= ", 'inhalt'";
     
             $sqla .= ", tname";
-            $sqlb .= ", '".eCRC(make_ebene($environment["parameter"][1])).".".$id."'";
+            $sqlb .= ", '".eCRC($_POST["link"]).".".$id."'";
     
             $sqla .= ", crc32";
             $sqlb .= ", '-1'";
     
             $sqla .= ", ebene";
-            $sqlb .= ", '".make_ebene($environment["parameter"][1])."'";
+            $sqlb .= ", '".$_POST["link"]."'";
     
             $sqla .= ", kategorie";
             $sqlb .= ", '".$id."'";
@@ -93,8 +93,7 @@
             $sqlb .= ", 0";
 
             if ( $cfg["bloged"]["blogs"][$ebene]["include"] == -1 ) {
-                if ( $environment["parameter"][2] == "") $environment["parameter"][2] = $environment["parameter"][1];
-                $kategorie = "[KATEGORIE]".make_ebene($environment["parameter"][2])."[/KATEGORIE]";
+                $kategorie = "[KATEGORIE]".$_POST["kategorie"]."[/KATEGORIE]";
             } else {
                 $kategorie = "";
             }
@@ -133,6 +132,7 @@
                 $sqla .= ", status";
                 $sqlb .= ", 1";
             }
+
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["tags"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["tags"] as $key => $value ) {
                     if (is_array($value)) {
@@ -146,6 +146,7 @@
                     (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
                     $content .= "[".$value.$para."]".$cont."[/".$endtag."]\r\n";
                 }
+
             }
 
             $sqla .= ", content";
@@ -157,18 +158,18 @@
             $result  = $db -> query($sql);
             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) {
-                if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".eCRC(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
+                if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".eCRC($_POST["link"]).".".$id.",inhalt.html";
             } else {
-                if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".eCRC(make_ebene($environment["parameter"][1])).".".$id.",inhalt.html";
+                if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".eCRC($_POST["link"]).".".$id.",inhalt.html";
             }
         }
 
-        $ebene = make_ebene($environment["parameter"][1]);
+        $ebene = $_POST["link"];
 
-        $laenge = strlen(eCRC(make_ebene($environment["parameter"][1])))+2;
+        $laenge = strlen(eCRC($ebene))+2;
         $sql = "SELECT Cast(SUBSTR(tname,".$laenge.") as unsigned) AS id 
                   FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
-                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".eCRC(make_ebene($environment["parameter"][1])).".%' AND tname REGEXP '[0-9]$'
+                 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".eCRC($ebene).".%' AND tname REGEXP '[0-9]$'
                  ORDER BY id DESC";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);

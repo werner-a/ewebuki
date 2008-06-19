@@ -72,7 +72,6 @@
                        ),
             "blogs" => array(
                     "/blog" => array(
-                            "right" => "",
                            "wizard" => 0,
                              "rows" => 10,
                 "own_list_template" => "",
@@ -85,20 +84,18 @@
 #                                  "entry2" => "tag2",
 #                                      ),
                                ),
-                       ),
 # beispiel eintrag fuer eine FAQ
-#            "faq" => array(
-#                    "/blog" => array(
-#                            "right" => "",
+#                    "/faq" => array(
 #                           "wizard" => 0,
 #                              "faq" => -1,
+#                             "rows" => 10,
 #                          "include" => -1,
 #                "own_list_template" => "",
 #                            "tags"  => array("titel" => array( "tag" => "B", "content" => "Hier bitte die Frage eingeben"),
 #                                            "faq" => array( "tag" => "CITE", "content" => "Hier bitte die Antwort eingeben"),
 #                                       ),
 #                               ),
-#                       ),
+                       ),
            );
 
     // blogs werden automatisch eingebunden, eintrag in der modules.cfg nicht mehr noetig 

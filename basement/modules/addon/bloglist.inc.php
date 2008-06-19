@@ -83,7 +83,17 @@
         $limit = $cfg["bloged"]["blogs"][$kat]["rows"];
     }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["bloged"]["blogs"][$kat]["right"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["faq"],$show_kat);
+    if ( $cfg["bloged"]["blogs"][$kat]["include"] == -1 ) {
+        if ( $environment["ebene"] == "" ) {
+            $show_kat = "/".$environment["kategorie"];
+        } else {
+            $show_kat = $environment["ebene"]."/".$environment["kategorie"];
+        }
+    } else {
+        $show_kat = "";
+    }
+
+    $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["faq"],$show_kat);
     // was anzeigen
     if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
         $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];

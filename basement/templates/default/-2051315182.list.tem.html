@@ -9,11 +9,12 @@
 <body>
 <!--##begin-->
 <!--$Id$-->
-<h1>#(ueberschrift)</h1>
-<p>#(inhalt)</p>
-<p>!#ausgaben_form_error</p>
 <!--##hide-new-->
-<p><a href="!{link}">g(new)</a></p>
+<form action="/auth/admin/bloged/add.html" method="post">
+<input type="submit" value="g(new)" name="blog"/>
+<input type="hidden" name="link" value="!{link}"/>
+<input type="hidden" name="kategorie" value="!{kategorie}"/>
+</form>
 <!--##show-->
 <!--##loop-list-->
 <h3>!{datum} - !{titel_org}</h3>

@@ -89,12 +89,7 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                if ( preg_match("/^".str_replace("/","\/",$pathvars["webroot"].$pathvars["subdir"]."/auth/")."/",$_SESSION["admin_back_link"]) ) {
-                    $jump = $_SESSION["admin_back_link"];
-                } else {
-                    $jump = str_replace($pathvars["webroot"].$pathvars["subdir"],$pathvars["webroot"].$pathvars["subdir"]."/auth",$_SESSION["admin_back_link"]);
-                }
-                header("Location: ".$jump);
+                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][4]).".html");
             }
         }
         // +++
