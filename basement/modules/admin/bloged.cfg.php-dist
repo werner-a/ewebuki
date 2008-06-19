@@ -74,6 +74,7 @@
                     "/blog" => array(
                             "right" => "",
                            "wizard" => 0,
+                             "rows" => 10,
                 "own_list_template" => "",
                             "tags"  => array(
 			            "titel" => "H1",
