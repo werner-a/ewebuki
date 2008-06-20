@@ -128,8 +128,12 @@
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
             foreach ( $tags as $key => $value ) {
+                // finden der parameter sowie begin und endtag
+                $invisible = "";
                 if (is_array($value)) {
                     $tag_parameter= $value["parameter"];
+                    $invisible = $value["invisible"];
+                    $show = $value["show"];
                     $value = $value["tag"];
                 }
                 if (strpos($value,"=")) {
@@ -142,7 +146,7 @@
                 } else {
                     $endtag=$value;
                 }
-
+                // preg nach den tags in der config
                 $preg = "(\[".addcslashes($value,"/")."\])(.*)\[\/".$endtag."\]";
                 if ( preg_match("/$preg/U",$test,$regs) ) {
                     $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
@@ -151,15 +155,34 @@
                     $rep_tag = "";
                     $org_tag = "";
                 }
-                $array[$counter][$key."_org"] = $org_tag;
-                $array[$counter][$key] = tagreplace($rep_tag);
-                if ( $org_tag == "" ) $array[$counter][$key] = "";
-                if ( preg_match("/^\[IMG/",$rep_tag,$regs) ) {
-                    $image_para = explode("/",$rep_tag);
-                    $array[$counter][$key."_img_art"] = $image_para[2];
-                    $array[$counter][$key."_img_id"] = $image_para[3];
+
+                // gefundene werte in array schreiben
+                if ( $invisible != -1 ) {
+                    if ( preg_match("/^\[IMG/",$rep_tag,$regs_img) ) {
+                        $image_para = explode("/",$rep_tag);
+                        $array[$counter][$key."_img_art"] = $image_para[2];
+                        $array[$counter][$key."_img_id"] = $image_para[3];
+                        $array[$counter][$key."_img_size"] = $image_para[4];
+                        if ( $show != "" ) {
+                            $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
+                        }
+                    }
+                    $array[$counter][$key."_org"] = $org_tag;
+                    $array[$counter][$key] = tagreplace($rep_tag);
+                    if ( $org_tag == "" ) $array[$counter][$key] = "";
+                } else {
+                    if ( preg_match("/^\[IMG/",$rep_tag,$reg_img) ) {
+                        $image_para = explode("/",$rep_tag);
+                        $invisible_array[$counter][$key."_img_art"] = $image_para[2];
+                        $invisible_array[$counter][$key."_img_id"] = $image_para[3];
+                        $invisible_array[$counter][$key."_img_size"] = $image_para[4];
+                        if ( $show != "" ) {
+                            $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
+                        }
+                    }
+                    $invisible_array[$counter][$key."_org"] = $org_tag;
+                    $invisible_array[$counter][$key] = tagreplace($rep_tag);;
                 }
-                $array[$counter][$key."_org"] = $org_tag;
             }
 
             preg_match("/$preg1/",$data["tname"],$regs);
@@ -175,6 +198,7 @@
             }
             $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
             $array[$counter]["id"] = $regs[1];
+            // Sortierung ausgeben
             if ( $sort == "-1" && $erlaubnis == -1) {
                 $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",,".$new.".html\">nach oben</a>";
                 $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
@@ -182,10 +206,12 @@
                 $array[$counter]["sort"] = "";
             }
             if ( $environment["parameter"][3] == $regs[1] ) {
-                $array[$counter]["faqcontent"] = $array[$counter]["faq"];
-            } else {
-                $array[$counter]["faqcontent"] = "";
-            }
+                if ( is_array($invisible_array) ){
+                    foreach ( $invisible_array[$counter] as $key => $value ) {
+                        $array[$counter][$key] = $value;
+                    }
+                }
+            } 
 
             if ( $right == "" || 
             ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )

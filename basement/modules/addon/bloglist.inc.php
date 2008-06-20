@@ -93,16 +93,12 @@
         $show_kat = "";
     }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["faq"],$show_kat);
+    $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
     // was anzeigen
+    $mapping["main"] = "-2051315182.list";
+
     if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
         $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];
-    } else {
-        if ( $cfg["bloged"]["blogs"][$kat]["faq"] == -1 ) {
-            $mapping["main"] = "-2051315182.faq";
-        } else {
-            $mapping["main"] = "-2051315182.list";
-        }
     }
 
     // fehlermeldungen

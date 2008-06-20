@@ -78,23 +78,13 @@
                             "tags"  => array(
 			            "titel" => "H1",
                                    "teaser" => "P=teaser",
+                                    "image" =>  array( "invisible" => -1,"tag" => "IMG=", "content" => "Default-Bild", "parameter" => "/file/png/1/m/ewebuki_160x67.png;r;0;b"),
                                        ),
 #                          "addons" => array(
 #                                  "entry1" => "tag1",
 #                                  "entry2" => "tag2",
 #                                      ),
                                ),
-# beispiel eintrag fuer eine FAQ
-#                    "/faq" => array(
-#                           "wizard" => 0,
-#                              "faq" => -1,
-#                             "rows" => 10,
-#                          "include" => -1,
-#                "own_list_template" => "",
-#                            "tags"  => array("titel" => array( "tag" => "B", "content" => "Hier bitte die Frage eingeben"),
-#                                            "faq" => array( "tag" => "CITE", "content" => "Hier bitte die Antwort eingeben"),
-#                                       ),
-#                               ),
                        ),
            );
 

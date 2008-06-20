@@ -50,7 +50,7 @@
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
 
-            if ( $cfg["bloged"]["blogs"][$ebene]["faq"] == -1 ) {
+            if ( $cfg["bloged"]["blogs"][$ebene]["sortable"] == -1 ) {
                 $sort = "0";
             } else {
                 $sort = date("Y-m-d H:i:s");
