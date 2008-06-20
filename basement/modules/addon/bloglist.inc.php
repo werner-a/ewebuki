@@ -92,8 +92,14 @@
     } else {
         $show_kat = "";
     }
+    if ( $environment["parameter"][2] == "" ) {
+        $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
+    } else {
+        $all = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
+        unset($hidedata["new"]);
+        $hidedata["all"]["inhalt"] = $all[1]["all"];
+    }
 
-    $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
     // was anzeigen
     $mapping["main"] = "-2051315182.list";
 

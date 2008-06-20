@@ -56,17 +56,16 @@
         $new = $id["mid"];
         $where = "";
 
+        if ( $right == "" || 
+        ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
+        ) {
+            $hidedata["new"]["link"] = $url;
+            $hidedata["new"]["kategorie"] = $kategorie;
+        }
+
         // falls kategorie , werden nur diese angezeigt
         if ( $kategorie != "" ) {
             $where = "  AND SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) ='[KATEGORIE]".$kategorie."'";
-        }
-
-        $erlaubnis = "";
-        // hier erfolgt der rechte-check, um den new-link einzublenden
-        if ( $right == "" || ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) ) {
-            $erlaubnis = -1;
-            $hidedata["new"]["link"] = $url;
-            $hidedata["new"]["kategorie"] = $kategorie;
         }
 
         // erster test einer suchanfrage per kalender
@@ -128,6 +127,11 @@
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
             foreach ( $tags as $key => $value ) {
+                if ( $environment["parameter"][2] != "" ) {
+                    $array[$counter][$key] = "";
+                    $array[$counter][$key."_org"] = "";
+                    continue;
+                }
                 // finden der parameter sowie begin und endtag
                 $invisible = "";
                 if (is_array($value)) {
@@ -186,25 +190,42 @@
             }
 
             preg_match("/$preg1/",$data["tname"],$regs);
+            if ( $environment["parameter"][2] != "" ) {
+                $array[$counter]["all"] = tagreplace($data["content"]); 
+            } else {
+                $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
+                $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
+                if ( $kategorie != "" ) {
+                    if ( $environment["ebene"] == "" ) {
+                        $url = "/".$environment["kategorie"];
+                    } else {
+                        $url = $environment["ebene"]."/".$environment["kategorie"];
+                    }
+                }
+                $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
+                $array[$counter]["allink"] = $pathvars["virtual"].$url.",,".$regs[1].".html";
+                $array[$counter]["id"] = $regs[1];
+                // Sortierung ausgeben
 
-            $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
-            $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
-            if ( $kategorie != "" ) {
-                if ( $environment["ebene"] == "" ) {
-                    $url = "/".$environment["kategorie"];
+                if ( $right == "" || 
+                ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
+                ) {
+
+                    if ( $sort == "-1") {
+                        $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",,".$new.".html\">nach oben</a>";
+                        $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
+                    } else {
+                        $array[$counter]["sort"] = "";
+                    }
+
+                    $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",,".$new.".html\">delete</a>";
+                    $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
                 } else {
-                    $url = $environment["ebene"]."/".$environment["kategorie"];
+                    $array[$counter]["editlink"] = "";
+                    $array[$counter]["deletelink"] = "";
                 }
             }
-            $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
-            $array[$counter]["id"] = $regs[1];
-            // Sortierung ausgeben
-            if ( $sort == "-1" && $erlaubnis == -1) {
-                $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",,".$new.".html\">nach oben</a>";
-                $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
-            } else {
-                $array[$counter]["sort"] = "";
-            }
+
             if ( $environment["parameter"][3] == $regs[1] ) {
                 if ( is_array($invisible_array) ){
                     foreach ( $invisible_array[$counter] as $key => $value ) {
@@ -213,15 +234,7 @@
                 }
             } 
 
-            if ( $right == "" || 
-            ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
-            ) {
-                $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",,".$new.".html\">delete</a>";
-                $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
-            } else {
-                $array[$counter]["editlink"] = "";
-                $array[$counter]["deletelink"] = "";
-            }
+
         }
         return $array;
     }

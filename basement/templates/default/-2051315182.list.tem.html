@@ -9,6 +9,9 @@
 <body>
 <!--##begin-->
 <!--$Id$-->
+<!--##hide-all-->
+!{inhalt}
+<!--##show-->
 <!--##hide-new-->
 <form action="/auth/admin/bloged/add.html" method="post">
 <input type="submit" value="g(new)" name="blog"/>
@@ -21,7 +24,7 @@
     !{image}
     !{teaser}
     <p>
-    <a href="!{detaillink}">mehr</a> !{editlink} !{deletelink}
+    <a href="!{allink}">mehr</a> !{editlink} !{deletelink}
     </p>
 <div class="clearer"></div><hr />
 <!--##cont-->
@@ -38,8 +41,10 @@
 <!--##hide-admin-->
 </table>
 <!--##show-->
+<!--##hide-inhalt_selector-->
 <p style="float:left">g(anzahl) !#ausgaben_anzahl</p>
 <p style="float:right">!#ausgaben_inhalt_selector</p>
+<!--##show-->
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
 <!--##end-->
