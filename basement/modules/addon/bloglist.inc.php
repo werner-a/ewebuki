@@ -52,7 +52,7 @@
     if ( $cfg["bloglist"]["iconpath"] == "" ) $cfg["bloglist"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
-    if ( isset($HTTP_GET_VARS["edit"]) ) {
+    if ( isset($_GET["edit"]) ) {
         $specialvars["editlock"] = 0;
     } else {
         $specialvars["editlock"] = -1;
