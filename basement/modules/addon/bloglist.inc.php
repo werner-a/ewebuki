@@ -101,10 +101,17 @@
     }
 
     // was anzeigen
-    $mapping["main"] = "-2051315182.list";
+    if ( $environment["ebene"] == "" ) {
+        $templ = $environment["kategorie"].".tem.html";
+    } else {
+        $templ = eCRC($environment["ebene"]).".".$environment["kategorie"].".tem.html";
+    }
 
-    if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
+    if ( file_exists($pathvars["templates"].$templ) ) {
+    } elseif ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
         $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];
+    } else {
+        $mapping["main"] = "-2051315182.list";
     }
 
     // fehlermeldungen
