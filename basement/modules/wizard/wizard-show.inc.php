@@ -65,8 +65,15 @@
     }
     $ausgaben["form_referer"] = $_SESSION["form_referer"];
 
+    // tname in pfad umwandeln
+    $tname2path = tname2path($environment["parameter"][2]);
+    if ( $tname2path == "" ) {
+        $tname2path = str_replace($pathvars["menuroot"],"",$_SESSION["form_referer"]);
+        $tname2path = substr($tname2path, 0, strpos($tname2path,".") );
+    }
+
     // welche seite wird bearbeitet
-    $ausgaben["url"] = $pathvars["webroot"].tname2path($environment["parameter"][2]).".html";
+    $ausgaben["url"] = $pathvars["webroot"].$tname2path.".html";
 
     // leere parameter abfangen
     // * * *
@@ -150,7 +157,7 @@
 
         if ( isset($_GET["preview"]) ) {
 
-            $ausgaben["output"] = tagreplace($form_values["content"]);
+//             $ausgaben["output"] = tagreplace($form_values["content"]);
 
         } else {
 
@@ -209,7 +216,7 @@
             // * * *
             $blocked = 0;
             if ( $specialvars["content_release"] == -1 ) {
-                if ( priv_check(tname2path($environment["parameter"][2]),"publish") ) {
+                if ( priv_check($tname2path,"publish") ) {
                     $hidedata["publish"] = array();
                 } else {
                     // ist bereits eine freigabe angefordert, dann blocken
@@ -317,7 +324,6 @@
             // bauen der "uebergeordneten" bereiche (keine verschachtelung)
             // * * *
             $allcontent = content_level1($content);
-// echo "\$content: $content";
             if ( count($allcontent) > 0 ) {
                 // vorbereitung fuer die array-sortierung fuer das verschieben
                 // * * *
@@ -457,7 +463,7 @@
                     } elseif ( file_exists($pathvars["fileroot"]."images/default/img_map_part_".$src_tag_tmp.".png") ) {
                         $src = "/images/default/img_map_part_".$src_tag_tmp.".png";
                     } elseif ( file_exists($pathvars["fileroot"]."images/".$environment["design"]."/img_map_part_".$src_tag.".png") ) {
-                        $src = "/images/default/".$environment["design"]."/img_map_part_".$src_tag.".png";
+                        $src = "/images/".$environment["design"]."/img_map_part_".$src_tag.".png";
                     } elseif ( file_exists($pathvars["fileroot"]."images/default/img_map_part_".$src_tag.".png") ) {
                         $src = "/images/default/img_map_part_".$src_tag.".png";
                     }
@@ -475,7 +481,7 @@
                       && $i < $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
                         $dataloop["img_map"][] = array(
                             "key"  => $dataloop["sort_content"][$i]["key"],
-                            "src"  => "/images/".$environment["design"]."/img_map_part_".strtolower($src_tag).".png",
+                            "src"  => $src,
                             "link" => $link,
                         );
                     }
@@ -556,13 +562,13 @@
             }
 
             $publisher = 0;
-            if ( priv_check(tname2path($environment["parameter"][2]),"publish") ) $publisher = -1;
+            if ( priv_check($tname2path,"publish") ) $publisher = -1;
 
             if ( ($environment["parameter"][6] == "verify"
                 && $_POST["send"] != "") || $_SESSION["form_send"] != "" ) {
 
                 // ebene und kategorie aus tname ableiten
-                $tname2path = tname2path($environment["parameter"][2]);
+//                 $tname2path = tname2path($environment["parameter"][2]);
                 if ( $ausgaben["url"] != "" ) {
                     $url = explode("/",$tname2path);
                     $kategorie = array_pop($url);
