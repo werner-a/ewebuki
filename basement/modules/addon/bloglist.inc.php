@@ -74,6 +74,13 @@
     include $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
     // erstellen der tags die angezeigt werden
+    if ( is_array($cfg["bloged"]["blogs"][$kat]["addons"]) ) {
+            foreach ( $cfg["bloged"]["blogs"][$kat]["addons"] as $key => $value) {
+                $tags[$key] = $value;
+            }
+    }
+
+    // erstellen der tags die angezeigt werden
     if ( is_array($cfg["bloged"]["blogs"][$kat]["tags"]) ) {
             foreach ( $cfg["bloged"]["blogs"][$kat]["tags"] as $key => $value) {
                 $tags[$key] = $value;
@@ -95,9 +102,9 @@
     if ( $environment["parameter"][2] == "" ) {
         $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
     } else {
-        $all = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
+        $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
         unset($hidedata["new"]);
-        $hidedata["all"]["inhalt"] = $all[1]["all"];
+        $hidedata["all"]["inhalt"] = $dataloop["list"][1]["all"];
     }
 
     // was anzeigen

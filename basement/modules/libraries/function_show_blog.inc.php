@@ -127,11 +127,6 @@
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
             foreach ( $tags as $key => $value ) {
-                if ( $environment["parameter"][2] != "" ) {
-                    $array[$counter][$key] = "";
-                    $array[$counter][$key."_org"] = "";
-                    continue;
-                }
                 // finden der parameter sowie begin und endtag
                 $invisible = "";
                 if (is_array($value)) {
@@ -185,13 +180,14 @@
                         }
                     }
                     $invisible_array[$counter][$key."_org"] = $org_tag;
-                    $invisible_array[$counter][$key] = tagreplace($rep_tag);;
+                    $invisible_array[$counter][$key] = tagreplace($rep_tag);
                 }
             }
 
             preg_match("/$preg1/",$data["tname"],$regs);
             if ( $environment["parameter"][2] != "" ) {
                 $array[$counter]["all"] = tagreplace($data["content"]); 
+                $array[$counter]["id"] = $regs[1];
             } else {
                 $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
                 $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
