@@ -1065,9 +1065,7 @@
                         $kat = $tagwerte[0];
                         if ( $cfg["bloged"]["blogs"][$kat]["include"] == -1 ) {
                             include $pathvars["moduleroot"]."addon/bloglist.inc.php";
-                            $temp = "list";
-                            if ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) $temp = $cfg["bloged"]["blogs"][$kat]["own_list_template"];
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,parser("-2051315182.".$temp,""),$replace);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,parser($mapping["main"],""),$replace);
                         } else {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"not allowed",$replace);
                         }
