@@ -117,6 +117,8 @@
     if ( file_exists($pathvars["templates"].$templ) ) {
     } elseif ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
         $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];
+    } elseif ( $cfg["bloged"]["blogs"][$kat]["sortable"] == -1 ) {
+        $mapping["main"] = "-2051315182.faq";
     } else {
         $mapping["main"] = "-2051315182.list";
     }
