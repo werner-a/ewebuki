@@ -85,6 +85,16 @@
 #                                  "entry2" => "tag2",
 #                                      ),
                                ),
+#                    "/faq" => array(
+#                           "wizard" => 0,
+#                             "rows" => 10,
+#                         "sortable" => -1,
+#                "own_list_template" => "",
+#                            "tags"  => array(
+#                                 "question" => array( "tag" => "H2", "content" => "Frage"),
+#                                   "answer" => array( "invisible" => -1,"tag" => "P", "content" => "Antwort"),
+#                                       ),
+#                               ),
                        ),
            );
 
