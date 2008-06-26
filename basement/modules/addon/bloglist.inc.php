@@ -102,9 +102,9 @@
     if ( $environment["parameter"][2] == "" ) {
         $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
     } else {
-        $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
+        $all = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
         unset($hidedata["new"]);
-        $hidedata["all"]["inhalt"] = $dataloop["list"][1]["all"];
+        $hidedata["all"]["inhalt"] = $all[1]["all"];
     }
 
     // was anzeigen
