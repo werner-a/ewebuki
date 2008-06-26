@@ -48,13 +48,23 @@
     ) {
         $url = make_ebene($environment["parameter"][4]);
 
-        $dataloop["list"] = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"],"","","",$cfg["bloged"]["blogs"][$url]["faq"]);
+        $delete = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"]);
+
+        // ruecksprung finden
+        $header = $url;
+        if ( $cfg["bloged"]["blogs"][$url]["include"] == -1 ) {
+            $preg = "(\[KATEGORIE\])(.*)\[\/KATEGORIE\]";
+            preg_match("/$preg/U",$delete[1]["all"],$regs);
+            $header = $regs[2];
+        }
+
         // fehlermeldungen
         $ausgaben["form_error"] = "";
+        $hidedata["delete"]["inhalt"] = $delete[1]["all"];
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $pathvars["virtual"].$environment["ebene"]."/delete,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].".html";
-        $ausgaben["form_break"] = $cfg["bloged"]["basis"]."/list.html";
+        $ausgaben["form_break"] = $pathvars["virtual"].$header.".html";
 
         // hidden values
         $ausgaben["form_hidden"] = "";
@@ -89,7 +99,7 @@
 
             // wohin schicken
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$pathvars["virtual"].make_ebene($environment["parameter"][4]).".html");
+                header("Location: ".$pathvars["virtual"].$header.".html");
             }
         }
         // +++

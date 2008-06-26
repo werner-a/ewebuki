@@ -11,12 +11,9 @@
 <!--$Id$-->
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <fieldset>
-        <!--##loop-list-->
-        <h2>!{datum} - <a href="!{detaillink}">!{titel_org}</a></h2>
-        !{image}
-        !{teaser}
-
-        <!--##cont-->
+        <!--##hide-delete-->
+        !{inhalt}
+        <!--##show-->
         <div class="clearer">&nbsp;</div>
         <input type="submit" name="send[]" value="g(send)" class="first" />
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
