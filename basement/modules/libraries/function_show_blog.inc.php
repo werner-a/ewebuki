@@ -195,13 +195,13 @@
                 $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
                 if ( $kategorie != "" ) {
                     if ( $environment["ebene"] == "" ) {
-                        $url = "/".$environment["kategorie"];
+                        $faq_url = "/".$environment["kategorie"];
                     } else {
-                        $url = $environment["ebene"]."/".$environment["kategorie"];
+                        $faq_url = $environment["ebene"]."/".$environment["kategorie"];
                     }
                 }
-                $array[$counter]["faqlink"] = $pathvars["virtual"].$url.",,,".$regs[1].".html";
-                $array[$counter]["allink"] = $pathvars["virtual"].$url.",,".$regs[1].".html";
+                $array[$counter]["faqlink"] = $pathvars["virtual"].$faq_url.",,,".$regs[1].".html";
+                $array[$counter]["allink"] = $pathvars["virtual"].$faq_url.",,".$regs[1].".html";
                 $array[$counter]["id"] = $regs[1];
                 // Sortierung ausgeben
 
