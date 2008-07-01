@@ -121,11 +121,8 @@
     // leere parameter abfangen
 
     $ausgaben["empty_show_url"] = $cfg["wizard"]["basis"]."/".implode( ",", array_slice($environment["parameter"],0,6) ).",none.html";
-//     for ( $i=0;$i<5;$i++ ) {
-//         $ausgaben["empty_show_url"] .= $environment["parameter"][$i].",";
-//     }
 
-    if ( priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
+    if ( priv_check($tname2path,$cfg["wizard"]["right"]) ||
          priv_check_old("",$cfg["wizard"]["right"]) ) {
 
         // page basics
