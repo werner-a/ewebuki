@@ -48,7 +48,7 @@
     ) {
         $url = make_ebene($environment["parameter"][4]);
 
-        $delete = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"]);
+        $delete = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"],"","","",$cfg["bloged"]["blogs"][$url]["sortable"]);
 
         // ruecksprung finden
         $header = $url;
