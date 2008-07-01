@@ -49,11 +49,15 @@
     ( priv_check(make_ebene($environment["parameter"][1]),$cfg["bloged"]["blogs"][$kat]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$kat]["right"]) ) )
     ) {
 
-        function renumber_blog () {
+        function renumber_blog ($kategorie="") {
             global $db,$environment;
+            $where = "";
+            if ( $kategorie != "" ) {
+                $where = " AND SUBSTR(content,POSITION('[KATEGORIE]' IN content)+11,POSITION('[/KATEGORIE]' IN content)-11-POSITION('[KATEGORIE]' IN content)) ='".$kategorie."'"; 
+            }
             $sql = "SELECT Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
                     FROM site_text 
-                    WHERE status = 1 AND tname like '".eCRC(make_ebene($environment["parameter"][4])).".%' order by date ASC";
+                    WHERE status = 1 AND tname like '".eCRC(make_ebene($environment["parameter"][4])).".%'".$where." order by date ASC";
             $result = $db -> query($sql);
             $count = 0;
             $preg = "^\[!\][0-9]*";
@@ -64,8 +68,13 @@
                 $result_update = $db -> query($sql_update);
             }
         }
+            if ($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["include"] == -1 ) {
+                $kati = make_ebene($environment["parameter"][3]); 
+            } else { 
+                $kati = "";
+            }
+        renumber_blog($kati);
 
-        renumber_blog();
 
         // dann punkt hoch oder runter
         $sql = "SELECT SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) AS kategorie,Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
@@ -88,7 +97,7 @@
         $sql = "UPDATE site_text SET content='".$content."' WHERE status = 1 and tname ='".$data["tname"]."'";
         $result = $db -> query($sql);
 
-        renumber_blog();
+         renumber_blog($kati);
 
          header("Location: ".$pathvars["virtual"].$jump.".html");
 

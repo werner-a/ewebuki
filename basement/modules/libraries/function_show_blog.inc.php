@@ -210,8 +210,13 @@
                 ) {
 
                     if ( $sort == "-1") {
-                        $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",,".$new.".html\">nach oben</a>";
-                        $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",,".$new.".html\">nach unten</a>";
+                        $sort_kat = "";
+                        if ( $kategorie != "" ) {
+                            $id = make_id($kategorie);
+                            $sort_kat = $id["mid"];
+                        }
+                        $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",".$sort_kat.",".$new.".html\">nach oben</a>";
+                        $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",".$sort_kat.",".$new.".html\">nach unten</a>";
                     } else {
                         $array[$counter]["sort"] = "";
                     }
