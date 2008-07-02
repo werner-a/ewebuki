@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
      function show_blog($url,$tags,$right="",$wizard="",$limit="",$sort="",$kategorie="") {
-        global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment;
+        global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment,$cfg;
 
         // parameter-erklaerung
         // 1: vorgesehen fuer inhalt_selector
@@ -63,9 +63,12 @@
             $hidedata["new"]["kategorie"] = $kategorie;
         }
 
+        $sort_len = strlen($cfg["bloged"]["blogs"][$url]["sort"][0])+2;
+
         // falls kategorie , werden nur diese angezeigt
         if ( $kategorie != "" ) {
-            $where = "  AND SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) ='[KATEGORIE]".$kategorie."'";
+            $cat_len = strlen($cfg["bloged"]["blogs"][$url]["category"])+2;
+            $where = "  AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
         }
 
         // erster test einer suchanfrage per kalender
@@ -91,13 +94,13 @@
             $tname = eCRC($url).".".$environment["parameter"][2];
         }
 
-        if ( $sort == "-1" ) {
+        if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1" ) {
             $art = "SIGNED";
         } else {
             $art = "DATETIME";
         }
 
-        $sql = "SELECT Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
+        $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
 
         if ( strpos($limit,"," ) ){
             $sql = $sql." LIMIT ".$limit;
@@ -193,13 +196,13 @@
             } else {
                 $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
                 $array[$counter]["detaillink"] = $pathvars["virtual"].$url."/".$regs[1].".html";
-                if ( $kategorie != "" ) {
-                    if ( $environment["ebene"] == "" ) {
-                        $faq_url = "/".$environment["kategorie"];
-                    } else {
-                        $faq_url = $environment["ebene"]."/".$environment["kategorie"];
-                    }
+
+                if ( $environment["ebene"] == "" ) {
+                    $faq_url = "/".$environment["kategorie"];
+                } else {
+                    $faq_url = $environment["ebene"]."/".$environment["kategorie"];
                 }
+
                 $array[$counter]["faqlink"] = $pathvars["virtual"].$faq_url.",,,".$regs[1].".html";
                 $array[$counter]["allink"] = $pathvars["virtual"].$faq_url.",,".$regs[1].".html";
                 $array[$counter]["id"] = $regs[1];
@@ -209,7 +212,7 @@
                 ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
                 ) {
 
-                    if ( $sort == "-1") {
+                    if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {
                         $sort_kat = "";
                         if ( $kategorie != "" ) {
                             $id = make_id($kategorie);

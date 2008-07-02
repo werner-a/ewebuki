@@ -90,7 +90,7 @@
         $limit = $cfg["bloged"]["blogs"][$kat]["rows"];
     }
 
-    if ( $cfg["bloged"]["blogs"][$kat]["include"] == -1 ) {
+    if ( $cfg["bloged"]["blogs"][$kat]["category"] != "" ) {
         if ( $environment["ebene"] == "" ) {
             $show_kat = "/".$environment["kategorie"];
         } else {
@@ -100,9 +100,9 @@
         $show_kat = "";
     }
     if ( $environment["parameter"][2] == "" ) {
-        $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
+        $dataloop["list"] = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sort"][0],$show_kat);
     } else {
-        $all = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sortable"],$show_kat);
+        $all = show_blog($kat,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sort"][0],$show_kat);
         unset($hidedata["new"]);
         $hidedata["all"]["inhalt"] = $all[1]["all"];
     }
@@ -117,7 +117,7 @@
     if ( file_exists($pathvars["templates"].$templ) ) {
     } elseif ( $cfg["bloged"]["blogs"][$kat]["own_list_template"] != "" ) {
         $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$kat]["own_list_template"];
-    } elseif ( $cfg["bloged"]["blogs"][$kat]["sortable"] == -1 ) {
+    } elseif ( $cfg["bloged"]["blogs"][$kat]["sort"][1] == -1 ) {
         $mapping["main"] = "-2051315182.faq";
     } else {
         $mapping["main"] = "-2051315182.list";

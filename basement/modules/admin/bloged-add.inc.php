@@ -50,7 +50,7 @@
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
 
-            if ( $cfg["bloged"]["blogs"][$ebene]["sortable"] == -1 ) {
+            if ( $cfg["bloged"]["blogs"][$ebene]["sort"][1] == -1 ) {
                 $sort = "0";
             } else {
                 $sort = date("Y-m-d H:i:s");
@@ -92,13 +92,13 @@
             $sqla .= ", html";
             $sqlb .= ", 0";
 
-            if ( $cfg["bloged"]["blogs"][$ebene]["include"] == -1 ) {
-                $kategorie = "[KATEGORIE]".$_POST["kategorie"]."[/KATEGORIE]";
+            if ( $cfg["bloged"]["blogs"][$ebene]["category"] != "" ) {
+                $kategorie = "[".$cfg["bloged"]["blogs"][$ebene]["category"]."]".$_POST["kategorie"]."[/".$cfg["bloged"]["blogs"][$ebene]["category"]."]";
             } else {
                 $kategorie = "";
             }
 
-            $content  = "[!][SORT]".$sort."[/SORT]".$kategorie;
+            $content  = "[!][".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$sort."[/".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$kategorie;
 
             // fuellen per posts
             if ( $_POST["send"] != "" ) {

@@ -52,8 +52,8 @@
 
         // ruecksprung finden
         $header = $url;
-        if ( $cfg["bloged"]["blogs"][$url]["include"] == -1 ) {
-            $preg = "(\[KATEGORIE\])(.*)\[\/KATEGORIE\]";
+        if ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
+            $preg = "(\[".$cfg["bloged"]["blogs"][$url]["category"]."\])(.*)\[\/".$cfg["bloged"]["blogs"][$url]["category"]."\]";
             preg_match("/$preg/U",$delete[1]["all"],$regs);
             $header = $regs[2];
         }

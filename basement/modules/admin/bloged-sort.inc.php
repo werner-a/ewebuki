@@ -50,12 +50,12 @@
     ) {
 
         function renumber_blog ($kategorie="") {
-            global $db,$environment;
+            global $db,$environment,$blog,$cfg;
             $where = "";
             if ( $kategorie != "" ) {
-                $where = " AND SUBSTR(content,POSITION('[KATEGORIE]' IN content)+11,POSITION('[/KATEGORIE]' IN content)-11-POSITION('[KATEGORIE]' IN content)) ='".$kategorie."'"; 
+                $where = " AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)+11,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)-11-POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)) ='".$kategorie."'";
             }
-            $sql = "SELECT Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
+            $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)+6,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-6) AS SIGNED) AS date,content,tname 
                     FROM site_text 
                     WHERE status = 1 AND tname like '".eCRC(make_ebene($environment["parameter"][4])).".%'".$where." order by date ASC";
             $result = $db -> query($sql);
@@ -63,21 +63,24 @@
             $preg = "^\[!\][0-9]*";
             while ( $data = $db -> fetch_array($result,1) ) {
                 $count = $count+10;
-                $content = preg_replace("|\[SORT\][0-9]*\[\/SORT\]|","\[SORT\]".$count."[\/SORT\]",$data["content"]);
+                $content = preg_replace("|\[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\][-0-9]*\[\/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\]|","\[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\]".$count."[\/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\]",$data["content"]);
                 $sql_update = "UPDATE site_text SET content='".$content."' WHERE status = 1 and tname ='".$data["tname"]."'";
                 $result_update = $db -> query($sql_update);
             }
         }
-            if ($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["include"] == -1 ) {
+            if ($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["category"] != "" ) {
                 $kati = make_ebene($environment["parameter"][3]); 
             } else { 
                 $kati = "";
             }
+
+        $blog = make_ebene($environment["parameter"][4]);
+
         renumber_blog($kati);
 
 
         // dann punkt hoch oder runter
-        $sql = "SELECT SUBSTR(content,POSITION('[KATEGORIE]' IN content),POSITION('[/KATEGORIE]' IN content)-POSITION('[KATEGORIE]' IN content)) AS kategorie,Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS SIGNED) AS date,content,tname 
+        $sql = "SELECT SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)) AS kategorie,Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)+6,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-6) AS SIGNED) AS date,content,tname 
                 FROM site_text 
                 WHERE status = 1 AND tname ='".eCRC(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
@@ -93,13 +96,13 @@
             $sort = $data["date"]+11;
         }
 
-        $content = preg_replace("|\[SORT\][0-9]*\[\/SORT\]|","\[SORT\]".$sort."[\/SORT\]",$data["content"]);
+        $content = preg_replace("|\[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\][0-9]*\[\/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\]|","\[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\]".$sort."[\/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."\]",$data["content"]);
         $sql = "UPDATE site_text SET content='".$content."' WHERE status = 1 and tname ='".$data["tname"]."'";
         $result = $db -> query($sql);
 
-         renumber_blog($kati);
+        renumber_blog($kati);
 
-         header("Location: ".$pathvars["virtual"].$jump.".html");
+        header("Location: ".$pathvars["virtual"].$jump.".html");
 
     } else {
         header("Location: ".$pathvars["virtual"]."/");

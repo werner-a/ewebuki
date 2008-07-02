@@ -74,6 +74,8 @@
                     "/blog" => array(
                            "wizard" => 0,
                              "rows" => 10,
+                         "sort" => array("SORT"),
+                         "category" => "KATEGORIE",
                 "own_list_template" => "",
                             "tags"  => array(
 			            "titel" => "H1",
@@ -88,7 +90,8 @@
 #                    "/faq" => array(
 #                           "wizard" => 0,
 #                             "rows" => 10,
-#                         "sortable" => -1,
+#                         "sort" => array("SORT",-1),
+#                         "category" => "KATEGORIE",
 #                "own_list_template" => "",
 #                            "tags"  => array(
 #                                 "question" => array( "tag" => "H2", "content" => "Frage"),

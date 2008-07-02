@@ -1063,7 +1063,7 @@
                         }
                         $tagwerte = explode("]",$tagwert,2);
                         $kat = $tagwerte[0];
-                        if ( $cfg["bloged"]["blogs"][$kat]["include"] == -1 ) {
+                        if ( $cfg["bloged"]["blogs"][$kat]["category"] != "" ) {
                             include $pathvars["moduleroot"]."addon/bloglist.inc.php";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,parser($mapping["main"],""),$replace);
                         } else {
