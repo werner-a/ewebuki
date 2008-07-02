@@ -56,8 +56,11 @@
         $new = $id["mid"];
         $where = "";
 
+        $check_url = $url;
+        if ( $kategorie != "" ) $check_url = $kategorie;
+
         if ( $right == "" || 
-        ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
+        ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
         ) {
             $hidedata["new"]["link"] = $url;
             $hidedata["new"]["kategorie"] = $kategorie;
@@ -209,7 +212,7 @@
                 // Sortierung ausgeben
 
                 if ( $right == "" || 
-                ( priv_check($url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
+                ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
                 ) {
 
                     if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {
@@ -224,7 +227,7 @@
                         $array[$counter]["sort"] = "";
                     }
 
-                    $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",,".$new.".html\">delete</a>";
+                    $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">delete</a>";
                     $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
                 } else {
                     $array[$counter]["editlink"] = "";

@@ -57,7 +57,7 @@
          "function" => array(
 //                       "add" => "",
                      "edit" => array("makece"),
-              "edit,shared" => array("filelist","phpdiff"),
+              "edit,shared" => array("filelist","phpdiff","menu_convert"),
                   "history" => "",
             "history,shared" => array("phpdiff3","phpdiff2","Diff","Render","Render_inline","Engine_native"),
               #"edit,shared" => array("sha","klo"),

@@ -45,8 +45,8 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $cfg["bloged"]["blogs"][$kat]["right"] == "" || 
-    ( priv_check(make_ebene($environment["parameter"][1]),$cfg["bloged"]["blogs"][$kat]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$kat]["right"]) ) )
+    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"] == "" || 
+    ( priv_check(make_ebene($environment["parameter"][3]),$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) ) )
     ) {
 
         function renumber_blog ($kategorie="") {

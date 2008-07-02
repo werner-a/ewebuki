@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["bloged"]["blogs"][$kat]["right"] == "" || 
-    ( priv_check($_POST["link"],$cfg["bloged"]["blogs"][$kat]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$kat]["right"]) ) )
+    if ( $cfg["bloged"]["blogs"][$_POST["link"]]["right"] == "" || 
+    ( priv_check($_POST["kategorie"],$cfg["bloged"]["blogs"][$_POST["link"]]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$_POST["link"]]["right"]) ) )
     ) {
 
         function create( $id ) {

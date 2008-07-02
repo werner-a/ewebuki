@@ -58,13 +58,23 @@
     $db->selectDb($database,FALSE);
 
 
+    // spezial-check fuer artikel
+    $tname2path = tname2path($environment["parameter"][2]);
+    $erlaubnis = "";
+    if ( is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]) ) {
+        $kate = $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"];
+        $laenge = strlen($kate)+2;
+        $sql = "SELECT SUBSTR(content,POSITION('[".$kate."]' IN content)+".$laenge.",POSITION('[/".$kate."]' IN content)-".$laenge."-POSITION('[".$kate."]' IN content) )as check_url from site_text where status = 1 AND tname = '".$environment["parameter"][2]."'";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,1);
+        $erlaubnis = priv_check($data["check_url"],$cfg["contented"]["right"]);
+    }
 
-    if ( $cfg["contented"]["right"] == "" ||
-        priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
+    if ( ( $cfg["contented"]["right"] == "" ||
+        priv_check($tname2path,$cfg["contented"]["right"]) ||
         priv_check_old("",$cfg["contented"]["right"]) ||
-        $rechte["administration"] == -1 ||
-        $erlaubnis == -1 ) {
-
+        $erlaubnis == 1) && $tname2path != "" )
+        {
 
         // page basics
         // ***

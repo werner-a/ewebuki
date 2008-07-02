@@ -43,9 +43,10 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"] == "" || 
-    ( priv_check(make_ebene($environment["parameter"][4]),$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) ) )
-    ) {
+    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"] == "" ||
+         priv_check(make_ebene($environment["parameter"][3]),$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"])
+        || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) )
+       ) {
         $url = make_ebene($environment["parameter"][4]);
 
         $delete = show_blog($url,$cfg["bloged"]["blogs"][$url]["tags"],"","","",$cfg["bloged"]["blogs"][$url]["sortable"]);
