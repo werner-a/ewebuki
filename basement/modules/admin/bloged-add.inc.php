@@ -43,8 +43,12 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    $check_url = $_POST["kategorie"];
+    if ( $_POST["kategorie"] == "" ) $check_url = $_POST["link"];
+
     if ( $cfg["bloged"]["blogs"][$_POST["link"]]["right"] == "" || 
-    ( priv_check($_POST["kategorie"],$cfg["bloged"]["blogs"][$_POST["link"]]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$_POST["link"]]["right"]) ) )
+    ( priv_check($check_url,$cfg["bloged"]["blogs"][$_POST["link"]]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][$_POST["link"]]["right"]) ) )
     ) {
 
         function create( $id ) {
