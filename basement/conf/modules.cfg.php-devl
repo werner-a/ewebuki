@@ -56,6 +56,14 @@
         include $pathvars["moduleroot"]."basic/view.inc.php";
     }
 
+#    // bloged
+    include $pathvars["moduleroot"]."admin/bloged.cfg.php";
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "bloged" )
+       || ( $environment["ebene"] == "/admin/bloged" ))
+    {
+        include $pathvars["moduleroot"]."admin/bloged-ctrl.inc.php";
+    }
+
     // admin: contented
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "contented" )
        || ( $environment["ebene"] == "/admin/contented" ))
@@ -137,14 +145,6 @@
     {
         include $pathvars["moduleroot"]."admin/passed.cfg.php";
         include $pathvars["moduleroot"]."admin/passed.inc.php";
-    }
-
-#    // bloged
-    include $pathvars["moduleroot"]."admin/bloged.cfg.php";
-    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "bloged" )
-       || ( $environment["ebene"] == "/admin/bloged" ))
-    {
-        include $pathvars["moduleroot"]."admin/bloged-ctrl.inc.php";
     }
 
 #    // addon: changed
