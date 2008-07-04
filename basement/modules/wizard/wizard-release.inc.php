@@ -118,11 +118,7 @@
     if ( $reload == -1 ) header("Location: ".$cfg["wizard"]["basis"]."/".implode(",",$environment["parameter"]).".html");
     // + + +
 
-    if ( $cfg["wizard"]["right"] == "" ||
-        priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
-        priv_check_old("",$cfg["wizard"]["right"]) ||
-        $rechte["administration"] == -1 ||
-        $erlaubnis == -1 ) {
+    if ( is_array($_SESSION["content"]) ) {
 
         // page basics
         // ***
@@ -133,7 +129,8 @@
         }
 
         // freizugebene seiten finden
-        $url = tname2path($environment["parameter"][2]);
+//         $url = tname2path($environment["parameter"][2]);
+        $url = "/";
         $buffer = find_marked_content($url, $cfg["wizard"], $cfg["wizard"]["default_label"]);
         $dataloop["releases"] = $buffer[-2];
         if ( count($dataloop["releases"]) > 0 ) {

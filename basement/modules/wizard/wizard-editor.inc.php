@@ -43,24 +43,19 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // parameter-verzeichnis:
+    // 1: Datenbank
+    // 2: tname
+    // 3: label
+    // 4: tag-name:tag-index
+    // 5: version
+    // 6: index des bereichs der im show angezeigt wird
 
-    // erlaubnis bei intrabvv speziell setzen
+    // datenbank auswaehlen
     $database = $environment["parameter"][1];
-    if ( is_array($_SESSION["katzugriff"]) ) {
-        if ( in_array("-1:".$database.":".$environment["parameter"][2],$_SESSION["katzugriff"]) ) $erlaubnis = -1;
-    }
-
-    if ( is_array($_SESSION["dbzugriff"]) ) {
-        if ( in_array($database,$_SESSION["dbzugriff"]) ) $erlaubnis = -1;
-    }
-
     $db->selectDb($database,FALSE);
 
-    if ( $cfg["wizard"]["right"] == "" ||
-        priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
-        priv_check_old("",$cfg["wizard"]["right"]) ||
-        $rechte["administration"] == -1 ||
-        $erlaubnis == -1 ) {
+    if ( is_array($_SESSION["content"]) ) {
 
         // daten holen
         // ***
@@ -255,6 +250,8 @@
                     // markeninhalt
                     $to_insert = $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"].
                                     tagremove($_POST["content"],False,$buffer).
+//                                     // experimentell: html in tag umwandeln
+//                                     html2tag($_POST["content"],$buffer).
                                     $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_end"];
                     // + + +
                 }
@@ -284,6 +281,10 @@
                 // vor-,nachlauf
                 $pre_content = substr($old_content,0,$tag_meat[$tag_marken[0]][$tag_marken[1]]["start"]);
                 $post_content = substr($old_content,$tag_meat[$tag_marken[0]][$tag_marken[1]]["end"]);
+
+//                 // experimentell: html in tag umwandeln
+//                 $to_insert = html2tag($to_insert);
+
                 // zusammenbauen
                 $content = $pre_content.
                         $to_insert.
@@ -304,6 +305,8 @@
 
                 // neuen content in session zwischenscheichern
                 if ( $_POST["ajax"] == "on" ) {
+//                     // experimentell: html in tag umwandeln
+//                     $content = html2tag($content,"none");
                     $content = tagreplace($content);
                     $content = tagremove($content);
                     if ( get_magic_quotes_gpc() == 1 ) {
@@ -345,7 +348,6 @@
                                                         ",".
                                                         $environment["parameter"][5].",".
                                                         $environment["parameter"][6].".html";
-echo "\$header2: $header<br>";
                     header("Location: ".$header);
                 }
             }

@@ -49,6 +49,7 @@
     // 3: label
     // 4: [leer]
     // 5: version
+    // 6: index des bereichs der im show angezeigt wird
 
     // erlaubnis bei intrabvv speziell setzen
     $database = $environment["parameter"][1];
@@ -70,6 +71,15 @@
     if ( $tname2path == "" ) {
         $tname2path = str_replace($pathvars["menuroot"],"",$_SESSION["form_referer"]);
         $tname2path = substr($tname2path, 0, strpos($tname2path,".") );
+        // tname-kontrolle
+        $tname_tmp = explode("/",$tname2path);
+        $kategorie = array_pop($tname_tmp);
+        if ( count($tname_tmp) > 1 ) {
+            $tname = eCRC(implode("/",$tname_tmp)).".".$kategorie;
+        } else {
+            $tname = $kategorie;
+        }
+        if ( $tname != $environment["parameter"][2] ) $tname2path = "/";
     }
 
     // welche seite wird bearbeitet
@@ -116,6 +126,7 @@
     if ( $reload == -1 ) {
         ksort($environment["parameter"]);
         header("Location: ".$pathvars["webroot"].$cfg["wizard"]["basis"]."/".implode(",",$environment["parameter"]).".html");
+        exit;
     }
     // + + +
     // leere parameter abfangen

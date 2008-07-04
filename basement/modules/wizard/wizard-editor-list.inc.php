@@ -50,10 +50,10 @@
     $hidedata["default"] = array();
     $hidedata["list"] = array();
     $buffer = explode("[*]",$form_values["content"]);
-    $form_values["content"] = "";
+    $ausgaben["inhalt"] = "";
     foreach ( $buffer as $value ) {
-        if ( $form_values["content"] != "" ) $form_values["content"] .= chr(13).chr(10).chr(13).chr(10);
-        $form_values["content"] .= trim($value);
+        if ( $ausgaben["inhalt"] != "" ) $ausgaben["inhalt"] .= chr(13).chr(10).chr(13).chr(10);
+        $ausgaben["inhalt"] .= trim($value);
     }
 
 
@@ -67,7 +67,7 @@
             || $_POST["upload"] != "" ) ) {
 
         // trennen nach leerzeilen
-        $buffer = preg_split("/[\n]{2}/",$_POST["content"],-1,PREG_SPLIT_NO_EMPTY);
+        $buffer = preg_split("/[".chr(13).chr(10)."]{2}/",$_POST["content"],-1,PREG_SPLIT_NO_EMPTY);
         $to_insert = implode("\n[*]",$buffer);
         // verbotenen tags rausfiltern
         $buffer = array();

@@ -52,23 +52,11 @@
     // 6: modus
     // 7: anker-name
 
-    // erlaubnis bei intrabvv speziell setzen
+    // datenbank auswaehlen
     $database = $environment["parameter"][1];
-    if ( is_array($_SESSION["katzugriff"]) ) {
-        if ( in_array("-1:".$database.":".$environment["parameter"][2],$_SESSION["katzugriff"]) ) $erlaubnis = -1;
-    }
-
-    if ( is_array($_SESSION["dbzugriff"]) ) {
-        if ( in_array($database,$_SESSION["dbzugriff"]) ) $erlaubnis = -1;
-    }
-
     $db->selectDb($database,FALSE);
 
-    if ( $cfg["wizard"]["right"] == "" ||
-        priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
-        priv_check_old("",$cfg["wizard"]["right"]) ||
-        $rechte["administration"] == -1 ||
-        $erlaubnis == -1 ) {
+    if ( is_array($_SESSION["content"]) ) {
 
         // page basics
         // ***
