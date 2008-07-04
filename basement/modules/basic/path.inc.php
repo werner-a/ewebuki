@@ -79,8 +79,15 @@
         unset($dynamicbg);
     }
 
+    // zusaetzliche informationen aus den feld extended (muss vorhanden sein!)
+    $extenddesc = "";
+    if ( $cfg["path"]["ext_info"] == "-1" ) $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend,";
+
     // link zum webroot
-    $environment["kekse"] = "<a href=\"".$pathvars["virtual"]."/index.html\">".$specialvars["rootname"]."</a>";
+    $kekse["html"][]  = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
+    $kekse["label"][] = $specialvars["rootname"];
+    $kekse["title"][] = $specialvars["rootname"];
+    $kekse["link"][]  = $pathvars["virtual"]."/index.html";
 
     // kekspath splitten und fuer jede ebene die beschreibung holen
     $kekspath = substr( $environment["ebene"]."/".$environment["kategorie"], 1);
@@ -109,7 +116,7 @@
                        ".$cfg["path"]["db"]["menu"]["entries"].".sort,
                        ".$cfg["path"]["db"]["menu"]["entries"].".level,
                        ".$cfg["path"]["db"]["menu"]["entries"].".defaulttemplate,
-                       ".$dynamiccss.$dynamicbg."
+                       ".$dynamiccss.$dynamicbg.$extenddesc."
                        ".$cfg["path"]["db"]["lang"]["entries"].".label
                   FROM ".$cfg["path"]["db"]["menu"]["entries"]."
             INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
@@ -140,7 +147,7 @@
                         ".$cfg["path"]["db"]["menu"]["entries"].".sort,
                         ".$cfg["path"]["db"]["menu"]["entries"].".level,
                         ".$cfg["path"]["db"]["menu"]["entries"].".defaulttemplate,
-                        ".$dynamiccss.$dynamicbg."
+                        ".$dynamiccss.$dynamicbg.$extenddesc."
                         ".$cfg["path"]["db"]["lang"]["entries"].".label
                    FROM ".$cfg["path"]["db"]["menu"]["entries"]."
              INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
@@ -163,11 +170,33 @@
                 $ausgaben["UP"] = $pathvars["virtual"].$path.".html";
             }
 
-            // seitentitel und kekse zusammensetzen
+            // seitentitel
             $path .= "/".$data["entry"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
             $specialvars["pagetitle"] .= $defaults["split"]["title"].$data["label"];
-            $environment["kekse"] .= $defaults["split"]["kekse"]."<a href=\"".$pathvars["virtual"].$path.".html\">".$data["label"]."</a>";
+            if ( $data["extend"] != "" ) {
+                $title = $data["extend"];
+            } else {
+                $title = $data["label"];
+            }
+            // css-auszeichnung
+            if ( $path == $environment["ebene"]."/".$environment["kategorie"] ) {
+                $css = $cfg["path"]["css"]["last"];
+            } else {
+                $css = $cfg["path"]["css"]["crumb"];
+            }
+            // kekse-array bauen
+            if ( $path == $environment["ebene"]."/".$environment["kategorie"] && $cfg["path"]["link_last"] != "-1" ) {
+                $kekse["html"][]  = "<span class=\"".$css."\">".$data["label"]."</span>";
+                $kekse["label"][] = $data["label"];
+                $kekse["title"][] = $data["label"];
+                $kekse["link"][]  = "";
+            } else {
+                $kekse["html"][] = "<a href=\"".$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
+                $kekse["label"][] = $data["label"];
+                $kekse["title"][] = $title;
+                $kekse["link"][]  = $pathvars["virtual"].$path.".html";
+            }
 
             // variables template laut menueintrag setzen
             $specialvars["default_template"] = $data["defaulttemplate"];
@@ -436,6 +465,22 @@
             // content navigation erstellen
         }
     }
+
+    // brotkrumen zusammensetzen
+    if ( $cfg["path"]["max_length"] != "" ) {
+        // kekse werden so lange gekuerzt bis sie passen
+        $cut_link = "";
+        while ( strlen(implode(" > ",$kekse["label"])) > $cfg["path"]["max_length"] ) {
+            array_shift($kekse["html"]);
+            $cut_label = array_shift($kekse["label"]);
+            $cut_title = array_shift($kekse["title"]);
+            $cut_link  = array_shift($kekse["link"]);
+        }
+        if ( $cut_link != "" ) {
+            array_unshift( $kekse["html"] , "<a href=\"".$cut_link."\" title=\"".$cut_title."\" class=\"".$cfg["path"]["css"]["crumb"]."\">...</a>" );
+        }
+    }
+    $environment["kekse"] = implode($defaults["split"]["kekse"],$kekse["html"]);
 
 
     // 404 error handling

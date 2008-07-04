@@ -45,14 +45,21 @@
     $cfg["path"] = array(
          "menuroot" => "", // !#lnk_0,!#ausgaben_UP [UP][/UP]; "" zeigt nach $pathvars["menuroot"]
                "db" => array(
-                    "menu" => array(
+                     "menu" => array(
                           "entries" => "site_menu",
                             "order" => "sort, label",
                                ),
-                    "lang" => array(
+                     "lang" => array(
                           "entries" => "site_menu_lang",
                                ),
                        ),
+         "ext_info" => 0,           // falls in site_menu_lang das feld extend vorhanden ist, dessen inhalt anzeigen
+        "link_last" => -1,          // das letzte keks-element verlinken
+//        "max_length" => 75,          // maximale laenge der keks-zeile
+              "css" => array(
+                    "crumb" => "bread_crumb",
+                     "last" => "last_bread_crumb",
+                        ),
 
     );
 
