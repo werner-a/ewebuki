@@ -42,7 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+if ( !function_exists(make_id)) {
     function make_id($url) {
         global $db;
         $leer[] = "";
@@ -64,7 +64,8 @@
         }
         return $data;
     }
-
+}
+if ( !function_exists(make_ebene)) {
     function make_ebene($mid, $ebene="") {
         # call: make_ebene(refid);
         global $db, $cfg;
@@ -79,7 +80,8 @@
         }
         return $ebene;
     }
-
+}
+if ( !function_exists(tname2path)) {
     // findet zu einem tname die passende url
     function tname2path($tname,$refid=0,$ebene="") {
         global $db;
@@ -106,8 +108,9 @@
             }
             if ( $return_value != "" ) return $return_value;
         }
+        if ( $return_value == "" && $refid == 0 ) $return_value = "/";
         return $return_value;
     }
-
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

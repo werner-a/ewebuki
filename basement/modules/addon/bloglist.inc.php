@@ -68,10 +68,10 @@
     }
 
     // herausfinden der id,noetig fuer neueintrag
-    include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
+    require_once $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
 
     // laden der eigentlichen funktion
-    include $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
+    require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
     // erstellen der tags die angezeigt werden
     if ( is_array($cfg["bloged"]["blogs"][$kat]["addons"]) ) {
