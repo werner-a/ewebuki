@@ -116,6 +116,13 @@
             require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
             // erstellen der tags die angezeigt werden
+            if ( is_array($cfg["bloged"]["blogs"][$key]["addons"]) ) {
+                foreach ( $cfg["bloged"]["blogs"][$key]["addons"] as $key_tag => $value) {
+                    $tags[$key_tag] = $value;
+                }
+            }
+
+            // erstellen der tags die angezeigt werden
             if ( is_array($cfg["bloged"]["blogs"][$key]["tags"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$key]["tags"] as $key_tag => $value) {
                     $tags[$key_tag] = $value;
