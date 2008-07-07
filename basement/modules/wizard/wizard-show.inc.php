@@ -645,6 +645,12 @@
                 } elseif ($_POST["send"][0] == "save" || $_SESSION["form_send"] == "save") {
                     // preview mit ajax
                     if ( $_POST["ajax"] == "on" ) {
+                        // parameter-manipulation fuer blog-tag
+                        $environment["ebene"] = dirname($tname2path);
+                        $environment["kategorie"] = basename($tname2path);
+                        $environment["parameter"] = array(basename($tname2path));
+                        $cfg["auth"]["ghost"]["contented"] = "none";
+
                         $content = tagreplace($form_values["content"]);
                         $content = tagremove($content);
                         if ( get_magic_quotes_gpc() == 1 ) {
