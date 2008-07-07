@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tagreplace($replace) {
-        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars,$dataloop,$hidedata;
+        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars,$dataloop,$hidedata,$mapping;
 
         // cariage return + linefeed fix
         if ( $specialvars["newbrmode"] != True ) {
@@ -1055,16 +1055,34 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"&nbsp;",$replace);
                         break;
                     case "[/BLOG]":
-                        // pfad des blog - inhalts
+
                         if ( $environment["ebene"] == "" ) {
-                            $show_kat = "/".$environment["kategorie"];
+                            $kat = "/".$environment["kategorie"];
                         } else {
-                            $show_kat = $environment["ebene"]."/".$environment["kategorie"];
+                            $kat = $environment["ebene"]."/".$environment["kategorie"];
                         }
                         $tagwerte = explode("]",$tagwert,2);
-                        $kat = $tagwerte[0];
-                        if ( $cfg["bloged"]["blogs"][$kat]["category"] != "" ) {
-                            include $pathvars["moduleroot"]."addon/bloglist.inc.php";
+                        $url = $tagwerte[0];
+
+                        // erstellen der tags die angezeigt werden
+                        if ( is_array($cfg["bloged"]["blogs"][$url]["tags"]) ) {
+                            foreach ( $cfg["bloged"]["blogs"][$url]["tags"] as $key => $value) {
+                                $tags[$key] = $value;
+                            }
+                        }
+
+                        require_once $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
+                        require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
+
+                        if ( $environment["parameter"][2] == "" ) {
+                            $dataloop["list"] = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["wizard"],$limit,$cfg["bloged"]["blogs"][$url]["sort"][0],$kat);
+                        } else {
+                            $all = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["wizard"],$limit,$cfg["bloged"]["blogs"][$url]["sort"][0],$kat);
+                            unset($hidedata["new"]);
+                            $hidedata["all"]["inhalt"] = $all[1]["all"];
+                        }
+
+                        if ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,parser($mapping["main"],""),$replace);
                         } else {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"not allowed",$replace);

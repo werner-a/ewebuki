@@ -44,35 +44,46 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
      function show_blog($url,$tags,$right="",$wizard="",$limit="",$sort="",$kategorie="") {
-        global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment,$cfg;
+        global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment,$cfg,$specialvars;
 
         // parameter-erklaerung
         // 1: vorgesehen fuer inhalt_selector
         // 2: aufruf eines einzigen contents
-        // 3: faqlink
+        // 3: anzeige als faq
+
+        // unzugaengliche #(marken) sichtbar machen
+        if ( isset($HTTP_GET_VARS["edit"]) ) {
+            $ausgaben["inaccessible"] = "inaccessible values:<br />";
+            $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
+        } else {
+            $ausgaben["inaccessible"] = "";
+        }
+
+        // label bearbeitung aktivieren
+        if ( isset($_GET["edit"]) ) {
+            $specialvars["editlock"] = 0;
+        } else {
+            $specialvars["editlock"] = -1;
+        }
 
         // aus der url eine id machen
         $id = make_id($url);
         $new = $id["mid"];
         $where = "";
 
+        $sort_len = strlen($cfg["bloged"]["blogs"][$url]["sort"][0])+2;
+
+        // hier erfolgt der rechte-check
         $check_url = $url;
         if ( $kategorie != "" ) $check_url = $kategorie;
 
-        if ( $right == "" || 
-        ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
-        ) {
-            $hidedata["new"]["link"] = $url;
-            $hidedata["new"]["kategorie"] = $kategorie;
-        }
+         if ( $right == "" || 
+         ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
+         ) {
+             $hidedata["new"]["link"] = $url;
+             $hidedata["new"]["kategorie"] = $kategorie;
+         }
 
-        $sort_len = strlen($cfg["bloged"]["blogs"][$url]["sort"][0])+2;
-
-        // falls kategorie , werden nur diese angezeigt
-        if ( $kategorie != "" ) {
-            $cat_len = strlen($cfg["bloged"]["blogs"][$url]["category"])+2;
-            $where = "  AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
-        }
 
         // erster test einer suchanfrage per kalender
         //
@@ -93,20 +104,31 @@
         //
         // erster test einer suchanfrage per kalender
 
+        // falls kategorie , werden nur diese angezeigt
+        if ( $kategorie != "" ) {
+            $cat_len = strlen($cfg["bloged"]["blogs"][$url]["category"])+2;
+            $where = "  AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
+        }
+
         $tname = eCRC($url).".%";
 
+        // falls parameter 2 gesetzt, wird nur dieser content geholt
         if ( $environment["parameter"][2] != "" ) {
             $tname = eCRC($url).".".$environment["parameter"][2];
         }
 
+        // falls sort auf -1 wird anstatt ein datum ein integer als sortiermerkmal gesetzt um ein manuelles sortieren zu ermoeglichen
         if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1" ) {
             $art = "SIGNED";
         } else {
             $art = "DATETIME";
         }
 
+        // hier der endgueltige sql !!
         $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
 
+        // damit kann man beliebig viele blogs manuell holen
+        $ausgaben["inhalt_selector"] = "";
         if ( strpos($limit,"," ) ){
             $sql = $sql." LIMIT ".$limit;
         } else {
@@ -213,6 +235,7 @@
                 $array[$counter]["id"] = $regs[1];
                 // Sortierung ausgeben
 
+                // ausgabe der aktions-buttons
                 if ( $right == "" || 
                 ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
                 ) {
@@ -245,11 +268,25 @@
                     }
                 }
             } 
-
-
         }
-        return $array;
-    }
+
+            // was anzeigen
+            if ( $environment["ebene"] == "" ) {
+                $templ = $environment["kategorie"].".tem.html";
+            } else {
+                $templ = eCRC($environment["ebene"]).".".$environment["kategorie"].".tem.html";
+            }
+    
+            if ( file_exists($pathvars["templates"].$templ) ) {
+            } elseif ( $cfg["bloged"]["blogs"][$url]["own_list_template"] != "" ) {
+                $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$url]["own_list_template"];
+            } elseif ( $cfg["bloged"]["blogs"][$url]["sort"][1] != "" ) {
+                $mapping["main"] = "-2051315182.faq";
+            } else {
+                $mapping["main"] = "-2051315182.list";
+            }
+            return $array;
+        }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

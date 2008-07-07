@@ -105,13 +105,41 @@
     foreach ( $cfg["bloged"]["blogs"] as $key => $value ) {
         $blogs = explode("/",substr($key,1));
         $blog_kategorie = array_pop($blogs);
+
         if ( count($blogs) > 0 ) {
             $blog_ebene = "/".implode("/",$blogs);
         } else {
             $blog_ebene = "";
         }
+
         if ( $environment["ebene"] == $blog_ebene && $environment["kategorie"] == $blog_kategorie ) {
-            include $pathvars["moduleroot"]."addon/bloglist.inc.php";
+            require_once $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
+            require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
+
+            // erstellen der tags die angezeigt werden
+            if ( is_array($cfg["bloged"]["blogs"][$key]["tags"]) ) {
+                foreach ( $cfg["bloged"]["blogs"][$key]["tags"] as $key_tag => $value) {
+                    $tags[$key_tag] = $value;
+                }
+            }
+
+            if ( $cfg["bloged"]["blogs"][$key]["category"] != "" ) {
+                if ( $environment["ebene"] == "" ) {
+                    $show_kat = "/".$environment["kategorie"];
+                } else {
+                    $show_kat = $environment["ebene"]."/".$environment["kategorie"];
+                }
+            } else {
+                $show_kat = "";
+            }
+
+            if ( $environment["parameter"][2] == "" ) {
+                $dataloop["list"] = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sort"][0],$show_kat);
+            } else {
+                $all = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sort"][0],$show_kat);
+                unset($hidedata["new"]);
+                $hidedata["all"]["inhalt"] = $all[1]["all"];
+            }
         }
     }
 
