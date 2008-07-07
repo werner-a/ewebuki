@@ -86,17 +86,17 @@
 #                                  "entry2" => "tag2",
 #                                      ),
                                ),
-#                    "/faq" => array(
-#                           "wizard" => 0,
-#                             "rows" => 10,
-#                         "sort" => array("SORT",-1),
-#                         "category" => "KATEGORIE",
-#                "own_list_template" => "",
-#                            "tags"  => array(
-#                                 "question" => array( "tag" => "H2", "content" => "Frage"),
-#                                   "answer" => array( "invisible" => -1,"tag" => "P", "content" => "Antwort"),
-#                                       ),
-#                               ),
+//                     "/faq" => array(
+//                            "wizard" => 0,
+//                              "rows" => 10,
+//                          "sort" => array("SORT",-1),
+//                          "category" => "KATEGORIE",
+//                 "own_list_template" => "",
+//                             "tags"  => array(
+//                                  "question" => array( "tag" => "H2", "content" => "Frage"),
+//                                    "answer" => array( "invisible" => -1,"tag" => "P", "content" => "Antwort"),
+//                                        ),
+//                                ),
                        ),
            );
 
@@ -133,9 +133,9 @@
             }
 
             if ( $environment["parameter"][2] == "" ) {
-                $dataloop["list"] = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sort"][0],$show_kat);
+                $dataloop["list"] = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$key]["rows"],$show_kat);
             } else {
-                $all = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$kat]["wizard"],$limit,$cfg["bloged"]["blogs"][$kat]["sort"][0],$show_kat);
+                $all = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$limit,$show_kat);
                 unset($hidedata["new"]);
                 $hidedata["all"]["inhalt"] = $all[1]["all"];
             }

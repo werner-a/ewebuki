@@ -1075,9 +1075,9 @@
                         require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
                         if ( $environment["parameter"][2] == "" ) {
-                            $dataloop["list"] = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["wizard"],$limit,$cfg["bloged"]["blogs"][$url]["sort"][0],$kat);
+                            $dataloop["list"] = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["rows"],$kat);
                         } else {
-                            $all = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["wizard"],$limit,$cfg["bloged"]["blogs"][$url]["sort"][0],$kat);
+                            $all = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["rows"],$kat);
                             unset($hidedata["new"]);
                             $hidedata["all"]["inhalt"] = $all[1]["all"];
                         }

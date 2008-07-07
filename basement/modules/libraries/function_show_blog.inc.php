@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-     function show_blog($url,$tags,$right="",$wizard="",$limit="",$sort="",$kategorie="") {
+     function show_blog($url,$tags,$right="",$limit="",$kategorie="") {
         global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment,$cfg,$specialvars;
 
         // parameter-erklaerung
@@ -128,11 +128,13 @@
         $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,content,tname from site_text WHERE status = 1".$where." AND tname like '".$tname."' order by date DESC";
 
         // damit kann man beliebig viele blogs manuell holen
+
         $ausgaben["inhalt_selector"] = "";
         if ( strpos($limit,"," ) ){
             $sql = $sql." LIMIT ".$limit;
         } else {
             if ( $limit != "" ) {
+                $hidedata["inhalt_selector"]["on"] = "on";
                 $p=$environment["parameter"][1]+0;
                 // seiten umschalter
                 $inhalt_selector = inhalt_selector( $sql, $p, $limit, $parameter, 1, 10, $getvalues );
@@ -147,7 +149,7 @@
         $preg1 = "\.([0-9]*)$";
 
         // evtl wizard einbinden
-        if ( $wizard != "" ) {
+        if ( $cfg["bloged"]["blogs"][$url]["wizard"] != "" ) {
             $editlink = "/wizard/show,";
         } else {
             $editlink = "/admin/contented/edit,";

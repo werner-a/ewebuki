@@ -183,8 +183,8 @@
         // ***
 
         // automatische generierung von beliebigen datensaetzen, durch parameter[2]
-        if ( $environment["parameter"][3] != "" ) {
-            for ( $i = 1; $i <= $environment["parameter"][3]; $i++ ) {
+        if ( $_POST["anzahl"] != "" ) {
+            for ( $i = 1; $i <= $_POST["anzahl"]; $i++ ) {
                 create($id+$i);
             }
         }
