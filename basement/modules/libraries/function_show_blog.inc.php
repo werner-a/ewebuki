@@ -77,7 +77,7 @@
         $check_url = $url;
         if ( $kategorie != "" ) $check_url = $kategorie;
 
-         if ( $right == "" || 
+         if ( $right == "" ||
          ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
          ) {
              $hidedata["new"]["link"] = $url;
@@ -91,7 +91,7 @@
         if ( $_GET["year"] || $_GET["month"] || $_GET["day"] ) {
             if ( $cfg["bloged"]["blogs"][$url]["sort"][1] != -1 ) {
                 $heute = getdate(mktime(0, 0, 0, ($_GET["month"])+1, 0, $_GET["year"]));
-                if ( !$_GET["day"] ) {  
+                if ( !$_GET["day"] ) {
                     $day1 = $heute["mday"];
                     $day2 = "1";
                 } else {
@@ -218,7 +218,7 @@
 
             preg_match("/$preg1/",$data["tname"],$regs);
             if ( $environment["parameter"][2] != "" ) {
-                $array[$counter]["all"] = tagreplace($data["content"]); 
+                $array[$counter]["all"] = tagreplace($data["content"]);
                 $array[$counter]["id"] = $regs[1];
             } else {
                 $array[$counter]["datum"] = substr($data["date"],8,2).".".substr($data["date"],5,2).".".substr($data["date"],0,4);
@@ -230,13 +230,14 @@
                     $faq_url = $environment["ebene"]."/".$environment["kategorie"];
                 }
 
-                $array[$counter]["faqlink"] = $pathvars["virtual"].$faq_url.",,,".$regs[1].".html";
+                $array[$counter]["faqlink"] = $pathvars["virtual"].$faq_url.",,,".$regs[1].".html#faq_".$regs[1];
+                $array[$counter]["faqanker"] = "faq_".$regs[1];
                 $array[$counter]["allink"] = $pathvars["virtual"].$faq_url.",,".$regs[1].".html";
                 $array[$counter]["id"] = $regs[1];
                 // Sortierung ausgeben
 
                 // ausgabe der aktions-buttons
-                if ( $right == "" || 
+                if ( $right == "" ||
                 ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
                 ) {
 
@@ -267,7 +268,7 @@
                         $array[$counter][$key] = $value;
                     }
                 }
-            } 
+            }
         }
 
             // was anzeigen
@@ -276,7 +277,7 @@
             } else {
                 $templ = eCRC($environment["ebene"]).".".$environment["kategorie"].".tem.html";
             }
-    
+
             if ( file_exists($pathvars["templates"].$templ) ) {
             } elseif ( $cfg["bloged"]["blogs"][$url]["own_list_template"] != "" ) {
                 $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$url]["own_list_template"];
