@@ -75,7 +75,6 @@
                            "wizard" => 0,
                              "rows" => 10,
                          "sort" => array("SORT"),
-                         "category" => "KATEGORIE",
                 "own_list_template" => "",
                             "tags"  => array(
 			            "titel" => "H1",
