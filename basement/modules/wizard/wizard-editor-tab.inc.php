@@ -68,9 +68,10 @@
         preg_match_all("/\[COL\](.*)\[\/COL\]/Us",$row,$cells);
         $col_index = 0; $ausgaben["num_col"] = 0;
         foreach ( $cells[1] as $cell ) {
-            $ausgaben["tabelle"] .= "<td>
-                                    <input type=\"text\" value=\"".$cell."\" name=\"cells[".$row_index."][".$col_index."]\" />
-                                    </td>";
+            $ausgaben["tabelle"] .= "<td>".
+//                                     "<input type=\"text\" value=\"".$cell."\" name=\"cells[".$row_index."][".$col_index."]\" />".
+                                    "<textarea name=\"cells[".$row_index."][".$col_index."]\">".$cell."</textarea>".
+                                    "</td>";
             $col_index++; $ausgaben["num_col"]++;
         }
         $ausgaben["tabelle"] .= "</tr>";
