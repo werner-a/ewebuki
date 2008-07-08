@@ -107,7 +107,7 @@
         // falls kategorie , werden nur diese angezeigt
         if ( $kategorie != "" ) {
             $cat_len = strlen($cfg["bloged"]["blogs"][$url]["category"])+2;
-            $where = "  AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
+            $where .= "  AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
         }
 
         $tname = eCRC($url).".%";
