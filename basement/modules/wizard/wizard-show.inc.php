@@ -565,6 +565,10 @@
                 $ausgaben["inaccessible"] .= "# (wiz_movedown_desc) #(wiz_movedown_desc)<br />";
                 $ausgaben["inaccessible"] .= "# (wiz_delete) #(wiz_delete)<br />";
                 $ausgaben["inaccessible"] .= "# (wiz_delete_desc) #(wiz_delete_desc)<br />";
+
+                $ausgaben["inaccessible"] .= "# (ask_release) #(ask_release)<br />";
+                $ausgaben["inaccessible"] .= "# (release) #(release)<br />";
+                $ausgaben["inaccessible"] .= "# (blocked_release) #(blocked_release)<br />";
             } else {
                 $ausgaben["inaccessible"] = "";
             }
