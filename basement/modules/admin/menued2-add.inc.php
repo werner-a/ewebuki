@@ -153,7 +153,7 @@
 
             // entry hinzufuegen
             if ( $ausgaben["form_error"] == "" ) {
-                $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y",
+                $kick = array( "PHPSESSID", "send", "cancel", "image", "image_x", "image_y",
                                "add_x", "add_y", "add", "form_referer", "lang", "label", "extend",
                                "exturl", "new_lang", "entry", "wizard");
                 foreach($_POST as $name => $value) {
@@ -218,7 +218,7 @@
                                 "post" => $_POST,
                             );
                         }
-                        header("Location: ".$header);
+//                         header("Location: ".$header);
                     } else {
                         $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
                     }

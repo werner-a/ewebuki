@@ -120,6 +120,10 @@
             }
         }
 
+        if ( $element["extend"] != "" ) {
+            $hidedata["extend"] = array();
+        }
+
         // langtabelle ausgabe
         // ***
         //elemente aussortieren
@@ -209,8 +213,6 @@
             // lang tabellen aenderungen
             if ( $ausgaben["form_error"] == ""  ) {
 
-                $checkext = checkext();
-
                 $header_link = $cfg["menued"]["basis"]."/edit,".$environment["parameter"][1].".html"; #?referer=".$ausgaben["form_referer"]);
                 if ( $HTTP_POST_VARS["add"] && $HTTP_POST_VARS["new_lang"] != "" ) {
                     $sql = "SELECT label
@@ -226,7 +228,7 @@
                         $ausgaben["form_error"] .= "#(error_lang_add)";
                         $header = $header_link;
                     } else {
-                        if ( $checkext != "" ) {
+                        if ( $element["extend"] != "" ) {
                             $extenda = "extend, ";
                             $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
                         }
@@ -260,7 +262,7 @@
                 }
 
                 if ( count($HTTP_POST_VARS["lang"]) <= 1 ) {
-                    if ( $checkext != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"]."',";
+                    if ( $element["extend"] != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"]."',";
                     $sql = "update ".$cfg["menued"]["db"]["lang"]["entries"]."
                             set label = '".$HTTP_POST_VARS["label"]."',
                                 ".$extenddesc."
@@ -271,7 +273,7 @@
                     if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 } else {
                     foreach( $HTTP_POST_VARS["lang"] as $key => $value ) {
-                        if ( $checkext != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"][$key]."',";
+                        if ( $element["extend"] != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"][$key]."',";
                         $sql = "update ".$cfg["menued"]["db"]["lang"]["entries"]."
                                 set label = '".$HTTP_POST_VARS["label"][$key]."',
                                     ".$extenddesc."
