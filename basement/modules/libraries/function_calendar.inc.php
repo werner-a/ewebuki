@@ -81,21 +81,21 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="") {
         // bauen der monatstabelle
         $ausgabe = "#(ueberschrift)";
         $ausgabe .= "<table class=\"".$class." ".$class."_months\" >\n";
-        $jump_back = "<a href=\"?month=01&year=".$back."\"";
-        $jump_forward = "<a href=\"?month=01&year=".$forward."\"";
+        $jump_back = "<a href=\"?month=01&amp;year=".$back."\">";
+        $jump_forward = "<a href=\"?month=01&amp;year=".$forward."\">";
         if ( $_GET["year"] && abs($aktuell["year"] - $_GET["year"]) > 1) {
-            header("Location: ".str_replace(strstr($pathvars["uri"],"?"),"",$pathvars["uri"])); 
+            header("Location: ".str_replace(strstr($pathvars["uri"],"?"),"",$pathvars["uri"]));
         } elseif ( $jahr-1-$aktuell["year"] < -1) {
                 $jump_back = "";
         } elseif ( $jahr+1-$aktuell["year"] > 1) {
                 $jump_forward = "";
         }
-        $ausgabe .= "<tr class=\"first_line\"><td class=\"first\">".$jump_back."<img src=\"/images/default/left.png\"></img></a></td><td colspan=\"2\"><b>".$jahr."</b></td><td class=\"last\">".$jump_forward."<img src=\"/images/default/right.png\"></a></td></tr>\n";
+        $ausgabe .= "<tr class=\"first_line\"><td class=\"first\">".$jump_back."<img src=\"/images/default/left.png\" alt=\"\" /></a></td><td colspan=\"2\"><b>".$jahr."</b></td><td class=\"last\">".$jump_forward."<img src=\"/images/default/right.png\" alt=\"\" /></a></td></tr>\n";
         $ausgabe .= "<tr class=\"first_line\" >\n";
         foreach ( $monate as $key => $value ) {
             $month = $key+1;
             if ($month > 12) $month = $month-12;
-            if ( $linked == -1 ) $value = "<a href=\"?month=".$month."&year=".$heute["year"]."\">".$value."</a>";
+            if ( $linked == -1 ) $value = "<a href=\"?month=".$month."&amp;year=".$heute["year"]."\">".$value."</a>";
             $class_m = "";
             if ( is_int($key/4)  ) {
                 if ( $key != 0 ) $ausgabe .= "</tr><tr>";
@@ -151,7 +151,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="") {
             ( $aktuell["mday"] == $int_counter && $aktuell["mon"] == $monat && $aktuell["year"] == $jahr) ? $class_today=" today " : $class_today="";
             $out = $int_counter;
             if ( $int_counter != "" && $linked == -1 ) {
-                $out = "<a href=\"?day=".$int_counter."&month=".$heute["mon"]."&year=".$heute["year"]."\">".$int_counter."</a>";
+                $out = "<a href=\"?day=".$int_counter."&amp;month=".$heute["mon"]."&amp;year=".$heute["year"]."\">".$int_counter."</a>";
             }
             $ausgabe .= "<td class=\"".$class.$class_today."\">".$out."</td>";
         }
