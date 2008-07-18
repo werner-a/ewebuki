@@ -162,7 +162,7 @@
             $result  = $db -> query($sql);
             if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) {
-                if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".eCRC($_POST["link"]).".".$id.",inhalt.html";
+                if ( $header == "" ) $header = $pathvars["virtual"]."/wizard/show,".DATABASE.",".eCRC($_POST["link"]).".".$id.",inhalt,,,none.html";
             } else {
                 if ( $header == "" ) $header = $pathvars["virtual"]."/admin/contented/edit,".DATABASE.",".eCRC($_POST["link"]).".".$id.",inhalt.html";
             }
