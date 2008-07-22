@@ -53,11 +53,17 @@
 
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
-
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
             if ( $cfg["bloged"]["blogs"][$ebene]["sort"][1] == -1 ) {
                 $sort = "0";
             } else {
-                $sort = date("Y-m-d H:i:s");
+                if ( $_POST["SORT"] != "" ) {
+                    $sort = $_POST["SORT"];
+                } else {
+                    $sort = date("Y-m-d H:i:s");
+                }
             }
 
             $sqla  = "lang";
@@ -104,29 +110,27 @@
 
             $content  = "[!][".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$sort."[/".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$kategorie;
 
-            // fuellen per posts
-            if ( $_POST["send"] != "" ) {
-                foreach ( $_POST as $key => $value ) {
-                    if ( $key == "send" ) continue;
-                    if ( is_array($value) ) {
-                        $time = mktime(0,0,0,(int)$value[1],(int)$value[0],(int)$value[2]);
-                        if ( $value[0] == "" ) {
-                            $time = mktime(1,0,0,1,1,1970);
-                        }
-                        $value = $time;
+            if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
+                foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
+                    if ( $value == "SORT" ) continue;
+                    if ( !is_array($value) && $_POST[$value] != "" ) {
+                        $header = $pathvars["virtual"].$ebene.".html";
+                        $cont = $_POST[$value];
+                        $para = "";
+                    } elseif (is_array($value)) {
+                        $cont = $value["content"];
+                        $para = $value["parameter"];
+                        $value = $value["tag"];
+                    } else {
+                        $cont = "";
+                        $para = "";
                     }
+                    (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
+                    $content .= "\r\n[".$value.$para."]".$cont."[/".$endtag."]\r\n";
+                }
 
-                    $content .= "\r\n[".$key."]".$value."[/".$key."]";
-                }
-                $header = $pathvars["virtual"].$ebene.".html";
-            } else {
-                if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
-                    foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
-                        (strpos($value["tag"],"=")) ? $endtag= substr($value["tag"],0,strpos($value["tag"],"=")): $endtag=$value["tag"];
-                        $content .= "\r\n[".$value["tag"]."]".$value["content"]."[/".$endtag."]";
-                    }
-                }
             }
+
             $content .= "[/!]\r\n";
             if ( $cfg["bloged"]["blogs"][$ebene]["wizard"] != "" ) {
                 $content .= "[!]wizard:".$cfg["bloged"]["blogs"][$ebene]["wizard"]."[/!]\r\n";
