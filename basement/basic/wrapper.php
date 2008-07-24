@@ -79,8 +79,8 @@
     $path["txt"] = $cfg["file"]["base"]["doc"]."txt_";
     $path["arc"] = $cfg["file"]["base"]["arc"]."arc_";
 
-
     // filetyp auswerten
+    // vollstaendige uebersicht ueber verfuegbare mime-types: http://www.iana.org/assignments/media-types/index.html
     switch( $value[2] ) {
         case "gif":
             $type ="image/gif";
@@ -95,31 +95,27 @@
             $filepath = $path["img"];
             break;
         case "odp":
-            $type ="application/odp";
+            $type ="application/vnd.oasis.opendocument.presentation";
             $filepath = $path["doc"];
             break;
         case "ods":
-            $type ="application/ods";
+            $type ="application/vnd.oasis.opendocument.spreadsheet";
             $filepath = $path["doc"];
             break;
         case "odt":
-            $type ="application/odt";
+            $type ="application/vnd.oasis.opendocument.text";
             $filepath = $path["doc"];
-            break;
-        case "csv":
-            $type ="text/csv";
-            $filepath = $path["txt"];
             break;
         case "pdf":
             $type ="application/pdf";
             $filepath = $path["doc"];
             break;
         case "bz2":
-            $type ="application/bz2";
+            $type ="application/octet-stream";
             $filepath = $path["arc"];
             break;
         case "gz":
-            $type ="application/gz";
+            $type ="application/octet-stream";
             $filepath = $path["arc"];
             break;
         case "zip":
@@ -129,7 +125,6 @@
         default:
             die("Bad File");
     }
-
 
     // filenamen zusammensetzen
     $file = $cfg["file"]["base"]["maindir"].$filepath.$value[3].".".$value[2];
