@@ -45,9 +45,10 @@
 
     function sitemap($refid, $script_name, $art = "", $modify = "", $self = "") {
         global $hidedata,$design,$opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $buffer,$positionArray;
-            
+
         if ( !$ausgaben["path"] ) $ausgaben["path"] = "";
 
+        $where = "";
         switch($art) {
             case menued:
                 $flapmenu = -1;
@@ -62,6 +63,7 @@
                 break;
             case sitemap:
                 $sitemap = -1;
+                $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
             default:
 
@@ -76,12 +78,13 @@
                         ".$cfg[$script_name]["db"]["lang"]["entries"].".lang,
                         ".$cfg[$script_name]["db"]["lang"]["entries"].".label,
                         ".$cfg[$script_name]["db"]["lang"]["entries"].".exturl
-                FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
+                  FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
             INNER JOIN  ".$cfg[$script_name]["db"]["lang"]["entries"]."
                     ON  ".$cfg[$script_name]["db"]["menu"]["entries"].".mid = ".$cfg[$script_name]["db"]["lang"]["entries"].".mid
-                WHERE (".$cfg[$script_name]["db"]["menu"]["entries"].".refid=".$refid.")
-                AND (".$cfg[$script_name]["db"]["lang"]["entries"].".lang='".$environment["language"]."')
-            ORDER BY  ".$cfg[$script_name]["db"]["menu"]["order"].";";
+                 WHERE (".$cfg[$script_name]["db"]["menu"]["entries"].".refid=".$refid.")
+                   AND (".$cfg[$script_name]["db"]["lang"]["entries"].".lang='".$environment["language"]."')
+                   ".$where."
+              ORDER BY  ".$cfg[$script_name]["db"]["menu"]["order"].";";
 
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
@@ -176,7 +179,7 @@
                 $aktion = "";
                 if ( is_array($modify) ) {
                     foreach($modify as $name => $value) {
-                        if ( !priv_check(make_ebene($array["mid"]),$value[2]) && !$rechte[$cfg[$script_name]["right"]] == -1 && $right != "-1") { 
+                        if ( !priv_check(make_ebene($array["mid"]),$value[2]) && !$rechte[$cfg[$script_name]["right"]] == -1 && $right != "-1") {
                             continue;
                         }
                         if ( $name == "rights" ) {
