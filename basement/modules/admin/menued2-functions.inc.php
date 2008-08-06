@@ -189,6 +189,29 @@
         }
     }
 
+
+    // funktion um bestimmte eintraege zu verhindern
+    if ( in_array("black_list", $cfg["menued"]["function"][$environment["kategorie"]]) ) {
+
+        function black_list($mid,$entry) {
+            global $cfg, $ausgaben;
+//             $return = "blacklist-test<br>";
+            // blacklist: label-check
+            if ( in_array($entry,$cfg["menued"]["black_list"]["entry"]) ) {
+                $ausgaben["form_error"] .= "#(error_entry)".$entry."<br />";
+            }
+            // blacklist: url-check
+            $url = make_ebene($mid);
+            if ( $url == "/" ) {
+                $url = "";
+            }
+            $url .= "/".$entry;
+            if ( in_array($url,$cfg["menued"]["black_list"]["url"]) ) {
+                $ausgaben["form_error"] .= "#(error_url)".$url."<br />";
+            }
+        }
+    }
+
     // funktion um zu pruefen, ob das feld extend in der lang tabelle existiert
     #if ( in_array("checkext", $cfg["function"][$environment["kategorie"]]) ) {
 

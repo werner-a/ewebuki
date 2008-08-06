@@ -1,4 +1,5 @@
-blacklist einfuehren fuer site namen die probleme hervorrufen koennen wie z.b view
+blacklist wurde eingefuehrt um bestimmte eintraege (z.b. view) oder bestimmte urls (z.b. /admin/fileed) zu verhindern.
+das funktioniert im moment beim edit und add, kann aber durch rename umgangen werden!!!
 
 auf session umgestellt ->
 

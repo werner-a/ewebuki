@@ -187,6 +187,8 @@
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
             $ausgaben["inaccessible"] .= "# (error_lang_add) #(error_lang_add)<br />";
             $ausgaben["inaccessible"] .= "# (error_lang_delete) #(error_lang_delete)<br />";
+            $ausgaben["inaccessible"] .= "# (error_entry) #(error_entry)<br />";
+            $ausgaben["inaccessible"] .= "# (error_url) #(error_url)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -209,6 +211,9 @@
 
             // form eigaben prüfen
             form_errors( $form_options, $HTTP_POST_VARS );
+
+            // black-list-test
+            black_list($environment["parameter"][2],$_POST["entry"]);
 
             // lang tabellen aenderungen
             if ( $ausgaben["form_error"] == ""  ) {

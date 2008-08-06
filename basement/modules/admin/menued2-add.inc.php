@@ -101,7 +101,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/add,,,verify.html";
+        $ausgaben["form_aktion"] = $cfg["menued"]["basis"]."/add,".$environment["parameter"][1].",,verify.html";
         $ausgaben["form_break"] = $cfg["menued"]["basis"]."/list.html";
 
         // hidden values
@@ -140,19 +140,22 @@
             // form eigaben prüfen
             form_errors( $form_options, $_POST );
 
-            // gibt es einen solchen entry bereits?
-            if ( $fixed_entry != "" ) {
-                $sql = "SELECT entry
-                        FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
-                        WHERE refid = '".$_POST["refid"]."'
-                        AND entry = '".$fixed_entry."'";
-                $result = $db -> query($sql);
-                $test = $db -> fetch_array($result,1);
-                if ( $test["entry"] == $fixed_entry ) $ausgaben["form_error"] .= "#(error_dupe)";
-            }
+            // black-list-test
+            black_list($_POST["refid"],$_POST["entry"]);
 
-            // entry hinzufuegen
             if ( $ausgaben["form_error"] == "" ) {
+                // gibt es einen solchen entry bereits?
+                if ( $fixed_entry != "" ) {
+                    $sql = "SELECT entry
+                              FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
+                             WHERE refid = '".$_POST["refid"]."'
+                               AND entry = '".$fixed_entry."'";
+                    $result = $db -> query($sql);
+                    $test = $db -> fetch_array($result,1);
+                    if ( $test["entry"] == $fixed_entry ) $ausgaben["form_error"] .= "#(error_dupe)";
+                }
+
+                // entry hinzufuegen
                 $kick = array( "PHPSESSID", "send", "cancel", "image", "image_x", "image_y",
                                "add_x", "add_y", "add", "form_referer", "lang", "label", "extend",
                                "exturl", "new_lang", "entry", "wizard");
@@ -171,14 +174,16 @@
                 $sqla .= ", entry";
                 $sqlb .= ", '".$fixed_entry."'";
 
-                $sql = "insert into ".$cfg["menued"]["db"]["menu"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "INSERT INTO  ".$cfg["menued"]["db"]["menu"]["entries"]."
+                                    (".$sqla.")
+                             VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             }
 
-            // sprache hinzufuegen
             if ( $ausgaben["form_error"] == "" ) {
+                // sprache hinzufuegen
                 $lastid = $db -> lastid();
                 if ( checkext() != "" ) {
                     $extenda = "extend, ";
@@ -196,42 +201,44 @@
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             }
 
-            // wohin schicken
-            if ( $_POST["add"] ) {
-                $header = $cfg["menued"]["basis"]."/edit,".$lastid.",verify.html";
-            } else {
-                if ( $_SESSION["REFERER"] != "" ) {
-                    $crc = eCRC(str_replace( $pathvars["virtual"], "", $_SESSION["REFERER"])).".";
-                    // ausnahme fuer die startseite hier wird die crc geleert und index aus dem referer entfernt
-                    if ( $_SESSION["REFERER"] == "/auth/index" ) {
-                        $crc = "";
-                        $_SESSION["REFERER"] = str_replace("/index","",$_SESSION["REFERER"]);
-                    }
-                    if ( preg_match("/wizard$/",dirname($_SERVER["HTTP_REFERER"])) ) {
-                        if ( $ausgaben["form_error"] == "" ) {
-                            $_SESSION["form_referer"] = $_SESSION["REFERER"]."/".$fixed_entry.".html";
-                            $header = $pathvars["virtual"]."/wizard/add,". DATABASE . ",".$crc.$fixed_entry.",inhalt,".$_POST["wizard"].".html";
-                        } else {
-                            $header = $pathvars["virtual"]."/wizard/add,,,,".$_POST["wizard"].".html";
-                            $_SESSION["form_error"] = array(
-                                "desc" => $ausgaben["form_error"],
-                                "post" => $_POST,
-                            );
-                        }
-//                         header("Location: ".$header);
-                    } else {
-                        $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
-                    }
-
-                    unset($_SESSION["referer"]);
-                } else {
-                    $sql = "SELECT refid FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."=".$lastid;
-                    $result  = $db -> query($sql);
-                    $lastrefid = $db -> fetch_array($result,1);
-                    $header = $cfg["menued"]["basis"]."/list,".$lastrefid["refid"].".html";
-                }
-            }
             if ( $ausgaben["form_error"] == "" ) {
+                // wohin schicken
+                if ( $_POST["add"] ) {
+                    $header = $cfg["menued"]["basis"]."/edit,".$lastid.",verify.html";
+                } else {
+                    if ( $_SESSION["REFERER"] != "" ) {
+                        $crc = eCRC(str_replace( $pathvars["virtual"], "", $_SESSION["REFERER"])).".";
+                        // ausnahme fuer die startseite hier wird die crc geleert und index aus dem referer entfernt
+                        if ( $_SESSION["REFERER"] == "/auth/index" ) {
+                            $crc = "";
+                            $_SESSION["REFERER"] = str_replace("/index","",$_SESSION["REFERER"]);
+                        }
+                        if ( preg_match("/wizard$/",dirname($_SERVER["HTTP_REFERER"])) ) {
+                            if ( $ausgaben["form_error"] == "" ) {
+                                $_SESSION["form_referer"] = $_SESSION["REFERER"]."/".$fixed_entry.".html";
+                                $header = $pathvars["virtual"]."/wizard/add,". DATABASE . ",".$crc.$fixed_entry.",inhalt,".$_POST["wizard"].".html";
+                            } else {
+                                $header = $pathvars["virtual"]."/wizard/add,,,,".$_POST["wizard"].".html";
+                                $_SESSION["form_error"] = array(
+                                    "desc" => $ausgaben["form_error"],
+                                    "post" => $_POST,
+                                );
+                            }
+    //                         header("Location: ".$header);
+                        } else {
+                            $header = $pathvars["virtual"]."/admin/contented/edit,". DATABASE . ",".$crc.$fixed_entry.",inhalt.html?referer=".$_SESSION["REFERER"]."/".$fixed_entry.".html";
+                        }
+
+                        unset($_SESSION["referer"]);
+                    } else {
+                        $sql = "SELECT refid
+                                  FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
+                                 WHERE ".$cfg["menued"]["db"]["menu"]["key"]."=".$lastid;
+                        $result  = $db -> query($sql);
+                        $lastrefid = $db -> fetch_array($result,1);
+                        $header = $cfg["menued"]["basis"]."/list,".$lastrefid["refid"].".html";
+                    }
+                }
                 header("Location: ".$header);
             }
         }
