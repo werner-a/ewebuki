@@ -114,6 +114,7 @@ echo "</pre>";
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
                     if ( $value == "SORT" ) continue;
                     if ( !is_array($value) && $_POST[$value] != "" ) {
+                        if ( $_POST["kategorie"] != "" ) $ebene = $_POST["kategorie"];
                         $header = $pathvars["virtual"].$ebene.".html";
                         $cont = $_POST[$value];
                         $para = "";
