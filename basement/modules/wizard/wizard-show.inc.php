@@ -171,7 +171,6 @@
 
             // versionen-links
             // * * *
-            $ausgaben["vaktuell"] = $form_values["version"];
             $sql = "SELECT version, html, content, changed, byalias
                       FROM ". SITETEXT ."
                      WHERE lang = '".$environment["language"]."'
@@ -179,32 +178,40 @@
                        AND tname ='".$environment["parameter"][2]."'
                   ORDER BY version";
             $result_version = $db -> query($sql);
-            $ausgaben["vgesamt"] = $db -> num_rows($result_version);
-            $aktuell = 0; $back = ""; $next = "";
+            $$num_versions = $db -> num_rows($result_version);
+            $index = 1; $hit = 0;
             while ( $data = $db -> fetch_array($result_version) ) {
-                if ( $data["version"] == $form_values["version"] ) {
-                    $aktuell = -1;
-                    continue;
-                }
-                if ( $aktuell == 0 ) $back = $data["version"];
-                if ( $aktuell == -1 ) {
+                if ( $index == 1 ) $first = $data["version"];
+                if ( $index == $$num_versions ) $last = $data["version"];
+                if ( $hit == -1 ) {
                     $next = $data["version"];
-                    break;
+                    $hit = 0;
                 }
+                if ( $data["version"] == $form_values["version"] ) {
+                    $aktuell = $data["version"];
+                    $i_aktuell = $index;
+                    $prev = $tmp_prev;
+                    $hit = -1;
+                }
+                $tmp_prev = $data["version"];
+                $index++;
             }
-            $link = $environment["parameter"][0].",".
-                    $environment["parameter"][1].",".
-                    $environment["parameter"][2].",".
-                    $environment["parameter"][3].",".
-                    $environment["parameter"][4].",";
-            if ( $back != "" ) {
-                $hidedata["version_prev"]["link_prev"] = $link.$back.".html";
-                $hidedata["version_prev"]["link_first"] = $link."1.html";
+            $link1 = $environment["parameter"][0].",".
+                     $environment["parameter"][1].",".
+                     $environment["parameter"][2].",".
+                     $environment["parameter"][3].",".
+                     $environment["parameter"][4].",";
+            $link2 = $environment["parameter"][6];
+            if ( $first != $aktuell ) {
+                $hidedata["version_prev"]["link_prev"] = $link1.$prev.",".$link2.".html";
+                $hidedata["version_prev"]["link_first"] = $link1.$first.",".$link2.".html";
             }
-            if ( $next != "" ) {
-                $hidedata["version_next"]["link_next"] = $link.$next.".html";
-                $hidedata["version_next"]["link_last"] = $link.$ausgaben["vgesamt"].".html";
+            if ( $last != $aktuell ) {
+                $hidedata["version_next"]["link_next"] = $link1.$next.",".$link2.".html";
+                $hidedata["version_next"]["link_last"] = $link1.$last.",".$link2.".html";
             }
+            $ausgaben["vaktuell"] = $i_aktuell;
+            $ausgaben["vgesamt"] = $$num_versions;
             // + + +
             // versionen-link
 
@@ -576,8 +583,13 @@
             $publisher = 0;
             if ( priv_check($tname2path,"publish") ) $publisher = -1;
 
-            if ( ($environment["parameter"][6] == "verify"
-                && $_POST["send"] != "") || $_SESSION["form_send"] != "" ) {
+            if ( ( $environment["parameter"][6] == "verify"
+                   && ( $_POST["save"] != ""
+                     || $_POST["version"] != ""
+                     || $_POST["cancel"] != ""
+                      )
+                 )
+              || $_SESSION["form_send"] != "" ) {
 
                 // ebene und kategorie aus tname ableiten
 //                 $tname2path = tname2path($environment["parameter"][2]);
@@ -601,7 +613,9 @@
                 $data = $db -> fetch_array($result,1);
                 $next_version = $data["max_version"] + 1;
 
-                if ( $content_exists == 0 || $_POST["send"][0] == "version" || $_SESSION["form_send"] == "version" ) {
+                if ( $content_exists == 0
+                  || $_POST["version"] != ""
+                  || $_SESSION["form_send"] == "version" ) {
                     // notwendig fuer die artikelverwaltung , der bisher aktive artikel wird auf inaktiv gesetzt
                     if ( preg_match("/^\[!\]/",$content,$regs) ) {
                         $sql_regex = "SELECT * FROM ". SITETEXT ." WHERE content REGEXP '^\\\[!\\\]1' AND tname like '".$environment["parameter"][2]."'";
@@ -646,7 +660,8 @@
                                         ".$status2.")";
                     $release_version = $next_version;
 
-                } elseif ($_POST["send"][0] == "save" || $_SESSION["form_send"] == "save") {
+                } elseif ($_POST["save"] != ""
+                       || $_SESSION["form_send"] == "save") {
                     // preview mit ajax
                     if ( $_POST["ajax"] == "on" ) {
                         // parameter-manipulation fuer blog-tag
@@ -693,7 +708,7 @@
                                AND version ='".$form_values["version"]."'";
                     $release_version = $form_values["version"];
 
-                } elseif ($_POST["send"][0] == "cancel") {
+                } elseif ($_POST["cancel"] != "") {
                     unset($_SESSION["wizard_content"]);
                 }
 
