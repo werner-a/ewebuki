@@ -258,6 +258,11 @@
             // bauen der zu bearbeitenden bereiche
             // * * *
             $tag_meat = content_split_all($form_values["content"]);
+// echo "<pre>";
+// echo print_r($tag_meat,true);
+// // echo print_r($tag_meat["I"],true);
+// // echo print_r($tag_meat["IMG"],true);
+// echo "</pre>";
             $tag_order = $tag_meat["order"];
             unset($tag_meat["order"]);
             $tmp_tag_meat = $tag_meat;

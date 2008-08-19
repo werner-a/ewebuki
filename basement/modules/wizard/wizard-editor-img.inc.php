@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -67,11 +67,21 @@
     // preview-bild holen
     $pic_info = str_replace($cfg["file"]["base"]["webdir"],"",$ausgaben["tagwerte0"]);
     $pic_array = explode("/",$pic_info);
+    // unterscheidung zwischen realname und alter bildpfad-angabe
+    if ( is_numeric($pic_array[1]) ) {
+        $file_id = $pic_array[1];
+        $file_size = $pic_array[2];
+    } else {
+        $file_id = substr($pic_array[2],(strpos($pic_array[2],"_")+1) );
+        $file_id = substr($file_id,0,strpos($file_id,".") );
+        $file_size = array_search($pic_array[1]."/", $cfg["file"]["base"]["pic"]);
+    }
     if ( is_array($_SESSION["file_memo"]) || $pic_array[1] != "" ) {
+        // id ggf aus session holen
         if ( is_array($_SESSION["file_memo"]) ) {
             $fid = current($_SESSION["file_memo"]);
         } else {
-            $fid = $pic_array[1];
+            $fid = $file_id;
         }
         $sql = "SELECT *
                   FROM site_file
@@ -88,7 +98,7 @@
             $target_src = $cfg["file"]["base"]["webdir"].
                             $data["ffart"]."/".
                             $fid."/".
-                            $pic_array[count($pic_array)-2]."/".
+                            $file_size."/".
                             $data["ffname"];
             // falls noch keine bildbeschriftung vorhanden ist, bildunterschrift einsetzen
             if ( is_array($_SESSION["file_memo"]) && $hidedata["img"]["description"] == "" ) $hidedata["img"]["description"] = $data["funder"];
@@ -102,7 +112,7 @@
         foreach ( $cfg["wizard"]["img_edit"]["cb_show_size"] as $value=>$label ) {
             $pic_url = $cfg["file"]["base"]["webdir"].$data["ffart"]."/".$fid."/".$value."/".$data["ffname"];
             $check = "";
-            if ( strstr($ausgaben["tagwerte0"],"/".$value."/") ) $check = " checked=\"checked\"";
+            if ( strstr($target_src,"/".$value."/") ) $check = " checked=\"checked\"";
             $dataloop["show"][] = array(
                 "value" => $pic_url,
                 "label" => "#(".$label.")",

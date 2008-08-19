@@ -74,6 +74,10 @@ a img{
         width:250px;
     }
 
+        #wizard form table textarea {
+            width:100%;
+        }
+
         #wizard form input.small {
             width:50px;
         }

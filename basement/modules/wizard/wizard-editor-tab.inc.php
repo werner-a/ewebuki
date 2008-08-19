@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -61,11 +61,17 @@
 
     // daten auflisten
     preg_match_all("/\[ROW\](.*)\[\/ROW\]/Us",$tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"],$rows);
+// echo $tag_marken[0]."<br>";
+// echo $tag_marken[1]."<br>";
+// echo "<pre>".print_r($tag_meat[$tag_marken[0]][$tag_marken[1]],true)."</pre>";
+// echo $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"]."<br>";
+// echo "<pre>".print_r($rows,true)."</pre>";
     $ausgaben["tabelle"] = "<table width=\"100%\">\n";
     $row_index = 0; $ausgaben["num_row"] = 0; $ausgaben["num_col"] = 0;
     foreach ( $rows[1] as $row ) {
         $ausgaben["tabelle"] .= "<tr>";
-        preg_match_all("/\[COL\](.*)\[\/COL\]/Us",$row,$cells);
+        preg_match_all("/\[COL.*\](.*)\[\/COL\]/Us",$row,$cells);
+// echo "<pre>".print_r($cells,true)."</pre>";
         $col_index = 0; $ausgaben["num_col"] = 0;
         foreach ( $cells[1] as $cell ) {
             $ausgaben["tabelle"] .= "<td>".
@@ -78,6 +84,7 @@
         $row_index++; $ausgaben["num_row"]++;
     }
     $ausgaben["tabelle"] .= "</table>";
+// echo "hallo".$ausgaben["tabelle"];
 
 
     // abspeichern, part 2

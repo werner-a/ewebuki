@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -111,7 +111,7 @@
                 //                                                     ebButtons[ebButtons.length] = new ebButton(
                 // id           used to name the toolbar button           'eb_h1'
                 // key          label on button                          ,'H1'
-                // tit          button title                             ,'Überschrift [Alt-1]'
+                // tit          button title                             ,'ï¿½berschrift [Alt-1]'
                 // position     position (top, bot)                      ,'T'
                 // access       access key                               ,'1'
                 // noSelect                                              ,'-1'
@@ -151,57 +151,52 @@
                 $open_tag = $preg[0][0];
                 $close_tag = $preg[0][1];
                 if ( $close_tag == "" ) $close_tag = str_replace("[","[/",$open_tag);
-                $preg_tag[] = str_replace(
-                                array("[","]","/"),
-                                array("\[","\]","\/"),
-                                $open_tag
-                );
-                $preg_tag[] = str_replace(
-                                array("[","]","/"),
-                                array("\[","\]","\/"),
-                                $close_tag
-                );
-                $match = preg_split("/(".implode(")|(",$preg_tag).")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
 
-                $level = 0; $index = -1; $max = -1; $mark = 0; $work = $match; $pre = "";$buffer = array(); $ind_lev = array();
-                foreach ( $match as $value ) {
-                    if ( $value == $open_tag ) {
-                        $level++; $max++;
-                        $index = $max;
-                        $ind_lev[$level] = $index;
-                        $buffer[$index]["start"] = strlen($pre);
-                    } elseif ( $value == $close_tag ) {
-                        $buffer[$index]["complete"] .= $value;
-                        $mark = -1;
-                        $pre .= array_shift($work);
-                        continue;
-                    } elseif ( $mark == -1 ) {
-                        $split = explode("]",$value,2);
-                        // tag-infos einarbeiten
-                        $buffer[$index]["complete"] .= $split[0]."]";
-                        $buffer[$index]["end"] .= $buffer[$index]["start"] + strlen($buffer[$index]["complete"]);
-                        $buffer[$index]["tag_start"] = substr($buffer[$index]["complete"],0,strpos($buffer[$index]["complete"],"]"))."]";
-                        $buffer[$index]["tag_end"] = strrchr($buffer[$index]["complete"],"[");
-                        $len = $buffer[$index]["end"] - $buffer[$index]["start"];
-                        $buffer[$index]["meat"] = substr(
-                                                        $buffer[$index]["complete"],
-                                                        strpos($buffer[$index]["complete"],"]") + 1,
-                                                        $len - strlen($buffer[$index]["tag_start"]) - strlen($buffer[$index]["tag_end"])
-                                                    );
-                        $buffer[$index]["type"] = $preg[1];
-                        $buffer[$index]["buttons"] = $preg[2];
-                        if ( $level > 1 ) {
-                            $value = $buffer[$ind_lev[$level]]["complete"].$split[1];
-                        } else {
-                            $value = $split[1];
-                        }
-                        $level--; $mark = 0;
-                        $index = $ind_lev[$level];
+                $splitter1 = str_replace(
+                                            array("[","]","/"),
+                                            array("\[","\]","\/"),
+                                            $open_tag
+                            )."[0-9=\]]{1}";
+                $splitter2 = str_replace(
+                                            array("[","]","/"),
+                                            array("\[","\]","\/"),
+                                            $close_tag
+                            )."[0-9]{0,1}\]";
+                $splitter = $splitter1.".*".$splitter2;
+                $match_test = preg_split("/(".$splitter.")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
+                $buffer = array(); $pre = ""; $index = 0;
+                foreach ( $match_test as $value ) {
+                    if ( preg_match("/(".$splitter.")/Us",$value) ) {
+                        $tag_preg = "(".
+                                str_replace(
+                                    array("[","]","/"),
+                                    array("\[","\]","\/"),
+                                    $open_tag
+                                ).".*\])(.*)(".
+                                str_replace(
+                                    array("[","]","/"),
+                                    array("\[","\]","\/"),
+                                    $close_tag
+                                ).".*\])";
+                        preg_match(
+                            "/".$tag_preg."/Us",
+                            $value,
+                            $match_tag
+                        );
+                        $buffer[$index] = array(
+                               "start" => strlen($pre),
+                                 "end" => strlen($pre) + strlen($value),
+                            "complete" => $value,
+                           "tag_start" => $match_tag[1],
+                                "meat" => $match_tag[2],
+                             "tag_end" => $match_tag[3],
+                                "type" => $preg[1],
+                             "buttons" => $preg[2],
+                        );
+                        $index++;
+                    } else {
                     }
-                    $pre .= array_shift($work);
-                    if ( $level == 0 ) continue;
-                    $buffer[$index]["complete"] .= $value;
-
+                    $pre .= $value;
                 }
                 $tag_meat[$tag] = $buffer;
             }
