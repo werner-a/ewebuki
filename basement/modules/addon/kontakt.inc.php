@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -74,6 +74,82 @@
         // form elememte bauen
         $element = form_elements( $cfg["kontakt"]["db"]["entries"], $form_values );
 
+        // +++
+        // page basics
+
+        // funktions bereich fuer erweiterungen
+        // ***
+
+        if ( is_array($cfg["kontakt"]["captcha"]) ) {
+            function captcha_randomize($length) {
+                global $cfg;
+                $random = "";
+                while ( strlen($random) < $length ) {
+                    $random .= substr($cfg["kontakt"]["captcha"]["letter_pot"], rand(0,strlen($cfg["kontakt"]["captcha"]["letter_pot"])), 1);
+                }
+                return $random;
+            }
+
+            function captcha_create($text) {
+                global $cfg;
+                // anzahl der zeichen
+                $count = strlen($text);
+                // schriftarten festlegen
+                $ttf = $cfg["kontakt"]["captcha"]["ttf"];
+                // schriftgroesse festlegen
+                $ttf_size = $cfg["kontakt"]["captcha"]["font"]["size"];
+                // schriftabstand rechts
+                $ttf_x = $cfg["kontakt"]["captcha"]["font"]["x"];
+                // schriftabstand oben
+                $ttf_y = $cfg["kontakt"]["captcha"]["font"]["y"];
+
+                // hintergrund erstellen
+                $ttf_img = ImageCreate($count*2*$ttf_size,2*$ttf_size);
+                // bgfarbe festlegen
+                $bg_color = ImageColorAllocate ($ttf_img, $cfg["kontakt"]["captcha"]["bg_color"][0], $cfg["kontakt"]["captcha"]["bg_color"][1], $cfg["kontakt"]["captcha"]["bg_color"][2]);
+                // textfarbe festlegen
+                $font_color = ImageColorAllocate($ttf_img, $cfg["kontakt"]["captcha"]["font_color"][0], $cfg["kontakt"]["captcha"]["font_color"][1], $cfg["kontakt"]["captcha"]["font_color"][2]);
+                // schrift in bild einfuegen
+                foreach ( str_split($text) as $key=>$character ) {
+                    // schriftwinkel festlegen
+                    $ttf_angle = rand(-25,25);
+                    // schriftarten auswaehlen
+                    $ttf_font = $ttf[rand(0,(count($ttf)-1))];
+                    imagettftext($ttf_img, $ttf_size, $ttf_angle, $ttf_size*2*$key+$ttf_x, $ttf_y, $font_color, $ttf_font, $character);
+                }
+                // bild temporaer als datei ausgeben
+                $captcha_crc = crc32($text.$cfg["kontakt"]["captcha"]["randomize"]);
+                $captcha_name = "captcha-".$captcha_crc.".png";
+                $captcha_path = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"];
+                imagepng($ttf_img,$captcha_path.$captcha_name);
+                // bild loeschen
+                imagedestroy($ttf_img);
+            }
+
+            // zufaellige zeichen erzeugen
+            $captcha_text = captcha_randomize($cfg["kontakt"]["captcha"]["length"]);
+            // bild erzeugen
+            captcha_create($captcha_text);
+            // captcha-info erzeugen
+            $captcha_crc = crc32($captcha_text.$cfg["kontakt"]["captcha"]["randomize"]);
+            $captcha_name = "captcha-".$captcha_crc.".png";
+            $captcha_path_web = $cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["new"];
+            $captcha_path_srv = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"];
+            // ausgeben
+            $hidedata["captcha"]["url"] = $captcha_path_web.$captcha_name;
+            $hidedata["captcha"]["proof"] = $captcha_crc;
+            // alte, unnuetze bilder entfernen
+            foreach ( glob($captcha_path_srv."captcha-*.png") as $captcha_file) {
+                if ( (mktime() - filemtime($captcha_file)) > 120 ) unlink($captcha_file);
+            }
+        }
+
+        // +++
+        // funktions bereich fuer erweiterungen
+
+        // page basics
+        // ***
+
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
@@ -88,10 +164,18 @@
         #$mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
 
+        // "form referer"
+        if ( $_POST["last_viewed"] != "" ) {
+            $ausgaben["last_viewed"] = $_POST["last_viewed"];
+        } else {
+            $ausgaben["last_viewed"] = $_SERVER["HTTP_REFERER"];
+        }
+
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
+            $ausgaben["inaccessible"] .= "# (error_captcha) #(error_captcha)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
@@ -108,8 +192,16 @@
                 || $HTTP_POST_VARS["extension1"] != ""
                 || $HTTP_POST_VARS["extension2"] != "" ) ) {
 
-            // form eigaben prüfen
+            // form eigaben pruefen
             form_errors( $form_options, $HTTP_POST_VARS );
+
+            if ( is_array($cfg["kontakt"]["captcha"]) ) {
+                if ( $_POST["captcha_proof"] != crc32($_POST["captcha"].$cfg["kontakt"]["captcha"]["randomize"])
+                  || !file_exists($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png") ) {
+                    $ausgaben["form_error"] .= "#(error_captcha)";
+                }
+                if (file_exists($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png")) unlink($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png");
+            }
 
             // evtl. zusaetzliche datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
@@ -129,13 +221,15 @@
 
                 // mail an betreiber
                 $subject1 = $cfg["kontakt"]["email"]["subj1"].$ausgaben["name"];
+                if ( $_POST["betreff"] != "" ) $subject1 .= ": ".$_POST["betreff"];
                 $header1  = "From: ".$cfg["kontakt"]["email"]["robot"]."\r\n";
                 $header1 .= "Reply-To: ".$email_adresse."\r\n";
                 $result = mail($cfg["kontakt"]["email"]["owner"],$subject1,$message1,$header1);
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (". htmlspecialchars($cfg["kontakt"]["email"]["owner"]).")</font><br />";
 
                 // kopie an kunden
-                $subject2 = $cfg["kontakt"]["email"]["subj2"].$ausgaben["name"];;
+                $subject2 = $cfg["kontakt"]["email"]["subj2"].$ausgaben["name"];
+                if ( $_POST["betreff"] != "" ) $subject2 .= ": ".$_POST["betreff"];
                 $header2  = "From: ".$cfg["kontakt"]["email"]["owner"]."\r\n";
                 $result = mail($email_adresse,$subject2,$message2,$header2);
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
