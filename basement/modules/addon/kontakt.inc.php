@@ -140,7 +140,7 @@
             $hidedata["captcha"]["proof"] = $captcha_crc;
             // alte, unnuetze bilder entfernen
             foreach ( glob($captcha_path_srv."captcha-*.png") as $captcha_file) {
-                if ( (mktime() - filemtime($captcha_file)) > 120 ) unlink($captcha_file);
+                if ( (mktime() - filemtime($captcha_file)) > 600 ) unlink($captcha_file);
             }
         }
 
@@ -160,15 +160,22 @@
         // hidden values
         $ausgaben["form_hidden"] .= "";
 
-        // was anzeigen
-        #$mapping["main"] = eCRC($environment["ebene"]).".modify";
-        #$mapping["navi"] = "leer";
-
         // "form referer"
         if ( $_POST["last_viewed"] != "" ) {
             $ausgaben["last_viewed"] = $_POST["last_viewed"];
         } else {
             $ausgaben["last_viewed"] = $_SERVER["HTTP_REFERER"];
+        }
+
+        // was anzeigen
+        #$mapping["main"] = eCRC($environment["ebene"]).".modify";
+        #$mapping["navi"] = "leer";
+        if ( $environment["parameter"]["1"] == "sent" ) {
+            $hidedata["success"] = array();
+            if ( $_GET["referer"] != "" ) {
+                $hidedata["referer"]["link"] = $_GET["referer"];
+                $ausgaben["last_viewed"] = "";
+            }
         }
 
         // unzugaengliche #(marken) sichtbar machen
@@ -234,16 +241,17 @@
                 $result = mail($email_adresse,$subject2,$message2,$header2);
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
-                $ausgaben["output"] = "<textarea name=\"debug1\" cols=\"60\" rows=\"20\">";
-                $ausgaben["output"] .= "Subject: ".$subject1."\n\n";
-                $ausgaben["output"] .= $message1;
-                $ausgaben["output"] .= "</textarea>";
-                $ausgaben["output"] .= "<br /><br />";
-                $ausgaben["output"] .= "<textarea name=\"debug2\" cols=\"60\" rows=\"20\">";
-                $ausgaben["output"] .= "Subject: ".$subject2."\n\n";
-                $ausgaben["output"] .= $message2;
-                $ausgaben["output"] .= "</textarea>";
-
+                if ( $debugging["html_enable"] ){
+                    $ausgaben["output"] = "<textarea name=\"debug1\" cols=\"60\" rows=\"20\">";
+                    $ausgaben["output"] .= "Subject: ".$subject1."\n\n";
+                    $ausgaben["output"] .= $message1;
+                    $ausgaben["output"] .= "</textarea>";
+                    $ausgaben["output"] .= "<br /><br />";
+                    $ausgaben["output"] .= "<textarea name=\"debug2\" cols=\"60\" rows=\"20\">";
+                    $ausgaben["output"] .= "Subject: ".$subject2."\n\n";
+                    $ausgaben["output"] .= $message2;
+                    $ausgaben["output"] .= "</textarea>";
+                }
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
@@ -257,7 +265,7 @@
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$header);
+                header("Location: ".$cfg["kontakt"]["basis"].",sent.html?referer=".$_POST["last_viewed"]);
             }
         }
 
