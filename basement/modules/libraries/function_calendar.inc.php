@@ -46,7 +46,7 @@
 function calendar($monat="",$jahr="",$class="",$extendend="",$linked="") {
     global $_GET,$pathvars;
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
-    $monate = array( "Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
+    $monate = array( "Jan", "Feb", "M&auml;r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
     setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
 
     $aktuell = getdate();
