@@ -45,7 +45,7 @@
 
     function eCRC($ebene) {
         global $specialvars;
-        if ( $specialvars["crc32force"] == -1 ) {
+        if ( $specialvars["crc32force"] == -1 && intval(-6981276091) == -6981276091 ) {
             $crc = abs(crc32($ebene));
             if( $crc & 0x80000000){
                 $crc ^= 0xffffffff;
