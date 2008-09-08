@@ -67,7 +67,7 @@
             || $_POST["upload"] != "" ) ) {
 
         // trennen nach leerzeilen
-        $buffer = preg_split("/[".chr(13).chr(10)."]{2}/",$_POST["content"],-1,PREG_SPLIT_NO_EMPTY);
+        $buffer = preg_split("/(".chr(13).chr(10)."){2}/",$_POST["content"],-1,PREG_SPLIT_NO_EMPTY);
         $to_insert = implode("\n[*]",$buffer);
         // verbotenen tags rausfiltern
         $buffer = array();
