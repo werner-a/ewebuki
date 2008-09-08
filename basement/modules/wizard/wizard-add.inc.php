@@ -167,11 +167,16 @@
                 $data = $db -> fetch_array($result,1);
                 $content = "[!]wizard:".$environment["parameter"][4]."[/!]\n\n".$data["content"];
 
+                if ( $specialvars["content_release"] == -1 ) {
+                    $sqla = ", status";
+                    $sqlb = ", 0";
+                }
+
                 $sql = "INSERT INTO ". SITETEXT ."
                                     (lang, label, tname, version,
                                     ebene, kategorie,
                                     crc32, html, content,
-                                    changed, bysurname, byforename, byemail, byalias)
+                                    changed, bysurname, byforename, byemail, byalias".$sqla.")
                                 VALUES (
                                         '".$environment["language"]."',
                                         '".$environment["parameter"][3]."',
@@ -186,7 +191,8 @@
                                         '".$_SESSION["surname"]."',
                                         '".$_SESSION["forename"]."',
                                         '".$_SESSION["email"]."',
-                                        '".$_SESSION["alias"]."')";
+                                        '".$_SESSION["alias"]."'
+                                         ".$sqlb.")";
 
                 if ( $result = $db -> query($sql) ) {
                     $header = $cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html";

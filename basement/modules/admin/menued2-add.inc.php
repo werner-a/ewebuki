@@ -174,8 +174,7 @@
                 $sqla .= ", entry";
                 $sqlb .= ", '".$fixed_entry."'";
 
-                $sql = "INSERT INTO  ".$cfg["menued"]["db"]["menu"]["entries"]."
-                                    (".$sqla.")
+                $sql = "INSERT INTO ".$cfg["menued"]["db"]["menu"]["entries"]." (".$sqla.")
                              VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
