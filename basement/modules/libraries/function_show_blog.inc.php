@@ -204,7 +204,7 @@
                             $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
                         }
                     }
-                    $array[$counter][$key."_org"] = $org_tag;
+                    $array[$counter][$key."_org"] = str_replace("\"","'",$org_tag);
                     $array[$counter][$key] = tagreplace($rep_tag);
                     if ( $org_tag == "" ) $array[$counter][$key] = "";
                 } else {
@@ -217,7 +217,7 @@
                             $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
                         }
                     }
-                    $invisible_array[$counter][$key."_org"] = $org_tag;
+                    $invisible_array[$counter][$key."_org"] = str_replace("\"","'",$org_tag);
                     $invisible_array[$counter][$key] = tagreplace($rep_tag);
                     $array[$counter][$key."_org"] = "";
                     $array[$counter][$key] = "";
