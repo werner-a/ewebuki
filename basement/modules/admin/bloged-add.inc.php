@@ -53,9 +53,6 @@
 
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";
             if ( $cfg["bloged"]["blogs"][$ebene]["sort"][1] == -1 ) {
                 $sort = "0";
             } else {
@@ -111,20 +108,21 @@ echo "</pre>";
             $content  = "[!][".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$sort."[/".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$kategorie;
 
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
+                if ( $_POST["kategorie"] != "" ) $ebene = $_POST["kategorie"];
+                $header = $pathvars["virtual"].$ebene.".html";
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
                     if ( $value == "SORT" ) continue;
-                    if ( !is_array($value) && $_POST[$value] != "" ) {
-                        if ( $_POST["kategorie"] != "" ) $ebene = $_POST["kategorie"];
-                        $header = $pathvars["virtual"].$ebene.".html";
+                    if ( !is_array($value) ) {
                         $cont = $_POST[$value];
                         $para = "";
-                    } elseif (is_array($value)) {
-                        $cont = $value["content"];
+                    } else {
+                       if ( $_POST[$value["tag"]] != "" ) {
+                            $cont = $_POST[$value["tag"]];
+                        } else {
+                            $cont = $value["content"];
+                        }
                         $para = $value["parameter"];
                         $value = $value["tag"];
-                    } else {
-                        $cont = "";
-                        $para = "";
                     }
                     (strpos($value,"=")) ? $endtag= substr($value,0,strpos($value,"=")): $endtag=$value;
                     $content .= "\r\n[".$value.$para."]".$cont."[/".$endtag."]\r\n";
