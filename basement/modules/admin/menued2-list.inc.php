@@ -46,11 +46,6 @@
     if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
         priv_check_old("",$cfg["menued"]["right"]) ) {
 
-        // bei eingeschalteten content recht wird button hinzugefuegt
-        if ( $specialvars["security"]["enable"] == -1 || $specialvars["security"]["new"] == -1 ) {
-            $cfg["menued"]["modify"]["rights"] = array("", "#(button_desc_right)", "admin");
-        }
-
         // array umdrehen
         $modify = array_reverse($cfg["menued"]["modify"]);
 
@@ -138,10 +133,15 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["menued"]["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        if ( priv_check("/",$cfg["menued"]["right"]) || priv_check_old("",$cfg["menued"]["right"])) {
+        if ( priv_check("/",$cfg["menued"]["modify"]["rights"][2]) || priv_check_old("",$cfg["menued"]["right"])) {
             $ausgaben["new"] = "<a href=\"".$cfg["menued"]["basis"]."/add,0.html\">g(new)</a>";
+            $ausgaben["root"] = "";
+            if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2]) ) {
+                $ausgaben["root"] ="<ul><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"".$pathvars["images"]."rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";
+            }
         } else {
             $ausgaben["new"] = "";
+            $ausgaben["root"] = "";
         }
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".list";

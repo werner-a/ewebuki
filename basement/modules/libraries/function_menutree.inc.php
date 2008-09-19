@@ -179,14 +179,27 @@
                 $aktion = "";
                 if ( is_array($modify) ) {
                     foreach($modify as $name => $value) {
-                        if ( !priv_check(make_ebene($array["mid"]),$value[2]) && !$rechte[$cfg[$script_name]["right"]] == -1 && $right != "-1") {
-                            continue;
+                        if ( $specialvars["security"]["new"] == -1 ) {
+                            if ( !priv_check(make_ebene($array["mid"]),$value[2]) ) continue;
+                        } else {
+                            if ( !$rechte[$cfg[$script_name]["right_admin"]] == -1 && $right != "-1" ) continue;
+                        }
+                        if ( $name == "up" || $name == "down") {
+                            if ( $specialvars["security"]["new"] == -1 ) {
+                                if ( !priv_check(make_ebene($array["refid"]),$value[2]) ) continue;
+                            } else {
+                                $kategorie2check = substr(make_ebene($array["refid"]),0,strpos(make_ebene($array["refid"]),"/"));
+                                $ebene2check = substr(make_ebene($array["refid"]),strpos(make_ebene($array["refid"]),"/"));
+                                if ( !$rechte[$cfg[$script_name]["right_admin"]] == -1 && ( !right_check("-1",$ebene2check,$kategorie2check != "") ) )  continue;
+                            }
                         }
                         if ( $name == "rights" ) {
                             if ( $specialvars["security"]["new"] == -1 ) {
                                 $aktion .= "<a href=\"".$pathvars["virtual"]."/".$cfg[$script_name]["subdir"]."/righted/edit,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
-                                continue;
+                            } elseif ( $specialvars["security"]["enable"] == -1 ) {
+                                $aktion .= "<a href=\"".$cfg[$script_name]["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                             }
+                            continue;
                         }
                         // anzeige der sortierung
                         if ( $sortinfo != "" ) {

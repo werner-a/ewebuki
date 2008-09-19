@@ -43,8 +43,11 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check(make_ebene($environment["parameter"][1]),$cfg["menued"]["right"]) ||
-        ( function_exists(priv_check_old) && priv_check_old("",$cfg["menued"]["right"])) ) {
+    $kategorie2check = substr(make_ebene($environment["parameter"][1]),0,strpos(make_ebene($environment["parameter"][1]),"/"));
+    $ebene2check = substr(make_ebene($environment["parameter"][1]),strpos(make_ebene($environment["parameter"][1]),"/"));
+
+    if ( ( $specialvars["security"]["new"] == -1 && priv_check(make_ebene($environment["parameter"][1]),$cfg["menued"]["modify"]["edit"][2]) ) ||
+        ( $specialvars["security"]["new"] != -1 && ( function_exists(priv_check_old) && priv_check_old("",$cfg["menued"]["right_admin"]) || right_check("-1",$ebene2check,$kategorie2check != "") ) ) ) {
 
         // page basics
         // ***

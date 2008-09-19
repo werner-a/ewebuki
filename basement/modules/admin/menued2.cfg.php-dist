@@ -59,10 +59,10 @@
                       "add" => array("make_ebene", "black_list"),
                      "edit" => array("make_ebene", "update_tname", "black_list"),
                    "delete" => array("make_ebene"),
-                     "sort" => array("sitemap", "renumber"),
+                     "sort" => array("sitemap", "renumber","make_ebene"),
               "move,shared" => array("menutree"),
                      "move" => array("locate", "make_ebene", "update_tname"),
-                   "rights" => array(""),
+                   "rights" => array("make_ebene"),
                        ),
                "db" => array(
                    "change" => 0,

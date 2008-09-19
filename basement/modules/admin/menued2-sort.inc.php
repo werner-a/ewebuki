@@ -43,8 +43,19 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
-        priv_check_old("",$cfg["menued"]["right"]) ) {
+    $kategorie2check = substr(make_ebene($environment["parameter"][2]),0,strpos(make_ebene($environment["parameter"][2]),"/"));
+    $ebene2check = substr(make_ebene($environment["parameter"][2]),strpos(make_ebene($environment["parameter"][2]),"/"));
+
+    // um bei den menupunkten die Reihenfolge veraendern zu koennen muss man das recht fuer den uebergeordneten Punkt besitzen
+    $sql = "SELECT refid FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE mid='".$environment["parameter"][2]."'";
+    $result = $db -> query($sql);
+    $refid = $db -> fetch_array($result,1);
+
+    $kategorie2check_2 = substr(make_ebene($refid["refid"]),0,strpos(make_ebene($refid["refid"]),"/"));
+    $ebene2check_2 = substr(make_ebene($refid["refid"]),strpos(make_ebene($refid["refid"]),"/"));
+
+    if ( ( $specialvars["security"]["new"] == -1 && priv_check(make_ebene($environment["parameter"][2]),$cfg["menued"]["modify"]["sort"][2]) && priv_check(make_ebene($refid["refid"]),$cfg["menued"]["modify"]["sort"][2]) ) ||
+        ( $specialvars["security"]["new"] != -1 && ( function_exists(priv_check_old) && priv_check_old("",$cfg["menued"]["right_admin"]) || ( right_check("-1",$ebene2check,$kategorie2check) != "" && right_check("-1",$ebene2check_2,$kategorie2check_2) ) ) ) ) {
 
         if ( $environment["parameter"][1] == "up" ) {
             $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
