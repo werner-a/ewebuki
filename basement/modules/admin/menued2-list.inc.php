@@ -137,7 +137,7 @@
             $ausgaben["new"] = "<a href=\"".$cfg["menued"]["basis"]."/add,0.html\">g(new)</a>";
             $ausgaben["root"] = "";
             if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2]) ) {
-                $ausgaben["root"] ="<ul><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"".$pathvars["images"]."rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";
+                $ausgaben["root"] ="<ul><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"/images/default/rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";
             }
         } else {
             $ausgaben["new"] = "";
