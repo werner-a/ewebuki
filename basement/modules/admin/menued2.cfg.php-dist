@@ -111,6 +111,7 @@
                 "up"        => array("sort,", "#(button_desc_up)", "admin"),
                 "down"      => array("sort,", "#(button_desc_down)", "admin"),
                 "move"      => array("", "#(button_desc_move)", "admin"),
+                "rights"    => array("", "#(button_desc_right)", "admin")
                             ),
         "black_list"=> array(
                     "entry" => array("view", "new", "history"),
