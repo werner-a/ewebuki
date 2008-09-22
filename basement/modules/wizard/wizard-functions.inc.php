@@ -143,7 +143,7 @@
         // erzeugt ein array mit den informationen aller gesuchten tags (inhalt der tags, position,...)
         // aufbau: $tag_meat[tagname][index] ( z.B. $tag_meat["H"][1] )
         function content_split_all($content) {
-            global $cfg;
+            global $cfg, $value;
 
             $tag_meat = array();
             foreach ( $cfg["wizard"]["ed_boxed"] as $tag=>$preg ) {
@@ -190,8 +190,14 @@
                            "tag_start" => $match_tag[1],
                                 "meat" => $match_tag[2],
                              "tag_end" => $match_tag[3],
+                                "keks" => "",
                                 "type" => $preg[1],
                              "buttons" => $preg[2],
+                        );
+                        $alternate[strlen($pre)] = array(
+                                "para" => array($tag,$index),
+                               "start" => strlen($pre),
+                                 "end" => strlen($pre) + strlen($value),
                         );
                         $index++;
                     } else {
@@ -200,6 +206,29 @@
                 }
                 $tag_meat[$tag] = $buffer;
             }
+
+            // verschachtelte tags werden gesucht und eingetragen
+            ksort($alternate);
+            if ( !function_exists(filter_alternate) ) {
+                function filter_alternate($var) {
+                    global $value, $start;
+                    if ( $value["start"] < $var["start"] && $value["end"] > $var["end"] ) return $var;
+                }
+            }
+            foreach ( $alternate as $key=>$value ) {
+                $start = $value["start"];
+                $nested = (array_filter($alternate, "filter_alternate"));
+                foreach ( $nested as $index => $nest_value ) {
+                    if ( $tag_meat[$nest_value["para"][0]][$nest_value["para"][1]]["keks"] != "" ) {
+                        $keks = "->";
+                    } else {
+                        $keks = "";
+                    }
+                    $keks .= trim($tag_meat[$value["para"][0]][$value["para"][1]]["tag_start"],"[]");
+                    $tag_meat[$nest_value["para"][0]][$nest_value["para"][1]]["keks"] .= $keks;
+                }
+            }
+
             return $tag_meat;
         }
 

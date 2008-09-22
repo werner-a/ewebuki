@@ -142,7 +142,7 @@
                                 $loop_work = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$loop_work);
                                 $loop_block .= $loop_work;
                             }
-                            $parse_mod = $loop_block.trim($parse_mod)."\n";
+                            $parse_mod = $loop_block."\n"; // marke ebenfalls kicken!
                         } elseif ( $loop == "1" ) {
                             $loop_buffer .= trim($parse_mod)."\n";
                             continue;

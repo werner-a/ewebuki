@@ -258,11 +258,7 @@
             // bauen der zu bearbeitenden bereiche
             // * * *
             $tag_meat = content_split_all($form_values["content"]);
-// echo "<pre>";
-// echo print_r($tag_meat,true);
-// // echo print_r($tag_meat["I"],true);
-// // echo print_r($tag_meat["IMG"],true);
-// echo "</pre>";
+
             $tag_order = $tag_meat["order"];
             unset($tag_meat["order"]);
             $tmp_tag_meat = $tag_meat;
@@ -307,7 +303,10 @@
                     $button = "";
                     if ( is_array($tmp_tag_meat[$tag][$key]["buttons"]) ) {
                         foreach ( $tmp_tag_meat[$tag][$key]["buttons"] as $buttons ) {
-                            $button .= "<a href=\"".$$buttons."\">#(tag_".$buttons.")</a>";
+                            if ( is_array($cfg["wizard"]["ed_boxed"][$tag][3][$tmp_tag_meat[$tag][$key]["keks"]]) ) {
+                                if ( !in_array($buttons,$cfg["wizard"]["ed_boxed"][$tag][3][$tmp_tag_meat[$tag][$key]["keks"]]) ) continue;
+                            }
+                            $button .= "<!--button_".$buttons."_beginn--><a href=\"".$$buttons."\">#(tag_".$buttons.")</a><!--button_".$buttons."_end-->";
                         }
                     }
                     // bauen der "bereichsumrandung"
@@ -441,6 +440,13 @@
                     }
                     // welcher tag ist es
                     preg_match("/\[(.+)\]/U",$value,$tag_match);
+
+                    $array = array("del","rip");
+                    if ( $parent_tag == "DIV=present" ) {
+                        foreach ( $array as $tag_key ) {
+                            $value = preg_replace("/<!--button_".$tag_key."_beginn-->.*<!--button_".$tag_key."_end-->/U","",$value);
+                        }
+                    }
 
                     $dataloop["sort_content"][] = array(
                                 "key"        => $key,
