@@ -65,7 +65,6 @@
 
         // keine files in dem new-ordner
         if ( $file == "" ) {
-            unset($_SESSION["zip_extracted"]);
             // falls man von wizard kommt, zurueck dahin
             if ( $_SESSION["wizard_last_edit"] != "" ) {
                 $header = $_SESSION["wizard_last_edit"];
@@ -73,6 +72,7 @@
             } else {
                 $header = $cfg["fileed"]["basis"]."/list.html";
             }
+            unset($_SESSION["zip_extracted"]);
             header("Location: ".$header);
         }
 
@@ -166,6 +166,7 @@
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
+        if ( $_SESSION["wizard_last_edit"] != "" ) $ausgaben["form_break"] = $_SESSION["wizard_last_edit"];
 
         // hidden values
         $ausgaben["form_hidden"] .= "";

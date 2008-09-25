@@ -55,7 +55,7 @@
         }
 
         if ( $environment["parameter"][1] == "" ) {
-            if ( count($_SESSION["file_memo"]) > 0 ) {
+            if ( count($_SESSION["file_memo"]) > 0 && $_SESSION["wizard_last_edit"] == "" ) {
                 $environment["parameter"][1] = current($_SESSION["file_memo"]);
             } else {
                 if ( $_SESSION["wizard_last_edit"] != "" ) {
@@ -167,6 +167,7 @@
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
+        if ( $_SESSION["wizard_last_edit"] != "" ) $ausgaben["form_break"] = $_SESSION["wizard_last_edit"];
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -286,7 +287,7 @@
                     if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/edit.html";
                 }
 
-                unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
+                if ( $_SESSION["wizard_last_edit"] != "" ) unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

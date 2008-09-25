@@ -33,12 +33,31 @@
             </fieldset>
 
             <fieldset >
-                <label></label>
-                <input type="submit" id="eb_submit" name="add[]" value="#(get_file)" title="Datei auswaehlen" class="button" /><br />
-                <label></label>
-                <input type="file" name="new_file" />
-                <label></label>
-                <input type="submit" name="upload[]" value="#(upload_file)" title="Datei auswaehlen" class="button" /><br />
+<!--                 <label></label> -->
+                <input type="submit" id="eb_submit" name="add[]" value="#(get_file)" title="Datei auswaehlen" class="button" />
+<!--                 <label></label> -->
+<!--                 <input type="file" name="new_file" /> -->
+<!--                 <label></label> -->
+                <input type="submit" name="upload[]" value="#(upload_file)" title="Datei auswaehlen" class="button" />
+                <input type="submit" name="change_pic[]" value="#(edit_file)" title="Datei auswaehlen" class="button" /><br />
+            <!--##show-->
+            <!--##hide-imgmulti-->
+            <ul style="float:left;">
+            <!--##loop-imgmulti-->
+                <li style="margin:5px 0 10px 10px;clear:both;float:left;" >
+                    <input type="radio" value="!{src}" name="tagwerte[0]"!{checked} />
+                    <img src="!{src}" alt="Preview" style="float:left;margin:0 10px;" />
+                    <div style="float:left;">
+                        <b>#(funder)</b><br />
+                        <p>!{funder}</p>
+                        <b>#(fdesc)</b><br />
+                        <p>!{fdesc}</p>
+                    </div>
+                </li>
+            <!--##cont-->
+            </ul>
+            <!--##show-->
+            <!--##hide-img-->
             </fieldset>
 
             <fieldset>
@@ -58,7 +77,7 @@
                     <legend>#(size)</legend>
                     <!--##loop-show-->
                     <label class="cbra">
-                        <input type="radio" name="tagwerte[0]" value="!{value}"!{check} />!{label}
+                        <input type="radio" name="pic_size" value="!{value}"!{check} />!{label}
                     </label>
                     <!--##cont-->
                 </fieldset>
@@ -137,10 +156,10 @@
                 <label></label>
                 <input type="file" name="new_file" />
                 <label></label>
-                <input type="submit" name="upload[]" value="#(upload_file)" title="Datei auswaehlen" class="button" /><br />
+                <input type="submit" name="uploaded[]" value="#(upload_file)" title="Datei auswaehlen" class="button" /><br />
             </fieldset>
 
-            <fieldset>
+            <fieldset style="display:none;">
                 <fieldset >
                     <legend>#(detail_size)</legend>
                     <!--##loop-size-->
@@ -219,9 +238,8 @@
             <!--##hide-default-->
             <fieldset class="ce">
                 <div style="float:left"><script type="text/javascript">ebToolbar('T');</script></div>
-                <textarea id="content" name="!#ausgaben_name" class="ta_norm" cols="80" rows="15" style="width:100%" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
+                <textarea id="content" name="!#ausgaben_name" class="ta_norm" cols="80" rows="15" style="width:100%;" !#ausgaben_eventh2>!#ausgaben_inhalt</textarea>
                 <div style="float:left"><script type="text/javascript">ebToolbar('B');</script></div>
-                <div style="clear:both"></div>
                 <ul>
                 <!--##loop-list_images-->
                     <li class="thumbs">

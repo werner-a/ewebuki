@@ -154,7 +154,9 @@
                     || $_POST["add"] != ""
                     || $_POST["sel"] != ""
                     || $_POST["refresh"] != ""
-                    || $_POST["upload"] != "" ) ) {
+                    || $_POST["upload"] != ""
+                    || $_POST["uploaded"] != ""
+                    || $_POST["change_pic"] != "" ) ) {
 
                 // form eingaben pr�fen
                 form_errors( $form_options, $_POST );
@@ -243,7 +245,9 @@
                         || $_POST["add"] != ""
                         || $_POST["sel"] != ""
                         || $_POST["refresh"] != ""
-                        || $_POST["upload"] != "" ) ) {
+                        || $_POST["upload"] != ""
+                        || $_POST["uploaded"] != ""
+                        || $_POST["change_pic"] != "" ) ) {
 
                     // neuen content bauen
                     // * * *
@@ -266,6 +270,7 @@
                                                     ",".
                                                     $environment["parameter"][5].",".
                                                     $environment["parameter"][6].".html";
+                unset($_SESSION["file_memo"]);
                 header("Location: ".$header);
             }
 
@@ -276,7 +281,9 @@
                     || $_POST["add"] != ""
                     || $_POST["sel"] != ""
                     || $_POST["refresh"] != ""
-                    || $_POST["upload"] != "" ) ) {
+                    || $_POST["upload"] != ""
+                    || $_POST["uploaded"] != ""
+                    || $_POST["change_pic"] != "" ) ) {
 
                 // vor-,nachlauf
                 $pre_content = substr($old_content,0,$tag_meat[$tag_marken[0]][$tag_marken[1]]["start"]);
@@ -287,8 +294,8 @@
 
                 // zusammenbauen
                 $content = $pre_content.
-                        $to_insert.
-                        $post_content;
+                           $to_insert.
+                           $post_content;
 
                 // html killer :)
                 if ( $specialvars["denyhtml"] == -1 ) {
@@ -321,7 +328,11 @@
                 }
                 $_SESSION["wizard_content"][$identifier] = $content;
 
-                if ( $_POST["add"] || $_POST["sel"] || $_POST["upload"] ) {
+                if ( $_POST["add"]
+                  || $_POST["sel"]
+                  || $_POST["upload"]
+                  || $_POST["uploaded"]
+                  || $_POST["change_pic"] ) {
 
                     $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
                     $_SESSION["wizard_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
@@ -333,8 +344,12 @@
                     if ( $_POST["sel"] != "" ) {
                         unset($_SESSION["compilation_memo"]);
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/compilation.html");
-                    } elseif ( $_POST["upload"] != "" && $error == 0 ) {
+                    } elseif ( $_POST["upload"] != "" ) {
+                        header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html");
+                    } elseif ( $_POST["uploaded"] != "" && $error == 0 ) {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/add.html");
+                    } elseif ( $_POST["change_pic"] != "" ) {
+                        header("Location: ".$pathvars["virtual"]."/admin/fileed/edit,".$selected_fid.".html");
                     } else {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
                     }
@@ -364,6 +379,7 @@
             $ausgaben["inaccessible"] .= "# (description) #(description)<br />";
             $ausgaben["inaccessible"] .= "# (get_file) #(get_file)<br />";
             $ausgaben["inaccessible"] .= "# (upload_file) #(upload_file)<br />";
+            $ausgaben["inaccessible"] .= "# (edit_file) #(edit_file)<br />";
             $ausgaben["inaccessible"] .= "# (get_sel) #(get_sel)<br />";
 
             $ausgaben["inaccessible"] .= "# (refresh) #(refresh)<br />";

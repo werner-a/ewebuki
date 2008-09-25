@@ -66,7 +66,7 @@
 
     // preview-bild holen
     $pic_info = str_replace($cfg["file"]["base"]["webdir"],"",$ausgaben["tagwerte0"]);
-    $pic_array = explode("/",$pic_info);
+    $pic_array = explode("/",str_replace($cfg["file"]["base"]["webdir"],"",$tag_werte[0]));
     // unterscheidung zwischen realname und alter bildpfad-angabe
     if ( is_numeric($pic_array[1]) ) {
         $file_id = $pic_array[1];
@@ -76,52 +76,60 @@
         $file_id = substr($file_id,0,strpos($file_id,".") );
         $file_size = array_search($pic_array[1]."/", $cfg["file"]["base"]["pic"]);
     }
-    if ( is_array($_SESSION["file_memo"]) || $pic_array[1] != "" ) {
-        // id ggf aus session holen
-        if ( is_array($_SESSION["file_memo"]) ) {
-            $fid = current($_SESSION["file_memo"]);
-        } else {
-            $fid = $file_id;
+    if ( is_array($_SESSION["file_memo"])
+      || $pic_array[1] != "" ) {
+        // ggf session ergaenzen
+        if ( !is_array($_SESSION["file_memo"]) || !in_array($file_id,$_SESSION["file_memo"]) ) {
+            $_SESSION["file_memo"][$file_id] = $file_id;
         }
         $sql = "SELECT *
                   FROM site_file
-                 WHERE fid=".$fid;
+                 WHERE fid IN (".implode(",",$_SESSION["file_memo"]).")";
         $result = $db -> query($sql);
-        if ( $db -> num_rows($result) == 1 ) {
-            $data = $db -> fetch_array($result);
-            $hidedata["imgpreview"] = array(
-                       "src" => $cfg["file"]["base"]["webdir"].
-                                $data["ffart"]."/".
-                                $fid."/s/".
-                                $data["ffname"],
-            );
-            $target_src = $cfg["file"]["base"]["webdir"].
-                            $data["ffart"]."/".
-                            $fid."/".
-                            $file_size."/".
-                            $data["ffname"];
-            // falls noch keine bildbeschriftung vorhanden ist, bildunterschrift einsetzen
-            if ( is_array($_SESSION["file_memo"]) && $hidedata["img"]["description"] == "" ) $hidedata["img"]["description"] = $data["funder"];
-            if ( is_array($_SESSION["file_memo"]) && $hidedata["img"]["meat"] == "" ) $hidedata["img"]["meat"] = $data["funder"];
-        }
-        unset($_SESSION["file_memo"]);
+            $hidedata["imgmulti"] = array();
+            while ( $data = $db -> fetch_array($result,1) ) {
+                $src =  $cfg["file"]["base"]["webdir"].
+                        $data["ffart"]."/".
+                        $data["fid"]."/".
+                        "tn/".
+                        $data["ffname"];
+                $checked = "";
+                if ( $_POST["tagwerte"] != "" ) {
+                    if ( $src == $_POST["tagwerte"][0] ) {
+                        $checked = " checked=\"checked\"";
+                        $selected_fid = $data["fid"];
+                    }
+                } else {
+                    if ( (count($_SESSION["file_memo"]) == 1 && in_array($data["fid"],$_SESSION["file_memo"]))
+                    || (count($_SESSION["file_memo"]) > 1 && $data["fid"] == $file_id)
+                    || (count($_SESSION["file_memo"]) == 0) ) {
+                        $checked = " checked=\"checked\"";
+                        $selected_fid = $data["fid"];
+                    }
+                }
+                $dataloop["imgmulti"][] = array(
+                        "src" => $src,
+                     "funder" => $data["funder"],
+                      "fdesc" => $data["fdesc"],
+                    "checked" => $checked,
+                );
+            }
     }
 
     // anzeigen-groesse-radiobutton
     if ( count($cfg["wizard"]["img_edit"]["cb_show_size"]) >0 ) {
         foreach ( $cfg["wizard"]["img_edit"]["cb_show_size"] as $value=>$label ) {
-            $pic_url = $cfg["file"]["base"]["webdir"].$data["ffart"]."/".$fid."/".$value."/".$data["ffname"];
             $check = "";
-            if ( strstr($target_src,"/".$value."/") ) $check = " checked=\"checked\"";
+            if ( $value == $file_size ) $check = " checked=\"checked\"";
             $dataloop["show"][] = array(
-                "value" => $pic_url,
+                "value" => $value,
                 "label" => "#(".$label.")",
                 "check" => $check,
             );
         }
     } else {
         $dataloop["show"][] = array(
-            "value" => $target_src,
+            "value" => $file_size,
             "label" => "not changeable",
             "check" => " checked=\"checked\"",
         );
@@ -173,7 +181,9 @@
             || $_POST["add"] != ""
             || $_POST["sel"] != ""
             || $_POST["refresh"] != ""
-            || $_POST["upload"] != "" ) ) {
+            || $_POST["upload"] != ""
+            || $_POST["uploaded"] != ""
+            || $_POST["change_pic"] != "" ) ) {
 
         // ggf bild einfuegen
         $error = file_validate($_FILES["new_file"]["tmp_name"], $_FILES["new_file"]["size"], $cfg["file"]["filesize"], $cfg["file"]["filetyp"], "new_file");
@@ -185,9 +195,15 @@
         // einzubauender content
         $tag_werte = array();
         for ($i = 0; $i <= 6; $i++) {
-            $tag_werte[] = $_POST["tagwerte"][$i];
+            if ( $i == 0 ) {
+                $tag_werte[] = str_replace("/tn/","/".$_POST["pic_size"]."/",$_POST["tagwerte"][$i]);
+            } else {
+                $tag_werte[] = $_POST["tagwerte"][$i];
+            }
         }
         $to_insert = "[IMG=".implode(";",$tag_werte)."]".$_POST["description"]."[/IMG]";
+
+        if ( !is_array($_POST["change_pic"]) && !is_array($_POST["add"]) ) unset($_SESSION["file_memo"]);
 
     }
     // + + +

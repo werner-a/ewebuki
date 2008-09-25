@@ -115,7 +115,7 @@
             || $_POST["add"] != ""
             || $_POST["sel"] != ""
             || $_POST["refresh"] != ""
-            || $_POST["upload"] != "" ) ) {
+            || $_POST["uploaded"] != "" ) ) {
 
         // ggf bild einfuegen
         $error = file_validate($_FILES["new_file"]["tmp_name"], $_FILES["new_file"]["size"], $cfg["file"]["filesize"], $cfg["file"]["filetyp"], "new_file");
