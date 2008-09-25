@@ -49,22 +49,19 @@
 
     include $pathvars["moduleroot"]."libraries/function_calendar.inc.php";
 
-    $ausgaben["calendar"] = calendar("","","cal_termine","-1","-1");
 
     // ausgabenwerte werden belegt
     if ( $_GET["day"] != "" && $_GET["month"] != "" && $_GET["year"] != "" ) {
         ( strlen($_GET["day"]) == 1 ) ? $hidedata["sort"]["day"] = "0".$_GET["day"] : $hidedata["sort"]["day"] = $_GET["day"];
         ( strlen($_GET["month"]) == 1 ) ? $hidedata["sort"]["month"] = "0".$_GET["month"] : $hidedata["sort"]["month"] = $_GET["month"];
         $hidedata["sort"]["year"] = $_GET["year"];
-    } elseif ( $_GET["day"] == "" && $_GET["month"] != "" && $_GET["year"] != "" ) {
-        $hidedata["sort"]["day"] = "01";
-        ( strlen($_GET["month"]) == 1 ) ? $hidedata["sort"]["month"] = "0".$_GET["month"] : $hidedata["sort"]["month"] = $_GET["month"];
-        $hidedata["sort"]["year"] = $_GET["year"];
     } else {
-        $hidedata["sort"]["day"] = date('d');
-        $hidedata["sort"]["month"] = date('m');
-        $hidedata["sort"]["year"] = date('Y');
+        $hidedata["sort"]["day"] = substr($tag_meat["SORT"][0]["meat"],8,2);
+        $hidedata["sort"]["month"] = substr($tag_meat["SORT"][0]["meat"],5,2);
+        $hidedata["sort"]["year"] = substr($tag_meat["SORT"][0]["meat"],0,4);
     }
+
+    $ausgaben["calendar"] = calendar($hidedata["sort"]["month"],$hidedata["sort"]["year"],"cal_termine","-1","-1",-1);
 
     $hidedata["sort"]["date"] = $hidedata["sort"]["day"].".".$hidedata["sort"]["month"].".".$hidedata["sort"]["year"];
 
