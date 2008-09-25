@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function calendar($monat="",$jahr="",$class="",$extendend="",$linked="") {
+function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secure="") {
     global $_GET,$pathvars;
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
     $monate = array( "Jan", "Feb", "M&auml;r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
@@ -83,12 +83,14 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="") {
         $ausgabe .= "<table class=\"".$class." ".$class."_months\" >\n";
         $jump_back = "<a href=\"?month=01&amp;year=".$back."\">";
         $jump_forward = "<a href=\"?month=01&amp;year=".$forward."\">";
-        if ( $_GET["year"] && abs($aktuell["year"] - $_GET["year"]) > 1) {
-            header("Location: ".str_replace(strstr($pathvars["uri"],"?"),"",$pathvars["uri"]));
-        } elseif ( $jahr-1-$aktuell["year"] < -1) {
-                $jump_back = "";
-        } elseif ( $jahr+1-$aktuell["year"] > 1) {
-                $jump_forward = "";
+        if ( $no_secure == "" ) {
+            if ( $_GET["year"] && abs($aktuell["year"] - $_GET["year"]) > 1) {
+                header("Location: ".str_replace(strstr($pathvars["uri"],"?"),"",$pathvars["uri"]));
+            } elseif ( $jahr-1-$aktuell["year"] < -1) {
+                    $jump_back = "";
+            } elseif ( $jahr+1-$aktuell["year"] > 1) {
+                    $jump_forward = "";
+            }
         }
         $ausgabe .= "<tr class=\"first_line\"><td class=\"first\">".$jump_back."<img src=\"/images/default/left.png\" alt=\"\" /></a></td><td colspan=\"2\"><b>".$jahr."</b></td><td class=\"last\">".$jump_forward."<img src=\"/images/default/right.png\" alt=\"\" /></a></td></tr>\n";
         $ausgabe .= "<tr class=\"first_line\" >\n";
