@@ -288,6 +288,13 @@
                             $tag.":".$key.",".
                             $environment["parameter"][5].",".
                             "rip.html";
+
+                    // buffy: alle tags werden in ein hidedata-array geschrieben
+                    ( $tag == "SORT" ) ? $hidevalue = substr($value["meat"],8,2).".".substr($value["meat"],5,2).".".substr($value["meat"],0,4) : $hidevalue = $value["meat"];
+                    $hidedata["wizardtags"][$tag."_".$key] = $hidevalue;
+                    $hidedata["wizardtags"][$tag."_".$key."_link"] = $edit;
+                    // buffy: alle tags werden in ein hidedata-array geschrieben
+
                     // bereiche vor oder nach den tag
                     $pre_section  = substr($content,0,$tmp_tag_meat[$tag][$key]["start"]);
                     $pre_section  = preg_replace("/[ ]$/","&nbsp;",$pre_section);
