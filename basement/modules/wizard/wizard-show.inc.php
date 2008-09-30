@@ -693,7 +693,9 @@
                         if ( get_magic_quotes_gpc() == 1 ) {
                             $content = stripslashes($content);
                         }
-                        $content = utf8_encode($content);
+                        if ( $cfg["wizard"]["utf8"] != TRUE ) {
+                            $content = utf8_encode($content);
+                        }
                         echo preg_replace(array("/#\{.+\}/U","/g\(.+\)/U"),"",$content);
                         die ;
                     }

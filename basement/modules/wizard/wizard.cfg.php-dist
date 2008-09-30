@@ -76,6 +76,7 @@
             "tagjs" => "-141347382.modify.js-nextgen",
              "tags" => $cfg["contented"]["tags"],
     "default_label" => "inhalt",
+//              "utf8" => TRUE,
          "ed_boxed" => array(
                     "H"    => array(                                    // ueberschriften
                                     array("[H"),

@@ -156,12 +156,12 @@
                                             array("[","]","/"),
                                             array("\[","\]","\/"),
                                             $open_tag
-                            )."[0-9=\]]{1}";
+                            )."[A-Z0-9=\]]{1}";
                 $splitter2 = str_replace(
                                             array("[","]","/"),
                                             array("\[","\]","\/"),
                                             $close_tag
-                            )."[0-9]{0,1}\]";
+                            )."[A-Z0-9]{0,1}\]";
                 $splitter = $splitter1.".*".$splitter2;
                 $match_test = preg_split("/(".$splitter.")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
                 $buffer = array(); $pre = ""; $index = 0;
