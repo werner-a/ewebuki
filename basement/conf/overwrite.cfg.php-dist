@@ -36,74 +36,81 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // trennzeichen veraendern
-  #$defaults["split"]["title"] = " + ";
-  #$defaults["split"]["kekse"] = " + ";
-  #$defaults["split"]["m1"] = " # ";
-  #$defaults["split"]["m2"] = " - ";
-  #$defaults["split"]["l1"] = " # ";
-  #$defaults["split"]["l2"] = " - ";
+    // trennzeichen veraendern
+    #$defaults["split"]["title"] = " + ";
+    #$defaults["split"]["kekse"] = " + ";
+    #$defaults["split"]["m1"] = " # ";
+    #$defaults["split"]["m2"] = " - ";
+    #$defaults["split"]["l1"] = " # ";
+    #$defaults["split"]["l2"] = " - ";
 
-  // wo liegen die bilder fuer die editor schaltflachen?
-  #$defaults["cms-tag"]["path"] = $pathvars["images"];
+    // wo liegen die bilder fuer die editor schaltflachen?
+    #$defaults["cms-tag"]["path"] = $pathvars["images"];
 
-  // tipp:
-  // bei eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden
-  // dann werden die bilder aus immer aus dem jeweiligen /images/design verzeichnis geladen.
+    // tipp:
+    // bei eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden
+    // dann werden die bilder aus immer aus dem jeweiligen /images/design verzeichnis geladen.
 
-  // bild fuer den bearbeiten link
-  #$defaults["cms-tag"]["signal"] = "<img src=\"".$pathvars["images"]."/cms-tag-";
-  #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\">";
+    // bild fuer den bearbeiten link
+    #$defaults["cms-tag"]["signal"] = "<img src=\"".$pathvars["images"]."/cms-tag-";
+    #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\">";
 
-  // einstellung fuer die sections aendern
-  #$defaults["section"]["label"] = "inhalt";
-  #$defaults["section"]["tag"] = "[H";
-  #$defaults["section"]["tag"] = array("[H","[P","[DIV"); # mehrere tags
+    // einstellung fuer die sections aendern
+    #$defaults["section"]["label"] = "inhalt";
+    #$defaults["section"]["tag"] = "[H";
+    #$defaults["section"]["tag"] = array("[H","[P","[DIV"); # mehrere tags
 
-  // bild einfügen tag
-  #$defaults["cms-tag"]["grafik"] = "[IMGB=";
-  #$defaults["cms-tag"][",grafik"] = ";;0;b;";
-  #$defaults["cms-tag"]["/grafik"] = "[/IMGB]";
+    // bild einfï¿½gen tag
+    #$defaults["cms-tag"]["grafik"] = "[IMGB=";
+    #$defaults["cms-tag"][",grafik"] = ";;0;b;";
+    #$defaults["cms-tag"]["/grafik"] = "[/IMGB]";
 
-  // bilder fuer vor und zurueck
-  #$defaults["select"]["none"] = "<img src=\"".$pathvars["images"]."pos.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"\" />" : NOP;
-  #$defaults["select"]["prev"] = "<img src=\"".$pathvars["images"]."sel_left.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
-  #$defaults["select"]["next"] = "<img src=\"".$pathvars["images"]."sel_right.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
+    // bilder fuer vor und zurueck
+    #$defaults["select"]["none"] = "<img src=\"".$pathvars["images"]."pos.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"\" />" : NOP;
+    #$defaults["select"]["prev"] = "<img src=\"".$pathvars["images"]."sel_left.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
+    #$defaults["select"]["next"] = "<img src=\"".$pathvars["images"]."sel_right.png\" height=\"9\" width=\"15\" border=\"0\" align=\"bottom\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
 
-  // tag fehlermeldung
-  #$defaults["tag"]["error"] = " <font color=\"#FF0000\">(eWebuki findet den ";
-  #$defaults["tag"]["/error"] = " Tag leider nicht)</font> ";
+    // tag fehlermeldung
+    #$defaults["tag"]["error"] = " <font color=\"#FF0000\">(eWebuki findet den ";
+    #$defaults["tag"]["/error"] = " Tag leider nicht)</font> ";
 
-  // eigene icons verwenden
-  #$defaults["icon"]["pdf"] = "<img src=\"".$pathvars["images"]."icon_pdf.png\">";
-  #$defaults["icon"]["zip"] = "<img src=\"".$pathvars["images"]."icon_zip.png\">";
+    // eigene icons verwenden
+    #$defaults["icon"]["pdf"] = "<img src=\"".$pathvars["images"]."icon_pdf.png\">";
+    #$defaults["icon"]["zip"] = "<img src=\"".$pathvars["images"]."icon_zip.png\">";
 
-  // [H1] tag wird zu einem kleinen rechteck aus einer punkt grafik und speziell css style formatierter schrift
-  #$defaults["tag"]["h1"] = "<img src=\"/images/default/pt.png\" height=\"7\" width=\"7\" alt=\"\"> <span class=\"spezial_h1\">";
-  #$defaults["tag"]["/h1"] = "</span><br />";
+    // [H1] tag wird zu einem kleinen rechteck aus einer punkt grafik und speziell css style formatierter schrift
+    #$defaults["tag"]["h1"] = "<img src=\"/images/default/pt.png\" height=\"7\" width=\"7\" alt=\"\"> <span class=\"spezial_h1\">";
+    #$defaults["tag"]["/h1"] = "</span><br />";
 
-  // [H2] tag wird mit speziellem style formatiert
-  #$defaults["tag"]["h2"] = "<span class=\"special_h2\">";
-  #$defaults["tag"]["/h2"] = "</span><br />";
+    // [H2] tag wird mit speziellem style formatiert
+    #$defaults["tag"]["h2"] = "<span class=\"special_h2\">";
+    #$defaults["tag"]["/h2"] = "</span><br />";
 
-  // [HL] die linie mit hl wird 300px lang und 1px hoch aus einer ein punkt grafik erstellt.
-  #$defaults["tag"]["hl"] = "<img src=\"/images/default/pt.png\" height=\"1\" width=\"300\" vspace=\"2\" alt=\"\">";
-  #$defaults["tag"]["/hl"] = "";
+    // [HL] die linie mit hl wird 300px lang und 1px hoch aus einer ein punkt grafik erstellt.
+    #$defaults["tag"]["hl"] = "<img src=\"/images/default/pt.png\" height=\"1\" width=\"300\" vspace=\"2\" alt=\"\">";
+    #$defaults["tag"]["/hl"] = "";
 
-  // [IN] ein initial kann rot, hervorgehoen und grosser dargestellt werden.
-  #$defaults["tag"]["in"] = "<strong><font color=\"#990000\" size=\"4\"><em>";
-  #$defaults["tag"]["/in"] = "</em></font></strong>";
+    // [IN] ein initial kann rot, hervorgehoen und grosser dargestellt werden.
+    #$defaults["tag"]["in"] = "<strong><font color=\"#990000\" size=\"4\"><em>";
+    #$defaults["tag"]["/in"] = "</em></font></strong>";
 
-  // [SEL] aussehen der picture collection
-  #$defaults["tag"]["sel"] = "<ul>\n";
-  #$defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n    <a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
-  #$defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n";
+    // [SEL] aussehen der picture collection
+    #$defaults["tag"]["sel"] = "<ul>\n";
+    #$defaults["tag"]["*sel"] = "<li class=\"thumbs\">\n    <a href=\"##link##\" class=\"pic\"><img alt=\"##tn##\" src=\"##tn##\" /></a>\n</li>\n";
+    #$defaults["tag"]["/sel"] = "</ul>\n<div style=\"clear:both\"></div>\n";
+
+    // [IMG]/[IMGB] aufbau der bilder und der bilder-links
+    #$defaults["tag"]["img_w3c"] = "<img src=\"##imgurl##\""." title=\"##beschriftung##\" alt=\"##beschriftung##\"##imgsize## style=\"##style_align####style_border####style_hspace####style_vspace##\"##attrib## />";
+    #$defaults["tag"]["img"] = "<img src=\"##imgurl##\"##attrib####vspace####hspace## title=\"##beschriftung##\" alt=\"##beschriftung##\"##align####border####imgsize## />";
+    #$defaults["tag"]["img_link"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\">";
+    #$defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" rel=\"lightbox[own]\">";
+    #$defaults["tag"]["/img_link"] = "</a>";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 KÃÂ¶nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -461,6 +461,14 @@
                             $ausgabewert = "<img src=\"".$imgurl."\" title=\"".$tagwert."\" alt=\"".$tagwert."\"".$imgsize." />";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         } else {
+
+                            if ( $defaults["tag"]["img_w3c"] == "" ) $defaults["tag"]["img_w3c"] = "<img src=\"##imgurl##\" title=\"##beschriftung##\" alt=\"##beschriftung##\"##imgsize## style=\"##style_align####style_border####style_hspace####style_vspace##\"##attrib## />";
+                            if ( $defaults["tag"]["img"] == "" ) $defaults["tag"]["img"] = "<img src=\"##imgurl##\"##attrib####vspace####hspace## title=\"##beschriftung##\" alt=\"##beschriftung##\"##align####border####imgsize## />";
+                            if ( $defaults["tag"]["img_link"] == "" ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\">";
+                            if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" rel=\"lightbox[own]\">";
+                            if ( $defaults["tag"]["/img_link"] == "" ) $defaults["tag"]["/img_link"] = "</a>";
+                            $repl = array("imgurl","beschriftung", "funder","fdesc","imgsize","attrib","vspace","hspace","align","border","style_align","style_border","style_hspace","style_vspace","imglnk");
+
                             $tagwerte = explode("]",$tagwert,2);
                             $imgwerte = explode(";",$tagwerte[0]);
                             $extrawerte = explode(":",$imgwerte[1]);
@@ -515,6 +523,22 @@
                             } else {
                                 $beschriftung = $tagwerte[1];
                             }
+                            // weitere informationen aus datenbank holen
+                            $img_path = explode("/",str_replace($cfg["file"]["base"]["maindir"],"",$tagwerte[0]) );
+                            if ( is_numeric($img_path[3]) ) {
+                                $fid = $img_path[3];
+                            } else {
+                                $fid = substr($tagwerte[0],0,strpos($tagwerte[0],";"));
+                                $fid = strrchr($fid,"_");
+                                $fid = substr( $fid , 1 , strpos($fid,".") - 1 );
+                            }
+                            $sql = "SELECT *
+                                        FROM site_file
+                                        WHERE fid=".$fid;
+                            $result = $db -> query($sql);
+                            $data = $db -> fetch_array($result,1);
+                            $funder = $data["funder"];
+                            $fdesc = $data["fdesc"];
 
                             $linka = "";
                             $linkb = "";
@@ -562,20 +586,27 @@
                                         $path = dirname($pathvars["requested"]);
                                         if ( substr( $path, -1 ) != '/') $path = $path."/";
                                         $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
-                                        $linka = "<a href=\"".$imglnk."\">";
                                         if ( $imgwerte[3] == "l" ) {
-                                            $linka = "<a href=\"".preg_replace("/\/(tn|s|m)\//","/b/",$imgurl)."\" title=\"".$beschriftung."\" rel=\"lightbox[own]\">";
+                                            $imglnk = preg_replace("/\/(tn|s|m)\//","/o/",$imgurl);
+                                            $linka = $defaults["tag"]["img_link_lb"];
+                                        } else {
+                                            $linka = $defaults["tag"]["img_link"];
                                         }
-                                        $linkb = "</a>";
+                                        $linkb = $defaults["tag"]["/img_link"];
                                     }
                                 } else {
                                     $imgsize = "";
                                 }
                             }
+
                             if ( $specialvars["w3c"] == "strict" ) {
-                                $ausgabewert = $linka."<img src=\"".$imgurl."\""." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$imgsize." style=\"".$style_align.$style_border.$style_hspace.$style_vspace."\"".$attrib." />".$linkb;
+                                $ausgabewert = $linka.$defaults["tag"]["img_w3c"].$linkb;
                             } else {
-                                $ausgabewert = $linka."<img src=\"".$imgurl."\"".$attrib.$vspace.$hspace." title=\"".$beschriftung."\" alt=\"".$beschriftung."\"".$align.$border.$imgsize." />".$linkb;
+                                $ausgabewert = $linka.$defaults["tag"]["img"].$linkb;
+                            }
+                            foreach ( $repl as $value ) {
+                                $ausgabewert = str_replace("##".$value."##",$$value,$ausgabewert);
+                                $$value = "";
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
@@ -725,6 +756,12 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["hl"].$tagwert.$defaults["tag"]["/hl"],$replace);
                         break;
                     case "[/IMGB]":
+
+                        if ( $defaults["tag"]["img_link"] == "" ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\">";
+                        if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" rel=\"lightbox[own]\">";
+                        if ( $defaults["tag"]["/img_link"] == "" ) $defaults["tag"]["/img_link"] = "</a>";
+                        $repl = array("imgurl","imglnk","beschriftung", "funder","fdesc");
+
                         $tagwerte = explode("]",$tagwert,2);
                         $imgwerte = explode(";",$tagwerte[0]);
                         $extrawerte = explode(":",$imgwerte[1]);
@@ -774,6 +811,23 @@
                         } else {
                             $beschriftung = $tagwerte[1];
                         }
+                        // weitere informationen aus datenbank holen
+                        $img_path = explode("/",str_replace($cfg["file"]["base"]["maindir"],"",$tagwerte[0]) );
+                        if ( is_numeric($img_path[3]) ) {
+                            $fid = $img_path[3];
+                        } else {
+                            $fid = substr($tagwerte[0],0,strpos($tagwerte[0],";"));
+                            $fid = strrchr($fid,"_");
+                            $fid = substr( $fid , 1 , strpos($fid,".") - 1 );
+                        }
+                        $sql = "SELECT *
+                                    FROM site_file
+                                    WHERE fid=".$fid;
+                        $result = $db -> query($sql);
+                        $data = $db -> fetch_array($result,1);
+                        $funder = $data["funder"];
+                        $fdesc = $data["fdesc"];
+
                         $ausgaben["linka"] = "";
                         $ausgaben["linkb"] = "";
                         if ( strpos($imgwerte[0],"/") === false ) {
@@ -822,11 +876,17 @@
                                     $path = dirname($pathvars["requested"]);
                                     if ( substr( $path, -1 ) != '/') $path = $path."/";
                                     $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
-                                    $ausgaben["linka"] = "<a href=\"".$imglnk."\">";
                                     if ( $imgwerte[3] == "l" ) {
-                                        $ausgaben["linka"] = "<a href=\"".str_replace("/s/", "/b/", $imgurl)."\" title=\"".$beschriftung."\" rel=\"lightbox[own]\">";;
+                                        $imglnk = preg_replace("/\/(tn|s|m)\//","/b/",$imgurl);
+                                        $ausgaben["linka"] = $defaults["tag"]["img_link_lb"];
+                                    } else {
+                                        $ausgaben["linka"] = $defaults["tag"]["img_link"];
                                     }
-                                    $ausgaben["linkb"] = "</a>";
+                                    foreach ( $repl as $value ) {
+                                        $ausgaben["linka"] = str_replace("##".$value."##",$$value,$ausgaben["linka"]);
+                                    }
+                                    $ausgaben["linkb"] = $defaults["tag"]["/img_link"];
+
                                 } else {
                                     $ausgaben["linka"] = "";
                                     $ausgaben["linkb"] = "";
@@ -836,6 +896,8 @@
                         }
                         $ausgaben["alt"] = $beschriftung;
                         $ausgaben["beschriftung"] = $beschriftung;
+                        $ausgaben["funder"] = $funder;
+                        $ausgaben["fdesc"] = $fdesc;
                         $ausgaben["tspace"] = $tspace;
                         $ausgaben["lspace"] = $lspace;
                         $ausgaben["rspace"] = $rspace;
