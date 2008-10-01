@@ -524,21 +524,26 @@
                                 $beschriftung = $tagwerte[1];
                             }
                             // weitere informationen aus datenbank holen
-                            $img_path = explode("/",str_replace($cfg["file"]["base"]["maindir"],"",$tagwerte[0]) );
-                            if ( is_numeric($img_path[3]) ) {
-                                $fid = $img_path[3];
+                            if ( preg_match("/^\//",$tagwerte[0]) ) {
+                                $img_path = explode("/",str_replace($cfg["file"]["base"]["maindir"],"",$tagwerte[0]) );
+                                if ( is_numeric($img_path[3]) ) {
+                                    $fid = $img_path[3];
+                                } else {
+                                    $fid = substr($tagwerte[0],0,strpos($tagwerte[0],";"));
+                                    $fid = strrchr($fid,"_");
+                                    $fid = substr( $fid , 1 , strpos($fid,".") - 1 );
+                                }
+                                $sql = "SELECT *
+                                            FROM site_file
+                                            WHERE fid=".$fid;
+                                $result = $db -> query($sql);
+                                $data = $db -> fetch_array($result,1);
+                                $funder = $data["funder"];
+                                $fdesc = $data["fdesc"];
                             } else {
-                                $fid = substr($tagwerte[0],0,strpos($tagwerte[0],";"));
-                                $fid = strrchr($fid,"_");
-                                $fid = substr( $fid , 1 , strpos($fid,".") - 1 );
+                                $funder = $beschriftung;
+                                $fdesc = $beschriftung;
                             }
-                            $sql = "SELECT *
-                                        FROM site_file
-                                        WHERE fid=".$fid;
-                            $result = $db -> query($sql);
-                            $data = $db -> fetch_array($result,1);
-                            $funder = $data["funder"];
-                            $fdesc = $data["fdesc"];
 
                             $linka = "";
                             $linkb = "";
@@ -812,21 +817,26 @@
                             $beschriftung = $tagwerte[1];
                         }
                         // weitere informationen aus datenbank holen
-                        $img_path = explode("/",str_replace($cfg["file"]["base"]["maindir"],"",$tagwerte[0]) );
-                        if ( is_numeric($img_path[3]) ) {
-                            $fid = $img_path[3];
+                        if ( preg_match("/^\//",$tagwerte[0]) ) {
+                            $img_path = explode("/",str_replace($cfg["file"]["base"]["maindir"],"",$tagwerte[0]) );
+                            if ( is_numeric($img_path[3]) ) {
+                                $fid = $img_path[3];
+                            } else {
+                                $fid = substr($tagwerte[0],0,strpos($tagwerte[0],";"));
+                                $fid = strrchr($fid,"_");
+                                $fid = substr( $fid , 1 , strpos($fid,".") - 1 );
+                            }
+                            $sql = "SELECT *
+                                        FROM site_file
+                                        WHERE fid=".$fid;
+                            $result = $db -> query($sql);
+                            $data = $db -> fetch_array($result,1);
+                            $funder = $data["funder"];
+                            $fdesc = $data["fdesc"];
                         } else {
-                            $fid = substr($tagwerte[0],0,strpos($tagwerte[0],";"));
-                            $fid = strrchr($fid,"_");
-                            $fid = substr( $fid , 1 , strpos($fid,".") - 1 );
+                            $funder = $beschriftung;
+                            $fdesc = $beschriftung;
                         }
-                        $sql = "SELECT *
-                                    FROM site_file
-                                    WHERE fid=".$fid;
-                        $result = $db -> query($sql);
-                        $data = $db -> fetch_array($result,1);
-                        $funder = $data["funder"];
-                        $fdesc = $data["fdesc"];
 
                         $ausgaben["linka"] = "";
                         $ausgaben["linkb"] = "";
