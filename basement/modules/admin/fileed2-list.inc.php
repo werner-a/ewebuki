@@ -149,7 +149,11 @@
                 if ( $value1 != "" ) {
                     foreach ( $array2 as $value2 ) {
                         if ( $part["search"] != "" ) $part["search"] .= " or ";
-                        $part["search"] .= $value2. " LIKE '%".$value1."%'";
+                        if ( $value2 == "fid" ) {
+                            $part["search"] .= "CAST(".$value2." as char) LIKE '%".$value1."%'";
+                        } else {
+                            $part["search"] .= $value2. " LIKE '%".$value1."%'";
+                        }
                     }
                 }
             }
