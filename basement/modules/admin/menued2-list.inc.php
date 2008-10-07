@@ -136,7 +136,7 @@
         if ( priv_check("/",$cfg["menued"]["modify"]["rights"][2]) || priv_check_old("",$cfg["menued"]["right"])) {
             $ausgaben["new"] = "<a href=\"".$cfg["menued"]["basis"]."/add,0.html\">g(new)</a>";
             $ausgaben["root"] = "";
-            if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2]) ) {
+            if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2]) && ( $environment["parameter"][1] == "" || $environment["parameter"][1] == "0" ) ) {
                 $ausgaben["root"] ="<ul><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"/images/default/rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";
             }
         } else {
