@@ -205,7 +205,11 @@
                         ),
                 ),
 
-            "right" => "edit",
+            "right" => array(
+                      "add" => $cfg["auth"]["inplace"]["/wizard/add"][0],
+                     "edit" => $cfg["auth"]["inplace"]["/wizard/show"][0],
+                  "publish" => $cfg["auth"]["inplace"]["/wizard/release"][0],
+                        ),
     );
 
     // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich

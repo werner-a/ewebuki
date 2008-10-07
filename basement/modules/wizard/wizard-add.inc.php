@@ -60,8 +60,23 @@
         if ( in_array($database,$_SESSION["dbzugriff"]) ) $erlaubnis = -1;
     }
 
-    if ( $cfg["wizard"]["right"] == "" ||
-        priv_check("/".$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"],$cfg["wizard"]["right"]) ||
+    // rausfinden, welcher menupunkt einen unterpunkt bekommen soll
+    if ( $environment["parameter"][4] != "" ) {
+        $url = tname2path($environment["parameter"][2]);
+        #$mid = $environment["parameter"][5];
+    } else {
+        if ( $_SESSION["REFERER"] != "" && preg_match("/wizard$/",dirname($_SESSION["REFERER"])) ) {
+            $url = str_replace(array($pathvars["virtual"],".html"),"",$_SESSION["REFERER"]);
+        } else {
+            $url = str_replace(array($pathvars["webroot"].$pathvars["virtual"],".html"),"",$_SERVER["HTTP_REFERER"]);
+            $_SESSION["REFERER"] = $pathvars["virtual"].$url;
+        }
+        $point = make_id($url);
+        #$mid = $point["mid"];
+    }
+
+    if ( $cfg["wizard"]["right"]["add"] == "" ||
+        priv_check($url,$cfg["wizard"]["right"]["add"]) || priv_check(tname2path($environment["parameter"][2]),$cfg["wizard"]["right"]["add"]) ||
         priv_check_old("",$cfg["wizard"]["right"]) ||
         $rechte["administration"] == -1 ||
         $erlaubnis == -1 ) {
@@ -98,7 +113,7 @@
                 );
                 if ( isset($_GET["edit"]) ) $ausgaben["inaccessible"] .= "# (wiz_".$key.") #(wiz_".$key.")<br />";
             }
-            if ( $mark == 0 ) $dataloop["wizards"][0]["check"] = " checked=\"checked\"";
+            if ( $mark == 0 ) $dataloop[$user_level][0]["check"] = " checked=\"checked\"";
 
             // form options holen
             $form_options = form_options(eCRC("/admin/menued").".add");
@@ -125,80 +140,74 @@
                 $hidedata["add_menu"]["hide"] = "";
             }
 
-            // rausfinden, welcher menupunkt einen unterpunkt bekommen soll
-            if ( $environment["parameter"][5] != "" ) {
-                $mid = $environment["parameter"][5];
-            } else {
-                if ( $_SESSION["REFERER"] != "" && preg_match("/wizard$/",dirname($_SESSION["REFERER"])) ) {
-                    $url = str_replace(array($pathvars["virtual"],".html"),"",$_SESSION["REFERER"]);
-                } else {
-                    $url = str_replace(array($pathvars["webroot"].$pathvars["virtual"],".html"),"",$_SERVER["HTTP_REFERER"]);
-                    $_SESSION["REFERER"] = $pathvars["virtual"].$url;
-                }
-                $point = make_id($url);
-                $mid = $point["mid"];
-            }
-
             //wohin schicken
             $ausgaben["form_aktion"] = $pathvars["virtual"]."/admin/menued/add,".$point["mid"].",,verify.html";
             $ausgaben["refid"] = $point["mid"];
 
         } elseif ( $environment["parameter"][1] != "" && $environment["parameter"][2] != "" && $environment["parameter"][3] != "" && $environment["parameter"][4] != "" ) {
-            // test, ob menue-punkt schon vorhanden ist
-            $db->selectDb($environment["parameter"][1],FALSE);
-            $sql = "SELECT version, html, content, changed, byalias
-                    FROM ". SITETEXT ."
-                    WHERE lang = '".$environment["language"]."'
-                    AND label ='".$environment["parameter"][3]."'
-                    AND tname ='".$environment["parameter"][2]."'
-                ORDER BY version DESC";
-            $result = $db -> query($sql);
 
-            if ( $db -> num_rows($result) == 0 ) {
+            if ( priv_check($url,$cfg["wizard"]["right"]["edit"]) || priv_check($url,$cfg["wizard"]["right"]["publish"]) ) {
+
+                // test, ob menue-punkt schon vorhanden ist
+                $db->selectDb($environment["parameter"][1],FALSE);
                 $sql = "SELECT version, html, content, changed, byalias
                         FROM ". SITETEXT ."
                         WHERE lang = '".$environment["language"]."'
                         AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".eCRC($environment["ebene"]."/default_content").".".$environment["parameter"][4]."'
-                    ORDER BY version DESC
-                        LIMIT 0,1";
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                        AND tname ='".$environment["parameter"][2]."'
+                    ORDER BY version DESC";
                 $result = $db -> query($sql);
-                $data = $db -> fetch_array($result,1);
-                $content = "[!]wizard:".$environment["parameter"][4]."[/!]\n\n".$data["content"];
-
-                if ( $specialvars["content_release"] == -1 ) {
-                    $sqla = ", status";
-                    $sqlb = ", 0";
+    
+                if ( $db -> num_rows($result) == 0 ) {
+                    $sql = "SELECT version, html, content, changed, byalias
+                            FROM ". SITETEXT ."
+                            WHERE lang = '".$environment["language"]."'
+                            AND label ='".$environment["parameter"][3]."'
+                            AND tname ='".eCRC($environment["ebene"]."/default_content").".".$environment["parameter"][4]."'
+                        ORDER BY version DESC
+                            LIMIT 0,1";
+                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                    $result = $db -> query($sql);
+                    $data = $db -> fetch_array($result,1);
+                    $content = "[!]wizard:".$environment["parameter"][4]."[/!]\n\n".$data["content"];
+    
+                    if ( $specialvars["content_release"] == -1 ) {
+                        $sqla = ", status";
+                        $sqlb = ", 0";
+                    }
+    
+                    $sql = "INSERT INTO ". SITETEXT ."
+                                        (lang, label, tname, version,
+                                        ebene, kategorie,
+                                        crc32, html, content,
+                                        changed, bysurname, byforename, byemail, byalias".$sqla.")
+                                    VALUES (
+                                            '".$environment["language"]."',
+                                            '".$environment["parameter"][3]."',
+                                            '".$environment["parameter"][2]."',
+                                            '1',
+                                            '".str_replace($pathvars["virtual"],"",dirname($_SESSION["form_referer"]))."',
+                                            '".str_replace(".html","",basename($_SESSION["form_referer"]))."',
+                                            '".$specialvars["crc32"]."',
+                                            '0',
+                                            '".$content."',
+                                            '".date("Y-m-d H:i:s")."',
+                                            '".$_SESSION["surname"]."',
+                                            '".$_SESSION["forename"]."',
+                                            '".$_SESSION["email"]."',
+                                            '".$_SESSION["alias"]."'
+                                            ".$sqlb.")";
+    
+                    if ( $result = $db -> query($sql) ) {
+                        $header = $cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html";
+                    } else {
+                        $header = $_SESSION["form_referer"];
+                    }
+                    unset($_SESSION["REFERER"]);
+                    header("Location: ".$header);
                 }
-
-                $sql = "INSERT INTO ". SITETEXT ."
-                                    (lang, label, tname, version,
-                                    ebene, kategorie,
-                                    crc32, html, content,
-                                    changed, bysurname, byforename, byemail, byalias".$sqla.")
-                                VALUES (
-                                        '".$environment["language"]."',
-                                        '".$environment["parameter"][3]."',
-                                        '".$environment["parameter"][2]."',
-                                        '1',
-                                        '".str_replace($pathvars["virtual"],"",dirname($_SESSION["form_referer"]))."',
-                                        '".str_replace(".html","",basename($_SESSION["form_referer"]))."',
-                                        '".$specialvars["crc32"]."',
-                                        '0',
-                                        '".$content."',
-                                        '".date("Y-m-d H:i:s")."',
-                                        '".$_SESSION["surname"]."',
-                                        '".$_SESSION["forename"]."',
-                                        '".$_SESSION["email"]."',
-                                        '".$_SESSION["alias"]."'
-                                         ".$sqlb.")";
-
-                if ( $result = $db -> query($sql) ) {
-                    $header = $cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html";
-                } else {
-                    $header = $_SESSION["form_referer"];
-                }
+            } else {
+                $header = $_SESSION["form_referer"];
                 unset($_SESSION["REFERER"]);
                 header("Location: ".$header);
             }

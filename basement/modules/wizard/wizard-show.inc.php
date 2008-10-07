@@ -133,7 +133,7 @@
 
     $ausgaben["empty_show_url"] = $cfg["wizard"]["basis"]."/".implode( ",", array_slice($environment["parameter"],0,6) ).",none.html";
 
-    if ( priv_check($tname2path,$cfg["wizard"]["right"]) ||
+    if ( priv_check($tname2path,$cfg["wizard"]["right"]["edit"]) || priv_check($tname2path,$cfg["wizard"]["right"]["publish"]) ||
          priv_check_old("",$cfg["wizard"]["right"]) ) {
 
         // page basics
