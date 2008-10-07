@@ -68,7 +68,9 @@
         }
         $hit = "";
         $del= array();
-        priv_check_path($url,$required,$hit,$del);
+        if ( $required != "" ) {
+            priv_check_path($url,$required,$hit,$del);
+        }
         return $hit;
     }
 
