@@ -43,8 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secure="") {
-    global $_GET,$pathvars;
+function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secure="",$start_parameter=0) {
+    global $environment,$pathvars;
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
     $monate = array( "Jan", "Feb", "M&auml;r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
     setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
@@ -54,10 +54,12 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         $jahr = $aktuell["year"];
         $monat = $aktuell["mon"];
     }
-    if ( $_GET["month"] != "" && $_GET["year"] != "" ) {
-        $monat = $_GET["month"];
-        $jahr = $_GET["year"];
+
+    if ( $environment["parameter"][$start_parameter+2] != "" && $environment["parameter"][$start_parameter+1] != "" ) {
+        $monat = $environment["parameter"][$start_parameter+2];
+        $jahr = $environment["parameter"][$start_parameter+1];
     }
+
     $heute = getdate(mktime(0, 0, 0, ($monat+1), 0, $jahr));
 
     // start-tag
@@ -76,15 +78,19 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
 //             array_push($monate,$shift);
 //         }
 
+        for ( $i=1; $i<=$start_parameter;$i++ ) {
+            $protect_parameter .= ",".$environment["parameter"][$i];
+        }
+
         $forward = $jahr+1;
         $back = $jahr-1;
         // bauen der monatstabelle
         $ausgabe = "#(ueberschrift)";
         $ausgabe .= "<table class=\"".$class." ".$class."_months\" >\n";
-        $jump_back = "<a href=\"?month=01&amp;year=".$back."\">";
-        $jump_forward = "<a href=\"?month=01&amp;year=".$forward."\">";
+        $jump_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$back.",01.html\">";
+        $jump_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$forward.",01.html\">";
         if ( $no_secure == "" ) {
-            if ( $_GET["year"] && abs($aktuell["year"] - $_GET["year"]) > 1) {
+            if ( $environment["parameter"][$start_parameter+1] && abs($aktuell["year"] - $environment["parameter"][$start_parameter+1]) > 1) {
                 header("Location: ".str_replace(strstr($pathvars["uri"],"?"),"",$pathvars["uri"]));
             } elseif ( $jahr-1-$aktuell["year"] < -1) {
                     $jump_back = "";
@@ -97,7 +103,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         foreach ( $monate as $key => $value ) {
             $month = $key+1;
             if ($month > 12) $month = $month-12;
-            if ( $linked == -1 ) $value = "<a href=\"?month=".$month."&amp;year=".$heute["year"]."\">".$value."</a>";
+            if ( $linked == -1 ) $value = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$heute["year"].",".$month.".html\">".$value."</a>";
             $class_m = "";
             if ( is_int($key/4)  ) {
                 if ( $key != 0 ) $ausgabe .= "</tr><tr>";
@@ -153,7 +159,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             ( $aktuell["mday"] == $int_counter && $aktuell["mon"] == $monat && $aktuell["year"] == $jahr) ? $class_today=" today " : $class_today="";
             $out = $int_counter;
             if ( $int_counter != "" && $linked == -1 ) {
-                $out = "<a href=\"?day=".$int_counter."&amp;month=".$heute["mon"]."&amp;year=".$heute["year"]."\">".$int_counter."</a>";
+                $out = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$heute["year"].",".$heute["mon"].",".$int_counter.".html\">".$int_counter."</a>";
             }
             $ausgabe .= "<td class=\"".$class.$class_today."\">".$out."</td>";
         }
