@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secure="",$start_parameter=0) {
+function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secure="",$start_parameter=3) {
     global $environment,$pathvars;
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
     $monate = array( "Jan", "Feb", "M&auml;r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
