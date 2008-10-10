@@ -51,17 +51,17 @@
 
 
     // ausgabenwerte werden belegt
-    if ( $_GET["day"] != "" && $_GET["month"] != "" && $_GET["year"] != "" ) {
-        ( strlen($_GET["day"]) == 1 ) ? $hidedata["sort"]["day"] = "0".$_GET["day"] : $hidedata["sort"]["day"] = $_GET["day"];
-        ( strlen($_GET["month"]) == 1 ) ? $hidedata["sort"]["month"] = "0".$_GET["month"] : $hidedata["sort"]["month"] = $_GET["month"];
-        $hidedata["sort"]["year"] = $_GET["year"];
+    if ( $environment["parameter"][9] != "" && $environment["parameter"][8] != "" && $environment["parameter"][7] != "" ) {
+        ( strlen($environment["parameter"][9]) == 1 ) ? $hidedata["sort"]["day"] = "0".$environment["parameter"][9] : $hidedata["sort"]["day"] = $environment["parameter"][9];
+        ( strlen($environment["parameter"][8]) == 1 ) ? $hidedata["sort"]["month"] = "0".$environment["parameter"][8] : $hidedata["sort"]["month"] = $environment["parameter"][8];
+        $hidedata["sort"]["year"] = $environment["parameter"][7];
     } else {
         $hidedata["sort"]["day"] = substr($tag_meat["SORT"][0]["meat"],8,2);
         $hidedata["sort"]["month"] = substr($tag_meat["SORT"][0]["meat"],5,2);
         $hidedata["sort"]["year"] = substr($tag_meat["SORT"][0]["meat"],0,4);
     }
 
-    $ausgaben["calendar"] = calendar($hidedata["sort"]["month"],$hidedata["sort"]["year"],"cal_termine","-1","-1",-1);
+    $ausgaben["calendar"] = calendar($hidedata["sort"]["month"],$hidedata["sort"]["year"],"cal_termine","-1","-1",-1,6);
 
     $hidedata["sort"]["date"] = $hidedata["sort"]["day"].".".$hidedata["sort"]["month"].".".$hidedata["sort"]["year"];
 
