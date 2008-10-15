@@ -383,6 +383,7 @@
             $ausgaben["inaccessible"] .= "# (upload_file) #(upload_file)<br />";
             $ausgaben["inaccessible"] .= "# (edit_file) #(edit_file)<br />";
             $ausgaben["inaccessible"] .= "# (get_sel) #(get_sel)<br />";
+            $ausgaben["inaccessible"] .= "# (get_link) #(get_link)<br />";
 
             $ausgaben["inaccessible"] .= "# (refresh) #(refresh)<br />";
 

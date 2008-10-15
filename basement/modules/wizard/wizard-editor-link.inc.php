@@ -72,6 +72,36 @@
         );
     }
 
+    if ( is_array($_SESSION["file_memo"]) ) {
+        $dataloop["fileed"][] = array(
+            "label" => $tag_werte[0],
+             "link" => $tag_werte[0],
+              "sel" => " checked=\"checked\"",
+        );
+        $hidedata["fileed"] = array();
+        $sql = "SELECT * FROM site_file WHERE fid IN (".implode(",",$_SESSION["file_memo"]).")";
+        $result = $db -> query($sql);
+        while ( $data = $db -> fetch_array($result,1) ) {
+            if ( $cfg["file"]["filetyp"][$data["ffart"]] != "arc" && $cfg["file"]["filetyp"][$data["ffart"]] != "pdf" && $cfg["file"]["filetyp"][$data["ffart"]] != "odf" ) {
+                continue;
+            }
+            $link = $cfg["file"]["base"]["webdir"].
+                    $data["ffart"]."/".
+                    $data["fid"]."/".
+                    $data["ffname"];
+            $check = "";
+            if ( $link == $tag_werte[0] ) {
+                $check = " checked=\"checked\"";
+                array_shift($dataloop["fileed"]);
+            }
+            $dataloop["fileed"][] = array(
+                "label" => $data["ffname"],
+                 "link" => $link,
+                  "sel" => $check,
+            );
+        }
+    }
+
 
     // abspeichern, part 2
     // * * *
@@ -83,11 +113,16 @@
             || $_POST["upload"] != "" ) ) {
 
         if ( is_array($_POST["tagwerte"][3]) ) $_POST["tagwerte"][3] = implode(":",$_POST["tagwerte"][3]);
+        if ( $_POST["tagwerte_memo"] != "" ) $_POST["tagwerte"][0] = $_POST["tagwerte_memo"];
         $tag_werte = array();
         for ($i = 0; $i <= 2; $i++) {
             $tag_werte[] = $_POST["tagwerte"][$i];
         }
         $to_insert = "[LINK=".implode(";",$tag_werte)."]".$_POST["description"]."[/LINK]";
+echo "<pre>".print_r($_POST,true)."</pre>";
+// die($to_insert);
+
+        if ( !is_array($_POST["add"]) ) unset($_SESSION["file_memo"]);
 
     }
     // + + +
