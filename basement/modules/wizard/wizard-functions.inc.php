@@ -143,7 +143,7 @@
         // erzeugt ein array mit den informationen aller gesuchten tags (inhalt der tags, position,...)
         // aufbau: $tag_meat[tagname][index] ( z.B. $tag_meat["H"][1] )
         function content_split_all($content) {
-            global $cfg, $value;
+            global $cfg, $value, $tag_sort;
 
             $tag_meat = array();
             foreach ( $cfg["wizard"]["ed_boxed"] as $tag=>$preg ) {
@@ -194,7 +194,7 @@
                                 "type" => $preg[1],
                              "buttons" => $preg[2],
                         );
-                        $alternate[strlen($pre)] = array(
+                        $tag_sort[strlen($pre)] = array(
                                 "para" => array($tag,$index),
                                "start" => strlen($pre),
                                  "end" => strlen($pre) + strlen($value),
@@ -208,16 +208,16 @@
             }
 
             // verschachtelte tags werden gesucht und eingetragen
-            ksort($alternate);
+            ksort($tag_sort);
             if ( !function_exists(filter_alternate) ) {
                 function filter_alternate($var) {
                     global $value, $start;
                     if ( $value["start"] < $var["start"] && $value["end"] > $var["end"] ) return $var;
                 }
             }
-            foreach ( $alternate as $key=>$value ) {
+            foreach ( $tag_sort as $key=>$value ) {
                 $start = $value["start"];
-                $nested = (array_filter($alternate, "filter_alternate"));
+                $nested = (array_filter($tag_sort, "filter_alternate"));
                 foreach ( $nested as $index => $nest_value ) {
                     if ( $tag_meat[$nest_value["para"][0]][$nest_value["para"][1]]["keks"] != "" ) {
                         $keks = "->";
