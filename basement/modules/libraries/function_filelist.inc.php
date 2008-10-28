@@ -133,6 +133,18 @@
                 $cvs_title = "";
             }
 
+
+            // src-pfad
+            $src = $cfg["file"]["base"]["webdir"].
+                   $cfg["file"]["base"]["pic"]["root"].
+                   $cfg["file"]["base"]["pic"]["tn"]."tn_".
+                   $data["fid"].".".$data["ffart"];
+            $src_realname = $cfg["file"]["base"]["webdir"].
+                            $data["ffart"]."/".
+                            $data["fid"]."/".
+                           "tn/".
+                           $data["ffname"];
+
             // download-link
             if ( $cfg["file"]["base"]["realname"] == True ) {
                 $download = $cfg["file"]["base"]["webdir"].
@@ -169,10 +181,7 @@
                                             "ehref" => "edit,".$data["fid"].".html",
                                             "dhref" => $download,
                                             "vhref" => $environment["allparameter"]."/view,o,".$data["fid"].",".$group.".html",
-                                              "src" => $cfg["file"]["base"]["webdir"].
-                                                       $cfg["file"]["base"]["pic"]["root"].
-                                                       $cfg["file"]["base"]["pic"]["tn"]."tn_".
-                                                       $data["fid"].".".$data["ffart"],
+                                              "src" => $src,
                                           "dtarget" => $target,
                                               "alt" => $data["ffname"],
                                             "title" => $data["ffname"],
@@ -182,6 +191,10 @@
                                             "bhref" => "list/view,b,".$data["fid"].".html",
                                             "mhref" => "list/view,m,".$data["fid"].".html",
                                             "shref" => "list/view,s,".$data["fid"].".html",
+                                         "ohref_lb" => str_replace("/tn/","/o/",$src_realname),
+                                         "bhref_lb" => str_replace("/tn/","/b/",$src_realname),
+                                         "mhref_lb" => str_replace("/tn/","/m/",$src_realname),
+                                         "shref_lb" => str_replace("/tn/","/s/",$src_realname),
                                                        // new: ebInsertImage(ebCanvas);
                                            "oclick" => "ebInsertImage(ebCanvas, '', '".$la."o/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",
                                            "bclick" => "ebInsertImage(ebCanvas, '', '".$la."b/".$lb."', '".$data["funder"]."', '".$cfg[$script_name]["tags"]["img"][5]."');",

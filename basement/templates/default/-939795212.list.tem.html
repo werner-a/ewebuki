@@ -83,10 +83,10 @@
         <a href="!{ehref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} g(edit)" /></a>
         <p>
             <input type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!{id});"!{checked} />
-            <a href="!{ohref}" title="Vorschau Original (original)">O</a>
-            <a href="!{bhref}" title="Vorschau Gross (big)">B</a>
-            <a href="!{mhref}" title="Vorschau Mittel (middle)">M</a>
-            <a href="!{shref}" title="Vorschau Klein (small)" >S</a>
+            <a rel="lightbox[!{id}]" href="!{ohref_lb}" title="!{title} - Vorschau Original (original)">O</a>
+            <a rel="lightbox[!{id}]" href="!{bhref_lb}" title="!{title} - Vorschau Gross (big)">B</a>
+            <a rel="lightbox[!{id}]" href="!{mhref_lb}" title="!{title} - Vorschau Mittel (middle)">M</a>
+            <a rel="lightbox[!{id}]" href="!{shref_lb}" title="!{title} - Vorschau Klein (small)">S</a>
         </p>
     </li>
 <!--##cont-->

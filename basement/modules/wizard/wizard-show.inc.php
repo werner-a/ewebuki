@@ -61,7 +61,7 @@
     }
 
     // form_referer
-    if ( !preg_match("/wizard$/",dirname($_SERVER["HTTP_REFERER"])) ) {
+    if ( $_SERVER["HTTP_REFERER"] &&  !preg_match("/wizard$/",dirname($_SERVER["HTTP_REFERER"])) ) {
         $_SESSION["form_referer"] = $_SERVER["HTTP_REFERER"];
     }
     $ausgaben["form_referer"] = $_SESSION["form_referer"];
