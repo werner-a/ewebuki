@@ -85,7 +85,7 @@
 
             if ( strpos($label,",") !== false ) break; // javascript fix
 
-            if ( preg_match("/^v[0-9]*$/",$environment["parameter"][1],$regs) ) {
+            if ( preg_match("/^v[0-9]*$/",$environment["parameter"][1],$regs) && priv_check($environment["ebene"]."/".$environment["kategorie"],"view")  ) {
                 $version_sql = "AND version=".substr($environment["parameter"][1],1);
                 $version = substr($environment["parameter"][1],1);
             } else {
