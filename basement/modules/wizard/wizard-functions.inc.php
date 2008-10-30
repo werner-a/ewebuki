@@ -332,9 +332,27 @@
                     $cfg[$data["status"]]["color"]["set"] = $cfg["color"]["a"];
                 }
 
+                // letzte aktuelle version finden
+                $sql = "SELECT *
+                          FROM site_text
+                         WHERE tname='".$data["tname"]."'
+                           AND label='".$data["label"]."'
+                           AND lang='".$data["lang"]."'
+                           AND status=1
+                  ORDER BY version DESC";
+                $res_akt = $db -> query($sql);
+                if ( $db->num_rows($res_akt) == 0 ) {
+                    $last_author = "";
+                } else {
+                    $dat_akt = $db -> fetch_array($res_akt);
+                    $last_author = $dat_akt["byforename"]." ".$dat_akt["bysurname"];
+                }
+
                 $new_releases[$data["status"]][] = array(
                     "path" => $path,
                    "titel" => $titel,
+                  "author" => $data["byforename"]." ".$data["bysurname"],
+             "last_author" => $last_author,
                     "view" => $pathvars["menuroot"].$data["ebene"]."/".$data["kategorie"].",v".$data["version"].".html",
                     "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt.html",
                   "unlock" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",unlock,".$data["version"].".html",
