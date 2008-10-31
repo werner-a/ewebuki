@@ -45,99 +45,155 @@
         $position = $environment["parameter"][1]+0;
 
     if ( priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
-        priv_check_old("",$cfg["contented"]["right"]) ) {
+         priv_check_old("",$cfg["contented"]["right"]) ) {
+
+        // ueberschrift
+        $ausgaben["url"] = $pfad;
+
+        // als tname werden die SESSIONS "ebene" u. "kategorie" verwendet
+        if ( $environment["parameter"][2] == "" ) {
+            if ( $_SESSION["ebene"] != "" ) {
+                $pfad = $_SESSION["ebene"]."/".$_SESSION["kategorie"];
+                $tname = eCRC($_SESSION["ebene"]).".".$_SESSION["kategorie"];
+            } else {
+                $pfad = "/".$_SESSION["kategorie"];
+                $tname = $_SESSION["kategorie"];
+            }
+        } else {
+            $tname = $environment["parameter"][2];
+            $pfad = tname2path($tname);
+        }
 
         // label steuerung wenn kein para dann wird default-label aus cfg hergenommen
         if ( $environment["parameter"][3] == "" )  $environment["parameter"][3] = $cfg["contented"]["default_label"];
 
-        // als tname werden die SESSIONS "ebene" u. "kategorie" verwendet
-        if ( $_SESSION["ebene"] != "" ) {
-            $pfad = $_SESSION["ebene"]."/".$_SESSION["kategorie"];
-            $tname = eCRC($_SESSION["ebene"]).".".$_SESSION["kategorie"];
-        } else {
-            $pfad = "/".$_SESSION["kategorie"];
-            $tname = $_SESSION["kategorie"];
+        $old = $environment["parameter"][4];
+        $new = $environment["parameter"][5];
+        if ( $_POST["old"] != "" || $_POST["new"]!= ""
+          || $_GET["old"] != ""  || $_GET["new"]!= "" ) {
+            if ( $_POST["old"] || $_GET["old"] ) {
+                $_POST["old"] != "" ? $old = $_POST["old"] : $old = $_GET["old"];
+            }
+            if ( $_POST["new"] || $_GET["new"] ) {
+                $_POST["new"] != "" ? $new = $_POST["new"] : $new = $_GET["new"];
+            }
+            header("Location: ".$cfg["contented"]["basis"]."/history,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$old.",".$new.",".$environment["parameter"][6].",verify.html");
         }
-
-        // ueberschrift
-        $ausgaben["url"] = $_SESSION["ebene"]."/".$_SESSION["kategorie"];
 
         // page basics
         // ***
         $ausgaben["diff"] = "";
+        $ausgaben["rows"] = $cfg["contented"]["history_rows"];
+
+        // hoechste und niedrigste versionsnummer rausfinden
+        $sql = "SELECT max(version), min(version)
+                  FROM site_text
+                 WHERE tname='".$tname."'
+                   AND label='".$environment["parameter"][3]."'";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,1);
+        $last_version = $data["max"];
+        $first_version = $data["min"];
+
         $sql = "SELECT *
-                    FROM site_text
-                    WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' ORDER BY version DESC";
+                  FROM site_text
+                 WHERE tname='".$tname."'
+                   AND label='".$environment["parameter"][3]."'
+              ORDER BY version DESC";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
-        $newest_id =  $db -> fetch_array($result,1);
 
         // Inhalt Selector erstellen und SQL modifizieren
+        $parameter = ",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",".$environment["parameter"][5].",".$environment["parameter"][6];
         $inhalt_selector = inhalt_selector( $sql, $position, $cfg["contented"]["history_rows"], $parameter );
         $ausgaben["inhalt_selector"] .= $inhalt_selector[0];
         $sql = $inhalt_selector[1];
         $ausgaben["gesamt"] = $inhalt_selector[2];
 
         $result = $db -> query($sql);
-        $last_version = $newest_id["version"]-$ausgaben["gesamt"]+1;
         $counter = "";
         while ( $form_values = $db -> fetch_array($result,1) ) {
+
             $counter++;
-            $max_id = "";
-            $visible_old = "visible";
-            $visible_new = "visible";
-            if ( $counter == 1 ) {
-                $max_id = $form_values["version"];
-                $visible_old = "hidden";
-                $selected_new = "checked";
-            } elseif ( $counter == 2 ) {
-                $selected_old = "checked";
-                $selected_new = "";
-            } else {
-                $selected_new = "";
-                $selected_old = "";
+            $selected_new = "";
+            if ( ($new == "" && $counter == 1)
+               || $new == $form_values["version"] ) {
+                $selected_new = " checked=\"checked\"";
+                $ausgaben["new_sel_id"] = $form_values["version"];
+            }
+            $selected_old = "";
+            if ( ($old == "" && $counter == 2)
+               || $old == $form_values["version"] ) {
+                $selected_old = " checked=\"checked\"";
+                $ausgaben["old_sel_id"] = $form_values["version"];
             }
 
-            $dataloop["list"][$form_values["version"]]["url"] = $pathvars["virtual"].$pfad.",v".$form_values["version"].".html";
-            $dataloop["list"][$form_values["version"]]["date"] = substr($form_values["changed"],8,2).". ".gerdate("gml",substr($form_values["changed"],5,2))." ".substr($form_values["changed"],0,4)." ".substr($form_values["changed"],11,5);
-            $dataloop["list"][$form_values["version"]]["name"] = $form_values["bysurname"];
-            $dataloop["list"][$form_values["version"]]["cb1"] = $form_values["version"];
-            $dataloop["list"][$form_values["version"]]["cb2"] = $form_values["version"];
-            $dataloop["list"][$form_values["version"]]["visible_old"] = $visible_old;
-            $dataloop["list"][$form_values["version"]]["visible_new"] = $visible_new;
-            $dataloop["list"][$form_values["version"]]["selected_old"] = $selected_old;
-            $dataloop["list"][$form_values["version"]]["selected_new"] = $selected_new;
-            $dataloop["list"][$form_values["version"]]["max_id"] = $max_id;
-            $dataloop["list"][$form_values["version"]]["rows"] = $cfg["contented"]["history_rows"];
+            $dataloop["list"][$form_values["version"]] = array(
+                             "url" => $pathvars["virtual"].$pfad.",v".$form_values["version"].".html",
+                            "date" => substr($form_values["changed"],8,2).". ".gerdate("gml",substr($form_values["changed"],5,2))." ".substr($form_values["changed"],0,4)." ".substr($form_values["changed"],11,5),
+                            "name" => $form_values["bysurname"]." ".$form_values["byforename"]." (".$form_values["version"].")",
+                             "cb1" => $form_values["version"],
+                             "cb2" => $form_values["version"],
+                     "visible_old" => "visible",
+                     "visible_new" => "visible",
+                    "selected_old" => $selected_old,
+                    "selected_new" => $selected_new,
+                          "max_id" => $last_version,
+                            "rows" => $cfg["contented"]["history_rows"],
+                         "current" => "?old=".$form_values["version"]."&new=".$last_version,
+                        "previous" => "?new=".$form_values["version"]."&old=".($form_values["version"]-1),
+            );
 
-            $dataloop["list"][$form_values["version"]]["current"] = "?old=".$form_values["version"]."&new=".$newest_id["version"];
-            $dataloop["list"][$form_values["version"]]["previous"] = "?new=".$form_values["version"]."&old=".($form_values["version"]-1);
-
-            ( $last_version == $form_values["version"] ) ? $dataloop["list"][$form_values["version"]]["visible_previous"] = "hidden" : $dataloop["list"][$form_values["version"]]["visible_previous"] = "visible";
-            ( $newest_id["version"] == $form_values["version"] ) ? $dataloop["list"][$form_values["version"]]["visible_current"] = "hidden" : $dataloop["list"][$form_values["version"]]["visible_current"] = "visible";
 
         }
 
-        // hier erfolgt der diff
-        if ( ( $_POST["old"] != "" && $_POST["new"]!= "" ) || ( $_GET["old"] != "" && $_GET["new"]!= "" ) ) {
-            $_POST["old"] != "" ? $old = $_POST["old"] : $old = $_GET["old"];
-            $_POST["new"] != "" ? $new = $_POST["new"] : $new = $_GET["new"];
+        // links und radiobuttons ggf ausblenden
+        if ( is_array($dataloop["list"][$first_version]) ) {
+            $dataloop["list"][$first_version]["visible_previous"] = "hidden";
+            $dataloop["list"][$first_version]["visible_new"] = "hidden";
+        }
+        if ( is_array($dataloop["list"][$last_version]) ) {
+            $dataloop["list"][$last_version]["visible_current"] = "hidden";
+            $dataloop["list"][$last_version]["visible_old"] = "hidden";
+        }
 
-            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$old;
+        // hier erfolgt der diff
+        if ( $environment["parameter"][4] && $environment["parameter"][5] ) {
+
+            $sql = "SELECT content,version
+                      FROM site_text
+                     WHERE tname='".$tname."'
+                       AND label='".$environment["parameter"][3]."'
+                       AND version=".$old;
             $result = $db -> query($sql);
             $data_old = $db -> fetch_array($result,1);
-            $sql = "SELECT content,version FROM site_text WHERE tname='".$tname."' AND label='".$environment["parameter"][3]."' AND version=".$new;
+            $sql = "SELECT content,version
+                      FROM site_text
+                     WHERE tname='".$tname."'
+                       AND label='".$environment["parameter"][3]."'
+                       AND version=".$new;
             $result = $db -> query($sql);
             $data_new = $db -> fetch_array($result,1);
 
-            if ( $data_new["version"] > $data_old["version"] ) {
-                $first = $data_new["content"];
-                $second = $data_old["content"];
+            if ( $environment["parameter"][6] == "html" ) {
+                if ( $data_new["version"] > $data_old["version"] ) {
+                    $first = tagreplace($data_new["content"]);
+                    $second = tagreplace($data_old["content"]);
+                } else {
+                    $first = tagreplace($data_old["content"]);
+                    $second = tagreplace($data_new["content"]);
+                }
             } else {
-                $first = $data_old["content"];
-                $second = $data_new["content"];
+                if ( $data_new["version"] > $data_old["version"] ) {
+                    $first = $data_new["content"];
+                    $second = $data_old["content"];
+                } else {
+                    $first = $data_old["content"];
+                    $second = $data_new["content"];
+                }
+                $old_array = explode("\n", $second);
+                $new_array = explode("\n", $first);
             }
-
             $old_array = explode("\n", $second);
             $new_array = explode("\n", $first);
 
@@ -185,8 +241,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-
-        $ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/history,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["contented"]["basis"]."/history,".$environment["parameter"][1].",".$tname.",".$environment["parameter"][3].",".$environment["parameter"][4].",".$environment["parameter"][5].",".$environment["parameter"][6].",verify.html";
         $ausgaben["form_break"] = $cfg["contented"]["basis"]."/list.html";
 
         // hidden values
@@ -211,55 +266,6 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
-            &&  ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["extension1"] != ""
-                || $HTTP_POST_VARS["extension2"] != "" ) ) {
-
-            // form eingaben prüfen
-            form_errors( $form_options, $HTTP_POST_VARS );
-
-            // evtl. zusaetzliche datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
-
-                // funktions bereich fuer erweiterungen
-                // ***
-
-                ### put your code here ###
-
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                // +++
-                // funktions bereich fuer erweiterungen
-            }
-
-            // datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
-
-                $kick = array( "PHPSESSID", "form_referer", "send" );
-                foreach($HTTP_POST_VARS as $name => $value) {
-                    if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
-                        if ( $sqla != "" ) $sqla .= ", ";
-                        $sqla .= $name."='".$value."'";
-                    }
-                }
-
-                // Sql um spezielle Felder erweitern
-                #$ldate = $HTTP_POST_VARS["ldate"];
-                #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
-                #$sqla .= ", ldate='".$ldate."'";
-
-                $sql = "update ".$cfg["contented"]["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["contented"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
-                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                $result  = $db -> query($sql);
-                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["contented"]["basis"]."/list.html";
-            }
-
-            // wenn es keine fehlermeldungen gab, die uri $header laden
-            if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$header);
-            }
-        }
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }

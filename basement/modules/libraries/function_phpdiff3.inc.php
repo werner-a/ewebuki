@@ -1,5 +1,5 @@
 <?php
-/*  
+/*
     Copyright 2003,2004 Nils Knappmeier (nk@knappi.org)
     Copyright 2004-2005, 2007 Patrick R. Michaud (pmichaud@pobox.com)
 
@@ -10,10 +10,10 @@
 
     This file implements a diff function in native PHP.  It is based
     upon the PHPDiffEngine code written by Nils Knappmeier, who in turn
-    had used Daniel Unterberger's diff 
+    had used Daniel Unterberger's diff
     (http://www.holomind.de/phpnet/diff.php) as the basis for his code.
 
-    Pm's revision of Nils' code simply attempts to streamline it 
+    Pm's revision of Nils' code simply attempts to streamline it
     for speed (eliminate function calls and unnecessary string ops)
     and place everything into a single file.
 
@@ -21,26 +21,26 @@
 
 ## PHPDiff returns the differences between $old and $new, formatted
 ## in the standard diff(1) output format.
-function phpdiff3($old, $new) 
+function phpdiff3($old, $new)
 {
  #  StopWatch("PHPDiff: begin");
    # split the source text into arrays of lines
    $t1 = explode("\n", $old);
-   $x = array_pop($t1); 
+   $x = array_pop($t1);
    if ($x > '') $t1[] = "$x\n\\ No newline at end of file";
    $t2 = explode("\n", $new);
-   $x = array_pop($t2); 
+   $x = array_pop($t2);
    if ($x > '') $t2[] = "$x\n\\ No newline at end of file";
 
    $t1_start = 0; $t1_end = count($t1);
    $t2_start = 0; $t2_end = count($t2);
 
    # stop with a common ending
-   while ($t1_start < $t1_end && $t2_start < $t2_end 
+   while ($t1_start < $t1_end && $t2_start < $t2_end
           && $t1[$t1_end-1] == $t2[$t2_end-1]) { $t1_end--; $t2_end--; }
 
    # skip over any common beginning
-   while ($t1_start < $t1_end && $t2_start < $t2_end 
+   while ($t1_start < $t1_end && $t2_start < $t2_end
           && $t1[$t1_start] == $t2[$t2_start]) { $t1_start++; $t2_start++; }
 
    # build a reverse-index array using the line as key and line number as value
@@ -55,7 +55,7 @@ function phpdiff3($old, $new)
    # walk this loop until we reach the end of one of the lists
    while ($a1 < $t1_end && $a2 < $t2_end) {
      # if we have a common element, save it and go to the next
-     if ($t1[$a1] == $t2[$a2]) { $actions[] = 4; $a1++; $a2++; continue; } 
+     if ($t1[$a1] == $t2[$a2]) { $actions[] = 4; $a1++; $a2++; continue; }
 
      # otherwise, find the shortest move (Manhattan-distance) from the
      # current location
@@ -63,12 +63,12 @@ function phpdiff3($old, $new)
      $s1 = $a1; $s2 = $a2;
      while(($s1 + $s2 - $a1 - $a2) < ($best1 + $best2 - $a1 - $a2)) {
        $d = -1;
-       foreach((array)@$r1[$t2[$s2]] as $n) 
+       foreach((array)@$r1[$t2[$s2]] as $n)
          if ($n >= $s1) { $d = $n; break; }
        if ($d >= $s1 && ($d + $s2 - $a1 - $a2) < ($best1 + $best2 - $a1 - $a2))
          { $best1 = $d; $best2 = $s2; }
        $d = -1;
-       foreach((array)@$r2[$t1[$s1]] as $n) 
+       foreach((array)@$r2[$t1[$s1]] as $n)
          if ($n >= $s2) { $d = $n; break; }
        if ($d >= $s2 && ($s1 + $d - $a1 - $a2) < ($best1 + $best2 - $a1 - $a2))
          { $best1 = $s1; $best2 = $d; }
@@ -206,7 +206,7 @@ function prepare($work,$lines2,$lines1) {
                     }
                 }
             }
-            $finish .= "</div>";
+            $finish .= "<div class=\"clear\"></div></div>";
         }
     } else {
         $finish = "Keine Änderungen";
