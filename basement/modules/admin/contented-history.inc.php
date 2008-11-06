@@ -42,9 +42,23 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        $position = $environment["parameter"][1]+0;
+    $position = $environment["parameter"][1]+0;
 
-    if ( priv_check("/".$cfg["contented"]["subdir"]."/".$cfg["contented"]["name"],$cfg["contented"]["right"]) ||
+    // als tname werden die SESSIONS "ebene" u. "kategorie" verwendet
+    if ( $environment["parameter"][2] == "" ) {
+        if ( $_SESSION["ebene"] != "" ) {
+            $pfad = $_SESSION["ebene"]."/".$_SESSION["kategorie"];
+            $tname = eCRC($_SESSION["ebene"]).".".$_SESSION["kategorie"];
+        } else {
+            $pfad = "/".$_SESSION["kategorie"];
+            $tname = $_SESSION["kategorie"];
+        }
+    } else {
+        $tname = $environment["parameter"][2];
+        $pfad = tname2path($tname);
+    }
+
+    if ( priv_check($pfad,$cfg["contented"]["right"]) ||
          priv_check_old("",$cfg["contented"]["right"]) ) {
 
         // parameter-uebersicht
@@ -56,19 +70,7 @@
         // ueberschrift
         $ausgaben["url"] = $pfad;
 
-        // als tname werden die SESSIONS "ebene" u. "kategorie" verwendet
-        if ( $environment["parameter"][2] == "" ) {
-            if ( $_SESSION["ebene"] != "" ) {
-                $pfad = $_SESSION["ebene"]."/".$_SESSION["kategorie"];
-                $tname = eCRC($_SESSION["ebene"]).".".$_SESSION["kategorie"];
-            } else {
-                $pfad = "/".$_SESSION["kategorie"];
-                $tname = $_SESSION["kategorie"];
-            }
-        } else {
-            $tname = $environment["parameter"][2];
-            $pfad = tname2path($tname);
-        }
+
 
         // label steuerung wenn kein para dann wird default-label aus cfg hergenommen
         if ( $environment["parameter"][3] == "" ) {
