@@ -106,14 +106,12 @@
             $ebene = make_ebene($refid);
             if ( $ebene != "/" ) $extend = eCRC($ebene).".";
             $tname = $extend.$kategorie;
-            $sql = "SELECT lang, label, tname, content
+            $sql = "SELECT lang, label, tname, content, version
                       FROM ".$cfg["menued"]["db"]["text"]["entries"]."
                      WHERE tname='".$tname."';";
             $result  = $db -> query($sql);
             while ( $array = $db -> fetch_array($result,$nop) ) {
-                $ausgaben["content"] .=  $array["lang"].": "
-                                        .$array["label"].": "
-                                        .substr($array["content"],0,20)." ...<br />";
+                $ausgaben["content"] .= "<a href=".$pathvars["virtual"].$ebene."/".$kategorie.",v".$array["version"].".html>Version ".$array["version"]."</a><br>";
             }
             if ( $ausgaben["content"] == "" ) $ausgaben["content"] = "#(no_content)";
             $ausgaben["form_hidden"] .= "<input type=\"hidden\" name=\"tname\" value=\"".$tname."\" class=\"hidden\"/>";
