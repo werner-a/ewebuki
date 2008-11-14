@@ -85,10 +85,15 @@
                 WHERE status = 1 AND tname ='".eCRC(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-        if ( $data["kategorie"] != "" ) {
-            $jump = substr($data["kategorie"],11);
+
+        if ( strstr($_SERVER["HTTP_REFERER"],"/wizard/show") ) {
+            $jump = str_replace("http://".$_SERVER["HTTP_HOST"].$pathvars["virtual"],"",$_SERVER["HTTP_REFERER"]);
         } else {
-            $jump = make_ebene($environment["parameter"][4]);
+            if ( $data["kategorie"] != "" ) {
+                $jump = substr($data["kategorie"],11);
+            } else {
+                $jump = make_ebene($environment["parameter"][4]);
+            }
         }
         if ( $environment["parameter"][1] == "down" ) {
             $sort = $data["date"]-11;

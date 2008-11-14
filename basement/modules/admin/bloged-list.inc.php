@@ -91,8 +91,8 @@
                 // liste der zum loeschen vorgemerkten artikel
                 default:
                     $hidedata["admin"]["beschriftung1"] = "Pfad";
-                    $hidedata["admin"]["beschriftung2"] = "sichtbare Einträge";
-                    $hidedata["admin"]["beschriftung3"] = "alle Einträge";
+                    $hidedata["admin"]["beschriftung2"] = "sichtbare Eintr&auml;ge";
+                    $hidedata["admin"]["beschriftung3"] = "alle Eintr&auml;ge";
                     $hidedata["admin_clear"]["beschriftung4"] = "<a href=\"list,".$environment["parameter"][1].",delete,all.html\">blog leeren</a>";
                     // liste der geloeschten artikel
                     $tag = array_shift($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][1])]["tags"]);
@@ -103,6 +103,7 @@
                         $counter++;
                         $sql_in = "SELECT * from site_text WHERE tname ='".$data["tname"]."' AND version='".$data["version"]."' AND status = 0";
                         $result_in = $db -> query($sql_in);
+                        if ( $db -> num_rows($result_in) == 0 ) continue;
                         $data_in = $db -> fetch_array($result_in,1);
                         $preg = "\[".$tag["tag"]."\](.*)\[\/".$tag["tag"]."\]";
                         $preg1 = "\.([0-9]*)$";
@@ -119,8 +120,8 @@
         } else {
             // uebersicht ueber alle blogs
             $hidedata["admin"]["beschriftung1"] = "Pfad";
-            $hidedata["admin"]["beschriftung2"] = "sichtbare Einträge";
-            $hidedata["admin"]["beschriftung3"] = "alle Einträge";
+            $hidedata["admin"]["beschriftung2"] = "sichtbare Eintr&auml;ge";
+            $hidedata["admin"]["beschriftung3"] = "alle Eintr&auml;ge";
             foreach ( $cfg["bloged"]["blogs"] as $key => $value ) {
                 $id = make_id($key);
                 $counter++;

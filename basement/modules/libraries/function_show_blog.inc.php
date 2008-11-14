@@ -77,11 +77,14 @@
         $check_url = $url;
         if ( $kategorie != "" ) $check_url = $kategorie;
 
-         if ( $right == "" ||
+        $status = "status=1";
+
+        if ( $right == "" ||
          ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
          ) {
              $hidedata["new"]["link"] = $url;
              $hidedata["new"]["kategorie"] = $kategorie;
+            $status = "(status=1 OR status = -1 AND version = 1)";
          }
 
 
@@ -119,7 +122,7 @@
         $tname = eCRC($url).".%";
 
         // falls parameter 2 gesetzt, wird nur dieser content geholt
-        if ( $environment["parameter"][2] != "" ) {
+        if ( $environment["parameter"][2] != "" && $environment["ebene"] != "/wizard" ) {
             $tname = eCRC($url).".".$environment["parameter"][2];
         }
 
@@ -131,7 +134,7 @@
         }
 
         // hier der endgueltige sql !!
-        $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,content,tname from site_text WHERE status = 1 AND tname like '".$tname."'".$where." order by date DESC";
+        $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,content,tname from site_text WHERE ".$status." AND tname like '".$tname."'".$where." order by date DESC";
 
         // damit kann man beliebig viele blogs manuell holen
 
@@ -225,7 +228,7 @@
             }
 
             preg_match("/$preg1/",$data["tname"],$regs);
-            if ( $environment["parameter"][2] != "" ) {
+            if ( $environment["parameter"][2] != "" && $environment["ebene"] != "/wizard" ) {
                 $array[$counter]["all"] = tagreplace($data["content"]);
                 $array[$counter]["id"] = $regs[1];
             } else {
@@ -281,12 +284,13 @@
 
             // was anzeigen
             if ( $environment["ebene"] == "" ) {
-                $templ = $environment["kategorie"].".tem.html";
+                $templ = $environment["kategorie"];
             } else {
-                $templ = eCRC($environment["ebene"]).".".$environment["kategorie"].".tem.html";
+                $templ = eCRC($environment["ebene"]).".".$environment["kategorie"];
             }
 
-            if ( file_exists($pathvars["templates"].$templ) ) {
+            if ( file_exists($pathvars["templates"].$templ.".tem.html") ) {
+                $mapping["main"] = $templ;
             } elseif ( $cfg["bloged"]["blogs"][$url]["own_list_template"] != "" ) {
                 $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$url]["own_list_template"];
             } elseif ( $cfg["bloged"]["blogs"][$url]["sort"][1] != "" ) {

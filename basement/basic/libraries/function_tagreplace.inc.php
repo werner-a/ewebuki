@@ -1129,10 +1129,14 @@
                         break;
                     case "[/BLOG]":
 
-                        if ( $environment["ebene"] == "" ) {
-                            $kat = "/".$environment["kategorie"];
+                        if ( $environment["ebene"] == "/wizard" && $environment["kategorie"] == "show" ) {
+                            $kat = tname2path($environment["parameter"][2]);
                         } else {
-                            $kat = $environment["ebene"]."/".$environment["kategorie"];
+                            if ( $environment["ebene"] == "" ) {
+                                $kat = "/".$environment["kategorie"];
+                            } else {
+                                $kat = $environment["ebene"]."/".$environment["kategorie"];
+                            }
                         }
                         $tagwerte = explode("]",$tagwert,2);
                         $url = $tagwerte[0];
@@ -1147,7 +1151,7 @@
                         require_once $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
                         require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
-                        if ( $environment["parameter"][2] == "" ) {
+                        if ( $environment["parameter"][2] == "" || $environment["ebene"] == "/wizard" ) {
                             $dataloop["list"] = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["rows"],$kat);
                         } else {
                             $all = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["rows"],$kat);

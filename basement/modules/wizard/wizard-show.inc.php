@@ -42,6 +42,12 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $prev_site = explode(",",$_SERVER["HTTP_REFERER"]);
+
+    if ( $environment["parameter"][2] != $prev_site[2] && $prev_site[2] != "" && $_SESSION["wizard_referer"] != "delete" ) {
+        $_SESSION["wizard_referer"] = $_SERVER["HTTP_REFERER"];
+    } 
+    if ( $_SESSION["wizard_referer"] == "delete" ) unset($_SESSION["wizard_referer"]);
 
     // parameter-verzeichnis:
     // 1: Datenbank
@@ -736,8 +742,6 @@
                     unset($_SESSION["wizard_content"]);
                 }
 
-                // sprungziele definieren
-                $header = $_SESSION["form_referer"];
                 unset($_SESSION["form_send"]);
                 // content ggf. sofort freigeben
                 if ( $specialvars["content_release"] == -1
@@ -750,7 +754,14 @@
                                 $release_version.".html";
                     header("Location: ".$header);
                 } else {
-                    unset($_SESSION["form_referer"]);
+                    // sprungziele definieren
+                    if ( $_SESSION["wizard_referer"] ) {
+                        $header = $_SESSION["wizard_referer"];
+                        $_SESSION["wizard_referer"] = "delete";
+                    } else {
+                        $header = $_SESSION["form_referer"];
+                    }
+                    if ( $_SESSION["wizard_referer"] == "" ) unset($_SESSION["form_referer"]);
                     header("Location: ".$header);
                 }
 

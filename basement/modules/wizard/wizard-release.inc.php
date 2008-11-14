@@ -194,11 +194,16 @@
                 $result = $db -> query($sql);
             }
 
-            if ( $_SESSION["form_referer"] != "" ) {
-                $header = $_SESSION["form_referer"];
-                unset($_SESSION["form_referer"]);
+            if ( $_SESSION["wizard_referer"] ) {
+                $header = $_SESSION["wizard_referer"];
+                $_SESSION["wizard_referer"] = "delete";
             } else {
-                $header = $_SERVER["HTTP_REFERER"];
+                if ( $_SESSION["form_referer"] != "" ) {
+                    $header = $_SESSION["form_referer"];
+                    unset($_SESSION["form_referer"]);
+                } else {
+                    $header = $_SERVER["HTTP_REFERER"];
+                }
             }
             header("Location: ".$header);
         }
