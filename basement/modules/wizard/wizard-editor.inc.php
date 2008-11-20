@@ -349,7 +349,7 @@
                     } elseif ( $_POST["upload"] != "" ) {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html");
                     } elseif ( $_POST["uploaded"] != "" && $error == 0 ) {
-                        header("Location: ".$pathvars["virtual"]."/admin/fileed/add.html");
+                        header("Location: ".$pathvars["virtual"]."/admin/fileed/add,,extract.html");
                     } elseif ( $_POST["change_pic"] != "" ) {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/edit,".$selected_fid.".html");
                     } else {
