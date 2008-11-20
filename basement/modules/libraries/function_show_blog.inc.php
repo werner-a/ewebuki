@@ -165,6 +165,7 @@
         }
 
         while ( $data = $db -> fetch_array($result,1) ) {
+            $tag_parameter="";
             $counter++;
             $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
             foreach ( $tags as $key => $value ) {
