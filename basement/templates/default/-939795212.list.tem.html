@@ -21,7 +21,7 @@
         </ul>
     </div>
     <div style="clear:both;border-top:1px solid #666666;"></div>
-    <fieldset class="float">
+    <fieldset id="qsearch" class="float" style="padding:0;">
         <label class="small">
             #(search)&nbsp;
             <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
@@ -38,29 +38,64 @@
             &nbsp;
             <input type="submit" name="send[]" value="g(send)" />
         </label>
+        <label class="small">
+            &nbsp;<br />
+            <a href="#" onclick="anzeigen('esearch');">#(esearch)</a>
+        </label>
+    </fieldset>
+    <fieldset id="esearch" class="float" style="padding:0;display:none;">
+        <div class="clearer"></div>
+        <!--##loop-filter_sel-->
+        <label class="small">
+            <input type="radio" name="filter_sel" value="!{value}"!{check} />!{label}
+        </label>
+        <!--##cont-->
+        <h2>Datei-Arten</h2>
+        <div class="clearer"></div>
+        <!--##loop-mimes-->
+        <label class="small">
+            <input type="checkbox" name="mimes[!{label}]" value="!{label}" onclick=""!{checked} />!{label}
+        </label>
+        <!--##cont-->
+        <div class="clearer"></div>
+        <label class="small">
+            &nbsp;
+            <input type="submit" name="send[]" value="g(send)" />
+        </label>
     </fieldset>
 </form>
+<div style="clear:both"></div>
 <p>!#ausgaben_result</p>
-<p>!#ausgaben_form_error</p>
-<p>&nbsp;
-<!--##hide-cms-->
-<span style="display:!{display}" id="cms">
-    <a href="!{link}">g(cmslink)</a>
-</span>
-<!--##show-->
+<!-- <p>!#ausgaben_form_error</p> -->
+<p class="toolbox">
 
-<!--##hide-file-->
-<span style="display:!{display}" id="file">
-    <a href="!{edit}">#(fileedit)</a>
-    <a href="!{collect}">#(filecollect)</a>
-    <a href="!{delete}">#(filedelete)</a>
-</span>
-<!--##show-->
+    <!--##hide-cms-->
+    <span style="display:!{display};" id="cms">
+        &nbsp;<a href="!{link}">g(cmslink)</a>
+    </span>
+    <!--##show-->
+
+    <!--##hide-file-->
+    <span style="display:!{display};" id="file">
+        <a href="!{edit}">#(fileedit)</a>
+        <a href="!{collect}">#(filecollect)</a>
+        <a href="!{delete}">#(filedelete)</a>
+    </span>
+    <!--##show-->
+
+    <b>Ansicht: </b>
+    <!--##loop-view-->
+    <a href="!{link}" title="!{title}"><img src="!{icon}" alt="!{title}" /></a>
+    <!--##cont-->
+<!-- </p> -->
+
+<!-- <p> -->
+    &nbsp;
 </p>
 
 <!--##hide-list_images-->
 <div style="clear:both"></div>
-<h2>#(images)</h2>
+<!-- <h2>#(images)</h2> -->
 <ul>
 <!--##show-->
 <!--##hide-list_plain-->
@@ -97,7 +132,7 @@
 
 <!--##hide-list_other-->
 <div style="clear:both"></div>
-<h2>#(other)</h2>
+<!-- <h2>#(other)</h2> -->
 <ul>
 <!--##show-->
 <!--##hide-list_plain-->
@@ -127,6 +162,91 @@
 </ul>
 <!--##show-->
 
+
+<!--##hide-list_details_frame-->
+<div style="clear:both"></div>
+<table cellpadding="5" style="width:100%;">
+    <thead>
+        <tr style="background:#A9C0CE;">
+            <th style="width:5%;"></th>
+            <th style="width:5%;">ID</th>
+            <th>Datei-Name</th>
+            <th style="width:5%;">Typ</th>
+            <th style="width:5%;">Vorschau</th>
+            <th style="width:5%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+<!--##show-->
+<!--##hide-list_details_ajax-->
+<!--##loop-list_files-->
+        <tr style="background:#EFEFEF;">
+            <td><input type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!{id});"!{checked} /></td>
+            <td>!{id}</td>
+            <td>!{title}</td>
+            <td style="width:5%;">
+                <img alt="!{kategorie}" title="!{kategorie}" src="!{icon_src}" style="margin:0;float:left;" />
+            </td>
+            <td style="white-space:nowrap;">!{aktion}</td>
+            <td>
+                <a title="!{title} bearbeiten" href="!{ehref}"><img src="../../images/default/edit.png" style="margin:0;float:left;" /></a>
+            </td>
+        </tr>
+<!--##cont-->
+<!--##show-->
+<!--##hide-list_details_plain-->
+<!--##loop-list_files-->
+        <tr style="background:#EFEFEF;">
+            <td>!{cb}</td>
+            <td>!{id}</td>
+            <td>!{title}</td>
+            <td style="width:5%;">
+                <img alt="!{kategorie}" title="!{kategorie}" src="!{icon_src}" style="margin:0;float:left;" />
+            </td>
+            <td style="white-space:nowrap;">!{aktion}</td>
+            <td>
+                <a title="!{title} bearbeiten" href="!{ehref}"><img src="../../images/default/edit.png" style="margin:0;float:left;" /></a>
+            </td>
+        </tr>
+<!--##cont-->
+<!--##show-->
+<!--##hide-list_details_frame-->
+    </tbody>
+</table>
+<!--##show-->
+
+<!--##hide-list_symbols_frame-->
+<div style="clear:both"></div>
+<ul>
+<!--##show-->
+<!--##hide-list_symbols_ajax-->
+<!--##loop-list_files-->
+    <li class="thumbs">
+        <a href="!{ehref}" class="pic"><img src="!{thumb_src}" alt="!{alt}" title="!{title} g(edit)" /></a>
+        <p>
+            <input type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!{id});"!{checked} />
+            !{aktion}
+        </p>
+    </li>
+
+<!--##cont-->
+<!--##show-->
+<!--##hide-list_symbols_plain-->
+<!--##loop-list_files-->
+    <li class="thumbs">
+        <a href="!{ehref}" class="pic"><img src="!{thumb_src}" alt="!{alt}" title="!{title} g(edit)" /></a>
+        <p>
+            !{cb}
+            !{aktion}
+        </p>
+    </li>
+
+<!--##cont-->
+<!--##show-->
+<!--##hide-list_symbols_frame-->
+</ul>
+<!--##show-->
+
 <!--##hide-list_ajax-->
 <script type="text/javascript">
     function session_update(fileid) {
@@ -137,6 +257,33 @@
                           onSuccess:function(){ new Effect.Appear('file')}
                          }
         );
+    }
+    function anzeigen(id,trigger) {
+        show = document.getElementById(id).style.display;
+        if ( show == 'none' ) {
+            new Effect.BlindDown(id, {duration: 0.1});
+        } else {
+            new Effect.BlindUp(id, {duration: 0.1})
+        }
+        return false;
+    }
+    function anzeigen(id) {
+        if ( typeof(id) == 'string' ) {
+            var element = [id];
+        } else {
+            element = id;
+        }
+        for (i=0; i<element.length; i++) {
+            if ( $(element[i]) ) {
+                show = $(element[i]).style.display;
+                if ( show == 'none' ) {
+                    new Effect.BlindDown(element[i], {duration: 0.3});
+                } else {
+                    new Effect.BlindUp(element[i], {duration: 0.3})
+                }
+            }
+        }
+        return false;
     }
 </script>
 <!--##show-->

@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Kï¿?igsbrunn
+    86343 Kï¿½ï¿½?igsbrunn
 
     URL: http://www.chaos.de
 */
@@ -165,7 +165,7 @@
         #$ausgaben["form_error"] = ""; siehe edit sperre!
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
         if ( $_SESSION["wizard_last_edit"] != "" ) $ausgaben["form_break"] = $_SESSION["wizard_last_edit"];
 
@@ -175,6 +175,13 @@
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
+        if ( $environment["parameter"][2] == "extract" ) {
+            $ausgaben["style_file_edit"]    = "display:none;";
+            $ausgaben["style_extract_edit"] = "display:block;";
+        } else {
+            $ausgaben["style_file_edit"]    = "display:block;";
+            $ausgaben["style_extract_edit"] = "display:none;";
+        }
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($_GET["edit"]) ) {
@@ -192,12 +199,12 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][3] == "verify"
             &&  ( $_POST["send"] != ""
                 || $_POST["extract"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
-            // form eingaben prüfen
+            // form eingaben prï¿½fen
             form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern

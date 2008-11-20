@@ -222,6 +222,7 @@ div.clearer {
 
     #eEd .tabbed {
         height:3em;
+        padding-left:9px;
         position:relative;
     }
 
@@ -330,6 +331,17 @@ li.thumbs a.pic {
     clear:both;
     font-size:0.9em;
 }
+
+.toolbox span {
+    float:right;
+}
+    .toolbox span a {
+        background:#EFEFEF;
+        border:1px solid #A9C0CE;
+        padding:3px;
+        text-decoration:none;
+        -moz-border-radius:5px;
+    }
 
 /* ---------------------*/
 

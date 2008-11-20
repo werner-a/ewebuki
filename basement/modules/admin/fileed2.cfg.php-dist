@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -116,11 +116,13 @@
                         "1" => array("Bilder", "Dokumente", "Archive", "Markierte Bilder"),
                        ),
              "tabs" => array(      #  beschriftung,  link,  anordung (L/R), url-muster
-                        "0" => array("g(all_files)", "list,,,all.html" , "L", "/list[,0-9]*[all]*\.html/i"),
-                        "1" => array("g(sel_files)", "list,,,sel.html", "L", "/list[,0-9]*,sel.*\.html/i"),
+//                         "0" => array("g(all_files)", "list,,,all.html" , "L", "/list[,0-9]*[all]*\.html/i"),
+//                         "1" => array("g(sel_files)", "list,,,sel.html", "L", "/list[,0-9]*,sel.*\.html/i"),
+                        "2" => array("g(all_files)", "list,,,sel.html", "L", "/list/i"),
                         "3" => array("g(fileupload)", "upload.html", "R", "/upload[,0-9]*.html/"),
                         "4" => array("g(filecompilation)", "compilation.html", "R", "/compilation[,0-9]*.html/"),
                        ),
+//      "default_view" => "symbols",
             "right" => $cfg["auth"]["menu"]["fileed"][1],
             "restrict" => array(), # z.B. array("delete", "edit")
     );

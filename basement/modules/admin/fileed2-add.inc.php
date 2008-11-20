@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -164,7 +164,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/add,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
         if ( $_SESSION["wizard_last_edit"] != "" ) $ausgaben["form_break"] = $_SESSION["wizard_last_edit"];
 
@@ -174,6 +174,13 @@
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
+        if ( $environment["parameter"][2] == "extract" && is_array($hidedata["zip"]) ) {
+            $ausgaben["style_file_edit"]    = "display:none;";
+            $ausgaben["style_extract_edit"] = "display:block;";
+        } else {
+            $ausgaben["style_file_edit"]    = "display:block;";
+            $ausgaben["style_extract_edit"] = "display:none;";
+        }
 
         // unzugaengliche #(marken) sichtbar machen
         if ( isset($_GET["edit"]) ) {
@@ -195,13 +202,13 @@
             exit;
         }
 
-        if ( ( $environment["parameter"][2] == "verify"
+        if ( ( $environment["parameter"][3] == "verify"
                  &&  ( $_POST["send"] != ""
                     || $_POST["extract"] != ""
                     || $_POST["extension2"] != "" )
              ) || $file_buffer["wave_thru"] == -1 ) {
 
-            // form eigaben prüfen
+            // form eigaben pruefen
             form_errors( $form_options, $_POST );
 
             // funktions bereich fuer erweiterungen

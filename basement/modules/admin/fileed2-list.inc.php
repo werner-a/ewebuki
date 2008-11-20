@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -50,7 +50,7 @@
         // funktions bereich ( aufbau )
         // ***
 
-        // file_memo verwalten
+        // file_memo verwalten, inkl. ajax-checkboxen
         if ( $environment["parameter"][2] ){
             if ( isset($_SESSION["file_memo"][$environment["parameter"][2]]) ){
                 unset($_SESSION["file_memo"][$environment["parameter"][2]]);
@@ -67,8 +67,52 @@
                 header("Location: ".$cfg["fileed"]["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",,".$environment["parameter"][3].".html");
             }
         }
-
         $debugging["ausgabe"] .= "<pre>".print_r($_SESSION["file_memo"],True)."</pre>";
+
+        // get-verarbeitung: mimes
+        $mime_session = 0;
+        if ( is_array($_SESSION["fileed_filter_mime"]) ) $mime_session = -1;
+        foreach ( $cfg["file"]["filetyp"] as $key => $value ) {
+            if ( !is_array($_GET["mimes"]) && $mime_session == 0 ) {
+                $_SESSION["fileed_filter_mime"][$value] = $value;
+            } elseif ( !isset($_GET["mimes"])
+                   && !isset($_GET["send"])
+                   && $mime_session == -1
+                   && $_SESSION["fileed_filter_mime"][$value] != "" ) {
+                $_SESSION["fileed_filter_mime"][$value] = $value;
+            } elseif ( is_array($_GET["mimes"]) && $_GET["mimes"][$value] != "" ) {
+                $_SESSION["fileed_filter_mime"][$value] = $value;
+            } elseif ( $_SESSION["fileed_filter_mime"][$value] != "" ) {
+                unset($_SESSION["fileed_filter_mime"][$value]);
+            }
+        }
+
+        // get-verarbeitung: filter-remove
+        if ( is_array($_GET["remove_filter"]) ) {
+            foreach ( $_GET["remove_filter"] as $key => $value ) {
+                if ( $key == "mime" ) {
+                    if ( $_SESSION["fileed_filter_mime"][$value] != "" ) {
+                        unset($_SESSION["fileed_filter_mime"][$value]);
+                    }
+                }
+                if ( $key == "search" ) {
+                    $search = array_flip(explode( " ", $_SESSION["fileed_search"] ));
+                    unset( $search[$value] );
+                    $_SESSION["fileed_search"] = implode(" ",array_flip($search) );
+                }
+                $header = $cfg["fileed"]["basis"]."/".$environment["kategorie"].".html";
+            }
+            header("Location: ".$header);
+        }
+        if ( count($_SESSION["fileed_filter_mime"]) == 0 ) unset($_SESSION["fileed_filter_mime"]);
+
+        // get-verarbeitung: schnellsuche verarbeiten
+        if ( isset($_GET["search"]) ) {
+            $_SESSION["fileed_position"] = 0;
+            $_SESSION["fileed_search"] = $_GET["search"];
+        } elseif ( isset($_GET["search"]) && $_GET["search"] == "" ) {
+            unset($_SESSION["fileed_search"]);
+        }
 
         // auswahllisten erstellen
         $set = array(); $data = array();
@@ -83,14 +127,93 @@
             }
             foreach ( $data as $key => $value ) {
                 if ( $key == $_SESSION["fileed_filter".$set] ) {
-                    $dataloop["filter".$set][$key]["select"] = "selected";
+                    $select = "selected=\"selected\"";
+                    $check = "checked=\"checked\"";
                 } else {
-                    $dataloop["filter".$set][$key]["select"] = "";
+                    $select = "";
+                    $check = "";
                 }
-                $dataloop["filter".$set][$key]["value"] = $key;
-                $dataloop["filter".$set][$key]["label"] = $value;
+                $dataloop["filter".$set][$key] = array(
+                    "value" => $key,
+                    "label" => $value,
+                   "select" => $select,
+                    "check" => $check,
+                );
             }
             $debugging["ausgabe"] .= "<pre>".print_r($dataloop["filter".$set],True)."</pre>";
+        }
+
+        // umleitung, damit die Get-Vars wieder weg sind
+        if ( count($_GET) > 0 && !isset($_GET["edit"]) ) {
+            $_GET["filter_sel"] == "sel" ? $filter_sel = "sel" : $filter_sel = "all";
+            $header = $cfg["fileed"]["basis"]."/list,,,".$filter_sel.".html";
+            header("Location: ".$header);
+        }
+
+        // radio-auswahl: nur angekreuzte dateien oder alle
+        $environment["parameter"][3] != "sel" ? $check = " checked=\"checked\"" : $check = "";
+        $dataloop["filter_sel"][] = array(
+            "value" => "all",
+            "label" => "alle Dateien",
+            "check" => $check,
+        );
+        $check == "" ? $check = " checked=\"checked\"" : $check = "";
+        $dataloop["filter_sel"][] = array(
+            "value" => "sel",
+            "label" => "nur ausgew&auml;hlte",
+            "check" => $check,
+        );
+
+        // dateitypen-checkboxen bauen
+        foreach ( $cfg["file"]["filetyp"] as $key => $value ) {
+            if ( (is_array($_SESSION["fileed_filter_mime"]) && in_array($value,$_SESSION["fileed_filter_mime"]))
+              || !is_array($_SESSION["fileed_filter_mime"])
+            ) {
+                $checked = " checked=\"checked\"";
+                $class = "checked";
+                $link = "?remove_filter[mime]=".$value;
+            } else {
+                $checked = "";
+                $class = "";
+                $link = "?add_filter[mime]=".$value;
+            }
+            $dataloop["mimes"][$value] = array(
+                  "label" => $value,
+                   "link" => $link,
+                "checked" => $checked,
+                  "class" => $class,
+            );
+        }
+
+        // ansichtslinks bauen
+        $views = array("default","details","symbols");
+        if ( $_COOKIE["fileed_view"][$_SESSION["uid"]] != "" ) {
+            $cfg["fileed"]["default_view"] = $_COOKIE["fileed_view"][$_SESSION["uid"]];
+            $view_mode = $_COOKIE["fileed_view"][$_SESSION["uid"]];
+        }
+        if ( $cfg["fileed"]["default_view"] == "" ) $cfg["fileed"]["default_view"] = "default";
+        if ( $environment["parameter"][4] != "" ) {
+            $view_mode = $environment["parameter"][4];
+        } else {
+            $view_mode = $cfg["fileed"]["default_view"];
+        }
+        foreach ( $views as $value ) {
+            if ( ($view_mode != "" && $value == $view_mode)
+              || ($view_mode == "" && $value == $cfg["fileed"]["default_view"]) ) {
+                $icon = "/images/default/view_icon_".$value."_sel.png";
+            } else {
+                $icon = "/images/default/view_icon_".$value.".png";
+            }
+            $dataloop["view"][] = array(
+                  "title" => "#(".$value.")",
+                   "icon" => $icon,
+                   "link" => $cfg["fileed"]["basis"]."/list,".
+                             $environment["parameter"][1].",".
+                             $environment["parameter"][2].",".
+                             $environment["parameter"][3].",".
+                             $value.",".
+                             $environment["parameter"][5].".html",
+            );
         }
 
         // content editor link erstellen
@@ -133,15 +256,9 @@
         $part = array();
 
         // suche verarbeiten
-        if ( isset($_GET["search"]) ) {
-            $_SESSION["fileed_position"] = 0;
-            $_SESSION["fileed_search"] = $_GET["search"];
-        } elseif ( isset($_GET["search"]) && $_GET["search"] == "" ) {
-            unset($_SESSION["fileed_search"]);
-        }
         if ( $_SESSION["fileed_search"] ) {
             $ausgaben["search"] = $_SESSION["fileed_search"];
-            $ausgaben["result"] = "#(answera) \"".$_SESSION["fileed_search"]."\" #(answerb) ";
+            $filters[] = $_SESSION["fileed_search"];
             $array1 = explode( " ", $_SESSION["fileed_search"] );
             $array2 = array( "ffname", "fdesc", "fhit", "fid" );
 
@@ -155,6 +272,10 @@
                             $part["search"] .= $value2. " LIKE '%".$value1."%'";
                         }
                     }
+                    $dataloop["filter"][] = array(
+                        "label" => $value1,
+                        "del" => "?remove_filter[search]=".$value1,
+                    );
                 }
             }
             if ( $part["search"] != "" ) $part["search"] = "(".$part["search"].")";
@@ -169,48 +290,14 @@
                 break;
             case 1:
                 $part["auswahl1"] = " fdid = '".$_SESSION["custom"]."'";
+                $filters[] = $cfg["fileed"]["filter"][0][$_SESSION["fileed_filter0"]];
                 break;
             default:
+                $filters[] = $cfg["fileed"]["filter"][0][$_SESSION["fileed_filter0"]];
                 $part["auswahl1"] = " fuid = '".$_SESSION["uid"]."'";
         }
 
         // auswahlliste 2 verarbeiten
-
-        function collect_filetyps($kategorie){
-            global $cfg;
-
-            $types = explode( ",",$kategorie );
-            foreach ( $types as $kat ){
-                foreach ( $cfg["fileed"]["filetyp"] as $key=>$value ){
-                    if ( $value == $kat ) $array[] = "'".$key."'";
-                }
-            }
-            return implode(",",$array);
-        }
-
-        switch ( $_SESSION["fileed_filter1"] ) {
-            case 3:
-                foreach ( $_SESSION["file_memo"] as $value ) {
-                    if ( $pattern == "" ) {
-                        $pattern = "(".$cfg["fileed"]["db"]["file"]["key"]." = ".$value.")";
-                    } else {
-                        $pattern .= " OR (".$cfg["fileed"]["db"]["file"]["key"]." = ".$value.")";
-                    }
-                }
-                if ( $pattern == "" ) $pattern = $cfg["fileed"]["db"]["file"]["key"]." = -1";
-
-                $part["auswahl2"] = $part["auswahl2"] = " ffart IN (".collect_filetyps("img").") AND (".$pattern.")";
-                $hidedata["images"] = array();
-                break;
-            case 2:
-                $part["auswahl2"] = " ffart IN (".collect_filetyps("arc").")";
-                $hidedata["other"] = array();
-                break;
-            case 1:
-                $part["auswahl2"] = " ffart IN (".collect_filetyps("odf,pdf").")";
-                $hidedata["other"] = array();
-                break;
-        }
 
         if ( $environment["parameter"][3] == "sel" ) {
             if ( is_array($_SESSION["file_memo"]) ) {
@@ -222,8 +309,27 @@
                     }
                 }
             }
-            if ( $part["sel"] == "" ) $part["sel"] = $cfg["fileed"]["db"]["file"]["key"]." = -1";
+            if ( $part["sel"] == "" ) {
+                $part["sel"] = $cfg["fileed"]["db"]["file"]["key"]." = -1";
+            } else {
+                $part["sel"] = "(".$part["sel"].")";
+            }
+            $filters[] = "nur ausgew&auml;hlte";
         }
+
+        $buffer = array();
+        foreach ( $cfg["file"]["filetyp"] as $key => $value ) {
+            if ( (is_array($_SESSION["fileed_filter_mime"]) && in_array($value,$_SESSION["fileed_filter_mime"]))
+                || !is_array($_SESSION["fileed_filter_mime"]) ) {
+                $buffer[] = $key;
+                $dataloop["filter"][$value] = array(
+                    "label" => $value,
+                    "del" => "?remove_filter[mime]=".$value,
+                );
+            }
+        }
+        if ( count($buffer) != count($cfg["file"]["filetyp"]) ) $filters[] = implode(", ",$buffer);
+        $part["mimes"] = "(ffart IN ('".implode("','",$buffer)."'))";
 
         // where build
         if ( count($part) >= 2 ) $binder = " AND ";
@@ -234,6 +340,8 @@
                 $where .= $binder.$value;
             }
         }
+
+        if ( count($filters) > 0 ) $ausgaben["result"] = "#(answera) \"".implode("\" und \"",$filters)."\" #(answerb) ";
 
         // +++
         // funktions bereich ( auswertung )
@@ -254,7 +362,13 @@
         if ( $environment["parameter"][1] != "" ) {
             $_SESSION["fileed_position"] = $environment["parameter"][1];
         }
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["fileed"]["db"]["file"]["rows"], ",".$environment["parameter"][2], 1, 5, Null );
+        $inhalt_selector = inhalt_selector(
+                                $sql,
+                                $environment["parameter"][1],
+                                $cfg["fileed"]["db"]["file"]["rows"],
+                                ",".$environment["parameter"][2].",".$environment["parameter"][3].",".$view_mode.",".$environment["parameter"][5],
+                                1, 5, Null
+                           );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0];
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
@@ -263,12 +377,12 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         if ( $db->num_rows($result) == 0 ) {
-            #$ausgaben["result"] .= " keine Einträge gefunden.";
+            #$ausgaben["result"] .= " keine Eintrï¿½ge gefunden.";
             $ausgaben["result"] .= " #(answerc_no)";
         } else {
             // nur erweitern wenn bereits was drin steht
             if ( $ausgaben["result"] ) {
-                #$ausgaben["result"] .= " folgende Einträge gefunden.";
+                #$ausgaben["result"] .= " folgende Eintrï¿½ge gefunden.";
                 $ausgaben["result"] .= " #(answerc_yes)";
             } else {
                 $ausgaben["result"]  = "";
@@ -277,6 +391,51 @@
 
         // dataloop wird ueber eine share-funktion aufgebaut
         filelist($result, "fileed");
+
+        if ( $view_mode == "details" || $view_mode == "symbols" ) {
+
+            if ( is_array($dataloop["list_files"]) ) {
+                foreach ( $dataloop["list_files"] as $key=>$value ) {
+                    $filetyp = $cfg["file"]["filetyp"][$value["art"]];
+                    if ( $filetyp == "img" ) {
+                        $aktion = '<a rel="lightbox['.$value["id"].']" href="'.$value["ohref_lb"].'" title="Vorschau Original (original)">O</a>
+                                    <a rel="lightbox['.$value["id"].']"  href="'.$value["bhref_lb"].'" title="Vorschau Gross (big)">B</a>
+                                    <a rel="lightbox['.$value["id"].']"  href="'.$value["mhref_lb"].'" title="Vorschau Mittel (middle)">M</a>
+                                    <a rel="lightbox['.$value["id"].']"  href="'.$value["shref_lb"].'" title="Vorschau Klein (small)" >S</a>';
+                        $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"]."thumbnail/tn_".$value["id"].".".$value["art"];
+                        $dataloop["list_files"][$key]["thumb_src"] = $dataloop["list_files"][$key]["src"];
+                    } else {
+                        $aktion = '<a title="Herunterladen (download)" href="'.$value["dhref"].'">D</a>';
+                        $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"].$cfg["file"]["fileopt"][$filetyp]["name"]."_".$value["id"].".".$value["art"];
+                        $dataloop["list_files"][$key]["thumb_src"] = "/images/default/thumbs_".$filetyp.".png";
+                    }
+                    $dataloop["list_files"][$key]["icon_src"] = "/images/default/text_icon_".$filetyp.".png";
+
+                    if ( !file_exists($srv_path) ) {
+                        $dataloop["list_files"][$key]["thumb_src"] = "/images/default/thumbs_broken.png";
+                    }
+                    $dataloop["list_files"][$key]["kategorie"] = $cfg["file"]["filetyp"][$value["art"]];
+                    $dataloop["list_files"][$key]["aktion"] = $aktion;
+                }
+            }
+
+            unset($hidedata["list_images"]);
+            unset($hidedata["list_other"]);
+            unset($dataloop["list_images"]);
+            unset($dataloop["list_other"]);
+            $hidedata["list_".$view_mode."_frame"] = array();
+            if ( $cfg["fileed"]["ajax-modus"] == FALSE ) {
+                $hidedata["list_".$view_mode."_plain"] = array();
+            } else {
+                $hidedata["list_".$view_mode."_ajax"] = array();
+            }
+            setcookie("fileed_view[".$_SESSION["uid"]."]",$view_mode);
+
+        } else {
+            unset($hidedata["list_files"]);
+            unset($dataloop["list_files"]);
+            setcookie("fileed_view[".$_SESSION["uid"]."]",$cfg["fileed"]["default_view"]);
+        }
 
         // +++
         // funktions bereich
@@ -314,12 +473,23 @@
             $ausgaben["inaccessible"] .= "# (next) #(prev)<br />";
             $ausgaben["inaccessible"] .= "# (images) #(images)<br />";
             $ausgaben["inaccessible"] .= "# (other) #(other)<br />";
+
+            $ausgaben["inaccessible"] .= "# (img) #(img)<br />";
+            $ausgaben["inaccessible"] .= "# (pdf) #(pdf)<br />";
+            $ausgaben["inaccessible"] .= "# (odf) #(odf)<br />";
+
+            $ausgaben["inaccessible"] .= "# (default) #(default)<br />";
+            $ausgaben["inaccessible"] .= "# (details) #(details)<br />";
+            $ausgaben["inaccessible"] .= "# (symbols) #(symbols)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
 
         // wohin schicken
-        $ausgaben["form1_aktion"] = $cfg["fileed"]["basis"]."/list.html";
+        $ausgaben["form1_aktion"] = $cfg["fileed"]["basis"]."/list,,,".
+                                    $environment["parameter"][3].",".
+                                    $view_mode.",".
+                                    $environment["parameter"][5].".html";
         $ausgaben["form2_aktion"] = $cfg["fileed"]["basis"]."/upload.html";
 
         // +++
