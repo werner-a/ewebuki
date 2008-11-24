@@ -62,6 +62,22 @@
         } else {
             $tname = $environment["kategorie"];
         }
+        $where = "";
+        if ( $specialvars["content_release"] == -1 ) {
+            if ( is_array($cfg["changed"]["blog_date"]) ){
+                if ( array_key_exists($environment["ebene"],$cfg["changed"]["blog_date"]) ) {
+                    $sort_len = strlen($cfg["changed"]["blog_date"][$environment["ebene"]])+2;
+                    $sql_blog = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["changed"]["blog_date"][$environment["ebene"]]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["changed"]["blog_date"][$environment["ebene"]]."]' IN content)-POSITION('[".$cfg["changed"]["blog_date"][$environment["ebene"]]."]' IN content)-".$sort_len.")AS DATETIME) AS date
+                                    FROM site_text
+                                    WHERE tname = '".$tname."' AND status =1";
+                    $result_blog = $db -> query($sql_blog);
+                    $data_blog = $db -> fetch_array($result_blog,1);
+                    $ext_date = $data_blog["date"];
+                }
+            }
+            $where = " AND status = 1";
+        }
+
         $sql = "SELECT ".$cfg["changed"]["db"]["changed"]["lang"].",
                        ".$cfg["changed"]["db"]["changed"]["changed"].",
                        ".$cfg["changed"]["db"]["changed"]["surname"].",
@@ -69,7 +85,7 @@
                        ".$cfg["changed"]["db"]["changed"]["email"].",
                        ".$cfg["changed"]["db"]["changed"]["alias"]."
                   FROM ".$cfg["changed"]["db"]["changed"]["entries"]."
-                 WHERE tname = '".$tname."'
+                 WHERE tname = '".$tname."'".$where."
               ORDER BY ".$cfg["changed"]["db"]["changed"]["changed"];
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
@@ -84,6 +100,9 @@
         }
 
         if ( $changed[$lang][$cfg["changed"]["db"]["changed"]["alias"]] != "" ) {
+            if ( $ext_date != "" ) {
+                $changed[$lang][$cfg["changed"]["db"]["changed"]["changed"]] = $ext_date;
+            }
             $hidedata["changed"]["changed"] = date($cfg["changed"]["format"],strtotime($changed[$lang][$cfg["changed"]["db"]["changed"]["changed"]]));
             $hidedata["changed"]["surname"] = $changed[$lang][$cfg["changed"]["db"]["changed"]["surname"]];
             $hidedata["changed"]["forename"] = $changed[$lang][$cfg["changed"]["db"]["changed"]["forename"]];
