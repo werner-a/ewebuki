@@ -145,7 +145,7 @@
         function content_split_all($content) {
             global $cfg, $value, $tag_sort;
 
-            $tag_meat = array();
+            $tag_meat = array();$tag_sort = array();
             foreach ( $cfg["wizard"]["ed_boxed"] as $tag=>$preg ) {
                 // tag-marken festlegen und content aufbrechen
                 $open_tag = $preg[0][0];

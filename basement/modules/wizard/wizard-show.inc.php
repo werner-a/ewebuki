@@ -46,7 +46,7 @@
 
     if ( $environment["parameter"][2] != $prev_site[2] && $prev_site[2] != "" && $_SESSION["wizard_referer"] != "delete" ) {
         $_SESSION["wizard_referer"] = $_SERVER["HTTP_REFERER"];
-    } 
+    }
     if ( $_SESSION["wizard_referer"] == "delete" ) unset($_SESSION["wizard_referer"]);
 
     // parameter-verzeichnis:
@@ -263,61 +263,73 @@
 
             // bauen der zu bearbeitenden bereiche
             // * * *
+
             $tag_meat = content_split_all($form_values["content"]);
-
-            $tag_order = $tag_meat["order"];
-            unset($tag_meat["order"]);
-            $tmp_tag_meat = $tag_meat;
-
             $content = $form_values["content"];
-            foreach ( $tag_meat as $tag=>$sections ) {
-                foreach ( $sections as $key=>$value ) {
+            $i = 0;
+            // 1. Durchlauf: die einzelnen tags werden markiert
+            foreach ( $tag_sort as $pos => $value ) {
+                $edit_marker = "<!--ID:".sprintf("%04d",$i)."-->";
+                $pre_mark  = substr($content,0,($value["start"] + $i*strlen($edit_marker)));
+                $post_mark = substr($content,($value["start"] + $i*strlen($edit_marker)));
+                // welche "verschachtelungs-ebene"
+                $level = count(explode("->",$tag_meat[$value["para"][0]][$value["para"][1]]["keks"]));
+                if ( $tag_meat[$value["para"][0]][$value["para"][1]]["keks"] == "" ) $level = 0;
+                $nested[$level][$i] = array($value["para"][0],$value["para"][1]);
+                // content ergaenzen
+                $content = $pre_mark.$edit_marker.$post_mark;
+                $i++;
+            }
+            // tag
+            $tmp_tag_meat = content_split_all($content);
+            // 2. Durchlauf: die bearbeiten-bereiche werden gesetzt
+            foreach ( $nested as $level=>$value ) {
+                foreach ( $value as $id=>$tag_id ) {
+                    $tag_name = $tag_id[0];
+                    $tag_key  = $tag_id[1];
+                    $tag_info = $tmp_tag_meat[$tag_name][$tag_key];
                     // links bauen
                     $edit = $cfg["wizard"]["basis"]."/editor,".
                             $environment["parameter"][1].",".
                             $environment["parameter"][2].",".
                             $environment["parameter"][3].",".
-                            $tag.":".$key.",".
+                            $tag_id[0].":".$tag_id[1].",".
                             $environment["parameter"][5].",".
                             $environment["parameter"][6].".html";
                     $del = $cfg["wizard"]["basis"]."/modify,".
                             $environment["parameter"][1].",".
                             $environment["parameter"][2].",".
                             $environment["parameter"][3].",".
-                            $tag.":".$key.",".
+                            $tag_id[0].":".$tag_id[1].",".
                             $environment["parameter"][5].",".
                             "delete.html";
                     $rip = $cfg["wizard"]["basis"]."/modify,".
                             $environment["parameter"][1].",".
                             $environment["parameter"][2].",".
                             $environment["parameter"][3].",".
-                            $tag.":".$key.",".
+                            $tag_id[0].":".$tag_id[1].",".
                             $environment["parameter"][5].",".
                             "rip.html";
 
                     // buffy: alle tags werden in ein hidedata-array geschrieben
-                    ( $tag == "SORT" ) ? $hidevalue = substr($value["meat"],8,2).".".substr($value["meat"],5,2).".".substr($value["meat"],0,4) : $hidevalue = $value["meat"];
-                    $hidedata["wizardtags"][$tag."_".$key] = $hidevalue;
-                    $hidedata["wizardtags"][$tag."_".$key."_link"] = $edit;
+                    ( $tag == "SORT" ) ? $hidevalue = substr($tag_info["meat"],8,2).".".substr($tag_info["meat"],5,2).".".substr($tag_info["meat"],0,4) : $hidevalue = $tag_info["meat"];
+                    $hidedata["wizardtags"][$tag_name."_".$tag_key] = $hidevalue;
+                    $hidedata["wizardtags"][$tag_name."_".$tag_key."_link"] = $edit;
                     // buffy: alle tags werden in ein hidedata-array geschrieben
 
-                    // bereiche vor oder nach den tag
-                    $pre_section  = substr($content,0,$tmp_tag_meat[$tag][$key]["start"]);
-                    $pre_section  = preg_replace("/[ ]$/","&nbsp;",$pre_section);
-                    $post_section = substr($content,$tmp_tag_meat[$tag][$key]["end"]);
-                    $post_section  = preg_replace("/^[ ]/","&nbsp;",$post_section);
 //                     // test: inline-elemente als solche umzusetzen
 //                     $display = "";
 //                     $inline = array("LINK","IMG","Fett");
 //                     if ( in_array($tag,$inline) ) {
 //                         $display = "display:inline;";
 //                     }
-                    // knoepfe
+
+                    // knoepfe sammeln
                     $button = "";
-                    if ( is_array($tmp_tag_meat[$tag][$key]["buttons"]) ) {
-                        foreach ( $tmp_tag_meat[$tag][$key]["buttons"] as $buttons ) {
-                            if ( is_array($cfg["wizard"]["ed_boxed"][$tag][3][$tmp_tag_meat[$tag][$key]["keks"]]) ) {
-                                if ( !in_array($buttons,$cfg["wizard"]["ed_boxed"][$tag][3][$tmp_tag_meat[$tag][$key]["keks"]]) ) continue;
+                    if ( is_array($tag_info["buttons"]) ) {
+                        foreach ( $tag_info["buttons"] as $buttons ) {
+                            if ( is_array($cfg["wizard"]["ed_boxed"][$tag_name][3][$tag_info["keks"]]) ) {
+                                if ( !in_array($buttons,$cfg["wizard"]["ed_boxed"][$tag_name][3][$tag_info["keks"]]) ) continue;
                             }
                             $button .= "<!--button_".$buttons."_beginn--><a href=\"".$$buttons."\">#(tag_".$buttons.")</a><!--button_".$buttons."_end-->";
                         }
@@ -325,29 +337,31 @@
                     // bauen der "bereichsumrandung"
                     if ( $blocked > 0 ) {
                         $section = "<!--edit_begin-->".
-                                    $tmp_tag_meat[$tag][$key]["complete"]."
+                                    $tag_info["complete"]."
                                     <!--edit_end-->";
-                    } elseif ( $value["type"] == "inline" ) {
+                    } elseif ( $tag_info["type"] == "inline" ) {
                         $section = "<!--edit_begin--><span class=\"wiz_edit\" style=\"".$display."\">".
-                                    trim($tmp_tag_meat[$tag][$key]["complete"]).
+                                    trim($tag_info["complete"]).
                                     "<span class=\"buttons\"> ".
                                         $button.
                                     "</span>".
                                     "</span><!--edit_end-->";
-                    } elseif ( $value["type"] == "hide" ) {
-                        $section = trim($tmp_tag_meat[$tag][$key]["complete"]);
+                    } elseif ( $tag_info["type"] == "hide" ) {
+                        $section = trim($tag_info["complete"]);
                     } else {
                         $section = "<!--edit_begin--><div class=\"wiz_edit\" style=\"".$display."\">".
-                                    $tmp_tag_meat[$tag][$key]["complete"]."
+                                    $tag_info["complete"]."
                                     <p style=\"clear:both;".$display."\" />
                                     <div class=\"buttons\">".
                                         $button.
                                     "</div>
                                     </div><!--edit_end-->";
                     }
-                    // tag_meat-array neu durchzaehlen
-                    $content = $pre_section.$section.$post_section;
-                    $tmp_tag_meat = content_split_all($content);
+                    // ersetzen der betroffenen bereiche
+                    $edit_marker = "<!--ID:".sprintf("%04d",$id)."-->";
+                    $sear  = $edit_marker.$tag_info["complete"];
+                    $repl = $section;
+                    $content = str_replace($sear,$repl,$content);
                 }
             }
             // + + +
