@@ -332,6 +332,7 @@
         $part["mimes"] = "(ffart IN ('".implode("','",$buffer)."'))";
 
         // where build
+        $where = "";
         if ( count($part) >= 2 ) $binder = " AND ";
         foreach ( $part as $value ) {
             if ( $where == "" ) {
