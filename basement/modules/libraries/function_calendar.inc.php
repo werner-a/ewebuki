@@ -90,7 +90,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         $jump_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$back.",01.html\">";
         $jump_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$forward.",01.html\">";
         if ( $no_secure == "" ) {
-            if ( $environment["parameter"][$start_parameter+1] && abs($aktuell["year"] - $environment["parameter"][$start_parameter+1]) > 1) {
+            if ( is_int($environment["parameter"][$start_parameter+1]) && abs($aktuell["year"] - $environment["parameter"][$start_parameter+1]) > 1) {
                 header("Location: ".$pathvars["virtual"]."/index.html");
             } elseif ( $jahr-1-$aktuell["year"] < -1) {
                     $jump_back = "";
