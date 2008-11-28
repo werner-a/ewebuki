@@ -302,6 +302,7 @@
                             $environment["parameter"][3].",".
                             $tag_id[0].":".$tag_id[1].",".
                             $environment["parameter"][5].",".
+                            $environment["parameter"][6].",".
                             "delete.html";
                     $rip = $cfg["wizard"]["basis"]."/modify,".
                             $environment["parameter"][1].",".
@@ -309,6 +310,7 @@
                             $environment["parameter"][3].",".
                             $tag_id[0].":".$tag_id[1].",".
                             $environment["parameter"][5].",".
+                            $environment["parameter"][6].",".
                             "rip.html";
 
                     // buffy: alle tags werden in ein hidedata-array geschrieben
@@ -400,6 +402,7 @@
                             $environment["parameter"][3].",".
                             "nop,".
                             $environment["parameter"][5].",".
+                            $environment["parameter"][6].",".
                             "move.html?".implode("&",$sort_array);
                     return $link;
                 }
@@ -446,6 +449,7 @@
                         $environment["parameter"][3].",".
                         "section:".$key.",".
                         $environment["parameter"][5].",".
+                        $environment["parameter"][6].",".
                         "delete.html";
                     // hintergrundbild-schnickschnack
                     preg_match("/\[(.+)\]/U",$value,$match);
@@ -475,7 +479,7 @@
                         }
                     }
 
-                    $dataloop["sort_content"][] = array(
+                    $dataloop["sort_content"][$key] = array(
                                 "key"        => $key,
                                 "tag"        => $tag_match[1],
                                 "value"      => $value,
@@ -489,6 +493,7 @@
                     );
                 }
             }
+// echo "<pre>".print_r($dataloop["sort_content"],true)."</pre>";
             // + + +
             // bereiche in eine liste pressen
 
@@ -530,8 +535,8 @@
                             $environment["parameter"][5].",".$i.".html";
                     $ausgaben["item_".$i."_link"] = $link;
                     // dataloop bauen
-                    if ( $i >=  $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]
-                      && $i < $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
+                    if ( $i >  $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]
+                      && $i <= $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
                         $dataloop["img_map"][] = array(
                             "key"  => $dataloop["sort_content"][$i]["key"],
                             "src"  => $src,
@@ -558,6 +563,7 @@
                                         $environment["parameter"][3].",".
                                         "nop,".
                                         $environment["parameter"][5].",".
+                                        $environment["parameter"][6].",".
                                         "move.html";
             // + + +
 
@@ -575,6 +581,7 @@
                             $environment["parameter"][3].",".
                             $key.":".strlen($form_values["content"]).",".
                             $environment["parameter"][5].",".
+                            $environment["parameter"][6].",".
                             "add,".
                             (count($dataloop["sort_content"]) - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]).
                             ".html",
@@ -761,7 +768,7 @@
                                 AND tname ='".$environment["parameter"][2]."'
                                     AND status = 1";
                         $result_blog  = $db -> query($sql_blog);
-                        if ( $db -> num_rows($result_blog) == 0 ) { 
+                        if ( $db -> num_rows($result_blog) == 0 ) {
                             $sql_blog = "UPDATE ". SITETEXT ." SET content=regexp_replace(content,'\\\[SORT\\\].*\\\[\\\/SORT\\\]','[SORT]".date("Y-m-d H:i:s")."[/SORT]') WHERE tname like '".$environment["parameter"][2]."'";
                             $result_blog  = $db -> query($sql_blog);
                         }

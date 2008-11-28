@@ -49,8 +49,8 @@
     // 3: label
     // 4: marke
     // 5: version
-    // 6: modus
-    // 7: anker-name
+    // 6: anker-name
+    // 7: modus
 
     // datenbank auswaehlen
     $database = $environment["parameter"][1];
@@ -104,17 +104,25 @@
         $tag_meat = content_split_all($form_values["content"]);
 
         if ( ( count($tag_marken) >  1 || $environment["parameter"][4] == "nop" )
-          && strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) ) {
-            switch ( $environment["parameter"][6] ) {
+          && ( strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) || $_SERVER["HTTP_REFERER"] == "" ) ) {
+            switch ( $environment["parameter"][7] ) {
                 case "add":
                     $allcontent = content_level1($form_values["content"]);
-                    foreach ( $allcontent as $key=>$value ) {
-                        if ( (count($allcontent) - $key) <= $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] ) {
-                            $buffer[] = preg_replace("/^[ ]+/m","",$cfg["wizard"]["add_tags"][$tag_marken[0]]);
+
+                    if ( $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] == 0 ) {
+                        $buffer = $allcontent;
+                        $buffer[] = $cfg["wizard"]["add_tags"][$tag_marken[0]];
+                        end($buffer);
+                        $environment["parameter"][6] = key($buffer);
+                    } else {
+                        foreach ( $allcontent as $key=>$value ) {
+                            if ( (count($allcontent) - $key) <= $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] ) {
+                                $buffer[] = preg_replace("/^[ ]+/m","",$cfg["wizard"]["add_tags"][$tag_marken[0]]);
+                                $environment["parameter"][6] = $key + 1;
+                            }
+                            $buffer[] = trim($value);
                         }
-                        $buffer[] = trim($value);
                     }
-                    if ( $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] == 0 ) $buffer[] = $cfg["wizard"]["add_tags"][$tag_marken[0]];
                     $content = implode(chr(13).chr(10).chr(13).chr(10),$buffer);
                     break;
                 case "delete":
@@ -129,6 +137,7 @@
                         $content = substr($form_values["content"],0,$tag_meat[$tag_marken[0]][$tag_marken[1]]["start"]).
                                    substr($form_values["content"],$tag_meat[$tag_marken[0]][$tag_marken[1]]["end"]);
                     }
+                    $environment["parameter"][6] = "none";
                     break;
                 case "rip":
                     $content = substr($form_values["content"],0,$tag_meat[$tag_marken[0]][$tag_marken[1]]["start"]).
@@ -137,27 +146,36 @@
                     break;
                 case "move":
                     $allcontent = content_level1($form_values["content"]);
+                    // sortier-array bestimmen
                     if ( is_array($_GET["content_blocks"]) ) {
-echo "hallo1";
                         $order = $_GET["content_blocks"];
                     } elseif ( is_array($_GET["img_map"]) ) {
-echo "hallo2";
                         $order = $_GET["img_map"];
                     }
-                    $i = 0;
-                    foreach ( $allcontent as $key=>$value ) {
-                        if ( in_array($key,$order) ) {
-                            $buffer[] = trim($allcontent[$order[$i]]);
-                            $i++;
-                        } else {
-                            $buffer[] = trim($value);
+                    // sortier-array ggf auffuellen
+                    $min = min($order);
+                    $max = max($order);
+                    $pre_buffer = array();$post_buffer = array();
+                    foreach ( $allcontent as $key=>$index ) {
+                        if ( !in_array($key,$order) ) {
+                            if ( $key < $min ) {
+                                $pre_buffer[] = $key;
+                            } elseif ( $key > $max ) {
+                                $post_buffer[] = $key;
+                            }
                         }
                     }
+                    $order = array_merge($pre_buffer, $order, $post_buffer);
+                    // content neu sortieren
+                    foreach ( $order as $key ) {
+                        $buffer[] = $allcontent[$key];
+                    }
+                    // ggf parameter anpassen
+                    if ( $environment["parameter"][6] != "" && is_numeric($environment["parameter"][6]) ) {
+                        $environment["parameter"][6] = array_search($environment["parameter"][6],$order);
+                    }
+                    // content neu zusammenbauen
                     $content = implode(chr(13).chr(10).chr(13).chr(10),$buffer);
-echo "<pre>".print_r($buffer,true)."</pre>";
-// echo "\$content: $content<br>";
-echo "\$identifier: $identifier<br>";
-// die("hallo");
                     break;
                 default:
                     header("Location: ".$_SERVER["HTTP_REFERER"]);
@@ -167,10 +185,16 @@ echo "\$identifier: $identifier<br>";
             $_SESSION["wizard_content"][$identifier] = $content;
         }
 
-        if ( strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) ) {
+        if ( strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) || $_SERVER["HTTP_REFERER"] == "" ) {
+            $header = $cfg["wizard"]["basis"]."/show,".
+                                                $environment["parameter"][1].",".
+                                                $environment["parameter"][2].",".
+                                                $environment["parameter"][3].",,".
+                                                $environment["parameter"][5].",".
+                                                $environment["parameter"][6].".html";
             $anker = "";
-            if ( $environment["parameter"][7] != "" ) $anker = "#item_".$environment["parameter"][7];
-            header("Location: ".$_SERVER["HTTP_REFERER"].$anker);
+            if ( $environment["parameter"][6] != "" && is_numeric($environment["parameter"][6]) ) $anker = "#item_".$environment["parameter"][6];
+            header("Location: ".$header.$anker);
         } else {
             header("Location: ".$cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html");
         }
