@@ -43,7 +43,6 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $prev_site = explode(",",$_SERVER["HTTP_REFERER"]);
-echo "halo";
     if ( $environment["parameter"][2] != $prev_site[2] && $prev_site[2] != "" && $_SESSION["wizard_referer"] != "delete" ) {
         $_SESSION["wizard_referer"] = $_SERVER["HTTP_REFERER"];
     }
