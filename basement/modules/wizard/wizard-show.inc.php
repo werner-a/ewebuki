@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $prev_site = explode(",",$_SERVER["HTTP_REFERER"]);
-
+echo "halo";
     if ( $environment["parameter"][2] != $prev_site[2] && $prev_site[2] != "" && $_SESSION["wizard_referer"] != "delete" ) {
         $_SESSION["wizard_referer"] = $_SERVER["HTTP_REFERER"];
     }
@@ -139,7 +139,22 @@
 
     $ausgaben["empty_show_url"] = $cfg["wizard"]["basis"]."/".implode( ",", array_slice($environment["parameter"],0,6) ).",none.html";
 
-    if ( priv_check($tname2path,$cfg["wizard"]["right"]["edit"]) || priv_check($tname2path,$cfg["wizard"]["right"]["publish"]) ||
+    // spezial-check fuer artikel mit kategorie
+    $artikel_check = "";
+    $artikel_check_publish = "";
+    if ( is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]) 
+        && $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"] != "" ) {
+        $kate = $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"];
+        $laenge = strlen($kate)+2;
+        $sql = "SELECT SUBSTR(content,POSITION('[".$kate."]' IN content)+".$laenge.",POSITION('[/".$kate."]' IN content)-".$laenge."-POSITION('[".$kate."]' IN content) )as check_url from site_text where tname = '".$environment["parameter"][2]."'";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,1);
+        $artikel_check = priv_check($data["check_url"],$cfg["contented"]["right"]);
+        $artikel_check_publish = priv_check($data["check_url"],"publish");
+    }
+
+
+    if ( priv_check($tname2path,$cfg["wizard"]["right"]["edit"])|| $artikel_check|| priv_check($tname2path,$cfg["wizard"]["right"]["publish"]) ||
          priv_check_old("",$cfg["wizard"]["right"]) ) {
 
         // page basics
@@ -237,7 +252,7 @@
             // * * *
             $blocked = 0;
             if ( $specialvars["content_release"] == -1 ) {
-                if ( priv_check($tname2path,"publish") ) {
+                if ( priv_check($tname2path,"publish") || $erlaubnis_publish ) {
                     $hidedata["publish"] = array();
                 } else {
                     // ist bereits eine freigabe angefordert, dann blocken
@@ -626,7 +641,7 @@
             }
 
             $publisher = 0;
-            if ( priv_check($tname2path,"publish") ) $publisher = -1;
+            if ( priv_check($tname2path,"publish") || $artikel_check_publish ) $publisher = -1;
 
             if ( ( $environment["parameter"][6] == "verify"
                    && ( $_POST["save"] != ""
