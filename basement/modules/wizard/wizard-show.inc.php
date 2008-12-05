@@ -251,7 +251,7 @@
             // * * *
             $blocked = 0;
             if ( $specialvars["content_release"] == -1 ) {
-                if ( priv_check($tname2path,"publish") || $erlaubnis_publish ) {
+                if ( priv_check($tname2path,"publish") || $artikel_check_publish ) {
                     $hidedata["publish"] = array();
                 } else {
                     // ist bereits eine freigabe angefordert, dann blocken
