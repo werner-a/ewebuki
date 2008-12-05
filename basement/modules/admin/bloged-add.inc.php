@@ -108,8 +108,7 @@
             $content  = "[!][".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$sort."[/".$cfg["bloged"]["blogs"][$ebene]["sort"][0]."]".$kategorie;
 
             if ( is_array($cfg["bloged"]["blogs"][$ebene]["addons"]) ) {
-                if ( $_POST["kategorie"] != "" ) $ebene = $_POST["kategorie"];
-                $header = $pathvars["virtual"].$ebene.".html";
+                $header = $pathvars["virtual"].$_POST["kategorie"].".html";
                 foreach ( $cfg["bloged"]["blogs"][$ebene]["addons"] as $key => $value ) {
                     if ( $value == "SORT" ) continue;
                     if ( !is_array($value) ) {
