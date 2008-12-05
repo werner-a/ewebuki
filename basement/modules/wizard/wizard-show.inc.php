@@ -148,7 +148,7 @@
         $sql = "SELECT SUBSTR(content,POSITION('[".$kate."]' IN content)+".$laenge.",POSITION('[/".$kate."]' IN content)-".$laenge."-POSITION('[".$kate."]' IN content) )as check_url from site_text where tname = '".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-        $artikel_check = priv_check($data["check_url"],$cfg["contented"]["right"]);
+        $artikel_check = priv_check($data["check_url"],$cfg["wizard"]["right"]["edit"]);
         $artikel_check_publish = priv_check($data["check_url"],"publish");
     }
 
