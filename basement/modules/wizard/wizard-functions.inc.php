@@ -311,10 +311,20 @@
                 }
                 $path = $data["ebene"]."/".$data["kategorie"];
 
+                // ggf kategorie
+                $kategorie = "---";
+                if  ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
+                    preg_match("/\[".$cfg["bloged"]["blogs"][$url]["category"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["category"]."/U",$data["content"],$match);
+                    if ( count($match) > 1 ) {
+                        $kategorie = $match[1];
+
+                        $path = $kategorie;
+                    }
+                }
                 // rechte checken
                 if ( $data["status"] == -2 && !priv_check($path,"publish") ) {
                     continue;
-                } elseif ( $data["status"] == -1 && !priv_check($path,"edit") ) {
+                } elseif ( $data["status"] == -1 && !priv_check($path,"edit;publish") ) {
                     continue;
                 }
 
@@ -326,10 +336,10 @@
                 }
 
                 // tabellen farben wechseln
-                if ( $cfg[$data["status"]]["color"]["set"] == $cfg["color"]["a"]) {
-                    $cfg[$data["status"]]["color"]["set"] = $cfg["color"]["b"];
+                if ( $cfg[$data["status"]]["color"]["set"] == $cfg["wizard"]["color"]["a"]) {
+                    $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["b"];
                 } else {
-                    $cfg[$data["status"]]["color"]["set"] = $cfg["color"]["a"];
+                    $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["a"];
                 }
 
                 // letzte aktuelle version finden
@@ -351,6 +361,7 @@
                 $new_releases[$data["status"]][] = array(
                     "path" => $path,
                    "titel" => $titel,
+               "kategorie" => $kategorie,
                   "author" => $data["byforename"]." ".$data["bysurname"],
              "last_author" => $last_author,
                     "view" => $pathvars["menuroot"].$data["ebene"]."/".$data["kategorie"].",v".$data["version"].".html",

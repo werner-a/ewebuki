@@ -131,7 +131,7 @@
         // freizugebene seiten finden
 //         $url = tname2path($environment["parameter"][2]);
         $url = "/";
-        $buffer = find_marked_content($url, $cfg["wizard"], $cfg["wizard"]["default_label"]);
+        $buffer = find_marked_content($url, $cfg, $cfg["wizard"]["default_label"]);
         $dataloop["releases"] = $buffer[-2];
         if ( count($dataloop["releases"]) > 0 ) {
             $hidedata["releases"] = array();
