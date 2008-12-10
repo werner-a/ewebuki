@@ -8,6 +8,35 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 09. Dezember 2008
+sql-eintraege für die schlagwoerter:
+CREATE TABLE IF NOT EXISTS `site_keyword` (
+  `kid` bigint(20) unsigned NOT NULL auto_increment,
+  `tname` varchar(40) NOT NULL,
+  `ebene` text NOT NULL,
+  `kategorie` text NOT NULL,
+  `lang` varchar(5) NOT NULL,
+  `word` varchar(100) NOT NULL,
+  PRIMARY KEY  (`kid`),
+  UNIQUE KEY `kid` (`kid`)
+);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'keywords', 'base', 1, '', '', '-1', '0', 'Schlagwörter', '2008-12-08 15:12:05', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'rel_pages', 'base', 1, '', '', '-1', '0', 'ähnliche Seiten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'add_keywords', 'global', 1, '', '', '-1', '0', 'Verschlagworten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'all_keywords', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'alle Schlagwörter', '2008-12-08 14:18:43', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'ueberschrift', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter', '2008-12-08 14:18:54', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'pages', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'gefundende Seiten', '2008-12-08 14:19:44', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'edit_page', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter der Seite bearbeiten', '2008-12-09 10:26:10', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'edit_keyword', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwort umbenennen', '2008-12-09 10:27:31', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'ueberschrift', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Seite verschlagworten', '2008-12-08 15:16:21', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'url', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Pfad', '2008-12-08 15:16:29', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'keyword', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Schlagwörter', '2008-12-08 15:16:37', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'error_right', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Sie sind nicht berechtigt, diese Seite zu verschlagworten!', '2008-12-09 08:43:23', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'ueberschrift', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Schlagwort umbenennen', '2008-12-08 15:20:41', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'old_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Altes Schlagwort', '2008-12-08 15:20:52', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'new_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Neues Schlagwort', '2008-12-08 15:21:03', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES ('new_keyword', '1950102507.rename_tag', '0', '', '', NULL, '-1', '');
+
 --- 05. Juni 2008
 Anscheinend fehlten beim fileed-add Inhalte der Marken in dem Zip-Entpack-Bereich:
 

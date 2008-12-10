@@ -286,4 +286,91 @@ input.submit {
     background: url(/images/default/filefind.png) no-repeat;
 }
 
+.cloud, .cloud_pages {
+    border:1px solid #A9C0CE;
+    margin:4px 0 6px;
+    padding:3px;
+}
+
+    .cloud li {
+        border:1px solid #EEEEEE;
+        float:left;
+        margin:2px 4px;
+    }
+
+        .cloud li a {
+            cursor:pointer;
+            padding:0 4px;
+            text-decoration:none;
+        }
+
+        .cloud li.selected {
+            background:#EEEEEE;
+            border:1px solid #6C757A;
+        }
+
+        .cloud li.tag0 a {
+            color:#BBBBBB !important;
+        }
+
+        .cloud li.tag1 a {
+            color:#888888 !important;
+        }
+
+        .cloud li.tag2 a {
+            color:#444444 !important;
+        }
+
+        .cloud li.tag3 a {
+            color:#333333 !important;
+            font-weight:bold;
+        }
+
+.cloud_pages {
+}
+
+    .cloud_pages li {
+        background:#EEEEEE;
+        margin-bottom:5px;
+        padding:0 5px;
+    }
+
+    .cloud_pages a {
+        text-decoration:none;
+    }
+
+    .cloud_pages li p {
+        font-size:0.8em;
+        clear:both;
+        margin:0 !important;
+    }
+
+div.autocomplete {
+    position:absolute;
+    background-color:#EFEFEF;
+    border:1px solid #333333;
+    margin:0px;
+    padding:0px;
+    left:-1px;
+}
+
+    div.autocomplete ul {
+        list-style-type:none;
+        margin:0px;
+        padding:0px;
+    }
+
+        div.autocomplete ul li {
+        list-style-type:none;
+        margin:0;
+        padding:2px;
+        cursor:pointer;
+        }
+
+        div.autocomplete ul li.selected {
+            background-color: #6C757A;
+            color:#EFEFEF;
+        }
+
+
 /* ---------------------*/

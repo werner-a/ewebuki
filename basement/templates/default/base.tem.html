@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../css/default/lightbox.css" type="text/css" />
     <title>!#specialvars_pagetitle</title>
     <script src="../../js/default/prototype.js" type="text/javascript"></script>
-    <script src="../../js/default/scriptaculous.js?load=effects,dragdrop,builder" type="text/javascript"></script>
+    <script src="../../js/default/scriptaculous.js?load=effects,controls,dragdrop,builder" type="text/javascript"></script>
     <script src="../../js/default/lightbox.js" type="text/javascript"></script>
 </head>
 <body>
@@ -67,9 +67,46 @@
             </ul>
             <!--##show-->
             #{auth}
+            <!--##hide-tags_on_page-->
+            <fieldset class="cloud">
+                <legend>#(keywords)</legend>
+                <ul id="cloud">
+                    <!--##loop-tags_on_page-->
+                    <li class="!{class}" ><a href="!{link}" title="!{keyword} !{anzahl}">!{keyword}</a></li>
+                    <!--##cont-->
+                </ul>
+                <div style="clear:both"></div>
+            </fieldset>
+            <!--##show-->
+            <!--##hide-rel_page-->
+            <fieldset class="cloud_pages">
+                <legend>#(rel_pages)</legend>
+                <ul>
+                    <!--##loop-rel_page-->
+                    <li class="!{class}" >
+                        <a href="!{url}" >!{title}</a>
+                    </li>
+                    <!--##cont-->
+                </ul>
+            </fieldset>
+            <!--##show-->
         </div>
 
         <div id="foot">
+            <!--##hide-tags_on_page-->
+<!--             <ul id="cloud" class="cloud"> -->
+                <!--##loop-tags_on_page-->
+<!--                 <li class="!{class}" ><a title="!{keyword} !{anzahl}">!{keyword}</a></li> -->
+                <!--##cont-->
+<!--             </ul> -->
+            <!--##show-->
+            <!--##hide-rel_page-->
+<!--             <ul class="cloud1" style="border:1px solid #FF9148;"> -->
+                <!--##loop-rel_page-->
+<!--                 <li class="!{class}" style="text-align:left;padding-left:10px;"><a href="!{url}">!{title}</a> (!{keywords})</li> -->
+                <!--##cont-->
+<!--             </ul> -->
+            <!--##show-->
             <p>
             <!--##hide-changed-->
             Letzte &Auml;nderung !{changed} von <a href="mailto:!{email}">!{alias}</a> (!{forename} !{surname})

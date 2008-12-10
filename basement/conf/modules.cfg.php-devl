@@ -167,13 +167,30 @@
         include $pathvars["moduleroot"]."addon/search.inc.php";
     }
 
-#    // addon: sitemap 
+#    // addon: sitemap
     if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "sitemap" )
        || ( $environment["ebene"] == "/sitemap" ))
     {
         include $pathvars["moduleroot"]."addon/sitemap.cfg.php";
         include $pathvars["moduleroot"]."addon/sitemap-ctrl.inc.php";
     }
+
+    // addon: schlagwoerter
+    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "keywords" )
+       || ( $environment["ebene"] == "/keywords" ) )
+    {
+        include $pathvars["moduleroot"]."addon/keyworded.cfg.php";
+        include $pathvars["moduleroot"]."addon/keyworded-ctrl.inc.php";
+    }
+
+#    // addon: schlagwoerter der seite
+    include $pathvars["moduleroot"]."libraries/function_keywords.inc.php";
+    $dataloop["tags_on_page"] = cloud_loop("local");
+    if ( count($dataloop["tags_on_page"]) > 0 ) $hidedata["tags_on_page"] = array();
+
+    // addon: "aehnliche" seiten
+    $dataloop["rel_page"] = related_pages();
+    if ( count($dataloop["rel_page"]) > 0 ) $hidedata["rel_page"] = array();
 
 #    // customer: modul beispiel "my" einfach
     if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )

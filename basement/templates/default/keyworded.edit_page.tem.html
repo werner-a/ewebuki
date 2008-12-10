@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>keyworded.edit_page</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -939795212.modify.tem.html 1481 2008-11-20 14:10:34Z krompi $-->
+<script type="text/javascript">
+<!--
+  function resetForm(){
+     document.forms[0].reset();
+  }
+//-->
+    function anzeigen(id) {
+        if ( typeof(id) == 'string' ) {
+            var element = [id];
+        } else {
+            element = id;
+        }
+        for (i=0; i<element.length; i++) {
+            if ( $(element[i]) ) {
+                show = $(element[i]).style.display;
+                if ( show == 'none' ) {
+                    new Effect.BlindDown(element[i], {duration: 0.3});
+                } else {
+                    new Effect.BlindUp(element[i], {duration: 0.3})
+                }
+            }
+        }
+        return false;
+    }
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" enctype="multipart/form-data">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset>
+        <label for="url">
+            #(url)
+        </label>
+        <input id="url" type="text" value="!#ausgaben_path" name="url" tabindex="1" />
+        <label for="keywords">
+            #(keyword)
+        </label>
+        <input id="keywords" type="text" value="!#ausgaben_keywords" name="keywords" onkeyup="update_tags(this)" tabindex="2" />
+        <div id="autocomplete_choices" class="autocomplete"></div>
+        <div class="clearer">&nbsp;</div>
+        <!--##hide-tags_all-->
+        <ul id="cloud" class="cloud" style="margin-left:190px;float:left;">
+            <!--##loop-tags_all-->
+            <li class="!{class}" id="tag_!{keyword}"><a onclick="update_input('!{keyword}')" title="!{keyword} !{anzahl}">!{keyword}</a></li>
+            <!--##cont-->
+        </ul>
+        <!--##show-->
+    </fieldset>
+    <fieldset>
+        <input type="submit" name="send[]" value="g(send)" class="first" tabindex="3" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" tabindex="4" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
+
+    <script type="text/javascript">
+        var edit_tags = new Ajax.Autocompleter(
+                            "keywords",
+                            "autocomplete_choices",
+                            "edit_page.html",
+                            {
+                                tokens: ',',
+                                parameters: 'ajax=on&taken=' + $('keywords').value
+                            }
+                        );
+
+
+        function update_tags(element) {
+            var tags = element.value.split(',');
+            var class = 'selected';
+            cloud_elements = $('cloud').childElements();
+            for (i=0;i<cloud_elements.length;i++) {
+                if ( $(cloud_elements[i].id).hasClassName(class) ) {
+                    tag_element = cloud_elements[i].id;
+                    $(tag_element).removeClassName(class);
+                }
+            }
+            for (i=0;i<tags.length;i++) {
+                text = tags[i].replace (/^\s+/, '').replace (/\s+$/, '');
+                if ( text == '' ) continue;
+                tag_element = 'tag_' + text;
+                if ($(tag_element)) $(tag_element).addClassName(class);
+            }
+
+
+        }
+
+        function update_input(tag) {
+            var tags_written = $('keywords').value.split(',');
+            var text_input = new Array();
+            var del = 0;
+            var class = 'selected';
+            var k = 0;
+            for (i=0;i<tags_written.length;i++) {
+                text = tags_written[i].replace (/^\s+/, '').replace (/\s+$/, '');
+                if ( text == '' ) continue;
+                if ( text == tag ) {
+                    del = -1;
+                    continue;
+                }
+                text_input[k] = text;
+                k++;
+            }
+            if ( del == 0 ) text_input[k++] = tag;
+            $('keywords').value = text_input.join(", ");
+            tag_element = 'tag_' + tag;
+            if ( $(tag_element).hasClassName(class) ) {
+                $(tag_element).removeClassName(class);
+            } else {
+                $(tag_element).addClassName(class);
+            }
+        }
+
+    </script>
+
+    <div class="clearer">&nbsp;</div>
+    <p id="output"></p>
+
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<!--##end-->
+</body>
+</html>
