@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ul xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>keyworded.list</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: 210295197.list.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<h1>#(ueberschrift)</h1>
+<p>#(inhalt)</p>
+<p>!#ausgaben_form_error</p>
+
+<!--##hide-all_tags_show-->
+<fieldset class="cloud">
+    <legend onclick="javascript:show_hide('cloud')" style="cursor:pointer;">#(all_keywords)</legend>
+    <ul id="cloud" style="display:!{display}">
+        <!--##loop-all_tags-->
+        <li class="!{class}" ><a href="!{link}" title="!{keyword} !{anzahl}">!{keyword}</a></li>
+        <!--##cont-->
+    </ul>
+</fieldset>
+<!--##show-->
+
+<!--##hide-all_tags_edit-->
+<fieldset class="cloud">
+    <legend onclick="javascript:show_hide('cloud')" style="cursor:pointer;">#(all_keywords)</legend>
+    <ul id="cloud" style="display:!{display}">
+        <!--##loop-all_tags-->
+        <li class="!{class}" >
+            <a href="!{link}" title="!{keyword} !{anzahl}">!{keyword}</a>
+            <a href="!{link_edit}"><img src="../../images/default/edit.png" style="vertical-align:middle;" title="#(edit_keyword)" alt="#(edit_keyword)" /></a>
+        </li>
+        <!--##cont-->
+    </ul>
+</fieldset>
+<!--##show-->
+
+<!--##hide-pages_show-->
+<fieldset class="cloud_pages">
+    <legend>#(pages)</legend>
+    <ul>
+        <!--##loop-pages-->
+        <li class="!{class}" style="">
+            <b><a href="!{url}" title="!{title}: !#pathvars_webroot!{url}" style="float:left;">!{title}</a></b>
+            <a href="!{link_edit}" style="float:right;"><img src="/images/default/!{img}" title="#(edit_page)" alt="#(edit_page)" /></a>
+            <p>!{keywords}
+        </li>
+        <!--##cont-->
+    </ul>
+<!--##show-->
+
+<script type="text/javascript">
+    function show_hide(id) {
+        if ( $(id).style.display == 'none' ) {
+            Effect.BlindDown(id, { duration: 0.3 });
+        } else {
+            new Effect.BlindUp(id, { duration: 0.3 });
+        }
+    }
+</script>
+<div style="clear:both"></div>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<!--##end-->
+</body>
+</html>
