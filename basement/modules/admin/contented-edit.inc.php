@@ -61,7 +61,7 @@
     // spezial-check fuer artikel
     $tname2path = tname2path($environment["parameter"][2]);
     $erlaubnis = "";
-    if ( is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]) 
+    if ( is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))])
         && $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"] != "" ) {
         $kate = $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"];
         $laenge = strlen($kate)+2;
@@ -350,6 +350,7 @@
                     $db -> selectDB( DATABASE ,"");
                 }
 
+                $where = "";
                 foreach ( $array as $value ) {
                     if ( $where != "" ) $where .= " OR ";
                     $where .= "fid = '".$value."'";
