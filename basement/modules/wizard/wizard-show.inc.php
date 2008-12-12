@@ -141,15 +141,15 @@
     // spezial-check fuer artikel mit kategorie
     $artikel_check = "";
     $artikel_check_publish = "";
-    if ( is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]) 
+    if ( is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))])
         && $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"] != "" ) {
         $kate = $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"];
         $laenge = strlen($kate)+2;
         $sql = "SELECT SUBSTR(content,POSITION('[".$kate."]' IN content)+".$laenge.",POSITION('[/".$kate."]' IN content)-".$laenge."-POSITION('[".$kate."]' IN content) )as check_url from site_text where tname = '".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-        $artikel_check = priv_check($data["check_url"],$cfg["wizard"]["right"]["edit"]);
-        $artikel_check_publish = priv_check($data["check_url"],"publish");
+//         $artikel_check = priv_check($data["check_url"],$cfg["wizard"]["right"]["edit"]);
+//         $artikel_check_publish = priv_check($data["check_url"],"publish");
     }
 
 
@@ -386,6 +386,7 @@
             // bauen der "uebergeordneten" bereiche (keine verschachtelung)
             // * * *
             $allcontent = content_level1($content);
+// echo "<pre>".print_r($allcontent,true)."</pre>";
             if ( count($allcontent) > 0 ) {
                 // vorbereitung fuer die array-sortierung fuer das verschieben
                 // * * *
@@ -737,6 +738,7 @@
                         if ( $cfg["wizard"]["utf8"] != TRUE ) {
                             $content = utf8_encode($content);
                         }
+                        header("HTTP/1.0 200 OK");
                         echo preg_replace(array("/#\{.+\}/U","/g\(.+\)/U"),"",$content);
                         die ;
                     }

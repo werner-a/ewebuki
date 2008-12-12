@@ -322,6 +322,7 @@
                     if ( $cfg["wizard"]["utf8"] != TRUE ) {
                         $content = utf8_encode($content);
                     }
+                    header("HTTP/1.0 200 OK");
                     echo preg_replace(array("/#\{.+\}/U","/g\(.+\)/U"),"",$content);
                     die ;
                 }
