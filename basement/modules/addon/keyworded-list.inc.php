@@ -91,7 +91,9 @@
                       FROM ".$cfg["keyworded"]["db"]["keyword"]["entries"]."
                      WHERE ".$cfg["keyworded"]["db"]["keyword"]["keyword"]." IN ('".implode("','",$tags)."')
                        AND ".$cfg["keyworded"]["db"]["keyword"]["lang"]."='".$environment["language"]."'
-                  GROUP BY ".$cfg["keyworded"]["db"]["keyword"]["tname"];
+                  GROUP BY ".$cfg["keyworded"]["db"]["keyword"]["tname"].",
+                           ".$cfg["keyworded"]["db"]["keyword"]["ebene"].",
+                           ".$cfg["keyworded"]["db"]["keyword"]["kategorie"];
             $result = $db -> query($sql);
             $pages = array();
             while ( $data = $db -> fetch_array($result,1) ) {
