@@ -194,7 +194,11 @@
         // funktions bereich fuer erweiterungen
 
         create($id);
-        header("Location: ".$header);
+        if ( $_POST["special"] ) {
+            header("Location: ".$_SERVER["HTTP_REFERER"]);
+        } else {
+            header("Location: ".$header);
+        }
 
     } else {
         header("Location: ".$pathvars["virtual"]."/");

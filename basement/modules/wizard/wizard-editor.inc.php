@@ -128,6 +128,14 @@
             $_SESSION["form_send"] = "version";
         }
 
+        $flyback = explode(",",$_SERVER["HTTP_REFERER"]);
+        if ( $flyback[2] != $environment["parameter"][2] ) {
+            $_SESSION["flyback"] = $_SERVER["HTTP_REFERER"];
+        } else {
+            if ( $_SESSION["flyback"] && $environment["parameter"][7] != "verify" ) {
+                unset($_SESSION["flyback"]);
+            }
+        }
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
@@ -271,6 +279,8 @@
                                                     $environment["parameter"][5].",".
                                                     $environment["parameter"][6].".html";
                 unset($_SESSION["file_memo"]);
+                if ( $_SESSION["flyback"] ) $header = $_SESSION["flyback"];
+                unset($_SESSION["flyback"]); 
                 header("Location: ".$header);
             }
 
@@ -366,6 +376,8 @@
                                                         ",".
                                                         $environment["parameter"][5].",".
                                                         $environment["parameter"][6].".html";
+                    if ( $_SESSION["flyback"] ) $header = $_SESSION["flyback"];
+                    unset($_SESSION["flyback"]); 
                     header("Location: ".$header);
                 }
             }

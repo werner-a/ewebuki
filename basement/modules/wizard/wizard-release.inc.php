@@ -141,6 +141,66 @@
 
         if ( $environment["parameter"][4] != "" && $environment["parameter"][5] != "" ) {
             if ( $environment["parameter"][4] == "release" ) {
+
+                    // ERSTER TEST FAQ-WIZARD
+                    // alle dazugehoerigen blogs updaten
+                    $blog_sql = "SELECT tname FROM ".SITETEXT." WHERE content ~ '\\\[KATEGORIE\]".tname2path($environment["parameter"][2])."\\\[\/KATEGORIE\]' group by tname";
+                    $blog_result = $db -> query($blog_sql);
+                    while ( $blog_data = $db -> fetch_array($blog_result,1) ) {
+                        // naechste nicht versteckte versions-nummer finden
+                        $sql = "SELECT max(version) as max_version
+                                    FROM ". SITETEXT ."
+                                    WHERE lang = '".$environment["language"]."'
+                                    AND label ='".$environment["parameter"][3]."'
+                                    AND tname ='".$blog_data["tname"]."'";
+
+
+                        $result = $db -> query($sql);
+                        $data = $db -> fetch_array($result,1);
+                        $next_version_org = $data["max_version"];
+                        $next_version = $data["max_version"] + 1;
+                        // naechste nicht versteckte versions-nummer finden
+                        $sql = "SELECT max(version) as max_version
+                                    FROM ". SITETEXT ."
+                                    WHERE lang = '".$environment["language"]."'
+                                    AND label ='".$environment["parameter"][3]."'
+                                    AND tname ='".$blog_data["tname"]."'
+                                    AND status=-1";
+
+                        $result = $db -> query($sql);
+                        $data = $db -> fetch_array($result,1);
+                        $last_version = $data["max_version"];
+                        if ( $last_version != "" ) {
+                        // alle "unnoetigen" versionen loeschen
+                        $sql = "DELETE
+                                    FROM ". SITETEXT ."
+                                    WHERE lang = '".$environment["language"]."'
+                                    AND label ='".$environment["parameter"][3]."'
+                                    AND tname ='".$blog_data["tname"]."'
+                                    AND status<0
+                                    AND version<>".$last_version;
+                        $result = $db -> query($sql);
+                        // bisher aktuelle inhalte historisieren
+                        $sql = "UPDATE ". SITETEXT ." SET
+                                        status=0
+                                    WHERE lang = '".$environment["language"]."'
+                                    AND label ='".$environment["parameter"][3]."'
+                                    AND tname ='".$blog_data["tname"]."'
+                                    AND status>=0";
+                        $result  = $db -> query($sql);
+                        // freigegebenen Datensatz aktualisieren
+                        $sql = "UPDATE ". SITETEXT ."
+                                    SET version=".$next_version.",
+                                        status=1
+                                    WHERE lang = '".$environment["language"]."'
+                                    AND label ='".$environment["parameter"][3]."'
+                                    AND tname ='".$blog_data["tname"]."'
+                                    AND version=".$last_version;
+                        $result = $db -> query($sql);
+                        }
+                    }
+                    // ERSTER TEST FAQ-WIZARD
+
                 // naechste nicht versteckte versions-nummer finden
                 $sql = "SELECT max(version) as max_version
                           FROM ". SITETEXT ."
@@ -194,16 +254,12 @@
                 $result = $db -> query($sql);
             }
 
-            if ( $_SESSION["wizard_referer"] ) {
-                $header = $_SESSION["wizard_referer"];
-                $_SESSION["wizard_referer"] = "delete";
+
+            if ( $_SESSION["form_referer"] != "" ) {
+                $header = $_SESSION["form_referer"];
+                unset($_SESSION["form_referer"]);
             } else {
-                if ( $_SESSION["form_referer"] != "" ) {
-                    $header = $_SESSION["form_referer"];
-                    unset($_SESSION["form_referer"]);
-                } else {
-                    $header = $_SERVER["HTTP_REFERER"];
-                }
+                $header = $_SERVER["HTTP_REFERER"];
             }
             header("Location: ".$header);
         }

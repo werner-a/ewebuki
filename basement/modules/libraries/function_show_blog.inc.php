@@ -78,13 +78,25 @@
         if ( $kategorie != "" ) $check_url = $kategorie;
 
         $status = "status=1";
+        $order = "";
+        $wizard_right = "";
+        // falls der der content bei dem der blog eingebunden ist, zur Freigabe angefordert ist, darf hier nichts mehr passieren
+        if ( $kategorie == tname2path($environment["parameter"][2]) && !priv_check($check_url,"publish")) {
+            $sql = "SELECT status from site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' ORDER by version DESC";
+            $result = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
+            if ( $data["status"] == -2 ) $wizard_right = "NO";
+        }
 
-        if ( $right == "" ||
-         ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
+        if ( $right == ""  ||
+         ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) )  ) && $wizard_right == ""
          ) {
              $hidedata["new"]["link"] = $url;
              $hidedata["new"]["kategorie"] = $kategorie;
-            $status = "(status=1 OR status = -1 AND version = 1)";
+            if ( $environment["ebene"] == "/wizard" ) {
+                $status = "(status=1 OR status = -1)";
+                $order=" DESC ,changed";
+            }
          }
 
 
@@ -134,8 +146,7 @@
         }
 
         // hier der endgueltige sql !!
-        $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,content,tname from site_text WHERE ".$status." AND tname like '".$tname."'".$where." order by date DESC";
-
+        $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,status,content,tname from site_text WHERE ".$status." AND tname like '".$tname."'".$where." order by date".$order." DESC";
         // damit kann man beliebig viele blogs manuell holen
 
         $ausgaben["inhalt_selector"] = "";
@@ -167,7 +178,12 @@
         while ( $data = $db -> fetch_array($result,1) ) {
             $tag_parameter="";
             $counter++;
-            $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
+            // im wizard wird der content aus der SESSION-Variablen genommen
+            if ( $_SESSION["wizard_content"][DATABASE.",".$data["tname"].",inhalt"] && $environment["ebene"] == "/wizard") {
+                $test = preg_replace("|\r\n|","\\r\\n",$_SESSION["wizard_content"][DATABASE.",".$data["tname"].",inhalt"]);
+            } else {
+                $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
+            }
             foreach ( $tags as $key => $value ) {
                 // finden der parameter sowie begin und endtag
                 $invisible = "";
@@ -208,7 +224,9 @@
                             $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
                         }
                     }
+                    $array[$counter][$key."_wizard_edit_link"] = "<a href=\"".$pathvars["virtual"]."/wizard/editor,".DATABASE.",".$data["tname"].",inhalt,".$value.":0,,,.html\">edit</a>";
                     $array[$counter][$key."_org"] = str_replace("\"","'",$org_tag);
+                    $array[$counter][$key."_org_tag"] = $value;
                     $array[$counter][$key] = tagreplace($rep_tag);
                     if ( $org_tag == "" ) $array[$counter][$key] = "";
                 } else {
@@ -246,11 +264,12 @@
                 $array[$counter]["faqanker"] = "faq_".$regs[1];
                 $array[$counter]["allink"] = $pathvars["virtual"].$faq_url.",,".$regs[1].".html";
                 $array[$counter]["id"] = $regs[1];
+                $array[$counter]["status"] = $data["status"];
                 // Sortierung ausgeben
-
+echo $wizard_right;
                 // ausgabe der aktions-buttons
                 if ( $right == "" ||
-                ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) )
+                ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) && $wizard_right == ""
                 ) {
 
                     if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {
@@ -265,8 +284,10 @@
                         $array[$counter]["sort"] = "";
                     }
 
+                    $array[$counter]["wizard_delete_link"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">delete</a>";
                     $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">delete</a>";
                     $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
+                    $array[$counter]["tname"] = eCrc($url);
                 } else {
                     $array[$counter]["editlink"] = "";
                     $array[$counter]["deletelink"] = "";

@@ -42,11 +42,6 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $prev_site = explode(",",$_SERVER["HTTP_REFERER"]);
-    if ( $environment["parameter"][2] != $prev_site[2] && $prev_site[2] != "" && $_SESSION["wizard_referer"] != "delete" ) {
-        $_SESSION["wizard_referer"] = $_SERVER["HTTP_REFERER"];
-    }
-    if ( $_SESSION["wizard_referer"] == "delete" ) unset($_SESSION["wizard_referer"]);
 
     // parameter-verzeichnis:
     // 1: Datenbank
@@ -148,8 +143,9 @@
         $sql = "SELECT SUBSTR(content,POSITION('[".$kate."]' IN content)+".$laenge.",POSITION('[/".$kate."]' IN content)-".$laenge."-POSITION('[".$kate."]' IN content) )as check_url from site_text where tname = '".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
-//         $artikel_check = priv_check($data["check_url"],$cfg["wizard"]["right"]["edit"]);
-//         $artikel_check_publish = priv_check($data["check_url"],"publish");
+        $artikel_check = priv_check($data["check_url"],$cfg["wizard"]["right"]["edit"]);
+        $artikel_check_publish = priv_check($data["check_url"],"publish");
+
     }
 
 
@@ -386,7 +382,6 @@
             // bauen der "uebergeordneten" bereiche (keine verschachtelung)
             // * * *
             $allcontent = content_level1($content);
-// echo "<pre>".print_r($allcontent,true)."</pre>";
             if ( count($allcontent) > 0 ) {
                 // vorbereitung fuer die array-sortierung fuer das verschieben
                 // * * *
@@ -676,15 +671,6 @@
                 if ( $content_exists == 0
                   || $_POST["version"] != ""
                   || $_SESSION["form_send"] == "version" ) {
-                    // notwendig fuer die artikelverwaltung , der bisher aktive artikel wird auf inaktiv gesetzt
-                    if ( preg_match("/^\[!\]/",$content,$regs) ) {
-                        $sql_regex = "SELECT * FROM ". SITETEXT ." WHERE content REGEXP '^\\\[!\\\]1' AND tname like '".$environment["parameter"][2]."'";
-                        $result_regex  = $db -> query($sql_regex);
-                        $data_regex = $db -> fetch_array($result_regex,1);
-                        $new_content = preg_replace("/\[!\]1/","[!]0",$data_regex["content"]);
-                        $sql_regex = "UPDATE ". SITETEXT ." SET content ='".$new_content."' WHERE content REGEXP '^\\\[!\\\]1' AND tname like '".$environment["parameter"][2]."'";
-                        $result_regex  = $db -> query($sql_regex);
-                    }
                     // freigabe-test
                     $status1 = "";
                     $status2 = "";
@@ -694,6 +680,47 @@
                             $status2 = ",-2";
                         } else {
                             $status2 = ",-1";
+                        }
+                    }
+
+                    // alle dazugehoerigen blogs updaten
+                    if ( is_array($tag_meat["BLOG"]) ) {
+                        $blog_sql = "SELECT tname FROM ".SITETEXT." WHERE content ~ '\\\[KATEGORIE\]".tname2path($environment["parameter"][2])."\\\[\/KATEGORIE\]' group by tname";
+                        $blog_result = $db -> query($blog_sql);
+                        while ( $blog_data = $db -> fetch_array($blog_result,1) ) {
+                            if ( $_SESSION["wizard_content"][DATABASE.",".$blog_data["tname"].",".$environment["parameter"][3]] ) {
+                                // die naechste freie versionsnummer finden
+                                $sql = "SELECT max(version) as max_version, ebene, kategorie
+                                        FROM ". SITETEXT ."
+                                        WHERE lang = '".$environment["language"]."'
+                                        AND label ='".$environment["parameter"][3]."'
+                                        AND tname ='".$blog_data["tname"]."' group by ebene,kategorie";
+                                $result = $db -> query($sql);
+                                $data = $db -> fetch_array($result,1);
+                                $next_blog_version = $data["max_version"] + 1;
+                                $sql = "INSERT INTO ". SITETEXT ."
+                                                    (lang, label, tname, version,
+                                                    ebene, kategorie,
+                                                    crc32, html, content,
+                                                    changed, bysurname, byforename, byemail, byalias".$status1.")
+                                            VALUES (
+                                                    '".$environment["language"]."',
+                                                    '".$environment["parameter"][3]."',
+                                                    '".$blog_data["tname"]."',
+                                                    '".$next_blog_version."',
+                                                    '".$data["ebene"]."',
+                                                    '".$data["kategorie"]."',
+                                                    '".$specialvars["crc32"]."',
+                                                    '0',
+                                                    '".addslashes($_SESSION["wizard_content"][DATABASE.",".$blog_data["tname"].",".$environment["parameter"][3]])."',
+                                                    '".date("Y-m-d H:i:s")."',
+                                                    '".$_SESSION["surname"]."',
+                                                    '".$_SESSION["forename"]."',
+                                                    '".$_SESSION["email"]."',
+                                                    '".$_SESSION["alias"]."'
+                                                    ,-1)";
+                                $result = $db -> query($sql);
+                            }
                         }
                     }
 
@@ -792,6 +819,8 @@
                     unset($_SESSION["wizard_content"]);
                 }
 
+                // sprungziele definieren
+                $header = $_SESSION["form_referer"];
                 unset($_SESSION["form_send"]);
                 // content ggf. sofort freigeben
                 if ( $specialvars["content_release"] == -1
@@ -804,14 +833,7 @@
                                 $release_version.".html";
                     header("Location: ".$header);
                 } else {
-                    // sprungziele definieren
-                    if ( $_SESSION["wizard_referer"] ) {
-                        $header = $_SESSION["wizard_referer"];
-                        $_SESSION["wizard_referer"] = "delete";
-                    } else {
-                        $header = $_SESSION["form_referer"];
-                    }
-                    if ( $_SESSION["wizard_referer"] == "" ) unset($_SESSION["form_referer"]);
+                    unset($_SESSION["form_referer"]);
                     header("Location: ".$header);
                 }
 
