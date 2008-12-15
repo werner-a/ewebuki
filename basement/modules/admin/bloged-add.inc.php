@@ -54,7 +54,7 @@
         function create( $id ) {
             global $cfg,$db, $header, $debugging, $_POST,$environment,$pathvars,$ebene;
             if ( $cfg["bloged"]["blogs"][$ebene]["sort"][1] == -1 ) {
-                $sort = "0";
+                $sort = "1000";
             } else {
                 if ( $_POST["SORT"] != "" ) {
                     $sort = $_POST["SORT"];
