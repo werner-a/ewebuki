@@ -224,7 +224,7 @@
                             $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
                         }
                     }
-                    $array[$counter][$key."_wizard_edit_link"] = "<a href=\"".$pathvars["virtual"]."/wizard/editor,".DATABASE.",".$data["tname"].",inhalt,".$value.":0,,,.html\">edit</a>";
+                    $array[$counter][$key."_wizard_edit_link"] = $pathvars["virtual"]."/wizard/editor,".DATABASE.",".$data["tname"].",inhalt,".$value.":0,,,.html";
                     $array[$counter][$key."_org"] = str_replace("\"","'",$org_tag);
                     $array[$counter][$key."_org_tag"] = $value;
                     $array[$counter][$key] = tagreplace($rep_tag);
@@ -266,7 +266,6 @@
                 $array[$counter]["id"] = $regs[1];
                 $array[$counter]["status"] = $data["status"];
                 // Sortierung ausgeben
-echo $wizard_right;
                 // ausgabe der aktions-buttons
                 if ( $right == "" ||
                 ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) && $wizard_right == ""
@@ -278,10 +277,11 @@ echo $wizard_right;
                             $id = make_id($kategorie);
                             $sort_kat = $id["mid"];
                         }
-                        $array[$counter]["sort"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",".$sort_kat.",".$new.".html\">nach oben</a>";
-                        $array[$counter]["sort"] .= " <a href=\"".$pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",".$sort_kat.",".$new.".html\">nach unten</a>";
+                        $array[$counter]["sort_up"] = $pathvars["virtual"]."/admin/bloged/sort,up,".$regs[1].",".$sort_kat.",".$new.".html";
+                        $array[$counter]["sort_down"] = $pathvars["virtual"]."/admin/bloged/sort,down,".$regs[1].",".$sort_kat.",".$new.".html";
                     } else {
-                        $array[$counter]["sort"] = "";
+                        $array[$counter]["sort_up"] = "";
+                        $array[$counter]["sort_down"] = "";
                     }
 
                     $array[$counter]["wizard_delete_link"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">delete</a>";
