@@ -179,6 +179,18 @@
             $form_values["content"] = $_SESSION["wizard_content"][$identifier];
         }
 
+        // verarbeitung fuer die ajax-vorschau auf bestimmte bereiche
+        if ( $_POST["ajax_preview"] == "on" ) {
+            $ajax_buffer = content_level1($form_values["content"]);
+                    echo preg_replace(
+                        array("/#\{.+\}/U","/g\(.+\)/U"),
+                        array("",""),
+                        tagreplace($ajax_buffer[$_POST["block"]])
+                    );
+            header("HTTP/1.0 200 OK");
+            die;
+        }
+
         if ( isset($_GET["preview"]) ) {
 
 //             $ausgaben["output"] = tagreplace($form_values["content"]);
@@ -503,7 +515,6 @@
                     );
                 }
             }
-// echo "<pre>".print_r($dataloop["sort_content"],true)."</pre>";
             // + + +
             // bereiche in eine liste pressen
 
@@ -765,7 +776,12 @@
                             $content = utf8_encode($content);
                         }
                         header("HTTP/1.0 200 OK");
-                        echo preg_replace(array("/#\{.+\}/U","/g\(.+\)/U"),"",$content);
+                        $content = str_replace($cfg["wizard"]["basis"],$environment["ebene"],$content);
+                        echo preg_replace(
+                            array("/#\{.+\}/U","/g\(.+\)/U"),
+                            array("",""),
+                            $content
+                        );
                         die ;
                     }
 
