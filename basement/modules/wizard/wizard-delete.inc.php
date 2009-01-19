@@ -147,6 +147,7 @@
             $data = $db -> fetch_array($result,0);
             echo tagreplace($data["content"]);
             $hidedata["vorschau"]["on"] = "AJAX";
+            header("HTTP/1.0 200 OK");
             die;
         }
         if ( $_POST["delete"] && $security != -1 ) {
