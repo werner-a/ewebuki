@@ -366,6 +366,7 @@
              "last_author" => $last_author,
                     "view" => $pathvars["menuroot"].$data["ebene"]."/".$data["kategorie"].",v".$data["version"].".html",
                     "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt.html",
+                    "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",inhalt.html",
                   "unlock" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",unlock,".$data["version"].".html",
                  "release" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",release,".$data["version"].".html",
                  "history" => $pathvars["virtual"]."/admin/contented/history,,".$tname.",".$label.",".$dat_akt["version"].",".$data["version"].".html",
