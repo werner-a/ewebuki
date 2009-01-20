@@ -525,7 +525,9 @@
                 $mapping["image_map"] = "img_map_".$wizard_name;
                 // anzahl der uebergeordneten bereiche
                 $num_cont_blocks = count($dataloop["sort_content"]);
+                $index=0;
                 foreach ($dataloop["sort_content"] as $i=>$value) {
+                    $index++;
                     // moegliche vorschau-bild-namen durchgehen
                     $src_tag = strtolower($dataloop["sort_content"][$i]["tag"]);
                     $src_tag_tmp = "";
@@ -556,8 +558,8 @@
                             $environment["parameter"][5].",".$i.".html";
                     $ausgaben["item_".$i."_link"] = $link;
                     // dataloop bauen
-                    if ( $i >  $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]
-                      && $i <= $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
+                    if ( $index >  $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0]
+                      && $index <= $num_cont_blocks - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]  ) {
                         $dataloop["img_map"][] = array(
                             "key"  => $dataloop["sort_content"][$i]["key"],
                             "src"  => $src,
