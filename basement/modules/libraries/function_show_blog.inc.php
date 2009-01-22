@@ -215,20 +215,26 @@
 
                 // gefundene werte in array schreiben
                 if ( $invisible != -1 ) {
-                    if ( preg_match("/^\[IMG/",$rep_tag,$regs_img) ) {
-                        $image_para = explode("/",$rep_tag);
-                        $array[$counter][$key."_img_art"] = $image_para[2];
-                        $array[$counter][$key."_img_id"] = $image_para[3];
-                        $array[$counter][$key."_img_size"] = $image_para[4];
-                        if ( $show != "" ) {
-                            $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
-                        }
-                    }
                     $array[$counter][$key."_wizard_edit_link"] = $pathvars["virtual"]."/wizard/editor,".DATABASE.",".$data["tname"].",inhalt,".$value.":0,,,.html";
                     $array[$counter][$key."_org"] = str_replace("\"","'",$org_tag);
                     $array[$counter][$key."_org_tag"] = $value;
                     $array[$counter][$key] = tagreplace($rep_tag);
                     if ( $org_tag == "" ) $array[$counter][$key] = "";
+                    if ( preg_match("/^\[IMG/",$rep_tag,$regs_img) ) {
+                        $image_para = explode("/",$rep_tag);
+                        $array[$counter][$key."_img_art"] = $image_para[2];
+                        $array[$counter][$key."_img_id"] = $image_para[3];
+                        $array[$counter][$key."_img_size"] = $image_para[4];
+                        $sql_img = "SELECT * FROM site_file WHERE fid='".$image_para[3]."'";
+                        $result_img = $db -> query($sql_img);
+                        $data_img = $db -> fetch_array($result_img,1);
+                        $array[$counter][$key."_img_desc"] = $data_img["fdesc"];
+                        $array[$counter][$key."_img_under"] = $data_img["funder"];
+                        $array[$counter][$key."_img_fname"] = $data_img["ffname"];
+                        if ( $show != "" ) {
+                            $rep_tag = str_replace("/".$image_para[4]."/","/".$show."/",$rep_tag);
+                        }
+                    }
                 } else {
                     if ( preg_match("/^\[IMG/",$rep_tag,$reg_img) ) {
                         $image_para = explode("/",$rep_tag);
