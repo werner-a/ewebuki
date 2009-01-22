@@ -199,6 +199,19 @@
         // +++
         // page basics
 
+        // beim abbrechen werden alle eigenen dateien aus new-ordner geloescht
+        if ( $_POST["abort"] != "" ) {
+            $header = $ausgaben["form_break"];
+            $dp = opendir($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]);
+            while ( $file = readdir($dp) ) {
+                $info  = explode( "_", $file, 2 );
+                if ( $info[0] == $_SESSION["uid"] ) {
+                    unlink($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
+                }
+            }
+            header("Location: ".$header);
+        }
+
         if ( $environment["parameter"][3] == "verify"
             &&  ( $_POST["send"] != ""
                 || $_POST["extract"] != ""
