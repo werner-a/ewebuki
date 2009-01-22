@@ -41,7 +41,23 @@
         <p>#(inhalt)</p>
         <p>!#ausgaben_form_error</p>
         <fieldset class="float">
-            <img src="!#ausgaben_thumbnail" alt="" style="float:right;" />
+            <!--##hide-preview_img-->
+            <a title="Vorschau klein (small)" href="!{path}!{id}/s/" rel="lightbox[]" style="float:right;padding-bottom:20px;background:#FFFFFF url('/images/default/filefind.png') no-repeat right bottom;">
+                <img src="!{path}!{id}/s/" alt="" style="float:right;" />
+            </a>
+            <a title="Vorschau mittel (middle)" href="!{path}!{id}/m/" rel="lightbox[]" style="display:none;">
+                <img src="!{path}!{id}/m/" alt="" />
+            </a>
+            <a title="Vorschau gro&szlig; (big)" href="!{path}!{id}/b/" rel="lightbox[]" style="display:none;">
+                <img src="!{path}!{id}/b/" alt="" />
+            </a>
+            <a title="Vorschau Original (original)" href="!{path}!{id}/o/" rel="lightbox[]" style="display:none;">
+                <img src="!{path}!{id}/o/" alt="" />
+            </a>
+            <!--##show-->
+            <!--##hide-preview_def-->
+            <img src="!{file}" alt="" style="float:right;" />
+            <!--##show-->
             <label style="clear:left;">#(ffname)
                 !#element_ffname
             </label>

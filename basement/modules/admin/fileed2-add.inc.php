@@ -139,6 +139,7 @@
             }
         }
         $ausgaben["thumbnail"] = $thumb_web;
+        $hidedata["preview_def"]["file"] = $thumb_web;
 
         // falls zip wird der inhalt gebaut
         if ( $match[2] == "zip" && function_exists("zip_open") ) {
