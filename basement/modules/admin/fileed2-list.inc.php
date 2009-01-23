@@ -342,7 +342,7 @@
             }
         }
 
-        if ( count($filters) > 0 ) $ausgaben["result"] = "#(answera) \"".implode("\" und \"",$filters)."\" #(answerb) ";
+        if ( count($filters) > 0 ) $ausgaben["result"] = "#(answera) <b>\"".implode("\"</b> und <b>\"",$filters)."\"</b> #(answerb) ";
 
         // +++
         // funktions bereich ( auswertung )
@@ -371,6 +371,7 @@
                                 1, 5, Null
                            );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0];
+        $ausgaben["inhalt_selected"] = $inhalt_selector[3];
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
 
@@ -380,6 +381,7 @@
         if ( $db->num_rows($result) == 0 ) {
             #$ausgaben["result"] .= " keine Eintr�ge gefunden.";
             $ausgaben["result"] .= " #(answerc_no)";
+            $hidedata["empty_search"]["search"] = "<b>\"".implode("\"</b> und <b>\"",$filters)."\"</b>";
         } else {
             // nur erweitern wenn bereits was drin steht
             if ( $ausgaben["result"] ) {
@@ -388,54 +390,71 @@
             } else {
                 $ausgaben["result"]  = "";
             }
-        }
 
-        // dataloop wird ueber eine share-funktion aufgebaut
-        filelist($result, "fileed");
+            $hidedata["search_result"]["search"] = "<b>\"".implode("\"</b> und <b>\"",$filters)."\"</b>";
 
-        if ( $view_mode == "details" || $view_mode == "symbols" ) {
+            // dataloop wird ueber eine share-funktion aufgebaut
+            filelist($result, "fileed");
 
-            if ( is_array($dataloop["list_files"]) ) {
-                foreach ( $dataloop["list_files"] as $key=>$value ) {
-                    $filetyp = $cfg["file"]["filetyp"][$value["art"]];
-                    if ( $filetyp == "img" ) {
-                        $aktion = '<a rel="lightbox['.$value["id"].']" href="'.$value["ohref_lb"].'" title="Vorschau Original (original)">O</a>
-                                    <a rel="lightbox['.$value["id"].']"  href="'.$value["bhref_lb"].'" title="Vorschau Gross (big)">B</a>
-                                    <a rel="lightbox['.$value["id"].']"  href="'.$value["mhref_lb"].'" title="Vorschau Mittel (middle)">M</a>
-                                    <a rel="lightbox['.$value["id"].']"  href="'.$value["shref_lb"].'" title="Vorschau Klein (small)" >S</a>';
-                        $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"]."thumbnail/tn_".$value["id"].".".$value["art"];
-                        $dataloop["list_files"][$key]["thumb_src"] = $dataloop["list_files"][$key]["src"];
-                    } else {
-                        $aktion = '<a title="Herunterladen (download)" href="'.$value["dhref"].'">D</a>';
-                        $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"].$cfg["file"]["fileopt"][$filetyp]["name"]."_".$value["id"].".".$value["art"];
-                        $dataloop["list_files"][$key]["thumb_src"] = "/images/default/thumbs_".$filetyp.".png";
+            if ( $view_mode == "details" || $view_mode == "symbols" ) {
+
+                if ( is_array($dataloop["list_files"]) ) {
+                    foreach ( $dataloop["list_files"] as $key=>$value ) {
+                        $filetyp = $cfg["file"]["filetyp"][$value["art"]];
+                        if ( $filetyp == "img" ) {
+                            $array = array(
+                                "o" => "Vorschau Original (original)",
+                                "b" => "Vorschau Gross (big)",
+                                "m" => "Vorschau Mittel (middle)",
+                                "s" => "Vorschau Klein (small)",
+                            );
+                            $aktion = "";
+                            foreach ( $array as $size=>$title ) {
+                                $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"].
+                                            $cfg["file"]["base"]["pic"][$size].
+                                            $cfg["file"]["fileopt"][$filetyp]["name"]."_".$value["id"].".".$value["art"];
+                                if ( file_exists($srv_path) ) {
+                                    $aktion .= '<a rel="lightbox['.$value["id"].']" href="'.$value[$size."href_lb"].'" title="'.$title.'" class="fileed_preview">'.strtoupper($size).'</a>';
+                                } else {
+                                    $aktion .= '<s title="Error" class="fileed_preview">'.strtoupper($size).'</s>';
+                                }
+                            }
+
+                            $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"]."thumbnail/tn_".$value["id"].".".$value["art"];
+                            $dataloop["list_files"][$key]["thumb_src"] = $dataloop["list_files"][$key]["src"];
+                        } else {
+                            $aktion = '<a title="Herunterladen (download)" href="'.$value["dhref"].'">D</a>';
+                            $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"].$cfg["file"]["fileopt"][$filetyp]["name"]."_".$value["id"].".".$value["art"];
+                            $dataloop["list_files"][$key]["thumb_src"] = "/images/default/thumbs_".$filetyp.".png";
+                        }
+                        $dataloop["list_files"][$key]["icon_src"] = "/images/default/text_icon_".$filetyp.".png";
+
+                        if ( !file_exists($srv_path) ) {
+                            $dataloop["list_files"][$key]["thumb_src"] = "/images/default/thumbs_broken.png";
+                        }
+                        $dataloop["list_files"][$key]["kategorie"] = $cfg["file"]["filetyp"][$value["art"]];
+                        $dataloop["list_files"][$key]["aktion"] = $aktion;
                     }
-                    $dataloop["list_files"][$key]["icon_src"] = "/images/default/text_icon_".$filetyp.".png";
-
-                    if ( !file_exists($srv_path) ) {
-                        $dataloop["list_files"][$key]["thumb_src"] = "/images/default/thumbs_broken.png";
-                    }
-                    $dataloop["list_files"][$key]["kategorie"] = $cfg["file"]["filetyp"][$value["art"]];
-                    $dataloop["list_files"][$key]["aktion"] = $aktion;
                 }
-            }
 
-            unset($hidedata["list_images"]);
-            unset($hidedata["list_other"]);
-            unset($dataloop["list_images"]);
-            unset($dataloop["list_other"]);
-            $hidedata["list_".$view_mode."_frame"] = array();
-            if ( $cfg["fileed"]["ajax-modus"] == FALSE ) {
-                $hidedata["list_".$view_mode."_plain"] = array();
+                unset($hidedata["list_images"]);
+                unset($hidedata["list_other"]);
+                unset($dataloop["list_images"]);
+                unset($dataloop["list_other"]);
+                $hidedata["list_".$view_mode."_frame"] = array();
+                if ( $cfg["fileed"]["ajax-modus"] == FALSE ) {
+                    $hidedata["list_".$view_mode."_plain"] = array();
+                } else {
+                    $hidedata["list_".$view_mode."_ajax"] = array();
+                }
+                setcookie("fileed_view[".$_SESSION["uid"]."]",$view_mode);
+
             } else {
-                $hidedata["list_".$view_mode."_ajax"] = array();
+                unset($hidedata["list_files"]);
+                unset($dataloop["list_files"]);
+                setcookie("fileed_view[".$_SESSION["uid"]."]",$cfg["fileed"]["default_view"]);
             }
-            setcookie("fileed_view[".$_SESSION["uid"]."]",$view_mode);
 
-        } else {
-            unset($hidedata["list_files"]);
-            unset($dataloop["list_files"]);
-            setcookie("fileed_view[".$_SESSION["uid"]."]",$cfg["fileed"]["default_view"]);
         }
 
         // +++

@@ -117,8 +117,6 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sft: ".$shift.$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sep: ".$selpages.$debugging["char"];
 
-
-
             for ( $j = $dirselbeg, $i = $dirselbeg; $i < $dirselend; $i+=$menge ) {
             #for ( $j = 0, $i = 0; $i < $gesamt; $i+=$menge ) {
                 $j++;
@@ -150,6 +148,7 @@
 
                 if ( $position == $i ) {
                     $inh_selector .= $trenner."<b>".$label."</b> ";
+                    $selected = $label;
                 } else {
                     $inh_selector .= $trenner."<a href=\"".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"].",".$i.$parameter.".html".$getvalues."\">".$label."</a> ";
                 }
@@ -162,6 +161,10 @@
             } else {
                 $inh_selector .= $defaults["select"]["none"];
             }
+        } elseif ( $gesamt > 0 ) {
+            $selected = "1-".$gesamt;
+        } else {
+            $selected = "0";
         }
 
         // fix htdig looping
@@ -170,6 +173,7 @@
         $return[] = $inh_selector;
         $return[] = $sql;
         $return[] = $gesamt;
+        $return[] = $selected;
         return $return;
     }
 
