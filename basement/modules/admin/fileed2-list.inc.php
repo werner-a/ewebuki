@@ -382,6 +382,7 @@
             #$ausgaben["result"] .= " keine Eintr�ge gefunden.";
             $ausgaben["result"] .= " #(answerc_no)";
             $hidedata["empty_search"]["search"] = "<b>\"".implode("\"</b> und <b>\"",$filters)."\"</b>";
+            $hidedata["file"]["display"] = "none";
         } else {
             // nur erweitern wenn bereits was drin steht
             if ( $ausgaben["result"] ) {
