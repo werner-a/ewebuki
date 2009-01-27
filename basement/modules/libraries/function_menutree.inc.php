@@ -61,6 +61,11 @@
                 $radiorefid = -1;
                 $hidestatus = -1;
                 break;
+            case wizard:
+                $flapmenu = -1;
+                $aktionlinks = -1;
+                $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
+                break;
             case sitemap:
                 $sitemap = -1;
                 $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
@@ -150,7 +155,7 @@
                     $copy = $positionArray;
                     array_shift($copy);
                     ( is_array($opentree) && in_array($array["mid"],$opentree) ) ? $sign = "-" : $sign = "+";
-                    $href = "<a class=".$class_hide." href=\"".$cfg[$script_name]["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_parameter.".html\">".$array["label"]."+</a>"."\n";
+                    $href = "<a class=".$class_hide." href=\"".$cfg[$script_name]["basis"]."/".$environment["parameter"][0].",".$array["mid"].$move_parameter.".html\">".$array["label"]."+</a>";
                 } else {
                     $href = "<span class=".$class_hide.">".$array["label"]."</span>";
                 }
@@ -226,7 +231,7 @@
 
             // wo geht der href hin?
             if ( $array["exturl"] != "" ) {
-                $href = "<a class=".$class_hide." href=".$array["exturl"].">".$array["label"]."</a>"."\n";
+                $href = "<a class=".$class_hide." href=".$array["exturl"].">".$array["label"]."</a>";
             }
 
             // in den buffer schreiben wieviel unterpunkte fuer jeweiligen überpunkt vorhanden sind !
