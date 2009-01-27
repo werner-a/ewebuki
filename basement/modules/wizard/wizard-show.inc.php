@@ -336,7 +336,7 @@
                             "rip.html";
 
                     // buffy: alle tags werden in ein hidedata-array geschrieben
-                    ( $tag == "SORT" ) ? $hidevalue = substr($tag_info["meat"],8,2).".".substr($tag_info["meat"],5,2).".".substr($tag_info["meat"],0,4) : $hidevalue = $tag_info["meat"];
+                    ( $tag_name == "SORT" ) ? $hidevalue = substr($tag_info["meat"],8,2).".".substr($tag_info["meat"],5,2).".".substr($tag_info["meat"],0,4) : $hidevalue = $tag_info["meat"];
                     $hidedata["wizardtags"][$tag_name."_".$tag_key] = $hidevalue;
                     $hidedata["wizardtags"][$tag_name."_".$tag_key."_link"] = $edit;
                     // buffy: alle tags werden in ein hidedata-array geschrieben
