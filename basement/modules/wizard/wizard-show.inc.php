@@ -245,7 +245,7 @@
 
             // wizard-infos rausfinden (z.b. wizard-typ,..)
             // * * *
-            preg_match("/\[!\]wizard:(.+)\[\/!\]/i",$form_values["content"],$match);
+            preg_match("/\[!\]wizard:(.+)\[\/!\]/Ui",$form_values["content"],$match);
             $wizard_name = "standard";
             if ( $match[1] != "" ) {
                 $info = explode(";",$match[1]);
