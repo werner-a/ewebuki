@@ -48,47 +48,45 @@
     $mapping["main"] = "wizard-edit";
 
     $hidedata["termine"]["on"] = "ON";
-    include $pathvars["moduleroot"]."libraries/function_calendar.inc.php";
 
+    $einsatz = "2008-01-01";
+    $preg = "/\[([A-Z]*)\](.*)\[\/[A-Z]*\]/Us";
 
-    // ausgabenwerte werden belegt
-    if ( $environment["parameter"][9] != "" && $environment["parameter"][8] != "" && $environment["parameter"][7] != "" ) {
-        ( strlen($environment["parameter"][9]) == 1 ) ? $hidedata["termine"]["day"] = "0".$environment["parameter"][9] : $hidedata["termine"]["day"] = $environment["parameter"][9];
-        ( strlen($environment["parameter"][8]) == 1 ) ? $hidedata["termine"]["month"] = "0".$environment["parameter"][8] : $hidedata["termine"]["month"] = $environment["parameter"][8];
-        $hidedata["termine"]["year"] = $environment["parameter"][7];
-    } else {
-        $hidedata["termine"]["day"] = substr($tag_meat["SORT"][0]["meat"],8,2);
-        $hidedata["termine"]["month"] = substr($tag_meat["SORT"][0]["meat"],5,2);
-        $hidedata["termine"]["year"] = substr($tag_meat["SORT"][0]["meat"],0,4);
+    preg_match_all($preg,$tag_meat["!"][0]["complete"],$regs);
+    foreach ( $regs[1] as $key => $value ) {
+        if ( $value == "KATEGORIE" ) continue;
+        $hidedata["termine"][$value] = $regs[2][$key];
+        $$value = $regs[2][$key];
+        if ( $_POST["send"]  ) {
+// echo $value.$$value."<br>";
+#echo "[".$value."]".$_POST[$value]."[/".$value."]<br>";
+            $tag_meat["!"][0]["complete"] = preg_replace("/\[".$value."\]".$$value."\[\/".$value."\]/","[".$value."]".$_POST[$value]."[/".$value."]",$tag_meat["!"][0]["complete"]);
+// echo $tet."<br>";
+        }
     }
+    $SORT = substr($SORT,0,10);
+//     echo $TERMIN;
+    $ausgaben["begin"] = "<script>DateInput('SORT', 'true', 'YYYY-MM-DD', '$SORT' )</script>";
+    $ausgaben["ende"] = "<script>DateInput('TERMIN', 'true', 'YYYY-MM-DD', '$TERMIN' )</script>";
 
-
-
-    $ausgaben["calendar"] = calendar($hidedata["termine"]["month"],$hidedata["termin"]["year"],"cal_termine","-1","-1",-1,6);
-
-    $hidedata["termine"]["date"] = $hidedata["termine"]["day"].".".$hidedata["termine"]["month"].".".$hidedata["termine"]["year"];
-
-echo "<pre>";
-print_r($tag_meat["!"][0]["complete"]);
-echo "</pre>";
-$tag_meat["!"][0]["complete"] = $tag_meat["!"][0]["complete"];
 
 
 // echo "<pre>";
-// print_r($temp);
+// print_r($tag_meat["!"][0]["complete"]);
+// print_r($hidedata["termine"]);
 // echo "</pre>";
-//     foreach ( $temp as $key => $value ) {
-//         echo $value["id"];
-//         $dataloop["wizardlist"][$key]["titel_org"] = $value["titel_org"];
-//         $dataloop["wizardlist"][$key]["faq"] = $value["faq"];
-//         $dataloop["wizardlist"][$key]["id"] = $value["id"];
-//         $dataloop["wizardlist"][$key]["url"] = "editor,".$environment["parameter"][1].",".eCrc("/service/fragen").".";
-//         $dataloop["wizardlist"][$key]["tag"] = $faq_tag;
-//         $dataloop["wizardlist"][$key]["tag1"] = $question_tag;
-//     }
-#echo $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"];
-#echo tname2path($environment["parameter"][2]);
+$tag_meat["!"][0]["complete"] = $tag_meat["!"][0]["complete"];
+
+
     if ( $_POST["send"]  ) {
+
+// echo "<pre>";
+// print_r($_POST);
+// print_r($tet);
+// print_r($tag_meat["!"][0]["complete"]);
+// print_r($hidedata["termine"]);
+// echo "</pre>";
+// exit;
         $to_insert = $tag_meat["!"][0]["complete"];
     }
 #echo $environment["parameter"][2];
