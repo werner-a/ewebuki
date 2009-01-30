@@ -50,7 +50,7 @@
     $hidedata["termine"]["on"] = "ON";
 
     $einsatz = "2008-01-01";
-    $preg = "/\[([A-Z]*)\](.*)\[\/[A-Z]*\]/Us";
+    $preg = "/\[([_A-Z]*)\](.*)\[\/[_A-Z]*\]/Us";
 
     preg_match_all($preg,$tag_meat["!"][0]["complete"],$regs);
     foreach ( $regs[1] as $key => $value ) {
@@ -58,38 +58,19 @@
         $hidedata["termine"][$value] = $regs[2][$key];
         $$value = $regs[2][$key];
         if ( $_POST["send"]  ) {
-// echo $value.$$value."<br>";
-#echo "[".$value."]".$_POST[$value]."[/".$value."]<br>";
             $tag_meat["!"][0]["complete"] = preg_replace("/\[".$value."\]".$$value."\[\/".$value."\]/","[".$value."]".$_POST[$value]."[/".$value."]",$tag_meat["!"][0]["complete"]);
-// echo $tet."<br>";
         }
     }
     $SORT = substr($SORT,0,10);
-//     echo $TERMIN;
+
     $ausgaben["begin"] = "<script>DateInput('SORT', 'true', 'YYYY-MM-DD', '$SORT' )</script>";
-    $ausgaben["ende"] = "<script>DateInput('TERMIN', 'true', 'YYYY-MM-DD', '$TERMIN' )</script>";
+    $ausgaben["ende"] = "<script>DateInput('_TERMIN', 'true', 'YYYY-MM-DD', '$_TERMIN' )</script>";
 
-
-
-// echo "<pre>";
-// print_r($tag_meat["!"][0]["complete"]);
-// print_r($hidedata["termine"]);
-// echo "</pre>";
-$tag_meat["!"][0]["complete"] = $tag_meat["!"][0]["complete"];
-
+    $tag_meat["!"][0]["complete"] = $tag_meat["!"][0]["complete"];
 
     if ( $_POST["send"]  ) {
-
-// echo "<pre>";
-// print_r($_POST);
-// print_r($tet);
-// print_r($tag_meat["!"][0]["complete"]);
-// print_r($hidedata["termine"]);
-// echo "</pre>";
-// exit;
         $to_insert = $tag_meat["!"][0]["complete"];
     }
-#echo $environment["parameter"][2];
- #echo tname2path($environment["parameter"][2]);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
