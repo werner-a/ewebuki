@@ -50,136 +50,102 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        if ( isset($_GET["insert"]) ) {
-            for ($i = 1; $i <= $_GET["insert"]; $i++) {
-                $sql = "INSERT INTO  site_file (frefid,fuid,fdid,ftname, ffname,ffart,fdesc,funder,fhit)
-                             VALUES (0,1,1,'','test.jpg','jpg','TempoTest','TempoTest','TempoTest #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."# #p".rand(1000,1100).",".$i."#');";
-                $result = $db -> query($sql);
+        // ajax-handling
+        if ( $_POST["ajax"] != "" ) {
+            // bilder die in der gruppierung enthalten sind
+            if ( $_POST["pics_chosen"] != "" ) {
+                $_SESSION["compilation_temp"][$_POST["compid"]]["contain"] = $_POST["pics_chosen"];
+            } else {
+                $_SESSION["compilation_temp"][$_POST["compid"]]["contain"] = array();
             }
+            // bilder die NICHT in der gruppierung enthalten sind
+            if ( $_POST["pics_available"] != "" ) {
+                $_SESSION["compilation_temp"][$_POST["compid"]]["trash"] = $_POST["pics_available"];
+            } else {
+                $_SESSION["compilation_temp"][$_POST["compid"]]["trash"] = array();
+            }
+
+            $_SESSION["compilation_temp"][$_POST["compid"]]["both"] = array_merge(
+                                                                            $_SESSION["compilation_temp"][$_POST["compid"]]["contain"],
+                                                                            $_SESSION["compilation_temp"][$_POST["compid"]]["trash"]
+                                                                      );
+            die();
         }
 
-        // loeschen von bilder aus der gruppe
-        if ( is_numeric($_GET["del"]) ) {
-            // loeschen aus der SESSION-variable
-            if ( isset($_SESSION["file_memo"][$_GET["del"]]) ) unset($_SESSION["file_memo"][$_GET["del"]]);
-            // loeschen aus dem fhit-feld
-            if ( $environment["parameter"][1] != "" ) {
-                $sql = "SELECT *
-                        FROM site_file
-                        WHERE fid=".$_GET["del"]." AND fhit LIKE '%".$environment["parameter"][1].",%'";
-                $result = $db -> query($sql);
-                if ( $db->num_rows($result) > 0 ) {
-                    $data = $db -> fetch_array($result,1);
-                    $fhit = preg_replace("/#p".$environment["parameter"][1].",[,0-9]*#/i","",$data["fhit"]);
-                    $sql = "UPDATE site_file
-                               SET fhit='".trim($fhit)."'
-                             WHERE fid=".$_GET["del"];
-                    $result = $db -> query($sql);
-                }
-            }
-            header("Location: ".$_SERVER["HTTP_REFERER"]);
-        }
-
-        // +++
-        // funktions bereich fuer erweiterungen
-
-        // page basics
-        // ***
-
-        // bauen des sql
         if ( $environment["parameter"][1] != "" ) {
-            // eine bildergruppe wurde angewaehlt (id in der url)
-            $sql = "SELECT *
-                      FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
-                     WHERE fhit LIKE '%#p".$environment["parameter"][1].",%'";
-            $ausgaben["groupid"] = $environment["parameter"][1];
-        } else {
-            // ausgewaehlte dateien werden einer gruppe zugewiesen
-            $sql = "SELECT *
-                      FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
-                     WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$_SESSION["file_memo"]).")";
-            $ausgaben["groupid"] = $_POST["groupid"];
-            $i = 1;
-        }
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql (bilder der gruppe): ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-        // falls keine bilder vorhanden sind zur gruppen-uebersicht springen
-        if ( $db->num_rows($result) == 0 ) {
-            $header = $_SESSION["referer"];
-            unset($_SESSION["referer"]);
-            header("Location: ".$header);
-        }
+            /* compilation bearbeiten */
 
-        // dataloop mit den ausgewaehlten bildern wird gebaut
-        while ( $data = $db -> fetch_array($result,1) ) {
-            // in welchen gruppen ist die datei bereits
-            preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
-            $containedGroups = array();
-            foreach ( $match[1] as $value ) {
-                $containedGroups[$value] = $value;
-                ksort($containedGroups);
-            }
+            $hidedata["modus"]["heading"] = "#(ueberschrift_edit)";
+            // compilationID
+            $ausgaben["compid"] = $environment["parameter"][1];
 
-            // festlegung der bild-sortierung
-            if ( $environment["parameter"][1] != "" ) {
-                // der fhit eintrag wird gesucht, und sortiert
-                preg_match("/#p".$environment["parameter"][1]."[,]*([0-9]*)#/i",$data["fhit"],$match);
-                $sort = $match[1];
-                if ( $match[1] == "" ) $sort = 1;
-                // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
-                while ( is_array($dataloop["list"][$sort]) ) {
-                    $sort++;
+            // dateien aus der gruppierung (DB)
+            if ( count($_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]) > 0 ) {
+                $sql = "SELECT *
+                          FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                         WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]).")";
+                function pics_sort($a,$b) {
+                    global $ausgaben;
+                    $order = array_flip($_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]);
+                    return strcasecmp($order[$a["id"]], $order[$b["id"]]);
                 }
             } else {
-                $sort = $i*10;
-                $i++;
+                $sql = "SELECT *
+                          FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                         WHERE fhit LIKE '%#p".$environment["parameter"][1].",%'";
+                function pics_sort($a, $b) {
+                    return ($a["sort"] < $b["sort"]) ? -1 : 1;
+                }
+            }
+            $result = $db -> query($sql);
+            filelist($result, "fileed", $ausgaben["compid"]);
+            uasort($dataloop["list_images"],"pics_sort");
+            $dataloop["chosen"] = $dataloop["list_images"];
+            unset($dataloop["list_images"]);
+
+        } else {
+            /* compilation hinzufuegen */
+
+            $hidedata["modus"]["heading"] = "#(ueberschrift_add)";
+            // id der naechsten compilation rausfinden
+            $dataloop["group_dropdown"] = compilation_list($environment["parameter"][1]);
+            reset($dataloop["group_dropdown"]);
+            $ausgaben["compid"] = key($dataloop["group_dropdown"]) + 1;
+
+            // dateien aus der gruppierung (Session)
+            if ( count($_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]) > 0 ) {
+                $sql = "SELECT *
+                          FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                         WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]).")";
+                $result = $db -> query($sql);
+                filelist($result, "fileed", $ausgaben["compid"]);
+                $dataloop["chosen"] = $dataloop["list_images"];
+                unset($dataloop["list_images"]);
             }
 
-            $dataloop["list"][$sort] = array(
-                    "id"   => $data["fid"],
-                    "item" => $data["funder"]." (enthalten in folgenden Gruppen: ".implode($containedGroups,", ").")",
-                   "title" => $data["funder"],
-                     "src" => $cfg["file"]["base"]["webdir"].$data["ffart"]."/".$data["fid"]."/tn/".$data["ffname"],
-                    "link" => $cfg["fileed"]["basis"]."/".$environment["allparameter"]."/view,o,".$data["fid"].",".$environment["parameter"][1].".html",
-                    "sort" => $sort,
-                  "delete" => "?del=".$data["fid"],
-            );
-
-            // welche werte stehen bereits in fhit
-            $form_values[$data["fid"]]["fhit"] = $data["fhit"];
-
         }
-        ksort($dataloop["list"]);
 
-        if ( isset($_GET["renumber"]) ) {
-            $i = 1;
-            foreach ( $dataloop["list"] as $key=>$value ) {
-                $dataloop["list"][$key]["sort"] = $i*10;
-                $i++;
+        // dateien aus ablage und file_memo
+        $clipboard = array();
+        if ( is_array($_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"]) ) $clipboard = array_merge($_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"],$clipboard);
+        if ( is_array($_SESSION["file_memo"]) ) $clipboard = array_merge($_SESSION["file_memo"],$clipboard);
+        if ( count($clipboard) > 0 ) {
+            // ids die bereist im chosen sind auslassen
+            if ( count($dataloop["chosen"]) > 0 ) {
+                $clipboard = array_flip($clipboard);
+                $clipboard = array_diff_key($clipboard, $dataloop["chosen"]);
+                $clipboard = array_flip($clipboard);
             }
+            $sql = "SELECT *
+                        FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                        WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$clipboard).")";
+            $result = $db -> query($sql);
+            filelist($result, "fileed", $ausgaben["compid"]);
+            $dataloop["clipboard"] = $dataloop["list_images"];
         }
-        $ausgaben["renumber"] = $cfg["fileed"]["basis"]."/".$environment["allparameter"].".html?renumber";
-
-        // form options holen
-        $form_options = form_options(eCRC($environment["ebene"]).".modify");
-
-        // form elememte bauen
-        $element = form_elements( $cfg["fileed"]["db"]["file"]["entries"], $form_values );
 
         // +++
-        // page basics
-
-
         // funktions bereich fuer erweiterungen
-        // ***
-
-        // dropdown mit bereits vorhandenen gruppen
-        $dataloop["group_dropdown"] = compilation_list($environment["parameter"][1]);
-        reset($dataloop["group_dropdown"]);
-        $ausgaben["new_comp"] = key($dataloop["group_dropdown"]) + 1;
-        // +++
-        // funktions bereich fuer erweiterungen
-
 
         // page basics
         // ***
@@ -189,6 +155,7 @@
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/collect,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_ajax_aktion"] = $cfg["fileed"]["basis"]."/collect,".$ausgaben["compid"].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
@@ -205,17 +172,29 @@
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (saved_groups) #(saved_groups)<br />";
             $ausgaben["inaccessible"] .= "# (new_comp) #(new_comp)<br />";
+            $ausgaben["inaccessible"] .= "# (get_pics) #(get_pics)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
 
-        // wohin schicken
-        if ( strstr($_SERVER["HTTP_REFERER"],"/compilation") || strstr($_SERVER["HTTP_REFERER"],"/list") ){
-            $_SESSION["referer"] = $_SERVER["HTTP_REFERER"];
-        }
-
         // +++
         // page basics
+
+        if ( $environment["parameter"][2] == "verify"
+          && $_POST["abort"] != "" ) {
+            $header = $cfg["fileed"]["basis"]."/compilation.html";
+            unset($_SESSION["compilation_temp"][$ausgaben["compid"]]);
+            if ( count($_SESSION["compilation_temp"]) == 0 ) unset($_SESSION["compilation_temp"]);
+            unset($_SESSION["file_memo"]);
+            unset($_SESSION["cms_last_edit"]);
+            header("Location: ".$header);
+        }
+
+        if ( $environment["parameter"][2] == "verify"
+          && $_POST["get_pics"] != "" ) {
+            $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
+            header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
+        }
 
         if ( $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""
@@ -225,46 +204,42 @@
             // form eingaben pruefen
             form_errors( $form_options, $_POST );
 
-            if ( $_POST["abort"] != "" ){
-                $header = $_SESSION["referer"];
-            }
+            $header = $cfg["fileed"]["basis"]."/compilation.html";
 
             // evtl. zusaetzliche datensatz aendern
-            if ( $ausgaben["form_error"] == "" && $header == "" ) {
+            if ( $ausgaben["form_error"] == "" ) {
 
-                // funktions bereich fuer erweiterungen
-                // ***
-
-                $groupid = $_POST["all_groups"];
-
-                foreach ( $form_values as $key=>$value ) {
-                    // testen, ob die p-nummer schon vorhanden ist
-                    if ( strstr($value["fhit"],"#p".$groupid) ) {
-                        // bereits vorhandene marke finden und entfernen
-                        $fhit  = trim(preg_replace("/#p".$groupid."[,0-9]*#/i", "",$value["fhit"]));
-                        $fhit .= " #p".$groupid.",".$_POST["sort"][$key]."#";
-                    } else {
-                        $fhit = $value["fhit"]." #p".$groupid.",".$_POST["sort"][$key]."#";
-                    }
+                // zuerst alle löschen
+                $sql = "SELECT *
+                          FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                         WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$_SESSION["compilation_temp"][$ausgaben["compid"]]["both"]).")";
+                $result = $db -> query($sql);
+                while ( $data = $db -> fetch_array($result,1) ) {
+                    $fhit[$data["fid"]]  = preg_replace("/#p".$ausgaben["compid"]."[,0-9]*#/Ui", "",$data["fhit"]);
                     $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
-                               SET fhit='".$fhit."'
-                             WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$key."'";
-                    $result  = $db -> query($sql);
+                               SET fhit='".trim($fhit[$data["fid"]])."'
+                             WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$data["fid"]."'";
+                    $res = $db -> query($sql);
                 }
 
-                // vorerst sprung zur entsprechenden bildergruppe
-                if ( $header == "" ) $header = $_SESSION["referer"];
-
-                unset ($_SESSION["file_memo"]);
-
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                // +++
-                // funktions bereich fuer erweiterungen
+                // dateien mit gruppierung versehen
+                $i = 1;
+                foreach ( $_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"] as $value ) {
+                    $fhit_new = "#p".$ausgaben["compid"].",".($i*10)."# ".trim($fhit[$value]);
+                    $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
+                               SET fhit='".trim($fhit_new)."'
+                             WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$value."'";
+                    $res = $db -> query($sql);
+                    $i++;
+                }
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                unset($_SESSION["referer"]);
+                unset($_SESSION["compilation_temp"][$ausgaben["compid"]]);
+                if ( count($_SESSION["compilation_temp"]) == 0 ) unset($_SESSION["compilation_temp"]);
+                unset($_SESSION["file_memo"]);
+                unset($_SESSION["cms_last_edit"]);
                 header("Location: ".$header);
             }
         }

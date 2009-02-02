@@ -9,60 +9,35 @@
 <body>
 <!--##begin-->
 <!--$Id$-->
-<script type="text/javascript">
-<!--
-  function resetForm(){
-     document.forms[0].reset();
-  }
-//-->
-</script>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
-    <h1>#(ueberschrift)</h1>
-    <div class="tabbed" style="">
-        <ul style="">
-            <!--##loop-tabs-->
-            <li style="!{style}">
-                <a href="!{link}" class="!{class}" style="">!{label}</a>
-            </li>
-            <!--##cont-->
-        </ul>
-    </div>
-    <div style="clear:both;border-top:1px solid #666666;"></div>
+    <!--##hide-modus-->
+    <h1>!{heading}</h1>
+    <!--##show-->
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <div class="clearer">&nbsp;</div>
-    <fieldset>
-        <label style="clear:left;">#(ffhit)</label>
-        <select name="all_groups">
-            <option value="!#ausgaben_new_comp">#(new_comp) (ID: !#ausgaben_new_comp)</option>
-            <optgroup label="#(saved_groups)">
-                <!--##loop-group_dropdown-->
-                <option value="!{id}"!{select}># !{id}: !{name_short}</option>
-                <!--##cont-->
-            </optgroup>
-        </select>
+
+    <fieldset id="pics_chosen" style="padding:0;min-height:90px;border:1px solid #6C757A;">
+        <legend>#(chosen)</legend>
+        <img src="/images/default/pos.png" style="width:1px;height:96px;float:right;" />
+        <!--##loop-chosen-->
+        <img src="!{src}" id="pic_!{id}" class="sel_item" style="float:left;margin:5px;" />
+        <!--##cont-->
     </fieldset>
-    <fieldset class="float">
-        <ul style="margin-left:20px;">
-            <!--##loop-list-->
-            <li class="thumbs">
-                <a href="!{link}" class="pic"><img src="!{src}" alt="!{title}" title="!{title}" /></a>
-                <p>
-                    <input type="text" value="!{sort}" name="sort[!{id}]" style="width:2em;" />
-                    <a href="!{delete}" style="float:left;">
-                        <img src="../../images/default/delete.png" alt="g(delete)" title="g(delete)" height="18" width="24" />
-                    </a>
-                </p>
-            </li>
-            <!--##cont-->
-        </ul>
-        <p><a href="!#ausgaben_renumber">g(renumber)</a></p>
+
+    <fieldset id="pics_available" style="padding:0;border:1px solid #6C757A;">
+        <legend>#(dashboard)</legend>
+        <img src="/images/default/pos.png" style="width:1px;height:96px;float:right;" />
+        <!--##loop-clipboard-->
+        <img src="!{src}" id="pic_!{id}" class="sel_item" style="float:left;margin:5px;" />
+        <!--##cont-->
     </fieldset>
+
     <fieldset>
         <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
-        <input type="submit" name="send[]" value="g(send)" class="first" />
-        <input type="reset" name="reset" value="g(reset)" onclick="resetForm()" class="next" />
+        <input type="submit" name="get_pics[]" value="#(get_pics)" class="first" />
+        <input type="submit" name="send[]" value="g(save)" class="next" />
         <input type="submit" name="abort[]" value="g(abort)" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>
@@ -70,6 +45,58 @@
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>
+
+<script type="text/javascript">
+    sections = new Array();
+    sections[0] = 'pics_chosen';
+// <!--#hide-storage-->
+    sections[1] = 'pics_available';
+
+    Sortable.create(
+        'pics_available',
+        {
+            tag:'img',
+                constraint: false,
+            dropOnEmpty: true,
+            containment: sections,
+            only:'sel_item',
+            evalScripts:true,
+            asynchronous:true,
+            onUpdate: function(){
+                new Ajax.Updater(
+                    'output',
+                    '!#ausgaben_form_ajax_aktion',
+                    {
+                        parameters:'ajax=on&compid=!#ausgaben_compid&' + Sortable.serialize('pics_chosen') + '&' + Sortable.serialize('pics_available')
+                    }
+                );
+            }
+        }
+    );
+// <!--#show-->
+
+    Sortable.create(
+        'pics_chosen',
+        {
+            tag:'img',
+                constraint: false,
+            dropOnEmpty: true,
+            containment: sections,
+            only:'sel_item',
+            evalScripts:true,
+            asynchronous:true,
+            onUpdate: function(){
+                new Ajax.Updater(
+                    'output',
+                    '!#ausgaben_form_aktion',
+                    {
+                        parameters:'ajax=on&compid=!#ausgaben_compid&' + Sortable.serialize('pics_chosen') + '&' + Sortable.serialize('pics_available')
+                    }
+                );
+            }
+        }
+    );
+</script>
 <!--##end-->
 </body>
 </html>

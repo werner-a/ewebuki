@@ -413,9 +413,9 @@
                             $name = $sel_name;
                         } else {
                             // name wird nur erfasst, wenn er nicht schon drinsteht
-                            $buffer_names = explode(", ",$compilations[$id]["name"]);
+                            $buffer_names = explode(";;",$compilations[$id]["name"]);
                             if ( !in_array($sel_name,$buffer_names) ){
-                                $name = $compilations[$id]["name"].", ".$sel_name;
+                                $name = $compilations[$id]["name"].";;".$sel_name;
                             }
                         }
                         $name = preg_replace(array("/(, )*$/","/(, ){2}/"),
@@ -429,6 +429,8 @@
                         } else {
                             $compilations[$id]["name_short"] = $name;
                         }
+
+                        $compilations[$id]["content"][$data["tname"]] = $data["tname"].",v".$data["version"];
                     }
 
                 }

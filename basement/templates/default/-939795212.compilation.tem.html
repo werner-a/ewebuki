@@ -21,39 +21,105 @@
         </ul>
     </div>
     <div style="clear:both;border-top:1px solid #666666;"></div>
-    <form method="get" action="!#ausgaben_form_aktion">
+    <form method="POST" action="!#ausgaben_form_aktion">
         <fieldset class="float" style="padding:0;">
             <label class="small">
                 #(search)&nbsp;
                 <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
             </label>
             <label class="small">
-                #(compilation_search)&nbsp;
-                <select name="compID" onchange="submit()">
-                    <option value="">Compilation ausw&auml;hlen</option>
-                    <!--##loop-groups-->
-                    <option value="!{id}"!{select}>#!{id}: !{name_short}</option>
-                    <!--##cont-->
-                </select>
-            </label>
-            <label class="small">
                 &nbsp;
                 <input type="submit" name="send[]" value="g(send)" />
             </label>
-            <div class="clearer">&nbsp;</div>
+            <div class="clearer"></div>
         </fieldset>
     </form>
 </div>
 <!-- <p>#(num_comps) !#ausgaben_result</p> -->
 <p style="clear:both">&nbsp;
     <!--##hide-cms-->
-    <a href="!{link}">g(cmslink)</a>
+    <span style="display:!{display};" id="cms">
+        &nbsp;<a href="!{link}">g(cmslink)</a>
+    </span>
     <!--##show-->
-    <!--##hide-selected-->
-    &nbsp;| !{count} #(selected) <a href="!{link}">!{aktion}</a>
-    <!--##show-->
-
 </p>
+
+<!--##loop-compilation-->
+<div class="selection_teaser">
+    <b style="background:none;" id="cEd">
+        <a style="!{used_title_show}" class="infobox">
+            #(used_title)
+            <span>!{used_title_text}</span>
+        </a>
+        <input id="!{id}" class="selection_checkbox" type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!{id});" style="vertical-align:middle;margin:0.166em 3px 0 0;"!{check} />
+        ID:!{id}
+    </b>
+    <div style="clear:both;"></div>
+
+    <div>
+        <ul>
+            <li class="thumbs">
+                <a title="!{pic_0_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_0_src_lb}"><img title="" alt="" src="!{pic_0_src}"/></a>
+            </li>
+            <li class="thumbs">
+                <a title="!{pic_1_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_1_src_lb}"><img title="" alt="" src="!{pic_1_src}"/></a>
+            </li>
+            <li class="thumbs">
+                <a title="!{pic_2_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_2_src_lb}"><img title="" alt="" src="!{pic_2_src}"/></a>
+            </li>
+            <li class="thumbs">
+                <a title="!{pic_3_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_3_src_lb}"><img title="" alt="" src="!{pic_3_src}"/></a>
+            </li>
+            <li style="display:none;">!{lb_pics}</li>
+        </ul>
+    </div>
+    <span style="display:block;">
+        !{edit} (Anzahl der Bilder: !{count})!{used_on}</span>
+</div>
+<div style="clear:both;"></div>
+<!--##cont-->
+
+<div style="clear:both"></div>
+<p style="float:left">g(anzahl)!#ausgaben_anzahl</p>
+<p style="float:right">!#ausgaben_inhalt_selector</p>
+<div style="clear:both"></div>
+<p>#(inhalt)</p>
+<p>#(text1)</p>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+
+<script type="text/javascript">
+    function session_update(compid) {
+        new Ajax.Request(
+            './compilation,' + compid + '.html',
+            {
+                asynchronous:true,
+                parameters:'ajax=on',
+                onSuccess:function() {
+                    check_boxes(compid);
+                }
+            }
+        );
+    }
+    function check_boxes(compid) {
+        elements = $$('input.selection_checkbox');
+        for (i=0;i<elements.length;i++) {
+            if ( elements[i].id != compid ) {
+                elements[i].checked = false;
+            }
+        }
+    }
+</script>
+<!--##end-->
+
+
+
+
+
+
+<hr />
+
+
 
 <!--##hide-compilation-->
 <h1 id="cEd">

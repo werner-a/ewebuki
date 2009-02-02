@@ -64,8 +64,9 @@
             "upload,shared" => array( "zip_handling", "file_validate" ),
                      #"used" => "",
                   "collect" => array( "compilationlist" ),
+           "collect,shared" => array( "filelist", "menu_convert" ),
               "compilation" => array( "compilationlist" ),
-       "compilation,shared" => array( "filelist" ),
+       "compilation,shared" => array( "filelist", "menu_convert" ),
                        ),
                "db" => array(
                      "file" => array(
@@ -110,6 +111,8 @@
                        ),
       "compilation" => array(
                     "items" => "3",
+                     "rows" => "3",
+                 "selektor" => "5",
                        ),
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),

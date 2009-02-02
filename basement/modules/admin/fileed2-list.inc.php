@@ -392,7 +392,11 @@
                 $ausgaben["result"]  = "";
             }
 
-            $hidedata["search_result"]["search"] = "<b>\"".implode("\"</b> und <b>\"",$filters)."\"</b>";
+            if ( is_array($filters) ) {
+                $hidedata["search_result"]["search"] = "<b>\"".implode("\"</b> und <b>\"",$filters)."\"</b>";
+            } else {
+                $hidedata["search_result"]["search"] = "";
+            }
 
             // dataloop wird ueber eine share-funktion aufgebaut
             filelist($result, "fileed");

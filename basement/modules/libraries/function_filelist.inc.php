@@ -186,6 +186,7 @@
                                               "alt" => $data["ffname"],
                                             "title" => $data["ffname"],
                                             "under" => $data["funder"],
+                                             "desc" => $data["fdesc"],
                                                "cb" => $cb,
                                             "ohref" => "list/view,o,".$data["fid"].".html",
                                             "bhref" => "list/view,b,".$data["fid"].".html",

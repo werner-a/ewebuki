@@ -50,98 +50,235 @@
         // funktions bereich
         // ***
 
-        $hidedata["check_error"] = array(
-            "display" => "none",
-              "count" => ""
-        );
-
-        if ( is_numeric($environment["parameter"][2]) ){
-
-            if ( $_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]] != "" ) {
-                unset($_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]]);
+        // ajax-steuerung der compilation-auswahl
+        if ( $_POST["ajax"] != "" ) {
+            $compid = $environment["parameter"][1];
+            if ( is_array($_SESSION["compilation_memo"][$compid]) ) {
+                unset ($_SESSION["compilation_memo"]);
             } else {
-                if ( count($_SESSION["compilation_memo"][$environment["parameter"][1]]) < $cfg["fileed"]["compilation"]["items"] ) {
-                    $_SESSION["compilation_memo"][$environment["parameter"][1]][$environment["parameter"][2]] = $environment["parameter"][2];
+                unset ($_SESSION["compilation_memo"]);
+                $_SESSION["compilation_memo"][$compid] = array();
+            }
+//             if ( count($_SESSION["compilation_memo"]) == 0 ) {
+//                 header("HTTP/1.0 404 Not Found");
+//             } else {
+                echo count($_SESSION["compilation_memo"]);
+//             }
+            die();
+        }
+
+        // compilation-array bauen lassen
+        $compilations = compilation_list($environment["parameter"][1]);
+
+        // suche
+        // * * * * *
+
+        /* suchfeld */
+        $filters = array();
+        if ( $_POST["send"] != "" ) {
+            if ( $_POST["search"] != "" ) {
+                $_SESSION["compilation_search"] = $_POST["search"];
+            } elseif ( isset($_SESSION["compilation_search"]) ) {
+                unset( $_SESSION["compilation_search"] );
+            }
+        }
+        $ausgaben["search"] = $_SESSION["compilation_search"];
+        if ( $_SESSION["compilation_search"] != "" ) {
+            function compilation_search($comp) {
+                if ( $comp["id"] == $_SESSION["compilation_search"]
+                  || stristr($comp["name"],$_SESSION["compilation_search"])
+                  || stristr($comp["desc"],$_SESSION["compilation_search"]) ) {
+                    return $comp;
+                }
+            }
+            $compilations = array_filter($compilations,"compilation_search");
+            $filters[] = $_SESSION["compilation_search"];
+        }
+
+        /* nur ausgewaehlte gruppierungen */
+        if ( $_POST["send"] != "" ) {
+            if ( $_POST["sel_search"] == -1 ) {
+                $header = $cfg["fileed"]["basis"]."/compilation,,sel,".$environment["parameter"][3].".html";
+            } else {
+                $header = $cfg["fileed"]["basis"]."/compilation,,,".$environment["parameter"][3].".html";
+            }
+            header("Location:".$header);
+        }
+        if ( $environment["parameter"][2] == "sel" ) {
+            if ( is_array($_SESSION["compilation_memo"]) ) {
+//                 $hidedata["search_sel"]["check"] = " checked=\"true\"";
+                $compilations = array_intersect_key($compilations,$_SESSION["compilation_memo"]);
+                $filters[] = "#(filter_selected)";
+            }
+        } else {
+            $hidedata["search_sel"]["check"] = "";
+        }
+        if ( is_array($_SESSION["compilation_memo"]) ) {
+            $hidedata["search_sel"]["display"] = "block";
+            $hidedata["search_sel"]["count"] = count($_SESSION["compilation_memo"]);
+        } else {
+            $hidedata["search_sel"]["display"] = "none";
+        }
+        $ausgaben["result"] = "";
+        if ( count($filters) > 0 ) $ausgaben["result"] = "#(answera) <b>\"".implode("\"</b> und <b>\"",$filters)."\"</b> #(answerb) ";
+
+        // + + + + +
+
+        // inhaltselektor-imitat
+        // * * * * *
+        $position = 0;
+        if ( $environment["parameter"][3] != "" ) $position = $environment["parameter"][3];
+        // gesamtanzahl der selektoren (z.B. 1-4)
+        $gesamt = count($compilations);
+        if ( $gesamt > 0 ) {
+            $hidedata["search_result"] = array();
+            $ausgaben["anzahl"] = $gesamt;
+        }
+        // wie gross ist ein selektor
+        $menge = $cfg["fileed"]["compilation"]["rows"];
+        // wieviele elemente darf eine selektor-gruppen maximal haben
+        $sel_groups_max = $cfg["fileed"]["compilation"]["selektor"];
+
+        // selektor bauen
+        if ( $gesamt > $menge ) {
+            // wieviel selektoren gibt es insgesamt
+            $sel_parts = ceil($gesamt/$menge);
+            $rest = $gesamt%$menge;
+
+            // wieviel selektor-gruppen gibt es
+            $sel_groups = ceil($sel_parts/$sel_groups_max);
+
+            $inh_selector = array(); $sel_parts_index = 0; $sel_groups_index = 0; $g_index = 0;
+            for ( $i=0; $i<$sel_parts; $i++ ) {
+                if ( $i%$sel_groups_max == 0 ) $g_index++;
+                $start = ($i*$menge);
+                $end = (($i+1)*$menge);
+                if ( $i+1 == $sel_parts && $rest > 0 ) {
+                    $end = $i*$menge+$rest;
+                }
+                $link = $cfg["fileed"]["basis"]."/compilation,".$environment["parameter"][1].",".$environment["parameter"][2].",".$start.".html";
+                $inh_link[$i] = $link;
+                if ( $position == $start ) {
+                    $inh_selector[$i] = "<b>".($start+1)."-".$end."</b>";
+                    $ausgaben["inhalt_selected"] = ($start+1)."-".$end;
+                    $sel_groups_index = $g_index;
+                    $sel_parts_index = $i + 1;
                 } else {
-                    if ( isset($_GET["ajax"]) ){
-                        header("HTTP/1.0 404 Not Found");
-                        echo $cfg["fileed"]["compilation"]["items"];
-                        exit;
-                    } else {
-                        $hidedata["check_error"] = array(
-                            "display" => "block",
-                              "count" => $cfg["fileed"]["compilation"]["items"]
-                        );
-                    }
+                    $inh_selector[$i] = "<a href=\"".$link."\">".($start+1)."-".$end."</a>";
                 }
             }
 
-            if ( count($_SESSION["compilation_memo"][$environment["parameter"][1]]) == 0 ) unset($_SESSION["compilation_memo"][$environment["parameter"][1]]);
-            if ( count($_SESSION["compilation_memo"]) == 0 ) unset($_SESSION["compilation_memo"]);
-            if ( isset($_GET["ajax"]) ) exit;
-        }
+            // nur die selektoren-gruppe anzeigen
+            if ( $sel_groups_index != 0 ) $inh_selector = array_slice($inh_selector,(($sel_groups_index-1)*$sel_groups_max),$sel_groups_max,true);
 
-        $ausgaben["compid"] = $environment["parameter"][1];
+            // gibt es vorher und nochher noch gruppen
+            if ( $sel_groups_index > 1 ) array_unshift($inh_selector,"...");
+            if ( $sel_groups_index < $sel_groups ) array_push($inh_selector,"...");
 
-        // dropdown bauen lassen
-        $dataloop["groups"] = compilation_list($environment["parameter"][1]);
+            // elemente zusammenfuegen
+            $ausgaben["inhalt_selector"] = implode(" | ",$inh_selector);
 
-        // schnellsuche
-        if ( $_GET["send"] ){
-            if ( $_GET["search"] == "" ){
-                unset($_SESSION["compilation_search"]);
-            }else{
-                $_SESSION["compilation_search"] = $_GET["search"];
+            // pfeile zum vor- und zuruecksteuern
+            $defaults["select"]["prev"] == "" ? $defaults["select"]["prev"] = "<img src=\"/images/default/left.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
+            $defaults["select"]["next"] == "" ? $defaults["select"]["next"] = "<img src=\"/images/default/right.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
+            if ( $sel_parts_index > 1 )  {
+                $ausgaben["inhalt_selector"] = "<a href=\"".$inh_link[$sel_parts_index-2]."\">".$defaults["select"]["prev"]."</a>".$ausgaben["inhalt_selector"];
             }
+            if ( $sel_parts_index < $sel_parts )  {
+                $ausgaben["inhalt_selector"] .= "<a href=\"".$inh_link[$sel_parts_index]."\">".$defaults["select"]["next"]."</a>";
+            }
+
+        } else {
+            $ausgaben["inhalt_selected"] = "1-".$gesamt;
+            $ausgaben["inhalt_selector"] = "";
         }
-        if ( $environment["parameter"][2] == "sel" && count($_SESSION["compilation_memo"]) == 0 ) {
-            header("Location: ".$cfg["fileed"]["basis"]."/compilation,".$environment["parameter"][1].".html");
+        // + + + + +
+        // inhaltselektor-imitat
+
+
+        function pics_sort($a, $b) {
+            return ($a["sort"] < $b["sort"]) ? -1 : 1;
         }
-        if ( isset($_SESSION["compilation_search"]) || $environment["parameter"][2] == "sel" ){
-            function groups_filter ($var) {
-                if ( stristr($var["name"],$_SESSION["compilation_search"])
-                  || stristr($var["desc"],$_SESSION["compilation_search"])
-                  || stristr($var["id"],$_SESSION["compilation_search"])
-                  || ( count($_SESSION["compilation_memo"]) > 0 && array_key_exists($var["id"],$_SESSION["compilation_memo"]) ) ) {
-                    return $var;
+
+        // gruppierungsarray wird zugeschnitten
+        $sliced_groups = array_slice($compilations,$position,$menge,true);
+
+        foreach ( $sliced_groups as $key=>$value ){
+            $id = $value["id"];
+            $check = "";
+            if ( is_array($_SESSION["compilation_memo"][$id]) ) $check = " checked=\"true\"";
+            $edit = "&nbsp;";
+            if ( $value["name"] == "---" ) $edit = "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.".html\" title=\"g(edit)\"><img src=\"/images/default/edit.png\" alt=\"g(edit)\" /></a>";
+
+            $used_on = "";
+            if ( is_array($value["content"]) ) {
+                $used_on = "<br />#(used_on)";
+                foreach ( $value["content"] as $tname ) {
+                    $link = tname2path($tname).".html";
+                    $used_on .= "<br /><a href=\"".$link."\">".$link."</a>";
                 }
             }
-            $dataloop["groups"] = array_filter($dataloop["groups"], "groups_filter");
-            $ausgaben["search"] = $_SESSION["compilation_search"];
-        }else{
-            $ausgaben["search"] = "";
-        }
-        if ( count($_SESSION["compilation_memo"]) > 0 ) {
-            if ( $environment["parameter"][2] == "sel" ) {
-                $link = $cfg["fileed"]["basis"]."/compilation.html";
-                $aktion = "#(sel_hide)";
-            } else {
-                $link = $cfg["fileed"]["basis"]."/compilation,,sel.html";
-                $aktion = "#(sel_show)";
+
+            $used_title_text = "";
+            $used_title_show = "display:none;";
+            if ( $value["name"] != "---" ) {
+                $used_title_text = str_replace(";;","<br />",$value["name"]);
+                $used_title_show = "";
             }
-            $hidedata["selected"] = array(
-                 "count" => count($_SESSION["compilation_memo"]),
-                  "link" => $link,
-                "aktion" => $aktion
+
+            $dataloop["compilation"][$id] = array(
+                        "id" => $id,
+                     "count" => $num_pics,
+                   "used_on" => $used_on,
+                     "check" => $check,
+                      "edit" => $edit,
+                "used_title_text" => $used_title_text,
+           "used_title_show" => $used_title_show,
+                "used_title" => "",
+                 "pic_0_src" => "",
+              "pic_0_src_lb" => "",
+               "pic_0_title" => "",
+                 "pic_1_src" => "",
+              "pic_1_src_lb" => "",
+               "pic_1_title" => "",
+                 "pic_2_src" => "",
+              "pic_2_src_lb" => "",
+               "pic_2_title" => "",
+                 "pic_3_src" => "",
+              "pic_3_src_lb" => "",
+               "pic_3_title" => "",
             );
+
+            // bilder der compilation finden
+            $sql = "SELECT *
+                      FROM site_file
+                     WHERE fhit
+                      LIKE '%#p".$id.",%'
+                  ORDER BY fid";
+            $result = $db -> query($sql);
+            $pic_array = array();
+            $dataloop["list_images"] = array();
+            filelist($result, "fileed", $key);
+            uasort($dataloop["list_images"],"pics_sort");
+            // anzahl der bilder
+            $num_pics = count($dataloop["list_images"]);
+            $dataloop["compilation"][$id]["count"] = $num_pics;
+            // galerie bauen
+            $i = 0;$lb_pics="";
+            foreach ( $dataloop["list_images"] as $pic ) {
+                if ( $i < 4 ) {
+                    $dataloop["compilation"][$id]["pic_".$i."_src"] = $pic["src"];
+                    $dataloop["compilation"][$id]["pic_".$i."_src_lb"] = $pic["ohref_lb"];
+                    $dataloop["compilation"][$id]["pic_".$i."_title"] = $pic["desc"];
+                } else {
+                    $lb_pics .= "<a title=\"".$pic["desc"]."\" class=\"pic\" rel=\"lightbox[".$id."]\" href=\"".$pic["ohref_lb"]."\"></a>";
+                }
+                $i++;
+            }
+            // restliche lightbox-bilder
+            $dataloop["compilation"][$id]["lb_pics"] = $lb_pics;
         }
 
-        // get wird environment-parameter, weiterleitung
-        if ( is_numeric($_GET["compID"]) ){
-            $header = $cfg["fileed"]["basis"]."/compilation,".$_GET["compID"].",".$environment["parameter"][2].".html";
-            header("Location: ".$header);
-        } elseif (( !isset($environment["parameter"][1])
-                 || !isset($dataloop["groups"][$environment["parameter"][1]])
-                  ) && count($dataloop["groups"]) > 0 ){
-            reset($dataloop["groups"]);
-            $buffer = current($dataloop["groups"]);
-            $header = $cfg["fileed"]["basis"]."/compilation,".$buffer["id"].",".$environment["parameter"][2].".html";
-            header("Location: ".$header);
-        }
-
-        // content editor link erstellen
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_edit): ".$_SESSION["cms_last_edit"].$debugging["char"];
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_referer): ".$_SESSION["cms_last_referer"].$debugging["char"];
         if ( isset($_SESSION["cms_last_edit"]) ) {
             // abrechen im cms editor soll zur ursrungseite springen und nicht in den fileed
             $_SESSION["page"] = $_SESSION["cms_last_referer"];
@@ -151,57 +288,8 @@
             );
         }
 
-        // vor- und zurueck-links
-        $vor = ""; $zurueck = ""; $aktuell = ""; $i = 0;
-        foreach ( $dataloop["groups"] as $value ){
-            if ( $aktuell != "" ){
-                $vor = $value["id"];
-                break;
-            }
-            if ( $value["id"] == $environment["parameter"][1] ){
-                $aktuell = $environment["parameter"][1];
-                $hidedata["compilation"]["title"] = "#".$value["id"].": ".$value["name_short"];
-                if ( $value["name"] != $value["name_short"] ) {
-                    $hidedata["long_name"]["title"] = "#".$value["id"].": ".$value["name"];
-                }
-            }
-            if ( $aktuell == "" ) {
-                $zurueck = $value["id"];
-            }
-            $i++;
-        }
-        $ausgaben["comp_count"] = count($dataloop["groups"]);
-        $ausgaben["aktuell"] = $i;
-        if ( $vor != "" ){
-            $hidedata["vor"]["link"] = $cfg["fileed"]["basis"]."/compilation,".$vor.",".$environment["parameter"][2].".html";
-        }
-        if ( $zurueck != "" ){
-            $hidedata["zurueck"]["link"] = $cfg["fileed"]["basis"]."/compilation,".$zurueck.",".$environment["parameter"][2].".html";
-        }
-
-        // bilderliste erstellen, sortieren, zaehlen
-        if ( count($dataloop["groups"]) > 0 ) {
-            $sql = "SELECT *
-                    FROM site_file
-                    WHERE fhit
-                    LIKE '%#p".$environment["parameter"][1].",%'
-                ORDER BY fid";
-            $result = $db -> query($sql);
-            filelist($result, "fileed", $environment["parameter"][1]);
-            if ( count($dataloop["list_images"]) > 0 ) {
-                function pics_sort($a, $b) {
-                    return ($a["sort"] < $b["sort"]) ? -1 : 1;
-                }
-                uasort($dataloop["list_images"],"pics_sort");
-            }
-            $hidedata["compilation"]["pic_count"] = count($dataloop["list_images"]) + count($dataloop["list_other"]);
-        } else {
-            unset($hidedata["list_plain"]);
-            unset($hidedata["list_ajax"]);
-        }
-
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/compilation.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/compilation,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html";
         $ausgaben["form_break"]  = $cfg["fileed"]["basis"]."/list.html";
         $ausgaben["edit"]        = $cfg["fileed"]["basis"]."/collect,".$environment["parameter"][1].".html";
 
