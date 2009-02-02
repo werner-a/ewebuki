@@ -103,9 +103,17 @@
         // erster test einer suchanfrage per kalender
         //
 
-        if ( $environment["parameter"][4] && $environment["parameter"][5] ) {
+        if ( $environment["parameter"][4] ) {
+
             if ( $cfg["bloged"]["blogs"][$url]["sort"][1] != -1 ) {
                 $heute = getdate(mktime(0, 0, 0, ($environment["parameter"][5])+1, 0, $environment["parameter"][4]));
+                if ( $environment["parameter"][5] == "" ) {
+                    $month2 = "1";
+                    $month1 = "12";
+                } else {
+                    $month1 = $environment["parameter"][5];
+                    $month2 = $environment["parameter"][5];
+                }
                 if ( !$environment["parameter"][6] ) {
                     $day1 = $heute["mday"];
                     $day2 = "1";
@@ -114,11 +122,11 @@
                     $day2 = $environment["parameter"][6];
                 }
                 if ( $cfg["bloged"]["blogs"][$url]["ext_sort"] == "" ) {
-                    $where .= " AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$environment["parameter"][5]."-".$day1." 23:59:59' AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) > '".$environment["parameter"][4]."-".$environment["parameter"][5]."-".$day2." 00:00:00'";
+                    $where .= " AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$month1."-".$day1." 23:59:59' AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) > '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00'";
                 }  else {
-                    $where .= " AND (( Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$environment["parameter"][5]."-".$day1." 23:59:59' AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) >= '".$environment["parameter"][4]."-".$environment["parameter"][5]."-".$day2." 00:00:00')";
+                    $where .= " AND (( Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$month1."-".$day1." 23:59:59' AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) >= '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00')";
                     $sort_len2 = strlen($cfg["bloged"]["blogs"][$url]["ext_sort"])+2;
-                    $where .= " OR ( Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) <= '".$environment["parameter"][4]."-".$environment["parameter"][5]."-".$day2." 00:00:00' AND  Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)+".$sort_len2.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-".$sort_len2.") as DATETIME) >= '".$environment["parameter"][4]."-".$environment["parameter"][5]."-".$day2." 00:00:00'))";
+                    $where .= " OR ( Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) <= '".$environment["parameter"][4]."-".$month1."-".$day2." 00:00:00' AND  Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)+".$sort_len2.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-".$sort_len2.") as DATETIME) >= '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00'))";
                 }
             }
         }
