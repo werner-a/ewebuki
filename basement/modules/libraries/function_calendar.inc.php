@@ -55,8 +55,9 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         $monat = $aktuell["mon"];
     }
 
-    if ( $environment["parameter"][$start_parameter+2] != "" && $environment["parameter"][$start_parameter+1] != "" ) {
-        $monat = $environment["parameter"][$start_parameter+2];
+    if (  $environment["parameter"][$start_parameter+1] != "" ) {
+        ( $environment["parameter"][$start_parameter+2] ) ? $monat = $environment["parameter"][$start_parameter+2] : $monat =1;
+        #$monat = $environment["parameter"][$start_parameter+2];
         $jahr = $environment["parameter"][$start_parameter+1];
     }
 
@@ -87,8 +88,8 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         // bauen der monatstabelle
         $ausgabe = "#(ueberschrift)";
         $ausgabe .= "<table class=\"".$class." ".$class."_months\" >\n";
-        $jump_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$back.",01.html\">";
-        $jump_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$forward.",01.html\">";
+        $jump_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$back.".html\">";
+        $jump_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$forward.".html\">";
         if ( $no_secure == "" ) {
             if ( is_int($environment["parameter"][$start_parameter+1]) && abs($aktuell["year"] - $environment["parameter"][$start_parameter+1]) > 1) {
                 header("Location: ".$pathvars["virtual"]."/index.html");
@@ -98,7 +99,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
                     $jump_forward = "";
             }
         }
-        $ausgabe .= "<tr class=\"first_line\"><td class=\"first\">".$jump_back."<img src=\"/images/default/left.png\" alt=\"\" /></a></td><td colspan=\"2\"><b>".$jahr."</b></td><td class=\"last\">".$jump_forward."<img src=\"/images/default/right.png\" alt=\"\" /></a></td></tr>\n";
+        $ausgabe .= "<tr class=\"first_line\"><td class=\"first\">".$jump_back."<img src=\"/images/default/left.png\" alt=\"\" /></a></td><td colspan=\"2\"><b><a href=\"".$environment["parameter"][0].$protect_parameter.",".$jahr.".html\">".$jahr."</a></b></td><td class=\"last\">".$jump_forward."<img src=\"/images/default/right.png\" alt=\"\" /></a></td></tr>\n";
         $ausgabe .= "<tr class=\"first_line\" >\n";
         foreach ( $monate as $key => $value ) {
             $month = $key+1;
