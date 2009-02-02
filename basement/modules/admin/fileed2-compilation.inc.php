@@ -130,10 +130,8 @@
         if ( $environment["parameter"][3] != "" ) $position = $environment["parameter"][3];
         // gesamtanzahl der selektoren (z.B. 1-4)
         $gesamt = count($compilations);
-        if ( $gesamt > 0 ) {
-            $hidedata["search_result"] = array();
-            $ausgaben["anzahl"] = $gesamt;
-        }
+        $hidedata["search_result"] = array();
+        $ausgaben["anzahl"] = $gesamt;
         // wie gross ist ein selektor
         $menge = $cfg["fileed"]["compilation"]["rows"];
         // wieviele elemente darf eine selektor-gruppen maximal haben
@@ -188,8 +186,11 @@
                 $ausgaben["inhalt_selector"] .= "<a href=\"".$inh_link[$sel_parts_index]."\">".$defaults["select"]["next"]."</a>";
             }
 
-        } else {
+        } elseif ( $gesamt > 0 ) {
             $ausgaben["inhalt_selected"] = "1-".$gesamt;
+            $ausgaben["inhalt_selector"] = "";
+        } else {
+            $ausgaben["inhalt_selected"] = "0";
             $ausgaben["inhalt_selector"] = "";
         }
         // + + + + +
