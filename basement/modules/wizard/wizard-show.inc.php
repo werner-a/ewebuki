@@ -434,6 +434,7 @@
                 // bereiche in eine liste pressen
                 // * * *
                 $buffer = ""; $i=-1; $block=0; $pre = "";
+                $dataloop["sort_content"] = array();
                 foreach ( $allcontent as $key=>$value ) {
                     // kommentar-bereich nicht beruecksichtigen
                     if ( preg_match("/^\[!\].*\[\/!\]/is",$value) ) {
@@ -780,6 +781,9 @@
                             $content = utf8_encode($content);
                         }
                         header("HTTP/1.0 200 OK");
+                        if ( file_exists($pathvars["moduleroot"]."customer/".$wizard_name.".inc.php" ) ) {
+                            include $pathvars["moduleroot"]."customer/".$wizard_name.".inc.php";
+                        }
                         $content = str_replace($cfg["wizard"]["basis"],$environment["ebene"],$content);
                         echo preg_replace(
                             array("/#\{.+\}/U","/g\(.+\)/U"),
