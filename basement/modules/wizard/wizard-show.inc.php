@@ -593,6 +593,7 @@
             // add-buttons
             // * * *
             foreach ( $cfg["wizard"]["add_tags"] as $key=>$value ) {
+                $debug_add_buttons .= "# (".$key.") #(".$key.")<br />";
                 if ( is_array($cfg["wizard"]["wizardtyp"][$wizard_name]["add_tags"])
                   && !in_array($key,$cfg["wizard"]["wizardtyp"][$wizard_name]["add_tags"]) ) {
                     continue;
@@ -608,7 +609,7 @@
                             "add,".
                             (count($dataloop["sort_content"]) - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]).
                             ".html",
-                    "item" => $key
+                    "item" => "#(".$key.")",
                 );
             }
             // + + +
@@ -644,6 +645,7 @@
                 $ausgaben["inaccessible"] .= "# (ask_release) #(ask_release)<br />";
                 $ausgaben["inaccessible"] .= "# (release) #(release)<br />";
                 $ausgaben["inaccessible"] .= "# (blocked_release) #(blocked_release)<br />";
+                $ausgaben["inaccessible"] .= $debug_add_buttons;
             } else {
                 $ausgaben["inaccessible"] = "";
             }
