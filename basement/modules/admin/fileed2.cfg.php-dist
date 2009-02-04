@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -121,11 +121,13 @@
              "tabs" => array(      #  beschriftung,  link,  anordung (L/R), url-muster
 //                         "0" => array("g(all_files)", "list,,,all.html" , "L", "/list[,0-9]*[all]*\.html/i"),
 //                         "1" => array("g(sel_files)", "list,,,sel.html", "L", "/list[,0-9]*,sel.*\.html/i"),
-                        "2" => array("g(all_files)", "list,,,sel.html", "L", "/list/i"),
+                        "2" => array("g(all_files)", "list,,,.html", "L", "/list/i"),
                         "3" => array("g(fileupload)", "upload.html", "R", "/upload[,0-9]*.html/"),
                         "4" => array("g(filecompilation)", "compilation.html", "R", "/compilation[,0-9]*.html/"),
                        ),
-//      "default_view" => "symbols",
+//      "default_view" => "symbols",   #standardansicht im fileed-list
+//       "dummy_regex" => array("#p[0-9]+,[0-9]+#"),      # regex, muster fuer fhit-sperre
+//          "no_dummy" => "admin",                                 # noetiges recht um den fhit komplett zu bearbeiten
             "right" => $cfg["auth"]["menu"]["fileed"][1],
             "restrict" => array(), # z.B. array("delete", "edit")
     );

@@ -8,6 +8,15 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 04. Januar 2009
+Im FileEd-Edit/Add kann nun festgelegt werden, dass bestimmte Werte im fhit-Feld nicht angezeigt und nicht eingefuegt werden kann.
+Diese gesperrten Eintraege werden dann automatisch vom System wieder angefuegt.
+
+Dazu gibt es zwei neue Eintraege in der config:
+$cfg["fileed"]["dummy_regex"]: Array mit Regex-Werten. Diese Muster werden gesperrt/ausgeblendet
+                               z.B.: array("#p[0-9]+,[0-9]+#"): dieses sperrt die Gruppierungsangaben
+$cfg["fileed"]["no_dummy"]:    Rechteangabe; für diese Rechte wird die herkoemmliche, nicht bereinigte/gesperrte Variante verwendet
+
 --- 09. Dezember 2008
 sql-eintraege für die schlagwoerter:
 CREATE TABLE IF NOT EXISTS `site_keyword` (

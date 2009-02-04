@@ -320,6 +320,8 @@ li.thumbs a.pic {
 }
 .selection_teaser div {
     background:#fff;
+    float:left;
+    width:100%;
 }
 .selection_teaser li {
     border: 1px solid #eee;
@@ -329,6 +331,7 @@ li.thumbs a.pic {
 }
 .selection_teaser span {
     clear:both;
+    display:block;
     font-size:0.9em;
 }
 

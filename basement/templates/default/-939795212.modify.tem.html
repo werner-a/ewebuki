@@ -68,7 +68,12 @@
                 !#element_fdesc
             </label>
             <label style="clear:left;">#(fhit)
+                <!--##hide-fhit_admin-->
                 !#element_fhit
+                <!--##show-->
+                <!--##hide-fhit_dummy-->
+                <input id="fhit_dummy" class="" type="text" value="!{value}" name="fhit_dummy" />
+                <!--##show-->
             </label>
             <!--##hide-upload-->
             <label style="clear:left;">#(replace)
@@ -81,8 +86,11 @@
             #(fowner)<a href="mailto:!{email}">!{name}</a><br />!{error}
         </p>
         <!--##show-->
+        <!--##hide-references-->
         <p>#(references)!#ausgaben_reference</p>
+        <p>#(ref_comp)!#ausgaben_ref_comp</p>
         <p>!#element_fid</p>
+        <!--##show-->
         <fieldset>
             <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
             <div class="clearer">&nbsp;</div>

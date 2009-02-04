@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K��?igsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -114,10 +114,77 @@
         }
         $ausgaben["thumbnail"] = $filename;
 
+        // dummy-fhit-feld
+        // * * * * *
+        // fhit aufsplitten
+        $block_elements = array();
+        if ( is_array($cfg["fileed"]["dummy_regex"]) ) {
+            foreach ( $cfg["fileed"]["dummy_regex"] as $pattern ) {
+                preg_match_all("/".$pattern."/Ui",$form_values["fhit"],$match);
+                $block_elements = array_merge($block_elements,$match[0]);
+            }
+        }
+        $fhit_dummy = trim(str_replace($block_elements,"",$form_values["fhit"]));
+        $fhit_delicate = trim(implode(" ",$block_elements));
 
+        if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"])
+            && $cfg["fileed"]["no_dummy"] != "" ) {
+            if ( isset($_POST["fhit_dummy"]) ) {
+                $fhit_dummy = $_POST["fhit_dummy"];
+            }
+            // fhit_dummy von "verbotenen "eingaben bereinigen
+            if ( is_array($cfg["fileed"]["dummy_regex"]) ) {
+                foreach ( $cfg["fileed"]["dummy_regex"] as $pattern ) {
+                    preg_match_all("/".$pattern."/Ui",$fhit_dummy,$match);
+                    $fhit_dummy = str_replace($match[0],"",$fhit_dummy);
+                }
+            }
+            $hidedata["fhit_dummy"]["value"] = $fhit_dummy;
+        } else {
+            $hidedata["fhit_admin"]["value"] = $form_values["fhit"];
+        }
+        // dummy-fhit-feld
+        // + + + + +
+
+        $hidedata["references"] = array();
+
+        // wo im content wird die datei verwendet
+        $used_in = content_check($environment["parameter"][1]);
+        if ( count($used_in) > 0 ) {
+            $ausgaben["reference"] = implode("<br />",$used_in);
+        } else {
+            $ausgaben["reference"] = "---";
+        }
+
+        // in welchen galerien wird die datei verwendet
+        $compilations = compilation_list($environment["parameter"][1]);
+        preg_match_all("/#p([0-9])+,/U",$form_values["fhit"],$match);
+        $intersect = array_intersect_key($compilations,array_flip($match[1]));
+        ksort($intersect);
+        $ausgaben["ref_comp"] = "";
+        if ( count($intersect) > 0 ) {
+            foreach ( $intersect as $value ) {
+                $group_content = ""; $i = 1;
+                if ( count($value["content"]) > 0 ) {
+                    foreach ( $value["content"] as $content ) {
+                        if ( $group_content != "" ) $group_content .= ", ";
+                        $group_content .= "<a href=\"/".$content.".html\" title=\"/".$content.".html\">[".$i."]</a>";
+                    }
+                }
+                if ( $group_content != "" ) $group_content = " (#(used_in) ".$group_content.")";
+                $ausgaben["ref_comp"] .= "<b>#".$value["id"]."</b>".$group_content."<br>";
+            }
+        } else {
+            $ausgaben["ref_comp"] = "---";
+        }
+
+        // ersetzen-feld
         if ( $_SESSION["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
-            $hidedata["upload"][0] = -1;
-            $owner_error = "";
+            // dateien duerfen nur ersetzt werden, wenn sie nirgends verwendet werden
+            if ( count($used_in) == 0 && count($intersect) == 0 ) {
+                $hidedata["upload"][0] = -1;
+                $owner_error = "";
+            }
         } else {
             $owner_error = "#(error_edit)";
             $element["fdesc"] = str_replace(">"," readonly=\"true\">",$element["fdesc"]);
@@ -131,14 +198,6 @@
             "email" => $form_values[$cfg["fileed"]["db"]["user"]["email"]],
             "error" => $owner_error,
         );
-
-        // wo im content wird die datei verwendet
-        $used_in = content_check($environment["parameter"][1]);
-        if ( count($used_in) > 0 ) {
-            $ausgaben["reference"] = implode("<br />",$used_in);
-        } else {
-            $ausgaben["reference"] = "---";
-        }
 
         // falls zip wird der inhalt gebaut
         if ( $form_values["ffart"] == "zip" && function_exists("zip_open") ) {
@@ -221,7 +280,7 @@
                 || $_POST["extract"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
-            // form eingaben pr�fen
+            // form eingaben pruefen
             form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern
@@ -275,12 +334,17 @@
                         }
                     }
 
-                    ### put your code here ###
+                    // ggf versteckte fhit-eingtraege wieder anhängen
+                    if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"]) ) {
+                        // dummy wird ergaenzt
+                        $fhit = $fhit_delicate." ".trim($fhit_dummy);
+                        $_POST["fhit"] = trim($fhit);
+                    }
 
                     // +++
                     // funktions bereich fuer erweiterungen
 
-                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder" );
+                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder", "fhit_dummy" );
                     foreach($_POST as $name => $value) {
                         if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                             if ( $sqla != "" ) $sqla .= ", ";
@@ -311,12 +375,12 @@
                     if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/edit.html";
                 }
 
-                if ( $_SESSION["wizard_last_edit"] != "" ) unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
+                if ( $_SESSION["file_memo"][$environment["parameter"][1]] != "" ) unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                 header("Location: ".$header);
+                header("Location: ".$header);
             }
         }
     } else {

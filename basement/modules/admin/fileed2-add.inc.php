@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -103,6 +103,28 @@
         }
 
         $hidedata[$environment["kategorie"]] = array();
+
+        // dummy-fhit-feld
+        // * * * * *
+        if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"])
+            && $cfg["fileed"]["no_dummy"] != "" ) {
+            $fhit_dummy = $form_values["fhit"];
+            if ( isset($_POST["fhit_dummy"]) ) {
+                $fhit_dummy = $_POST["fhit_dummy"];
+            }
+            // fhit_dummy von "verbotenen" eingaben bereinigen
+            if ( is_array($cfg["fileed"]["dummy_regex"]) ) {
+                foreach ( $cfg["fileed"]["dummy_regex"] as $pattern ) {
+                    preg_match_all("/".$pattern."/Ui",$fhit_dummy,$match);
+                    $fhit_dummy = str_replace($match[0],"",$fhit_dummy);
+                }
+            }
+            $hidedata["fhit_dummy"]["value"] = $fhit_dummy;
+        } else {
+            $hidedata["fhit_admin"]["value"] = $form_values["fhit"];
+        }
+        // dummy-fhit-feld
+        // + + + + +
 
         // +++
         // page basics
