@@ -255,6 +255,11 @@
             // + + +
             // wizard-infos rausfinden
 
+            $ausgaben["class"] = ""; 
+            if ( $wizard_name == "termine" ) {
+                $ausgaben["class"] = "class=\"wide\""; 
+            }
+
             // freigabe-test
             // * * *
             $blocked = 0;
