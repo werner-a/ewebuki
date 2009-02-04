@@ -339,6 +339,9 @@
                 if ( $_POST["ajax"] == "on" ) {
 //                     // experimentell: html in tag umwandeln
 //                     $content = html2tag($content,"none");
+                    if ( file_exists($pathvars["moduleroot"]."customer/".$wizard_name.".inc.php" ) ) {
+                        include $pathvars["moduleroot"]."customer/".$wizard_name.".inc.php";
+                    }
                     $content = tagreplace($content);
                     $content = tagremove($content);
                     if ( get_magic_quotes_gpc() == 1 ) {
@@ -348,9 +351,6 @@
                         $content = utf8_encode($content);
                     }
                     header("HTTP/1.0 200 OK");
-                    if ( file_exists($pathvars["moduleroot"]."customer/".$wizard_name.".inc.php" ) ) {
-                        include $pathvars["moduleroot"]."customer/".$wizard_name.".inc.php";
-                    }
                     echo preg_replace(array("/#\{.+\}/U","/g\(.+\)/U"),"",$content);
                     die ;
                 }
