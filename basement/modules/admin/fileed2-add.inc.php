@@ -301,7 +301,7 @@
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
 
-                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet", "fdesc", "zip_fdesc", "zip_fhit", "zip_funder" );
+                $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet", "fdesc", "fhit_dummy", "zip_fdesc", "zip_fhit", "zip_funder" );
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";

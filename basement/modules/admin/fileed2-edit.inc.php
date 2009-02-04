@@ -169,6 +169,7 @@
                     foreach ( $value["content"] as $content ) {
                         if ( $group_content != "" ) $group_content .= ", ";
                         $group_content .= "<a href=\"/".$content.".html\" title=\"/".$content.".html\">[".$i."]</a>";
+                        $i++;
                     }
                 }
                 if ( $group_content != "" ) $group_content = " (#(used_in) ".$group_content.")";
