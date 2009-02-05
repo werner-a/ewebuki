@@ -321,6 +321,9 @@
 //                 // experimentell: html in tag umwandeln
 //                 $to_insert = html2tag($to_insert);
 
+                if ( $_POST["ajax"] == "on" ) {
+                    $to_insert = str_replace("\n","##br##",$to_insert);
+                }
                 // zusammenbauen
                 $content = $pre_content.
                            $to_insert.
@@ -329,6 +332,10 @@
                 // html killer :)
                 if ( $specialvars["denyhtml"] == -1 ) {
                     $content = strip_tags($content);
+                }
+
+                if ( $_POST["ajax"] == "on" ) {
+                    $content = str_replace("##br##","<br>",$content);
                 }
 
                 // space killer
