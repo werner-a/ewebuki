@@ -47,21 +47,32 @@
     // was anzeigen
     $mapping["main"] = "wizard-edit";
 
+    $ausgaben["error"] = "";
+    $ausgaben["checked"] = "";
     $hidedata["termine"]["on"] = "ON";
 
-    $einsatz = "2008-01-01";
     $preg = "/\[([_A-Z]*)\](.*)\[\/[_A-Z]*\]/Us";
-
+    if  ( $_GET["_NAME"] ) $ausgaben["error"] = "Beginn und Ende-Datum sind nicht korrekt";
     preg_match_all($preg,$tag_meat["!"][0]["complete"],$regs);
     foreach ( $regs[1] as $key => $value ) {
         if ( $value == "KATEGORIE" ) continue;
+        if  ( $_GET[$value] ) {
+            $regs[2][$key] = $_GET[$value];
+        }
         $hidedata["termine"][$value] = $regs[2][$key];
         $$value = $regs[2][$key];
-        if ( $_POST["send"]  ) {
+        if ( $value == "_TERMIN" && $regs[2][$key] != "1970-01-01" ) $ausgaben["checked"] = "checked";
+        if ( $_POST["send"] ) {
+            if ( $value == "_TERMIN" && !$_POST["set_end"] ) {
+                $_POST[$value] = "1970-01-01";
+            }
             $tag_meat["!"][0]["complete"] = preg_replace("/\[".$value."\]".$$value."\[\/".$value."\]/","[".$value."]".$_POST[$value]."[/".$value."]",$tag_meat["!"][0]["complete"]);
+        if ( $value == "_TERMIN" && !$_POST["set_end"] ) continue;
         }
     }
     $SORT = substr($SORT,0,10);
+
+    if ( $_TERMIN == "1970-01-01" ) $_TERMIN = $SORT;
 
     $ausgaben["begin"] = "<script>DateInput('SORT', 'true', 'YYYY-MM-DD', '$SORT' )</script>";
     $ausgaben["ende"] = "<script>DateInput('_TERMIN', 'true', 'YYYY-MM-DD', '$_TERMIN' )</script>";
@@ -69,6 +80,17 @@
     $tag_meat["!"][0]["complete"] = $tag_meat["!"][0]["complete"];
 
     if ( $_POST["send"]  ) {
+        if ( !$_POST["set_end"] ) {
+            $_TERMIN = "1970-01-01";
+        } else {
+            if ( mktime(0,0,0,substr($_POST["_TERMIN"],5,2),substr($_POST["_TERMIN"],8,2),substr($_POST["_TERMIN"],0,4)) <= mktime(0,0,0,substr($_POST["SORT"],5,2),substr($_POST["SORT"],8,2),substr($_POST["SORT"],0,4)) ) {
+                echo "Beginn und Ende-Datum sind nicht korrekt";
+            if ( $_POST["send"][0] == "Abschicken" ) {
+                header("Location: ".$_SESSION["page"]."?_NAME=".$_POST["_NAME"]."&_VERANSTALTER=".$_POST["_VERANSTALTER"]."&_ORT=".$_POST["_ORT"]."&_BESCHREIBUNG=".urlencode($_POST["_BESCHREIBUNG"]));
+                exit;
+                }
+            }
+        }
         $to_insert = $tag_meat["!"][0]["complete"];
     }
 
