@@ -313,7 +313,12 @@
 
                 // ggf kategorie
                 $kategorie = "---";
+                $ext = "---";
                 if  ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
+                    preg_match("/\[".$cfg["bloged"]["blogs"][$url]["addons"]["name"]["tag"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["addons"]["name"][0]."/Us",$data["content"],$termine_match);
+                    if ( count($termine_match) > 1 ) {
+                        $ext = $termine_match[1];
+                    }
                     preg_match("/\[".$cfg["bloged"]["blogs"][$url]["category"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["category"]."/U",$data["content"],$match);
                     if ( count($match) > 1 ) {
                         $kategorie = $match[1];
@@ -361,6 +366,7 @@
                 $new_releases[$data["status"]][] = array(
                     "path" => $path,
                    "titel" => $titel,
+                     "ext" => $ext,
                "kategorie" => $kategorie,
                   "author" => $data["byforename"]." ".$data["bysurname"],
              "last_author" => $last_author,
