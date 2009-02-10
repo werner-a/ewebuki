@@ -63,32 +63,33 @@
         $$value = $regs[2][$key];
         if ( $value == "_TERMIN" && $regs[2][$key] != "1970-01-01" ) $ausgaben["checked"] = "checked";
         if ( $_POST["send"] ) {
-            if ( $value == "_TERMIN" && !$_POST["set_end"] ) {
-                $_POST[$value] = "1970-01-01";
+            if ( $value == "_TERMIN" || $value == "SORT" ) {
+                $_POST[$value] = substr($_POST[$value],6,4)."-".substr($_POST[$value],3,2)."-".substr($_POST[$value],0,2);
             }
             $tag_meat["!"][0]["complete"] = preg_replace("/\[".$value."\]".$$value."\[\/".$value."\]/","[".$value."]".$_POST[$value]."[/".$value."]",$tag_meat["!"][0]["complete"]);
-        if ( $value == "_TERMIN" && !$_POST["set_end"] ) continue;
         }
     }
     $SORT = substr($SORT,0,10);
 
-    if ( $_TERMIN == "1970-01-01" ) $_TERMIN = $SORT;
+    $SORT = substr($SORT,8,2).".".substr($SORT,5,2).".".substr($SORT,0,4);
+    $_TERMIN = substr($_TERMIN,8,2).".".substr($_TERMIN,5,2).".".substr($_TERMIN,0,4);
 
-    $ausgaben["begin"] = "<script>DateInput('SORT', 'true', 'YYYY-MM-DD', '$SORT' )</script>";
-    $ausgaben["ende"] = "<script>DateInput('_TERMIN', 'true', 'YYYY-MM-DD', '$_TERMIN' )</script>";
-
-    $tag_meat["!"][0]["complete"] = $tag_meat["!"][0]["complete"];
+    if ( $_TERMIN != "01.01.1970" ) {
+        $display = "";
+    } else {
+        $display = "none";
+    }
+    $ausgaben["begin"] = "<input readonly=true style=\"float:left\" type=\"text\" id=\"date1\" name=\"SORT\" value=\"".$SORT."\"><button onClick=\"alert('hi')\" style=\"width:20px\" id=\"trigger1\">...</button>";
+    $ausgaben["begin"] .= "<div class=\"clear\"></div>";
+    $ausgaben["ende"]  = "<div style=\"display:".$display."\" id=\"end_termin\"><input readonly=true style=\"float:left\" type=\"text\" id=\"date2\" name=\"_TERMIN\" value=\"".$_TERMIN."\"> <button style=\"width:20px\" id=\"trigger2\">...</button></div>";
+    $ausgaben["ende"] .= "<div class=\"clear\"></div>";
 
     if ( $_POST["send"]  ) {
-        if ( !$_POST["set_end"] ) {
-            $_TERMIN = "1970-01-01";
-        } else {
-            if ( mktime(0,0,0,substr($_POST["_TERMIN"],5,2),substr($_POST["_TERMIN"],8,2),substr($_POST["_TERMIN"],0,4)) <= mktime(0,0,0,substr($_POST["SORT"],5,2),substr($_POST["SORT"],8,2),substr($_POST["SORT"],0,4)) ) {
-                echo "Beginn und Ende-Datum sind nicht korrekt";
-            if ( $_POST["send"][0] == "Abschicken" ) {
-                header("Location: ".$_SESSION["page"]."?_NAME=".$_POST["_NAME"]."&_VERANSTALTER=".$_POST["_VERANSTALTER"]."&_ORT=".$_POST["_ORT"]."&_BESCHREIBUNG=".urlencode($_POST["_BESCHREIBUNG"]));
-                exit;
-                }
+        if ( $_POST["_TERMIN"] != "1970-01-01" && mktime(0,0,0,substr($_POST["_TERMIN"],5,2),substr($_POST["_TERMIN"],8,2),substr($_POST["_TERMIN"],0,4)) <= mktime(0,0,0,substr($_POST["SORT"],5,2),substr($_POST["SORT"],8,2),substr($_POST["SORT"],0,4)) ) {
+            echo "Beginn und Ende-Datum sind nicht korrekt";
+        if ( $_POST["send"][0] == "Abschicken" ) {
+            header("Location: ".$_SESSION["page"]."?_NAME=".$_POST["_NAME"]."&_VERANSTALTER=".$_POST["_VERANSTALTER"]."&_ORT=".$_POST["_ORT"]."&_BESCHREIBUNG=".urlencode($_POST["_BESCHREIBUNG"]));
+            exit;
             }
         }
         $to_insert = $tag_meat["!"][0]["complete"];
