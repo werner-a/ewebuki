@@ -101,7 +101,7 @@
 
 
     // funktion um die ebene aus der refid zu erstellen
-    if ( in_array("make_ebene", $cfg["menued"]["function"][$environment["kategorie"]]) ) {
+    if ( in_array("make_ebene", $cfg["menued"]["function"][$environment["kategorie"]]) && !function_exists(make_ebene) ) {
 
         function make_ebene($mid, $ebene="") {
             # call: make_ebene(refid);
