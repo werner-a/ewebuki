@@ -61,9 +61,11 @@
     }
 
     // rausfinden, welcher menupunkt einen unterpunkt bekommen soll
-    if ( $environment["parameter"][4] != "" ) {
+    if ( $environment["parameter"][2] != "" ) {
         $url = tname2path($environment["parameter"][2]);
-        #$mid = $environment["parameter"][5];
+        $point = make_id($url);
+        $_SESSION["REFERER"] = $url;
+        $_SESSION["form_referer"] = $pathvars["webroot"].$pathvars["virtual"]."/login.html";
     } else {
         if ( $_SESSION["REFERER"] != "" && preg_match("/wizard$/",dirname($_SESSION["REFERER"])) ) {
             $url = str_replace(array($pathvars["virtual"],".html"),"",$_SESSION["REFERER"]);
