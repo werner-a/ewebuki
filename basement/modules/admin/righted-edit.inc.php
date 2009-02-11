@@ -43,21 +43,6 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function make_ebene($mid, $ebene="") {
-        # call: make_ebene(refid);
-        global $db, $cfg;
-        $sql = "SELECT refid, entry
-                FROM site_menu
-                WHERE mid='".$mid."'";
-        $result = $db -> query($sql);
-        $array = $db -> fetch_array($result,$nop);
-        $ebene = "/".$array["entry"].$ebene;
-        if ( $array["refid"] != 0 ) {
-            $ebene = make_ebene($array["refid"],$ebene);
-        }
-        return $ebene;
-    }
-
     $url = make_ebene($environment["parameter"][1]);
 
     if ( priv_check($url,$cfg["righted"]["right"]) ||
