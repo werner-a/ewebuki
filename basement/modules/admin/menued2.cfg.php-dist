@@ -79,6 +79,9 @@
                      "text" => array(
                           "entries" => "site_text",
                                ),
+                     "content" => array(
+                          "entries" => "auth_content",
+                               ),
                      "user" => array(
                           "entries" => "auth_user",
                               "key" => "uid",
