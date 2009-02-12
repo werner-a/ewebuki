@@ -147,6 +147,20 @@
             $ausgaben["keywords"] = implode(", ",$keywords);
         }
 
+        // in der site_menu nach titel suchen
+        $menu_item = make_id(str_replace(".html","",$ausgaben["path"]));
+        if ( $menu_item["mid"] != 0 ) {
+            $sql = "SELECT *
+                      FROM site_menu_lang
+                     WHERE mid=".$menu_item["mid"]."
+                       AND lang='".$environment["language"]."'";
+            $result = $db -> query($sql);
+            $data = $db -> fetch_array($result,1);
+            $ausgaben["title"] = $data["label"];
+        } else {
+            $ausgaben["title"] = "";
+        }
+
         // alle schlagwoerter holen
         $dataloop["tags_all"] = cloud_loop("all","",$keywords);
         if ( count($dataloop["tags_all"]) > 0 ) $hidedata["tags_all"] = array();
