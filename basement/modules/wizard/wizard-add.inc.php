@@ -76,7 +76,7 @@
         $point = make_id($url);
         #$mid = $point["mid"];
     }
-
+    $ausgaben["form_referer"] = $_SESSION["form_referer"];
     if ( $cfg["wizard"]["right"]["add"] == "" ||
         priv_check($url,$cfg["wizard"]["right"]["add"]) || priv_check(tname2path($environment["parameter"][2]),$cfg["wizard"]["right"]["add"]) ||
         priv_check_old("",$cfg["wizard"]["right"]) ||
