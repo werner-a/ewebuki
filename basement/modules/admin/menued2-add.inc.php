@@ -239,6 +239,10 @@
                     }
                 }
                 header("Location: ".$header);
+            } else {
+                if ( strstr($_SERVER["HTTP_REFERER"],"/auth/wizard/add") ){
+                    header("Location: ".$_SERVER["HTTP_REFERER"]."?".$ausgaben["form_error"]);
+                }
             }
         }
     }  else {
