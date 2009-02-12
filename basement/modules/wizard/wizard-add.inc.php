@@ -121,8 +121,12 @@
             $form_options = form_options(eCRC("/admin/menued").".add");
 
             // fehlermeldungen
-            $ausgaben["form_error"] = $_SESSION["form_error"]["desc"];
-
+            $ausgaben["form_error"] .= $_SESSION["form_error"]["desc"];
+            if ( $_GET["error"] ) {
+                if ( strstr($_GET["error"],"entry required")) $ausgaben["form_error"] .= "Eintrag fehlt!<br>";
+                if ( strstr($_GET["error"],"label required")) $ausgaben["form_error"] .= "Bezeichnung fehlt!<br>";
+                if ( strstr($_GET["error"],"dupe")) $ausgaben["form_error"] .= "#(error_dupe)";
+            }
             // form elememte bauen
             $element = array_merge(form_elements( "site_menu", $form_values ), form_elements( "site_menu_lang", $form_values ));
 
@@ -205,7 +209,7 @@
                     } else {
                         $header = $_SESSION["form_referer"];
                     }
-                    unset($_SESSION["REFERER"]);
+                   # unset($_SESSION["REFERER"]);
                     header("Location: ".$header);
                 }
             } else {

@@ -139,7 +139,7 @@
 
             // form eigaben prüfen
             form_errors( $form_options, $_POST );
-
+            $error = $ausgaben["form_error"];
             // black-list-test
             black_list($_POST["refid"],$_POST["entry"]);
 
@@ -152,7 +152,7 @@
                                AND entry = '".$fixed_entry."'";
                     $result = $db -> query($sql);
                     $test = $db -> fetch_array($result,1);
-                    if ( $test["entry"] == $fixed_entry ) $ausgaben["form_error"] .= "#(error_dupe)";
+                    if ( $test["entry"] == $fixed_entry ) $ausgaben["form_error"] .= "#(error_dupe)";$error="dupe";
                 }
 
                 // entry hinzufuegen
@@ -212,7 +212,7 @@
                             $crc = "";
                             $_SESSION["REFERER"] = str_replace("/index","",$_SESSION["REFERER"]);
                         }
-                        if ( preg_match("/wizard$/",dirname($_SERVER["HTTP_REFERER"])) ) {
+                        if ( strstr($_SERVER["HTTP_REFERER"],"/auth/wizard/add") ){
                             if ( $ausgaben["form_error"] == "" ) {
                                 $_SESSION["form_referer"] = $_SESSION["REFERER"]."/".$fixed_entry.".html";
                                 $header = $pathvars["virtual"]."/wizard/add,". DATABASE . ",".$crc.$fixed_entry.",inhalt,".$_POST["wizard"].".html";
@@ -241,7 +241,11 @@
                 header("Location: ".$header);
             } else {
                 if ( strstr($_SERVER["HTTP_REFERER"],"/auth/wizard/add") ){
-                    header("Location: ".$_SERVER["HTTP_REFERER"]."?".$ausgaben["form_error"]);
+                    if ( strpos($_SERVER["HTTP_REFERER"],"?") != "" ) {
+                        header("Location: ".substr($_SERVER["HTTP_REFERER"],0,strpos($_SERVER["HTTP_REFERER"],"?"))."?error=".$error);
+                    } else {
+                        header("Location: ".$_SERVER["HTTP_REFERER"]."?error=".$error);
+                    }
                 }
             }
         }
