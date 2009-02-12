@@ -256,7 +256,7 @@
             // wizard-infos rausfinden
 
             $ausgaben["class"] = ""; 
-            if ( $wizard_name == "termine" ) {
+            if ( $wizard_name == "termine" || $wizard_name == "artikel" || $wizard_name == "presse" ) {
                 $ausgaben["class"] = "class=\"wide\""; 
             }
 
