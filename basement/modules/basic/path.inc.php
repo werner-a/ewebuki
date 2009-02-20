@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -173,7 +173,11 @@
             // seitentitel
             $path .= "/".$data["entry"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
-            $specialvars["pagetitle"] .= $defaults["split"]["title"].$data["label"];
+            if ( $cfg["path"]["title_reverse"] == -1 ) {
+                $specialvars["pagetitle"] = $data["label"].$defaults["split"]["title"].$specialvars["pagetitle"];
+            } else {
+                $specialvars["pagetitle"] .= $defaults["split"]["title"].$data["label"];
+            }
             if ( $data["extend"] != "" ) {
                 $title = $data["extend"];
             } else {
