@@ -148,9 +148,10 @@
 
     }
 
-
-    if ( priv_check($tname2path,$cfg["wizard"]["right"]["edit"])|| $artikel_check|| priv_check($tname2path,$cfg["wizard"]["right"]["publish"]) ||
-         priv_check_old("",$cfg["wizard"]["right"]) ) {
+    if ( priv_check($tname2path,$cfg["wizard"]["right"]["edit"])
+      || $artikel_check
+      || priv_check($tname2path,$cfg["wizard"]["right"]["publish"])
+      || priv_check_old("",$cfg["wizard"]["right"]) ) {
 
         // page basics
         // ***
@@ -440,7 +441,6 @@
                 // * * *
                 $buffer = ""; $i=-1; $block=0; $pre = "";
                 $dataloop["sort_content"] = array();
-echo "<pre>";
                 foreach ( $allcontent as $key=>$value ) {
                     // kommentar-bereich nicht beruecksichtigen
                     if ( preg_match("/^\[!\].*\[\/!\]/is",$value) ) {
@@ -523,7 +523,6 @@ echo "<pre>";
                                 "delete"     => $del,
                     );
                 }
-echo "</pre>";
             }
             // + + +
             // bereiche in eine liste pressen
@@ -776,7 +775,6 @@ echo "</pre>";
                        || $_SESSION["form_send"] == "save") {
                     // preview mit ajax
                     if ( $_POST["ajax"] == "on" ) {
-echo "".str_replace("\r","---<br>",$content);
                         // parameter-manipulation fuer blog-tag
                         $environment["ebene"] = dirname($tname2path);
                         $environment["kategorie"] = basename($tname2path);
