@@ -47,6 +47,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
     global $environment,$pathvars;
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
     $monate = array( "Jan", "Feb", "M&auml;r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
+    $monate_full = array( "Januar", "Februar", "M&auml;rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
     setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
 
     $aktuell = getdate();
@@ -123,7 +124,9 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
     $int_counter = "";
 
     // bauen der tabellenbeschriftung
-    $ausgabe .= "<thead><tr><th colspan=\"7\" scope=\"col\" class=\"monat\">".strftime ("%B", $heute[0])."</th></tr>";
+    $mon_out = preg_replace("/^0/","",strftime ("%m", $heute[0]));
+
+    $ausgabe .= "<thead><tr><th colspan=\"7\" scope=\"col\" class=\"monat\">".$monate_full[$mon_out-1]."</th></tr>";
     $ausgabe .= "<tr>";
     foreach ( $tage as $key => $value ) {
         // ersten und letzten tag kennzeichnen
