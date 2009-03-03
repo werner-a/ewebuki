@@ -129,16 +129,16 @@
         $clipboard = array();
         if ( is_array($_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"]) ) $clipboard = array_merge($_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"],$clipboard);
         if ( is_array($_SESSION["file_memo"]) ) $clipboard = array_merge($_SESSION["file_memo"],$clipboard);
+        // ids die bereist im chosen sind auslassen
+        if ( count($dataloop["chosen"]) > 0 ) {
+            $clipboard = array_flip($clipboard);
+            $clipboard = array_diff_key($clipboard, $dataloop["chosen"]);
+            $clipboard = array_flip($clipboard);
+        }
         if ( count($clipboard) > 0 ) {
-            // ids die bereist im chosen sind auslassen
-            if ( count($dataloop["chosen"]) > 0 ) {
-                $clipboard = array_flip($clipboard);
-                $clipboard = array_diff_key($clipboard, $dataloop["chosen"]);
-                $clipboard = array_flip($clipboard);
-            }
             $sql = "SELECT *
-                        FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
-                        WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$clipboard).")";
+                      FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
+                     WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$clipboard).")";
             $result = $db -> query($sql);
             filelist($result, "fileed", $ausgaben["compid"]);
             $dataloop["clipboard"] = $dataloop["list_images"];
@@ -186,13 +186,13 @@
             unset($_SESSION["compilation_temp"][$ausgaben["compid"]]);
             if ( count($_SESSION["compilation_temp"]) == 0 ) unset($_SESSION["compilation_temp"]);
             unset($_SESSION["file_memo"]);
-            unset($_SESSION["cms_last_edit"]);
+            unset($_SESSION["comp_last_edit"]);
             header("Location: ".$header);
         }
 
         if ( $environment["parameter"][2] == "verify"
           && $_POST["get_pics"] != "" ) {
-            $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
+            $_SESSION["comp_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
             header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
         }
 
@@ -239,7 +239,7 @@
                 unset($_SESSION["compilation_temp"][$ausgaben["compid"]]);
                 if ( count($_SESSION["compilation_temp"]) == 0 ) unset($_SESSION["compilation_temp"]);
                 unset($_SESSION["file_memo"]);
-                unset($_SESSION["cms_last_edit"]);
+                unset($_SESSION["comp_last_edit"]);
                 header("Location: ".$header);
             }
         }

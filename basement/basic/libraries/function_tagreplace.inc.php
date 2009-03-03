@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 KÃÂ¶nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -968,7 +968,7 @@
                                          ."img_".$row["fid"].".".$row["ffart"];
 
                                     $style = "";
-                                    if ( !in_array( $row["fid"], $tag_extra ) ) {
+                                    if ( !in_array( $row["fid"], $tag_extra ) && $tag_param[3] != "a" ) {
                                         if ( $tag_param[4] == "l" ) {
                                             $style = " style=\"display:none;\"";
                                         } else {

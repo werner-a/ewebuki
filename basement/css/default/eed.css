@@ -327,8 +327,14 @@ li.thumbs a.pic {
     border: 1px solid #eee;
     margin: 2px;
     padding:0;
+    position:relative;
     -moz-border-radius: 0;
 }
+    .selection_teaser li input.sel_pic_checkbox {
+        bottom:0;
+        right:0;
+        position:absolute;
+    }
 .selection_teaser span {
     clear:both;
     display:block;

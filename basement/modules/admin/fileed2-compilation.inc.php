@@ -52,18 +52,32 @@
 
         // ajax-steuerung der compilation-auswahl
         if ( $_POST["ajax"] != "" ) {
-            $compid = $environment["parameter"][1];
-            if ( is_array($_SESSION["compilation_memo"][$compid]) ) {
-                unset ($_SESSION["compilation_memo"]);
-            } else {
-                unset ($_SESSION["compilation_memo"]);
-                $_SESSION["compilation_memo"][$compid] = array();
+
+            echo "<pre>".print_r($environment["parameter"],true)."</pre>";
+
+            $cid = $environment["parameter"][1];
+            $pid = $environment["parameter"][2];
+
+            // alle nicht-ausgewaehlten compilations aus session loeschen
+            if ( is_array($_SESSION["compilation_memo"]) ) {
+                foreach ( $_SESSION["compilation_memo"] as $key=>$value ) {
+                    if ( $key != $cid ) unset($_SESSION["compilation_memo"][$key]);
+                }
             }
-//             if ( count($_SESSION["compilation_memo"]) == 0 ) {
-//                 header("HTTP/1.0 404 Not Found");
-//             } else {
-                echo count($_SESSION["compilation_memo"]);
-//             }
+
+            if ( is_numeric($pid) ) {
+                if ( $_SESSION["compilation_memo"][$cid][$pid] != "" ) {
+                    unset($_SESSION["compilation_memo"][$cid][$pid]);
+                } else {
+                    $_SESSION["compilation_memo"][$cid][$pid] = $pid;
+                }
+            } else {
+                if ( is_array($_SESSION["compilation_memo"][$cid]) ) {
+                    unset ($_SESSION["compilation_memo"]);
+                } else {
+                    $_SESSION["compilation_memo"][$cid] = array();
+                }
+            }
             die();
         }
 
@@ -84,6 +98,7 @@
         }
         $ausgaben["search"] = $_SESSION["compilation_search"];
         if ( $_SESSION["compilation_search"] != "" ) {
+            // array wird durchsucht
             function compilation_search($comp) {
                 if ( $comp["id"] == $_SESSION["compilation_search"]
                   || stristr($comp["name"],$_SESSION["compilation_search"])
@@ -106,7 +121,6 @@
         }
         if ( $environment["parameter"][2] == "sel" ) {
             if ( is_array($_SESSION["compilation_memo"]) ) {
-//                 $hidedata["search_sel"]["check"] = " checked=\"true\"";
                 $compilations = array_intersect_key($compilations,$_SESSION["compilation_memo"]);
                 $filters[] = "#(filter_selected)";
             }
@@ -209,7 +223,9 @@
             $check = "";
             if ( is_array($_SESSION["compilation_memo"][$id]) ) $check = " checked=\"true\"";
             $edit = "&nbsp;";
-            if ( $value["name"] == "---" ) $edit = "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.".html\" title=\"g(edit)\"><img src=\"/images/default/edit.png\" alt=\"g(edit)\" /></a>";
+            if ( $value["name"] == "---" || $cfg["fileed"]["compilation"]["blocked_used"] != true ) {
+                $edit = "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.".html\" title=\"g(edit)\"><img src=\"/images/default/edit.png\" alt=\"g(edit)\" /></a>";
+            }
 
             $used_on = "";
             if ( is_array($value["content"]) ) {
@@ -233,21 +249,9 @@
                    "used_on" => $used_on,
                      "check" => $check,
                       "edit" => $edit,
-                "used_title_text" => $used_title_text,
+           "used_title_text" => $used_title_text,
            "used_title_show" => $used_title_show,
                 "used_title" => "",
-                 "pic_0_src" => "",
-              "pic_0_src_lb" => "",
-               "pic_0_title" => "",
-                 "pic_1_src" => "",
-              "pic_1_src_lb" => "",
-               "pic_1_title" => "",
-                 "pic_2_src" => "",
-              "pic_2_src_lb" => "",
-               "pic_2_title" => "",
-                 "pic_3_src" => "",
-              "pic_3_src_lb" => "",
-               "pic_3_title" => "",
             );
 
             // bilder der compilation finden
@@ -256,6 +260,11 @@
                      WHERE fhit
                       LIKE '%#p".$id.",%'
                   ORDER BY fid";
+            $list_item = "<li class=\"thumbs\">
+                                <a title=\"##title##\" class=\"pic\" rel=\"lightbox[##cid##]\" href=\"##src_lb##\"><img title=\"##title##\" alt=\"##title##\" src=\"##src##\"/></a>
+                                <input id=\"c##cid##p##pid##\" class=\"sel_pic_checkbox\" type=\"checkbox\" value=\"-1\" onclick=\"session_update(##cid##,##pid##);\"##check## />
+                          </li>";
+            $search = array('##title##','##cid##','##pid##','##src_lb##','##src##','##check##');
             $result = $db -> query($sql);
             $pic_array = array();
             $dataloop["list_images"] = array();
@@ -265,19 +274,26 @@
             $num_pics = count($dataloop["list_images"]);
             $dataloop["compilation"][$id]["count"] = $num_pics;
             // galerie bauen
-            $i = 0;$lb_pics="";
+            $i = 0;$lb_pics="";$pics="";
             foreach ( $dataloop["list_images"] as $pic ) {
-                if ( $i < 4 ) {
-                    $dataloop["compilation"][$id]["pic_".$i."_src"] = $pic["src"];
-                    $dataloop["compilation"][$id]["pic_".$i."_src_lb"] = $pic["ohref_lb"];
-                    $dataloop["compilation"][$id]["pic_".$i."_title"] = $pic["desc"];
-                } else {
-                    $lb_pics .= "<a title=\"".$pic["desc"]."\" class=\"pic\" rel=\"lightbox[".$id."]\" href=\"".$pic["ohref_lb"]."\"></a>";
-                }
+
+                $check = "";
+                if ( $_SESSION["compilation_memo"][$id][$pic["id"]] != "" ) $check = " checked=\"true\"";
+                $replace = array(
+                    $pic["under"],
+                    $id,
+                    $pic["id"],
+                    $pic["ohref_lb"],
+                    $pic["src"],
+                    $check,
+                );
+
+                $pics .= str_replace($search,$replace,$list_item);
                 $i++;
             }
             // restliche lightbox-bilder
             $dataloop["compilation"][$id]["lb_pics"] = $lb_pics;
+            $dataloop["compilation"][$id]["pics"] = $pics;
         }
 
         if ( isset($_SESSION["cms_last_edit"]) ) {

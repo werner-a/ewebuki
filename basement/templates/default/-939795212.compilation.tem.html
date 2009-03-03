@@ -36,13 +36,14 @@
     </form>
 </div>
 <!-- <p>#(num_comps) !#ausgaben_result</p> -->
-<p style="clear:both">&nbsp;
+<p style="clear:both" class="toolbox">&nbsp;
     <!--##hide-cms-->
     <span style="display:!{display};" id="cms">
         &nbsp;<a href="!{link}">g(cmslink)</a>
     </span>
     <!--##show-->
 </p>
+<div style="clear:both"></div>
 
 <!--##loop-compilation-->
 <div class="selection_teaser">
@@ -51,28 +52,17 @@
             #(used_title)
             <span>!{used_title_text}</span>
         </a>
-        <input id="!{id}" class="selection_checkbox" type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!{id});" style="vertical-align:middle;margin:0.166em 3px 0 0;"!{check} />
+        <input id="c!{id}" class="selection_checkbox" type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!{id});" style="vertical-align:middle;margin:0.166em 3px 0 0;"!{check} />
         ID:!{id}
     </b>
     <div style="clear:both;"></div>
 
     <div>
-        <ul>
-            <li class="thumbs">
-                <a title="!{pic_0_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_0_src_lb}"><img title="" alt="" src="!{pic_0_src}"/></a>
-            </li>
-            <li class="thumbs">
-                <a title="!{pic_1_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_1_src_lb}"><img title="" alt="" src="!{pic_1_src}"/></a>
-            </li>
-            <li class="thumbs">
-                <a title="!{pic_2_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_2_src_lb}"><img title="" alt="" src="!{pic_2_src}"/></a>
-            </li>
-            <li class="thumbs">
-                <a title="!{pic_3_title}" class="pic" rel="lightbox[!{id}]" href="!{pic_3_src_lb}"><img title="" alt="" src="!{pic_3_src}"/></a>
-            </li>
-            <li style="display:none;">!{lb_pics}</li>
+        <ul style="">
+            !{pics}
         </ul>
     </div>
+
     <span style="display:block;">
         !{edit} (Anzahl der Bilder: !{count})!{used_on}</span>
 </div>
@@ -89,25 +79,46 @@
 <p>!#ausgaben_inaccessible</p>
 
 <script type="text/javascript">
-    function session_update(compid) {
+    function session_update(compid,picid) {
         new Ajax.Request(
-            './compilation,' + compid + '.html',
+            './compilation,' + compid + ',' + picid + '.html',
             {
                 asynchronous:true,
                 parameters:'ajax=on',
                 onSuccess:function() {
-                    check_boxes(compid);
+                    check_boxes(compid,picid);
                 }
             }
         );
     }
-    function check_boxes(compid) {
-        elements = $$('input.selection_checkbox');
-        for (i=0;i<elements.length;i++) {
-            if ( elements[i].id != compid ) {
-                elements[i].checked = false;
+    function check_boxes(cid,pid) {
+        $$('input.selection_checkbox').each(
+            function(celement,i) {
+                if ( celement.id != 'c' + cid ) {
+                    $(celement.id).checked = false;
+                } else {
+                    if ( !Object.isUndefined(pid) ) {
+                        $(celement.id).checked = true;
+                    }
+                }
             }
-        }
+        );
+        var pic_checked = false
+        $$('input.sel_pic_checkbox').each(
+            function(pelement,i) {
+                if ( pelement.id.indexOf('c' + cid + 'p') == -1 ) {
+                    $(pelement.id).checked = false;
+                } else {
+                    if ( $('c' + cid).checked == false ) {
+                        $(pelement.id).checked = false;
+                    } else {
+                        if ( $(pelement.id).checked == true ) {
+                            pic_checked = true;
+                        }
+                    }
+                }
+            }
+        );
     }
 </script>
 <!--##end-->

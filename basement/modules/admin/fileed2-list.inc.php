@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -219,7 +219,12 @@
         // content editor link erstellen
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_edit): ".$_SESSION["cms_last_edit"].$debugging["char"];
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_referer): ".$_SESSION["cms_last_referer"].$debugging["char"];
-        if ( isset($_SESSION["cms_last_edit"]) ) {
+        if ( isset($_SESSION["comp_last_edit"]) ) {
+            $hidedata["cms"] = array(
+                   "link" => $_SESSION["comp_last_edit"]."?referer=".$_SESSION["cms_last_referer"],
+                "display" => "inline",
+            );
+        } elseif ( isset($_SESSION["cms_last_edit"]) ) {
             // abrechen im cms editor soll zur ursrungseite springen und nicht in den fileed
             $_SESSION["page"] = $_SESSION["cms_last_referer"];
             $hidedata["cms"] = array(
