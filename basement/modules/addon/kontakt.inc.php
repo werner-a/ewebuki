@@ -154,7 +154,7 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["kontakt"]["basis"].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["kontakt"]["basis"].",".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = "index.html";
 
         // hidden values
@@ -170,7 +170,7 @@
         // was anzeigen
         #$mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
-        if ( $environment["parameter"]["1"] == "sent" ) {
+        if ( $environment["parameter"]["2"] == "sent" ) {
             $hidedata["success"] = array();
             if ( $_GET["referer"] != "" ) {
                 $hidedata["referer"]["link"] = $_GET["referer"];
@@ -194,7 +194,7 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][1] == "verify"
+        if ( $environment["parameter"][2] == "verify"
             &&  ( $HTTP_POST_VARS["send"] != ""
                 || $HTTP_POST_VARS["extension1"] != ""
                 || $HTTP_POST_VARS["extension2"] != "" ) ) {
@@ -265,7 +265,7 @@
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$cfg["kontakt"]["basis"].",sent.html?referer=".$_POST["last_viewed"]);
+                header("Location: ".$cfg["kontakt"]["basis"].",,sent.html?referer=".$_POST["last_viewed"]);
             }
         }
 
