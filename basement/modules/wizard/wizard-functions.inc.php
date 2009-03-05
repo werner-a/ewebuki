@@ -74,6 +74,7 @@
 
             $cms_old_mode = False;
             $tag_marken = explode(":",$environment["parameter"][4]);
+            $ausgaben["njs"] = "";
             foreach( $cfg["wizard"]["tags"] as $key => $value ) {
 
                 // feststellen, ob der tag erlaubt ist

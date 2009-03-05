@@ -102,6 +102,7 @@
         // was soll modifiziert werden
         $tag_marken = explode(":",$environment["parameter"][4]);
         $tag_meat = content_split_all($form_values["content"]);
+        $anker = "";
 
         if ( ( count($tag_marken) >  1 || $environment["parameter"][4] == "nop" )
           && ( strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) || $_SERVER["HTTP_REFERER"] == "" ) ) {
@@ -113,12 +114,14 @@
                         $buffer = $allcontent;
                         $buffer[] = $cfg["wizard"]["add_tags"][$tag_marken[0]];
                         end($buffer);
-                        $environment["parameter"][6] = key($buffer);
+//                         $environment["parameter"][6] = key($buffer);
+                        $anker = "?scroll=item_".key($buffer);
                     } else {
                         foreach ( $allcontent as $key=>$value ) {
                             if ( (count($allcontent) - $key) <= $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] ) {
                                 $buffer[] = preg_replace("/^[ ]+/m","",$cfg["wizard"]["add_tags"][$tag_marken[0]]);
-                                $environment["parameter"][6] = $key + 1;
+//                                 $environment["parameter"][6] = $key + 1;
+                                $anker = "scroll=item_".$key + 1;
                             }
                             $buffer[] = trim($value);
                         }
@@ -137,7 +140,7 @@
                         $content = substr($form_values["content"],0,$tag_meat[$tag_marken[0]][$tag_marken[1]]["start"]).
                                    substr($form_values["content"],$tag_meat[$tag_marken[0]][$tag_marken[1]]["end"]);
                     }
-                    $environment["parameter"][6] = "none";
+                    $environment["parameter"][6] = "";
                     break;
                 case "rip":
                     $content = substr($form_values["content"],0,$tag_meat[$tag_marken[0]][$tag_marken[1]]["start"]).
@@ -192,8 +195,8 @@
                                                 $environment["parameter"][3].",,".
                                                 $environment["parameter"][5].",".
                                                 $environment["parameter"][6].".html";
-            $anker = "";
-            if ( $environment["parameter"][6] != "" && is_numeric($environment["parameter"][6]) ) $anker = "#item_".$environment["parameter"][6];
+//             $anker = "";
+//             if ( $environment["parameter"][6] != "" && is_numeric($environment["parameter"][6]) ) $anker = "#item_".$environment["parameter"][6];
             header("Location: ".$header.$anker);
         } else {
             header("Location: ".$cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html");

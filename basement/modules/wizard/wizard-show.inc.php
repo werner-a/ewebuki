@@ -192,6 +192,10 @@
             die;
         }
 
+        if ( $_GET["scroll"] != "" ) {
+            $hidedata["ajax_scroll"]["section"] = $_GET["scroll"];
+        }
+
         if ( isset($_GET["preview"]) ) {
 
 //             $ausgaben["output"] = tagreplace($form_values["content"]);
@@ -616,7 +620,7 @@
                             $environment["parameter"][5].",".
                             $environment["parameter"][6].",".
                             "add,".
-                            (count($dataloop["sort_content"]) - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]).
+//                             (count($dataloop["sort_content"]) - $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1]).
                             ".html",
                     "item" => "#(".$key.")",
                 );
@@ -654,6 +658,9 @@
                 $ausgaben["inaccessible"] .= "# (ask_release) #(ask_release)<br />";
                 $ausgaben["inaccessible"] .= "# (release) #(release)<br />";
                 $ausgaben["inaccessible"] .= "# (blocked_release) #(blocked_release)<br />";
+
+                $ausgaben["inaccessible"] .= "g (yes) g(yes)<br />";
+                $ausgaben["inaccessible"] .= "g (no) g(no)<br />";
                 $ausgaben["inaccessible"] .= $debug_add_buttons;
             } else {
                 $ausgaben["inaccessible"] = "";
@@ -748,27 +755,28 @@
                         }
                     }
 
-                    $sql = "INSERT INTO ". SITETEXT ."
-                                        (lang, label, tname, version,
-                                        ebene, kategorie,
-                                        crc32, html, content,
-                                        changed, bysurname, byforename, byemail, byalias".$status1.")
-                                VALUES (
-                                        '".$environment["language"]."',
-                                        '".$environment["parameter"][3]."',
-                                        '".$environment["parameter"][2]."',
-                                        '".$next_version."',
-                                        '".$ebene."',
-                                        '".$kategorie."',
-                                        '".$specialvars["crc32"]."',
-                                        '0',
-                                        '".addslashes($form_values["content"])."',
-                                        '".date("Y-m-d H:i:s")."',
-                                        '".$_SESSION["surname"]."',
-                                        '".$_SESSION["forename"]."',
-                                        '".$_SESSION["email"]."',
-                                        '".$_SESSION["alias"]."'
-                                        ".$status2.")";
+                    $sql_content = "INSERT INTO ". SITETEXT ."
+                                                (lang, label, tname, version,
+                                                 ebene, kategorie,
+                                                 crc32, html, content,
+                                                 changed, bysurname, byforename, byemail, byalias".$status1."
+                                                )
+                                         VALUES (
+                                                '".$environment["language"]."',
+                                                '".$environment["parameter"][3]."',
+                                                '".$environment["parameter"][2]."',
+                                                '".$next_version."',
+                                                '".$ebene."',
+                                                '".$kategorie."',
+                                                '".$specialvars["crc32"]."',
+                                                '0',
+                                                '".addslashes($form_values["content"])."',
+                                                '".date("Y-m-d H:i:s")."',
+                                                '".$_SESSION["surname"]."',
+                                                '".$_SESSION["forename"]."',
+                                                '".$_SESSION["email"]."',
+                                                '".$_SESSION["alias"]."'
+                                                ".$status2.")";
                     $release_version = $next_version;
 
                 } elseif ($_POST["save"] != ""
@@ -811,43 +819,53 @@
                         }
                     }
 
-                    $sql = "UPDATE ". SITETEXT ."
-                               SET ebene = '".$ebene."',
-                                   kategorie = '".$kategorie."',
-                                   crc32 = '".$specialvars["crc32"]."',
-                                   html = '0',
-                                   content = '".addslashes($form_values["content"])."',
-                                   changed = '".date("Y-m-d H:i:s")."',
-                                   bysurname = '".$_SESSION["surname"]."',
-                                   byforename = '".$_SESSION["forename"]."',
-                                   byemail = '".$_SESSION["email"]."',
-                                   byalias = '".$_SESSION["alias"]."'
-                                   ".$status."
-                             WHERE lang = '".$environment["language"]."'
-                               AND label ='".$environment["parameter"][3]."'
-                               AND tname ='".$environment["parameter"][2]."'
-                               AND version ='".$form_values["version"]."'";
+                    $sql_content = "UPDATE ". SITETEXT ."
+                                       SET ebene = '".$ebene."',
+                                           kategorie = '".$kategorie."',
+                                           crc32 = '".$specialvars["crc32"]."',
+                                           html = '0',
+                                           content = '".addslashes($form_values["content"])."',
+                                           changed = '".date("Y-m-d H:i:s")."',
+                                           bysurname = '".$_SESSION["surname"]."',
+                                           byforename = '".$_SESSION["forename"]."',
+                                           byemail = '".$_SESSION["email"]."',
+                                           byalias = '".$_SESSION["alias"]."'
+                                           ".$status."
+                                     WHERE lang = '".$environment["language"]."'
+                                       AND label ='".$environment["parameter"][3]."'
+                                      AND tname ='".$environment["parameter"][2]."'
+                                      AND version ='".$form_values["version"]."'";
                     $release_version = $form_values["version"];
 
                 } elseif ($_POST["cancel"] != "") {
+                    // falls bei der ersten version abbrechen gedrueckt wird, wird der eintrag geloescht
+                    if ( $next_version == 1 ) {
+                        $sql_del = "DELETE FROM ". SITETEXT ."
+                                          WHERE lang = '".$environment["language"]."'
+                                            AND label ='".$environment["parameter"][3]."'
+                                            AND tname ='".$environment["parameter"][2]."'";
+                        $result_del  = $db -> query($sql_del);
+                    }
                     unset($_SESSION["wizard_content"]);
                 }
 
-                if ( $result  = $db -> query($sql) ) {
-                    if ( $cfg["wizard"]["wizardtyp"][$wizard_name]["blog_date"] == true ) {
-                        $sql_blog = "SELECT *
-                                FROM ". SITETEXT ."
-                                WHERE lang = '".$environment["language"]."'
-                                AND label ='".$environment["parameter"][3]."'
-                                AND tname ='".$environment["parameter"][2]."'
-                                    AND status = 1";
-                        $result_blog  = $db -> query($sql_blog);
-                        if ( $db -> num_rows($result_blog) == 0 ) {
-                            $sql_blog = "UPDATE ". SITETEXT ." SET content=regexp_replace(content,'\\\[SORT\\\].*\\\[\\\/SORT\\\]','[SORT]".date("Y-m-d H:i:s")."[/SORT]') WHERE tname like '".$environment["parameter"][2]."'";
+                if ( $sql_content != "" ) {
+                    if ( $db -> query($sql_content) ) {
+                        if ( $cfg["wizard"]["wizardtyp"][$wizard_name]["blog_date"] == true ) {
+                            $sql_blog = "SELECT *
+                                           FROM ". SITETEXT ."
+                                          WHERE lang = '".$environment["language"]."'
+                                            AND label ='".$environment["parameter"][3]."'
+                                            AND tname ='".$environment["parameter"][2]."'
+                                            AND status = 1";
                             $result_blog  = $db -> query($sql_blog);
+                            if ( $db -> num_rows($result_blog) == 0 ) {
+                                $sql_blog = "UPDATE ". SITETEXT ." SET content=regexp_replace(content,'\\\[SORT\\\].*\\\[\\\/SORT\\\]','[SORT]".date("Y-m-d H:i:s")."[/SORT]') WHERE tname like '".$environment["parameter"][2]."'";
+                                $result_blog  = $db -> query($sql_blog);
+                            }
                         }
+                        unset($_SESSION["wizard_content"]);
                     }
-                    unset($_SESSION["wizard_content"]);
                 }
 
                 // sprungziele definieren
