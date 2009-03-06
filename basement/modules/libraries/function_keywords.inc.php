@@ -120,6 +120,7 @@
 
                 $loop[strtolower($keyword)] = array(
                        "keyword" => $keyword,
+                    "keyword_id" => str_replace(" ","_",$keyword),
                         "anzahl" => $anzahl,
                          "class" => $class,
                           "link" => $link,
