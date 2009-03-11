@@ -331,9 +331,7 @@
                 $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$url]["own_list_template"];
             } elseif ( $cfg["bloged"]["blogs"][$url]["sort"][1] != "" ) {
                 $mapping["main"] = "-2051315182.faq";
-            } else {
-                $mapping["main"] = "-2051315182.list";
-            }
+            } 
             return $array;
         }
 
