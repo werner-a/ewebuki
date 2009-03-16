@@ -297,8 +297,7 @@
                         $array[$counter]["sort_up"] = "";
                         $array[$counter]["sort_down"] = "";
                     }
-
-                    $array[$counter]["wizard_delete_link"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">delete</a>";
+                    $array[$counter]["wizard_delete_link"] = $pathvars["virtual"]."/wizard/delete,".DATABASE.",".$data["tname"].",inhalt.html\"";
                     $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">delete</a>";
                     $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
                     $array[$counter]["tname"] = eCrc($url);
