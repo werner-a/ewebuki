@@ -95,7 +95,11 @@
         // fehlermeldungen
         $ausgaben["form_error"] = $_SESSION["form_error"]["desc"];
 
-        $ausgaben["form_referer"] = "/auth/login.html";
+        if ( strstr($_SERVER["HTTP_REFERER"],"auth/login") ) {
+            $ausgaben["form_referer"] = "/auth/login.html";
+        } else {
+            $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
+        }
 
         // form elememte bauen
         $element = array_merge(form_elements( "site_menu", $form_values ), form_elements( "site_menu_lang", $form_values ));
@@ -154,8 +158,7 @@
                 $sql = "DELETE FROM ". SITETEXT ."
                         WHERE lang = '".$environment["language"]."'
                         AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".$environment["parameter"][2]."'
-                        AND status ='-1'";
+                        AND tname ='".$environment["parameter"][2]."'";
                 $result = $db -> query($sql);
                 header("Location: ".$pathvars["virtual"]."/login.html");
         }
