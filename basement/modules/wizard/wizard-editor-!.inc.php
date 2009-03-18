@@ -46,7 +46,7 @@
 
     // was anzeigen
     $mapping["main"] = "wizard-edit";
-    
+
     $hidedata["terminecal"]["on"] = "on";
     $ausgaben["error"] = "";
     $ausgaben["checked"] = "";
@@ -80,9 +80,9 @@
     } else {
         $display = "none";
     }
-    $ausgaben["begin"] = "<input readonly=true style=\"float:left\" type=\"text\" id=\"date1\" name=\"SORT\" value=\"".$SORT."\"><button onClick=\"alert('hi')\" style=\"width:20px\" id=\"trigger1\">...</button>";
+    $ausgaben["begin"] = "<input readonly=true style=\"float:left\" type=\"text\" id=\"date1\" name=\"SORT\" value=\"".$SORT."\"><button onClick=\"alert('hi')\" class=\"button\" style=\"font-size:0.6em;margin-left:5px;\" id=\"trigger1\">...</button>";
     $ausgaben["begin"] .= "<div class=\"clear\"></div>";
-    $ausgaben["ende"]  = "<div style=\"display:".$display."\" id=\"end_termin\"><input readonly=true style=\"float:left\" type=\"text\" id=\"date2\" name=\"_TERMIN\" value=\"".$_TERMIN."\"> <button style=\"width:20px\" id=\"trigger2\">...</button></div>";
+    $ausgaben["ende"]  = "<div style=\"display:".$display."\" id=\"end_termin\"><input readonly=true style=\"float:left\" type=\"text\" id=\"date2\" name=\"_TERMIN\" value=\"".$_TERMIN."\"> <button  class=\"button\" style=\"font-size:0.6em;margin-left:5px;\" id=\"trigger2\">...</button></div>";
     $ausgaben["ende"] .= "<div class=\"clear\"></div>";
 
     if ( $_POST["send"]  ) {
