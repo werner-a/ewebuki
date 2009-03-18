@@ -299,6 +299,7 @@
             $tag_meat = content_split_all($form_values["content"]);
             $content = $form_values["content"];
             $i = 0;
+            $nested = array();
             // 1. Durchlauf: die einzelnen tags werden markiert
             foreach ( $tag_sort as $pos => $value ) {
                 $edit_marker = "<!--ID:".sprintf("%04d",$i)."-->";
@@ -474,10 +475,21 @@
                     } else {
                         $ajax_class = "ajax_move";
                         $modify_class = "";
+                        $display_up = "";
+                        $display_down = "";
                         $link_up = arrange_elements($sort_array, $key, "up");
                         $link_down = arrange_elements($sort_array, $key, "down");
+                        if ( $i == $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][0] ) {
+                            $display_up = "display:none";
+                            $link_up = "";
+                        }
+                        if ( (count($allcontent) - $key - 1) == $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] ) {
+                            $display_down = "display:none";
+                            $link_down = "";
+                        }
                     }
                     // loeschen-link
+                    $display_delete = "";
                     $del = $cfg["wizard"]["basis"]."/modify,".
                         $environment["parameter"][1].",".
                         $environment["parameter"][2].",".
@@ -486,6 +498,15 @@
                         $environment["parameter"][5].",".
                         $environment["parameter"][6].",".
                         "delete.html";
+                    // falls der bereich nur einen tag enthaelt und dieser
+                    // einen loeschen-butten hat, wird er hier ausgeblendet
+                    preg_match_all("/wiz_edit/",$value,$match);
+                    if ( count($match[0]) == 1 ) {
+                        preg_match_all("/delete\.html/",$value,$match);
+                        if ( count(count($match[0]) == 1) ) {
+                            $display_delete = "display:none";
+                        }
+                    }
                     // hintergrundbild-schnickschnack
                     preg_match("/\[(.+)\]/U",$value,$match);
                     $pic = strtolower(str_replace("=","-",$match[1]));
@@ -516,6 +537,7 @@
 
                     $dataloop["sort_content"][$key] = array(
                                 "key"        => $key,
+                                "index"      => $i,
                                 "tag"        => $tag_match[1],
                                 "value"      => $value,
                                 "value_html" => tagreplace($value),
@@ -524,6 +546,9 @@
                                 "modify"     => $modify_class,
                                 "link_up"    => $link_up,
                                 "link_down"  => $link_down,
+                         "display_delete"    => $display_delete,
+                             "display_up"    => $display_up,
+                             "display_down"  => $display_down,
                                 "delete"     => $del,
                     );
                 }

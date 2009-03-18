@@ -298,7 +298,7 @@
                         $array[$counter]["sort_down"] = "";
                     }
                     $array[$counter]["wizard_delete_link"] = $pathvars["virtual"]."/wizard/delete,".DATABASE.",".$data["tname"].",inhalt.html\"";
-                    $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">delete</a>";
+                    $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">#(faq_del)</a>";
                     $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
                     $array[$counter]["tname"] = eCrc($url);
                 } else {
@@ -330,7 +330,7 @@
                 $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$url]["own_list_template"];
             } elseif ( $cfg["bloged"]["blogs"][$url]["sort"][1] != "" ) {
                 $mapping["main"] = "-2051315182.faq";
-            } 
+            }
             return $array;
         }
 

@@ -121,7 +121,7 @@
                             if ( (count($allcontent) - $key) <= $cfg["wizard"]["wizardtyp"][$wizard_name]["section_block"][1] ) {
                                 $buffer[] = preg_replace("/^[ ]+/m","",$cfg["wizard"]["add_tags"][$tag_marken[0]]);
 //                                 $environment["parameter"][6] = $key + 1;
-                                $anker = "scroll=item_".$key + 1;
+                                $anker = "?scroll=item_".$key;
                             }
                             $buffer[] = trim($value);
                         }
@@ -195,8 +195,6 @@
                                                 $environment["parameter"][3].",,".
                                                 $environment["parameter"][5].",".
                                                 $environment["parameter"][6].".html";
-//             $anker = "";
-//             if ( $environment["parameter"][6] != "" && is_numeric($environment["parameter"][6]) ) $anker = "#item_".$environment["parameter"][6];
             header("Location: ".$header.$anker);
         } else {
             header("Location: ".$cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html");

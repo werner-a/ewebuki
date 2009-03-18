@@ -46,6 +46,7 @@
     // was anzeigen
     $mapping["main"] = "wizard-edit";
     $hidedata["img"] = array();
+    $hidedata["img"]["num"] = $tag_marken[1] + 1;
 
     // beschreibung
     $hidedata["img"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
@@ -108,6 +109,7 @@
                     }
                 }
                 $dataloop["imgmulti"][] = array(
+                         "id" => $data["fid"],
                         "src" => $src,
                      "funder" => $data["funder"],
                       "fdesc" => $data["fdesc"],

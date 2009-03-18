@@ -91,9 +91,9 @@
         // + + +
         // wizard-infos rausfinden
 
-        $ausgaben["class"] = ""; 
+        $ausgaben["class"] = "";
         if ( $wizard_name == "termine" ) {
-            $ausgaben["class"] = "class=\"wide\""; 
+            $ausgaben["class"] = "class=\"wide\"";
         }
 
         $tag_meat = content_split_all($form_values["content"]);
@@ -223,6 +223,8 @@
                 // was anzeigen
                 $mapping["main"] = "wizard-edit";
                 $hidedata["default"] = array();
+                $hidedata["default"]["num"] = $tag_marken[1] + 1;
+                $hidedata["default"]["tag"] = "#(tag_head_".$tag_marken[0].")";
 
                 // vogelwilde regexen die alte & neue links zu ewebuki-files findet
                 // und viel arbeit erspart
@@ -247,6 +249,7 @@
                         $db -> selectDB( DATABASE ,"");
                     }
 
+                    $where = "";
                     foreach ( $array as $value ) {
                         if ( $where != "" ) $where .= " OR ";
                         $where .= "fid = '".$value."'";

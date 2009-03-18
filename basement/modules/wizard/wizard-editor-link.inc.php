@@ -46,6 +46,7 @@
     // was anzeigen
     $mapping["main"] = "wizard-edit";
     $hidedata["link"] = array();
+    $hidedata["link"]["num"] = $tag_marken[1] + 1;
 
     // ausgabenwerte werden belegt
     $ausgaben["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];

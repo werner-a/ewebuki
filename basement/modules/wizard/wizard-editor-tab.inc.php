@@ -45,7 +45,7 @@
 
     // was anzeigen
     $mapping["main"] = "wizard-edit";
-    $hidedata["tab"] = array();
+    $hidedata["tab"]["num"] = $tag_marken[1] + 1;
 
     $opentag = str_replace(array("[","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]);
     $tag_werte = explode(";",trim(strstr($opentag,"="),"="));
