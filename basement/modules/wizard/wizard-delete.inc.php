@@ -158,7 +158,8 @@
                 $sql = "DELETE FROM ". SITETEXT ."
                         WHERE lang = '".$environment["language"]."'
                         AND label ='".$environment["parameter"][3]."'
-                        AND tname ='".$environment["parameter"][2]."'";
+                        AND tname ='".$environment["parameter"][2]."'
+                        AND status ='-1'";
                 $result = $db -> query($sql);
                 header("Location: ".$pathvars["virtual"]."/login.html");
         }
