@@ -104,7 +104,7 @@
         //
 
         if ( $environment["parameter"][4] ) {
-
+            $parameter = ",,,".$environment["parameter"][4].",".$environment["parameter"][5].",".$environment["parameter"][6];
             if ( $cfg["bloged"]["blogs"][$url]["sort"][1] != -1 ) {
                 $heute = getdate(mktime(0, 0, 0, ($environment["parameter"][5])+1, 0, $environment["parameter"][4]));
                 if ( $environment["parameter"][5] == "" ) {
