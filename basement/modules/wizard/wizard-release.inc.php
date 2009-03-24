@@ -91,7 +91,7 @@
     $reload = 0;
     /* fehlende datenbank */
     if ( $environment["parameter"][1] != "" ) {
-        $db->selectDb($database,FALSE);
+        #$db->selectDb($database,FALSE);
     } else {
         $reload = -1;
     }
