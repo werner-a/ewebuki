@@ -78,7 +78,7 @@
     if ( $ausgaben["tagwerte2"] != "" ) $hidedata["sel"]["check_thumb"] = " checked=\"true\"";
     if ( $ausgaben["tagwerte4"] != "" ) $hidedata["sel"]["check_lbox"] = " checked=\"true\"";
     // selection aus session/tag holen
-    if ( is_array($_SESSION["compilation_memo"]) || $tag_werte[3] != "" ) {
+    if ( is_array($_SESSION["compilation_memo"]) || $tag_werte[0] != "" ) {
         if ( is_array($_SESSION["compilation_memo"]) ) {
             $ausgaben["tagwerte0"] = key($_SESSION["compilation_memo"]);
             $array = current($_SESSION["compilation_memo"]);
@@ -97,7 +97,7 @@
         if ( count($dataloop["list_images"]) > 0 ) {
             foreach ( $dataloop["list_images"] as $key=>$value ) {
                 $buffer[$value["sort"]] = $value;
-                if ( in_array($key,$array) ) {
+                if ( is_array($array) && in_array($key,$array) ) {
                     $buffer[$value["sort"]]["checked"] = " checked=\"true\"";
                 } else {
                     $buffer[$value["sort"]]["checked"] = "";
