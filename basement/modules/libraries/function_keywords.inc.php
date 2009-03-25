@@ -175,12 +175,38 @@
                            AND lang='".$environment["language"]."'";
                 $res_menu = $db -> query($sql);
                 $dat_menu = $db -> fetch_array($res_menu,1);
+                $title = $dat_menu["label"];
+                // zus. titel aus content holen
+                if ( $specialvars["content_release"] == -1 && $version == "" ) {
+                    $content_release = "AND status>0";
+                } else {
+                    $content_release = "";
+                }
+                $sql = "SELECT *
+                          FROM site_text
+                         WHERE tname='".$tname."'
+                           AND lang='".$environment["language"]."'
+                           AND label='inhalt'
+                            ".$content_release."
+                      ORDER BY version DESC
+                         LIMIT 0,1";
+                $res_content = $db -> query($sql);
+                $dat_content = $db -> fetch_array($res_content,1);
+                preg_match("/\[H1\](.*)\[\/H1\]/U",$dat_content["content"],$match);
+                if ( $match[1] != "" ) {
+                    $title_content = $match[1];
+                } else {
+                    $title_content = $title;
+                }
+
+                if ( $title == "" ) continue;
 
                 $pages[$tname] = array(
                        "index" => $index,
                          "url" => $pathvars["virtual"].$url.".html",
                          "mid" => $mid["mid"],
-                       "title" => $dat_menu["label"],
+                       "title" => $title,
+               "title_content" => $title_content,
                     "keywords" => $keywords,
                 );
             }
