@@ -301,6 +301,7 @@
                                                     $environment["parameter"][5].",".
                                                     $environment["parameter"][6].".html";
                 unset($_SESSION["file_memo"]);
+                unset($_SESSION["compilation_memo"]);
                 if ( $_SESSION["flyback"] ) $header = $_SESSION["flyback"];
                 unset($_SESSION["flyback"]);
                 header("Location: ".$header);
@@ -410,40 +411,46 @@
                                                         $environment["parameter"][6].".html";
                     if ( $_SESSION["flyback"] ) $header = $_SESSION["flyback"];
                     unset($_SESSION["flyback"]);
+                    unset($_SESSION["file_memo"]);
+                    unset($_SESSION["compilation_memo"]);
                     header("Location: ".$header);
                 }
+            } elseif ( $ausgaben["form_error"] != "" ) {
+                $hidedata["form_error"][] = -1;
             }
             // + + +
 
         }
 
-        // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
-            $ausgaben["inaccessible"] = "inaccessible values:<br />";
-            $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
-            $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
-
-            $ausgaben["inaccessible"] .= "# (description) #(description)<br />";
-            $ausgaben["inaccessible"] .= "# (get_file) #(get_file)<br />";
-            $ausgaben["inaccessible"] .= "# (upload_file) #(upload_file)<br />";
-            $ausgaben["inaccessible"] .= "# (edit_file) #(edit_file)<br />";
-            $ausgaben["inaccessible"] .= "# (get_sel) #(get_sel)<br />";
-            $ausgaben["inaccessible"] .= "# (get_link) #(get_link)<br />";
-
-            $ausgaben["inaccessible"] .= "# (refresh) #(refresh)<br />";
-
-
-
-            $ausgaben["inaccessible"] .= "# (upload) #(upload)<br />";
-            $ausgaben["inaccessible"] .= "# (file) #(file)<br />";
-            $ausgaben["inaccessible"] .= "# (files) #(files)<br />";
-            $ausgaben["inaccessible"] .= "g (preview) g(preview)<br />";
-        } else {
-            $ausgaben["inaccessible"] = "";
-        }
-
     } else {
         header("Location: ".$pathvars["virtual"]."/");
+    }
+
+    // unzugaengliche #(marken) sichtbar machen
+    if ( isset($HTTP_GET_VARS["edit"]) ) {
+        $ausgaben["inaccessible"] = "inaccessible values:<br />";
+        $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
+        $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
+
+        $ausgaben["inaccessible"] .= "# (description) #(description)<br />";
+        $ausgaben["inaccessible"] .= "# (get_file) #(get_file)<br />";
+        $ausgaben["inaccessible"] .= "# (upload_file) #(upload_file)<br />";
+        $ausgaben["inaccessible"] .= "# (edit_file) #(edit_file)<br />";
+        $ausgaben["inaccessible"] .= "# (get_sel) #(get_sel)<br />";
+        $ausgaben["inaccessible"] .= "# (get_link) #(get_link)<br />";
+
+        $ausgaben["inaccessible"] .= "# (refresh) #(refresh)<br />";
+
+        $ausgaben["inaccessible"] .= "# (sel_num_error) #(sel_num_error)<br />";
+
+
+
+        $ausgaben["inaccessible"] .= "# (upload) #(upload)<br />";
+        $ausgaben["inaccessible"] .= "# (file) #(file)<br />";
+        $ausgaben["inaccessible"] .= "# (files) #(files)<br />";
+        $ausgaben["inaccessible"] .= "g (preview) g(preview)<br />";
+    } else {
+        $ausgaben["inaccessible"] = "";
     }
 
 

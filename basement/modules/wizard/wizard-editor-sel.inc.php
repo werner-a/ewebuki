@@ -94,10 +94,12 @@
         // dataloop wird ueber eine share-funktion aufgebaut
         filelist($result, "fileed",$ausgaben["tagwerte0"]);
 
+// echo "<pre>".print_r($array,true)."</pre>";
         if ( count($dataloop["list_images"]) > 0 ) {
             foreach ( $dataloop["list_images"] as $key=>$value ) {
                 $buffer[$value["sort"]] = $value;
-                if ( is_array($array) && in_array($key,$array) ) {
+                if ( ( is_array($array) && in_array($key,$array) )
+                  || ( is_array($_POST["tagwerte"][3]) && in_array($key,$_POST["tagwerte"][3]) ) ) {
                     $buffer[$value["sort"]]["checked"] = " checked=\"true\"";
                 } else {
                     $buffer[$value["sort"]]["checked"] = "";
@@ -131,6 +133,10 @@
             $tag_werte[] = $_POST["tagwerte"][$i];
         }
         $to_insert = "[SEL=".implode(";",$tag_werte)."]".$_POST["description"]."[/SEL]";
+
+        if ( $cfg["wizard"]["sel_edit"]["max_num"] != "" && count(explode(":",$_POST["tagwerte"][3])) > $cfg["wizard"]["sel_edit"]["max_num"] ) {
+            $ausgaben["form_error"] .= count(explode(":",$_POST["tagwerte"][3]))."#(sel_num_error)".count(explode(":",$_POST["tagwerte"][3]))."<br />";;
+        }
 
     }
     // + + +

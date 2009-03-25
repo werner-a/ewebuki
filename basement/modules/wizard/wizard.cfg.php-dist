@@ -195,6 +195,7 @@
                                    "b" => "big",
                                    "o" => "original",
                         ),
+//                   "max_num" => 4
                 ),
 
         "link_edit" => array(
