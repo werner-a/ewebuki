@@ -149,9 +149,14 @@
                     AND version ='".$_POST["version"]."'";
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result,0);
-            echo tagreplace($data["content"]);
+            $content =  tagreplace($data["content"]);
             $hidedata["vorschau"]["on"] = "AJAX";
             header("HTTP/1.0 200 OK");
+            echo preg_replace(
+                array("/#\{.+\}/U","/g\(.+\)/U"),
+                array("",""),
+                $content
+            );
             die;
         }
         if ( $_POST["delete"] && $security != -1 ) {
