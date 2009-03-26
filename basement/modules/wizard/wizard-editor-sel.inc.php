@@ -47,6 +47,7 @@
     $mapping["main"] = "wizard-edit";
     $hidedata["sel"] = array();
     $hidedata["sel"]["num"] = $tag_marken[1] + 1;
+    $ausgaben["max_sel_num"] = $cfg["wizard"]["sel_edit"]["max_num"];
 
     // ausgabenwerte werden belegt
     $hidedata["sel"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
@@ -135,7 +136,7 @@
         $to_insert = "[SEL=".implode(";",$tag_werte)."]".$_POST["description"]."[/SEL]";
 
         if ( $cfg["wizard"]["sel_edit"]["max_num"] != "" && count(explode(":",$_POST["tagwerte"][3])) > $cfg["wizard"]["sel_edit"]["max_num"] ) {
-            $ausgaben["form_error"] .= count(explode(":",$_POST["tagwerte"][3]))."#(sel_num_error)".count(explode(":",$_POST["tagwerte"][3]))."<br />";;
+            $ausgaben["form_error"] .= count(explode(":",$_POST["tagwerte"][3]))."#(sel_num_error)".$cfg["wizard"]["sel_edit"]["max_num"]."<br />";;
         }
 
     }
