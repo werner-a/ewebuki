@@ -47,15 +47,43 @@
     $mapping["main"] = "wizard-edit";
     $hidedata["list"] = array();
 
-    $hidedata["default"] = array();
-    $hidedata["list"] = array();
-    $buffer = explode("[*]",$form_values["content"]);
-    $ausgaben["inhalt"] = "";
-    foreach ( $buffer as $value ) {
-        if ( $ausgaben["inhalt"] != "" ) $ausgaben["inhalt"] .= chr(13).chr(10).chr(13).chr(10);
-        $ausgaben["inhalt"] .= trim($value);
+    if ( $_POST["del"] ) {
+        $to_del = array_keys($_POST["del"]);
+        unset($_POST["areas"][$to_del[0]]);
     }
 
+    if ( count($_POST) > 0 ) {
+        foreach ( $_POST["areas"] as $key => $value ) {
+            $buffer[$key] = $value;
+        }
+        if ( $_POST["new_line"] ) {
+            $buffer[] = "Listeneintrag";
+        }
+    } else {
+        $buffer = explode("[*]",$form_values["content"]);
+    }
+
+    $pos = strpos($environment["parameter"][4],":");
+    $list_id = substr($environment["parameter"][4],$pos+1);
+    $art = "normal";
+    if ( preg_match("/DEF/",$tag_meat["LIST"][$list_id]["tag_start"]) ){
+        $art = "def";
+    }
+
+    $ausgaben["inhalt"] = "";
+    foreach ( $buffer as $key => $value ) {
+        if ( $art == "def"  ) { 
+            if  ( $key % 2 == 0) {
+                $dataloop["list"][$key]["tr_e"] = "";
+            } else {
+                $dataloop["list"][$key]["tr_b"] = "";
+            }
+        } else {
+            $dataloop["list"][$key]["del"] = "<button type=\"submit\" name=\"del[".$key."]\" style=\"margin-left:5px;float:right\" value=\"Listeneintrag löschen\" class=\"button\">Entfernen</button>";
+        }
+        $dataloop["list"][$key]["inhalt"] = $value;
+        $dataloop["list"][$key]["count"] = $key;
+    }
 
     // abspeichern, part 2
     // * * *
@@ -66,18 +94,28 @@
             || $_POST["refresh"] != ""
             || $_POST["upload"] != "" ) ) {
 
-        // trennen nach leerzeilen
-        $buffer = preg_split("/(".chr(13).chr(10)."){2}/",$_POST["content"],-1,PREG_SPLIT_NO_EMPTY);
-        $to_insert = implode("\n[*]",$buffer);
+        $buffer = "";
+        foreach ( $_POST["areas"] as $key => $value ) {
+            $ende[] = $value;
+        }
+
+        foreach ( $ende as $key => $value ) {
+            $trenner = "[*]";
+            if ( $key == 0 ) $trenner = "";
+            $list_buffer .= $trenner.$value;
+        }
+
+        $list_buffer = preg_replace("/^\[\*\]/","",$list_buffer);
+
         // verbotenen tags rausfiltern
         $buffer = array();
         foreach ( $allowed_tags as $value ) {
             $buffer[] = "[/".strtoupper($value)."]";
         }
-        $to_insert = $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"].
-                        tagremove($to_insert,False,$buffer).
-                        $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_end"];
 
+        $to_insert = $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"].
+                        tagremove($list_buffer,False,$buffer).
+                        $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_end"];
     }
     // + + +
 
