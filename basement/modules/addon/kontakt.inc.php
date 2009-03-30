@@ -74,6 +74,9 @@
         // form elememte bauen
         $element = form_elements( $cfg["kontakt"]["db"]["entries"], $form_values );
 
+
+        $hidedata["form"] = array();
+
         // +++
         // page basics
 
@@ -171,6 +174,8 @@
         #$mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
         if ( $environment["parameter"]["2"] == "sent" ) {
+            unset($hidedata["form"]);
+            unset($hidedata["captcha"]);
             $hidedata["success"] = array();
             if ( $_GET["referer"] != "" ) {
                 $hidedata["referer"]["link"] = $_GET["referer"];
@@ -239,7 +244,7 @@
                 if ( $_POST["betreff"] != "" ) $subject2 .= ": ".$_POST["betreff"];
                 $header2  = "From: ".$cfg["kontakt"]["email"]["owner"]."\r\n";
                 $result = mail($email_adresse,$subject2,$message2,$header2);
-                if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
+                #if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
                 if ( $debugging["html_enable"] ){
                     $ausgaben["output"] = "<textarea name=\"debug1\" cols=\"60\" rows=\"20\">";
@@ -259,8 +264,8 @@
 
             // info anlegen
             if ( $ausgaben["form_error"] == ""  ) {
-                if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["kontakt"]["basis"]."/danke.html";
+//                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+//                 if ( $header == "" ) $header = $cfg["kontakt"]["basis"]."/danke.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
