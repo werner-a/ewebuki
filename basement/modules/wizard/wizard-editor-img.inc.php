@@ -206,7 +206,7 @@
         $tag = str_replace( array("[","/","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_end"] );
         $to_insert = "[".$tag."=".implode(";",$tag_werte)."]".$_POST["description"]."[/".$tag."]";
 
-        if ( !is_array($_POST["change_pic"]) && !is_array($_POST["add"]) ) unset($_SESSION["file_memo"]);
+        if ( !is_array($_POST["change_pic"]) || !is_array($_POST["add"]) ) unset($_SESSION["file_memo"]);
 
     }
     // + + +

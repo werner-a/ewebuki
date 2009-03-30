@@ -55,7 +55,7 @@
         }
 
         if ( $environment["parameter"][1] == "" ) {
-            if ( count($_SESSION["file_memo"]) > 0 && $_SESSION["wizard_last_edit"] == "" ) {
+            if ( count($_SESSION["file_memo"]) > 0 ) {
                 $environment["parameter"][1] = current($_SESSION["file_memo"]);
             } else {
                 if ( $_SESSION["wizard_last_edit"] != "" ) {
