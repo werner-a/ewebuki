@@ -74,13 +74,14 @@
                                FROM ".$cfg["keyworded"]["db"]["keyword"]["entries"]."
                               WHERE ".$cfg["keyworded"]["db"]["keyword"]["keyword"]." LIKE '".$_POST["keywords"]."%'";
             $result = $db -> query($sql);
-            $output  = "<ul>";
-            $output .= "<li>".$_POST["keywords"]."</li>";
+            $output = array();
+            $output[0] = "<li><b>".$_POST["keywords"]."</b></li>";
             while ( $data = $db -> fetch_array($result,1) ) {
-                $output .= "<li>".$data[$cfg["keyworded"]["db"]["keyword"]["keyword"]]."</li>";
+                $output[] = "<li>".preg_replace("/^(".$_POST["keywords"].")/Ui",'<b>${1}</b>',$data[$cfg["keyworded"]["db"]["keyword"]["keyword"]])."</li>";
+                if ( $_POST["keywords"] == $data[$cfg["keyworded"]["db"]["keyword"]["keyword"]] ) unset($output[0]);
             }
-            $output .= "</ul>";
-            die($output);
+            echo "<ul>".implode("\n",$output)."</ul>";
+            die();
         }
 
 //         $ausgaben["path"] = tname2path($environment["parameter"][1]).".html";
