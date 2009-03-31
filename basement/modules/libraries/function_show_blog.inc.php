@@ -299,7 +299,7 @@
                     }
                     $array[$counter]["wizard_delete_link"] = $pathvars["virtual"]."/wizard/delete,".DATABASE.",".$data["tname"].",inhalt.html\"";
                     $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">#(faq_del)</a>";
-                    $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">edit</a>";
+                    $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">g(blog_edit)</a>";
                     $array[$counter]["tname"] = eCrc($url);
                 } else {
                     $array[$counter]["editlink"] = "";
