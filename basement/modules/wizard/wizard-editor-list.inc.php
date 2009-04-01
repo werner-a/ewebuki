@@ -47,22 +47,7 @@
     $mapping["main"] = "wizard-edit";
     $hidedata["list"] = array();
 
-    if ( $_POST["del"] ) {
-        $to_del = array_keys($_POST["del"]);
-        unset($_POST["areas"][$to_del[0]]);
-    }
-
-    if ( count($_POST) > 0 ) {
-        foreach ( $_POST["areas"] as $key => $value ) {
-            $buffer[$key] = $value;
-        }
-        if ( $_POST["new_line"] ) {
-            $buffer[] = "Listeneintrag";
-        }
-    } else {
-        $buffer = explode("[*]",$form_values["content"]);
-    }
-
+    // liste oder faq
     $pos = strpos($environment["parameter"][4],":");
     $list_id = substr($environment["parameter"][4],$pos+1);
     $art = "normal";
@@ -70,19 +55,45 @@
         $art = "def";
     }
 
+    if ( $_POST["del"] ) {
+
+        if ( ( $art != "def" && count($_POST["areas"]) > 1 ) || ( $art == "def" && count($_POST["areas"]) > 2 ) ) {
+            $to_del = array_keys($_POST["del"]);
+            unset($_POST["areas"][$to_del[0]]);
+        }
+    }
+
+    if ( count($_POST) > 0 ) {
+        foreach ( $_POST["areas"] as $key => $value ) {
+            $buffer[$key] = $value;
+        }
+        if ( $_POST["new_line"] ) {
+            if ( $art == "def" ) {
+                $buffer[] = "Frage";
+                $buffer[] = "Antwort";
+            } else {
+                $buffer[] = "Listeneintrag";
+            }
+        }
+    } else {
+        $buffer = explode("[*]",$form_values["content"]);
+    }
+
     $ausgaben["inhalt"] = "";
     foreach ( $buffer as $key => $value ) {
         if ( $art == "def"  ) { 
-            if  ( $key % 2 == 0) {
-                $dataloop["list"][$key]["tr_e"] = "";
-            } else {
-                $dataloop["list"][$key]["tr_b"] = "";
-            }
+        if ( $key % 2 == 1 ) continue;
+            $dataloop["faq"][$key]["answer"] = $buffer[$key+1];
+            $dataloop["faq"][$key]["question"] = $value;
+            $dataloop["faq"][$key]["count"] = $key;
+            $dataloop["faq"][$key]["count1"] = $key+1;
+            $dataloop["faq"][$key]["del"] = "<button type=\"submit\" name=\"del[".$key."]\" style=\"margin-left:5px;float:right\" value=\"Listeneintrag löschen\" class=\"button\">Entfernen</button>";
         } else {
             $dataloop["list"][$key]["del"] = "<button type=\"submit\" name=\"del[".$key."]\" style=\"margin-left:5px;float:right\" value=\"Listeneintrag löschen\" class=\"button\">Entfernen</button>";
+            $dataloop["list"][$key]["inhalt"] = $value;
+            $dataloop["list"][$key]["count"] = $key;
         }
-        $dataloop["list"][$key]["inhalt"] = $value;
-        $dataloop["list"][$key]["count"] = $key;
+
     }
 
     // abspeichern, part 2
