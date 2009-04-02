@@ -82,7 +82,16 @@
     $ausgaben["inhalt"] = "";
     foreach ( $buffer as $key => $value ) {
         if ( $art == "def"  ) { 
-        if ( $key % 2 == 1 ) continue;
+            if ( $key % 2 == 0 ) {
+                if ( strstr($buffer[$key+1],"[DIV]") || $_POST[$key+1] == $key+1 ) {
+                $dataloop["faq"][$key]["checked"] = "checked";
+                $buffer[$key+1] = str_replace("[DIV]","",$buffer[$key+1]);
+                $buffer[$key+1] = str_replace("[/DIV]","",$buffer[$key+1]);
+                }
+            } else {
+                continue;
+            }
+
             $dataloop["faq"][$key]["answer"] = $buffer[$key+1];
             $dataloop["faq"][$key]["question"] = $value;
             $dataloop["faq"][$key]["count"] = $key;
@@ -107,6 +116,15 @@
 
         $buffer = "";
         foreach ( $_POST["areas"] as $key => $value ) {
+        if ( $key % 2 == 1 && $_POST[$key] == $key) {
+            $list_display = preg_split("/(".chr(13).chr(10).")/",$value,-1,PREG_SPLIT_NO_EMPTY);
+            $e = "";
+            foreach ( $list_display as $test ) {
+                $e .= "[DIV]".$test."[/DIV]\n";
+            }
+            $value = $e;
+
+        }
             $ende[] = $value;
         }
 
@@ -128,7 +146,6 @@
                         tagremove($list_buffer,False,$buffer).
                         $tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_end"];
     }
-    // + + +
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
