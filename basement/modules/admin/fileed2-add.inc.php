@@ -301,6 +301,13 @@
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
 
+                // ggf versteckte fhit-eingtraege wieder anhaengen
+                if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"]) ) {
+                    // dummy wird ergaenzt
+                    $fhit = $fhit_delicate." ".trim($fhit_dummy);
+                    $_POST["fhit"] = trim($fhit);
+                }
+
                 $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "extract", "selection", "bnet", "cnet", "fdesc", "fhit_dummy", "zip_fdesc", "zip_fhit", "zip_funder" );
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {

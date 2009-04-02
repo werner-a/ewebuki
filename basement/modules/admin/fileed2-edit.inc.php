@@ -335,7 +335,7 @@
                         }
                     }
 
-                    // ggf versteckte fhit-eingtraege wieder anhängen
+                    // ggf versteckte fhit-eingtraege wieder anhaengen
                     if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"]) ) {
                         // dummy wird ergaenzt
                         $fhit = $fhit_delicate." ".trim($fhit_dummy);
