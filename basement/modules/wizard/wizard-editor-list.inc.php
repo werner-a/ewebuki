@@ -45,13 +45,14 @@
 
     // was anzeigen
     $mapping["main"] = "wizard-edit";
-    $hidedata["list"] = array();
+    $hidedata["list"]["new_point"] = "#(new_list)";
 
     // liste oder faq
     $pos = strpos($environment["parameter"][4],":");
     $list_id = substr($environment["parameter"][4],$pos+1);
     $art = "normal";
     if ( preg_match("/DEF/",$tag_meat["LIST"][$list_id]["tag_start"]) ){
+        $hidedata["list"]["new_point"] = "#(new_faq)";
         $art = "def";
     }
 
@@ -96,9 +97,9 @@
             $dataloop["faq"][$key]["question"] = $value;
             $dataloop["faq"][$key]["count"] = $key;
             $dataloop["faq"][$key]["count1"] = $key+1;
-            $dataloop["faq"][$key]["del"] = "<button type=\"submit\" name=\"del[".$key."]\" style=\"margin-left:5px;float:right\" value=\"Listeneintrag löschen\" class=\"button\">Entfernen</button>";
+            $dataloop["faq"][$key]["del"] = "<button type=\"submit\" name=\"del[".$key."]\" value=\"#(delete)\" title=\"#(delete)\" class=\"button\">#(delete)</button>";
         } else {
-            $dataloop["list"][$key]["del"] = "<button type=\"submit\" name=\"del[".$key."]\" style=\"margin-left:5px;float:right\" value=\"Listeneintrag löschen\" class=\"button\">Entfernen</button>";
+            $dataloop["list"][$key]["del"] = "<button type=\"submit\" name=\"del[".$key."]\" style=\"margin-left:5px;float:right\" value=\"#(delete)\" title=\"#(delete)\" class=\"button\">#(delete)</button>";
             $dataloop["list"][$key]["inhalt"] = $value;
             $dataloop["list"][$key]["count"] = $key;
         }
