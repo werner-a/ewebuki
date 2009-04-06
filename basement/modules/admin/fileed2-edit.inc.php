@@ -158,7 +158,7 @@
 
         // in welchen galerien wird die datei verwendet
         $compilations = compilation_list($environment["parameter"][1]);
-        preg_match_all("/#p([0-9])+,/U",$form_values["fhit"],$match);
+        preg_match_all("/#p([0-9]+),/U",$form_values["fhit"],$match);
         $intersect = array_intersect_key($compilations,array_flip($match[1]));
         ksort($intersect);
         $ausgaben["ref_comp"] = "";
