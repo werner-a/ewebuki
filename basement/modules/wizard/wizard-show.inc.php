@@ -179,6 +179,8 @@
         if ( $_SESSION["wizard_content"][$identifier] != "" ) {
             $form_values["content"] = $_SESSION["wizard_content"][$identifier];
         }
+// echo "::".$form_values["status"]."<br>";
+// echo "::".$form_values["byalias"]."<br>";
 
         // verarbeitung fuer die ajax-vorschau auf bestimmte bereiche
         if ( $_POST["ajax_preview"] == "on" ) {
@@ -739,6 +741,32 @@
                         }
                     }
 
+                    $change_a = "changed, bysurname, byforename, byemail, byalias";
+                    if ( $form_values["status"] == -2 ) {
+                        // 1. status der neuen version wird -2
+                        $status2 = ",-2";
+                        // 2. status -2 wird zu -1
+                        $sql = "UPDATE ". SITETEXT ."
+                                   SET status=-1
+                                 WHERE lang = '".$environment["language"]."'
+                                   AND label ='".$environment["parameter"][3]."'
+                                   AND tname ='".$environment["parameter"][2]."'
+                                   AND status=-2";
+                        $result = $db->query($sql) ;
+                        // 3. bearbeiter-daten wird belassen
+                        $change_b = "'".date("Y-m-d H:i:s")."',
+                                     '".$form_values["bysurname"]."',
+                                     '".$form_values["byforename"]."',
+                                     '".$form_values["byemail"]."',
+                                     '".$form_values["byalias"]."'";
+                    } else {
+                        $change_b = "'".date("Y-m-d H:i:s")."',
+                                     '".$_SESSION["surname"]."',
+                                     '".$_SESSION["forename"]."',
+                                     '".$_SESSION["email"]."',
+                                     '".$_SESSION["alias"]."'";
+                    }
+
                     // alle dazugehoerigen blogs updaten
                     if ( is_array($tag_meat["BLOG"]) ) {
                         $blog_sql = "SELECT tname FROM ".SITETEXT." WHERE content ~ '\\\[KATEGORIE\]".tname2path($environment["parameter"][2])."\\\[\/KATEGORIE\]' group by tname";
@@ -783,8 +811,10 @@
                     $sql_content = "INSERT INTO ". SITETEXT ."
                                                 (lang, label, tname, version,
                                                  ebene, kategorie,
-                                                 crc32, html, content,
-                                                 changed, bysurname, byforename, byemail, byalias".$status1."
+                                                 crc32, html,
+                                                 content,
+                                                 ".$change_a."
+                                                 ".$status1."
                                                 )
                                          VALUES (
                                                 '".$environment["language"]."',
@@ -796,11 +826,7 @@
                                                 '".$specialvars["crc32"]."',
                                                 '0',
                                                 '".addslashes($form_values["content"])."',
-                                                '".date("Y-m-d H:i:s")."',
-                                                '".$_SESSION["surname"]."',
-                                                '".$_SESSION["forename"]."',
-                                                '".$_SESSION["email"]."',
-                                                '".$_SESSION["alias"]."'
+                                                ".$change_b."
                                                 ".$status2.")";
                     $release_version = $next_version;
 
