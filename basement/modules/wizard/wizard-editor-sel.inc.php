@@ -118,6 +118,7 @@
         &&  ( $_POST["send"] != ""
             || $_POST["add"] != ""
             || $_POST["sel"] != ""
+            || $_POST["create_sel"] != ""
             || $_POST["refresh"] != ""
             || $_POST["uploaded"] != "" ) ) {
 

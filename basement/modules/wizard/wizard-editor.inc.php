@@ -180,6 +180,7 @@
                 &&  ( $_POST["send"] != ""
                     || $_POST["add"] != ""
                     || $_POST["sel"] != ""
+                    || $_POST["create_sel"]
                     || $_POST["refresh"] != ""
                     || $_POST["upload"] != ""
                     || $_POST["uploaded"] != ""
@@ -274,6 +275,7 @@
                     &&  ( $_POST["send"] != ""
                         || $_POST["add"] != ""
                         || $_POST["sel"] != ""
+                        || $_POST["create_sel"]
                         || $_POST["refresh"] != ""
                         || $_POST["upload"] != ""
                         || $_POST["uploaded"] != ""
@@ -313,6 +315,7 @@
                 &&  ( $_POST["send"] != ""
                     || $_POST["add"] != ""
                     || $_POST["sel"] != ""
+                    || $_POST["create_sel"]
                     || $_POST["refresh"] != ""
                     || $_POST["upload"] != ""
                     || $_POST["uploaded"] != ""
@@ -376,6 +379,7 @@
 
                 if ( $_POST["add"]
                   || $_POST["sel"]
+                  || $_POST["create_sel"]
                   || $_POST["upload"]
                   || $_POST["uploaded"]
                   || $_POST["change_pic"] ) {
@@ -437,6 +441,7 @@
         $ausgaben["inaccessible"] .= "# (upload_file) #(upload_file)<br />";
         $ausgaben["inaccessible"] .= "# (edit_file) #(edit_file)<br />";
         $ausgaben["inaccessible"] .= "# (get_sel) #(get_sel)<br />";
+        $ausgaben["inaccessible"] .= "# (create_sel) #(create_sel)<br />";
         $ausgaben["inaccessible"] .= "# (get_link) #(get_link)<br />";
 
         $ausgaben["inaccessible"] .= "# (refresh) #(refresh)<br />";
