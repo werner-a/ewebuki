@@ -168,7 +168,8 @@
                 if ( count($value["content"]) > 0 ) {
                     foreach ( $value["content"] as $content ) {
                         if ( $group_content != "" ) $group_content .= ", ";
-                        $group_content .= "<a href=\"/".$content.".html\" title=\"/".$content.".html\">[".$i."]</a>";
+                        $used_in = tname2path($content);
+                        $group_content .= "<a href=\"".$used_in.".html\" title=\"/".$used_in.".html\">[".$i."]</a>";
                         $i++;
                     }
                 }
