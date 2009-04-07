@@ -181,7 +181,6 @@
                     || $_POST["add"] != ""
                     || $_POST["sel"] != ""
                     || $_POST["create_sel"]
-                    || $_POST["refresh"] != ""
                     || $_POST["upload"] != ""
                     || $_POST["uploaded"] != ""
                     || $_POST["change_pic"] != "" ) ) {
@@ -276,7 +275,6 @@
                         || $_POST["add"] != ""
                         || $_POST["sel"] != ""
                         || $_POST["create_sel"]
-                        || $_POST["refresh"] != ""
                         || $_POST["upload"] != ""
                         || $_POST["uploaded"] != ""
                         || $_POST["change_pic"] != "" ) ) {
@@ -316,7 +314,6 @@
                     || $_POST["add"] != ""
                     || $_POST["sel"] != ""
                     || $_POST["create_sel"]
-                    || $_POST["refresh"] != ""
                     || $_POST["upload"] != ""
                     || $_POST["uploaded"] != ""
                     || $_POST["change_pic"] != "" ) ) {
@@ -404,8 +401,6 @@
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
                     }
 
-                } elseif ( $_POST["refresh"] != "" ) {
-                    header("Location: ".$ausgaben["form_aktion"]."");
                 } else {
                     $header = $cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".
                                                         $environment["parameter"][2].",".
@@ -435,6 +430,7 @@
         $ausgaben["inaccessible"] = "inaccessible values:<br />";
         $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
         $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
+        $ausgaben["inaccessible"] .= "# (error_tab_cells) #(error_tab_cells)<br />";
 
         $ausgaben["inaccessible"] .= "# (description) #(description)<br />";
         $ausgaben["inaccessible"] .= "# (get_file) #(get_file)<br />";

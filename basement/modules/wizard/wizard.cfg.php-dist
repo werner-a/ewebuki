@@ -198,6 +198,10 @@
 //                   "max_num" => 4
                 ),
 
+         "tab_edit" => array(
+                "max_cells" => 500      // max. anzahl an zellen
+                ),
+
         "link_edit" => array(
                 "cb_target" => array(
                                     "" => "nope",
