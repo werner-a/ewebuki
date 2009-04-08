@@ -81,7 +81,8 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
 //         }
 
         for ( $i=1; $i<=$start_parameter;$i++ ) {
-            $protect_parameter .= ",".$environment["parameter"][$i];
+            ( $i == 1 ) ? $para = "" : $para = $environment["parameter"][$i];
+            $protect_parameter .= ",".$para;
         }
 
         $forward = $jahr+1;
