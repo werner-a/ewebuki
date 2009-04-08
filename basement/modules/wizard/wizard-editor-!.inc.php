@@ -48,6 +48,7 @@
     $mapping["main"] = "wizard-edit";
 
     $hidedata["terminecal"]["on"] = "on";
+    $hidedata["terminecal1"]["on"] = "on";
     $ausgaben["error"] = "";
     $ausgaben["checked"] = "";
     $hidedata["termine"]["on"] = "ON";

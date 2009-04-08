@@ -47,29 +47,20 @@
     $mapping["main"] = "wizard-edit";
     $hidedata["sort"] = array();
 
-    include $pathvars["moduleroot"]."libraries/function_calendar.inc.php";
+    $day = substr($tag_meat["SORT"][0]["meat"],8,2);
+    $month = substr($tag_meat["SORT"][0]["meat"],5,2);
+    $year = substr($tag_meat["SORT"][0]["meat"],0,4);
 
+    $ausgaben["calendar"] = "<input readonly=true style=\"float:left\" type=\"text\" id=\"date1\" name=\"SORT\" value=\"".$day.".".$month.".".$year."\"><button class=\"button\" style=\"font-size:0.6em;margin-left:5px;\" id=\"trigger1\">...</button>";
+    $ausgaben["calendar"] .= "<div class=\"clear\"></div>";
 
-    // ausgabenwerte werden belegt
-    if ( $environment["parameter"][9] != "" && $environment["parameter"][8] != "" && $environment["parameter"][7] != "" ) {
-        ( strlen($environment["parameter"][9]) == 1 ) ? $hidedata["sort"]["day"] = "0".$environment["parameter"][9] : $hidedata["sort"]["day"] = $environment["parameter"][9];
-        ( strlen($environment["parameter"][8]) == 1 ) ? $hidedata["sort"]["month"] = "0".$environment["parameter"][8] : $hidedata["sort"]["month"] = $environment["parameter"][8];
-        $hidedata["sort"]["year"] = $environment["parameter"][7];
-    } else {
-        $hidedata["sort"]["day"] = substr($tag_meat["SORT"][0]["meat"],8,2);
-        $hidedata["sort"]["month"] = substr($tag_meat["SORT"][0]["meat"],5,2);
-        $hidedata["sort"]["year"] = substr($tag_meat["SORT"][0]["meat"],0,4);
-    }
-
-    $ausgaben["calendar"] = calendar($hidedata["sort"]["month"],$hidedata["sort"]["year"],"cal_termine","-1","-1",-1,6);
-
-    $hidedata["sort"]["date"] = $hidedata["sort"]["day"].".".$hidedata["sort"]["month"].".".$hidedata["sort"]["year"];
+    $hidedata["terminecal"]["on"] = "on";
 
     // abspeichern
     // * * *
 
-    if ( $_POST["send"] && $_POST["year"] != "" && $_POST["month"] != "" && $_POST["day"] != "" ) {
-        $to_insert = "[SORT]".$_POST["year"]."-".$_POST["month"]."-".$_POST["day"]."[/SORT]";
+    if ( $_POST["send"] && $_POST["SORT"] != ""  ) {
+        $to_insert = "[SORT]".substr($_POST["SORT"],6,4)."-".substr($_POST["SORT"],3,2)."-".substr($_POST["SORT"],0,2)."[/SORT]";
     }
     // + + +
 
