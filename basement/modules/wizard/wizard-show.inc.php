@@ -85,6 +85,37 @@
     // welche seite wird bearbeitet
     $ausgaben["url"] = $pathvars["webroot"].$tname2path.".html";
 
+
+    function urlToLoop( $url , &$array=array() , $refid=0 ) {
+        global $db;
+
+        $path_parts = explode("/",trim($url,"/") );
+        $work_part = array_shift($path_parts);
+
+        $sql = "SELECT * FROM site_menu JOIN site_menu_lang ON (site_menu.mid=site_menu_lang.mid) WHERE entry='".$work_part."' AND refid=".$refid;
+        $result = $db -> query($sql);
+        $num = $db -> num_rows($result);
+        $data = $db -> fetch_array($result);
+
+        if ( $data["label"] != "" ) {
+            $label = $data["label"];
+        } else {
+            $label = "#(your_position)";
+        }
+        $array[] = array(
+            "entry" => $work_part,
+            "label" => $label
+        );
+
+        if ( count($path_parts) > 0 ) {
+            urlToLoop( implode("/",$path_parts) , $array , $data["mid"] );
+        }
+
+        return $array;
+    }
+
+    $dataloop["sima_pos"] = urlToLoop($tname2path);
+
     // leere parameter abfangen
     // * * *
     $reload = 0;
@@ -741,7 +772,7 @@
                         }
                     }
 
-                    $change_a = "changed, bysurname, byforename, byemail, byalias";
+                    $change_a = "bysurname, byforename, byemail, byalias";
                     if ( $form_values["status"] == -2 ) {
                         // 1. status der neuen version wird -2
                         $status2 = ",-2";
@@ -754,14 +785,12 @@
                                    AND status=-2";
                         $result = $db->query($sql) ;
                         // 3. bearbeiter-daten wird belassen
-                        $change_b = "'".date("Y-m-d H:i:s")."',
-                                     '".$form_values["bysurname"]."',
+                        $change_b = "'".$form_values["bysurname"]."',
                                      '".$form_values["byforename"]."',
                                      '".$form_values["byemail"]."',
                                      '".$form_values["byalias"]."'";
                     } else {
-                        $change_b = "'".date("Y-m-d H:i:s")."',
-                                     '".$_SESSION["surname"]."',
+                        $change_b = "'".$_SESSION["surname"]."',
                                      '".$_SESSION["forename"]."',
                                      '".$_SESSION["email"]."',
                                      '".$_SESSION["alias"]."'";
@@ -813,6 +842,7 @@
                                                  ebene, kategorie,
                                                  crc32, html,
                                                  content,
+                                                 changed,
                                                  ".$change_a."
                                                  ".$status1."
                                                 )
@@ -826,6 +856,7 @@
                                                 '".$specialvars["crc32"]."',
                                                 '0',
                                                 '".addslashes($form_values["content"])."',
+                                                '".date("Y-m-d H:i:s")."',
                                                 ".$change_b."
                                                 ".$status2.")";
                     $release_version = $next_version;

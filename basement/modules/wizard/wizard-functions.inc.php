@@ -273,7 +273,18 @@
     }
 
         // welche seiten sind in bearbeitung und welche warten auf freigabe
-        function find_marked_content( $url = "/", $cfg, $label, $ignore = array() ) {
+        // parameter:
+        //
+        //      $url..........: ueberpruefter pfad
+        //      $cfg..........: cfg-datei
+        //      $label........: durchsuchtes site_text-label
+        //      $status.......: welche zustaende sollen durchsucht werden
+        //      $add_filter...: zusaetzliche filter, z.B.
+        //                        username, max_age (tage)
+        //      $check_privs..: sollen rechte ueberprueft werden
+        //      $ignore.......: pfade, die ausgespart werden sollen
+        //
+        function find_marked_content( $url = "/", $cfg, $label, $status = array(-2,-1), $add_filter = array(), $check_privs = TRUE, $ignore = array() ) {
             global $db, $pathvars, $environment;
 
             $path = explode("/",$url);
@@ -288,6 +299,19 @@
                 }
                 $where = " AND (".implode(" AND ",$where).")";
             }
+            // zusaetzliche filter
+            $buffer = array();
+            foreach ( $add_filter as $key=>$value ) {
+                switch ( $key ) {
+                    case "user":
+                        $buffer[] = "byalias='".$value."'";
+                        break;
+                    case "max_age":
+                        $buffer[] = "changed>='".date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), (date("d")-$value), date("Y")))."'";
+                        break;
+                }
+            }
+            if ( count($buffer) > 0 ) $filter = "AND ".implode(" AND ",$buffer);
             $sql = "SELECT *
                       FROM site_text
                      WHERE (
@@ -295,8 +319,20 @@
                             OR (ebene='".$ebene."' AND kategorie='".$kategorie."')
                            )".$where."
                        AND label='".$label."'
-                       AND status<0
+                       AND status IN (".implode(",",$status).")
+                       ".$filter."
                   ORDER BY tname, status ASC, version DESC";
+            $sql = "SELECT *
+                      FROM site_text
+                     WHERE (
+                            ebene LIKE '".$url."%'
+                            OR (ebene='".$ebene."')
+                           )".$where."
+                       AND label='".$label."'
+                       AND status IN (".implode(",",$status).")
+                       ".$filter."
+                  ORDER BY tname, status ASC, version DESC";
+// if ( count($add_filter) > 0 ) echo "$sql<br>";
             $result = $db -> query($sql);
 
             $dataset = "";
@@ -311,27 +347,13 @@
                     $tname = eCRC($data["ebene"]).".".$data["kategorie"];
                 }
                 $path = $data["ebene"]."/".$data["kategorie"];
-
-                // ggf kategorie
-                $kategorie = "---";
-                $ext = "---";
-                if  ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
-                    preg_match("/\[".$cfg["bloged"]["blogs"][$url]["addons"]["name"]["tag"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["addons"]["name"][0]."/Us",$data["content"],$termine_match);
-                    if ( count($termine_match) > 1 ) {
-                        $ext = $termine_match[1];
-                    }
-                    preg_match("/\[".$cfg["bloged"]["blogs"][$url]["category"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["category"]."/U",$data["content"],$match);
-                    if ( count($match) > 1 ) {
-                        $kategorie = $match[1];
-
-                        $path = $kategorie;
-                    }
-                }
                 // rechte checken
-                if ( $data["status"] == -2 && !priv_check($path,"publish") ) {
-                    continue;
-                } elseif ( $data["status"] == -1 && !priv_check($path,"edit;publish") ) {
-                    continue;
+                if ( $check_privs == TRUE || $_SESSION["uid"] == "" ) {
+                    if ( $data["status"] == -2 && !priv_check($path,"publish") ) {
+                        continue;
+                    } elseif ( $data["status"] == -1 && !priv_check($path,"edit;publish") ) {
+                        continue;
+                    }
                 }
 
                 // titel
@@ -341,11 +363,32 @@
                     $titel = $match[1];
                 }
 
-                // tabellen farben wechseln
-                if ( $cfg[$data["status"]]["color"]["set"] == $cfg["wizard"]["color"]["a"]) {
-                    $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["b"];
+                // link anpassen
+                if ( $data["status"] > 0 ) {
+                    $view_link = $pathvars["menuroot"].$data["ebene"]."/".$data["kategorie"].".html";
                 } else {
-                    $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["a"];
+                    $view_link = $pathvars["menuroot"].$data["ebene"]."/".$data["kategorie"].",v".$data["version"].".html";
+                }
+
+                // ggf kategorie
+                $kategorie = "---";
+                $ext = "---";
+                if  ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
+                    preg_match("/\[".$cfg["bloged"]["blogs"][$url]["addons"]["name"]["tag"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["addons"]["name"][0]."/Us",$data["content"],$termine_match);
+                    if ( count($termine_match) > 1 ) {
+                        $ext = $termine_match[1];
+//                         if ( $data["status"] > 0 ) {
+                            $view_link = $pathvars["menuroot"].$data["ebene"].",,".$data["kategorie"].".html";
+//                         } else {
+//                             $view_link = $pathvars["menuroot"].$data["ebene"].",,".$data["kategorie"].",v".$data["version"].".html";
+//                         }
+                    }
+                    preg_match("/\[".$cfg["bloged"]["blogs"][$url]["category"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["category"]."/U",$data["content"],$match);
+                    if ( count($match) > 1 ) {
+                        $kategorie = $match[1];
+
+                        $path = $kategorie;
+                    }
                 }
 
                 // letzte aktuelle version finden
@@ -364,6 +407,18 @@
                     $last_author = $dat_akt["byforename"]." ".$dat_akt["bysurname"];
                 }
 
+                // tabellen farben wechseln
+                if ( $cfg[$data["status"]]["color"]["set"] == $cfg["wizard"]["color"]["a"]) {
+                    $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["b"];
+                } else {
+                    $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["a"];
+                }
+
+                // datum bearbeiten
+                $tmp_date1 = explode(" ",$data["changed"]);
+                $tmp_date = explode("-",$tmp_date1[0]);
+                $date = $tmp_date[2].".".$tmp_date[1].".".$tmp_date[0];
+
                 $new_releases[$data["status"]][] = array(
                     "path" => $path,
                    "titel" => $titel,
@@ -371,9 +426,10 @@
                "kategorie" => $kategorie,
                   "author" => $data["byforename"]." ".$data["bysurname"],
              "last_author" => $last_author,
-                    "view" => $pathvars["menuroot"].$data["ebene"]."/".$data["kategorie"].",v".$data["version"].".html",
+                 "changed" => $date,
+                    "view" => $view_link,
                     "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt.html",
-                    "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",inhalt.html",
+                     "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",inhalt.html",
                   "unlock" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",unlock,".$data["version"].".html",
                  "release" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",release,".$data["version"].".html",
                  "history" => $pathvars["virtual"]."/admin/contented/history,,".$tname.",".$label.",".$dat_akt["version"].",".$data["version"].".html",
