@@ -115,13 +115,14 @@
         $ausgaben["form_aktion"] = $pathvars["virtual"]."/wizard/delete,devel0,".$environment["parameter"][2].",inhalt.html";
         $ausgaben["refid"] = $point["mid"];
 
-        $sql = "SELECT status,version, html, content, changed, byalias
+        $url = $pathvars["virtual"].tname2path($environment["parameter"][2]);
+
+        $sql = "SELECT *
                 FROM ". SITETEXT ."
                 WHERE lang = '".$environment["language"]."'
                 AND label ='".$environment["parameter"][3]."'
                 AND tname ='".$environment["parameter"][2]."'
             ORDER BY version ASC";
-
         $result = $db -> query($sql);
         $security = "";
         while ( $data = $db -> fetch_array($result,0) ) {
@@ -137,6 +138,7 @@
                 $dataloop["allartikel"][$data["version"]]["text"] = "in Bearbeitung - wird geloescht";
             }
             $dataloop["allartikel"][$data["version"]]["version"] = $data["version"];
+            $dataloop["allartikel"][$data["version"]]["url"] = $url.",v".$data["version"].".html";
         }
             $hidedata["vorschau"]["on"] = "AJAX";
 
