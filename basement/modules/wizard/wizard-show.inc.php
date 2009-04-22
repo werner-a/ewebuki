@@ -85,36 +85,8 @@
     // welche seite wird bearbeitet
     $ausgaben["url"] = $pathvars["webroot"].$tname2path.".html";
 
-
-    function urlToLoop( $url , &$array=array() , $refid=0 ) {
-        global $db;
-
-        $path_parts = explode("/",trim($url,"/") );
-        $work_part = array_shift($path_parts);
-
-        $sql = "SELECT * FROM site_menu JOIN site_menu_lang ON (site_menu.mid=site_menu_lang.mid) WHERE entry='".$work_part."' AND refid=".$refid;
-        $result = $db -> query($sql);
-        $num = $db -> num_rows($result);
-        $data = $db -> fetch_array($result);
-
-        if ( $data["label"] != "" ) {
-            $label = $data["label"];
-        } else {
-            $label = "#(your_position)";
-        }
-        $array[] = array(
-            "entry" => $work_part,
-            "label" => $label
-        );
-
-        if ( count($path_parts) > 0 ) {
-            urlToLoop( implode("/",$path_parts) , $array , $data["mid"] );
-        }
-
-        return $array;
-    }
-
-    $dataloop["sima_pos"] = urlToLoop($tname2path);
+    // pfad-info-loop
+    $dataloop["sima_pos"] = url2Loop($tname2path);
 
     // leere parameter abfangen
     // * * *

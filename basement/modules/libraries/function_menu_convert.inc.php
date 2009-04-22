@@ -117,5 +117,41 @@ if ( !function_exists(tname2path)) {
         return $return_value;
     }
 }
+if ( !function_exists(url2Loop)) {
+    function url2Loop( $url , &$array=array() , &$array_used=array() , $refid=0 ) {
+        global $db, $pathvars, $environment;
+
+        $path_parts = explode("/",trim($url,"/") );
+        $work_part = array_shift($path_parts);
+        $array_used[] = $work_part;
+
+        $sql = "SELECT *
+                  FROM site_menu
+                  JOIN site_menu_lang ON (site_menu.mid=site_menu_lang.mid)
+                 WHERE entry='".$work_part."'
+                   AND lang='".$environment["language"]."'
+                   AND refid=".$refid;
+        $result = $db -> query($sql);
+        $num = $db -> num_rows($result);
+        $data = $db -> fetch_array($result);
+
+        if ( $data["label"] != "" ) {
+            $label = $data["label"];
+        } else {
+            $label = "#(your_position)";
+        }
+        $array[] = array(
+            "entry" => $work_part,
+            "label" => $label,
+             "link" => $pathvars["virtual"]."/".implode("/",$array_used).".html",
+        );
+
+        if ( count($path_parts) > 0 ) {
+            url2Loop( implode("/",$path_parts) , $array , $array_used , $data["mid"] );
+        }
+
+        return $array;
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
