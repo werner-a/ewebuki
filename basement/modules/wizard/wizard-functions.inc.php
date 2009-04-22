@@ -358,7 +358,7 @@
 
                 // titel
                 $titel = "---";
-                preg_match("/\[H[0-9]{1}\](.+)\[\/H/U",$data["content"],$match);
+                preg_match("/\[H[0-9]{1}\](.+)\[\/H/Us",$data["content"],$match);
                 if ( count($match) > 1 ) {
                     $titel = $match[1];
                 }
