@@ -72,6 +72,37 @@
             die();
         }
 
+        // feststellen, ob die galerie schon irgendwo verwendet wird
+        if ( $environment["parameter"][1] != "" ) {
+            $sql = "SELECT *
+                      FROM site_text
+                     WHERE content LIKE '%[SEL=".$environment["parameter"][1]."]%'
+                        OR content LIKE '%[SEL=".$environment["parameter"][1].";%'";
+            $result = $db -> query($sql);
+            $num = $db -> num_rows($result);
+            if ( $num > 0 && $cfg["fileed"]["compilation"]["blocked_used"] == true ) {
+                header("Location:".$cfg["fileed"]["basis"]."/compilation.html");
+            }
+        }
+
+        // galerie loeschen
+        if ( $environment["parameter"][2] == "delete" && $environment["parameter"][1] != "" ) {
+            $sql = "SELECT *
+                      FROM site_file
+                     WHERE fhit LIKE '%#p".$environment["parameter"][1].",%'";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ){
+                preg_match("/#p".$environment["parameter"][1]."[,]*[0-9]*#/i",$data["fhit"],$match);
+                echo print_r($match,true);
+                $fhit = trim(str_replace($match,"",$data["fhit"]));
+                $sql = "UPDATE site_file
+                           SET fhit='".$fhit."'
+                         WHERE fid=".$data["fid"];
+                $res = $db -> query($sql);
+            }
+            header("Location:".$cfg["fileed"]["basis"]."/compilation.html");
+        }
+
         if ( $environment["parameter"][1] != "" ) {
             /* compilation bearbeiten */
 
@@ -154,8 +185,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/collect,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_ajax_aktion"] = $cfg["fileed"]["basis"]."/collect,".$ausgaben["compid"].",verify.html";
+        $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/collect,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
+        $ausgaben["form_ajax_aktion"] = $cfg["fileed"]["basis"]."/collect,".$ausgaben["compid"].",".$environment["parameter"][2].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
@@ -180,7 +211,7 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][3] == "verify"
           && $_POST["abort"] != "" ) {
             $header = $cfg["fileed"]["basis"]."/compilation.html";
             unset($_SESSION["compilation_temp"][$ausgaben["compid"]]);
@@ -190,13 +221,13 @@
             header("Location: ".$header);
         }
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][3] == "verify"
           && $_POST["get_pics"] != "" ) {
             $_SESSION["comp_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
             header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
         }
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( $environment["parameter"][3] == "verify"
             &&  ( $_POST["send"] != ""
                 || $_POST["abort"] != ""
                 || $_POST["extension2"] != "" ) ) {

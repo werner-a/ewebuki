@@ -89,6 +89,9 @@
         // ***
 
         ### put your code here ###
+        if ( !strstr($_SERVER["HTTP_REFERER"],$environment["ebene"]."/".$environment["kategorie"]) ) {
+            $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]] = $_SERVER["HTTP_REFERER"];
+        }
 
         // +++
         // funktions bereich fuer erweiterungen
@@ -103,6 +106,7 @@
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/upload,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
+        $ausgaben["form_break"] = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
 
         // hidden values
         $ausgaben["form_hidden"] .= "";

@@ -953,6 +953,11 @@
                 // sprungziele definieren
                 $header = $_SESSION["form_referer"];
                 unset($_SESSION["form_send"]);
+                unset($_SESSION["wizard_last_edit"]);
+                unset($_SESSION["cms_last_edit"]);
+                unset($_SESSION["cms_last_referer"]);
+                unset($_SESSION["cms_last_ebene"]);
+                unset($_SESSION["cms_last_kategorie"]);
                 // content ggf. sofort freigeben
                 if ( $specialvars["content_release"] == -1
                   && $publisher == -1

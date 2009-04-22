@@ -58,14 +58,20 @@
             if ( count($_SESSION["file_memo"]) > 0 ) {
                 $environment["parameter"][1] = current($_SESSION["file_memo"]);
             } else {
-                if ( $_SESSION["wizard_last_edit"] != "" ) {
-                    $header = $_SESSION["wizard_last_edit"];
-                    unset($_SESSION["wizard_last_edit"]);
-                } else {
-                    $header = $cfg["fileed"]["basis"]."/list.html";
-                }
+//                 if ( $_SESSION["wizard_last_edit"] != "" ) {
+//                     $header = $_SESSION["wizard_last_edit"];
+//                     unset($_SESSION["wizard_last_edit"]);
+//                 } else {
+//                     $header = $cfg["fileed"]["basis"]."/list.html";
+//                 }
+                $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
+                unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
                 header("Location: ".$header);
             }
+        }
+
+        if ( !strstr($_SERVER["HTTP_REFERER"],$environment["ebene"]."/".$environment["kategorie"]) ) {
+            $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]] = $_SERVER["HTTP_REFERER"];
         }
 
         // +++
@@ -266,7 +272,9 @@
 
         // beim abbrechen werden alle eigenen dateien aus new-ordner geloescht
         if ( $_POST["abort"] != "" ) {
-            $header = $ausgaben["form_break"];
+//             $header = $ausgaben["form_break"];
+            $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
+            unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
             $dp = opendir($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]);
             while ( $file = readdir($dp) ) {
                 $info  = explode( "_", $file, 2 );

@@ -224,7 +224,8 @@
             if ( is_array($_SESSION["compilation_memo"][$id]) ) $check = " checked=\"true\"";
             $edit = "&nbsp;";
             if ( $value["name"] == "---" || $cfg["fileed"]["compilation"]["blocked_used"] != true ) {
-                $edit = "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.".html\" title=\"g(edit)\"><img src=\"/images/default/edit.png\" alt=\"g(edit)\" /></a>";
+                $edit  = "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.".html\" title=\"g(edit)\"><img src=\"/images/default/edit.png\" alt=\"g(edit)\" /></a>";
+                $edit .= "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.",delete.html\" title=\"g(delete)\"><img src=\"/images/default/delete.png\" alt=\"g(delete)\" /></a>";
             }
 
             $used_on = "";
