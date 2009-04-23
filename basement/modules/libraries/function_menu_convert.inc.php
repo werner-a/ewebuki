@@ -118,7 +118,7 @@ if ( !function_exists(tname2path)) {
     }
 }
 if ( !function_exists(url2Loop)) {
-    function url2Loop( $url , &$array=array() , &$array_used=array() , $refid=0 ) {
+    function url2Loop( $url , &$array=array() , &$array_used=array() , $refid=0, $name="" ) {
         global $db, $pathvars, $environment;
 
         $path_parts = explode("/",trim($url,"/") );
@@ -135,6 +135,12 @@ if ( !function_exists(url2Loop)) {
         $num = $db -> num_rows($result);
         $data = $db -> fetch_array($result);
 
+        if ( $refid == 0 ) {
+            $name = "/".$data["label"];
+        } else {
+            $name .= "/".$data["label"];
+        }
+
         if ( $data["label"] != "" ) {
             $label = $data["label"];
         } else {
@@ -143,11 +149,12 @@ if ( !function_exists(url2Loop)) {
         $array[] = array(
             "entry" => $work_part,
             "label" => $label,
+             "name" => $name,
              "link" => $pathvars["virtual"]."/".implode("/",$array_used).".html",
         );
 
         if ( count($path_parts) > 0 ) {
-            url2Loop( implode("/",$path_parts) , $array , $array_used , $data["mid"] );
+            url2Loop( implode("/",$path_parts) , $array , $array_used , $data["mid"], $name );
         }
 
         return $array;
