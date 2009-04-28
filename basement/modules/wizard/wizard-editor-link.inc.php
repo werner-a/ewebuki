@@ -120,7 +120,7 @@
             $tag_werte[] = $_POST["tagwerte"][$i];
         }
         $to_insert = "[LINK=".implode(";",$tag_werte)."]".$_POST["description"]."[/LINK]";
-echo "<pre>".print_r($_POST,true)."</pre>";
+#echo "<pre>".print_r($_POST,true)."</pre>";
 // die($to_insert);
 
         if ( !is_array($_POST["add"]) ) unset($_SESSION["file_memo"]);
