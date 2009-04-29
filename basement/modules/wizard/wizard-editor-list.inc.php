@@ -118,10 +118,10 @@
         $buffer = "";
         foreach ( $_POST["areas"] as $key => $value ) {
         if ( $key % 2 == 1 && $_POST[$key] == $key) {
-            $list_display = preg_split("/(".chr(13).chr(10).")/",$value,-1,PREG_SPLIT_NO_EMPTY);
+            $list_display = preg_split("/(".chr(10).")/",$value,-1,PREG_SPLIT_NO_EMPTY);
             $e = "";
             foreach ( $list_display as $test ) {
-                $e .= "[DIV]".$test."[/DIV]\n";
+                $e .= "[DIV]".$test."[/DIV]";
             }
             $value = $e;
 
