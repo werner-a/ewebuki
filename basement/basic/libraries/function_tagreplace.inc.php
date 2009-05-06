@@ -355,7 +355,7 @@
                         }
                         break;
                     case "[/ROW]":
-                        if ( $specialvars["newbrmode"] == True ) $replace = str_replace("\r\n","",$replace);
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<tr>".$tagwert."</tr>",$replace);
                         break;
                     case "[/COL]":
