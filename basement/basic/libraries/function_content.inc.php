@@ -122,6 +122,7 @@
                          WHERE tname='$dbtname'
                            AND lang='".$specialvars["default_language"]."'
                            AND label='$label'
+                            ".$version_sql."
                             ".$content_release."
                       ORDER BY version DESC
                          LIMIT 0,1";
