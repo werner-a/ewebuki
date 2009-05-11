@@ -983,7 +983,7 @@
 
                                     if ( $tag_param[4] == "l" ) {
                                         $changed = $img;
-                                        $lb = "rel=\"lightbox[group]\" ";
+                                        $lb = "rel=\"lightbox[group_".$tag_param[0]."]\" ";
                                     } else {
                                         $changed = str_replace( "#", $row["fid"], $link);
                                         $lb = "";
