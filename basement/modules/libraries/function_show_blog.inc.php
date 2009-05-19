@@ -214,8 +214,8 @@
                 // preg nach den tags in der config
                 $preg = "(\[".addcslashes($value,"/")."\])(.*)\[\/".$endtag."\]";
                 if ( preg_match("/$preg/Us",$test,$regs) ) {
-                    $rep_tag = str_replace('\r\n',"<br>",$regs[0]);
-                    $org_tag = str_replace('\r\n',"<br>",$regs[2]);
+                    $rep_tag = str_replace('\r\n',"<br />",$regs[0]);
+                    $org_tag = str_replace('\r\n',"<br />",$regs[2]);
                 } else {
                     $rep_tag = "";
                     $org_tag = "";
