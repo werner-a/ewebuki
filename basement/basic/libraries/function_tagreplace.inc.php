@@ -253,7 +253,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["hr"].$tagwert.$defaults["tag"]["/hr"],$replace);
                         break;
                     case "[/TAB]":
-                        if ( $specialvars["newbrmode"] == True ) $replace = str_replace("\r\n","",$replace);
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = str_replace("\r\n","",$tagwert);
                         if ( $sign == "]" ) {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"<table cellspacing=\"0\" cellpadding=\"1\">".$tagwert."</table>",$replace);
                         } else {
