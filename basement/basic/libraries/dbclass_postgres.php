@@ -128,7 +128,7 @@
             $sqlquery = ": ".$sql." ";
 
             // emulate mysql_errno()
-            if ( strstr(pg_errormessage(), "Cannot insert a duplicate key") ) $no = "1062";
+            if ( strstr(pg_errormessage(), "Cannot insert a duplicate key") || strstr(pg_errormessage(), "Unique-Constraint") ) $no = "1062";
             $msg = pg_errormessage();
 
             if ($text) {
