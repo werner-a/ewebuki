@@ -56,6 +56,7 @@
         if ( isset($_GET["search"]) ) {
             $ausgaben["search"] = $_GET["search"];
             $where = " WHERE ".$cfg["usered"]["db"]["user"]["login"]." like '%".$_GET["search"]."%' OR ".$cfg["usered"]["db"]["user"]["forename"]." like '%".$_GET["search"]."%' OR ".$cfg["usered"]["db"]["user"]["surname"]." like '%".$_GET["search"]."%' ";
+            $getvalues = "search=".$_GET["search"];
         }
 
         $sql = "SELECT *
