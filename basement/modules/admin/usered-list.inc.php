@@ -123,7 +123,7 @@
         }
 
         // wohin schicken
-        #n/a
+        $ausgaben["form_aktion"] = $cfg["usered"]["basis"]."/list.html";
 
         // +++
         // page basics
