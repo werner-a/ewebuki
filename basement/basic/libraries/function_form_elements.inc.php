@@ -88,7 +88,7 @@
                 ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
                 ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["textfield"]["class"]."\"";
                 ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".$form_values[$fields["Field"]]."\"" : $value = " value=\"".$fields["Default"]."\"";
+                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".htmlspecialchars($form_values[$fields["Field"]])."\"" : $value = " value=\"".$fields["Default"]."\"";
                 ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
