@@ -57,6 +57,7 @@
                     "subj2" => "Ihre Anfrage",
                     "robot" => "Web Robot <robot@da.de>",
                     "owner" => "Firma <info@da.de>",
+                    "encoding" => "",
               ),
 //           "captcha" => array(
 //                 "randomize" => "changeme",          // beliebiger wert, verfaelscht nur den captcha-kontrollwert

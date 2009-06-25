@@ -236,6 +236,9 @@
                 if ( $_POST["betreff"] != "" ) $subject1 .= ": ".$_POST["betreff"];
                 $header1  = "From: ".$cfg["kontakt"]["email"]["robot"]."\r\n";
                 $header1 .= "Reply-To: ".$email_adresse."\r\n";
+                if ( $cfg["kontakt"]["email"]["encoding"] != "" ) {
+                    $header1 .= "Content-Type: text/plain; charset=".$cfg["kontakt"]["email"]["encoding"]."\r\n";
+                }
                 $result = mail($cfg["kontakt"]["email"]["owner"],$subject1,$message1,$header1);
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (". htmlspecialchars($cfg["kontakt"]["email"]["owner"]).")</font><br />";
 
@@ -243,6 +246,9 @@
                 $subject2 = $cfg["kontakt"]["email"]["subj2"].$ausgaben["name"];
                 if ( $_POST["betreff"] != "" ) $subject2 .= ": ".$_POST["betreff"];
                 $header2  = "From: ".$cfg["kontakt"]["email"]["owner"]."\r\n";
+                if ( $cfg["kontakt"]["email"]["encoding"] != "") {
+                    $header2 .= "Content-Type: text/plain; charset=".$cfg["kontakt"]["email"]["encoding"]."\r\n";
+                }
                 $result = mail($email_adresse,$subject2,$message2,$header2);
                 #if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
