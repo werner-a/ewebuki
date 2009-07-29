@@ -189,7 +189,7 @@
         // ersetzen-feld
         if ( $_SESSION["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
             // dateien duerfen nur ersetzt werden, wenn sie nirgends verwendet werden
-            if ( count($used_in) == 0 && count($intersect) == 0 ) {
+            if ( (count($used_in) == 0 && count($intersect) == 0) || $cfg["fileed"]["replace_used"] == true ) {
                 $hidedata["upload"][0] = -1;
                 $owner_error = "";
             }

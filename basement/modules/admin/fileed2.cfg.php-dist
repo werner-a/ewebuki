@@ -113,6 +113,7 @@
                     "items" => "3",
                      "rows" => "3",
                  "selektor" => "5",
+//              "blocked_used" => true,                        # duerfen benutzte gruppierungen bearbeitet werden
                        ),
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),
@@ -125,9 +126,10 @@
                         "3" => array("g(fileupload)", "upload.html", "R", "/upload[,0-9]*.html/"),
                         "4" => array("g(filecompilation)", "compilation.html", "R", "/compilation[,0-9]*.html/"),
                        ),
-//      "default_view" => "symbols",   #standardansicht im fileed-list
-//       "dummy_regex" => array("#p[0-9]+,[0-9]+#"),      # regex, muster fuer fhit-sperre
-//          "no_dummy" => "admin",                                 # noetiges recht um den fhit komplett zu bearbeiten
+//      "default_view" => "symbols",                           # standardansicht im fileed-list
+//      "replace_used" => true,                                # duerfen benutzte dateien ausgetauscht werden
+//       "dummy_regex" => array("#p[0-9]+,[0-9]+#"),           # regex, muster fuer fhit-sperre
+//          "no_dummy" => "admin",                             # noetiges recht um den fhit komplett zu bearbeiten
             "right" => $cfg["auth"]["menu"]["fileed"][1],
             "restrict" => array(), # z.B. array("delete", "edit")
     );
