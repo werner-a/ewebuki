@@ -91,7 +91,7 @@
                   "content" => array(
                           "entries" => "site_text",
                           "content" => "content",
-                             "path" => "ebene, kategorie"
+                             "path" => "ebene, kategorie, tname"
                                ),
                     "multi" => array(
                            "change" => False,

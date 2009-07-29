@@ -282,7 +282,7 @@
         //
 
         function content_check($id) {
-            global $db, $_SESSION, $cfg, $pathvars, $file, $debugging;
+            global $db, $_SESSION, $cfg, $pathvars, $specialvars, $file, $debugging;
 
             $content_error = "";
             $old = "\_".$id.".";
@@ -324,10 +324,25 @@
             if ( $num_rows > 0 && $error == 0 ){
                 while ( $data2 = $db -> fetch_array($result2,1) ) {
                     $ebene = $data2["ebene"]."/";
-                    $kategorie = $data2["kategorie"].".html";
-                    $url = str_replace($environment["fqdn"][0],"www",$pathvars["menuroot"]).$ebene.$kategorie;
-                    $label = $ebene.$kategorie;
-                    $found_in[] = "<a href=\"".$url."\">".$label."</a>";
+                    $kategorie = $data2["kategorie"];
+                    $label = $ebene.$kategorie.".html";
+
+                    // versionen abarbeiten
+                    $sql3 = "SELECT *
+                               FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
+                              WHERE tname='".$data2["tname"]."'
+                                AND (".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
+                                 OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%')
+                           ORDER BY version DESC";
+                    $result3 = $db -> query($sql3);
+                    $versions = array();
+                    while ( $data3 = $db -> fetch_array($result3,1) ) {
+                        $url = $ebene.$kategorie.",v".$data3["version"].".html";
+                        $class = "";
+                        if ( $data3["status"] == 1 ) $class = " class=\"red\"";
+                        $versions[] = "<a href=\"".$url."\" title=\"Version ".$data3["version"]."\"".$class.">v".$data3["version"]."</a>";
+                    }
+                    $found_in[] = "<b>".$label."</b> (".implode(", ",$versions).")";
                 }
             }
 
