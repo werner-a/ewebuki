@@ -402,9 +402,11 @@
                 $res_akt = $db -> query($sql);
                 if ( $db->num_rows($res_akt) == 0 ) {
                     $last_author = "";
+                    $last_uid = "";
                 } else {
                     $dat_akt = $db -> fetch_array($res_akt);
                     $last_author = $dat_akt["byforename"]." ".$dat_akt["bysurname"];
+                    $last_uid = $dat_akt["byalias"];
                 }
 
                 // tabellen farben wechseln
@@ -426,7 +428,9 @@
                "kategorie" => $kategorie,
                   "author" => $data["byforename"]." ".$data["bysurname"],
              "last_author" => $last_author,
+                "last_uid" => $last_uid,
                  "changed" => $date,
+              "changed_db" => $data["changed"],
                     "view" => $view_link,
                     "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt.html",
                      "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",inhalt.html",
