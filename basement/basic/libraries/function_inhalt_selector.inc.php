@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -55,6 +55,7 @@
         $defaults["select"]["none"] == "" ? $defaults["select"]["none"] = "<img src=\"/images/default/pos.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"\" />" : NOP;
         $defaults["select"]["prev"] == "" ? $defaults["select"]["prev"] = "<img src=\"/images/default/left.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
         $defaults["select"]["next"] == "" ? $defaults["select"]["next"] = "<img src=\"/images/default/right.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
+        $defaults["select"]["separator"] == "" ? $defaults["select"]["separator"] = "|" : NOP;
 
         // muss ein integer sein, sonst geht der select daneben!
         $position = (int) $position;
@@ -117,6 +118,8 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sft: ".$shift.$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sep: ".$selpages.$debugging["char"];
 
+            $trenner = "";
+
             for ( $j = $dirselbeg, $i = $dirselbeg; $i < $dirselend; $i+=$menge ) {
             #for ( $j = 0, $i = 0; $i < $gesamt; $i+=$menge ) {
                 $j++;
@@ -126,12 +129,12 @@
                     $erster = $i+1;
                     $letzter = $i+$menge;
 
-                    // wenn nötig auf den max wert stellen
+                    // wenn noetig auf den max wert stellen
                     if ( $letzter > $gesamt ) {
                         $letzter = $gesamt;
                     }
 
-                    if ( $erster != 1 ) $trenner = "| ";
+                    if ( $erster != 1 ) $trenner = $defaults["select"]["separator"];
                     $label = $erster."-".$letzter;
 
                     if ( $faktor >= 1 && $j == $dirselbeg +1 ) {
