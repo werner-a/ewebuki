@@ -409,8 +409,15 @@
             if ( $view_mode == "details" || $view_mode == "symbols" ) {
 
                 if ( is_array($dataloop["list_files"]) ) {
+                    $class = "even";
                     foreach ( $dataloop["list_files"] as $key=>$value ) {
                         $filetyp = $cfg["file"]["filetyp"][$value["art"]];
+                        if ( $class == "even" ) {
+                            $class = "odd";
+                        } else {
+                            $class = "even";
+                        }
+                        $dataloop["list_files"][$key]["class"] = $class;
                         if ( $filetyp == "img" ) {
                             $array = array(
                                 "o" => "Vorschau Original (original)",

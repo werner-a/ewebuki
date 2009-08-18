@@ -95,7 +95,7 @@
         $element["fid"] = "";
         $file_name = substr($file,strrpos($file,"--") );
         $file_name = str_replace("--","",$file_name);
-        $element["ffname"] = str_replace("ffname\"", "ffname\" value=\"".str_replace($_SESSION["uid"]."_","",$file_name)."\"", $element["ffname"]);
+        $element["ffname"] = str_replace("ffname\"", "ffname\" value=\"".preg_replace("/^".$_SESSION["uid"]."_/","",$file_name)."\"", $element["ffname"]);
         if ( is_array($_SESSION["zip_extracted"]) ){
             $element["fdesc"] = str_replace("></textarea>", "/>".trim($file_buffer["fdesc"])."</textarea>", $element["fdesc"]);
             $element["funder"] = str_replace("value=\"\"", "value=\"".trim($file_buffer["funder"])."\"", $element["funder"]);

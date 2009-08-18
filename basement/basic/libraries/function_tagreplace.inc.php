@@ -592,7 +592,7 @@
                                         if ( substr( $path, -1 ) != '/') $path = $path."/";
                                         $imglnk = $path.basename($pathvars["requested"],".html")."/view,".$imgwerte[3].",".$imgid.$bilderstrecke.".html";
                                         if ( $imgwerte[3] == "l" ) {
-                                            $imglnk = preg_replace("/\/(tn|s|m)\//","/o/",$imgurl);
+                                            $imglnk = preg_replace("/\/(tn|s|m|b)\//","/o/",$imgurl);
                                             $linka = $defaults["tag"]["img_link_lb"];
                                         } else {
                                             $linka = $defaults["tag"]["img_link"];
