@@ -85,43 +85,9 @@
     // welche seite wird bearbeitet
     $ausgaben["url"] = $pathvars["webroot"].$tname2path.".html";
 
-// <<<<<<< .mine
+    // pfad-info-loop
+    $dataloop["sima_pos"] = url2Loop($tname2path);
 
-    function urlToLoop( $url , &$array=array() , $refid=0 ) {
-        global $db;
-
-        $path_parts = explode("/",trim($url,"/") );
-        $work_part = array_shift($path_parts);
-
-        $sql = "SELECT * FROM site_menu JOIN site_menu_lang ON (site_menu.mid=site_menu_lang.mid) WHERE entry='".$work_part."' AND refid=".$refid;
-        $result = $db -> query($sql);
-        $num = $db -> num_rows($result);
-        $data = $db -> fetch_array($result);
-
-        if ( $data["label"] != "" ) {
-            $label = $data["label"];
-        } else {
-            $label = "#(your_position)";
-        }
-        $array[] = array(
-            "entry" => $work_part,
-            "label" => $label
-        );
-
-        if ( count($path_parts) > 0 ) {
-            urlToLoop( implode("/",$path_parts) , $array , $data["mid"] );
-        }
-
-        return $array;
-    }
-
-    $dataloop["sima_pos"] = urlToLoop($tname2path);
-
-// =======
-//     // pfad-info-loop
-//     $dataloop["sima_pos"] = url2Loop($tname2path);
-//
-// >>>>>>> .r1606
     // leere parameter abfangen
     // * * *
     $reload = 0;
@@ -309,7 +275,6 @@
             $blocked = 0;
             if ( $specialvars["content_release"] == -1 ) {
                 if ( priv_check($tname2path,"publish") || $artikel_check_publish ) {
-echo "hallo";
                     $hidedata["publish"] = array();
                 } else {
                     // ist bereits eine freigabe angefordert, dann blocken
@@ -985,8 +950,7 @@ echo "hallo";
         }
 
     } else {
-echo "hallo";
-//         header("Location: ".$pathvars["virtual"]."/");
+        header("Location: ".$pathvars["virtual"]."/");
     }
 
     //

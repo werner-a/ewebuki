@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -213,6 +213,47 @@
             }
             // + + +
 
+            // vogelwilde regexen die alte & neue links zu ewebuki-files findet
+            // und viel arbeit erspart
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",$form_values["content"],$found1);
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",$form_values["content"],$found2);
+            $found = array_merge($found1[1],$found2[1]);
+            $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
+
+            // file memo auslesen und zuruecksetzen
+            if ( is_array($_SESSION["file_memo"]) ) {
+                $array = array_merge($_SESSION["file_memo"],$found);
+            } else {
+                $array = $found;
+            }
+
+            // wenn es thumbnails gibt, anzeigen
+            if ( count($array) >= 1 ) {
+
+                $merken = $db -> getDb();
+                if ( $merken != DATABASE ) {
+                    $db -> selectDB( DATABASE ,"");
+                }
+
+                $where = "";
+                foreach ( $array as $value ) {
+                    if ( $where != "" ) $where .= " OR ";
+                    $where .= "fid = '".$value."'";
+                }
+                $sql = "SELECT *
+                        FROM site_file
+                        WHERE ".$where."
+                    ORDER BY ffname, funder";
+                $result = $db -> query($sql);
+
+
+                if ( $merken != DATABASE ) {
+                    $db -> selectDB($merken,"");
+                }
+
+                filelist($result, "contented");
+            }
+
             // auf spezial-wizard-editor testen
             $wizard_file = $pathvars["moduleroot"].$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"]."-".$environment["kategorie"]."-".strtolower($tag_marken[0]).".inc.php";
             if ( file_exists($wizard_file) ) {
@@ -225,48 +266,6 @@
                 $hidedata["default"] = array();
                 $hidedata["default"]["num"] = $tag_marken[1] + 1;
                 $hidedata["default"]["tag"] = "#(tag_head_".$tag_marken[0].")";
-
-                // vogelwilde regexen die alte & neue links zu ewebuki-files findet
-                // und viel arbeit erspart
-                preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",$form_values["content"],$found1);
-                preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",$form_values["content"],$found2);
-                $found = array_merge($found1[1],$found2[1]);
-                $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
-
-                // file memo auslesen und zuruecksetzen
-                if ( is_array($_SESSION["file_memo"]) ) {
-                    $array = array_merge($_SESSION["file_memo"],$found);
-    //                 unset($_SESSION["file_memo"]);
-                } else {
-                    $array = $found;
-                }
-
-                // wenn es thumbnails gibt, anzeigen
-                if ( count($array) >= 1 ) {
-
-                    $merken = $db -> getDb();
-                    if ( $merken != DATABASE ) {
-                        $db -> selectDB( DATABASE ,"");
-                    }
-
-                    $where = "";
-                    foreach ( $array as $value ) {
-                        if ( $where != "" ) $where .= " OR ";
-                        $where .= "fid = '".$value."'";
-                    }
-                    $sql = "SELECT *
-                            FROM site_file
-                            WHERE ".$where."
-                        ORDER BY ffname, funder";
-                    $result = $db -> query($sql);
-
-
-                    if ( $merken != DATABASE ) {
-                        $db -> selectDB($merken,"");
-                    }
-
-                    filelist($result, "contented");
-                }
 
                 // abspeichern, part 2
                 // * * *
