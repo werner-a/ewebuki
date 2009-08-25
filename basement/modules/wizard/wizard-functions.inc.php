@@ -157,13 +157,19 @@
                                             array("[","]","/"),
                                             array("\[","\]","\/"),
                                             $open_tag
-                            )."[A-Z0-9=\]]{1}";
+                            );
+                if ( !preg_match("/\]$/",$open_tag) ) $splitter1 .= "[A-Z0-9=\]]{1}";
+
                 $splitter2 = str_replace(
                                             array("[","]","/"),
                                             array("\[","\]","\/"),
                                             $close_tag
-                            )."[A-Z0-9]{0,1}\]";
+                            );
+                if ( !preg_match("/\]$/",$close_tag) ) {
+                    $splitter2 .= "[A-Z0-9]{0,1}\]";
+                }
                 $splitter = $splitter1.".*".$splitter2;
+
                 $match_test = preg_split("/(".$splitter.")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
                 $buffer = array(); $pre = ""; $index = 0;
                 foreach ( $match_test as $value ) {
@@ -189,7 +195,7 @@
                                  "end" => strlen($pre) + strlen($value),
                             "complete" => $value,
                            "tag_start" => $match_tag[1],
-                                "meat" => $match_tag[2],
+                                "meat" => trim($match_tag[2]),
                              "tag_end" => $match_tag[3],
                                 "keks" => "",
                                 "type" => $preg[1],
@@ -242,14 +248,17 @@
             $split_tags["open"][] = "<!--edit_begin-->";
             $split_tags["close"][] = "<!--edit_end-->";
             foreach ( $cfg["wizard"]["ed_boxed"] as $key=>$value ) {
+                $start_tag = $value[0][0];
                 if ( $value[0][1] == "" ) {
                     $end_tag = str_replace("[","[/",$value[0][0]);
                 } else {
                     $end_tag = $value[0][1];
                 }
-                $split_tags["open"][]  = $value[0][0];
+                $start_tag = str_replace("]","",$start_tag);
+                $end_tag = str_replace("]","",$end_tag);
+                $split_tags["open"][]  = $start_tag;
                 $split_tags["close"][] = $end_tag;
-                $preg[] = str_replace(array("[","/"),array("\[","\/"),$value[0][0]);
+                $preg[] = str_replace(array("[","/"),array("\[","\/"),$start_tag);
                 $preg[] = str_replace(array("[","/"),array("\[","\/"),$end_tag);
             }
             $separate = preg_split("/(".implode("|",$preg).")|(<!--edit_begin-->)|(<!--edit_end-->)/",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
@@ -264,7 +273,7 @@
                 } elseif ( in_array($line,$split_tags["close"]) ) {
                     $close--; $mark = -1;
                 }
-                $allcontent[$i] .= trim($line,"\n");
+                $allcontent[$i] .= trim($line);
             }
 
             return array_merge($allcontent);

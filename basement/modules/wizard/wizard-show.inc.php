@@ -580,6 +580,7 @@
                             $src_tag_tmp    = substr($src_tag_tmp,0,strpos($src_tag_tmp,";") );
                         }
                     }
+                    $src_tag_tmp    = str_replace(" ","-",$src_tag_tmp);
                     if ( strstr($src_tag,"=") ) $src_tag = substr($src_tag,0,strpos($src_tag,"=") );
                     $src = "";
                     if ( file_exists($pathvars["fileroot"]."images/".$environment["design"]."/img_map_part_".$src_tag_tmp.".png") ) {
