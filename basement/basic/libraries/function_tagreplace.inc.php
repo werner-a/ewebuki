@@ -647,7 +647,16 @@
                                     $title = "";
                                 }
                             }
-                            $ausgabewert  = "<a href=\"".$href."\"".$target." title=\"".$title."\">".$beschriftung."</a>";
+                            // css-klasse, je nachdem, welche art link vorliegt
+                            $class = "";
+                            if ( preg_match("/^http/",$href) ) {
+                                $class = "link_extern";
+                            } elseif ( preg_match("/^".str_replace("/","\/",$cfg["file"]["base"]["webdir"]).".*\.([a-zA-Z]+)/",$href,$match) ) {
+                                if ( $cfg["file"]["filetyp"][$match[1]] != "" ) {
+                                    $class = "link_".$cfg["file"]["filetyp"][$match[1]];
+                                }
+                            }
+                            $ausgabewert  = $pic."<a href=\"".$href."\"".$target." title=\"".$title."\" class=\"".$class."\">".$beschriftung."</a>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
                         break;
