@@ -181,8 +181,8 @@
                 case "gif":
                     imagegif($img_dst,$img_path."/".$img_name."_".$img_id.".gif");
                     break;
-                case "jpg":
-                    imagejpeg($img_dst,$img_path."/".$img_name."_".$img_id.".jpg");
+                case "jpg":case "jpeg":
+                    imagejpeg($img_dst,$img_path."/".$img_name."_".$img_id.".".$file_ext);
                     break;
                 case "png":
                     imagepng($img_dst,$img_path."/".$img_name."_".$img_id.".png");

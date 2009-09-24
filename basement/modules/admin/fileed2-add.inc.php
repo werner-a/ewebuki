@@ -140,7 +140,7 @@
                     case "gif":
                         $img_src = @imagecreatefromgif($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
                         break;
-                    case "jpg":
+                    case "jpg":case "jpeg":
                         $img_src = @imagecreatefromjpeg($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
                         break;
                     case "png":
