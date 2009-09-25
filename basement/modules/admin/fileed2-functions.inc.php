@@ -212,7 +212,7 @@
                     case "gif":
                         $img_src = @imagecreatefromgif($source);
                         break;
-                    case "jpg":
+                    case "jpg":case "jpeg":
                         $img_src = @imagecreatefromjpeg($source);
                         break;
                     case "png":
