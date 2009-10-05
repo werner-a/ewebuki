@@ -189,6 +189,7 @@
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_captcha) #(error_captcha)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
+            $ausgaben["inaccessible"] .= "# (success) #(success)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -211,6 +212,8 @@
                 if ( $_POST["captcha_proof"] != crc32($_POST["captcha"].$cfg["kontakt"]["captcha"]["randomize"])
                   || !file_exists($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png") ) {
                     $ausgaben["form_error"] .= "#(error_captcha)";
+                    $dataloop["form_error"]["captcha"]["text"] = "#(error_captcha)";
+                    $hidedata["captcha"]["class"] = "form_error";
                 }
                 if (file_exists($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png")) unlink($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png");
             }

@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -47,7 +47,7 @@
     // aufruf: form_errors( form optionen, post array);
 
     function form_errors( $form_options, $form_values ) {
-        global $ausgaben;
+        global $ausgaben, $element, $dataloop, $hidedata;
         #$ausgaben["form_error"] = "";
         if ( is_array($form_options) && count($form_values) > 0 ) {
             // form options durchlaufen
@@ -58,8 +58,10 @@
                         // gibt es eine fehlermeldung in der db ?
                         if ( $value["ferror"] == "" ) {
                             $ausgaben["form_error"] .= "Field: ".$value["flabel"]." required!<br />";
+                            $dataloop["form_error"][$name]["text"] = "Field: ".$value["flabel"]." required!";
                         } else {
                             $ausgaben["form_error"] .= $value["ferror"]."<br />";
+                            $dataloop["form_error"][$name]["text"] = $value["ferror"];
                         }
                     }
                 }
@@ -72,13 +74,23 @@
                         if (!preg_match_all("/$preg/",$form_values[$name],$regs) && !$form_values[$name] == "") {
                             if ( $value["fchkerror"] == "" ) {
                                 $ausgaben["form_error"] .= "Field: ".$value["flabel"]." check failed!<br />";
+                                $dataloop["form_error"][$name]["text"] = "Field: ".$value["flabel"]." check failed!<br />";
                             } else {
                                 $ausgaben["form_error"] .= $value["fchkerror"]."<br />";
+                                $dataloop["form_error"][$name]["text"] = $value["fchkerror"];
                             }
                         }
                     }
                 }
+                // form_element manipulieren
+                if ( $dataloop["form_error"][$name]["text"] != "" && $element[$name] != "" ) {
+                    preg_match("/class=\"(.*)\"/Ui",$element[$name],$match);
+                    $class = "form_error";
+                    if ( $match[1] != "" ) $class .= " ".$match[1];
+                    $element[$name] = str_replace($match[0],"class=\"".$class."\"",$element[$name]);
+                }
             }
+            if ( count($dataloop["form_error"]) > 0 ) $hidedata["form_error"] = array();
         }
     }
 
