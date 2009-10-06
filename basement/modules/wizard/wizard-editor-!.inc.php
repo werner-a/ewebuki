@@ -47,8 +47,11 @@
     // was anzeigen
     $mapping["main"] = "wizard-edit";
 
-    $hidedata["terminecal"]["on"] = "on";
-    $hidedata["terminecal1"]["on"] = "on";
+    $dataloop["calendar"][1]["id"] =  "date1";
+    $dataloop["calendar"][1]["button"] =  "trigger1";
+    $dataloop["calendar"][2]["id"] =  "date2";
+    $dataloop["calendar"][2]["button"] =  "trigger2";
+
     $ausgaben["error"] = "";
     $ausgaben["checked"] = "";
     $hidedata["termine"]["on"] = "ON";
