@@ -54,7 +54,8 @@
     $ausgaben["calendar"] = "<input readonly=true style=\"float:left\" type=\"text\" id=\"date1\" name=\"SORT\" value=\"".$day.".".$month.".".$year."\"><button class=\"button\" style=\"font-size:0.6em;margin-left:5px;\" id=\"trigger1\">...</button>";
     $ausgaben["calendar"] .= "<div class=\"clear\"></div>";
 
-    $hidedata["terminecal"]["on"] = "on";
+    $dataloop["calendar"][1]["id"] = "date1";
+    $dataloop["calendar"][1]["button"] = "trigger1";
 
     // abspeichern
     // * * *
