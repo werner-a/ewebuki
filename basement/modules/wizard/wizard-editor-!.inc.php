@@ -158,11 +158,16 @@
         $now_timestamp = mktime(0,0,0,date('m'),date('d'),date('Y'));
         $postsort_timestamp = mktime(0,0,0,substr($_POST["SORT"],5,2),substr($_POST["SORT"],8,2),substr($_POST["SORT"],0,4));
 
+        $sql = "Select Cast(SUBSTR(content,POSITION('[SORT]' IN content)+6,POSITION('[/SORT]' IN content)-POSITION('[SORT]' IN content)-6) AS DATETIME ) AS date from site_text where status =1 AND tname ='".$environment["parameter"][2]."'";
+        $result = $db -> query($sql);
+        $data = $db -> fetch_array($result,1);
+        if ( $db -> num_rows($result)  > 0 ) {
+            $check_date = mktime(0,0,0,substr($data["date"],5,2),substr($data["date"],8,2),substr($data["date"],0,4));
+        }
 
         if ( $_POST["send"] ) {
             if ( $regs[2][1] != "/aktuell/archiv" ) {
-
-                if ( $postsort_timestamp < $now_timestamp ) {
+                if ( $postsort_timestamp < $now_timestamp && ( $check_date == "" || $postsort_timestamp < $check_date )) {
                     if ( $_POST["send"][0] == "Abschicken" ) {
                         header("Location: ".$_SESSION["page"]."?error=1");
                         exit;
