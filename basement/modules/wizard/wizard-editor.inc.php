@@ -443,7 +443,9 @@
 
         $ausgaben["inaccessible"] .= "# (sel_num_error) #(sel_num_error)<br />";
 
-
+        $ausgaben["inaccessible"] .= "# (antedate) #(antedate)<br />";
+        $ausgaben["inaccessible"] .= "# (date_periode) #(date_periode)<br />";
+        $ausgaben["inaccessible"] .= "# (date_begin_end) #(date_begin_end)<br />";
 
         $ausgaben["inaccessible"] .= "# (upload) #(upload)<br />";
         $ausgaben["inaccessible"] .= "# (file) #(file)<br />";
