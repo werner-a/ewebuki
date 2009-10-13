@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-     function show_blog($url,$tags,$right="",$limit="",$kategorie="") {
+     function show_blog($url,$tags,$right="",$limit="",$kategorie="",$future="") {
         global $db,$pathvars,$ausgaben,$mapping,$hidedata,$environment,$cfg,$specialvars;
 
         // parameter-erklaerung
@@ -138,7 +138,9 @@
             $cat_len = strlen($cfg["bloged"]["blogs"][$url]["category"])+2;
             $where .= "  AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
         }
-
+        if ( $future == -1 ) {
+            $where .= " AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".date('Y-m-d')." 23:59:59'";
+        }
         $tname = eCRC($url).".%";
 
         // falls parameter 2 gesetzt, wird nur dieser content geholt
