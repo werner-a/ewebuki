@@ -907,16 +907,21 @@
                 if ( $sql_content != "" ) {
                     if ( $db -> query($sql_content) ) {
                         if ( $cfg["wizard"]["wizardtyp"][$wizard_name]["blog_date"] == true ) {
-                            $sql_blog = "SELECT *
-                                           FROM ". SITETEXT ."
-                                          WHERE lang = '".$environment["language"]."'
-                                            AND label ='".$environment["parameter"][3]."'
-                                            AND tname ='".$environment["parameter"][2]."'
-                                            AND status = 1";
-                            $result_blog  = $db -> query($sql_blog);
-                            if ( $db -> num_rows($result_blog) == 0 ) {
-                                $sql_blog = "UPDATE ". SITETEXT ." SET content=regexp_replace(content,'\\\[SORT\\\].*\\\[\\\/SORT\\\]','[SORT]".date("Y-m-d H:i:s")."[/SORT]') WHERE tname like '".$environment["parameter"][2]."'";
+                            preg_match("/\[SORT\]([0-9-]*)\[\/SORT\]/",$tag_meat["!"][0]["meat"],$reg);
+                            $sort_timestamp = mktime(0,0,0,substr($reg[1],5,2),substr($reg[1],8,2),substr($reg[1],0,4));
+                            $now_timestamp = mktime(0,0,0,date('m'),date('d'),date('Y'));
+                            if ( $sort_timestamp < $now_timestamp ) {
+                                $sql_blog = "SELECT *
+                                               FROM ". SITETEXT ."
+                                              WHERE lang = '".$environment["language"]."'
+                                                AND label ='".$environment["parameter"][3]."'
+                                                AND tname ='".$environment["parameter"][2]."'
+                                                AND status = 1";
                                 $result_blog  = $db -> query($sql_blog);
+                                if ( $db -> num_rows($result_blog) == 0 ) {
+                                    $sql_blog = "UPDATE ". SITETEXT ." SET content=regexp_replace(content,'\\\[SORT\\\].*\\\[\\\/SORT\\\]','[SORT]".date("Y-m-d H:i:s")."[/SORT]') WHERE tname like '".$environment["parameter"][2]."'";
+                                    $result_blog  = $db -> query($sql_blog);
+                                }
                             }
                         }
                         unset($_SESSION["wizard_content"]);
