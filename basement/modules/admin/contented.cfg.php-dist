@@ -82,7 +82,7 @@
                           "newline" => "<br clear=\"all\" />",
                                ),
                        ),
-
+ "revision_control" => true,
             "right" => $cfg["auth"]["ghost"]["contented"],
             #"tagjs" => "-141347382.modify.js-classic",
           "letters" => "",

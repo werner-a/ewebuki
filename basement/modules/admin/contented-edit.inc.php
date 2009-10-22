@@ -126,9 +126,9 @@
         // form elemente erweitern
         #$element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
         #$element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
-        $hidedata["overwrite"] = array();
-        if ( $form_values["status"] <= 0 ) {
-            unset($hidedata["overwrite"]);
+
+        if ( $cfg["contented"]["revision_control"] == true ) {
+            $hidedata["revision_control"] = array();
         }
 
         // +++
