@@ -266,14 +266,14 @@
             $i = 0; $close = 0;
             $allcontent = array();
             foreach ( $separate as $index => $line ) {
-                if ( trim($line) == "" ) continue;
+                if ( trim($line," ") == "" ) continue;
                 if ( in_array($line,$split_tags["open"]) ) {
                     if ($close == 0) $i++;
                     $close++;
                 } elseif ( in_array($line,$split_tags["close"]) ) {
                     $close--; $mark = -1;
                 }
-                $allcontent[$i] .= trim($line);
+                $allcontent[$i] .= trim($line," ");
             }
 
             return array_merge($allcontent);
