@@ -72,16 +72,18 @@
             // berechtigte gruppen rausfinden
             $group_permit = group_permit( $data[$cfg["fileed"]["db"]["file"]["grant_grp"]] );
 
-            if ( $_SESSION["uid"] != $data["fuid"] ) {
-                if ( count($group_permit["intersect_groups"]) == 0 ) {
-                    $dataloop["list"][$data["fid"]] = array(
-                                "id" => $data["fid"],
-                            "item" => $data["ffname"],
-                            "link" => $link,
-                            "reason" => "#(user_error)",
-                    );
-                    $forbidden[$data["fid"]] = $data["fid"];
-                }
+
+            // berechtigter personenkreis
+            if ( $_SESSION["uid"] != $data["fuid"]                  # kein Eigentuemer
+              && count($group_permit["intersect_groups"]) == 0      # weder berechtigte gruppe noch superuser
+            ) {
+                $dataloop["list"][$data["fid"]] = array(
+                            "id" => $data["fid"],
+                          "item" => $data["ffname"],
+                          "link" => $link,
+                        "reason" => "#(user_error)",
+                );
+                $forbidden[$data["fid"]] = $data["fid"];
             } else {
                 $pages = content_check($data["fid"]);
                 if ( count($pages) > 0 ) {

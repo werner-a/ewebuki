@@ -157,7 +157,7 @@
 
         // grant edit-rechte
         // * * * * *
-        if ( $grant_grp_mode == -1 ) {
+        if ( $grant_grp_mode == -1 && function_exists("group_permit") ) {
 
             $group_permit = group_permit( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] );
             $perm_groups      = $group_permit["perm_groups"];
