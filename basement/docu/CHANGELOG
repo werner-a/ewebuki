@@ -8,6 +8,19 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 02. November 2009
+Dateien koennen jetzt fuer zur bearbeitung freigegeben werden.
+Dazu muss die Tabelle site_file mit einer neuen Spalte des Typs "varchar" ergaenzt werden, in der die IDs berechtigten Gruppen durch Doppelpunkt getrennt gespeichert werden koennen.
+Der Name dieser Spalte wird in die Variablen $cfg["fileed"]["db"]["file"]["grant_grp"] geschrieben.
+So kann man festlegen, ob eine Datei von allen, nur vom Eigentuemer oder von Mitgliedern von bestimmten Gruppen bearbeitet und geloescht werden.
+Aufbau des Spalteninhalts:  - leer:  urspruengliches Verhalten (nur Eigentuemer kann Datei bearbeiten)
+                            -   -1:  jeder kann die Datei bearbeiten
+                            -  1:2:  Mitglieder der Gruppen mit den IDs 1 und 2 kann die Datei bearbeiten
+
+Zusaetzlich kann man in der Variablen $cfg["fileed"]["su_groups"] festlegen, welche Gruppen generell alle Dateien bearbeiten koennen.
+$cfg["fileed"]["su_groups"] ist ein Array und hat die Gruppen-IDs als Elemente.
+$cfg["fileed"]["su_groups"] zieht nur, wenn auch $cfg["fileed"]["db"]["file"]["grant_grp"] gesetzt ist.
+
 --- 04. Januar 2009
 Im FileEd-Edit/Add kann nun festgelegt werden, dass bestimmte Werte im fhit-Feld nicht angezeigt und nicht eingefuegt werden kann.
 Diese gesperrten Eintraege werden dann automatisch vom System wieder angefuegt.

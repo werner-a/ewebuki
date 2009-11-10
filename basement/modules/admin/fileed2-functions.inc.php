@@ -285,12 +285,27 @@
             global $db, $_SESSION, $cfg, $pathvars, $specialvars, $file, $debugging;
 
             $content_error = "";
-            $old = "\_".$id.".";
+//             $old = "\_".$id.".";
+            $reg = array();
+            foreach ( $cfg["file"]["fileopt"] as $key=>$value ) {
+                if ( !is_array($value) ) continue;
+                $reg[$value["name"]] = $value["name"];
+            }
+            if ( count($reg) > 0 ) {
+                $old = "(".implode("|",$reg).")_".$id."[\.]";
+            } else {
+                $old = "_".$id."[\.]";
+            }
             $new = "/".$id."/";
+//             $sql2 = "SELECT DISTINCT ".$cfg["fileed"]["db"]["content"]["path"]."
+//                        FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
+//                       WHERE ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
+//                          OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%'";
             $sql2 = "SELECT DISTINCT ".$cfg["fileed"]["db"]["content"]["path"]."
                        FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
-                      WHERE ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
+                      WHERE ".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$old."'
                          OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%'";
+// echo $sql2."<br>";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
 
             /* multi-db-support */
@@ -328,16 +343,24 @@
                     $label = $ebene.$kategorie.".html";
 
                     // versionen abarbeiten
+//                     $sql3 = "SELECT *
+//                                FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
+//                               WHERE tname='".$data2["tname"]."'
+//                                 AND (".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
+//                                  OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%')
+//                            ORDER BY version DESC";
                     $sql3 = "SELECT *
                                FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
                               WHERE tname='".$data2["tname"]."'
-                                AND (".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
+                                AND (".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$old."'
                                  OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%')
                            ORDER BY version DESC";
+// echo $sql3."<br>";
                     $result3 = $db -> query($sql3);
                     $versions = array();
                     while ( $data3 = $db -> fetch_array($result3,1) ) {
-                        $url = $ebene.$kategorie.",v".$data3["version"].".html";
+//                         if ( !strstr($data3["content"],str_replace("\\","",$old)) && !strstr($data3["content"],$new) ) continue;
+                        $url = $pathvars["virtual"].$ebene.$kategorie.",v".$data3["version"].".html";
                         $class = "";
                         if ( $data3["status"] == 1 ) $class = " class=\"red\"";
                         $versions[] = "<a href=\"".$url."\" title=\"Version ".$data3["version"]."\"".$class.">v".$data3["version"]."</a>";
@@ -454,6 +477,67 @@
             krsort($compilations);
 
             return $compilations;
+        }
+    }
+
+    // funktionen fuer die compilation-liste
+    if ( in_array("group_permit", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
+        function group_permit( $grant_grp ) {
+            global $db, $cfg;
+
+            $return = array(
+                "perm_groups"      => array(),
+                "own_groups"       => array(),
+                "intersect_groups" => array(),
+            );
+
+            // freigegeben gruppen rausfinden
+            $perm_groups = array();
+            if ( is_array($_POST["perm_groups"]) ) {
+                $perm_groups = $_POST["perm_groups"];
+            } elseif ( $grant_grp == "-1" ) {
+                $sql = "SELECT *
+                          FROM auth_group";
+                $result = $db -> query($sql);
+                while ( $data = $db -> fetch_array($result,1) ) {
+                    $perm_groups[$data["gid"]] = $data["gid"];
+                }
+            } else {
+                $array = explode(":",$grant_grp);
+                if (is_array($array)) {
+                    foreach ( $array as $grpid ) {
+                        $perm_groups[$grpid] = $grpid;
+                    }
+                }
+            }
+            // hinzufuegen der superuser-gruppe(n) aus $cfg["fileed"]["su_groups"]
+            if ( is_array($cfg["fileed"]["su_groups"]) ) {
+                foreach ( $cfg["fileed"]["su_groups"] as $grpid ) {
+                    $perm_groups[$grpid] = $grpid;
+                }
+            }
+            if ( is_array($perm_groups) ) $return["perm_groups"] = array_filter($perm_groups);
+            asort($return["perm_groups"]);
+
+            // eigene gruppen rausfinden
+            $own_groups = array();
+            $sql = "SELECT *
+                      FROM auth_member
+                      JOIN auth_group
+                        ON (auth_member.gid=auth_group.gid)
+                     WHERE uid=".$_SESSION["uid"]."
+                  ORDER BY ggroup";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+                $own_groups[$data["gid"]] = $data["gid"];
+            }
+            if ( is_array($own_groups) ) $return["own_groups"] = $own_groups;
+
+            // schnittmenge zw. erlaubten und eigenen gruppen
+            $return["intersect_groups"] = array_intersect($return["perm_groups"],$return["own_groups"]);
+
+            return $return;
+
         }
     }
 

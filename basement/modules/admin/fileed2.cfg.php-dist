@@ -55,15 +55,15 @@
          "function" => array(
                      "list" => "", # array( "function_name" ),
               "list,shared" => array("filelist"),
-                      "add" => array( "thumbnail", "resize", "arrange", "compilationlist" ),
+                      "add" => array( "thumbnail", "resize", "arrange", "compilationlist","group_permit" ),
                "add,shared" => array( "zip_handling", "file_validate" ),
-                     "edit" => array( "resize", "arrange", "file_check", "compilationlist" ),
+                     "edit" => array( "resize", "arrange", "file_check", "compilationlist","group_permit" ),
               "edit,shared" => array( "zip_handling", "file_validate", "menu_convert" ),
                    "resize" => array( "resize", "arrange", "file_check", "compilationlist" ),
             "resize,shared" => array( "zip_handling", "file_validate" ),
                    "crop" => array( "resize", "arrange", "file_check", "compilationlist" ),
             "crop,shared" => array( "zip_handling", "file_validate" ),
-                   "delete" => array( "file_check" ),
+                   "delete" => array( "file_check","group_permit" ),
                    "upload" => array( "resize", "compilationlist" ),
             "upload,shared" => array( "zip_handling", "file_validate" ),
                      #"used" => "",
@@ -81,6 +81,7 @@
                              "line" => "5",    # pro zeile  (rows / line)
                           "newline" => "<br clear=\"all\" />",
                              "user" => "fuid",
+                        #"grant_grp" => "fgroups",          # dort steht, welche gruppen das bild editiern koennen
                                ),
                      "lang" => array(
                             #"entries" => "site_file_lang",
@@ -135,7 +136,8 @@
 //       "dummy_regex" => array("#p[0-9]+,[0-9]+#"),           # regex, muster fuer fhit-sperre
 //          "no_dummy" => "admin",                             # noetiges recht um den fhit komplett zu bearbeiten
             "right" => $cfg["auth"]["menu"]["fileed"][1],
-            "restrict" => array(), # z.B. array("delete", "edit")
+         "restrict" => array(), # z.B. array("delete", "edit")
+        #"su_groups" => array(1),       # beinhaltet die ids der gruppen, die alle bilder bearbeiten koennen
     );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////

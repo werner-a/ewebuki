@@ -81,14 +81,58 @@
             </label>
             <!--##show-->
         </fieldset>
+
         <!--##hide-owner-->
         <p>
             #(fowner) <a href="mailto:!{email}">!{name}</a><br />!{error}
         </p>
         <!--##show-->
+
+        <!--##hide-all_groups_allowed-->
+        <p>
+            #(all_groups_allowed)
+        </p>
+        <!--##show-->
+
+        <!--##hide-show_allowed_groups-->
+        <p>
+            #(allowed_groups)
+            <p>
+                <!--##loop-avail_groups-->
+                <b>!{group}:</b>&nbsp;!{desc}<br />
+                <!--##cont-->
+            </p>
+        </p>
+        <!--##show-->
+
+        <!--##hide-grant-->
+        <p>
+            <h2>Wer soll die Datei bearbeiten k&ouml;nnen?</h2>
+            <div class="clearer">&nbsp;</div>
+            <fieldset>
+            <ul>
+                <li>
+                    <input name="grant_all" value="0" type="radio"!{radio_grant_me} />&nbsp;nur Sie und folgende ausgew&auml;hlte Gruppen
+                    <ul class="no-style" style="margin:5px 0;">
+                        <!--##loop-avail_groups-->
+                        <li style="margin:5px 0 5px 25px;">
+                            <input name="perm_groups[]" value="!{gid}" type="checkbox"!{check}!{disabled} />
+                            <div style="float:left;margin-left:5px;"><b>!{group}:</b><br />!{desc}</div>
+                            <div class="clearer"></div>
+                        </li>
+                        <!--##cont-->
+                    </ul>
+                </li>
+                <li><input name="grant_all" value="-1" type="radio"!{radio_grant_all} />&nbsp;alle angemeldeten Benutzer</li>
+            </ul>
+            </fieldset>
+
+        </p>
+        <!--##show-->
+
         <!--##hide-references-->
-        <p>#(references)!#ausgaben_reference</p>
-        <p>#(ref_comp)!#ausgaben_ref_comp</p>
+        <p>#(references)<br />!#ausgaben_reference</p>
+        <p>#(ref_comp)<br />!#ausgaben_ref_comp</p>
         <p>!#element_fid</p>
         <!--##show-->
         <fieldset>

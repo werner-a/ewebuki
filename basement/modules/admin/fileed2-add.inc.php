@@ -106,6 +106,16 @@
 
         // dummy-fhit-feld
         // * * * * *
+        // fhit aufsplitten
+        $block_elements = array();
+        if ( is_array($cfg["fileed"]["dummy_regex"]) ) {
+            foreach ( $cfg["fileed"]["dummy_regex"] as $pattern ) {
+                preg_match_all("/".$pattern."/Ui",$form_values["fhit"],$match);
+                $block_elements = array_merge($block_elements,$match[0]);
+            }
+        }
+        $fhit_dummy = trim(str_replace($block_elements,"",$form_values["fhit"]));
+        $fhit_delicate = trim(implode(" ",$block_elements));
         if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"])
             && $cfg["fileed"]["no_dummy"] != "" ) {
             $fhit_dummy = $form_values["fhit"];
@@ -300,7 +310,6 @@
 
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
-
                 // ggf versteckte fhit-eingtraege wieder anhaengen
                 if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"]) ) {
                     // dummy wird ergaenzt

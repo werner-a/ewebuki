@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -77,6 +77,7 @@
                     $content = addslashes($zip->getFromIndex($buffer["index"]));
                     $textfile = explode("\n",$content);
                     $var_name = "";$array = array();
+                    // text wird in zeilen aufgesplittet und in abgelegt (vgl. $section bzw $cfg["fileed"]["zip_handling"]["sektions"])
                     foreach ( $textfile as $value ) {
                         if ( array_key_exists(strtolower(trim($value)), $section) ) {
                             $var_name = $section[strtolower(trim($value))];
@@ -116,13 +117,19 @@
                       && $value["name"] != "" ) {
 
                         // 1. datei auf den server schreiben
-                        $tmp_file = $extract_dest.str_replace(array("/"," "),
-                                                              array("--","_"),
-                                                              $value["file"]
-                        );
-                        $handle = fopen($tmp_file,"a");
-                        fwrite($handle, $zip->getFromIndex($key));
-                        fclose($handle);
+                        if ( !is_array($text_files[$value["name"]]) ) {
+                            $tmp_file = $extract_dest.str_replace(array("/"," "),
+                                                                array("--","_"),
+                                                                $value["file"]
+                            );
+                            $handle = fopen($tmp_file,"a");
+                            fwrite($handle, $zip->getFromIndex($key));
+                            fclose($handle);
+                        } else {
+                            // textdatei wird ausgelassen
+                            unset($zip_content[$key]);
+                            continue;
+                        }
 
                         // 2. file ueberpruefen
                         $error = file_validate($tmp_file, $value["size"], $restrict_size, $restrict_type);
@@ -143,7 +150,7 @@
                                 "compilation" => $compilation,
 //                                 "desc" => $text_files[basename($tmp_file).".txt"]["content"],
                                 "fdesc" => $_POST["zip_fdesc"]."\n".$text_files[basename($tmp_file).".txt"]["fdesc"],
-                               "funder" => $_POST["zip_fdesc"]." ".$text_files[basename($tmp_file).".txt"]["funder"],
+                               "funder" => $_POST["zip_funder"]." ".$text_files[basename($tmp_file).".txt"]["funder"],
                                  "fhit" => $_POST["zip_fhit"]." ".$text_files[basename($tmp_file).".txt"]["fhit"],
                             "wave_thru" => $wave_thru,
                             );

@@ -54,22 +54,18 @@
             $_SESSION["wizard_last_edit"] = $_SERVER["HTTP_REFERER"];
         }
 
+        // markierte Dateien werden nacheinander abgearbeitet
         if ( $environment["parameter"][1] == "" ) {
             if ( count($_SESSION["file_memo"]) > 0 ) {
                 $environment["parameter"][1] = current($_SESSION["file_memo"]);
             } else {
-//                 if ( $_SESSION["wizard_last_edit"] != "" ) {
-//                     $header = $_SESSION["wizard_last_edit"];
-//                     unset($_SESSION["wizard_last_edit"]);
-//                 } else {
-//                     $header = $cfg["fileed"]["basis"]."/list.html";
-//                 }
                 $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
                 unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
                 header("Location: ".$header);
             }
         }
 
+        // advanced referer
         if ( !strstr($_SERVER["HTTP_REFERER"],$environment["ebene"]."/".$environment["kategorie"]) ) {
             $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]] = $_SERVER["HTTP_REFERER"];
         }
@@ -88,6 +84,10 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         $form_values = $db -> fetch_array($result,1);
+
+        // ist die gruppenberechtigung aktiviert
+        if ( isset($form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]]) ) $grant_grp_mode = -1;
+
         if ( count($_POST) != 0 ) {
             $form_values = array_merge($form_values,$_POST);
             $form_values["ffart"] = strtolower(substr(strrchr($form_values["ffname"],"."),1));
@@ -146,11 +146,85 @@
                 }
             }
             $hidedata["fhit_dummy"]["value"] = $fhit_dummy;
+            $hidedata["fhit_dummy"]["readonly"] = "";
         } else {
             $hidedata["fhit_admin"]["value"] = $form_values["fhit"];
+            $hidedata["fhit_admin"]["readonly"] = "";
         }
         // dummy-fhit-feld
         // + + + + +
+
+
+        // grant edit-rechte
+        // * * * * *
+        if ( $grant_grp_mode == -1 ) {
+
+            $group_permit = group_permit( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] );
+            $perm_groups      = $group_permit["perm_groups"];
+            $own_groups       = $group_permit["own_groups"];
+            $intersect_groups = $group_permit["intersect_groups"];
+
+            if ( $_SESSION["uid"] == $form_values["fuid"] ) {
+            // nur besitzer darf gruppenrechte setzen
+                if ( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] == "-1" || $form_values["grant_all"] == "-1" ) {
+                    $hidedata["grant"]["radio_grant_me"] = "";
+                    $hidedata["grant"]["radio_grant_all"] = " checked=\"true\"";
+                } else {
+                    $hidedata["grant"]["radio_grant_me"] = " checked=\"true\"";
+                    $hidedata["grant"]["radio_grant_all"] = "";
+                }
+                // kombination der vergebenen und eigenen gruppen, keine doppelte
+                if ( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] == "-1" ) {
+                    $avail_groups = $own_groups;
+                } else {
+                    $avail_groups = array_flip(array_flip(array_merge($perm_groups,$own_groups)));
+                }
+            } else {
+            // alle andere bekommen nur eine auflistung der berechtigten gruppen
+                if ( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] == "-1" ) {
+                    $hidedata["all_groups_allowed"] = array();
+                } else {
+                    $avail_groups = $perm_groups;
+                    if ( count($avail_groups) > 0 ) $hidedata["show_allowed_groups"] = array();
+                }
+            }
+
+            // auflistung der gruppen
+            if ( count($avail_groups) > 0 ) {
+                $sql = "SELECT *
+                          FROM  auth_group
+                         WHERE gid IN (".implode(",",$avail_groups).")
+                      ORDER BY ggroup";
+                $result = $db -> query($sql);
+                while ( $data = $db -> fetch_array($result,1) ) {
+                    $check = "";
+                    if ( in_array($data["gid"],$perm_groups)
+                    && $form_values["grant_all"] != "-1"
+                    && $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] != "-1"  ) {
+                        $check = " checked=\"true\"";
+                    }
+                    if ( is_array($cfg["fileed"]["su_groups"]) && in_array($data["gid"],$cfg["fileed"]["su_groups"]) ) {
+                        $class = "inaktiv";
+                        $disabled = " disabled=\"disabled\"";
+                        $check = " checked=\"true\"";
+                    } else {
+                        $class = "";
+                        $disabled = "";
+                    }
+                    $dataloop["avail_groups"][] = array(
+                             "gid" => $data["gid"],
+                           "group" => $data["ggroup"],
+                            "desc" => $data["beschreibung"],
+                           "check" => $check,
+                           "class" => $class,
+                        "disabled" => $disabled,
+                    );
+                }
+            }
+        }
+        // + + + + +
+        // grant edit-rechte
+
 
         $hidedata["references"] = array();
 
@@ -187,17 +261,21 @@
         }
 
         // ersetzen-feld
-        if ( $_SESSION["uid"] == $form_values["fuid"] ) { # nur eigene dateien duerfen ersetzt werden
+        if ( $_SESSION["uid"] == $form_values["fuid"]           # nur eigene dateien duerfen ersetzt werden
+          || count($intersect_groups) > 0 ) {                   # oder wenn man in berechtigter gruppe ist
             // dateien duerfen nur ersetzt werden, wenn sie nirgends verwendet werden
             if ( (count($used_in) == 0 && count($intersect) == 0) || $cfg["fileed"]["replace_used"] == true ) {
                 $hidedata["upload"][0] = -1;
                 $owner_error = "";
             }
         } else {
-            $owner_error = "#(error_edit)";
+            if ( count($perm_groups) == 0 ) $owner_error = "#(error_edit)";
+            $element["ffname"] = str_replace(">"," readonly=\"true\">",$element["ffname"]);
             $element["fdesc"] = str_replace(">"," readonly=\"true\">",$element["fdesc"]);
             $element["fhit"] = str_replace(">"," readonly=\"true\">",$element["fhit"]);
             $element["funder"] = str_replace(">"," readonly=\"true\">",$element["funder"]);
+            if ( is_array($hidedata["fhit_dummy"]) ) $hidedata["fhit_dummy"]["readonly"] = " readonly=\"true\"";
+            if ( is_array($hidedata["fhit_admin"]) ) $hidedata["fhit_admin"]["readonly"] = " readonly=\"true\"";
         }
 
         // besitzer feststellen
@@ -260,6 +338,8 @@
             $ausgaben["inaccessible"] .= "# (error_edit) #(error_edit)<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_replace) #(error_replace)<br />";
+            $ausgaben["inaccessible"] .= "# (all_groups_allowed) #(all_groups_allowed)<br />";
+            $ausgaben["inaccessible"] .= "# (allowed_groups) #(allowed_groups)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -354,10 +434,10 @@
                     // +++
                     // funktions bereich fuer erweiterungen
 
-                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder", "fhit_dummy" );
+                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder", "fhit_dummy", "grant_all", "perm_groups" );
                     foreach($_POST as $name => $value) {
                         if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
-                            if ( $sqla != "" ) $sqla .= ", ";
+                            if ( $sqla != "" ) $sqla .= ",\n ";
                             $sqla .= $name."='".$value."'";
                         }
                     }
@@ -367,13 +447,27 @@
                     #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                     #$sqla .= ", ldate='".$ldate."'";
                     if ( trim($_POST["fdesc"]) == "" ) {
-                        $sqla .= ", fdesc='".$_POST["funder"]."'";
+                        $sqla .= ",\n fdesc='".$_POST["funder"]."'";
                     } else {
-                        $sqla .= ", fdesc='".$_POST["fdesc"]."'";
+                        $sqla .= ",\n fdesc='".$_POST["fdesc"]."'";
+                    }
+                    // grant edit-rechte
+                    if ( $_SESSION["uid"] == $form_values["fuid"] && $grant_grp_mode == -1 ) {
+                        if ( $_POST["grant_all"] == -1 ) {
+                            $sqla .= ",\n ".$cfg["fileed"]["db"]["file"]["grant_grp"]."='-1'";
+                        } else {
+                            if ( is_array($_POST["perm_groups"]) ) {
+                                $sqla .= ",\n ".$cfg["fileed"]["db"]["file"]["grant_grp"]."='".implode(":",$_POST["perm_groups"])."'";
+                            } else {
+                                $sqla .= ",\n ".$cfg["fileed"]["db"]["file"]["grant_grp"]."=''";
+                            }
+                        }
                     }
 
                     $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
-                               SET ".$sqla." WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+                               SET ".$sqla."
+                             WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) {

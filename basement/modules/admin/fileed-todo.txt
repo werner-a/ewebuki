@@ -2,37 +2,37 @@
 
 ToDo:
 -----
-- feature: benutzer soll eine selektionen nur mit einer bestimmten anzahl von bildern auswählen können
-- feature: rechtestruktur (z.B.: Benutzer gelöscht - datei herrenlos)
-- feature: freigabe von dateien für andere benutzer (ersezten!)
+- feature: benutzer soll eine selektionen nur mit einer bestimmten anzahl von bildern auswaehlen koennen
+- feature: rechtestruktur (z.B.: Benutzer geloescht - datei herrenlos)
 
 
 
 to be tested:
 -------------
+- feature: freigabe von dateien fuer andere benutzer (ersezten!)
 - transparent geht beim resizen verloren
 
 
 
 erledigt:
 ---------
-- gemeinsame liste bilder, dokumente, archive macht im markierten zustand probleme - lösung: kombinierte liste
+- gemeinsame liste bilder, dokumente, archive macht im markierten zustand probleme - loesung: kombinierte liste
 - reiter:
     links: dateien, markiert
     rechts: Selektionen, Upload
 
 zip-handling:
-- funktionalität auch bei edit
-- möglichkeit, die felder (fdesc, fhit) vorzubelegen
+- funktionalitaet auch bei edit
+- moeglichkeit, die felder (fdesc, fhit) vorzubelegen
 - nach fehlerfreien extrahieren soll die zip-datei geloescht werden
 
 - automatisch gallerien bilden
 - dateibeschreibung aus mitgegebenen textfile lesen
-- zurück-sprungziel nach bearbeiten von compilations
-- möglichkeit, die datei nach dem upload, aber vor dem db-eintrag aus dem new-ordner zu löschen
-- filecollect: benutzer muß neue CompilationId eingeben -> soll system übernehmen
+- zurueck-sprungziel nach bearbeiten von compilations
+- moeglichkeit, die datei nach dem upload, aber vor dem db-eintrag aus dem new-ordner zu loeschen
+- filecollect: benutzer muss neue CompilationId eingeben -> soll system uebernehmen
 - feature: die max. upload groesse anzeigen
-- welche selektionen wurden ausgewählt?
+- welche selektionen wurden ausgewaehlt?
 - bug: bei zip, pdf u.s.w. wird der noch der alte name beim download verwendet
 - bug: beim klick auf ein bild in den compilations, wird das bild nicht angezeigt
 - bug: nach entpacken von zips leerzeichen in den vorbelegungen

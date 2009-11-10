@@ -17,20 +17,31 @@
     <p>!#ausgaben_form_error</p>
     <div class="clearer">&nbsp;</div>
 
-    <fieldset id="pics_chosen" style="padding:0;min-height:90px;border:1px solid #6C757A;">
+    <fieldset style="padding:0;min-height:90px;border:1px solid #6C757A;">
         <legend>#(chosen)</legend>
-        <img src="/images/default/pos.png" style="width:1px;height:96px;float:right;" />
-        <!--##loop-chosen-->
-        <img src="!{src}" id="pic_!{id}" class="sel_item" style="float:left;margin:5px;" />
-        <!--##cont-->
+        <ul id="pics_chosen" style="float:left;width:98% !important;margin:10px 5px 5px 10px;">
+            <li style="list-style:none;border:0 solid silver;float:left;margin:0;width:0;">
+                <img src="/images/default/pos.png" style="width:1px;height:96px;" />
+            </li>
+            <!--##loop-chosen-->
+            <li id="pic_!{id}" class="sel_item thumbs" style="height:102px;">
+                <img src="!{src}" class="sel_item" />
+            </li>
+            <!--##cont-->
+        </ul>
     </fieldset>
-
-    <fieldset id="pics_available" style="padding:0;border:1px solid #6C757A;">
+    <fieldset style="padding:0;min-height:90px;border:1px solid #6C757A;">
         <legend>#(dashboard)</legend>
-        <img src="/images/default/pos.png" style="width:1px;height:96px;float:right;" />
-        <!--##loop-clipboard-->
-        <img src="!{src}" id="pic_!{id}" class="sel_item" style="float:left;margin:5px;" />
-        <!--##cont-->
+        <ul id="pics_available" style="float:left;width:98% !important;margin:10px 5px 5px 10px;">
+            <li style="list-style:none;border:0 solid silver;float:left;margin:0;width:0;">
+                <img src="/images/default/pos.png" style="width:1px;height:96px;" />
+            </li>
+            <!--##loop-clipboard-->
+            <li id="pic_!{id}" class="sel_item thumbs" style="height:102px;">
+                <img src="!{src}" class="sel_item" />
+            </li>
+            <!--##cont-->
+        </ul>
     </fieldset>
 
     <fieldset>
@@ -55,8 +66,8 @@
     Sortable.create(
         'pics_available',
         {
-            tag:'img',
-                constraint: false,
+            constraint: false,
+            overlap:'horizontal',
             dropOnEmpty: true,
             containment: sections,
             only:'sel_item',
@@ -78,8 +89,8 @@
     Sortable.create(
         'pics_chosen',
         {
-            tag:'img',
-                constraint: false,
+            constraint: false,
+            overlap:'horizontal',
             dropOnEmpty: true,
             containment: sections,
             only:'sel_item',
