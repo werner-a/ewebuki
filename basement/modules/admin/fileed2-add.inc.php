@@ -100,6 +100,9 @@
             $element["fdesc"] = str_replace("></textarea>", "/>".trim($file_buffer["fdesc"])."</textarea>", $element["fdesc"]);
             $element["funder"] = str_replace("value=\"\"", "value=\"".trim($file_buffer["funder"])."\"", $element["funder"]);
             $element["fhit"] = str_replace("value=\"\"", "value=\"".trim($file_buffer["compilation"]." ".$file_buffer["fhit"])."\"", $element["fhit"]);
+            if ( $_POST["fhit"] == "" ) {
+                $form_values["fhit"] = trim($file_buffer["compilation"]." ".$file_buffer["fhit"]);
+            }
         }
 
         $hidedata[$environment["kategorie"]] = array();

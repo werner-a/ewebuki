@@ -58,6 +58,7 @@
         if ( $environment["parameter"][1] == "" ) {
             if ( count($_SESSION["file_memo"]) > 0 ) {
                 $environment["parameter"][1] = current($_SESSION["file_memo"]);
+                $environment["allparameter"] = implode(",",$environment["parameter"]);
             } else {
                 $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
                 unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
@@ -175,7 +176,7 @@
                 }
                 // kombination der vergebenen und eigenen gruppen, keine doppelte
                 if ( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] == "-1" ) {
-                    $avail_groups = $own_groups;
+                    $avail_groups = array_flip(array_flip(array_merge($cfg["fileed"]["su_groups"],$own_groups)));
                 } else {
                     $avail_groups = array_flip(array_flip(array_merge($perm_groups,$own_groups)));
                 }
@@ -196,6 +197,9 @@
                          WHERE gid IN (".implode(",",$avail_groups).")
                       ORDER BY ggroup";
                 $result = $db -> query($sql);
+                $buffer_user = array();
+                $buffer_su = array();
+                $dataloop["avail_groups"] = array();
                 while ( $data = $db -> fetch_array($result,1) ) {
                     $check = "";
                     if ( in_array($data["gid"],$perm_groups)
@@ -211,7 +215,7 @@
                         $class = "";
                         $disabled = "";
                     }
-                    $dataloop["avail_groups"][] = array(
+                    $buffer = array(
                              "gid" => $data["gid"],
                            "group" => $data["ggroup"],
                             "desc" => $data["beschreibung"],
@@ -219,7 +223,13 @@
                            "class" => $class,
                         "disabled" => $disabled,
                     );
+                    if ( in_array($data["gid"],$cfg["fileed"]["su_groups"]) ) {
+                        $buffer_su[] = $buffer;
+                    } else {
+                        $buffer_user[] = $buffer;
+                    }
                 }
+                $dataloop["avail_groups"] = array_merge($buffer_su,$buffer_user);
             }
         }
         // + + + + +
@@ -352,8 +362,10 @@
 
         // beim abbrechen werden alle eigenen dateien aus new-ordner geloescht
         if ( $_POST["abort"] != "" ) {
+echo "hallo<br>";
 //             $header = $ausgaben["form_break"];
             $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
+echo "$header<br>";
             unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
             $dp = opendir($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]);
             while ( $file = readdir($dp) ) {
@@ -362,7 +374,7 @@
                     unlink($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
                 }
             }
-            header("Location: ".$header);
+//             header("Location: ".$header);
         }
 
         if ( $environment["parameter"][3] == "verify"
