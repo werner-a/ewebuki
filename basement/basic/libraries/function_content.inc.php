@@ -266,20 +266,18 @@
                         $editurl = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$dbtname.",".$label.",,,".$version;
                     }
 
-                    if ( $defaults["cms-tag"]["signal"] == "" ) {
-                        $defaults["cms-tag"]["signal"] = "<img src=\"/images/default/cms-tag-";
-                        $defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" />";
+                    if ( $defaults["cms-tag"]["link"] == "" ) {
+                        $defaults["cms-tag"]["link"] = "<a href=\"##url##\"<img src=\"/images/default/cms-tag-##signal##.png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" /></a>";
                     }
 
-
-
+                    // section verarbeitung
                     if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
                         foreach ( $allcontent as $key => $value ) {
-                            $replace = str_replace( "{".$key."}", "<a href=\"".$editurl_key.",".$key.",,".$version.",.html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>", $replace);
+                            $marken = array("##url##", "##signal##");
+                            $ersatz = array($editurl_key.",".$key.",,".$version.",.html", $signal);
+                            $replace = str_replace( "{".$key."}",str_replace($marken,$ersatz,$defaults["cms-tag"]["link"]), $replace);
                         }
                     }
-
-
 
                     // wenn es kein value, alt, title und status in der zeile gibt
                     $vorher = substr($line,$labelbeg-20,20);
@@ -287,7 +285,9 @@
                       && !strpos($vorher,"alt=\"")
                       && !strpos($vorher,"title=\"")
                       && !strpos($vorher,"status='") ) {
-                        $replace .= " <a href=\"".$editurl.$convert.".html\">".$defaults["cms-tag"]["signal"].$signal.$defaults["cms-tag"]["/signal"]."</a>";
+                        $marken = array("##url##", "##signal##");
+                        $ersatz = array($editurl.$convert.".html", $signal);
+                        $replace .= str_replace($marken,$ersatz,$defaults["cms-tag"]["link"]);
                     } else {
                         $ausgaben["inaccessible"] .= $bez.$label.")&nbsp;".$art.$label.")<br />\n";
                     }

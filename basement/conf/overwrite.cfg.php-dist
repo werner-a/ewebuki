@@ -57,9 +57,8 @@
     // bei eigenen bildern, kann anstatt '/images/default/' - '".$pathvars["images"]."' verwendet werden
     // dann werden die bilder aus immer aus dem jeweiligen /images/design verzeichnis geladen.
 
-    // bild fuer den bearbeiten link
-    #$defaults["cms-tag"]["signal"] = "<img src=\"".$pathvars["images"]."/cms-tag-";
-    #$defaults["cms-tag"]["/signal"] = ".png\" width=\"4\" height=\"4\" border=\"0\" alt=\"Bearbeiten\">";
+    // alternative bearbeiten haken
+    #$defaults["cms-tag"]["link"] = "<a href=\"##url##\"<img src=\"/images/default/cms-tag-##signal##.png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" /></a>";
 
     // einstellung fuer die sections aendern
     #$defaults["section"]["label"] = "inhalt";

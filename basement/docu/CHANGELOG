@@ -1,14 +1,23 @@
 ================================================================================
 eWeBuKi changelog
 
-weitere infos im cvs http://cvs.berlios.de/cgi-bin/viewcvs.cgi/ewebuki/basement/
+weitere infos im svn
+http://svn.berlios.de/wsvn/ewebuki/trunk/basement/
 
 $Id$
 ================================================================================
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 11. November 2009
+
+den kompletten edit haken in die overwrite.cfg.php 
+( $defaults["cms-tag"]["link"] ) ausgelagert um ihn 
+besser konfigurieren zu k�nnen.
+
+
 --- 02. November 2009
+
 Dateien koennen jetzt fuer zur bearbeitung freigegeben werden.
 Dazu muss die Tabelle site_file mit einer neuen Spalte des Typs "varchar" ergaenzt werden, in der die IDs berechtigten Gruppen durch Doppelpunkt getrennt gespeichert werden koennen.
 Der Name dieser Spalte wird in die Variablen $cfg["fileed"]["db"]["file"]["grant_grp"] geschrieben.
@@ -42,21 +51,21 @@ CREATE TABLE IF NOT EXISTS `site_keyword` (
   PRIMARY KEY  (`kid`),
   UNIQUE KEY `kid` (`kid`)
 );
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'keywords', 'base', 1, '', '', '-1', '0', 'Schlagwörter', '2008-12-08 15:12:05', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'rel_pages', 'base', 1, '', '', '-1', '0', 'ähnliche Seiten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'add_keywords', 'global', 1, '', '', '-1', '0', 'Verschlagworten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'all_keywords', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'alle Schlagwörter', '2008-12-08 14:18:43', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'ueberschrift', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter', '2008-12-08 14:18:54', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'pages', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'gefundende Seiten', '2008-12-08 14:19:44', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'edit_page', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter der Seite bearbeiten', '2008-12-09 10:26:10', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'edit_keyword', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwort umbenennen', '2008-12-09 10:27:31', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'ueberschrift', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Seite verschlagworten', '2008-12-08 15:16:21', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'url', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Pfad', '2008-12-08 15:16:29', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'keyword', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Schlagwörter', '2008-12-08 15:16:37', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'error_right', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Sie sind nicht berechtigt, diese Seite zu verschlagworten!', '2008-12-09 08:43:23', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'ueberschrift', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Schlagwort umbenennen', '2008-12-08 15:20:41', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'old_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Altes Schlagwort', '2008-12-08 15:20:52', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
-INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES('de', 'new_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Neues Schlagwort', '2008-12-08 15:21:03', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 0);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'keywords', 'base', 1, '', '', '-1', '0', 'Schlagwörter', '2008-12-08 15:12:05', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'rel_pages', 'base', 1, '', '', '-1', '0', 'ähnliche Seiten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'add_keywords', 'global', 1, '', '', '-1', '0', 'Verschlagworten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'all_keywords', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'alle Schlagwörter', '2008-12-08 14:18:43', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'ueberschrift', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter', '2008-12-08 14:18:54', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'pages', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'gefundende Seiten', '2008-12-08 14:19:44', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'edit_page', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter der Seite bearbeiten', '2008-12-09 10:26:10', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'edit_keyword', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwort umbenennen', '2008-12-09 10:27:31', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'ueberschrift', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Seite verschlagworten', '2008-12-08 15:16:21', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'url', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Pfad', '2008-12-08 15:16:29', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'keyword', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Schlagwörter', '2008-12-08 15:16:37', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'error_right', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Sie sind nicht berechtigt, diese Seite zu verschlagworten!', '2008-12-09 08:43:23', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'ueberschrift', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Schlagwort umbenennen', '2008-12-08 15:20:41', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'old_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Altes Schlagwort', '2008-12-08 15:20:52', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'new_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Neues Schlagwort', '2008-12-08 15:21:03', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES ('new_keyword', '1950102507.rename_tag', '0', '', '', NULL, '-1', '');
 
 --- 05. Juni 2008
@@ -75,6 +84,7 @@ VALUES ( 'de', 'extract', 'global', '', '', '-1', 'Entpacken', '0000-00-00 00:00
 
 
 --- 27. Februar 2008
+
 ACHTUNG: Neue Spalte ist erforderlich!
 
 Vergebene Rechte koennen jetzt in tiefer liegenden Menupunkten wieder aufgehoben werden,
@@ -109,6 +119,7 @@ VALUES
 ( 'de', 'history', 'global', '', 'auth', '-1', 'Historie',
 '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 
+
 --- 21. Januar 2008
 
 In der $cfg["file"] kann man jetzt breite und hoehe der zielgroessen angeben:
@@ -121,6 +132,7 @@ Soll das Bild so zugeschnitten werden, dass es die festgelegte Breite und Hoehe 
 $cfg["file"]["size"]-Variable um den Schalter "crop" ergaenzen.
 z.B.:
 $cfg["file"]["size"]["tn"] = 96:60:crop;    => Thumbnail hat 96:60 Pixel ohne weisse Raender
+
 
 --- 20. November 2007
 
@@ -139,6 +151,7 @@ VALUES
 '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki'),
 ( 'de', 'grouped', 'auth', '', 'auth', '-1', 'Gruppen-Editor',
 '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+
 
 --- 20. November 2007
 
@@ -182,6 +195,7 @@ CREATE TABLE `auth_priv` (
   `priv` varchar(20) NOT NULL,
   PRIMARY KEY  (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0;
+
 
 --- 12. November 2007
 
