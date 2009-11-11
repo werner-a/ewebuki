@@ -267,7 +267,7 @@
                     }
 
                     if ( $defaults["cms-tag"]["link"] == "" ) {
-                        $defaults["cms-tag"]["link"] = "<a href=\"##url##\"<img src=\"/images/default/cms-tag-##signal##.png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" /></a>";
+                        $defaults["cms-tag"]["link"] = "<a href=\"##url##\"><img src=\"/images/default/cms-tag-##signal##.png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" /></a>";
                     }
 
                     // section verarbeitung

@@ -58,7 +58,7 @@
     // dann werden die bilder aus immer aus dem jeweiligen /images/design verzeichnis geladen.
 
     // alternative bearbeiten haken
-    #$defaults["cms-tag"]["link"] = "<a href=\"##url##\"<img src=\"/images/default/cms-tag-##signal##.png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" /></a>";
+    #$defaults["cms-tag"]["link"] = "<a href=\"##url##\"><img src=\"/images/default/cms-tag-##signal##.png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" /></a>";
 
     // einstellung fuer die sections aendern
     #$defaults["section"]["label"] = "inhalt";

@@ -39,6 +39,7 @@ $cfg["fileed"]["dummy_regex"]: Array mit Regex-Werten. Diese Muster werden gespe
                                z.B.: array("#p[0-9]+,[0-9]+#"): dieses sperrt die Gruppierungsangaben
 $cfg["fileed"]["no_dummy"]:    Rechteangabe; für diese Rechte wird die herkoemmliche, nicht bereinigte/gesperrte Variante verwendet
 
+
 --- 09. Dezember 2008
 sql-eintraege für die schlagwoerter:
 CREATE TABLE IF NOT EXISTS `site_keyword` (
@@ -67,6 +68,7 @@ INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategori
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'old_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Altes Schlagwort', '2008-12-08 15:20:52', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'new_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Neues Schlagwort', '2008-12-08 15:21:03', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
 INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES ('new_keyword', '1950102507.rename_tag', '0', '', '', NULL, '-1', '');
+
 
 --- 05. Juni 2008
 Anscheinend fehlten beim fileed-add Inhalte der Marken in dem Zip-Entpack-Bereich:
