@@ -362,10 +362,7 @@
 
         // beim abbrechen werden alle eigenen dateien aus new-ordner geloescht
         if ( $_POST["abort"] != "" ) {
-echo "hallo<br>";
-//             $header = $ausgaben["form_break"];
             $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
-echo "$header<br>";
             unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
             $dp = opendir($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]);
             while ( $file = readdir($dp) ) {
@@ -374,7 +371,7 @@ echo "$header<br>";
                     unlink($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"].$file);
                 }
             }
-//             header("Location: ".$header);
+            header("Location: ".$header);
         }
 
         if ( $environment["parameter"][3] == "verify"
