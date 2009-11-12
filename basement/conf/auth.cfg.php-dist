@@ -100,13 +100,13 @@
              # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
             "inplace" => array(
-                              "new" => array("add","g(new)"),
-       #"/admin/contented/history,," => array("add","g(history)"),
-                      #"/wizard/add" => array("add","g(wizard-add)"),
-                     #"/wizard/show" => array("edit","g(wizard-show)"),
-                  #"/wizard/release" => array("publish","g(wizard-release)"),
-              #"/keywords/edit_page" => array("edit","g(add_keywords)"),
-                             #"move" => array("add")
+                              "new" => array("cms_admin","g(new)"),
+       "/admin/contented/history,," => array("cms_admin","g(history)"),
+                      #"/wizard/add" => array("disabled","g(wizard-add)"),
+                     #"/wizard/show" => array("disabled","g(wizard-show)"),
+                  #"/wizard/release" => array("disabled","g(wizard-release)"),
+              #"/keywords/edit_page" => array("disabled","g(add_keywords)"),
+                             #"move" => array("disabled")
                        ),
     );
 
