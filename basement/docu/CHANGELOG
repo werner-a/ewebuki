@@ -11,8 +11,8 @@ $Id$
 
 --- 11. November 2009
 
-den kompletten edit haken in die overwrite.cfg.php 
-( $defaults["cms-tag"]["link"] ) ausgelagert um ihn 
+den kompletten edit haken in die overwrite.cfg.php
+( $defaults["cms-tag"]["link"] ) ausgelagert um ihn
 besser konfigurieren zu können.
 
 
@@ -30,7 +30,9 @@ Zusaetzlich kann man in der Variablen $cfg["fileed"]["su_groups"] festlegen, wel
 $cfg["fileed"]["su_groups"] ist ein Array und hat die Gruppen-IDs als Elemente.
 $cfg["fileed"]["su_groups"] zieht nur, wenn auch $cfg["fileed"]["db"]["file"]["grant_grp"] gesetzt ist.
 
+
 --- 04. Januar 2009
+
 Im FileEd-Edit/Add kann nun festgelegt werden, dass bestimmte Werte im fhit-Feld nicht angezeigt und nicht eingefuegt werden kann.
 Diese gesperrten Eintraege werden dann automatisch vom System wieder angefuegt.
 
@@ -71,6 +73,7 @@ INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `fopti
 
 
 --- 05. Juni 2008
+
 Anscheinend fehlten beim fileed-add Inhalte der Marken in dem Zip-Entpack-Bereich:
 
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
@@ -101,13 +104,17 @@ sql fuer postgres:
 ALTER TABLE auth_content ADD neg character varying(2) DEFAULT '';
 ALTER TABLE auth_content ADD CONSTRAINT auth_content_neg_check CHECK ((((neg)::text = (-1)::text) OR ((neg)::text = ''::text)));
 
+
 --- 21. Februar 2008
+
 Beim Link-Tag kann jetzt ein zusaetzliches attribut "title" hinzugefuegt werden:
 [LINK=url;target;titel]bezeichnung[/LINK]
 Beispiel:
 [LINK=http://www.google.de;_blank;Link zu Google]Eine Suchmaschine[/LINK]
 
+
 --- 01. Februar 2008
+
 die "authInPlace" tools werden jetzt mit dataloop eingebunden.
 das tool "history" wurde hinzugefuegt, um es sichtbar zu machen bitte unten
 angefuegten sql ausfï¿½hren!
