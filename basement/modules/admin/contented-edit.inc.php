@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -141,7 +141,7 @@
         ### put your code here ###
 
         // funktion_content.inc.php zeile 181,182 reicht nicht (mehr)
-        // eine funktion die nicht aufgerufen wird füllt auch die variablen nicht
+        // eine funktion die nicht aufgerufen wird fï¿½llt auch die variablen nicht
         if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
         if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
 
@@ -472,7 +472,7 @@
                 || $HTTP_POST_VARS["upload"] != "" ) ) {
 
 
-            // form eingaben prüfen
+            // form eingaben prï¿½fen
             form_errors( $form_options, $HTTP_POST_VARS );
 
 
@@ -594,6 +594,9 @@
 
             // datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
+
+                // ticks sicher maskierie
+                $content = addslashes(stripslashes($content));
 
                 $mark = "";$marka = "";$markb = "";
                 if ( $specialvars["content_release"] == -1 ) {
