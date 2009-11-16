@@ -462,7 +462,6 @@
                             AND tname ='".$environment["parameter"][2]."'
                             AND lang = '".$environment["language"]."'";
             $result  = $db -> query($sql);
-            header("Location: ".$_SESSION["page"]."");
         }
 
         if ( $environment["parameter"][7] == "verify"
