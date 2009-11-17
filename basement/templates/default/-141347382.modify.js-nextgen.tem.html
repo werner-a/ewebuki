@@ -317,10 +317,13 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
         }
         var myValue = prompt('URL:', defaultLink);
         if (myValue) {
-            myValue = '[IMG'
+            myValue = '['
+                    + i
                     + myValue
                     + ']' + prompt('Titel:', defaultTitle)
-                    + '[/IMG' + defaultEnd + ']';
+                    + '[/'
+                    + i
+                    + defaultEnd + ']';
             ebInsertContent(myField, myValue);
         }
 

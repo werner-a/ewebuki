@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -65,7 +65,7 @@
     #$defaults["section"]["tag"] = "[H";
     #$defaults["section"]["tag"] = array("[H","[P","[DIV"); # mehrere tags
 
-    // bild einf�gen tag
+    // bild einfuegen tag (deprecated, look in contented.cfg.php -> $cfg[$script_name]["image_tag"] and the matching $cfg["contented"]["tags"]["?"]
     #$defaults["cms-tag"]["grafik"] = "[IMGB=";
     #$defaults["cms-tag"][",grafik"] = ";;0;b;";
     #$defaults["cms-tag"]["/grafik"] = "[/IMGB]";

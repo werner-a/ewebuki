@@ -1,13 +1,8 @@
-
-
-DIV Tag - irgendwie mehrfach verfügbar? -> done!
 IMG Tag - komplett
 EMAIL - komplett
 IMGB - komplett
 
 HR, BR, SP, HS, HL wenn nichts markiert ist open/close auf einmal?
-
-
 
 
 "BUFFY MINDS"
@@ -21,6 +16,5 @@ Anlegen neuer Seiten:
 
 Füllen von Seiten:
 dummy-user erhalten eigenen editor der nur bestimmte marken ( DIV oder HS )ohne tags speichern kann.
-
 
 beim zurückspringen vom fileed landet man nicht im contented, sondern auf der seite selber

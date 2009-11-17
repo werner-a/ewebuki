@@ -111,13 +111,14 @@
             }
 
             // onclick link start / end
-            $la = $cfg[$script_name]["tags"]["img"][3]
+            if ( $cfg[$script_name]["image_tag"] == "" ) $cfg[$script_name]["image_tag"] = "img"; # kompatibilitaet
+            $la = $cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][3]
                  .$cfg["file"]["base"]["webdir"]
                  .$data["ffart"]."/"
                  .$data["fid"]."/";
             //   "o/"
             $lb = $data["ffname"]
-                 .$cfg[$script_name]["tags"]["img"][4];
+                 .$cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][4];
 
             // keine weiteren parameter fuer others
             if ( $cfg["file"]["filetyp"][$data["ffart"]] != "img" ) {
@@ -197,11 +198,11 @@
                                          "mhref_lb" => str_replace("/tn/","/m/",$src_realname),
                                          "shref_lb" => str_replace("/tn/","/s/",$src_realname),
                                                        // new: ebInsertImage(ebCanvas);
-                                           "oclick" => "ebInsertImage(ebCanvas, '', '".$la."o/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
-                                           "bclick" => "ebInsertImage(ebCanvas, '', '".$la."b/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
-                                           "mclick" => "ebInsertImage(ebCanvas, '', '".$la."m/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
-                                           "sclick" => "ebInsertImage(ebCanvas, '', '".$la."s/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
-                                           "fclick" => "ebInsertother(ebCanvas, '', '".$la.$lb."', '".htmlspecialchars($data["funder"])."', '');",
+                                           "oclick" => "ebInsertImage(ebCanvas, '".strtoupper($cfg[$script_name]["image_tag"])."', '".$la."o/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
+                                           "bclick" => "ebInsertImage(ebCanvas, '".strtoupper($cfg[$script_name]["image_tag"])."', '".$la."b/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
+                                           "mclick" => "ebInsertImage(ebCanvas, '".strtoupper($cfg[$script_name]["image_tag"])."', '".$la."m/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
+                                           "sclick" => "ebInsertImage(ebCanvas, '".strtoupper($cfg[$script_name]["image_tag"])."', '".$la."s/".$lb."', '".htmlspecialchars($data["funder"])."', '".$cfg[$script_name]["tags"]["img"][5]."');",
+                                           "fclick" => "ebInsertother(ebCanvas, '".strtoupper($cfg[$script_name]["image_tag"])."', '".$la.$lb."', '".htmlspecialchars($data["funder"])."', '');",
                                         "cvs_click" => $cvs_click,
                                         "cvs_title" => $cvs_title,
                                           "newline" => $newline,
