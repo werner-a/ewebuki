@@ -71,6 +71,11 @@
         $new = $id["mid"];
         $where = "";
 
+        // manipulation verhindern
+        if ( $environment["parameter"][2] != "" && !preg_match("/^[0-9]*$/",$environment["parameter"][2]) ) {
+            header('Location: /index.html');
+            exit;
+        }
         $sort_len = strlen($cfg["bloged"]["blogs"][$url]["sort"][0])+2;
 
         // hier erfolgt der rechte-check
@@ -121,6 +126,18 @@
                     $day1 = $environment["parameter"][6];
                     $day2 = $environment["parameter"][6];
                 }
+
+                // parameter - check
+                $preg_error = "";
+                if ( !preg_match("/^[0-9]{4}$/",$environment["parameter"][4]) ) $preg_error = -1;
+                if ( $environment["parameter"][5] != "" && !preg_match("/^[0-9]{1,2}$/",$environment["parameter"][5]) ) $preg_error = -1;
+                if ( $environment["parameter"][6] != "" && !preg_match("/^[0-9]{1,2}$/",$environment["parameter"][6]) ) $preg_error = -1;
+                if ( $preg_error == -1 ) {
+                    header('Location: /index.html');
+                    exit;
+                }
+                $environment["parameter"][4] = min($environment["parameter"][4], '2035');
+                $environment["parameter"][4] = max($environment["parameter"][4], '1970');
                 if ( $cfg["bloged"]["blogs"][$url]["ext_sort"] == "" ) {
                     $where .= " AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$month1."-".$day1." 23:59:59' AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) > '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00'";
                 }  else {
