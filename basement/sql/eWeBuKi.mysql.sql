@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2009 at 05:13 PM
+-- Generation Time: Nov 19, 2009 at 05:39 PM
 -- Server version: 4.0.24
 -- PHP Version: 5.2.0-8+etch7~bpo.1
 
@@ -11,6 +11,398 @@
 --
 -- Database: `ewebuki_mdebase`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_content`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_content` (
+  `uid` int(11) NOT NULL default '0',
+  `gid` int(11) NOT NULL default '0',
+  `pid` int(11) NOT NULL default '0',
+  `neg` enum('-1','') default '',
+  `db` varchar(20) NOT NULL default '',
+  `tname` varchar(50) NOT NULL default '',
+  `ebene` text NOT NULL,
+  `kategorie` text NOT NULL,
+  PRIMARY KEY  (`uid`,`gid`,`pid`,`db`,`tname`)
+) TYPE=MyISAM;
+
+--
+-- Dumping data for table `auth_content`
+--
+
+INSERT INTO `auth_content` (`uid`, `gid`, `pid`, `neg`, `db`, `tname`, `ebene`, `kategorie`) VALUES
+(0, 1, 1, '', '', '/', '', ''),
+(0, 1, 2, '', '', '/', '', ''),
+(0, 1, 3, '', '', '/', '', ''),
+(0, 1, 4, '', '', '/', '', ''),
+(0, 1, 5, '', '', '/', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_group`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_group` (
+  `gid` int(11) NOT NULL auto_increment,
+  `ggroup` varchar(30) NOT NULL default '',
+  `beschreibung` text NOT NULL,
+  PRIMARY KEY  (`gid`)
+) TYPE=MyISAM AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `auth_group`
+--
+
+INSERT INTO `auth_group` (`gid`, `ggroup`, `beschreibung`) VALUES
+(1, 'manager', 'manager');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_level`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_level` (
+  `lid` int(11) NOT NULL auto_increment,
+  `level` varchar(10) NOT NULL default '',
+  `beschreibung` text NOT NULL,
+  PRIMARY KEY  (`lid`)
+) TYPE=MyISAM AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `auth_level`
+--
+
+INSERT INTO `auth_level` (`lid`, `level`, `beschreibung`) VALUES
+(1, 'cms_edit', 'berechtigt zum bearbeiten der templates'),
+(2, 'cms_admin', 'berechtigt zur administration');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_member`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_member` (
+  `uid` int(11) NOT NULL default '0',
+  `gid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`uid`,`gid`)
+) TYPE=MyISAM;
+
+--
+-- Dumping data for table `auth_member`
+--
+
+INSERT INTO `auth_member` (`uid`, `gid`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_priv`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_priv` (
+  `pid` int(11) NOT NULL default '0',
+  `priv` varchar(20) NOT NULL default '',
+  PRIMARY KEY  (`pid`)
+) TYPE=MyISAM;
+
+--
+-- Dumping data for table `auth_priv`
+--
+
+INSERT INTO `auth_priv` (`pid`, `priv`) VALUES
+(1, 'view'),
+(2, 'edit'),
+(3, 'publish'),
+(4, 'admin'),
+(5, 'add');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_right`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_right` (
+  `uid` int(11) NOT NULL default '0',
+  `lid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`uid`,`lid`)
+) TYPE=MyISAM;
+
+--
+-- Dumping data for table `auth_right`
+--
+
+INSERT INTO `auth_right` (`uid`, `lid`) VALUES
+(1, 1),
+(1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_special`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_special` (
+  `sid` int(11) NOT NULL auto_increment,
+  `suid` int(11) NOT NULL default '0',
+  `content` int(11) default '0',
+  `sdb` varchar(20) NOT NULL default '',
+  `stname` varchar(50) NOT NULL default '',
+  `sebene` text,
+  `skategorie` text,
+  `sbeschreibung` text,
+  PRIMARY KEY  (`sid`)
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `auth_special`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_user`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_user` (
+  `uid` int(11) NOT NULL auto_increment,
+  `nachname` varchar(40) NOT NULL default '',
+  `vorname` varchar(40) NOT NULL default '',
+  `email` varchar(60) NOT NULL default '',
+  `username` varchar(20) NOT NULL default '',
+  `pass` varchar(20) NOT NULL default '',
+  PRIMARY KEY  (`uid`),
+  UNIQUE KEY `username` (`username`)
+) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `auth_user`
+--
+
+INSERT INTO `auth_user` (`uid`, `nachname`, `vorname`, `email`, `username`, `pass`) VALUES
+(1, 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 'WFffxluy26Lew');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `db_leer`
+--
+
+CREATE TABLE IF NOT EXISTS `db_leer` (
+  `id` int(11) NOT NULL auto_increment,
+  `field1` varchar(255) NOT NULL default '',
+  `field2` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `db_leer`
+--
+
+INSERT INTO `db_leer` (`id`, `field1`, `field2`) VALUES
+(1, 'Erster Eintrag', 'Zweite Spalte'),
+(2, 'Zweiter Eintrag', 'Zweite Spalte');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_file`
+--
+
+CREATE TABLE IF NOT EXISTS `site_file` (
+  `fid` int(11) NOT NULL auto_increment,
+  `frefid` int(11) NOT NULL default '0',
+  `fuid` int(11) NOT NULL default '0',
+  `fdid` int(11) NOT NULL default '0',
+  `ftname` varchar(255) NOT NULL default '',
+  `ffname` varchar(255) NOT NULL default '',
+  `ffart` enum('gif','jpg','png','pdf','zip','odt','ods','odp','gz','bz2') NOT NULL default 'jpg',
+  `fdesc` text NOT NULL,
+  `funder` varchar(255) default NULL,
+  `fhit` varchar(255) default NULL,
+  `fdel` text,
+  `fgroups` varchar(150) NOT NULL default '',
+  PRIMARY KEY  (`fid`)
+) TYPE=MyISAM AUTO_INCREMENT=40 ;
+
+--
+-- Dumping data for table `site_file`
+--
+
+INSERT INTO `site_file` (`fid`, `frefid`, `fuid`, `fdid`, `ftname`, `ffname`, `ffart`, `fdesc`, `funder`, `fhit`, `fdel`, `fgroups`) VALUES
+(1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo Beschreibung', 'eWeBuKi Logo Unterschift', '', NULL, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_form`
+--
+
+CREATE TABLE IF NOT EXISTS `site_form` (
+  `fid` int(11) NOT NULL auto_increment,
+  `flabel` varchar(20) NOT NULL default '',
+  `ftname` varchar(40) NOT NULL default '',
+  `fsize` varchar(7) NOT NULL default '0',
+  `fclass` varchar(30) NOT NULL default '',
+  `fstyle` varchar(60) NOT NULL default '',
+  `foption` enum('file','hidden','password','pgenum','readonly') default NULL,
+  `frequired` enum('0','-1') NOT NULL default '0',
+  `fcheck` text NOT NULL,
+  PRIMARY KEY  (`fid`)
+) TYPE=MyISAM AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `site_form`
+--
+
+INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES
+(1, 'username', '210295197.modify', '0', '', '', NULL, '-1', ''),
+(2, 'pass', '210295197.modify', '0', '', '', 'password', '-1', ''),
+(3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', ''),
+(4, 'fid', '-939795212.modify', '0', 'hidden', '', 'hidden', '-1', ''),
+(6, 'fdesc', '-939795212.modify', '25', '', '', NULL, '0', ''),
+(7, 'funder', '-939795212.modify', '30', '', '', NULL, '0', ''),
+(8, 'fhit', '-939795212.modify', '30', '', '', NULL, '0', ''),
+(9, 'entry', '-555504947.add', '0', '', '', NULL, '-1', 'PREG:^[a-z_\\-\\.0-9]+$'),
+(10, 'entry', '-555504947.edit', '0', '', '', NULL, '-1', 'PREG:^[a-z_\\-\\.0-9]+$'),
+(11, 'new_keyword', '1950102507.rename_tag', '0', '', '', NULL, '-1', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_form_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `site_form_lang` (
+  `flid` int(11) NOT NULL auto_increment,
+  `fid` int(11) NOT NULL default '0',
+  `flang` varchar(5) NOT NULL default 'de',
+  `fpgenum` text,
+  `fwerte` varchar(255) NOT NULL default '',
+  `ferror` varchar(255) NOT NULL default '',
+  `fdberror` varchar(255) NOT NULL default '',
+  `fchkerror` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`flid`)
+) TYPE=MyISAM AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `site_form_lang`
+--
+
+INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fpgenum`, `fwerte`, `ferror`, `fdberror`, `fchkerror`) VALUES
+(1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', ''),
+(2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
+(3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', ''),
+(9, 9, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.'),
+(10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_keyword`
+--
+
+CREATE TABLE IF NOT EXISTS `site_keyword` (
+  `kid` bigint(20) unsigned NOT NULL auto_increment,
+  `tname` varchar(40) NOT NULL default '',
+  `ebene` text NOT NULL,
+  `kategorie` text NOT NULL,
+  `lang` varchar(5) NOT NULL default '',
+  `word` varchar(100) NOT NULL default '',
+  PRIMARY KEY  (`kid`),
+  UNIQUE KEY `kid` (`kid`)
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `site_keyword`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_lock`
+--
+
+CREATE TABLE IF NOT EXISTS `site_lock` (
+  `lang` varchar(5) NOT NULL default '',
+  `label` varchar(20) NOT NULL default '',
+  `tname` varchar(40) NOT NULL default '',
+  `byalias` varchar(20) NOT NULL default '',
+  `lockat` datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`lang`,`label`,`tname`)
+) TYPE=MyISAM;
+
+--
+-- Dumping data for table `site_lock`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_menu`
+--
+
+CREATE TABLE IF NOT EXISTS `site_menu` (
+  `mid` int(10) NOT NULL auto_increment,
+  `refid` int(10) default '0',
+  `entry` varchar(30) NOT NULL default '',
+  `picture` varchar(128) default NULL,
+  `sort` int(8) NOT NULL default '1000',
+  `hide` enum('-1') default NULL,
+  `level` varchar(10) default NULL,
+  `mandatory` enum('-1') default NULL,
+  `defaulttemplate` enum('default1','default2','default3','default4') NOT NULL default 'default1',
+  PRIMARY KEY  (`mid`),
+  UNIQUE KEY `DUPE` (`refid`,`entry`)
+) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `site_menu`
+--
+
+INSERT INTO `site_menu` (`mid`, `refid`, `entry`, `picture`, `sort`, `hide`, `level`, `mandatory`, `defaulttemplate`) VALUES
+(1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'default1'),
+(2, 0, 'show', NULL, 20, NULL, NULL, NULL, 'default1'),
+(3, 0, 'bilderstrecke', NULL, 30, NULL, NULL, NULL, 'default1'),
+(4, 0, 'fehler', NULL, 40, NULL, NULL, NULL, 'default1'),
+(5, 0, 'impressum', NULL, 50, NULL, NULL, NULL, 'default1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_menu_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `site_menu_lang` (
+  `mlid` int(10) NOT NULL auto_increment,
+  `mid` int(10) NOT NULL default '0',
+  `lang` varchar(5) NOT NULL default 'de',
+  `label` varchar(30) NOT NULL default '',
+  `exturl` varchar(128) default NULL,
+  PRIMARY KEY  (`mlid`)
+) TYPE=MyISAM PACK_KEYS=1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `site_menu_lang`
+--
+
+INSERT INTO `site_menu_lang` (`mlid`, `mid`, `lang`, `label`, `exturl`) VALUES
+(1, 1, 'de', 'Demo', NULL),
+(2, 2, 'de', 'eWeBuKi Show', NULL),
+(3, 3, 'de', 'Bilderstrecke', NULL),
+(4, 4, 'de', '404', NULL),
+(5, 5, 'de', 'Impressum', NULL);
 
 -- --------------------------------------------------------
 
