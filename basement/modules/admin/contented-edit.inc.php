@@ -462,8 +462,7 @@
                             AND tname ='".$environment["parameter"][2]."'
                             AND lang = '".$environment["language"]."'";
             $result  = $db -> query($sql);
-            header("Location: ".$_SESSION["page"]."");
-	    exit();
+            $header = $_SESSION["page"];
         }
 
         if ( $environment["parameter"][7] == "verify"
@@ -596,7 +595,7 @@
             // datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
 
-                // ticks sicher maskierie
+                // ticks sicher maskieren
                 $content = addslashes(stripslashes($content));
 
                 $mark = "";$marka = "";$markb = "";
@@ -681,9 +680,8 @@
 
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
-                #if ( !$result ) die($db -> error("DB ERROR: "));
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["contented"]["basis"]."/list.html";
+                #if ( $header == "" ) $header = $cfg["contented"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
@@ -709,9 +707,12 @@
                     $ausgaben["form_referer"] = preg_replace("/".$pattern."/",".html",$ausgaben["form_referer"] );
                     header("Location: ".$ausgaben["form_referer"]."");
                 }
-
-#                header("Location: ".$header);
+                #header("Location: ".$header);
             }
+        }
+        // abbrechen button verarbeiten (siehe 465 $header variable)
+        if ( $environment["parameter"][7] == "unlock" ) {
+            header("Location: ".$header);
         }
     } else {
         header("Location: ".$pathvars["virtual"]."/");
