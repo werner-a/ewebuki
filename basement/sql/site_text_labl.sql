@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2009 at 04:27 PM
+-- Generation Time: Nov 19, 2009 at 05:10 PM
 -- Server version: 4.0.24
 -- PHP Version: 5.2.0-8+etch7~bpo.1
 
@@ -154,10 +154,10 @@ INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategori
 ('de', 'u', 'cms.edit.cmstag', 0, '', 'index', '-1', '0', 'Unterstrichen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'up', 'cms.edit.cmstag', 0, '', 'index', '-1', '0', 'Zurück-Link', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'upload', 'cms.edit.cmstag', 0, '', 'index', '-1', '0', 'Hinaufladen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'inhalt', '404', 0, '', 'fehlt', '-1', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind[/P].', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'inhalt', '404', 0, '', 'seitenfehler', '-1', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nLeider konnte das System nicht feststellen woher sie gekommen sind.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'modcol', 'global', 0, '/admin/leveled', 'list', '-1', '0', 'Funktionen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'error_dupe', '-555504947.edit-single', 0, '/admin/menued', 'add', '-1', '0', 'Der Eintrag ist bereits vorhanden.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'inhalt', '404referer', 0, '', 'fehlt', '-1', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthaelt einen falschen/alten Link.\r\n\r\nUm die zweite 404 Fehlermeldung (Referer unbekannt) sichtbar zu machen,\r\nin der Eingabezeile der obigen 404 Fehlermeldung einfach Enter drücken.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'inhalt', '404referer', 0, '', 'seitenfehler', '-1', '0', '[H1]Fehler 404 - Nicht gefunden.[/H1]\r\n\r\n[P]Die Uri: !#ausgaben_404seite wurde nicht gefunden.\r\n\r\nDie [LINK=!#ausgaben_404referer]Seite[/LINK] enthält einen falschen/alten Link.[/P]', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'error_dupe', '-555504947.edit-multi', 0, '/admin/menued', 'edit', '-1', '0', 'Der Eintrag ist bereits vorhanden.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'error_dupe', '-555504947.move', 0, '/admin/menued', 'move', '-1', '0', 'In dieser Ebene existiert bereits ein Eintrag mit gleichem Namen.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'logout', 'auth', 0, '', 'auth.login', '-1', '0', 'Abgemeldet', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
@@ -309,9 +309,9 @@ INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategori
 ('de', 'add', '-102562964.modify', 0, '/admin/grouped', 'edit', '-1', '0', 'Hinzufügen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'description', '-102562964.modify', 0, '/admin/grouped', 'edit', '-1', '0', 'Beschreibung', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'frage', '-102562964.delete', 0, '/admin/grouped', 'delete', '-1', '0', 'Wollen Sie die Gruppe "!#ausgaben_ggroup" wirklich löschen ?', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'members', '-102562964.delete', 0, '/admin/grouped', 'delete', '-1', '0', 'Mitglieder', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1);
+('de', 'members', '-102562964.delete', 0, '/admin/grouped', 'delete', '-1', '0', 'Mitglieder', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'user', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Mitglieder', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1);
 INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES
-('de', 'user', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Mitglieder', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'group', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Gruppe', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'beschreibung', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Beschreibung', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'ueberschrift', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Gruppen-Editor - Eigenschaften', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
