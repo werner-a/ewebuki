@@ -139,11 +139,11 @@
                 $environment["parameter"][4] = min($environment["parameter"][4], '2035');
                 $environment["parameter"][4] = max($environment["parameter"][4], '1970');
                 if ( $cfg["bloged"]["blogs"][$url]["ext_sort"] == "" ) {
-                    $where .= " AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$month1."-".$day1." 23:59:59' AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) > '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00'";
+                    $where .= " AND Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$month1."-".$day1." 23:59:59' AND Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) > '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00'";
                 }  else {
-                    $where .= " AND (( Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$month1."-".$day1." 23:59:59' AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) >= '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00')";
+                    $where .= " AND (( Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".$environment["parameter"][4]."-".$month1."-".$day1." 23:59:59' AND Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) >= '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00')";
                     $sort_len2 = strlen($cfg["bloged"]["blogs"][$url]["ext_sort"])+2;
-                    $where .= " OR ( Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) <= '".$environment["parameter"][4]."-".$month1."-".$day2." 00:00:00' AND  Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)+".$sort_len2.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-".$sort_len2.") as DATETIME) >= '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00'))";
+                    $where .= " OR ( Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) <= '".$environment["parameter"][4]."-".$month1."-".$day2." 00:00:00' AND  Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)+".$sort_len2.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["ext_sort"]."]' IN content)-".$sort_len2.") as DATETIME) >= '".$environment["parameter"][4]."-".$month2."-".$day2." 00:00:00'))";
                 }
             }
         }
@@ -153,10 +153,10 @@
         // falls kategorie , werden nur diese angezeigt
         if ( $kategorie != "" ) {
             $cat_len = strlen($cfg["bloged"]["blogs"][$url]["category"])+2;
-            $where .= "  AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
+            $where .= "  AND SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["category"]."]' IN content)) ='[".$cfg["bloged"]["blogs"][$url]["category"]."]".$kategorie."'";
         }
         if ( $future == -1 ) {
-            $where .= " AND Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".date('Y-m-d')." 23:59:59'";
+            $where .= " AND Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") as DATETIME) < '".date('Y-m-d')." 23:59:59'";
         }
         $tname = eCRC($url).".%";
 
@@ -173,7 +173,7 @@
         }
 
         // hier der endgueltige sql !!
-        $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,status,content,tname from site_text WHERE ".$status." AND tname like '".$tname."'".$where." order by date".$order." DESC";
+        $sql = "SELECT Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,status,content,tname from site_text WHERE ".$status." AND tname like '".$tname."'".$where." order by date".$order." DESC";
         // damit kann man beliebig viele blogs manuell holen
 
         $ausgaben["inhalt_selector"] = "";
@@ -318,7 +318,7 @@
                         $array[$counter]["sort_down"] = "";
                     }
                     $array[$counter]["wizard_delete_link"] = $pathvars["virtual"]."/wizard/delete,".DATABASE.",".$data["tname"].",inhalt.html\"";
-                    $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">#(faq_del)</a>";
+                    $array[$counter]["deletelink"] = "<a href=\"".$pathvars["virtual"]."/admin/bloged/delete,,".$regs[1].",".$sort_kat.",".$new.".html\">g(blog_delete)</a>";
                     $array[$counter]["editlink"] = "<a href=\"".$pathvars["virtual"].$editlink.DATABASE.",".$data["tname"].",inhalt.html\">g(blog_edit)</a>";
                     $array[$counter]["tname"] = eCrc($url);
                 } else {
