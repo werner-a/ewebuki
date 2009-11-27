@@ -16,7 +16,7 @@
 -- Dumping data for table `site_file`
 --
 
-INSERT INTO `site_file` (`fid`, `frefid`, `fuid`, `fdid`, `ftname`, `ffname`, `ffart`, `fdesc`, `funder`, `fhit`, `fdel`) VALUES
+REPLACE INTO `site_file` (`fid`, `frefid`, `fuid`, `fdid`, `ftname`, `ffname`, `ffart`, `fdesc`, `funder`, `fhit`, `fdel`) VALUES
 (2, 0, 1, 0, '', 'alex.jpg', 'jpg', 'Der Alex in Berlin', 'Der Alex in Berlin', '#p2,10# #p1,10#', NULL),
 (3, 0, 1, 0, '', 'dark.jpg', 'jpg', 'Unwetter naht', ' Unwetter naht', '#p1,20#', NULL),
 (4, 0, 1, 0, '', 'dust.jpg', 'jpg', 'Staub im PC', 'Staub im PC', '#p2,20#', NULL),
