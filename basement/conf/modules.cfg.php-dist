@@ -52,7 +52,7 @@
 
     // basic: blog(ed)
     include $pathvars["moduleroot"]."admin/bloged.cfg.php";
-    include $pathvars["moduleroot"]."admin/bloged-autoload.php";
+    include $pathvars["moduleroot"]."admin/bloged-autoload.inc.php";
 
     // basic: view
     if ( $environment["kategorie"] == "view" ) {
