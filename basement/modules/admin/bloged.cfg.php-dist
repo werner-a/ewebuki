@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2010 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -52,15 +52,15 @@
                         "b" => "#999999",
                        ),
          "function" => array(
-                      "list" => "",
-                      "list,shared" => array("menu_convert"),
+                     "list" => "",
+              "list,shared" => array("menu_convert"),
                       "add" => "",
-                      "add,shared" => array("menu_convert"),
+               "add,shared" => array("menu_convert"),
                      "edit" => "",
                    "delete" => "",
             "delete,shared" => array("menu_convert","show_blog"),
                      "sort" => "",
-               "sort,shared" => array("menu_convert"),
+              "sort,shared" => array("menu_convert"),
                        ),
                "db" => array(
                    "bloged" => array(
@@ -74,80 +74,31 @@
                     "/blog" => array(
                            "wizard" => 0,
                              "rows" => 10,
-                         "sort" => array("SORT"),
+                             "sort" => array("SORT"),
                 "own_list_template" => "",
                             "tags"  => array(
-			            "titel" => "H1",
+                                    "titel" => "H1",
                                    "teaser" => "P=teaser",
                                     "image" =>  array( "invisible" => -1,"tag" => "IMG=", "content" => "Default-Bild", "parameter" => "/file/png/1/m/ewebuki_160x67.png;r;0;b"),
                                        ),
-#                          "addons" => array(
-#                                  "entry1" => "tag1",
-#                                  "entry2" => "tag2",
-#                                      ),
+#                           "addons" => array(
+#                                   "entry1" => "tag1",
+#                                   "entry2" => "tag2",
+#                                       ),
                                ),
-//                     "/faq" => array(
-//                            "wizard" => 0,
-//                              "rows" => 10,
-//                          "sort" => array("SORT",-1),
-//                          "category" => "KATEGORIE",
-//                 "own_list_template" => "",
-//                             "tags"  => array(
-//                                  "question" => array( "tag" => "H2", "content" => "Frage"),
-//                                    "answer" => array( "invisible" => -1,"tag" => "P", "content" => "Antwort"),
-//                                        ),
-//                                ),
+#                     "/faq" => array(
+#                           "wizard" => 0,
+#                             "rows" => 10,
+#                             "sort" => array("SORT",-1),
+#                         "category" => "KATEGORIE",
+#                "own_list_template" => "",
+#                            "tags"  => array(
+#                                 "question" => array( "tag" => "H2", "content" => "Frage"),
+#                                   "answer" => array( "invisible" => -1,"tag" => "P", "content" => "Antwort"),
+#                                       ),
+#                               ),
                        ),
-           );
-
-    // blogs werden automatisch eingebunden, eintrag in der modules.cfg nicht mehr noetig 
-    foreach ( $cfg["bloged"]["blogs"] as $key => $value ) {
-        $blogs = explode("/",substr($key,1));
-        $blog_kategorie = array_pop($blogs);
-
-        if ( count($blogs) > 0 ) {
-            $blog_ebene = "/".implode("/",$blogs);
-        } else {
-            $blog_ebene = "";
-        }
-
-        if ( $environment["ebene"] == $blog_ebene && $environment["kategorie"] == $blog_kategorie ) {
-            require_once $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
-            require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
-
-            // erstellen der tags die angezeigt werden
-            if ( is_array($cfg["bloged"]["blogs"][$key]["addons"]) ) {
-                foreach ( $cfg["bloged"]["blogs"][$key]["addons"] as $key_tag => $value) {
-                    $tags[$key_tag] = $value;
-                }
-            }
-
-            // erstellen der tags die angezeigt werden
-            if ( is_array($cfg["bloged"]["blogs"][$key]["tags"]) ) {
-                foreach ( $cfg["bloged"]["blogs"][$key]["tags"] as $key_tag => $value) {
-                    $tags[$key_tag] = $value;
-                }
-            }
-
-            if ( $cfg["bloged"]["blogs"][$key]["category"] != "" ) {
-                if ( $environment["ebene"] == "" ) {
-                    $show_kat = "/".$environment["kategorie"];
-                } else {
-                    $show_kat = $environment["ebene"]."/".$environment["kategorie"];
-                }
-            } else {
-                $show_kat = "";
-            }
-
-            if ( $environment["parameter"][2] == "" ) {
-                $dataloop["list"] = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$key]["rows"],$show_kat);
-            } else {
-                $all = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$limit,$show_kat);
-                unset($hidedata["new"]);
-                $hidedata["all"]["inhalt"] = $all[1]["all"];
-            }
-        }
-    }
+    );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>
