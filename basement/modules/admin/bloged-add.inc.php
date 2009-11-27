@@ -173,7 +173,7 @@
         $ebene = $_POST["link"];
 
         $laenge = strlen(eCRC($ebene))+2;
-        $sql = "SELECT Cast(SUBSTR(tname,".$laenge.") as unsigned) AS id 
+        $sql = "SELECT Cast(SUBSTRING(tname,".$laenge.") as unsigned) AS id
                   FROM ".$cfg["bloged"]["db"]["bloged"]["entries"]."
                  WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]." LIKE '".eCRC($ebene).".%' AND tname REGEXP '[0-9]$'
                  ORDER BY id DESC";
