@@ -99,7 +99,7 @@
             }
             $to_insert = $tag_meat["!"][0]["complete"];
         }
-    } elseif ( $wizard_name == "artikel" ) {
+    } elseif ( $wizard_name == "artikel" || $wizard_name="ausstellungen" ) {
         $ausgaben["error"] = "";
         if ( $_GET["error"] == 1 )$ausgaben["error"] = "#(antedate)";
         if ( $_GET["error"] == 2 )$ausgaben["error"] = "#(date_begin_end)";
