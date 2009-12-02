@@ -54,9 +54,13 @@
             "right" => "",
             "email" => array(
                     "subj1" => "Neue Anfrage ",
+                    "template1" => "kontakt-email1",
                     "subj2" => "Ihre Anfrage",
-                    "robot" => "Web Robot <robot@da.de>",
-                    "owner" => "Firma <info@da.de>",
+                    "template2" => "kontakt-email2",
+                    "form_name_feld" => "ansprechpartner",
+                    "form_email_feld" => "e-mail",
+                    "robot" => "Web Robot <robot@domain.aendern>",
+                    "owner" => "Firma <info@domain.aendern>",
                     "encoding" => "",
               ),
 //           "captcha" => array(

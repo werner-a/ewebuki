@@ -222,17 +222,22 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 // kunde
-                $email_adresse = $HTTP_POST_VARS["ansprechpartner"]." <".$HTTP_POST_VARS["e-mail"].">";
+                if ( $HTTP_POST_VARS["e-mail"] == "" ) {
+                    $email_adresse = $cfg["kontakt"]["email"]["robot"];
+                } else {
+                    $email_adresse = $HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_name_feld"]]." <".$HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_email_feld"]].">";
+                }
 
                 foreach ( $HTTP_POST_VARS as $key => $value ) {
                    $$key = $value;
                 }
 
-                $message1 = parser("kontakt-email1","");
-                $message2 = parser("kontakt-email2","");
+                $message1 = parser($cfg["kontakt"]["email"]["template1"],"");
+                $message2 = parser($cfg["kontakt"]["email"]["template2"],"");
 
                 // happy bouncing
-                ini_set("sendmail_from",$cfg["kontakt"]["email"]["robot"]);
+                #ini_set("sendmail_from",$cfg["kontakt"]["email"]["robot"]);
+                #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sendmail_from = ".ini_get('sendmail_from').$debugging["char
 
                 // mail an betreiber
                 $subject1 = $cfg["kontakt"]["email"]["subj1"].$ausgaben["name"];
