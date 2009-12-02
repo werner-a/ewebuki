@@ -222,7 +222,7 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 // kunde
-                if ( $HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_name_feld"]] == "" ) {
+                if ( $HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_email_feld"]] == "" ) {
                     $email_adresse = $cfg["kontakt"]["email"]["robot"];
                 } else {
                     $email_adresse = $HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_name_feld"]]." <".$HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_email_feld"]].">";
