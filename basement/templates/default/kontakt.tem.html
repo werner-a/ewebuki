@@ -13,6 +13,13 @@
     <h1>#(ueberschrift)</h1>
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
+
+    <!--##hide-success-->
+    <p>
+        #(success)
+    </p>
+    <!--##show-->
+    <!--##hide-form-->
     <fieldset class="cbra">
         !#element_betreff
     </fieldset>
@@ -39,11 +46,13 @@
         !#element_mitteilung
         <label for="last_viewed">g(last_viewed)</label>
         <input type="text" value="!#ausgaben_last_viewed" name="last_viewed" class="" maxlength="50" id="last_viewed"  readonly="true" />
+        <!--##show-->
         <!--##hide-captcha-->
         <label for="captcha"><img title="captcha" alt="captcha" src="!{url}" /></label>
         <input type="text" value="" name="captcha" class="" id="captcha" />
         <input name="captcha_proof" type="hidden" value="!{proof}" class="hidden" />
         <!--##show-->
+        <!--##hide-form-->
         <p>#(zusatz)</p>
         <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
         <div class="clearer">&nbsp;</div>
@@ -52,6 +61,7 @@
         <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
         <div class="clearer">&nbsp;</div>
     </fieldset>
+        <!--##show-->
     <p>!#ausgaben_output</p>
     <p>!#ausgaben_inaccessible</p>
 </form>
