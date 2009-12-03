@@ -51,6 +51,7 @@
                   "entries" => "db_kontakt",
                       "key" => "kid",
                        ),
+         //workarround fuer geaenderten loader
          "function" => array(
            "kontakt,shared" => array("captcha"),
                        ),
