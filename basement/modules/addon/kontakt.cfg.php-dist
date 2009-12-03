@@ -50,7 +50,7 @@
                "db" => array(
                   "entries" => "db_kontakt",
                       "key" => "kid",
-              ),
+                       ),
          "function" => array(
            "kontakt,shared" => array("captcha"),
                        ),
@@ -83,6 +83,12 @@
 //                                 "y" => 21,
 //                             ),
 //                       "ttf" => array(
+//                                 // path for debian
+//                                 "/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMono.ttf",
+//                                 "/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMoIt.ttf",
+//                                 "/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMoBI.ttf",
+//                                 "/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMoBd.ttf",
+//                                 // or local path
 //                                 "/usr/local/share/fonts/VeraMono.ttf",
 //                                 "/usr/local/share/fonts/VeraMoIt.ttf",
 //                                 "/usr/local/share/fonts/VeraMoBI.ttf",
