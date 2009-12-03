@@ -51,6 +51,9 @@
                   "entries" => "db_kontakt",
                       "key" => "kid",
               ),
+         "function" => array(
+           "kontakt,shared" => array("captcha"),
+                       ),
             "right" => "",
             "email" => array(
                     // mail an betreiber

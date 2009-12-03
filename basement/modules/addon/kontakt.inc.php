@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Kï¿½nigsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
@@ -84,50 +84,6 @@
         // ***
 
         if ( is_array($cfg["kontakt"]["captcha"]) ) {
-            function captcha_randomize($length) {
-                global $cfg;
-                $random = "";
-                while ( strlen($random) < $length ) {
-                    $random .= substr($cfg["kontakt"]["captcha"]["letter_pot"], rand(0,strlen($cfg["kontakt"]["captcha"]["letter_pot"])), 1);
-                }
-                return $random;
-            }
-
-            function captcha_create($text) {
-                global $cfg;
-                // anzahl der zeichen
-                $count = strlen($text);
-                // schriftarten festlegen
-                $ttf = $cfg["kontakt"]["captcha"]["ttf"];
-                // schriftgroesse festlegen
-                $ttf_size = $cfg["kontakt"]["captcha"]["font"]["size"];
-                // schriftabstand rechts
-                $ttf_x = $cfg["kontakt"]["captcha"]["font"]["x"];
-                // schriftabstand oben
-                $ttf_y = $cfg["kontakt"]["captcha"]["font"]["y"];
-
-                // hintergrund erstellen
-                $ttf_img = ImageCreate($count*2*$ttf_size,2*$ttf_size);
-                // bgfarbe festlegen
-                $bg_color = ImageColorAllocate ($ttf_img, $cfg["kontakt"]["captcha"]["bg_color"][0], $cfg["kontakt"]["captcha"]["bg_color"][1], $cfg["kontakt"]["captcha"]["bg_color"][2]);
-                // textfarbe festlegen
-                $font_color = ImageColorAllocate($ttf_img, $cfg["kontakt"]["captcha"]["font_color"][0], $cfg["kontakt"]["captcha"]["font_color"][1], $cfg["kontakt"]["captcha"]["font_color"][2]);
-                // schrift in bild einfuegen
-                foreach ( str_split($text) as $key=>$character ) {
-                    // schriftwinkel festlegen
-                    $ttf_angle = rand(-25,25);
-                    // schriftarten auswaehlen
-                    $ttf_font = $ttf[rand(0,(count($ttf)-1))];
-                    imagettftext($ttf_img, $ttf_size, $ttf_angle, $ttf_size*2*$key+$ttf_x, $ttf_y, $font_color, $ttf_font, $character);
-                }
-                // bild temporaer als datei ausgeben
-                $captcha_crc = crc32($text.$cfg["kontakt"]["captcha"]["randomize"]);
-                $captcha_name = "captcha-".$captcha_crc.".png";
-                $captcha_path = $cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"];
-                imagepng($ttf_img,$captcha_path.$captcha_name);
-                // bild loeschen
-                imagedestroy($ttf_img);
-            }
 
             // zufaellige zeichen erzeugen
             $captcha_text = captcha_randomize($cfg["kontakt"]["captcha"]["length"]);
