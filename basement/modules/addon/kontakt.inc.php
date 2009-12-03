@@ -240,7 +240,11 @@
                 #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sendmail_from = ".ini_get('sendmail_from').$debugging["char
 
                 // mail an betreiber
-                $subject1 = $cfg["kontakt"]["email"]["subj1"].$ausgaben["name"];
+                $subject1 = $cfg["kontakt"]["email"]["subj1"];
+                foreach ( $cfg["kontakt"]["email"]["repl1"] as $value ) {
+                    $subject1 = str_replace("!{".$value."}",$$value,$subject1);
+                }
+
                 if ( $_POST["betreff"] != "" ) $subject1 .= ": ".$_POST["betreff"];
                 $header1  = "From: ".$cfg["kontakt"]["email"]["robot"]."\r\n";
                 $header1 .= "Reply-To: ".$email_adresse."\r\n";
@@ -252,13 +256,16 @@
 
                 // kopie an kunden
                 $subject2 = $cfg["kontakt"]["email"]["subj2"].$ausgaben["name"];
+                foreach ( $cfg["kontakt"]["email"]["repl2"] as $value ) {
+                    $subject2 = str_replace("!{".$value."}",$$value,$subject2);
+                }
                 if ( $_POST["betreff"] != "" ) $subject2 .= ": ".$_POST["betreff"];
                 $header2  = "From: ".$cfg["kontakt"]["email"]["owner"]."\r\n";
                 if ( $cfg["kontakt"]["email"]["encoding"] != "") {
                     $header2 .= "Content-Type: text/plain; charset=".$cfg["kontakt"]["email"]["encoding"]."\r\n";
                 }
                 $result = mail($email_adresse,$subject2,$message2,$header2);
-                #if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
+                if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
                 if ( $debugging["html_enable"] ){
                     $ausgaben["output"] = "<textarea name=\"debug1\" cols=\"60\" rows=\"20\">";

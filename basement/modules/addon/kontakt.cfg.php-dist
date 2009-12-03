@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Kï¿½nigsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
@@ -53,14 +53,19 @@
               ),
             "right" => "",
             "email" => array(
-                    "subj1" => "Neue Anfrage ",
+                    // mail an betreiber
+                    "owner" => "Firma <info@domain.aendern>",
+                    "subj1" => "Neue Anfrage von !{ansprechpartner}",
+                    "repl1" => array("firma","ansprechpartner"),
                     "template1" => "kontakt-email1",
-                    "subj2" => "Ihre Anfrage",
+                    // mail an benutzer
+                    "subj2" => "Ihre Anfrage Frau/Herr !{ansprechpartner}",
+                    "repl2" => array("ansprechpartner"),
                     "template2" => "kontakt-email2",
                     "form_name_feld" => "ansprechpartner",
                     "form_email_feld" => "e-mail",
+                    // admin
                     "robot" => "Web Robot <robot@domain.aendern>",
-                    "owner" => "Firma <info@domain.aendern>",
                     "encoding" => "",
               ),
 //           "captcha" => array(
