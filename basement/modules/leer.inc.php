@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -84,6 +84,7 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
+            // als beispiel fuer das einfache modul werden nur die marken !{0}, !{1}
             $dataloop["leer"][$data["id"]][0] = $data["field1"];
             $dataloop["leer"][$data["id"]][1] = $data["field2"];
         }

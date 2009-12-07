@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -65,16 +65,19 @@
 
         $result = $db -> query($sql);
         while ( $data = $db -> fetch_array($result,1) ) {
-            $dataloop["list"][$data["id"]][0] = $data["field1"];
-            $dataloop["list"][$data["id"]][1] = $data["field2"];
 
-            // tabellen farben wechseln
+            // platz fuer vorbereitungen hier z.B.tabellen farben wechseln
             if ( $cfg["leer"]["color"]["set"] == $cfg["leer"]["color"]["a"]) {
                 $cfg["leer"]["color"]["set"] = $cfg["leer"]["color"]["b"];
             } else {
                 $cfg["leer"]["color"]["set"] = $cfg["leer"]["color"]["a"];
             }
 
+            // wie im einfachen modul könnten nur die marken !{0}, !{1} befuellt werden
+            #$dataloop["list"][$data["id"]][0] = $data["field1"];
+            #$dataloop["list"][$data["id"]][1] = $data["field2"];
+
+            // der uebersicht halber fuellt das erweiterte modul aber einzeln benannte marken
             $dataloop["list"][$data["id"]] = array(
                                    "color" => $cfg["leer"]["color"]["set"],
                                   "field1" => $data["field1"],
