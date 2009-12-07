@@ -3,4 +3,4 @@ admin/ 		- original ewebuki admin modules
 basic/		- original ewebuki basic modules
 libraries/	- original ewebuki shared libraries
 
-customer/ 	- ewebuki customer extensions
+custom/ 	- ewebuki customer extensions
