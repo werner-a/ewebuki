@@ -215,7 +215,7 @@
                                     foreach ( (array)$data as $name => $value ) {
                                         $loop_work = str_replace("!{".$name."}",$value,$loop_work);
                                     }
-                                    $loop_work = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$loop_work);
+                                    $loop_work = preg_replace("/!\{[0-9a-zA-Z]+\}/","&nbsp;",$loop_work);
                                     $loop_block .= $loop_work;
                                 }
                                 $line = $loop_block.trim($line)."\n";
@@ -241,9 +241,9 @@
                                     foreach ( $hidedata[$hide_label] as $name => $value ) {
                                         $hide_buffer = str_replace("!{".$name."}",$value,$hide_buffer);
                                     }
-                                    $hide_block = ereg_replace("!\{[0-9a-zA-Z]+\}","&nbsp;",$hide_buffer);
+                                    $hide_block = preg_replace("/!\{[0-9a-zA-Z]+\}/","&nbsp;",$hide_buffer);
                                 }
-                                #$line = $block.trim($line)."\n";
+                               #$line = $block.trim($line)."\n";
                                 $line = $hide_block; // marke ebenfalls kicken!
                             } elseif ( $hide == "1" ) {
                                 $hide_buffer .= trim($line)."\n";

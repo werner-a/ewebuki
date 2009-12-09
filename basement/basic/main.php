@@ -145,7 +145,7 @@
     if ( strstr($pathvars["level"][$authcount],"auth" ) ) {
         $pathvars["virtual"] .= "/auth";
     }
-    $pathvars["virtual_depth"] = count(split("/",$pathvars["virtual"]));
+    $pathvars["virtual_depth"] = count(explode("/",$pathvars["virtual"]));
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "virtual path: ".$pathvars["virtual"].$debugging["char"];
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "virtual path depth: ".$pathvars["virtual_depth"].$debugging["char"];
 

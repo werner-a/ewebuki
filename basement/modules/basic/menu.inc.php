@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
-    $ebene = split("/",$environment["ebene"]);
+    $ebene = explode("/",$environment["ebene"]);
 
     //
     // menupunkte level 1

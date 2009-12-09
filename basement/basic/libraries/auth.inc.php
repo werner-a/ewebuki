@@ -54,7 +54,7 @@
     if ( $HTTP_POST_VARS["form_referer"] == "" ) {
         $a = 4;
         if ( $pathvars["subdir"] != "" ) $a++;
-        $path = split("/",$_SERVER["HTTP_REFERER"],$a);
+        $path = explode("/",$_SERVER["HTTP_REFERER"],$a);
         $ausgaben["form_referer"] = "/".$path[--$a];
         $ausgaben["form_break"] = $ausgaben["form_referer"];
     } else {
