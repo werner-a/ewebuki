@@ -46,7 +46,7 @@ if ( !function_exists(make_id)) {
     function make_id($url) {
         global $db;
         $leer[] = "";
-        $test = split("/",$url);
+        $test = explode("/",$url);
         $cleaned_up = array_diff($test, $leer);
 
         $data["mid"] = 0;
