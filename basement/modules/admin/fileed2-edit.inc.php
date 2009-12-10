@@ -176,7 +176,11 @@
                 }
                 // kombination der vergebenen und eigenen gruppen, keine doppelte
                 if ( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] == "-1" ) {
-                    $avail_groups = array_flip(array_flip(array_merge($cfg["fileed"]["su_groups"],$own_groups)));
+                    if ( is_array($cfg["fileed"]["su_groups"]) ) {
+                        $avail_groups = array_flip(array_flip(array_merge($cfg["fileed"]["su_groups"],$own_groups)));
+                    } else {
+                        $avail_groups = $own_groups;
+                    }
                 } else {
                     $avail_groups = array_flip(array_flip(array_merge($perm_groups,$own_groups)));
                 }
@@ -223,7 +227,7 @@
                            "class" => $class,
                         "disabled" => $disabled,
                     );
-                    if ( in_array($data["gid"],$cfg["fileed"]["su_groups"]) ) {
+                    if ( is_array($cfg["fileed"]["su_groups"]) && in_array($data["gid"],$cfg["fileed"]["su_groups"]) ) {
                         $buffer_su[] = $buffer;
                     } else {
                         $buffer_user[] = $buffer;
