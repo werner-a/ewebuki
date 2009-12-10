@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Kï¿½nigsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
@@ -141,7 +141,7 @@
                    "hs"     => array( "" ),
                    "hl"     => array( "", "_", True ),
                    "imgb"   => array( "", "X", False, "=image.typ;l|r;0;b;20;20;10]" ),
-                   "sel"    => array( "", "S", False, "=1;m;True;1:2]" ),
+                   "sel"    => array( "", "S", False, "=1;b;;1:2;l]" ),
                    "in"     => array( "" ),
                    "m0"     => array( "B", "-" ),
                    "m1"     => array( "B", "=" ),
