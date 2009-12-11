@@ -79,6 +79,7 @@
 <p>!#ausgaben_inaccessible</p>
 
 <script type="text/javascript">
+
     function session_update(compid,picid) {
         new Ajax.Request(
             './compilation,' + compid + ',' + picid + '.html',
@@ -92,6 +93,7 @@
         );
     }
     function check_boxes(cid,pid) {
+        // checkboxen der selectionen
         $$('input.selection_checkbox').each(
             function(celement,i) {
                 if ( celement.id != 'c' + cid ) {
@@ -103,18 +105,22 @@
                 }
             }
         );
-        var pic_checked = false
+        // checkboxen der einzelnen bilder
         $$('input.sel_pic_checkbox').each(
             function(pelement,i) {
                 if ( pelement.id.indexOf('c' + cid + 'p') == -1 ) {
+                    // bilder ausserhalb der gewaehlten selektion ausblenden
                     $(pelement.id).checked = false;
                 } else {
                     if ( $('c' + cid).checked == false ) {
+                        // bilder ist ausserhalb der gewaehlten selection
                         $(pelement.id).checked = false;
                     } else {
-                        if ( $(pelement.id).checked == true ) {
-                            pic_checked = true;
-                        }
+                        // bilder ist innerhalb der gewaehlten selection
+// <!--##hide-sel_pics_w_sel-->
+                        // und alle bilder der gewaehlten selection werden ausgewaehlt
+                        if ( !pid ) $(pelement.id).checked = true;
+// <!--##show-->
                     }
                 }
             }

@@ -43,6 +43,11 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    function pics_sort($a, $b) {
+        return ($a["sort"] < $b["sort"]) ? -1 : 1;
+    }
+
     if ( $cfg["fileed"]["right"] == "" ||
         priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
         priv_check_old("",$cfg["fileed"]["right"]) ) {
@@ -53,7 +58,9 @@
         // ajax-steuerung der compilation-auswahl
         if ( $_POST["ajax"] != "" ) {
 
-            echo "<pre>".print_r($environment["parameter"],true)."</pre>";
+            echo "<pre>";
+            echo print_r($environment["parameter"],true);
+            echo print_r($_SESSION["compilation_memo"],true);
 
             $cid = $environment["parameter"][1];
             $pid = $environment["parameter"][2];
@@ -66,18 +73,38 @@
             }
 
             if ( is_numeric($pid) ) {
+                // ein bestimmtes bild wurde ausgewaehlt
                 if ( $_SESSION["compilation_memo"][$cid][$pid] != "" ) {
                     unset($_SESSION["compilation_memo"][$cid][$pid]);
                 } else {
                     $_SESSION["compilation_memo"][$cid][$pid] = $pid;
                 }
             } else {
+                // es wurde kein bild ausgewaehlt
                 if ( is_array($_SESSION["compilation_memo"][$cid]) ) {
                     unset ($_SESSION["compilation_memo"]);
                 } else {
                     $_SESSION["compilation_memo"][$cid] = array();
+                    if ( $cfg["fileed"]["compilation"]["sel_pics_w_sel"] == -1 ) {
+                        // alle bilder der galerie markieren
+                        $sql = "SELECT *
+                                  FROM site_file
+                                 WHERE fhit
+                                  LIKE '%#p".$cid.",%'
+                              ORDER BY fid";
+                        $result = $db -> query($sql);
+                        $dataloop["list_images"] = array();
+                        filelist($result, "fileed", $key);
+                        uasort($dataloop["list_images"],"pics_sort");
+                        foreach ( $dataloop["list_images"] as $key=>$value ) {
+                            $_SESSION["compilation_memo"][$cid][$key] = $key;
+                        }
+                    }
                 }
             }
+
+            echo print_r($_SESSION["compilation_memo"],true);
+            echo "</pre>";
             die();
         }
 
@@ -147,9 +174,18 @@
         $hidedata["search_result"] = array();
         $ausgaben["anzahl"] = $gesamt;
         // wie gross ist ein selektor
-        $menge = $cfg["fileed"]["compilation"]["rows"];
+        if ( $cfg["fileed"]["compilation"]["rows"] != "" ) {
+            $menge = $cfg["fileed"]["compilation"]["rows"];
+        } else {
+            $menge = 3;
+        }
         // wieviele elemente darf eine selektor-gruppen maximal haben
         $sel_groups_max = $cfg["fileed"]["compilation"]["selektor"];
+        if ( $cfg["fileed"]["compilation"]["selektor"] != "" ) {
+            $sel_groups_max = $cfg["fileed"]["compilation"]["selektor"];
+        } else {
+            $sel_groups_max = 5;
+        }
 
         // selektor bauen
         if ( $gesamt > $menge ) {
@@ -209,11 +245,6 @@
         }
         // + + + + +
         // inhaltselektor-imitat
-
-
-        function pics_sort($a, $b) {
-            return ($a["sort"] < $b["sort"]) ? -1 : 1;
-        }
 
         // gruppierungsarray wird zugeschnitten
         $sliced_groups = array_slice($compilations,$position,$menge,true);
@@ -310,6 +341,11 @@
         $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/compilation,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html";
         $ausgaben["form_break"]  = $cfg["fileed"]["basis"]."/list.html";
         $ausgaben["edit"]        = $cfg["fileed"]["basis"]."/collect,".$environment["parameter"][1].".html";
+
+        if ( $cfg["fileed"]["compilation"]["sel_pics_w_sel"] == -1 ) {
+            // wenn die selection ausgewaehlt wird werden auch alle bilder ausgewaehlt, js-teil anzeigen
+            $hidedata["sel_pics_w_sel"] = array();
+        }
 
         // hidden values
         #$ausgaben["form_hidden"] .= "";
