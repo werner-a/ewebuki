@@ -51,7 +51,7 @@
             "basis" => $pathvars["virtual"]."/admin/fileed",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
        "ajax-modus" => True,
-       "compatible" => True,
+       "compatible" => False,
          #"function" => array("describe", "list", "note", "preview", "select"),
          "function" => array(
                      "list" => "", # array( "function_name" ),
