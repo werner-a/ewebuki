@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Koenigsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
@@ -91,7 +91,8 @@
     if ( in_array("resize", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
 
         function resize( $img_org, $img_id, $img_src, $max_size, $img_path, $img_name ) {
-
+		
+            global $cfg;
             $src_width = imagesx($img_src);
             $src_height = imagesy($img_src);
             // maximale breite und hoehe bestimmen
@@ -144,11 +145,11 @@
                 if ( $file_ext == "gif" ) {
                     $colorTrans = imagecolortransparent($img_src);
                     imagepalettecopy($img_src,$img_dst);
-                    imagefill($img_dst, 0, 0, $colorTrans);
+                    if ( $cfg["fileed"]["compatible"] != True ) imagefill($img_dst, 0, 0, $colorTrans);
                     imagecolortransparent($img_dst, $colorTrans);
                     imagetruecolortopalette($img_dst,true,256);
                 } elseif ( $file_ext == "png" ) {
-                    imageantialias($img_dst,true);
+                    if ( $cfg["fileed"]["compatible"] != True ) imageantialias($img_dst,true);
                     imagealphablending($img_dst, False);
                     imagesavealpha($img_dst, True);
                 }
