@@ -108,7 +108,7 @@
                 }
                 ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["textbox"]["class"]."\"";
                 ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                $formularobject = "<textarea id=\"".$fields["Field"]."\"".$cols.$rows.$class.$style." name=\"".$fields["Field"].$extend."\">".$form_values[$fields["Field"]]."</textarea>\n";
+                $formularobject = "<textarea id=\"".$fields["Field"]."\"".$cols.$rows.$class.$style." name=\"".$fields["Field"].$extend."\">".htmlspecialchars($form_values[$fields["Field"]])."</textarea>\n";
                 $element[$fields["Field"].$extend] = $formularobject;
             }
             // checkbox, dropdown
@@ -159,7 +159,7 @@
                     // hack: bei nicht auf "checked" gesetzten radio buttons
                     // bleibt der post/get value leer
                     // der required check versagt!
-                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".$form_values[$fields["Field"]]."\" class=\"hidden\" />\n";
+                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".htmlspecialchars($form_values[$fields["Field"]])."\" class=\"hidden\" />\n";
                     foreach( $options as $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
                             $checked = " checked";
@@ -239,7 +239,7 @@
                 ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
                 ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["int"]["class"]."\"";
                 ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".$form_values[$fields["Field"]]."\"" : $value = " value=\"".$fields["Default"]."\"";
+                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".htmlspecialchars($form_values[$fields["Field"]])."\"" : $value = " value=\"".$fields["Default"]."\"";
                 ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);

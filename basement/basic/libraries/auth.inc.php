@@ -68,6 +68,12 @@
     // login ueberpruefen
     if ( $HTTP_POST_VARS["login"] == "login" ) {
         if ( $cfg["auth"]["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["auth"]["db"]["user"]["custom"];
+        // user-eingabe absichern
+        if ( get_magic_quotes_gpc() ) {
+            $post_user = $HTTP_POST_VARS["user"];
+        } else {
+            $post_user = addslashes($HTTP_POST_VARS["user"]);
+        }
         $sql = "SELECT ".$cfg["auth"]["db"]["user"]["id"].",
                        ".$cfg["auth"]["db"]["user"]["surname"].",
                        ".$cfg["auth"]["db"]["user"]["forename"].",
@@ -76,7 +82,7 @@
                        ".$cfg["auth"]["db"]["user"]["pass"]."
                        ".$custom."
                   FROM ".$cfg["auth"]["db"]["user"]["entries"]."
-                 WHERE ".$cfg["auth"]["db"]["user"]["alias"]."='".$HTTP_POST_VARS["user"]."'";
+                 WHERE ".$cfg["auth"]["db"]["user"]["alias"]."='".$post_user."'";
         $result  = $db -> query($sql);
         $AUTH = $db -> fetch_array($result,0);
 
