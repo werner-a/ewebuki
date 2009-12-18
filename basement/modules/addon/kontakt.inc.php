@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
-  $Script["desc"] = "kontakt form";
+//  "$Id$";
+//  "kontakt form";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -37,31 +37,16 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Kï¿½nigsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
-
     if ( $rechte[$cfg["kontakt"]["right"]] == "" || $rechte[$cfg["kontakt"]["right"]] == -1 ) {
 
         // page basics
         // ***
-
-        // warnung ausgeben
-        if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
-
-        // path fuer die schaltflaechen anpassen
-        if ( $cfg["kontakt"]["iconpath"] == "" ) $cfg["kontakt"]["iconpath"] = "/images/default/";
-
-        // label bearbeitung aktivieren
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
-            $specialvars["editlock"] = 0;
-        } else {
-            $specialvars["editlock"] = -1;
-        }
 
         #if ( count($HTTP_POST_VARS) == 0 ) {
         #} else {
@@ -254,8 +239,6 @@
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
-
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
