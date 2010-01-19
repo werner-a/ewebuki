@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -156,6 +156,7 @@
                     $formularobject .= "</select>\n";
                 } else {
                     unset($formularobject);
+                    ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["radio"]["class"]."\"";
                     // hack: bei nicht auf "checked" gesetzten radio buttons
                     // bleibt der post/get value leer
                     // der required check versagt!
@@ -173,7 +174,7 @@
                             $label_wert = $value;          #
                         }                                  #
                         $formularobject .= "<label for=\"".$fields["Field"]."\">".$label_wert."</label>\n";
-                        $formularobject .= "<input id=\"".$fields["Field"]."\" type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$checked." />\n";
+                        $formularobject .= "<input id=\"".$fields["Field"]."\" type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$class.$checked." />\n";
                     }
                     $element[$fields["Field"].$extend] = $formularobject;
                 }
