@@ -352,7 +352,12 @@
                             "rip.html";
 
                     // buffy: alle tags werden in ein hidedata-array geschrieben
-                    ( $tag_name == "SORT" ) ? $hidevalue = substr($tag_info["meat"],8,2).".".substr($tag_info["meat"],5,2).".".substr($tag_info["meat"],0,4) : $hidevalue = $tag_info["meat"];
+                    if ( $tag_name == "SORT" || $tag_name == "ENDE" ) {
+                        $hidevalue = substr($tag_info["meat"],8,2).".".substr($tag_info["meat"],5,2).".".substr($tag_info["meat"],0,4);
+                        if ( $hidevalue == "01.01.1970" ) $hidevalue = "&infin;";
+                    } else {
+                        $hidevalue = $tag_info["meat"];
+                    }
                     $hidedata["wizardtags"][$tag_name."_".$tag_key] = $hidevalue;
                     $hidedata["wizardtags"][$tag_name."_".$tag_key."_link"] = $edit;
                     // buffy: alle tags werden in ein hidedata-array geschrieben
