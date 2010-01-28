@@ -56,13 +56,9 @@
         include $pathvars["moduleroot"]."basic/view.inc.php";
     }
 
-#    // bloged
+    // basic: blog(ed)
     include $pathvars["moduleroot"]."admin/bloged.cfg.php";
-    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "bloged" )
-       || ( $environment["ebene"] == "/admin/bloged" ))
-    {
-        include $pathvars["moduleroot"]."admin/bloged-ctrl.inc.php";
-    }
+    include $pathvars["moduleroot"]."admin/bloged-autoload.inc.php";
 
     // admin: contented
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "contented" )
