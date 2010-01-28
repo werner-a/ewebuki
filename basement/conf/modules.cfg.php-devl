@@ -95,6 +95,14 @@
         include $pathvars["moduleroot"]."admin/grouped-ctrl.inc.php";
     }
 
+    // admin: prived (development)
+    if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "prived" )
+       || ( $environment["ebene"] == "/admin/prived" ))
+    {
+        include $pathvars["moduleroot"]."admin/prived.cfg.php";
+        include $pathvars["moduleroot"]."admin/prived-ctrl.inc.php";
+    }
+
     // admin: righted (development)
     if (  ( $environment["ebene"] == "/admin" && $environment["kategorie"] == "righted" )
        || ( $environment["ebene"] == "/admin/righted" ))

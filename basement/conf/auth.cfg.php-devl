@@ -91,6 +91,7 @@
                        ),
              "menu" => array(
                  "grouped" => array("list", "admin"),
+                  "prived" => array("list", "admin"),
                  "leveled" => array("list", "disabled"),
                   "usered" => array("list", "admin"),
                   "menued" => array("list", "admin"),
