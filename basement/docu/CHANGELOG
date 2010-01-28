@@ -9,6 +9,14 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 28. Januar 2010
+
+mit einfuehrung des prived wurde die tabelle auth_priv angepasst:
+pid wurde auto_increment und auf des feld priv wurde ein schluessel gelegt,
+um das anlegen gleicher rechte zu verhindern
+
+ALTER TABLE auth_priv CHANGE `pid` `pid` INT( 11 ) NOT NULL AUTO_INCREMENT;
+ALTER TABLE auth_priv ADD UNIQUE KEY `priv` (`priv`);
 
 --- 17. November 2009
 

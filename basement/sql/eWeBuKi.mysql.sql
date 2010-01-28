@@ -108,10 +108,11 @@ INSERT INTO `auth_member` (`uid`, `gid`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `auth_priv` (
-  `pid` int(11) NOT NULL default '0',
+  `pid` int(11) NOT NULL auto_increment,
   `priv` varchar(20) NOT NULL default '',
-  PRIMARY KEY  (`pid`)
-) TYPE=MyISAM;
+  PRIMARY KEY  (`pid`),
+  UNIQUE KEY `priv` (`priv`)
+) TYPE=MyISAM AUTO_INCREMENT=6;
 
 --
 -- Dumping data for table `auth_priv`
