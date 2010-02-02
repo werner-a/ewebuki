@@ -182,12 +182,6 @@
                             exit;
                         }
                     }
-                    if ( ( $_POST["ENDE"] && $_POST["ENDE"] != "1970-01-01") && ($periode > ( 86400 * 130 ) ) ) {
-                        if ( $_POST["send"][0] == "Abschicken" ) {
-                            header("Location: ".$_SESSION["page"]."?error=3");
-                            exit;
-                        }
-                    }
                 }
             }
             $to_insert = $tag_meat["!"][0]["complete"];
