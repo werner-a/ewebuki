@@ -48,10 +48,15 @@
         // page basics
         // ***
 
+        $hidedata["edit"]["on"] = "on";
+        $hidedata["send_button"]["on"] = "on";
+        $ausgaben["priv"] = "";
+
+
         if ( count($HTTP_POST_VARS) == 0 ) {
             $sql = "SELECT *
-                      FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
-                     WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+                      FROM ".$cfg["prived"]["db"]["priv"]["entries"]."
+                     WHERE ".$cfg["prived"]["db"]["priv"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
@@ -60,10 +65,10 @@
         }
 
         // form options holen
-        $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
+        $form_options = form_options(eCRC($environment["ebene"]).".modify");
 
         // form elememte bauen
-        $element = form_elements( $cfg["leer"]["db"]["leer"]["entries"], $form_values );
+        $element = form_elements( $cfg["prived"]["db"]["priv"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -89,8 +94,8 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
-        $ausgaben["form_aktion"] = $cfg["leer"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-        $ausgaben["form_break"] = $cfg["leer"]["basis"]."/list.html";
+        $ausgaben["form_aktion"] = $cfg["prived"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
+        $ausgaben["form_break"] = $cfg["prived"]["basis"]."/list.html";
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -146,16 +151,11 @@
                     }
                 }
 
-                // Sql um spezielle Felder erweitern
-                #$ldate = $HTTP_POST_VARS["ldate"];
-                #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
-                #$sqla .= ", ldate='".$ldate."'";
-
-                $sql = "update ".$cfg["leer"]["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
+                $sql = "update ".$cfg["prived"]["db"]["priv"]["entries"]." SET ".$sqla." WHERE ".$cfg["prived"]["db"]["priv"]["key"]."='".$environment["parameter"][1]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["leer"]["basis"]."/list.html";
+                if ( $header == "" ) $header = $cfg["prived"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
