@@ -132,13 +132,13 @@
                     $formularobject .= "<label for=\"".$fields["Field"]."\">".$options[0]."</label>\n";
                     $formularobject .= "<input id=\"".$fields["Field"]."\" type=\"checkbox\" name=\"".$fields["Field"].$extend."\" value=\"".$options[0]."\"".$checked." />\n";
                 } elseif ( count($options) >= 4 ) {
-                    ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "1";
+                    ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "size=\"1\"";
                     ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["dropdown"]["class"]."\"";
                     ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
                     // multiple koennte gehen, mommentan deaktiviert
                     ( strstr($form_options[$fields["Field"]]["opt"], "multiple") ) ? $multiple = " multiple" : $multiple = "";
                     ( strstr($form_options[$fields["Field"]]["opt"], "multiple") ) ? $isarray = "[]" : $isarray = "";
-                    $formularobject = "<select id=\"".$fields["Field"]." name=\"".$fields["Field"].$extend.$isarray."\"".$size.$class.$style."".$multiple.">\n";
+                    $formularobject = "<select id=\"".$fields["Field"]."\" name=\"".$fields["Field"].$extend.$isarray."\"".$size.$class.$style."".$multiple.">\n";
                     foreach( $options as $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
                             $selected = " selected";
