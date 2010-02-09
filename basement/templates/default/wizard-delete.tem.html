@@ -1,0 +1,95 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Wizard-Edit</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<div id="wizard">
+
+    <div class="admin_head" style="">
+        #(inhalt)
+        <div class="clearer"></div>
+    </div>
+
+    <div class="column_2 column_2_wide" style="" id="cEd">
+        <fieldset class="">
+            <ul>
+                <!--##loop-allartikel-->
+                <li style="border:1px solid silver; margin:0 0 5px;padding:5px;">
+                    <button type="button" style="float:right;width:auto;" onclick="preview('!{url}');" id="!{version}" class="button">Vorschau</button>
+                    <h3 style="margin-top:0;">Version: !{version}:</h3>
+                    !{text}
+                </li>
+                <!--##cont-->
+            </ul>
+        </fieldset>
+    </div>
+
+    <div class="column_3">
+        <form method="post" action="!#ausgaben_form_aktion">
+            <div class="box">
+                <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+                <button type="submit" name="delete[]" value="delete" accesskey="s" class="button">g(delete)</button>
+                <button type="button" name="cancel[]" value="g(abort)" accesskey="a" class="button" onclick="location='!#ausgaben_form_referer'">g(abort)</button>
+                <div class="clearer">&nbsp;</div>
+            </div>
+        </form>
+    </div>
+    <div class="clearer"></div>
+    !#ausgaben_output
+    !#ausgaben_inaccessible
+    <div class="clearer"></div>
+
+</div>
+
+<div id="tmp_preview" style="border:1px solid silver;display:none;"></div>
+<div id="vorschau_container" style="display:none;">
+    <div id="vorschau">
+        <div id="substance"></div>
+    </div>
+    <div id="preview_close">
+        <img style="cursor: pointer;" alt="Vorschau schliessen" onclick="lb_preview.hide();" src="/images/html/lb/closelabel.gif"/>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    function preview(url) {
+        // 1. Seite holen
+        new Ajax.Updater(
+            'tmp_preview',
+            url,
+            {
+                onComplete: function() {
+                    if ( $$('#tmp_preview #substance').length > 0 ) {
+                        // 2. zielcontainer vorbereiten
+                        var source = $$('#tmp_preview #substance')[0];
+                        var destination = $$('#vorschau #substance')[0]
+                        var klasse = source.className;
+                        if ( !destination.hasClassName(klasse) ) destination.addClassName(klasse);
+                        // 3. container fuellen
+                        destination.innerHTML = source.innerHTML;
+                        source.innerHTML = '';
+                        // 4. ausgabe anpassen
+                        dd_initialize();
+                        lb_preview.show();
+                    } else {
+                        $('tmp_preview').innerHTML = '';
+                    }
+                }
+            }
+        );
+    }
+    lb_preview = new LB_imitate('vorschau_container',{top:100});
+
+</script>
+<!--##end-->
+
+</body>
+</html>
