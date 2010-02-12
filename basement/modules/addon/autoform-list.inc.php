@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $cfg["leer"]["right"] == "" || $rechte[$cfg["leer"]["right"]] == -1 ) {
+    if ( $cfg["autoform"]["right"] == "" || priv_check($environment["ebene"]."/".$environment["kategorie"],$cfg["autoform"]["right"]) ){
 
         ////////////////////////////////////////////////////////////////////
         // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!
@@ -54,6 +54,32 @@
 
         // page basics
         // ***
+
+        // art des forms
+        switch($cfg["autoform"]["location"][$environment["ebene"]]["art"]) {
+            case "mailsave":
+                $db_entry = -1;
+                $mail_order = -1;
+                break;
+            case "mail":
+                $mail_order = -1;
+                break;
+            case "save":
+                $db_entry = -1;
+                break;
+            case "confirm":
+                $db_entry = -1;
+                $mail_order = -1;
+                $confirm = -1;
+                break;
+            default:
+                $ausgaben["form_error"] = "Art wählen";
+        }
+
+        // schutz vor automatischen pushen
+        if ( $_POST["send"] != "" && $_SERVER["HTTP_REFERER"] == "" ) {
+            header("Location: ".$pathvars["virtual"]."/");
+        }
 
         $ausgaben["form_error"] = "";
 
@@ -77,10 +103,6 @@
         // form elememte bauen
         $element = form_elements( $cfg["autoform"]["location"][$environment["ebene"]]["db"], $_POST );
 
-//echo $cfg["autoform"]["location"][$environment["ebene"]]["db"];
-//echo "<pre>";
-//print_r($form_options);
-//echo "</pre>";
         // +++
         // page basics
 
@@ -113,6 +135,13 @@
         $hidedata[$cfg["autoform"]["location"][$environment["ebene"]]["db"]][0] = "enable";
         $hidedata["form"][0] = "enable";
 
+        // "form referer"
+        if ( $_POST["last_viewed"] != "" ) {
+            $ausgaben["last_viewed"] = $_POST["last_viewed"];
+        } else {
+            $ausgaben["last_viewed"] = $_SERVER["HTTP_REFERER"];
+        }
+
         // +++
         // funktions bereich
 
@@ -120,7 +149,7 @@
         // page basics
         // ***
 
-        if ( $environment["parameter"][1] == "verify" && $HTTP_POST_VARS["send"] != "" ) {
+        if ( $environment["parameter"][1] == "verify" && $_POST["send"] != "" ) {
 
             // form eigaben pruefen
             form_errors( $form_options, $_POST );
@@ -139,12 +168,11 @@
 
             // hier erfolgt der mail-versand bzw db-eintrag
             if ( $ausgaben["form_error"] == ""  ) {
-                 if ( $cfg["autoform"]["location"][$environment["ebene"]]["mail-order"] ) {
+                if ( $mail_order == -1 ) {
                     mail_order($_POST,$cfg["autoform"]["location"][$environment["ebene"]]["email"]);
                 }
-               if ( $cfg["autoform"]["location"][$environment["ebene"]]["db-entry"] ) {
+                if ( $db_entry == -1 ) {
                     $kick = array( "PHPSESSID", "form_referer", "send", "last_viewed","captcha","captcha_proof" );
-
                     foreach($_POST as $name => $value) {
                         if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                             // posts absichern
@@ -157,17 +185,21 @@
                             $sqlb .= "'".$value."'";
                         }
                     }
-
                     $sql = "INSERT INTO ".$cfg["autoform"]["location"][$environment["ebene"]]["db"]." (".$sqla.") VALUES (".$sqlb.")";
                     $result  = $db -> query($sql);
-               }
+                }
 
-            }
-
-            // wenn es keine fehlermeldungen gab, die uri $header laden
-            if ( $ausgaben["form_error"] == "" ) {
-                header("Location: ".$environment["ebene"]."/list,,sent.html?referer=".$_POST["last_viewed"]);
-            }
+                // wenn es keine fehlermeldungen gab, die uri $header laden
+                unset($hidedata[$cfg["autoform"]["location"][$environment["ebene"]]["db"]]);
+                unset($hidedata["form"]);
+                unset($hidedata["captcha"]);
+                $hidedata["success"] = array();
+                if ( $_POST["last_viewed"] != "" ) {
+                    $hidedata["success"]["link"] = $_POST["last_viewed"];
+                } else {
+                    $hidedata["success"]["link"] = $environment["ebene"];
+                }
+            }   
         }
 
         // was anzeigen

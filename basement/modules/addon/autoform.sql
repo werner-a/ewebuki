@@ -30,5 +30,6 @@ CREATE TABLE `db_survey` (
   `kid` int(11) NOT NULL AUTO_INCREMENT,
   `wert` enum('1','2','3','4','5','6') default NULL,
   `mitteilung` text NOT NULL,
+  `confirm` integer default 0,
   PRIMARY KEY  (`kid`)
 ) TYPE=MyISAM;
