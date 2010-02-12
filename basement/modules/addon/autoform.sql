@@ -17,6 +17,7 @@ CREATE TABLE `db_kontakt` (
   `e-mail` varchar(50) NOT NULL default '',
   `mitteilung` text NOT NULL,
   `confirm` integer default 0,
+  `crc` varchar(50) default NULL,
 
   PRIMARY KEY  (`kid`)
 ) TYPE=MyISAM;
@@ -31,5 +32,6 @@ CREATE TABLE `db_survey` (
   `wert` enum('1','2','3','4','5','6') default NULL,
   `mitteilung` text NOT NULL,
   `confirm` integer default 0,
+  `crc` varchar(50) default NULL,
   PRIMARY KEY  (`kid`)
 ) TYPE=MyISAM;

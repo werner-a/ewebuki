@@ -52,6 +52,7 @@
     // beschreibung der funktion
     if ( in_array("mail_order", $cfg["autoform"]["function"][$environment["kategorie"]]) ) {
          function mail_order(  $posts, $config ) {
+            global $message1,$message2;
                 // kunde
                 if ( $posts[$config["form_email_feld"]] == "" ) {
                     echo $config["robot"];
@@ -59,13 +60,6 @@
                 } else {
                     $email_adresse = str_replace(",","",$posts[$config["form_name_feld"]])." <".$posts[$config["form_email_feld"]].">";
                 }
-
-                foreach ( $posts as $key => $value ) {
-                   $$key = $value;
-                }
-
-                $message1 = parser($config["template1"],"");
-                $message2 = parser($config["template2"],"");
 
                 // mail an betreiber
                 $subject1 = $config["subj1"];

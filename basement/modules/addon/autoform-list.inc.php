@@ -55,6 +55,26 @@
         // page basics
         // ***
 
+        if ( $_GET["eintragen"] ) {
+            $preg = "^(-)?([0-9])*$";
+            if ( preg_match("/$preg/",$_GET["eintragen"],$regs) ) {
+                $sql = "SELECT * FROM ".$cfg["autoform"]["location"][$environment["ebene"]]["db"]." WHERE crc='".$regs[0]."' AND confirm !='-1'";
+                $result = $db -> query($sql);
+                if ( $db -> num_rows($result) > 0 ) {
+                    $sql = "UPDATE ".$cfg["autoform"]["location"][$environment["ebene"]]["db"]." SET confirm='-1' WHERE crc='".$regs[0]."' AND confirm !='-1'";
+                    $result = $db -> query($sql);
+                    $hidedata["confirm_yes"]["enable"] = -1;
+                    exit;
+                } else {
+                    $hidedata["confirm_no"]["enable"] = -1;
+                    exit;
+                }
+            } else {
+                $hidedata["confirm_yes"]["no"] = -1;
+                exit;
+            }
+        }
+
         // art des forms
         switch($cfg["autoform"]["location"][$environment["ebene"]]["art"]) {
             case "mailsave":
@@ -169,7 +189,20 @@
             // hier erfolgt der mail-versand bzw db-eintrag
             if ( $ausgaben["form_error"] == ""  ) {
                 if ( $mail_order == -1 ) {
-                    mail_order($_POST,$cfg["autoform"]["location"][$environment["ebene"]]["email"]);
+                    if ( $confirm == -1 ) {
+                        ( $cfg["autoform"]["captcha"]["letter_pot"] ) ? $put = $cfg["autoform"]["captcha"] : $put["letter_pot"] = "abcde";
+                        $hazard = crc32(captcha_randomize("43",$put));
+                        $bestaetigungslink = "http://".$_SERVER["HTTP_HOST"].$environment["ebene"].".html?eintragen=".$hazard;
+                        $message = parser($cfg["autoform"]["location"][$environment["ebene"]]["email"]["confirm_template"],"");
+                        mail($_POST[$cfg["autoform"]["location"][$environment["ebene"]]["email"]["form_email_feld"]],"Confirm",$message);
+                    } else {
+                        foreach ( $_POST as $key => $value ) {
+                            $$key = $value;
+                        }
+                        $message1 = parser($cfg["autoform"]["location"][$environment["ebene"]]["email"]["template1"],"");
+                        $message2 = parser($cfg["autoform"]["location"][$environment["ebene"]]["email"]["template2"],"");
+                        mail_order($_POST,$cfg["autoform"]["location"][$environment["ebene"]]["email"]);
+                    }
                 }
                 if ( $db_entry == -1 ) {
                     $kick = array( "PHPSESSID", "form_referer", "send", "last_viewed","captcha","captcha_proof" );
@@ -184,6 +217,10 @@
                             $sqla .= " `".$name."`";
                             $sqlb .= "'".$value."'";
                         }
+                    }
+                    if ( $confirm == -1 ) {
+                            $sqla .= ", `crc`";
+                            $sqlb .= ", '".$hazard."'";
                     }
                     $sql = "INSERT INTO ".$cfg["autoform"]["location"][$environment["ebene"]]["db"]." (".$sqla.") VALUES (".$sqlb.")";
                     $result  = $db -> query($sql);
@@ -210,6 +247,9 @@
         if ( isset($HTTP_GET_VARS["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
+            $ausgaben["inaccessible"] .= "# (success) #(success)<br />";
+            $ausgaben["inaccessible"] .= "# (confirm_yes) #(confirm_yes)<br />";
+            $ausgaben["inaccessible"] .= "# (confirm_no) #(confirm_no)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
