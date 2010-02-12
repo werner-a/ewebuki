@@ -65,8 +65,7 @@
                  "location" => array(
                               "/kontakt" => array(
                                           "db" => "db_kontakt",
-                                    "db-entry" => -1,
-                                  "mail-order" => -1,
+                                         "art" => "mailsave",  // mailsave,mail,save,confirm
                                   "captcha"    => -1,
                                        "email" => array(
                                                 // mail an betreiber
@@ -83,6 +82,7 @@
                                                 // admin
                                                 "robot" => "Web Robot <robot@domain.aendern>",
                                                 "encoding" => "",
+                                                "confirm_template" => "kontakt-confirm"
                                           ),
                              ),
 //                          "/irgendwo/irgendwo" => array(          // pfad setzen
