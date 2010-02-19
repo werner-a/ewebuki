@@ -43,7 +43,6 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     // was anzeigen
     $mapping["main"] = "wizard-edit";
 
@@ -99,7 +98,9 @@
             }
             $to_insert = $tag_meat["!"][0]["complete"];
         }
-    } elseif ( $wizard_name == "artikel" || $wizard_name="ausstellungen" ) {
+    } elseif ( $wizard_name == "artikel" || $wizard_name == "ausstellungen" ) {
+
+
         $ausgaben["error"] = "";
         if ( $_GET["error"] == 1 )$ausgaben["error"] = "#(antedate)";
         if ( $_GET["error"] == 2 )$ausgaben["error"] = "#(date_begin_end)";
@@ -169,6 +170,22 @@
             }
             $to_insert = $tag_meat["!"][0]["complete"];
         }
+    } else {
+        $ausgaben["error"] = "";
+        $dataloop["calendar"][1]["id"] =  "date1";
+        $dataloop["calendar"][1]["button"] =  "trigger1";
+
+        $preg = "/\[SORT\](.*)\[\/SORT\]/Us";
+        preg_match_all($preg,$tag_meat["!"][0]["complete"],$regs);
+        $SORT = $regs[1][0];
+        $SORT = substr($SORT,8,2).".".substr($SORT,5,2).".".substr($SORT,0,4);
+        $hidedata["blogsort"]["sort"] = $SORT;
+        if ( $_POST["send"] ) {
+            $_POST["SORT"] = substr($_POST["SORT"],6,4)."-".substr($_POST["SORT"],3,2)."-".substr($_POST["SORT"],0,2);
+            $tag_meat["!"][0]["complete"] = preg_replace("/\[SORT\]".$regs[1][0]."\[\/SORT\]/","[SORT]".$_POST["SORT"]."[/SORT]",$tag_meat["!"][0]["complete"]);
+            $to_insert = $tag_meat["!"][0]["complete"];
+        }
+
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
