@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -60,9 +60,14 @@
         $pathvars["requested"] = str_replace($pathvars["subdir"],"",$pathvars["requested"]);
     }
 
-    // url ohne .html wird auf index.html gesetzt
-    if ( !strstr($pathvars["requested"],".html") ) {
-       $pathvars["requested"] = $pathvars["requested"]."index.html"; ###
+    // url ohne .htm(l) wird ergaenzt
+    if ( !strstr($pathvars["requested"],".htm") ) {
+        if ( preg_match("/\/$/",$pathvars["requested"]) ) {
+            // url endet mit /
+            $pathvars["requested"] .= "index.html";
+        } else {
+            $pathvars["requested"] .= ".html";
+        }
     }
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "pathvars requested: ".$pathvars["requested"].$debugging["char"];
@@ -161,7 +166,7 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg ebene: ".$environment["ebene"].$debugging["char"];
 
     // neuer parameter 'parameter'
-    $paramlen = (strlen($paramstr)-6);
+    $paramlen = (strrpos($paramstr,".htm")-1);
     $paramstr = substr($paramstr,1,$paramlen);
     $environment["parameter"] = explode(",", $paramstr);
     foreach( $environment["parameter"] as $key => $piece ) {
@@ -292,7 +297,7 @@
     require $pathvars["config"]."auth.cfg.php";
     require $pathvars["libraries"]."auth.inc.php";
 
-    // überschreiben von default werten
+    // ueberschreiben von default werten
     require $pathvars["config"]."overwrite.cfg.php";
 
     if ( $environment["ebene"] == "/cms" || $environment["ebene"] == "/admin/contented" ) {
