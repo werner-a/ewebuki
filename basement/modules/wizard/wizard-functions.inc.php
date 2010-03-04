@@ -430,6 +430,17 @@
                 $tmp_date = explode("-",$tmp_date1[0]);
                 $date = $tmp_date[2].".".$tmp_date[1].".".$tmp_date[0];
 
+                // Sortierdatum
+                $sort_date = $date;
+                $sort_date_db = $data["changed"];
+                preg_match("/\[SORT\](.+)\[\/SORT\]/Us",$data["content"],$match);
+                if ( count($match) > 1 ) {
+                    $tmp_date1 = explode(" ",$match[1]);
+                    $tmp_date = explode("-",$tmp_date1[0]);
+                    $sort_date = $tmp_date[2].".".$tmp_date[1].".".$tmp_date[0];
+                    $sort_date_db = $match[1];
+                }
+
                 $new_releases[$data["status"]][] = array(
                     "path" => $path,
                    "titel" => $titel,
@@ -440,6 +451,8 @@
                 "last_uid" => $last_uid,
                  "changed" => $date,
               "changed_db" => $data["changed"],
+                    "sort" => $sort_date,
+                 "sort_db" => $sort_date_db,
                     "view" => $view_link,
                     "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt.html",
                      "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",inhalt.html",
@@ -447,6 +460,7 @@
                  "release" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",release,".$data["version"].".html",
                  "history" => $pathvars["virtual"]."/admin/contented/history,,".$tname.",".$label.",".$dat_akt["version"].",".$data["version"].".html",
                    "color" => $cfg[$data["status"]]["color"]["set"],
+                   "status" => $data["status"],
                 );
             }
 

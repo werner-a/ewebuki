@@ -153,7 +153,9 @@
         }
 
         if ( $_POST["send"] ) {
-            if ( $postsort_timestamp < $now_timestamp && ( $check_date == "" || $postsort_timestamp < $check_date )) {
+            if ( $postsort_timestamp < $now_timestamp
+              && ( $check_date == "" || $postsort_timestamp < $check_date )
+              && $cfg["wizard"]["!_edit"]["backdate"] != TRUE) {
                 if ( $_POST["send"][0] == "Abschicken" ) {
                     header("Location: ".$_SESSION["page"]."?error=1");
                     exit;

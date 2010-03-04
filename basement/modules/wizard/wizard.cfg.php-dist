@@ -202,6 +202,10 @@
                 "max_cells" => 500      // max. anzahl an zellen
                 ),
 
+           "!_edit" => array(
+//                  "backdate" => true     // soll das startdatum zurueckdatiert werden koennen
+                ),
+
         "link_edit" => array(
                 "cb_target" => array(
                                     "" => "nope",
