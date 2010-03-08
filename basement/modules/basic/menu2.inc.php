@@ -95,6 +95,7 @@
                 }
 
                 // link und ziel
+                $aktiv =  "";
                 if ( $data["exturl"] == "" ) {
                     $link   = $url."/".$data["entry"].".html";
                     $target = "";

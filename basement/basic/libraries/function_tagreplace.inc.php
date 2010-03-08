@@ -942,8 +942,8 @@
                             if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
 
                             $sql = "SELECT *
-                                     FROM site_file
-                                    WHERE fhit like '%#p".$tag_param[0]."%'";
+                                      FROM site_file
+                                     WHERE fhit LIKE '%#p".$tag_param[0]."%'";
                             $result = $db -> query($sql);
                             $files = array();
                             while ( $data = $db -> fetch_array($result,1) ) {
@@ -952,8 +952,9 @@
                                             "fid"    => $data["fid"],
                                             "sort"   => $match[1],
                                             "ffart"  => $data["ffart"],
+                                            "ffname" => $data["ffname"],
                                             "funder" => $data["funder"],
-                                            "fdesc" => $data["fdesc"]
+                                            "fdesc"  => $data["fdesc"]
                                             );
                             }
                             ksort($files);
@@ -971,10 +972,28 @@
                                 $lb_helper = "";
                                 foreach ( $files as $row ) {
 
-                                    $img = $cfg["file"]["base"]["webdir"]
-                                         .$cfg["file"]["base"]["pic"]["root"]
-                                         .$cfg["file"]["base"]["pic"][$tag_param[1]]
-                                         ."img_".$row["fid"].".".$row["ffart"];
+                                    if ( $cfg["file"]["base"]["realname"] == True ) {
+                                        $img = $cfg["file"]["base"]["webdir"]
+                                              .$row["ffart"]."/"
+                                              .$row["fid"]."/"
+                                              .$tag_param[1]."/"
+                                              .$row["ffname"];
+                                        $tn =$cfg["file"]["base"]["webdir"]
+                                              .$row["ffart"]."/"
+                                              .$row["fid"]."/"
+                                              ."tn/"
+                                              .$row["ffname"];
+                                    } else {
+                                        $img = $cfg["file"]["base"]["webdir"]
+                                              .$cfg["file"]["base"]["pic"]["root"]
+                                              .$cfg["file"]["base"]["pic"][$tag_param[1]]
+                                              ."img_".$row["fid"].".".$row["ffart"];
+                                        $tn = $cfg["file"]["base"]["webdir"]
+                                             .$cfg["file"]["base"]["pic"]["root"]
+                                             .$cfg["file"]["base"]["pic"]["tn"]
+                                             ."tn_".$row["fid"].".".$row["ffart"];
+                                    }
+
 
                                     $style = "";
                                     if ( !in_array( $row["fid"], $tag_extra ) && $tag_param[3] != "a" ) {
@@ -985,10 +1004,6 @@
                                         }
                                     }
 
-                                    $tn = $cfg["file"]["base"]["webdir"]
-                                         .$cfg["file"]["base"]["pic"]["root"]
-                                         .$cfg["file"]["base"]["pic"]["tn"]
-                                         ."tn_".$row["fid"].".".$row["ffart"];
 
                                     if ( $tag_param[4] == "l" ) {
                                         $changed = $img;

@@ -108,6 +108,7 @@
                 }
 
                 // wo geht der href hin?
+                $aktiv = "";
                 if ( $level1array["exturl"] == "" ) {
                     $href = $cfg["menu"]["base"]."/".$level1array["entry"].".html";
                     $target = "";

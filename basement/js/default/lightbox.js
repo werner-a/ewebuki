@@ -326,10 +326,10 @@ Lightbox.prototype = {
     //
     updateDetails: function() {
 
-        // if caption is not null
-        if (this.imageArray[this.activeImage][1] != ""){
+//         // if caption is not null
+//         if (this.imageArray[this.activeImage][1] != ""){
             this.caption.update(this.imageArray[this.activeImage][1]).show();
-        }
+//         }
 
         // if image is part of set display 'Image x of x'
         if (this.imageArray.length > 1){
