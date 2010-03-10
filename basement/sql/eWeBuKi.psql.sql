@@ -35,6 +35,15 @@ CREATE TABLE auth_content (
     CONSTRAINT auth_content_neg_check CHECK (((neg = (-1)) OR (neg = 0)))
 );
 
+--
+-- data for table `auth_content`
+--
+
+INSERT INTO auth_content (uid, gid, pid, neg, db, tname, ebene, kategorie) VALUES(0, 1, 1, 0, '', '/', '', '');
+INSERT INTO auth_content (uid, gid, pid, neg, db, tname, ebene, kategorie) VALUES(0, 1, 2, 0, '', '/', '', '');
+INSERT INTO auth_content (uid, gid, pid, neg, db, tname, ebene, kategorie) VALUES(0, 1, 3, 0, '', '/', '', '');
+INSERT INTO auth_content (uid, gid, pid, neg, db, tname, ebene, kategorie) VALUES(0, 1, 4, 0, '', '/', '', '');
+INSERT INTO auth_content (uid, gid, pid, neg, db, tname, ebene, kategorie) VALUES(0, 1, 5, 0, '', '/', '', '');
 
 --
 -- TOC entry 1321 (class 1259 OID 3068486)
@@ -62,6 +71,11 @@ CREATE TABLE auth_group (
     beschreibung text NOT NULL
 );
 
+--
+-- data for table `auth_group`
+--
+
+INSERT INTO auth_group (gid, ggroup, beschreibung) VALUES(1, 'manager', 'manager');
 
 --
 -- TOC entry 1322 (class 1259 OID 3068488)
@@ -89,6 +103,12 @@ CREATE TABLE auth_level (
     beschreibung text NOT NULL
 );
 
+--
+-- data for table `auth_level`
+--
+
+INSERT INTO auth_level (lid, level, beschreibung) VALUES(1, 'cms_edit', 'berechtigt zum bearbeiten der templates');
+INSERT INTO auth_level (lid, level, beschreibung) VALUES(2, 'cms_admin', 'berechtigt zur administration');
 
 --
 -- TOC entry 1308 (class 1259 OID 3068308)
@@ -101,6 +121,11 @@ CREATE TABLE auth_member (
     gid integer DEFAULT 0 NOT NULL
 );
 
+--
+-- data for table `auth_memeber`
+--
+
+INSERT INTO auth_member (uid, gid) VALUES(1, 1);
 
 --
 -- TOC entry 1331 (class 1259 OID 3068508)
@@ -127,6 +152,15 @@ CREATE TABLE auth_priv (
     priv character varying(20) DEFAULT ''::character varying NOT NULL
 );
 
+--
+-- data for table `auth_priv`
+--
+
+INSERT INTO auth_priv (pid, priv) VALUES(1, 'view');
+INSERT INTO auth_priv (pid, priv) VALUES(2, 'edit');
+INSERT INTO auth_priv (pid, priv) VALUES(3, 'publish');
+INSERT INTO auth_priv (pid, priv) VALUES(4, 'admin');
+INSERT INTO auth_priv (pid, priv) VALUES(5, 'add');
 
 --
 -- TOC entry 1310 (class 1259 OID 3068321)
@@ -139,6 +173,12 @@ CREATE TABLE auth_right (
     lid integer DEFAULT 0 NOT NULL
 );
 
+--
+-- data for table `auth_right`
+--
+
+INSERT INTO auth_right (uid, lid) VALUES(1, 1);
+INSERT INTO auth_right (uid, lid) VALUES(1, 2);
 
 --
 -- TOC entry 1323 (class 1259 OID 3068490)
@@ -201,6 +241,11 @@ CREATE TABLE auth_user (
     pass character varying(20) DEFAULT ''::character varying NOT NULL
 );
 
+--
+-- data for table `auth_user`
+--
+
+INSERT INTO auth_user (uid, nachname, vorname, email, username, pass) VALUES(1, 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 'WFffxluy26Lew');
 
 --
 -- TOC entry 1325 (class 1259 OID 3068494)
@@ -228,6 +273,12 @@ CREATE TABLE db_leer (
     field2 text NOT NULL
 );
 
+--
+-- data for table `db_leer`
+--
+
+INSERT INTO db_leer (id, field1, field2) VALUES(1, 'Erster Eintrag', 'Zweite Spalte');
+INSERT INTO db_leer (id, field1, field2) VALUES(2, 'Zweiter Eintrag', 'Zweite Spalte');
 
 --
 -- TOC entry 1326 (class 1259 OID 3068496)
@@ -251,10 +302,11 @@ CREATE SEQUENCE site_file_fid_seq
 
 CREATE TABLE site_file (
     fid integer DEFAULT nextval('site_file_fid_seq'::regclass) NOT NULL,
-    fredit integer DEFAULT 0 NOT NULL,
+    frefid integer DEFAULT 0 NOT NULL,
     fuid integer DEFAULT 0 NOT NULL,
     fdid integer DEFAULT 0 NOT NULL,
     ftname character varying(255) DEFAULT ''::character varying NOT NULL,
+    ffname character varying(255) DEFAULT ''::character varying NOT NULL,
     ffart character varying(8) DEFAULT 'jpg'::character varying NOT NULL,
     fdesc text NOT NULL,
     funder character varying(255),
@@ -264,6 +316,11 @@ CREATE TABLE site_file (
     CONSTRAINT site_file_ffart_check CHECK ((((((((((((ffart)::text = 'gif'::text) OR ((ffart)::text = 'jpg'::text)) OR ((ffart)::text = 'png'::text)) OR ((ffart)::text = 'pdf'::text)) OR ((ffart)::text = 'zip'::text)) OR ((ffart)::text = 'odt'::text)) OR ((ffart)::text = 'ods'::text)) OR ((ffart)::text = 'odp'::text)) OR ((ffart)::text = 'gz'::text)) OR ((ffart)::text = 'bz2'::text)))
 );
 
+--
+-- data for table `site_file`
+--
+
+INSERT INTO site_file (fid, frefid, fuid, fdid, ftname, ffname, ffart, fdesc, funder, fhit, fdel, fgroups) VALUES(1, 0, 1, 0, '', 'ewebuki_160x67.png', 'png', 'eWeBuKi Logo Beschreibung', 'eWeBuKi Logo Unterschift', '', NULL, '');
 
 --
 -- TOC entry 1327 (class 1259 OID 3068498)
@@ -299,6 +356,20 @@ CREATE TABLE site_form (
     CONSTRAINT site_form_frequired_check CHECK (((frequired = 0) OR (frequired = (-1))))
 );
 
+--
+-- data for table `site_form`
+--
+
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(1, 'username', '210295197.modify', '0', '', '', NULL, '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(2, 'pass', '210295197.modify', '0', '', '', 'password', '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(3, 'pass', '852881080.modify', '0', '', '', 'password', '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(4, 'fid', '-939795212.modify', '0', 'hidden', '', 'hidden', '-1', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(6, 'fdesc', '-939795212.modify', '25', '', '', NULL, '0', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(7, 'funder', '-939795212.modify', '30', '', '', NULL, '0', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(8, 'fhit', '-939795212.modify', '30', '', '', NULL, '0', '');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(9, 'entry', '-555504947.add', '0', '', '', NULL, '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(10, 'entry', '-555504947.edit', '0', '', '', NULL, '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
+INSERT INTO site_form (fid, flabel, ftname, fsize, fclass, fstyle, foption, frequired, fcheck) VALUES(11, 'new_keyword', '1950102507.rename_tag', '0', '', '', NULL, '-1', '');
 
 --
 -- TOC entry 1328 (class 1259 OID 3068500)
@@ -331,6 +402,15 @@ CREATE TABLE site_form_lang (
     fchkerror character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
+--
+-- data for table `site_form_lang`
+--
+
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(9, 9, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
 
 --
 -- TOC entry 1332 (class 1259 OID 3068517)
@@ -397,6 +477,21 @@ CREATE TABLE site_menu (
     defaulttemplate character varying(20) DEFAULT 'default1'::character varying NOT NULL
 );
 
+--
+-- data for table `site_menu`
+--
+
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(1, 0, 'demo', NULL, 10, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(2, 0, 'show', NULL, 20, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(3, 0, 'bilderstrecke', NULL, 30, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(4, 0, 'lightbox', '', 40, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(5, 0, 'doku', '', 50, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(6, 5, 'kapitel1', '', 10, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(7, 6, 'punkt_1', '', 10, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(8, 6, 'punkt_2', '', 20, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(9, 5, 'kapitel_2', '', 20, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(10, 0, 'fehler', NULL, 60, NULL, NULL, NULL, 'default1');
+INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory, defaulttemplate) VALUES(11, 0, 'impressum', NULL, 70, NULL, NULL, NULL, 'default1');
 
 --
 -- TOC entry 1329 (class 1259 OID 3068502)
@@ -426,6 +521,21 @@ CREATE TABLE site_menu_lang (
     exturl character varying(128)
 );
 
+--
+-- data for table `site_menu_lang`
+--
+
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(1, 1, 'de', 'Demo', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(2, 2, 'de', 'eWeBuKi Show', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(3, 3, 'de', 'Bilderstrecke', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(4, 4, 'de', 'Lightbox', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(5, 5, 'de', 'Doku', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(6, 6, 'de', 'Kapitel 1', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(7, 7, 'de', 'Punkt 1', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(8, 8, 'de', 'Punkt 2', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(9, 9, 'de', 'Kapitel 2', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(10, 10, 'de', '404', NULL);
+INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(11, 11, 'de', 'Impressum', NULL);
 
 --
 -- TOC entry 1330 (class 1259 OID 3068504)
