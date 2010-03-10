@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -166,7 +166,7 @@
         // page basics
         if ( $environment["parameter"][3] == "verify" && preg_match("/^new#|^del#|^add#/",key($HTTP_POST_VARS)) ){
 
-            // form eingaben prüfen
+            // form eingaben pruefen
             form_errors( $form_options, $HTTP_POST_VARS );
 
             // evtl. zusaetzliche datensatz aendern
@@ -199,7 +199,7 @@
                 } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "del" ) {
                     $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
                 } else {
-                    $sql = "INSERT INTO auth_content (gid,pid,tname,neg) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','')";
+                    $sql = "INSERT INTO auth_content (gid,pid,tname) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."')";
                 }
                 $result = $db -> query($sql);
 
