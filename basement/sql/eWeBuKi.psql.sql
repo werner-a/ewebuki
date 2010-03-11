@@ -52,7 +52,7 @@ INSERT INTO auth_content (uid, gid, pid, neg, db, tname, ebene, kategorie) VALUE
 --
 
 CREATE SEQUENCE auth_group_gid_seq
-    START WITH 1
+    START WITH 2
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -84,7 +84,7 @@ INSERT INTO auth_group (gid, ggroup, beschreibung) VALUES(1, 'manager', 'manager
 --
 
 CREATE SEQUENCE auth_level_lid_seq
-    START WITH 1
+    START WITH 3
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -134,7 +134,7 @@ INSERT INTO auth_member (uid, gid) VALUES(1, 1);
 --
 
 CREATE SEQUENCE auth_priv_pid_seq
-    START WITH 1
+    START WITH 6
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -219,7 +219,7 @@ CREATE TABLE auth_special (
 --
 
 CREATE SEQUENCE auth_user_uid_seq
-    START WITH 1
+    START WITH 2
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -254,7 +254,7 @@ INSERT INTO auth_user (uid, nachname, vorname, email, username, pass) VALUES(1, 
 --
 
 CREATE SEQUENCE db_leer_id_seq
-    START WITH 1
+    START WITH 3
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -287,7 +287,7 @@ INSERT INTO db_leer (id, field1, field2) VALUES(2, 'Zweiter Eintrag', 'Zweite Sp
 --
 
 CREATE SEQUENCE site_file_fid_seq
-    START WITH 1
+    START WITH 2
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -409,8 +409,8 @@ CREATE TABLE site_form_lang (
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(9, 9, 'de', NULL, '', '', '', 'Ung�ltige Zeichen im Feld Eintrag.');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(10, 10, 'de', NULL, '', '', '', 'Ung�ltige Zeichen im Feld Eintrag.');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(9, 9, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
 
 --
 -- TOC entry 1332 (class 1259 OID 3068517)
@@ -458,6 +458,19 @@ CREATE TABLE site_lock (
 
 
 --
+-- TOC entry 1330 (class 1259 OID 3068504)
+-- Dependencies: 4
+-- Name: site_menu_mid_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE site_menu_mid_seq
+    START WITH 12
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+--
 -- TOC entry 1334 (class 1259 OID 3068757)
 -- Dependencies: 1745 1746 1747 1748 4
 -- Name: site_menu; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -469,12 +482,13 @@ CREATE TABLE site_menu (
     entry character varying(30) DEFAULT ''::character varying NOT NULL,
     picture character varying(128),
     sort integer DEFAULT 1000 NOT NULL,
-    hide integer,
+    hide character varying(2) DEFAULT 0,
     level character varying(10),
-    mandatory integer,
+    mandatory character varying(2) DEFAULT 0,
     dynamiccss character varying(5),
     dynamicbg character varying(128),
-    defaulttemplate character varying(20) DEFAULT 'default1'::character varying NOT NULL
+    defaulttemplate character varying(20) DEFAULT 'default1'::character varying NOT NULL,
+    CONSTRAINT site_menu_hide_check CHECK (((hide = ('-1')) OR (hide = ('0')) OR (hide = ('')) ))
 );
 
 --
@@ -500,7 +514,7 @@ INSERT INTO site_menu (mid, refid, entry, picture, sort, hide, level, mandatory,
 --
 
 CREATE SEQUENCE site_menu_lang_mlid_seq
-    START WITH 1
+    START WITH 12
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -536,29 +550,6 @@ INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(8, 8, 'de', '
 INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(9, 9, 'de', 'Kapitel 2', NULL);
 INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(10, 10, 'de', '404', NULL);
 INSERT INTO site_menu_lang (mlid, mid, lang, label, exturl) VALUES(11, 11, 'de', 'Impressum', NULL);
-
---
--- TOC entry 1330 (class 1259 OID 3068504)
--- Dependencies: 4
--- Name: site_menu_mid_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE site_menu_mid_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- TOC entry 1794 (class 0 OID 0)
--- Dependencies: 1333
--- Name: site_menu_mid_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE site_menu_mid_seq OWNED BY site_menu.mid;
-
 
 --
 -- TOC entry 1320 (class 1259 OID 3068462)
