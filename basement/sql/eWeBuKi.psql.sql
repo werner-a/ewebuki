@@ -409,8 +409,8 @@ CREATE TABLE site_form_lang (
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(1, 1, 'de', NULL, '', 'Username darf nicht leer sein.', 'Username bereits vorhanden.', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(2, 2, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
 INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(3, 3, 'de', NULL, '', 'Passworte nicht identisch oder leer.', '', '');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(9, 9, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
-INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(10, 10, 'de', NULL, '', '', '', 'Ungültige Zeichen im Feld Eintrag.');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(9, 9, 'de', NULL, '', '', '', 'Ungï¿½ltige Zeichen im Feld Eintrag.');
+INSERT INTO site_form_lang (flid, fid, flang, fpgenum, fwerte, ferror, fdberror, fchkerror) VALUES(10, 10, 'de', NULL, '', '', '', 'Ungï¿½ltige Zeichen im Feld Eintrag.');
 
 --
 -- TOC entry 1332 (class 1259 OID 3068517)
@@ -552,26 +552,12 @@ CREATE SEQUENCE site_menu_mid_seq
 
 
 --
--- TOC entry 1333 (class 1259 OID 3068755)
--- Dependencies: 1334 4
--- Name: site_menu_mid_seq1; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE site_menu_mid_seq1
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
 -- TOC entry 1794 (class 0 OID 0)
 -- Dependencies: 1333
 -- Name: site_menu_mid_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE site_menu_mid_seq1 OWNED BY site_menu.mid;
+ALTER SEQUENCE site_menu_mid_seq OWNED BY site_menu.mid;
 
 
 --
@@ -605,7 +591,7 @@ CREATE TABLE site_text (
 -- Name: mid; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE site_menu ALTER COLUMN mid SET DEFAULT nextval('site_menu_mid_seq1'::regclass);
+ALTER TABLE site_menu ALTER COLUMN mid SET DEFAULT nextval('site_menu_mid_seq'::regclass);
 
 
 --
