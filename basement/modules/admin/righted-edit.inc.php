@@ -194,12 +194,12 @@
                     if ( $treffer == 1 && $url == $url2 ) {
                         $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg!='-1'";
                     } else {
-                        $sql = "INSERT INTO auth_content (gid,pid,tname,neg) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','-1')";
+                        $sql = "INSERT INTO auth_content (gid,pid,tname,neg,ebene,kategorie) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','-1','','')";
                     }
                 } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "del" ) {
                     $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
                 } else {
-                    $sql = "INSERT INTO auth_content (gid,pid,tname) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."')";
+                    $sql = "INSERT INTO auth_content (gid,pid,tname,ebene,kategorie) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','','')";
                 }
                 $result = $db -> query($sql);
 
