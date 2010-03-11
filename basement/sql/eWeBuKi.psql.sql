@@ -304,7 +304,7 @@ CREATE TABLE site_file (
     fid integer DEFAULT nextval('site_file_fid_seq'::regclass) NOT NULL,
     frefid integer DEFAULT 0 NOT NULL,
     fuid integer DEFAULT 0 NOT NULL,
-    fdid integer DEFAULT 0 NOT NULL,
+    fdid character varying(2) DEFAULT 0 NOT NULL,
     ftname character varying(255) DEFAULT ''::character varying NOT NULL,
     ffname character varying(255) DEFAULT ''::character varying NOT NULL,
     ffart character varying(8) DEFAULT 'jpg'::character varying NOT NULL,
