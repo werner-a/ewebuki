@@ -290,6 +290,20 @@ Das einfügen von Tags funktioniert ohne Javascript nicht. Bitte aktivieren Sie J
             ebInsertContent(myField, myValue);
         }
     }
+    function ebInsertSelNG(myField, compid,size,thumbs,pics,lb,defaultTitle) {
+        var myTitle = prompt('Titel:', defaultTitle);
+        if (myTitle) {
+            var myValue = '[SEL='
+                    + compid + ';'
+                    + size + ';'
+                    + thumbs +';'
+                    + pics + ';'
+                    + lb + ']'
+                    + myTitle
+                    + '[/SEL]\n';
+            ebInsertContent(myField, myValue);
+        }
+    }
 
     function ebInsertLink(myField, i, defaultValue) {
         if (!defaultValue) {

@@ -88,6 +88,7 @@
           "letters" => "",
             "tagjs" => "-141347382.modify.js-nextgen",
         "image_tag" => "img",
+          "sel_tag" => array("o","True","l","Bildergalerie"),     // array(size des zielbildes,thumbs in viewer(TRUE),Lightbox-Modus(l),defaultTitle)
              "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts, eingener tag
                    // block-elemente
                    "h1"     => array( "T", "1" ),

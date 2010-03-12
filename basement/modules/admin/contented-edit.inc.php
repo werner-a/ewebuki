@@ -375,9 +375,11 @@
 
             if ( is_array($_SESSION["compilation_memo"]) ) {
                 foreach ( $_SESSION["compilation_memo"] as $compid=>$value ) {
+                    $pics = implode(":",$value);
                     $dataloop["selection"][] = array(
-                        "id" => $compid,
-                        "pics" => implode(":",$value)
+                            "id" => $compid,
+                          "pics" => $pics,
+                       "onclick" => "ebInsertSelNG(ebCanvas, '".$compid."', '".$cfg["contented"]["sel_tag"][0]."', '".$cfg["contented"]["sel_tag"][1]."', '".$pics."', '".$cfg["contented"]["sel_tag"][2]."', '".$cfg["contented"]["sel_tag"][3]."');",
                     );
                 }
                 if ( count($dataloop["selection"]) > 0 ) $hidedata["selection"] = array();
