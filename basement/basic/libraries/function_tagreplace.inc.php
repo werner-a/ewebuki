@@ -1189,6 +1189,26 @@
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"not allowed",$replace);
                         }
                         break;
+                    case "[/OBJECT]":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $objectwerte = explode(";",$tagwerte[0]);
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,"<object type=\"".$objectwerte[3]."\" data=\"".$objectwerte[0]."\" width=\"".$objectwerte[1]."\" height=\"".$objectwerte[2]."\">".$tagwerte[1]."</object>",$replace);
+                        break;
+                    case "[/PARAM]":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,"<param name=\"".$tagwerte[0]."\" value=\"".$tagwerte[1]."\"></param>",$replace);
+                        break;
+                    case "[/YT]":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $ytwerte = explode(";",$tagwerte[0]);
+                        $yt =  "<object width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\">
+                                <param name=\"movie\" value=\"http://www.youtube.com/v/".$tagwerte[1]."&hl=de_DE&fs=1&\"></param>
+                                <param name=\"allowFullScreen\" value=\"true\"></param>
+                                <param name=\"allowscriptaccess\" value=\"always\"></param>
+                                <embed src=\"http://www.youtube.com/v/".$tagwerte[1]."&hl=de_DE&fs=1&\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\"></embed>
+                                </object>";
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
+                        break;
                     default:
                         // unbekannte tags verstecken
                         $replace = str_replace($closetag,"[##".substr($closetag,1),$replace);
