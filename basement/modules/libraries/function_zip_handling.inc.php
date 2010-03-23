@@ -113,7 +113,10 @@
                     foreach ( $textfile as $value ) {
                         if ( trim($value) == "" ) continue;
                         $csv_info = explode(";",$value);
-                        $key = array_shift($csv_info).".txt";
+                        $key = str_replace(array("/"," "),
+                                           array("--","_"),
+                                           array_shift($csv_info).".txt"
+                        );
                         foreach ( $section as $label ) {
                             $text_files_csv[$key][$label] = array_shift($csv_info);
                         }
