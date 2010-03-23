@@ -93,7 +93,6 @@
             $result = $db -> query($sql);
             while ( $data = $db -> fetch_array($result,1) ){
                 preg_match("/#p".$environment["parameter"][1]."[,]*[0-9]*#/i",$data["fhit"],$match);
-                echo print_r($match,true);
                 $fhit = trim(str_replace($match,"",$data["fhit"]));
                 $sql = "UPDATE site_file
                            SET fhit='".$fhit."'
