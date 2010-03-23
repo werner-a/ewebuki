@@ -129,9 +129,11 @@
             }
             $result = $db -> query($sql);
             filelist($result, "fileed", $ausgaben["compid"]);
-            uasort($dataloop["list_images"],"pics_sort");
-            $dataloop["chosen"] = $dataloop["list_images"];
-            unset($dataloop["list_images"]);
+            if ( is_array($dataloop["list_images"]) ) {
+                uasort($dataloop["list_images"],"pics_sort");
+                $dataloop["chosen"] = $dataloop["list_images"];
+                unset($dataloop["list_images"]);
+            }
 
         } else {
             /* compilation hinzufuegen */
@@ -237,7 +239,7 @@
             $header = $cfg["fileed"]["basis"]."/compilation.html";
 
             // evtl. zusaetzliche datensatz aendern
-            if ( $ausgaben["form_error"] == "" ) {
+            if ( $ausgaben["form_error"] == "" && is_array($_SESSION["compilation_temp"]) ) {
 
                 // zuerst alle l�schen
                 $sql = "SELECT *
