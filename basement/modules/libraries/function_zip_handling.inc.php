@@ -44,8 +44,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function zip_handling( $file, $extract_dest="", $restrict_type=array(), $restrict_size="", $restrict_dir="", $compid="", $section=array(), $wave_thru=0 ) {
-        global $db, $pathvars, $ausgaben;
+        global $db, $pathvars, $cfg, $ausgaben;
 
+        $text_files = array();
         $zip = new ZipArchive;
         if ($zip->open($file) == TRUE) {
             $zip_content = array();
@@ -60,7 +61,8 @@
                                     array_pop($path)
                 );
                 $dir  = implode("/",$path);
-                if ( $name != "" ) {
+                $extension = trim(strrchr($name,"."),".");
+                if ( $name != "" && array_key_exists($extension,$cfg["file"]["filetyp"]) ) {
                     $zip_content[$buffer["index"]] = array(
                             "name" => $name,
                              "dir" => $dir,
@@ -68,6 +70,7 @@
                                                   array("--","_"),
                                                   $buffer["name"]
                                       ),
+                            "path" => $buffer["name"],
                             "size" => $buffer["size"],
                     );
                 }
@@ -101,11 +104,23 @@
                         "content" => addslashes(substr($zip->getFromIndex($buffer["index"]),0,400))
                     );
 
-                    foreach ( $array as $key => $value ) {
-                        $text_files[str_replace("/","--",$buffer["name"])][$key] = $value;
+                    foreach ( $array as $label => $value ) {
+                        $text_files[$key][$label] = $value;
+                    }
+                } elseif ( preg_match("/.*\.csv$/i",$name) ) {
+                    $content = addslashes($zip->getFromIndex($buffer["index"]));
+                    $textfile = explode("\n",$content);
+                    foreach ( $textfile as $value ) {
+                        if ( trim($value) == "" ) continue;
+                        $csv_info = explode(";",$value);
+                        $key = array_shift($csv_info).".txt";
+                        foreach ( $section as $label ) {
+                            $text_files_csv[$key][$label] = array_shift($csv_info);
+                        }
                     }
                 }
             }
+            if ( is_array($text_files) && is_array($text_files_csv) ) $text_files = array_merge($text_files,$text_files_csv);
 
             // auspacken
             if ( $extract_dest != "" ) {
@@ -117,7 +132,7 @@
                       && $value["name"] != "" ) {
 
                         // 1. datei auf den server schreiben
-                        if ( !is_array($text_files[$value["name"]]) ) {
+                        if ( !is_array($text_files[$value["name"]]) /*&& !preg_match("/\.csv$/",$value["name"])*/ ) {
                             $tmp_file = $extract_dest.str_replace(array("/"," "),
                                                                 array("--","_"),
                                                                 $value["file"]
@@ -145,14 +160,33 @@
                             } else {
                                 $compilation = "";
                             }
+
+                            $new_file = $_SESSION["uid"]."_".basename($tmp_file);
+                            $fdesc  = $_POST["zip_fdesc"];
+                            $funder = $_POST["zip_funder"];
+                            $fhit   = $_POST["zip_fhit"];
+                            if ( $text_files[basename($tmp_file).".txt"]["fdesc"] != "" ) {
+                                $fdesc .= "\n".$text_files[basename($tmp_file).".txt"]["fdesc"];
+                            } elseif ( $text_files[$value["name"].".txt"]["fdesc"] != "" ) {
+                                $fdesc .= "\n".$text_files[$value["name"].".txt"]["fdesc"];
+                            }
+                            if ( $text_files[basename($tmp_file).".txt"]["funder"] != "" ) {
+                                $funder .= "\n".$text_files[basename($tmp_file).".txt"]["funder"];
+                            } elseif ( $text_files[$value["name"].".txt"]["funder"] != "" ) {
+                                $funder .= "\n".$text_files[$value["name"].".txt"]["funder"];
+                            }
+                            if ( $text_files[basename($tmp_file).".txt"]["fhit"] != "" ) {
+                                $fhit .= "\n".$text_files[basename($tmp_file).".txt"]["fhit"];
+                            } elseif ( $text_files[$value["name"].".txt"]["fhit"] != "" ) {
+                                $fhit .= "\n".$text_files[$value["name"].".txt"]["fhit"];
+                            }
                             $_SESSION["zip_extracted"][$new_file] = array(
-                                 "name" => $new_file,
+                                       "name" => $new_file,
                                 "compilation" => $compilation,
-//                                 "desc" => $text_files[basename($tmp_file).".txt"]["content"],
-                                "fdesc" => $_POST["zip_fdesc"]."\n".$text_files[basename($tmp_file).".txt"]["fdesc"],
-                               "funder" => $_POST["zip_funder"]." ".$text_files[basename($tmp_file).".txt"]["funder"],
-                                 "fhit" => $_POST["zip_fhit"]." ".$text_files[basename($tmp_file).".txt"]["fhit"],
-                            "wave_thru" => $wave_thru,
+                                      "fdesc" => trim($fdesc),
+                                     "funder" => trim($funder),
+                                       "fhit" => trim($fhit),
+                                  "wave_thru" => $wave_thru,
                             );
                             // zip_content soll die nicht auszupackenden dateien ausgeben
                             unset($zip_content[$key]);
@@ -166,6 +200,7 @@
                 }
             }
         }
+
 
         return $zip_content;
     }

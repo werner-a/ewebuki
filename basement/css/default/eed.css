@@ -369,6 +369,10 @@ li.thumbs a.pic {
         -moz-border-radius: 5px;
 }
 
+#cEd li.files a {
+    cursor:pointer;
+}
+
 
 #cEd fieldset.ce {
     border: none;
