@@ -937,7 +937,7 @@
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
                             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,groesse,bild,selektion,thumbs
 
-                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div class=\"selection_teaser\">\n<b>##title##</b>\n<div>\n<ul>\n";
+                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div style=\"position:relative\" class=\"selection_teaser\">##youtube_div##\n<b>##title## ##youtube_link##</b>\n<div>\n<ul>\n";
                             if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
                             if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
 
@@ -969,6 +969,16 @@
                                 $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
                             } else {
                                 $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
+
+                                // wenn video-parameter vorhanden dann marken ersetzen
+                                if ( $tag_param[5] != "") {
+                                    $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">[YT=250;192]".$tag_param[5]."[/YT]<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schließen</a></div>",$sel);
+                                    $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:inline;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
+                                } else {
+                                    $sel = str_replace("##youtube_div##","",$sel);
+                                    $sel = str_replace("##youtube_link##","",$sel);
+                                }
+
                                 $lb_helper = "";
                                 foreach ( $files as $row ) {
 

@@ -49,12 +49,15 @@
     $hidedata["sel"]["num"] = $tag_marken[1] + 1;
     $ausgaben["max_sel_num"] = $cfg["wizard"]["sel_edit"]["max_num"];
 
+    // youtube nur fuer admin
+    if ( priv_check("/","admin") ) $hidedata["youtube"]["enable"] = "enable";
+
     // ausgabenwerte werden belegt
     $hidedata["sel"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
     if ( $_POST["description"] != "" ) $hidedata["sel"]["description"] = $_POST["description"];
 
     $tag_werte = explode(";",str_replace(array("[SEL=","[SEL","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]));
-    for ($i=0;$i<=4;$i++) {
+    for ($i=0;$i<=5;$i++) {
         $ausgaben["tagwerte".$i] = $tag_werte[$i];
     }
     // size-radiobutton
@@ -111,7 +114,7 @@
         }
     }
 
-
+ 
     // abspeichern, part 2
     // * * *
     if ( $environment["parameter"][7] == "verify"
@@ -131,7 +134,7 @@
 
         if ( is_array($_POST["tagwerte"][3]) ) $_POST["tagwerte"][3] = implode(":",$_POST["tagwerte"][3]);
         $tag_werte = array();
-        for ($i = 0; $i <= 4; $i++) {
+        for ($i = 0; $i <= 5; $i++) {
             $tag_werte[] = $_POST["tagwerte"][$i];
         }
         $to_insert = "[SEL=".implode(";",$tag_werte)."]".$_POST["description"]."[/SEL]";
