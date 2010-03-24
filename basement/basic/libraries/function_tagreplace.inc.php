@@ -972,8 +972,13 @@
 
                                 // wenn video-parameter vorhanden dann marken ersetzen
                                 if ( $tag_param[5] != "") {
-                                    $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">[YT=250;192]".$tag_param[5]."[/YT]<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schließen</a></div>",$sel);
-                                    $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:inline;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
+                                    $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">
+                                    [OBJECT=http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&;250;192;application/x-shockwave-flash]
+                                    [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
+                                    [PARAM=wmode]transparent[/PARAM]
+                                    [/OBJECT]
+                                    <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schließen</a></b></span></div>",$sel);
+                                    $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
                                 } else {
                                     $sel = str_replace("##youtube_div##","",$sel);
                                     $sel = str_replace("##youtube_link##","",$sel);
