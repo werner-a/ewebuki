@@ -143,14 +143,9 @@
             $num_rows = $db -> num_rows($result);
             if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
 
-            // content tabellen aenderungen
             if ( $ausgaben["form_error"] == "" ) {
-                $sql = "SELECT refid, entry
-                          FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
-                         WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
-                $result = $db -> query($sql);
-                $data = $db -> fetch_array($result,1);
 
+                // content tabellen aenderungen
                 $new_url = make_ebene($_POST["refid"]);
                 if ( $new_url == "/" ) {
                     $new_url = "";
@@ -158,13 +153,8 @@
                 $new_url .= "/".$_POST["entry"];
                 update_tname($environment["parameter"][2], $new_url);
 
-            }
-
-
-            // menu tabellen aenderungen
-            if ( $ausgaben["form_error"] == "" ) {
-                $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y", "form_referer",
-                               "entry" );
+                // menu tabellen aenderungen
+                $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y", "form_referer" );
                 foreach($HTTP_POST_VARS as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                         if ( $sqla != "" ) $sqla .= ", ";
@@ -182,10 +172,8 @@
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(menu_error)<br />");
                 if ( $header == "" ) $header = $cfg["menued"]["basis"]."/list.html";
-            }
 
-            // wenn es keine fehlermeldungen gab, die uri $header laden
-            if ( $ausgaben["form_error"] == "" ) {
+                // wenn es keine fehlermeldungen gab, die uri $header laden
                 header("Location: ".$header);
             }
         }
