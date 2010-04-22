@@ -10,17 +10,15 @@
 <!--##begin-->
 <!--$Id$-->
 
+<h1>#(ueberschrift)</h1>
 <form method="get" action="" id="eEd">
-    <h1>#(ueberschrift)</h1>
-    <p>#(inhalt)</p>
-    <p>!#ausgaben_form_error</p>
-    <fieldset id="qsearch" class="float" style="padding:0;">
+    <fieldset id="qsearch" class="float">
         <label class="small">
             #(search)&nbsp;
             <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
         </label>
         <label class="small">
-            &nbsp;
+            <br />
             <input type="submit" name="send[]" value="g(send)" />
         </label>
     </fieldset>
