@@ -126,6 +126,17 @@
         function update_tname($mid, $new_url) {
             global $db, $cfg, $debugging, $ausgaben;
 
+            // Neue Rechte werden beim moven oder umbenennen mitgezogen
+            if ( $specialvars["security"]["new"] == -1 ) {
+                $sql = "SELECT tname FROM ".$cfg["menued"]["db"]["content"]["entries"]." WHERE tname like '".make_ebene($mid)."%'";
+                $result = $db -> query($sql);
+                while ( $data = $db -> fetch_array($result,1) ) {
+                    $new_right = str_replace(make_ebene($mid),$new_url,$data["tname"]);
+                    $sql_update = "UPDATE ".$cfg["menued"]["db"]["content"]["entries"]." SET tname ='".$new_right."' WHERE tname = '".$data["tname"]."'";
+                    $result = $db -> query($sql_update);
+                }
+            }
+
             $sql = "SELECT mid, refid, entry
                       FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
                      WHERE mid ='".$mid."'";
