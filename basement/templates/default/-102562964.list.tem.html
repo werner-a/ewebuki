@@ -9,8 +9,23 @@
 <body>
 <!--##begin-->
 <!--$Id$-->
-<h1>#(ueberschrift)</h1>
-<p>#(inhalt)</p>
+
+<form method="get" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset id="qsearch" class="float" style="padding:0;">
+        <label class="small">
+            #(search)&nbsp;
+            <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+        </label>
+        <label class="small">
+            &nbsp;
+            <input type="submit" name="send[]" value="g(send)" />
+        </label>
+    </fieldset>
+</form>
+
 <p><a href="!#ausgaben_link_new">g(new)</a></p>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
     <thead>

@@ -49,9 +49,19 @@
         // funktions bereich
         // ***
 
+        // get-verarbeitung: schnellsuche verarbeiten
+        $ausgaben["search"] = "";
+        $where = "";
+        if ( isset($_GET["search"]) ) {
+            $ausgaben["search"] = $_GET["search"];
+            $where = " WHERE ".$cfg["grouped"]["db"]["group"]["desc"]." like '%".$_GET["search"]."%' OR ".$cfg["grouped"]["db"]["group"]["order"]." like '%".$_GET["search"]."%'";
+            $getvalues = "search=".$_GET["search"];
+        }
+
+
         /* db query */
         $sql = "SELECT *
-                  FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
+                  FROM ".$cfg["grouped"]["db"]["group"]["entries"].$where."
               ORDER BY ".$cfg["grouped"]["db"]["group"]["order"];
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
