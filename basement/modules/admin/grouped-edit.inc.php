@@ -51,13 +51,13 @@
 
         if ( $_POST["ajaxsuche"] == "on") {
             echo "<li><b>Treffer</b></li>";
-            $sql = "SELECT * FROM auth_user WHERE username like '%".$_POST["text"]."%' OR vorname like '%".$_POST["text"]."%' OR nachname like '%".$_POST["text"]."%'";
+            $sql = "SELECT * FROM auth_user WHERE username like '%".$_POST["text"]."%' OR vorname like '%".$_POST["text"]."%' OR nachname like '%".$_POST["text"]."%' ORDER BY ".$cfg["grouped"]["db"]["user"]["order"];
             $result = $db -> query($sql);
             while ( $data = $db -> fetch_array($result,1) ) {
                 if ( is_array($_SESSION["chosen_user"]) ) {
                     if ( in_array($data["uid"], $_SESSION["chosen_user"])) continue;
                 }
-                echo "<li id=\"doc_".$data["uid"]."\" class=\"sel_item\">".$data["vorname"]." ".$data["nachname"]."</li>";
+                echo "<li id=\"doc_".$data["uid"]."\" class=\"sel_item\">".$data["vorname"]." ".$data["nachname"]." (".$data["username"].")</li>";
             }
             exit;
         }
@@ -76,7 +76,7 @@
             $form_values = $db -> fetch_array($result,1);
 
             # nice sql query tnx@bastard!
-            $sql = "SELECT auth_user.uid, auth_user.vorname,auth_user.nachname,auth_user.username, auth_member.gid FROM auth_user LEFT JOIN auth_member ON (auth_user.uid = auth_member.uid and auth_member.gid = ".$environment["parameter"][1].") ORDER by username";
+            $sql = "SELECT auth_user.uid, auth_user.vorname,auth_user.nachname,auth_user.username, auth_member.gid FROM auth_user LEFT JOIN auth_member ON (auth_user.uid = auth_member.uid and auth_member.gid = ".$environment["parameter"][1].") ORDER by ".$cfg["grouped"]["db"]["user"]["order"];
             $result = $db -> query($sql);
 
             while ( $all = $db -> fetch_array($result,1) ) {
