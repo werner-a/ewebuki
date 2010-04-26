@@ -48,11 +48,26 @@
 
         // page basics
         // ***
+        $form_values = $HTTP_POST_VARS;
 
-        #if ( count($HTTP_POST_VARS) == 0 ) {
-        #} else {
-            $form_values = $HTTP_POST_VARS;
-        #}
+        $hidedata["edit"]["enable"] = "on";
+        $ausgaben["parameter"] = $environment["parameter"][1];
+
+        if ( $_POST["ajaxsuche"] == "on") {
+            echo "<li><b>Treffer</b></li>";
+            $sql = "SELECT * FROM auth_user WHERE username like '%".$_POST["text"]."%' OR vorname like '%".$_POST["text"]."%' OR nachname like '%".$_POST["text"]."%'";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+                if ( in_array($data["uid"], $_SESSION["chosen_user"])) continue;
+                echo "<li class=\"sel_item\">".$data["vorname"]." ".$data["nachname"]."</li>";
+            }
+            exit;
+        }
+
+        if ( $_POST["ajax"]) {
+            $_SESSION["chosen_user"] = $_POST["chosen_user"];
+            exit;
+        }
 
         // form options holen
         $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
@@ -72,14 +87,16 @@
         // ***
 
         // user holen und mit dataloop ausgeben
-        $sql = "SELECT uid, username
+        $sql = "SELECT *
                   FROM ".$cfg["grouped"]["db"]["user"]["entries"]."
               ORDER BY ".$cfg["grouped"]["db"]["user"]["order"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
             $dataloop["avail"][] = array(
-                                        "value" =>      $all["uid"],
-                                        "username" =>   $all["username"],
+                                            "value"     => $all["uid"],
+                                            "username"  => $all["username"],
+                                            "name"      => $all["nachname"],
+                                            "vorname"   => $all["vorname"]
                                     );
         }
 
@@ -150,8 +167,8 @@
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
 
-                $kick = array( "PHPSESSID", "form_referer", "send", "avail" );
-                foreach($HTTP_POST_VARS as $name => $value) {
+                $kick = array( "PHPSESSID", "form_referer", "send" );
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
                         $sqla .= $name;
@@ -164,7 +181,7 @@
                 #$sqla .= ", pass";
                 #$sqlb .= ", password('".$checked_password."')";
 
-                // level hinzufuegen
+                // gruppr hinzufuegen
                 $sql = "insert into ".$cfg["grouped"]["db"]["group"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
 
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -173,9 +190,9 @@
 
                 // usern mit neuem level versehen
                 if ( $ausgaben["form_error"] == "" ) {
-                    if ( is_array($HTTP_POST_VARS["avail"]) ) {
+                    if ( is_array($_SESSION["chosen_user"]) ) {
                         $gid = $db -> lastid();
-                        foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
+                        foreach ($_SESSION["chosen_user"] as $value ) {
                             $sql = "INSERT INTO auth_member (gid, uid) VALUES ('".$gid."', '".$value."')";
                             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                             $db -> query($sql);

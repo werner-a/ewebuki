@@ -26,27 +26,24 @@
         <div class="clearer"></div>
     </fieldset>
     <fieldset class="float">
-        <!--##hide-edit-->
-        <label>#(actual)
-            <select name="actual[]" size="10" multiple="multiple">
-            <!--##loop-actual-->
-                <option value="!{value}">!{username}</option>
-            <!--##cont-->
-            </select>
-            <input type="submit" name="del[]" value="#(del)" />
-        </label>
-        <!--##show-->
-        <label>#(avail)
-            <select name="avail[]" size="10" multiple="multiple">
+        <input id="user_search" onkeyup="aj_search()" />
+        <div class="clearer"></div>
+        <ul  style="padding:5px;border: 2px dashed;width:45%;float:left" id="avail_user">
+            <li><b>#(avail)</b></li>
             <!--##loop-avail-->
-                <option value="!{value}">!{username}</option>
+            <li id="doc_!{value}" class="sel_item">!{vorname} !{name}</li>
             <!--##cont-->
-            </select>
-            <!--##hide-edit-->
-            <input type="submit" name="add[]" value="#(add)" />
-            <!--##show-->
-        </label>
+        </ul>
+  
+        <ul style="padding:5px;border: 2px dashed;width:45%;float:right" id="chosen_user">
+            <li><b>#(actual)</b></li>
+            <!--##loop-actual-->
+            <li id="doc_!{value}" class="sel_item">!{vorname} !{name}</li>
+            <!--##cont-->
+        </ul>
+
     </fieldset>
+
     <fieldset>
         <input type="submit" name="send[]" value="g(send)" class="first" />
         <input type="reset" name="reset" value="g(reset)" class="next" />
@@ -54,8 +51,50 @@
         <div class="clearer"></div>
     </fieldset>
 </form>
-<p>!#ausgaben_output</p>
+<p id="output"></p>
 <p>!#ausgaben_inaccessible</p>
+
+<script type="text/javascript">
+window.onload = create_sortable;
+
+function aj_search() {
+        new Ajax.Updater('avail_user','/auth/admin/grouped/edit,!#ausgaben_parameter.html',{
+                parameters: { ajaxsuche:'on',text:$F('user_search')} ,
+                onComplete:function(){ Sortable.destroy('avail_user');Sortable.destroy('chosen_user');create_sortable() }
+            } );
+}
+
+function create_sortable() {
+
+    Sortable.create('avail_user',{
+        tag:'li',
+        constraint: false,
+        dropOnEmpty: true,
+        containment: ['chosen_user'],
+        only:'sel_item',
+        evalScripts:true,
+        asynchronous:true,
+        onUpdate: function(){
+            new Ajax.Updater('output','/auth/admin/grouped/edit,!#ausgaben_parameter.html',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
+                            }
+    }
+    );
+
+    Sortable.create('chosen_user',{
+        tag:'li',
+        constraint: false,
+        dropOnEmpty: true,
+        containment: ['avail_user'],
+        only:'sel_item',
+        evalScripts:true,
+        asynchronous:true,
+        onUpdate: function(){
+            new Ajax.Updater('output','/auth/admin/grouped/edit,!#ausgaben_parameter.html',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
+                            }
+    }
+    );
+}
+</script>
 <!--##end-->
 </body>
 </html>

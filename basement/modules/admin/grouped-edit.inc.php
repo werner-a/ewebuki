@@ -46,20 +46,57 @@
     if ( priv_check("/".$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"],$cfg["grouped"]["right"]) ||
         priv_check_old("",$cfg["grouped"]["right"]) ) {
 
-        $hidedata["edit"]["ii"] = "on";
+        $hidedata["edit"]["enable"] = "on";
+        $ausgaben["parameter"] = $environment["parameter"][1];
 
-        // page basics
-        // ***
+        if ( $_POST["ajaxsuche"] == "on") {
+            echo "<li><b>Treffer</b></li>";
+            $sql = "SELECT * FROM auth_user WHERE username like '%".$_POST["text"]."%' OR vorname like '%".$_POST["text"]."%' OR nachname like '%".$_POST["text"]."%'";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+                if ( in_array($data["uid"], $_SESSION["chosen_user"])) continue;
+                echo "<li class=\"sel_item\">".$data["vorname"]." ".$data["nachname"]."</li>";
+            }
+            exit;
+        }
 
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        if ( $_POST["ajax"]) {
+            $_SESSION["chosen_user"] = $_POST["chosen_user"];
+            exit;
+        }
+
+        if ( count($_POST) == 0 ) {
             $sql = "SELECT *
                       FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
                      WHERE ".$cfg["grouped"]["db"]["group"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
+
+            # nice sql query tnx@bastard!
+            $sql = "SELECT auth_user.uid, auth_user.vorname,auth_user.nachname,auth_user.username, auth_member.gid FROM auth_user LEFT JOIN auth_member ON (auth_user.uid = auth_member.uid and auth_member.gid = ".$environment["parameter"][1].") ORDER by username";
+            $result = $db -> query($sql);
+
+            while ( $all = $db -> fetch_array($result,1) ) {
+                if ( $all["gid"] == $environment["parameter"][1] ) {
+                    $_SESSION["chosen_user"][] = $all["uid"];
+                    $dataloop["actual"][] = array(
+                                            "value"     => $all["uid"],
+                                            "username"  => $all["username"],
+                                            "name"      => $all["nachname"],
+                                            "vorname"   => $all["vorname"]
+                                        );
+                } else {
+                    $dataloop["avail"][] = array(
+                                            "value"     => $all["uid"],
+                                            "username"  => $all["username"],
+                                            "name"      => $all["nachname"],
+                                            "vorname"   => $all["vorname"]
+                                        );
+                }
+            }
         } else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         }
 
         // form options holen
@@ -67,42 +104,6 @@
 
         // form elememte bauen
         $element = form_elements( $cfg["grouped"]["db"]["group"]["entries"], $form_values );
-
-        // form elemente erweitern
-        $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
-        $element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
-
-        // +++
-        // page basics
-
-
-        // funktions bereich fuer erweiterungen
-        // ***
-
-        # nice sql query tnx@bastard!
-        $sql = "SELECT auth_user.uid, auth_user.username, auth_member.gid FROM auth_user LEFT JOIN auth_member ON (auth_user.uid = auth_member.uid and auth_member.gid = ".$environment["parameter"][1].") ORDER by username";
-        $result = $db -> query($sql);
-
-        while ( $all = $db -> fetch_array($result,1) ) {
-
-            if ( $all["gid"] == $environment["parameter"][1] ) {
-                $dataloop["actual"][] = array(
-                                            "value" => $all["uid"],
-                                            "username" => $all["username"]
-                                        );
-            } else {
-                $dataloop["avail"][] = array(
-                                            "value" => $all["uid"],
-                                            "username" => $all["username"]
-                                        );
-            }
-        }
-
-        // +++
-        // funktions bereich fuer erweiterungen
-
-        // page basics
-        // ***
 
         // fehlermeldungen
         $ausgaben["form_error"] = "";
@@ -119,7 +120,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
@@ -133,18 +134,15 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
-            &&  ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["avail"] != ""
-                || $HTTP_POST_VARS["actual"] != "" ) ) {
+        if ( $environment["parameter"][2] == "verify" && $_POST["send"] != "" ) {
 
             // form eingaben prüfen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
             // gibt es diesen gruppe bereits?
             $sql = "SELECT ".$cfg["grouped"]["db"]["group"]["order"].",gid
                         FROM ".$cfg["grouped"]["db"]["group"]["entries"]."
-                       WHERE ".$cfg["grouped"]["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["grouped"]["db"]["group"]["order"]]."'";
+                       WHERE ".$cfg["grouped"]["db"]["group"]["order"]." = '".$_POST[$cfg["grouped"]["db"]["group"]["order"]]."'";
             $result  = $db -> query($sql);
             $num_rows = 0;
             while ( $array = $db -> fetch_array($result,1) ) {;
@@ -161,32 +159,22 @@
                 // funktions bereich fuer erweiterungen
                 // ***
 
+                // erst einmal alle loeschen
+                $sql = "DELETE FROM ".$cfg["grouped"]["db"]["member"]["entries"]." WHERE ".$cfg["grouped"]["db"]["member"]["group"]." = ".$environment["parameter"][1];
+                $result = $db -> query($sql);
+
                 // user hinzufuegen
-                if ( $HTTP_POST_VARS["add"] ) {
-                    foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
+                if ( is_array($_SESSION["chosen_user"]) ) {
+
+                    // session variable in db schreiben
+                    foreach ($_SESSION["chosen_user"] as $value ) {
                         $sql = "INSERT INTO ".$cfg["grouped"]["db"]["member"]["entries"]."
                                             (".$cfg["grouped"]["db"]["member"]["group"].",".$cfg["grouped"]["db"]["member"]["user"].")
                                      VALUES ('".$environment["parameter"][1]."','".$value."')";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result = $db -> query($sql);
-                        if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
-                    $header = $cfg["grouped"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
                 }
-
-                // user entfernen
-                if ( $HTTP_POST_VARS["del"] ) {
-                    foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
-                        $sql = "DELETE FROM ".$cfg["grouped"]["db"]["member"]["entries"]."
-                                      WHERE ".$cfg["grouped"]["db"]["member"]["user"]."='".$value."' AND ".$cfg["grouped"]["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
-                        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-                        $result = $db -> query($sql);
-                        if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                    }
-                    $header = $cfg["grouped"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
-                }
-
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
             }
@@ -195,7 +183,7 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 $kick = array( "PHPSESSID", "form_referer", "send", "actual", "avail" );
-                foreach($HTTP_POST_VARS as $name => $value) {
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                         if ( $sqla != "" ) $sqla .= ", ";
                         $sqla .= $name."='".$value."'";
@@ -209,8 +197,8 @@
 
                 // gruppe aendern
                 $sql = "UPDATE ".$cfg["grouped"]["db"]["group"]["entries"]."
-                            SET ".$cfg["grouped"]["db"]["group"]["order"]." = '".$HTTP_POST_VARS[$cfg["grouped"]["db"]["group"]["order"]]."',
-                                beschreibung = '".$HTTP_POST_VARS["beschreibung"]."'
+                            SET ".$cfg["grouped"]["db"]["group"]["order"]." = '".$_POST[$cfg["grouped"]["db"]["group"]["order"]]."',
+                                beschreibung = '".$_POST["beschreibung"]."'
                             WHERE gid='".$environment["parameter"][1]."'";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);

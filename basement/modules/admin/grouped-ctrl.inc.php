@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id: leveled-ctrl.inc.php 914 2007-10-15 11:49:39Z chaot $";
-  $Script["desc"] = "leer - kontroll funktion";
+  $script["name"] = "$Id: grouped-ctrl.inc.php 914 2007-10-15 11:49:39Z chaot $";
+  $Script["desc"] = "grouped - kontroll funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
