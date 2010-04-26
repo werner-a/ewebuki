@@ -54,13 +54,15 @@
             $sql = "SELECT * FROM auth_user WHERE username like '%".$_POST["text"]."%' OR vorname like '%".$_POST["text"]."%' OR nachname like '%".$_POST["text"]."%'";
             $result = $db -> query($sql);
             while ( $data = $db -> fetch_array($result,1) ) {
-                if ( in_array($data["uid"], $_SESSION["chosen_user"])) continue;
-                echo "<li class=\"sel_item\">".$data["vorname"]." ".$data["nachname"]."</li>";
+                if ( is_array($_SESSION["chosen_user"]) ) {
+                    if ( in_array($data["uid"], $_SESSION["chosen_user"])) continue;
+                }
+                echo "<li id=\"doc_".$data["uid"]."\" class=\"sel_item\">".$data["vorname"]." ".$data["nachname"]."</li>";
             }
             exit;
         }
 
-        if ( $_POST["ajax"]) {
+        if ( $_POST["ajax"] == "on") {
             $_SESSION["chosen_user"] = $_POST["chosen_user"];
             exit;
         }

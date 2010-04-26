@@ -28,19 +28,22 @@
     <fieldset class="float">
         <input id="user_search" onkeyup="aj_search()" />
         <div class="clearer"></div>
-        <ul  style="padding:5px;border: 2px dashed;width:45%;float:left" id="avail_user">
-            <li><b>#(avail)</b></li>
-            <!--##loop-avail-->
-            <li id="doc_!{value}" class="sel_item">!{vorname} !{name}</li>
-            <!--##cont-->
-        </ul>
-  
-        <ul style="padding:5px;border: 2px dashed;width:45%;float:right" id="chosen_user">
-            <li><b>#(actual)</b></li>
-            <!--##loop-actual-->
-            <li id="doc_!{value}" class="sel_item">!{vorname} !{name}</li>
-            <!--##cont-->
-        </ul>
+        <div style="width:49%;float:left">
+            <ul  style="padding:5px;border: 2px dashed;" id="avail_user">
+                <li><b>#(avail)</b></li>
+                <!--##loop-avail-->
+                <li id="doc_!{value}" class="sel_item">!{vorname} !{name}</li>
+                <!--##cont-->
+            </ul>
+        </div>
+        <div style="width:49%;float:right">
+            <ul style="padding:5px;border: 2px dashed" id="chosen_user">
+                <li><b>#(actual)</b></li>
+                <!--##loop-actual-->
+                <li id="doc_!{value}" class="sel_item">!{vorname} !{name}</li>
+                <!--##cont-->
+            </ul>
+        </div>
 
     </fieldset>
 
