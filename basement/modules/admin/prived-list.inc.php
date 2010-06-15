@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -81,9 +81,9 @@
                     }
                 }
             }
-            if ( $part["search"] != "" ) $part["search"] = "(".$part["search"].")";
+            if ( $part["search"] != "" ) $part["search"] = " WHERE (".$part["search"].")";
         } else {
-            $part["search"] = "1";
+            $part["search"] = "";
             $ausgaben["search"] = "";
         }
 
@@ -94,8 +94,7 @@
         /* z.B. db query */
 
         $sql = "SELECT *
-                  FROM ".$cfg["prived"]["db"]["priv"]["entries"]."
-                 WHERE ".$part["search"];
+                  FROM ".$cfg["prived"]["db"]["priv"]["entries"].$part["search"];
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
@@ -115,7 +114,7 @@
                 $cfg["prived"]["color"]["set"] = $cfg["prived"]["color"]["a"];
             }
 
-            // wie im einfachen modul könnten nur die marken !{0}, !{1} befuellt werden
+            // wie im einfachen modul kï¿½nnten nur die marken !{0}, !{1} befuellt werden
             #$dataloop["list"][$data["id"]][0] = $data["field1"];
             #$dataloop["list"][$data["id"]][1] = $data["field2"];
 
