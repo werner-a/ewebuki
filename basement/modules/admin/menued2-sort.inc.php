@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -46,40 +46,42 @@
     $kategorie2check = substr(make_ebene($environment["parameter"][2]),0,strpos(make_ebene($environment["parameter"][2]),"/"));
     $ebene2check = substr(make_ebene($environment["parameter"][2]),strpos(make_ebene($environment["parameter"][2]),"/"));
 
-    // um bei den menupunkten die Reihenfolge veraendern zu koennen muss man das recht fuer den uebergeordneten Punkt besitzen
-    $sql = "SELECT refid FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE mid='".$environment["parameter"][2]."'";
-    $result = $db -> query($sql);
-    $refid = $db -> fetch_array($result,1);
+    if ( $environment["parameter"][1] != "all" ) {
+        // um bei den menupunkten die Reihenfolge veraendern zu koennen muss man das recht fuer den uebergeordneten Punkt besitzen
+        $sql = "SELECT refid FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE mid='".$environment["parameter"][2]."'";
+        $result = $db -> query($sql);
+        $refid = $db -> fetch_array($result,1);
 
-    $kategorie2check_2 = substr(make_ebene($refid["refid"]),0,strpos(make_ebene($refid["refid"]),"/"));
-    $ebene2check_2 = substr(make_ebene($refid["refid"]),strpos(make_ebene($refid["refid"]),"/"));
+        $kategorie2check_2 = substr(make_ebene($refid["refid"]),0,strpos(make_ebene($refid["refid"]),"/"));
+        $ebene2check_2 = substr(make_ebene($refid["refid"]),strpos(make_ebene($refid["refid"]),"/"));
 
-    if ( ( $specialvars["security"]["new"] == -1 && priv_check(make_ebene($environment["parameter"][2]),$cfg["menued"]["modify"]["sort"][2]) && priv_check(make_ebene($refid["refid"]),$cfg["menued"]["modify"]["sort"][2]) ) ||
-        ( $specialvars["security"]["new"] != -1 && ( function_exists(priv_check_old) && priv_check_old("",$cfg["menued"]["right_admin"]) || ( right_check("-1",$ebene2check,$kategorie2check) != "" && right_check("-1",$ebene2check_2,$kategorie2check_2) ) ) ) ) {
+        if ( ( $specialvars["security"]["new"] == -1 && priv_check(make_ebene($environment["parameter"][2]),$cfg["menued"]["modify"]["sort"][2]) && priv_check(make_ebene($refid["refid"]),$cfg["menued"]["modify"]["sort"][2]) ) ||
+            ( $specialvars["security"]["new"] != -1 && ( function_exists(priv_check_old) && priv_check_old("",$cfg["menued"]["right_admin"]) || ( right_check("-1",$ebene2check,$kategorie2check) != "" && right_check("-1",$ebene2check_2,$kategorie2check_2) ) ) ) ) {
 
-        if ( $environment["parameter"][1] == "up" ) {
-            $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
-                       SET sort=sort-11
-                     WHERE mid='".$environment["parameter"][2]."'";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $db -> query($sql);
-        } elseif ( $environment["parameter"][1] == "down" ) {
-            $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
-                       SET sort=sort+11
-                     WHERE mid='".$environment["parameter"][2]."'";
-            if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $db -> query($sql);
+            if ( $environment["parameter"][1] == "up" ) {
+                $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
+                           SET sort=sort-11
+                         WHERE mid='".$environment["parameter"][2]."'";
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $db -> query($sql);
+            } elseif ( $environment["parameter"][1] == "down" ) {
+                $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
+                           SET sort=sort+11
+                         WHERE mid='".$environment["parameter"][2]."'";
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $db -> query($sql);
+            }
         }
-
-        // alle sollen neu numeriert werden
-        if ( $environment["parameter"][1] == "all" ) {
-            $all = -1;
-        }
-
-        // ob up, down, oder all renumber funktion aufrufen
-        renumber($cfg["menued"]["db"]["menu"]["entries"], $cfg["menued"]["db"]["lang"]["entries"], $environment["parameter"][3], $all);
-        header("Location: ".$cfg["menued"]["basis"]."/list,".$environment["parameter"][3].",".$environment["parameter"][4].".html");
     }
+
+    // alle sollen neu numeriert werden
+    if ( $environment["parameter"][1] == "all" ) {
+        $all = -1;
+    }
+
+    // ob up, down, oder all renumber funktion aufrufen
+    renumber($cfg["menued"]["db"]["menu"]["entries"], $cfg["menued"]["db"]["lang"]["entries"], $environment["parameter"][3], $all);
+    header("Location: ".$cfg["menued"]["basis"]."/list,".$environment["parameter"][3].",".$environment["parameter"][4].".html");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
