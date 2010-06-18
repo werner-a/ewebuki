@@ -656,7 +656,18 @@
                                     $class = "link_".$cfg["file"]["filetyp"][$match[1]];
                                 }
                             }
-                            $ausgabewert  = $pic."<a href=\"".$href."\"".$target." title=\"".$title."\" class=\"".$class."\">".$beschriftung."</a>";
+                            // klasse manuell hinzufuegen
+                            if ( $linkwerte[3] != "" ) {
+                                $class .= " ".$linkwerte[3];
+                            }
+                            // id
+                            if ( $linkwerte[4] != "" ) {
+                                $id = " id=\"".$linkwerte[4]."\"";
+                            } else {
+                                $id = "";
+                            }
+
+                            $ausgabewert  = $pic."<a href=\"".$href."\"".$id.$target." title=\"".$title."\" class=\"".$class."\">".$beschriftung."</a>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
                         break;
