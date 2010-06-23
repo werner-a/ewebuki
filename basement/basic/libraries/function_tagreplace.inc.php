@@ -1236,9 +1236,11 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
                         break;
                     default:
-                        if ( $defaults["extra_tags"] != "" ) {
-                            if (  file_exists($pathvars["moduleroot"].$defaults["extra_tags"]) ) {
-                                include $pathvars["moduleroot"].$defaults["extra_tags"];
+                        $extra_tag = str_replace(array("/","]","["),array("","",""),$closetag);
+                        if ( $defaults["extra_tags"][$extra_tag] != "" ) {
+                            if (  file_exists($pathvars["moduleroot"].$defaults["extra_tags"][$extra_tag]) ) {
+                                include $pathvars["moduleroot"].$defaults["extra_tags"][$extra_tag];
+                                break;
                             }
                         }
                         // unbekannte tags verstecken
