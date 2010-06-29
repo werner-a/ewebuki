@@ -89,7 +89,7 @@
     $ausgaben["num_row_tag"] = $row_index;
     // + + +
 
-    if ( $_FILES["csv_upload"]["type"] == "text/csv" ) {
+    if ( $_FILES["csv_upload"]["tmp_name"] ) {
 
         $handle = fopen ($_FILES["csv_upload"]["tmp_name"],"r");
         $row_index = 0; $ausgaben["num_col"] = 0;
