@@ -149,70 +149,70 @@
             $tag_meat = array();$tag_sort = array();
             foreach ( $cfg["wizard"]["ed_boxed"] as $tag=>$preg ) {
                 // tag-marken festlegen und content aufbrechen
-                $open_tag = $preg[0][0];
-                $close_tag = $preg[0][1];
-                if ( $close_tag == "" ) $close_tag = str_replace("[","[/",$open_tag);
+                    $open_tag = $preg[0][0];
+                    $close_tag = $preg[0][1];
+                    if ( $close_tag == "" ) $close_tag = str_replace("[","[/",$open_tag);
 
-                $splitter1 = str_replace(
-                                            array("[","]","/"),
-                                            array("\[","\]","\/"),
-                                            $open_tag
-                            );
-                if ( !preg_match("/\]$/",$open_tag) ) $splitter1 .= "[A-Z0-9=\]]{1}";
+                    $splitter1 = str_replace(
+                                                array("[","]","/"),
+                                                array("\[","\]","\/"),
+                                                $open_tag
+                                );
+                    if ( !preg_match("/\]$/",$open_tag) ) $splitter1 .= "[A-Z0-9=\]]{1}";
 
-                $splitter2 = str_replace(
-                                            array("[","]","/"),
-                                            array("\[","\]","\/"),
-                                            $close_tag
-                            );
-                if ( !preg_match("/\]$/",$close_tag) ) {
-                    $splitter2 .= "[A-Z0-9]{0,1}\]";
-                }
-                $splitter = $splitter1.".*".$splitter2;
-
-                $match_test = preg_split("/(".$splitter.")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
-                $buffer = array(); $pre = ""; $index = 0;
-                foreach ( $match_test as $value ) {
-                    if ( preg_match("/(".$splitter.")/Us",$value) ) {
-                        $tag_preg = "(".
-                                str_replace(
-                                    array("[","]","/"),
-                                    array("\[","\]","\/"),
-                                    $open_tag
-                                ).".*\])(.*)(".
-                                str_replace(
-                                    array("[","]","/"),
-                                    array("\[","\]","\/"),
-                                    $close_tag
-                                ).".*\])";
-                        preg_match(
-                            "/".$tag_preg."/Us",
-                            $value,
-                            $match_tag
-                        );
-                        $buffer[$index] = array(
-                               "start" => strlen($pre),
-                                 "end" => strlen($pre) + strlen($value),
-                            "complete" => $value,
-                           "tag_start" => $match_tag[1],
-                                "meat" => trim($match_tag[2]),
-                             "tag_end" => $match_tag[3],
-                                "keks" => "",
-                                "type" => $preg[1],
-                             "buttons" => $preg[2],
-                        );
-                        $tag_sort[strlen($pre)] = array(
-                                "para" => array($tag,$index),
-                               "start" => strlen($pre),
-                                 "end" => strlen($pre) + strlen($value),
-                        );
-                        $index++;
-                    } else {
+                    $splitter2 = str_replace(
+                                                array("[","]","/"),
+                                                array("\[","\]","\/"),
+                                                $close_tag
+                                );
+                    if ( !preg_match("/\]$/",$close_tag) ) {
+                        $splitter2 .= "[A-Z0-9]{0,1}\]";
                     }
-                    $pre .= $value;
+                    $splitter = $splitter1.".*".$splitter2;
+
+                    $match_test = preg_split("/(".$splitter.")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
+                    $buffer = array(); $pre = ""; $index = 0;
+                    foreach ( $match_test as $value ) {
+                        if ( preg_match("/(".$splitter.")/Us",$value) ) {
+                            $tag_preg = "(".
+                                    str_replace(
+                                        array("[","]","/"),
+                                        array("\[","\]","\/"),
+                                        $open_tag
+                                    ).".*\])(.*)(".
+                                    str_replace(
+                                        array("[","]","/"),
+                                        array("\[","\]","\/"),
+                                        $close_tag
+                                    ).".*\])";
+                            preg_match(
+                                "/".$tag_preg."/Us",
+                                $value,
+                                $match_tag
+                            );
+                            $buffer[$index] = array(
+                                   "start" => strlen($pre),
+                                     "end" => strlen($pre) + strlen($value),
+                                "complete" => $value,
+                               "tag_start" => $match_tag[1],
+                                    "meat" => trim($match_tag[2]),
+                                 "tag_end" => $match_tag[3],
+                                    "keks" => "",
+                                    "type" => $preg[1],
+                                 "buttons" => $preg[2],
+                            );
+                            $tag_sort[strlen($pre)] = array(
+                                    "para" => array($tag,$index),
+                                   "start" => strlen($pre),
+                                     "end" => strlen($pre) + strlen($value),
+                            );
+                            $index++;
+                        } else {
+                        }
+                        $pre .= $value;
+                    }
+                    $tag_meat[$tag] = $buffer;
                 }
-                $tag_meat[$tag] = $buffer;
-            }
 
             // verschachtelte tags werden gesucht und eingetragen
             ksort($tag_sort);
@@ -266,7 +266,7 @@
             $i = 0; $close = 0;
             $allcontent = array();
             foreach ( $separate as $index => $line ) {
-                if ( trim($line," ") == "" ) continue;
+                if ( trim($line," \n\r") == "" ) continue;
                 if ( in_array($line,$split_tags["open"]) ) {
                     if ($close == 0) $i++;
                     $close++;
