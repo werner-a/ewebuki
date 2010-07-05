@@ -311,7 +311,7 @@
                 $pre_mark  = substr($content,0,($value["start"] + $i*strlen($edit_marker)));
                 $post_mark = substr($content,($value["start"] + $i*strlen($edit_marker)));
                 // welche "verschachtelungs-ebene"
-                $level = count(explode("->",$tag_meat[$value["para"][0]][$value["para"][1]]["keks"]));
+                $level = count($tag_meat[$value["para"][0]][$value["para"][1]]["keks"]);
                 if ( $tag_meat[$value["para"][0]][$value["para"][1]]["keks"] == "" ) $level = 0;
                 $nested[$level][$i] = array($value["para"][0],$value["para"][1]);
                 // content ergaenzen
@@ -373,8 +373,16 @@
                     $button = "";
                     if ( is_array($tag_info["buttons"]) ) {
                         foreach ( $tag_info["buttons"] as $buttons ) {
-                            if ( is_array($cfg["wizard"]["ed_boxed"][$tag_name][3][$tag_info["keks"]]) ) {
-                                if ( !in_array($buttons,$cfg["wizard"]["ed_boxed"][$tag_name][3][$tag_info["keks"]]) ) continue;
+                            $stop = "";
+                            if ( is_array($tag_info["keks"]) ) {
+                                foreach ( $tag_info["keks"] as $rkey => $rvalue) {
+                                    if ( is_array($cfg["wizard"]["ed_boxed"][$tag_name][3][$rvalue] ) ) {
+                                        if ( !in_array($buttons,$cfg["wizard"]["ed_boxed"][$tag_name][3][$rvalue]) ) {
+                                            $stop = -1;
+                                        }
+                                    }
+                                }                               
+                                if ( $stop == -1 )  continue;
                             }
                             $button .= "<!--button_".$buttons."_beginn--><a href=\"".$$buttons."\">#(tag_".$buttons.")</a><!--button_".$buttons."_end-->";
                         }

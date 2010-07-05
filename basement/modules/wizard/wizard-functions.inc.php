@@ -146,73 +146,91 @@
         function content_split_all($content) {
             global $cfg, $value, $tag_sort;
 
+            $tmp_content = $content;
             $tag_meat = array();$tag_sort = array();
             foreach ( $cfg["wizard"]["ed_boxed"] as $tag=>$preg ) {
-                // tag-marken festlegen und content aufbrechen
-                    $open_tag = $preg[0][0];
-                    $close_tag = $preg[0][1];
-                    if ( $close_tag == "" ) $close_tag = str_replace("[","[/",$open_tag);
+                $pre = "";
+                $index = 0;
+                $preg1 = "/(\[\/)(".$tag."[0-9]{0,1})(\])/";
 
-                    $splitter1 = str_replace(
-                                                array("[","]","/"),
-                                                array("\[","\]","\/"),
-                                                $open_tag
-                                );
-                    if ( !preg_match("/\]$/",$open_tag) ) $splitter1 .= "[A-Z0-9=\]]{1}";
+                $buffer = array();
+                while ( preg_match($preg1, $tmp_content, $match) ) {
 
-                    $splitter2 = str_replace(
-                                                array("[","]","/"),
-                                                array("\[","\]","\/"),
-                                                $close_tag
-                                );
-                    if ( !preg_match("/\]$/",$close_tag) ) {
-                        $splitter2 .= "[A-Z0-9]{0,1}\]";
-                    }
-                    $splitter = $splitter1.".*".$splitter2;
+                    // endtag
+                    $closetag = $match[0];
+                    $closetag_len = strlen($match[0]);
 
-                    $match_test = preg_split("/(".$splitter.")/Us",$content,-1,PREG_SPLIT_DELIM_CAPTURE);
-                    $buffer = array(); $pre = ""; $index = 0;
-                    foreach ( $match_test as $value ) {
-                        if ( preg_match("/(".$splitter.")/Us",$value) ) {
-                            $tag_preg = "(".
-                                    str_replace(
-                                        array("[","]","/"),
-                                        array("\[","\]","\/"),
-                                        $open_tag
-                                    ).".*\])(.*)(".
-                                    str_replace(
-                                        array("[","]","/"),
-                                        array("\[","\]","\/"),
-                                        $close_tag
-                                    ).".*\])";
-                            preg_match(
-                                "/".$tag_preg."/Us",
-                                $value,
-                                $match_tag
-                            );
-                            $buffer[$index] = array(
-                                   "start" => strlen($pre),
-                                     "end" => strlen($pre) + strlen($value),
-                                "complete" => $value,
-                               "tag_start" => $match_tag[1],
-                                    "meat" => trim($match_tag[2]),
-                                 "tag_end" => $match_tag[3],
-                                    "keks" => "",
-                                    "type" => $preg[1],
-                                 "buttons" => $preg[2],
-                            );
-                            $tag_sort[strlen($pre)] = array(
-                                    "para" => array($tag,$index),
-                                   "start" => strlen($pre),
-                                     "end" => strlen($pre) + strlen($value),
-                            );
-                            $index++;
-                        } else {
-                        }
-                        $pre .= $value;
-                    }
+                    // wie faengt der opentag an?
+                    $opentag = "[".$match[2];
+
+                    // wo beginnt der endtag?
+                    $closetagbeg = strpos($tmp_content,$closetag);
+
+                    // heuhaufen
+                    $haystack = substr($tmp_content,0,$closetagbeg);
+
+                    // zugehoerigen opentag finden
+                    $opentagbeg = strrpos($haystack,$opentag);
+
+
+                    // temporaere heuhaufen
+                    $tmp_haystack = substr($haystack,$opentagbeg);
+
+                    $opentagbeg_endklammer = strpos($tmp_haystack,"]");
+
+                    // reele opentag
+                    $real_opentag = substr($tmp_haystack,0,$opentagbeg_endklammer+1);
+
+                    // laenge des opentags
+                    $opentaglen = strlen($real_opentag);
+
+                    // mit unnuetzen zeichen auffuellen
+                    $var = '';
+                    $right = str_pad ( $var, $opentaglen, 'e' );
+
+                    $regex_replace = str_replace("[","\[",substr($haystack,0,$opentagbeg).$real_opentag);
+                    $regex_replace = str_replace("]","\]",$regex_replace);
+                    $regex_replace = str_replace("/","\/",$regex_replace);
+                    $regex_replace = str_replace(".","\.",$regex_replace);
+                    $regex_replace = str_replace("$","\$",$regex_replace);
+                    $regex_replace = str_replace("+","\+",$regex_replace);
+                    $regex_replace = str_replace("^","\^",$regex_replace);
+                    $regex_replace = str_replace("(","\(",$regex_replace);
+                    $regex_replace = str_replace(")","\)",$regex_replace);
+                    $regex_replace = str_replace("{","\{",$regex_replace);
+                    $regex_replace = str_replace("}","\}",$regex_replace);
+
+                    // wie lautet der tagwert
+                    $tagwertbeg = strlen($haystack) - (strpos(strrev($haystack), strrev($real_opentag)) + strlen($real_opentag)) + $opentaglen + 1;
+
+                   $tagoriginal = substr($tmp_content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
+                   $tagoriginal_org = substr($content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
+
+                     // open und endtags zerstören
+                    $tmp_content = str_replace($haystack.$closetag,$haystack."==".$match[2]."#",$tmp_content);
+                    $tmp_content = preg_replace("/^".$regex_replace."/",substr($haystack,0,$opentagbeg).$right,$tmp_content);
+
+                    $buffer[$index] = array(
+                               "start" => strrpos($haystack,$real_opentag),
+                                 "end" => strlen($haystack)+strlen($closetag),
+                            "complete" => $tagoriginal_org,
+                           "tag_start" => $real_opentag,
+                                "meat" => substr($tmp_haystack,$opentaglen),
+                             "tag_end" => $closetag,
+                                "keks" => "",
+                                "type" => $preg[1],
+                             "buttons" => $preg[2],
+                        );
+                    $tag_sort[strrpos($haystack,$real_opentag)] = array(
+                        "para" => array($tag,$index),
+                       "start" => strrpos($haystack,$real_opentag),
+                         "end" => strlen($haystack)+strlen($closetag),
+                    );
+                    $tagwert = $tagoriginal;
+                    $index++;
                     $tag_meat[$tag] = $buffer;
                 }
+            }
 
             // verschachtelte tags werden gesucht und eingetragen
             ksort($tag_sort);
@@ -226,16 +244,11 @@
                 $start = $value["start"];
                 $nested = (array_filter($tag_sort, "filter_alternate"));
                 foreach ( $nested as $index => $nest_value ) {
-                    if ( $tag_meat[$nest_value["para"][0]][$nest_value["para"][1]]["keks"] != "" ) {
-                        $keks = "->";
-                    } else {
-                        $keks = "";
-                    }
-                    $keks .= trim($tag_meat[$value["para"][0]][$value["para"][1]]["tag_start"],"[]");
-                    $tag_meat[$nest_value["para"][0]][$nest_value["para"][1]]["keks"] .= $keks;
+                    $keks = trim($tag_meat[$value["para"][0]][$value["para"][1]]["tag_start"],"[]");
+                    $tag_meat[$nest_value["para"][0]][$nest_value["para"][1]]["keks"][] = $keks;
                 }
             }
-
+  
             return $tag_meat;
         }
 
