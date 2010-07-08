@@ -168,6 +168,7 @@
 
                     // heuhaufen
                     $haystack = substr($tmp_content,0,$closetagbeg);
+                    $org_haystack = substr($content,0,$closetagbeg);
 
                     // zugehoerigen opentag finden
                     $opentagbeg = strrpos($haystack,$opentag);
@@ -175,6 +176,7 @@
 
                     // temporaere heuhaufen
                     $tmp_haystack = substr($haystack,$opentagbeg);
+                    $tmp_org_haystack = substr($org_haystack,$opentagbeg);
 
                     $opentagbeg_endklammer = strpos($tmp_haystack,"]");
 
@@ -215,7 +217,7 @@
                                  "end" => strlen($haystack)+strlen($closetag),
                             "complete" => $tagoriginal_org,
                            "tag_start" => $real_opentag,
-                                "meat" => substr($tmp_haystack,$opentaglen),
+                                "meat" => substr($tmp_org_haystack,$opentaglen),
                              "tag_end" => $closetag,
                                 "keks" => "",
                                 "type" => $preg[1],
