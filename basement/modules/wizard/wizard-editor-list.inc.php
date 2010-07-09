@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -84,11 +84,12 @@
     foreach ( $buffer as $key => $value ) {
         if ( $art == "def"  ) { 
             if ( $key % 2 == 0 ) {
-                if ( strstr($buffer[$key+1],"[DIV]") || $_POST[$key+1] == $key+1 ) {
-                $dataloop["faq"][$key]["checked"] = "checked";
-                $buffer[$key+1] = str_replace("[DIV]","",$buffer[$key+1]);
-                $buffer[$key+1] = str_replace("[/DIV]","",$buffer[$key+1]);
+                if ( (preg_match("/^\[DIV.*\/DIV\]$/is",$buffer[$key+1]) || $_POST[$key+1] == $key+1) ) {
+                    $dataloop["faq"][$key]["checked"] = "checked";
+                    $buffer[$key+1] = str_replace("[DIV]","",$buffer[$key+1]);
+                    $buffer[$key+1] = str_replace("[/DIV]","",$buffer[$key+1]);
                 }
+                $buffer[$key+1] = str_replace("[/DIV][DIV]","[/DIV]\n[DIV]",$buffer[$key+1] );
             } else {
                 continue;
             }
@@ -117,15 +118,16 @@
 
         $buffer = "";
         foreach ( $_POST["areas"] as $key => $value ) {
-        if ( $key % 2 == 1 && $_POST[$key] == $key) {
-            $list_display = preg_split("/(".chr(10).")/",$value,-1,PREG_SPLIT_NO_EMPTY);
-            $e = "";
-            foreach ( $list_display as $test ) {
-                $e .= "[DIV]".$test."[/DIV]";
-            }
-            $value = $e;
+            if ( $key % 2 == 1 && $_POST[$key] == $key) {
+                $list_display = preg_split("/(".chr(10).")/",$value,-1,PREG_SPLIT_NO_EMPTY);
+                $e = "";
+                foreach ( $list_display as $test ) {
+                    $e .= "[DIV]".$test."[/DIV]";
+                }
+                $value = $e;
 
-        }
+            }
+            $value = preg_replace("/\[\/DIV\][\s]?/","[/DIV]",$value);
             $ende[] = $value;
         }
 

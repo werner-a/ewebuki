@@ -83,6 +83,9 @@
         if ( !is_array($_SESSION["file_memo"]) || !in_array($file_id,$_SESSION["file_memo"]) ) {
             $_SESSION["file_memo"][$file_id] = $file_id;
         }
+        foreach ( $_SESSION["file_memo"] as $key=>$value ) {
+            if ( trim($value) == "" ) unset($_SESSION["file_memo"][$key]);
+        }
         $sql = "SELECT *
                   FROM site_file
                  WHERE fid IN (".implode(",",$_SESSION["file_memo"]).")";
