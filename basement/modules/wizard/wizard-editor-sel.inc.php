@@ -45,6 +45,7 @@
 
     // was anzeigen
     $mapping["main"] = "wizard-edit";
+    $hidedata["sel_global"]["on"] = "on";
     $hidedata["sel"] = array();
     $hidedata["sel"]["num"] = $tag_marken[1] + 1;
     $ausgaben["max_sel_num"] = $cfg["wizard"]["sel_edit"]["max_num"];
@@ -60,7 +61,7 @@
     for ($i=0;$i<=5;$i++) {
         $ausgaben["tagwerte".$i] = $tag_werte[$i];
     }
-    // size-radiobutton
+// size-radiobutton
     if ( count($cfg["wizard"]["sel_edit"]["cb_link_size"]) > 0 ) {
         foreach ( $cfg["wizard"]["sel_edit"]["cb_link_size"] as $value=>$label ) {
             $check = "";
@@ -81,40 +82,80 @@
     // checkboxen
     if ( $ausgaben["tagwerte2"] != "" ) $hidedata["sel"]["check_thumb"] = " checked=\"true\"";
     if ( $ausgaben["tagwerte4"] != "" ) $hidedata["sel"]["check_lbox"] = " checked=\"true\"";
-    // selection aus session/tag holen
-    if ( is_array($_SESSION["compilation_memo"]) || $tag_werte[0] != "" ) {
-        if ( is_array($_SESSION["compilation_memo"]) ) {
-            $ausgaben["tagwerte0"] = key($_SESSION["compilation_memo"]);
-            $array = current($_SESSION["compilation_memo"]);
-        } elseif ( $tag_werte[3] != "" ) {
-            $array = explode(":",$tag_werte[3]);
-        }
 
-        $sql = "SELECT *
-                  FROM site_file
-                 WHERE fhit
-                  LIKE '%p".$ausgaben["tagwerte0"].",%'";
+    // sobald ein doppelpunkt im ersten parameter ist es die bildergalerie on the fly :)
+    if ( strstr($ausgaben["tagwerte0"],":") ) {
+        $sel_pics = explode(":",$ausgaben["tagwerte0"]);
+        $prev_pics = explode(":",$ausgaben["tagwerte3"]);
+        $i = 0;
+
+        // sql erstellen und array fuer multisort
+        foreach ( $sel_pics as $value ) {
+            if ( $value == "" ) continue;
+            $i++;
+            $tmp_sort[$value] = $i;
+            ( $iarray == "" ) ? $trenner = "" : $trenner = ",";
+            $iarray .= $trenner.$value;
+        }
+        if ( $iarray == "" ) $iarray = 0;
+        $sql = "SELECT * FROM site_file WHERE fid in (".$iarray.")";
+        $result = $db -> query($sql);
+        filelist($result, "fileed",$ausgaben["tagwerte0"]);
+        $dataloop["chosen_images"] = $dataloop["list_images"];
+        if ( is_array($dataloop["chosen_images"]) ) {
+            foreach ( $dataloop["chosen_images"] as $key => $value ) {
+                $sortarray[] = $tmp_sort[$key];
+                if ( in_array($key, $prev_pics ) ) {
+                    $dataloop["chosen_images"][$key]["checked"] = "checked";
+                }
+            }
+            array_multisort( $sortarray, $dataloop["chosen_images"]);
+            unset($dataloop["list_images"]);
+        }
+        $hidedata["sel2"]["on"] = "on";
+        #unset($hidedata["sel"]);
+        $sql = "SELECT * FROM site_file WHERE fid not in (".$iarray.")";
         $result = $db -> query($sql);
         // dataloop wird ueber eine share-funktion aufgebaut
         filelist($result, "fileed",$ausgaben["tagwerte0"]);
-
-// echo "<pre>".print_r($array,true)."</pre>";
-        if ( count($dataloop["list_images"]) > 0 ) {
-            foreach ( $dataloop["list_images"] as $key=>$value ) {
-                $buffer[$value["sort"]] = $value;
-                if ( ( is_array($array) && in_array($key,$array) )
-                  || ( is_array($_POST["tagwerte"][3]) && in_array($key,$_POST["tagwerte"][3]) ) ) {
-                    $buffer[$value["sort"]]["checked"] = " checked=\"true\"";
-                } else {
-                    $buffer[$value["sort"]]["checked"] = "";
-                }
+        $dataloop["avail_images"] = $dataloop["list_images"];
+    } else {
+        $hidedata["sel_db"]["on"] = "on";
+        // selection aus session/tag holen
+        if ( is_array($_SESSION["compilation_memo"]) || $tag_werte[0] != "" ) {
+            if ( is_array($_SESSION["compilation_memo"]) ) {
+                $ausgaben["tagwerte0"] = key($_SESSION["compilation_memo"]);
+                $array = current($_SESSION["compilation_memo"]);
+            } elseif ( $tag_werte[3] != "" ) {
+                $array = explode(":",$tag_werte[3]);
             }
-            ksort($buffer);
-            $dataloop["list_images"] = $buffer;
+
+            $sql = "SELECT *
+                      FROM site_file
+                     WHERE fhit
+                      LIKE '%p".$ausgaben["tagwerte0"].",%'";
+            $result = $db -> query($sql);
+            // dataloop wird ueber eine share-funktion aufgebaut
+            filelist($result, "fileed",$ausgaben["tagwerte0"]);
+
+    // echo "<pre>".print_r($array,true)."</pre>";
+            if ( count($dataloop["list_images"]) > 0 ) {
+                foreach ( $dataloop["list_images"] as $key=>$value ) {
+                    $buffer[$value["sort"]] = $value;
+                    if ( ( is_array($array) && in_array($key,$array) )
+                      || ( is_array($_POST["tagwerte"][3]) && in_array($key,$_POST["tagwerte"][3]) ) ) {
+                        $buffer[$value["sort"]]["checked"] = " checked=\"true\"";
+                    } else {
+                        $buffer[$value["sort"]]["checked"] = "";
+                    }
+                }
+                ksort($buffer);
+                $dataloop["list_images"] = $buffer;
+            }
         }
     }
-
  
+
     // abspeichern, part 2
     // * * *
     if ( $environment["parameter"][7] == "verify"
@@ -132,13 +173,21 @@
             rename($_FILES["new_file"]["tmp_name"],$newname);
         }
 
-        if ( is_array($_POST["tagwerte"][3]) ) $_POST["tagwerte"][3] = implode(":",$_POST["tagwerte"][3]);
-        $tag_werte = array();
-        for ($i = 0; $i <= 5; $i++) {
-            $tag_werte[] = $_POST["tagwerte"][$i];
+        if ( strstr($ausgaben["tagwerte0"],":") ) {
+            $_POST["tagwerte"][0] = "";
+            foreach ( $_POST["pics"] as $value ) {
+                if ( $value == "" ) continue;
+                $_POST["tagwerte"][0] .= $value.":";
+            }
+            if ( $_POST["tagwerte"][0] == "" ) $_POST["tagwerte"][0] = ":";
         }
+            if ( is_array($_POST["tagwerte"][3]) ) $_POST["tagwerte"][3] = implode(":",$_POST["tagwerte"][3]);
+            $tag_werte = array();
+            for ($i = 0; $i <= 5; $i++) {
+                $tag_werte[] = $_POST["tagwerte"][$i];
+            }
         $to_insert = "[SEL=".implode(";",$tag_werte)."]".$_POST["description"]."[/SEL]";
-
+        
         if ( $cfg["wizard"]["sel_edit"]["max_num"] != "" && count(explode(":",$_POST["tagwerte"][3])) > $cfg["wizard"]["sel_edit"]["max_num"] ) {
             $ausgaben["form_error"] .= count(explode(":",$_POST["tagwerte"][3]))."#(sel_num_error)".$cfg["wizard"]["sel_edit"]["max_num"]."<br />";;
         }

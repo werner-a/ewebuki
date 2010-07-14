@@ -943,6 +943,7 @@
                             $tag_value = explode("]",$tagwert,2);
                             $tag_param = explode(";",$tag_value[0]);
                             $tag_extra = explode(":",$tag_param[3]);
+                            $tag_special = explode(":",$tag_param[0]);
 
                             $path = dirname($pathvars["requested"]);
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
@@ -951,30 +952,63 @@
                             if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div style=\"position:relative\" class=\"selection_teaser\">##youtube_div##\n<b>##title## ##youtube_link##</b>\n<div>\n<ul>\n";
                             if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
                             if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
+                            if ( strstr($tag_param[0],":") ) {
+                                $sel_pics = "";
+                                foreach ( $tag_special as $pics ) {
+                                    if ( $pics == "" ) continue;
+                                    ( $sel_pics != "" ) ? $trenner = " ," : $trenner = "";
+                                    $sel_pics .= $trenner.$pics;
+                                }
+                                if ( $sel_pics == "" ) $sel_pics = 0;
+                                $sql = "SELECT * FROM site_file WHERE fid in (".$sel_pics.")";
+                                $sel_pics1 = explode(":",$tag_param[0]);
+                                $i = 0;
+                                foreach ( $sel_pics1 as $key => $value ) {
+                                    $i++;
+                                    $tmp_sort[$value] = $i;
+                                }
 
-                            $sql = "SELECT *
-                                      FROM site_file
-                                     WHERE fhit LIKE '%#p".$tag_param[0]."%'";
-                            $result = $db -> query($sql);
-                            $files = array();
-                            while ( $data = $db -> fetch_array($result,1) ) {
-                                preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
-                                $files[$match[1]] = array(
-                                            "fid"    => $data["fid"],
-                                            "sort"   => $match[1],
-                                            "ffart"  => $data["ffart"],
-                                            "ffname" => $data["ffname"],
-                                            "funder" => $data["funder"],
-                                            "fdesc"  => $data["fdesc"]
-                                            );
-                            }
-                            ksort($files);
-                            $sort = array();
-                            foreach ($files as $key => $row) {
-                                $sort[$key]  = $row['sort'];
-                            }
-                            array_multisort($sort, $files);
+                                $result = $db -> query($sql);
+                                $files = array();
+                                while ( $data = $db -> fetch_array($result,1) ) {
+                                    $sortarray[] = $tmp_sort[$data["fid"]];
+                                    $files[] = array(
+                                                "fid"    => $data["fid"],
+                                                "sort"   => $counter,
+                                                "ffart"  => $data["ffart"],
+                                                "ffname" => $data["ffname"],
+                                                "funder" => $data["funder"],
+                                                "fdesc"  => $data["fdesc"]
+                                                );
+                                }
+                                if ( count($files) > 0 ) {
+                                    array_multisort( $sortarray, $files);
+                                }
+                            } else {
+                                $sql = "SELECT *
+                                          FROM site_file
+                                         WHERE fhit LIKE '%#p".$tag_param[0]."%'";
+                                $result = $db -> query($sql);
+                                $files = array();
+                                while ( $data = $db -> fetch_array($result,1) ) {
+                                    preg_match("/#p".$tag_param[0]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                                    $files[$match[1]] = array(
+                                                "fid"    => $data["fid"],
+                                                "sort"   => $match[1],
+                                                "ffart"  => $data["ffart"],
+                                                "ffname" => $data["ffname"],
+                                                "funder" => $data["funder"],
+                                                "fdesc"  => $data["fdesc"]
+                                                );
+                                }
+                                ksort($files);
+                                $sort = array();
+                                foreach ($files as $key => $row) {
+                                    $sort[$key]  = $row['sort'];
+                                }
+                                array_multisort($sort, $files);
 
+                            }
                             if ( $tag_param[3] == "" ) {
                                 $changed = str_replace( "#", $files[0]["fid"], $link);
                                 $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
