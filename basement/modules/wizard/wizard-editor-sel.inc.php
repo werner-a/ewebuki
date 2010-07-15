@@ -97,6 +97,7 @@
             ( $iarray == "" ) ? $trenner = "" : $trenner = ",";
             $iarray .= $trenner.$value;
         }
+        unset($dataloop["list_images"]);
         if ( $iarray == "" ) $iarray = 0;
         $sql = "SELECT * FROM site_file WHERE fid in (".$iarray.")";
         $result = $db -> query($sql);
@@ -114,7 +115,12 @@
         }
         $hidedata["sel2"]["on"] = "on";
         #unset($hidedata["sel"]);
-        $sql = "SELECT * FROM site_file WHERE fid not in (".$iarray.")";
+        if ( is_array($_SESSION["file_memo"]) ) {
+            $sess_images = implode(",",$_SESSION["file_memo"]);
+        }
+        if ( $sess_images == "" ) $sess_images = 0;
+
+        $sql = "SELECT * FROM site_file WHERE fid in (".$sess_images.") and fid not in (".$iarray.")";
         $result = $db -> query($sql);
         // dataloop wird ueber eine share-funktion aufgebaut
         filelist($result, "fileed",$ausgaben["tagwerte0"]);
