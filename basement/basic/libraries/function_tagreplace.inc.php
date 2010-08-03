@@ -355,8 +355,12 @@
                         }
                         break;
                     case "[/ROW]":
-//                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<tr>".$tagwert."</tr>",$replace);
+                        break;
+                    case "[/TH]":
+                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,"<th valign=\"top\">".$tagwert."</th>",$replace);
                         break;
                     case "[/COL]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);

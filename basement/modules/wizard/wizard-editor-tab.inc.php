@@ -73,10 +73,18 @@
     $tab_rows_tag = array();
     $row_index = 0; $ausgaben["num_col_tag"] = 0;
     foreach ( $rows[1] as $row_value ) {
+        // ist die erste spalte der kopf
+        if ( $row_index == 0 ) {
+            if ( strstr($row_value,"[TH]") ) {
+                $hidedata["tab"]["col_header_check"] = " checked=\"true\"";
+            } else {
+                $hidedata["tab"]["col_header_check"] = "";
+            }
+        }
         // tag nach zellen aufsplitten
-        preg_match_all("/\[COL.*\](.*)\[\/COL\]/Us",$row_value,$cells);
+        preg_match_all("/\[(COL|TH).*\](.*)\[\/(COL|TH)\]/Us",$row_value,$cells);
         $col_index = 0; $row_buffer = array();
-        foreach ( $cells[1] as $cell_value ) {
+        foreach ( $cells[2] as $cell_value ) {
             $row_buffer[] = "<td>\n".
                                 "<textarea name=\"cells[".$row_index."][".$col_index."]\" onclick=\"ebCanvas=this\">".$cell_value."</textarea>\n".
                             "</td>\n";
@@ -164,7 +172,11 @@
             for ($i=0;$i<$_POST["num_row"];$i++) {
                 $tab .= "[ROW]\n";
                 for ($k=0;$k<$_POST["num_col"];$k++) {
-                    $tab .= "[COL]".trim($_POST["cells"][$i][$k])."[/COL]\n";
+                    if ( $i == 0 && $_POST["col_header"] == -1 ) {
+                        $tab .= "[TH]".tagremove(trim($_POST["cells"][$i][$k]))."[/TH]\n";
+                    } else {
+                        $tab .= "[COL]".trim($_POST["cells"][$i][$k])."[/COL]\n";
+                    }
                     $num_cell++;
                 }
                 $tab .= "[/ROW]\n";
