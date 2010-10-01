@@ -44,6 +44,7 @@
 
     $cfg["wizard"] = array(
            "subdir" => "wizard",
+    "subdir_custom" => "customer",  // eigener modules-ordner
              "name" => "wizard",
             "basis" => $pathvars["virtual"]."/wizard",
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]

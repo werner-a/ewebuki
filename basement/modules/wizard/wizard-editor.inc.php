@@ -255,8 +255,15 @@
             }
 
             // auf spezial-wizard-editor testen
-            $wizard_file = $pathvars["moduleroot"].$cfg["wizard"]["subdir"]."/".$cfg["wizard"]["name"]."-".$environment["kategorie"]."-".strtolower($tag_marken[0]).".inc.php";
-            if ( file_exists($wizard_file) ) {
+            $wizard_file = $pathvars["moduleroot"].$cfg["wizard"]["subdir"].
+                           "/".$cfg["wizard"]["name"]."-".$environment["kategorie"]."-".strtolower($tag_marken[0]).".inc.php";
+            $wizard_file_custom = $pathvars["moduleroot"].$cfg["wizard"]["subdir_custom"].
+                                  "/".$cfg["wizard"]["name"]."-".$environment["kategorie"]."-".strtolower($tag_marken[0]).".inc.php";
+            if ( file_exists($wizard_file_custom) ) {
+
+                include $wizard_file_custom;
+
+            } elseif ( file_exists($wizard_file) ) {
 
                 include $wizard_file;
 
