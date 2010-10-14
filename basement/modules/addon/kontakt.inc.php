@@ -106,7 +106,7 @@
 
         // "form referer"
         if ( $_POST["last_viewed"] != "" ) {
-            $ausgaben["last_viewed"] = $_POST["last_viewed"];
+            $ausgaben["last_viewed"] = htmlentities($_POST["last_viewed"]);
         } else {
             $ausgaben["last_viewed"] = $_SERVER["HTTP_REFERER"];
         }
@@ -119,7 +119,7 @@
             unset($hidedata["captcha"]);
             $hidedata["success"] = array();
             if ( $_GET["referer"] != "" ) {
-                $hidedata["referer"]["link"] = $_GET["referer"];
+                $hidedata["referer"]["link"] = htmlentities($_GET["referer"]);
                 $ausgaben["last_viewed"] = "";
             }
         }
@@ -131,6 +131,7 @@
             $ausgaben["inaccessible"] .= "# (error_captcha) #(error_captcha)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
             $ausgaben["inaccessible"] .= "# (success) #(success)<br />";
+            $ausgaben["inaccessible"] .= "# (referer) #(referer)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
         }
@@ -155,12 +156,14 @@
                     $ausgaben["form_error"] .= "#(error_captcha)";
                     $dataloop["form_error"]["captcha"]["text"] = "#(error_captcha)";
                     $hidedata["captcha"]["class"] = "form_error";
+                    $hidedata["form_error"] = array();
                 }
                 if (file_exists($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png")) unlink($captcha_path_srv."captcha-".$_POST["captcha_proof"].".png");
             }
 
             // evtl. zusaetzliche datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
+echo "hallo";
 
                 // kunde
                 if ( $HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_email_feld"]] == "" ) {
@@ -182,8 +185,10 @@
 
                 // mail an betreiber
                 $subject1 = $cfg["kontakt"]["email"]["subj1"];
-                foreach ( $cfg["kontakt"]["email"]["repl1"] as $value ) {
-                    $subject1 = str_replace("!{".$value."}",$$value,$subject1);
+                if ( is_array($cfg["kontakt"]["email"]["repl1"]) ) {
+                    foreach ( $cfg["kontakt"]["email"]["repl1"] as $value ) {
+                        $subject1 = str_replace("!{".$value."}",$$value,$subject1);
+                    }
                 }
 
                 if ( $_POST["betreff"] != "" ) $subject1 .= ": ".$_POST["betreff"];
@@ -197,8 +202,10 @@
 
                 // kopie an kunden
                 $subject2 = $cfg["kontakt"]["email"]["subj2"].$ausgaben["name"];
-                foreach ( $cfg["kontakt"]["email"]["repl2"] as $value ) {
-                    $subject2 = str_replace("!{".$value."}",$$value,$subject2);
+                if ( is_array($cfg["kontakt"]["email"]["repl2"]) ) {
+                    foreach ( $cfg["kontakt"]["email"]["repl2"] as $value ) {
+                        $subject2 = str_replace("!{".$value."}",$$value,$subject2);
+                    }
                 }
                 if ( $_POST["betreff"] != "" ) $subject2 .= ": ".$_POST["betreff"];
                 $header2  = "From: ".$cfg["kontakt"]["email"]["owner"]."\r\n";
