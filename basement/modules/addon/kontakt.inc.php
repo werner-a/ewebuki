@@ -163,7 +163,6 @@
 
             // evtl. zusaetzliche datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
-echo "hallo";
 
                 // kunde
                 if ( $HTTP_POST_VARS[$cfg["kontakt"]["email"]["form_email_feld"]] == "" ) {
