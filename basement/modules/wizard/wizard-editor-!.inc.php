@@ -71,6 +71,17 @@
                 if ( $value == "_TERMIN" || $value == "SORT" ) {
                     $_POST[$value] = substr($_POST[$value],6,4)."-".substr($_POST[$value],3,2)."-".substr($_POST[$value],0,2);
                 }
+
+                // diese zeichen gar nicht verwenden
+                $array_quelle = array ("$");
+                $array_neu = array ("");
+                $_POST[$value] = str_replace($array_quelle, $array_neu, $_POST[$value]);
+
+                // diese zeichen entwerten
+                $array_quelle = array ("/",".","&","?","^","*","+","|");
+                $array_neu = array ("\/","\.","\&","\?","\^","\*","\+","\|");
+                $$value = str_replace($array_quelle, $array_neu, $$value);
+
                 $tag_meat["!"][0]["complete"] = preg_replace("/\[".$value."\]".$$value."\[\/".$value."\]/","[".$value."]".$_POST[$value]."[/".$value."]",$tag_meat["!"][0]["complete"]);
             }
         }
