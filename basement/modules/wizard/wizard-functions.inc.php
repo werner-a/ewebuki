@@ -149,12 +149,13 @@
             $tmp_content = $content;
             $tag_meat = array();$tag_sort = array();
             foreach ( $cfg["wizard"]["ed_boxed"] as $tag=>$preg ) {
+
                 $pre = "";
                 $index = 0;
                 $preg1 = "/(\[\/)(".$tag."[0-9]{0,1})(\])/";
 
                 $buffer = array();
-                while ( preg_match($preg1, $tmp_content, $match) ) {
+                while ( preg_match( $preg1 , $tmp_content, $match ) ) {
 
                     // endtag
                     $closetag = $match[0];
@@ -190,27 +191,25 @@
                     $var = '';
                     $right = str_pad ( $var, $opentaglen, 'e' );
 
-                    $regex_replace = str_replace("[","\[",substr($haystack,0,$opentagbeg).$real_opentag);
-                    $regex_replace = str_replace("]","\]",$regex_replace);
-                    $regex_replace = str_replace("/","\/",$regex_replace);
-                    $regex_replace = str_replace(".","\.",$regex_replace);
-                    $regex_replace = str_replace("$","\$",$regex_replace);
-                    $regex_replace = str_replace("+","\+",$regex_replace);
-                    $regex_replace = str_replace("^","\^",$regex_replace);
-                    $regex_replace = str_replace("(","\(",$regex_replace);
-                    $regex_replace = str_replace(")","\)",$regex_replace);
-                    $regex_replace = str_replace("{","\{",$regex_replace);
-                    $regex_replace = str_replace("}","\}",$regex_replace);
-
                     // wie lautet der tagwert
                     $tagwertbeg = strlen($haystack) - (strpos(strrev($haystack), strrev($real_opentag)) + strlen($real_opentag)) + $opentaglen + 1;
 
-                   $tagoriginal = substr($tmp_content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
-                   $tagoriginal_org = substr($content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
+                    $tagoriginal = substr($tmp_content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
+                    $tagoriginal_org = substr($content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
 
                      // open und endtags zerstören
-                    $tmp_content = str_replace($haystack.$closetag,$haystack."==".$match[2]."#",$tmp_content);
-                    $tmp_content = preg_replace("/^".$regex_replace."/",substr($haystack,0,$opentagbeg).$right,$tmp_content);
+                     $tmp_content = preg_replace(
+                                "/".preg_quote($haystack.$closetag,"/")."/" ,
+                                $haystack."==".$match[2]."#" ,
+                                $tmp_content,
+                                1
+                    );
+                     $tmp_content = preg_replace(
+                                "/^".preg_quote(substr($haystack,0,$opentagbeg).$real_opentag,"/")."/" ,
+                                substr($haystack,0,$opentagbeg).$right ,
+                                $tmp_content,
+                                1
+                    );
 
                     $buffer[$index] = array(
                                "start" => strrpos($haystack,$real_opentag),
@@ -250,7 +249,6 @@
                     $tag_meat[$nest_value["para"][0]][$nest_value["para"][1]]["keks"][] = $keks;
                 }
             }
-  
             return $tag_meat;
         }
 
