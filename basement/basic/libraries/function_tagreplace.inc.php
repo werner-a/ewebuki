@@ -973,7 +973,7 @@
                                 }
 
                                 $result = $db -> query($sql);
-                                $files = array();
+                                $files = array();$sortarray = array();
                                 while ( $data = $db -> fetch_array($result,1) ) {
                                     $sortarray[] = $tmp_sort[$data["fid"]];
                                     $files[] = array(
