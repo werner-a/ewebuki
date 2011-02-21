@@ -208,6 +208,21 @@
                     // verbotenen tags rausfiltern
                     foreach ( $allowed_tags as $value ) {
                         $buffer[] = "[/".strtoupper($value)."]";
+                        // ist der tag geschlossen
+                        if ( strstr($_POST["content"],"[".strtoupper($value)) ) {
+                            // oeffnende Tags zaehlen
+                            preg_match_all( "/"."\[".strtoupper($value).".*\]"."/Us" , $_POST["content"], $match);
+                            $count_open = count($match[0]);
+                            // schliessende Tags zaehlen
+                            preg_match_all( "/"."\[\/".strtoupper($value)."\]"."/Us" , $_POST["content"], $match);
+                            $count_close = count($match[0]);
+                            // zuviele offene oder zuviele schliessende Tags?
+                            if ( $count_open > $count_close ) {
+                                $ausgaben["form_error"] .= "Fehler: m&ouml;glicherweise fehlt mindestens ein abschliessendes [/".strtoupper($value)."]<br />";
+                            } elseif ( $count_open < $count_close ) {
+                                $ausgaben["form_error"] .= "Fehler: m&ouml;glicherweise fehlt mindestens ein &ouml;ffnendes [".strtoupper($value)."<br />";
+                            }
+                        }
                     }
                 }
             }
