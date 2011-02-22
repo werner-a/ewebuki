@@ -61,6 +61,7 @@
                 $environment["allparameter"] = implode(",",$environment["parameter"]);
             } else {
                 $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
+                if ( trim($header) == "" ) $header = $cfg["fileed"]["basis"]."/list.html";
                 unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
                 header("Location: ".$header);
             }
