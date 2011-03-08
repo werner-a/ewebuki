@@ -631,6 +631,8 @@
                 }
                 if ( $environment["parameter"][6] == "none" ) {
                     $hidedata["no_sort_content"] = array();
+                } elseif ( $environment["parameter"][6] != "" ) {
+                    $hidedata["show_one_content"] = array();
                 }
             }
             if ( count($dataloop["sort_content"]) > 0 ) $hidedata["sort_content"] = array();
@@ -678,6 +680,12 @@
                                                                 $environment["parameter"][3].",".
                                                                 $environment["parameter"][4].",".
                                                                 $environment["parameter"][5].",verify.html";
+            $ausgaben["show_all"] = $cfg["wizard"]["basis"]."/show,".
+                                                                $environment["parameter"][1].",".
+                                                                $environment["parameter"][2].",".
+                                                                $environment["parameter"][3].",".
+                                                                $environment["parameter"][4].",".
+                                                                $environment["parameter"][5].".html";
 
             // was anzeigen
             $mapping["main"] = "wizard-show";
