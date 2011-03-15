@@ -78,9 +78,9 @@
                 $sql = "SELECT *
                           FROM ".$cfg["view"]["db"]["entries"]."
                          WHERE fid in (".$ina.")";
-                $sortier_array = explode(",", $ina);
-                foreach ( $sortier_array as $key => $value ) {
-                    $sortier_array1[$value] = $key;
+                $SortArray = explode(",", $ina);
+                foreach ( $SortArray as $key => $value ) {
+                    $FinalSortArray[$value] = $key;
                 }
             } else {
                 $sql = "SELECT *
@@ -98,11 +98,11 @@
         $result = $db -> query($sql);
 
         while ( $data = $db -> fetch_array($result,1) ) {
-            $sort_1[] = $sortier_array1[$data["fid"]];
+            $SortMulti[] = $FinalSortArray[$data["fid"]];
             $cache[] = $data;
         }
         if ( strstr($environment["parameter"][3],":") ) {
-            array_multisort($sort_1,$cache);
+            array_multisort($SortMulti,$cache);
         }
         foreach ( $cache as $data) {
             // selection mode - part1
@@ -114,7 +114,7 @@
                     $color = "none";
                 }
                 if ( strstr($environment["parameter"][3],":") ) {
-                    $match[1] = $sortier_array1[$data["fid"]];
+                    $match[1] = $FinalSortArray[$data["fid"]];
                 } else {
                     preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
                 }
