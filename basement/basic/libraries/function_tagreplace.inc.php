@@ -940,15 +940,16 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         break;
                     case "[/SEL]":
-                        if ( $sign == "]" ) {
+                        
+                        $tag_value = explode("]",$tagwert,2);
+                        $tag_param = explode(";",$tag_value[0]);
+                        $tag_extra = explode(":",$tag_param[3]);
+                        $tag_special = explode(":",$tag_param[0]);
+
+                        if ( !preg_match("/[0-9]+/", $tag_param[0])  ) {
                             $sel = "selection not ready";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         } else {
-                            $tag_value = explode("]",$tagwert,2);
-                            $tag_param = explode(";",$tag_value[0]);
-                            $tag_extra = explode(":",$tag_param[3]);
-                            $tag_special = explode(":",$tag_param[0]);
-
                             $path = dirname($pathvars["requested"]);
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
                             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,groesse,bild,selektion,thumbs
