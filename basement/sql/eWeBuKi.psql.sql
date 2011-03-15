@@ -313,7 +313,7 @@ CREATE TABLE site_file (
     fhit character varying(255),
     fdel text,
     fgroups character varying(150) DEFAULT ''::character varying NOT NULL,
-    CONSTRAINT site_file_ffart_check CHECK ((((((((((((ffart)::text = 'gif'::text) OR ((ffart)::text = 'jpg'::text)) OR ((ffart)::text = 'png'::text)) OR ((ffart)::text = 'pdf'::text)) OR ((ffart)::text = 'zip'::text)) OR ((ffart)::text = 'odt'::text)) OR ((ffart)::text = 'ods'::text)) OR ((ffart)::text = 'odp'::text)) OR ((ffart)::text = 'gz'::text)) OR ((ffart)::text = 'bz2'::text)))
+    CONSTRAINT site_file_ffart_check CHECK (((((((((((((ffart)::text = 'gif'::text) OR ((ffart)::text = 'jpg'::text)) OR ((ffart)::text = 'jpeg'::text)) OR ((ffart)::text = 'png'::text)) OR ((ffart)::text = 'pdf'::text)) OR ((ffart)::text = 'zip'::text)) OR ((ffart)::text = 'odt'::text)) OR ((ffart)::text = 'ods'::text)) OR ((ffart)::text = 'odp'::text)) OR ((ffart)::text = 'gz'::text)) OR ((ffart)::text = 'bz2'::text)))
 );
 
 --
