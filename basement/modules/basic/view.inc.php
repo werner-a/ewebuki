@@ -73,10 +73,21 @@
 
         if ( $environment["parameter"][3] != "" ) {
             // selection mode
-            $sql = "SELECT *
-                      FROM ".$cfg["view"]["db"]["entries"]."
-                     WHERE fhit like '%#p".$environment["parameter"][3].",%'
-                  ORDER BY ".$cfg["view"]["db"]["order"];
+            if ( strstr($environment["parameter"][3],":") ) {
+                $ina = str_replace(":",",",trim($environment["parameter"][3],":"));
+                $sql = "SELECT *
+                          FROM ".$cfg["view"]["db"]["entries"]."
+                         WHERE fid in (".$ina.")";
+                $sortier_array = explode(",", $ina);
+                foreach ( $sortier_array as $key => $value ) {
+                    $sortier_array1[$value] = $key;
+                }
+            } else {
+                $sql = "SELECT *
+                          FROM ".$cfg["view"]["db"]["entries"]."
+                         WHERE fhit like '%#p".$environment["parameter"][3].",%'
+                      ORDER BY ".$cfg["view"]["db"]["order"];
+            }
         } else {
             // picture mode
             $sql = "SELECT *
@@ -87,7 +98,13 @@
         $result = $db -> query($sql);
 
         while ( $data = $db -> fetch_array($result,1) ) {
-
+            $sort_1[] = $sortier_array1[$data["fid"]];
+            $cache[] = $data;
+        }
+        if ( strstr($environment["parameter"][3],":") ) {
+            array_multisort($sort_1,$cache);
+        }
+        foreach ( $cache as $data) {
             // selection mode - part1
             if ( $environment["parameter"][3] != "" ) {
 
@@ -96,8 +113,11 @@
                 } else {
                     $color = "none";
                 }
-
-                preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                if ( strstr($environment["parameter"][3],":") ) {
+                    $match[1] = $sortier_array1[$data["fid"]];
+                } else {
+                    preg_match("/#p".$environment["parameter"][3]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                }
                 $dataloop["thumbs"][] = array(
                        "id" => $data["fid"],
                      "sort" => $match[1],
