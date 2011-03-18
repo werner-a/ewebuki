@@ -54,6 +54,7 @@
         }
 
         $preg = "|\[\/[!A-Z0-9]{1,6}\]|";
+        $selection_counter = 0;
         while ( preg_match($preg, $replace, $match ) ) {
 
             $closetag = $match[0];
@@ -940,7 +941,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         break;
                     case "[/SEL]":
-                        
+                        $selection_counter ++;
                         $tag_value = explode("]",$tagwert,2);
                         $tag_param = explode(";",$tag_value[0]);
                         $tag_extra = explode(":",$tag_param[3]);
@@ -954,9 +955,9 @@
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
                             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,groesse,bild,selektion,thumbs
 
-                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div style=\"position:relative\" class=\"selection_teaser\">##youtube_div##\n<b>##title## ##youtube_link##</b>\n<div>\n<ul>\n";
+                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div style=\"position:relative\" class=\"selection_teaser\">##no_image####youtube_div##\n<b>##title## ##youtube_link##</b>\n##no_image_end##<div>\n<ul>\n";
                             if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
-                            if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
+                            if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span##display##>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
                             if ( strstr($tag_param[0],":") ) {
                                 $sel_pics = "";
                                 foreach ( $tag_special as $pics ) {
@@ -1014,74 +1015,97 @@
                                 array_multisort($sort, $files);
 
                             }
-                            if ( $tag_param[3] == "" ) {
-                                $changed = str_replace( "#", $files[0]["fid"], $link);
-                                $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
+                            
+                            $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
+
+                            // wenn video-parameter vorhanden dann marken ersetzen
+                            if ( $tag_param[5] != "") {
+                                $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">
+                                [OBJECT=http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&;250;192;application/x-shockwave-flash]
+                                [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
+                                [PARAM=wmode]transparent[/PARAM]
+                                [/OBJECT]
+                                <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schließen</a></b></span></div>",$sel);
+                                $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
                             } else {
-                                $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
+                                $sel = str_replace("##youtube_div##","",$sel);
+                                $sel = str_replace("##youtube_link##","",$sel);
+                            }
 
-                                // wenn video-parameter vorhanden dann marken ersetzen
-                                if ( $tag_param[5] != "") {
-                                    $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">
-                                    [OBJECT=http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&;250;192;application/x-shockwave-flash]
-                                    [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
-                                    [PARAM=wmode]transparent[/PARAM]
-                                    [/OBJECT]
-                                    <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schließen</a></b></span></div>",$sel);
-                                    $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
+                            $lb_helper = "";
+                            $file_counter = 0;
+                            foreach ( $files as $row ) {
+                                $file_counter ++;
+
+                                if ( $cfg["file"]["base"]["realname"] == True ) {
+                                    $img = $cfg["file"]["base"]["webdir"]
+                                          .$row["ffart"]."/"
+                                          .$row["fid"]."/"
+                                          .$tag_param[1]."/"
+                                          .$row["ffname"];
+                                    $tn =$cfg["file"]["base"]["webdir"]
+                                          .$row["ffart"]."/"
+                                          .$row["fid"]."/"
+                                          ."tn/"
+                                          .$row["ffname"];
                                 } else {
-                                    $sel = str_replace("##youtube_div##","",$sel);
-                                    $sel = str_replace("##youtube_link##","",$sel);
+                                    $img = $cfg["file"]["base"]["webdir"]
+                                          .$cfg["file"]["base"]["pic"]["root"]
+                                          .$cfg["file"]["base"]["pic"][$tag_param[1]]
+                                          ."img_".$row["fid"].".".$row["ffart"];
+                                    $tn = $cfg["file"]["base"]["webdir"]
+                                         .$cfg["file"]["base"]["pic"]["root"]
+                                         .$cfg["file"]["base"]["pic"]["tn"]
+                                         ."tn_".$row["fid"].".".$row["ffart"];
                                 }
 
-                                $lb_helper = "";
-                                foreach ( $files as $row ) {
 
-                                    if ( $cfg["file"]["base"]["realname"] == True ) {
-                                        $img = $cfg["file"]["base"]["webdir"]
-                                              .$row["ffart"]."/"
-                                              .$row["fid"]."/"
-                                              .$tag_param[1]."/"
-                                              .$row["ffname"];
-                                        $tn =$cfg["file"]["base"]["webdir"]
-                                              .$row["ffart"]."/"
-                                              .$row["fid"]."/"
-                                              ."tn/"
-                                              .$row["ffname"];
-                                    } else {
-                                        $img = $cfg["file"]["base"]["webdir"]
-                                              .$cfg["file"]["base"]["pic"]["root"]
-                                              .$cfg["file"]["base"]["pic"][$tag_param[1]]
-                                              ."img_".$row["fid"].".".$row["ffart"];
-                                        $tn = $cfg["file"]["base"]["webdir"]
-                                             .$cfg["file"]["base"]["pic"]["root"]
-                                             .$cfg["file"]["base"]["pic"]["tn"]
-                                             ."tn_".$row["fid"].".".$row["ffart"];
-                                    }
-
-
-                                    $style = "";
-                                    if ( !in_array( $row["fid"], $tag_extra ) && $tag_param[3] != "a" ) {
-                                        if ( $tag_param[4] == "l" ) {
-                                            $style = " style=\"display:none;\"";
-                                        } else {
-                                            continue;
-                                        }
-                                    }
-
-
+                                $style = "";
+                                if ( !in_array( $row["fid"], $tag_extra ) && $tag_param[3] != "a" ) {
                                     if ( $tag_param[4] == "l" ) {
-                                        $changed = $img;
-                                        $lb = "rel=\"lightbox[group_".$tag_param[0]."]\" ";
+                                        $style = " style=\"display:none;\"";
                                     } else {
-                                        $changed = str_replace( "#", $row["fid"], $link);
-                                        $lb = "";
+                                        continue;
                                     }
-                                    $s = array("##link##", "##lb##", "##tn##", "##funder##", "##fdesc##","##style##");
-                                    $r = array($changed, $lb, $tn, $row["funder"], $row["fdesc"],$style);
-                                    $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                                 }
-                                $sel .= str_replace("##count##",count($files),$defaults["tag"]["/sel"]);
+
+
+                                if ( $tag_param[4] == "l" ) {
+                                    $changed = $img;
+                                    $lb = "rel=\"lightbox[group_".$selection_counter."]\" ";
+                                } else {
+                                    $changed = str_replace( "#", $row["fid"], $link);
+                                    $lb = "";
+                                }
+                                if ( $tag_param[3] == "" && $tag_param[4] == "l" && $file_counter == 1 ){
+                                    $tn1 = $img;
+                                    continue;
+                                }
+
+                                $s = array("##link##", "##lb##", "##tn##", "##funder##", "##fdesc##","##style##");
+                                $r = array($changed, $lb, $tn, $row["funder"], $row["fdesc"],$style);
+                                $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
+                            }
+
+                            if ( $tag_param[3] == "" && $tag_param[4] == "l" ) {
+                               $ArrayReplace = array(count($files)," style=\"display:none\"");
+                            } else {
+                               $ArrayReplace = array(count($files),"");
+                            }
+
+                            $sel .= str_replace(array("##count##","##display##"),$ArrayReplace,$defaults["tag"]["/sel"]);
+
+                            if ( $tag_param[3] == "" ) {
+                                if ( $tag_param[4] == "l" ) {
+                                    $sel = str_replace("##no_image##","<a href=\"".$tn1."\" ".$lb.">",$sel);
+                                    $sel = str_replace("##no_image_end##","</a>",$sel);
+                                } else {
+                                    $changed = str_replace( "#", $files[0]["fid"], $link);
+                                    $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
+                                }
+                            } else {
+                                $sel = str_replace("##no_image##","",$sel);
+                                $sel = str_replace("##no_image_end##","",$sel);
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         }
