@@ -46,16 +46,18 @@
     // was anzeigen
     $mapping["main"] = "wizard-edit";
     $hidedata["sel_global"]["on"] = "on";
-    $hidedata["sel"] = array();
-    $hidedata["sel"]["num"] = $tag_marken[1] + 1;
+    $hidedata["sel"]["on"] = "on";
+    $hidedata["sel_global"] = array();
+    $hidedata["sel_global"]["num"] = $tag_marken[1] + 1;
     $ausgaben["max_sel_num"] = $cfg["wizard"]["sel_edit"]["max_num"];
+    $ausgaben["check_id"] = "grid_list";
 
     // youtube nur fuer admin
     if ( priv_check("/","admin") ) $hidedata["youtube"]["enable"] = "enable";
 
     // ausgabenwerte werden belegt
-    $hidedata["sel"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
-    if ( $_POST["description"] != "" ) $hidedata["sel"]["description"] = $_POST["description"];
+    $hidedata["sel_global"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
+    if ( $_POST["description"] != "" ) $hidedata["sel_global"]["description"] = $_POST["description"];
 
     $tag_werte = explode(";",str_replace(array("[SEL=","[SEL","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]));
     for ($i=0;$i<=5;$i++) {
@@ -80,12 +82,40 @@
         );
     }
     // checkboxen
-    if ( $ausgaben["tagwerte2"] != "" ) $hidedata["sel"]["check_thumb"] = " checked=\"true\"";
-    if ( $ausgaben["tagwerte4"] != "" ) $hidedata["sel"]["check_lbox"] = " checked=\"true\"";
-
+    if ( $ausgaben["tagwerte2"] != "" ) $hidedata["sel_global"]["check_thumb"] = " checked=\"true\"";
+    if ( $ausgaben["tagwerte4"] != "" ) $hidedata["sel_global"]["check_lbox"] = " checked=\"true\"";
     // sobald ein doppelpunkt im ersten parameter ist es die bildergalerie on the fly :)
-    if ( strstr($ausgaben["tagwerte0"],":") ) {
-        $sel_pics = explode(":",$ausgaben["tagwerte0"]);
+    if ( strstr($ausgaben["tagwerte0"],":") || strstr($cfg["wizard"]["add_tags"]["Selection"],"[SEL=:;") ) {
+        $hidedata["sel2"]["on"] = "on";
+        $hidedata["jquery"]["on"] = "on";
+        $ausgaben["check_id"] = "grid_list_2";
+
+        // ggf bilder aus db holen
+        if (!strstr($ausgaben["tagwerte0"],":")) {
+            $sql = "SELECT *
+                            FROM site_file
+                            WHERE fhit
+                            LIKE '%p".$ausgaben["tagwerte0"].",%'";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+
+                preg_match("/#p".$ausgaben["tagwerte0"]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                $dataloop["list_files"][$match[1]] = array(
+                            "id"    => $data["fid"],
+                            "src"   => "/file/picture/thumbnail//tn_".$data["fid"],
+                            "ffart"  => $data["ffart"],
+                            "ffname" => $data["ffname"],
+                            "under" => $data["funder"],
+                            "desc"  => $data["fdesc"]
+                            );
+            }
+            ksort($dataloop["list_files"]);
+            foreach ( $dataloop["list_files"] as $bild_id ) {
+                $sel_pics[] = $trenner.$bild_id["id"];
+            }
+        } else {
+            $sel_pics = explode(":",$ausgaben["tagwerte0"]);
+        }
         $prev_pics = explode(":",$ausgaben["tagwerte3"]);
         $i = 0;
 
@@ -113,8 +143,7 @@
             array_multisort( $sortarray, $dataloop["chosen_images"]);
             unset($dataloop["list_images"]);
         }
-        $hidedata["sel2"]["on"] = "on";
-        #unset($hidedata["sel"]);
+
         if ( is_array($_SESSION["file_memo"]) ) {
             $sess_images = implode(",",$_SESSION["file_memo"]);
         }
@@ -124,7 +153,7 @@
         $result = $db -> query($sql);
         // dataloop wird ueber eine share-funktion aufgebaut
         filelist($result, "fileed",$ausgaben["tagwerte0"]);
-        $dataloop["avail_images"] = $dataloop["list_images"];
+// Bildergalerie mit DB
     } else {
         $hidedata["sel_db"]["on"] = "on";
         // selection aus session/tag holen
@@ -179,11 +208,13 @@
             rename($_FILES["new_file"]["tmp_name"],$newname);
         }
 
-        if ( strstr($ausgaben["tagwerte0"],":") ) {
+        if ( strstr($ausgaben["tagwerte0"],":") || strstr($cfg["wizard"]["add_tags"]["Selection"],"[SEL=:;") ) {
             $_POST["tagwerte"][0] = "";
-            foreach ( $_POST["pics"] as $value ) {
-                if ( $value == "" ) continue;
-                $_POST["tagwerte"][0] .= $value.":";
+            if (is_array($_POST["pics"]) ) {
+                foreach ( $_POST["pics"] as $value ) {
+                    if ( $value == "" ) continue;
+                    $_POST["tagwerte"][0] .= $value.":";
+                }
             }
             if ( $_POST["tagwerte"][0] == "" ) $_POST["tagwerte"][0] = ":";
         }
@@ -192,6 +223,12 @@
             for ($i = 0; $i <= 5; $i++) {
                 $tag_werte[] = $_POST["tagwerte"][$i];
             }
+
+//echo "<pre>";
+//print_r($_POST);
+//echo "</pre>";
+//exit;
+
         $to_insert = "[SEL=".implode(";",$tag_werte)."]".$_POST["description"]."[/SEL]";
         
         if ( $cfg["wizard"]["sel_edit"]["max_num"] != "" && count(explode(":",$_POST["tagwerte"][3])) > $cfg["wizard"]["sel_edit"]["max_num"] ) {
