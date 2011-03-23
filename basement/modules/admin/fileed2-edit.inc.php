@@ -275,6 +275,23 @@
             $ausgaben["ref_comp"] = "---";
         }
 
+        $compilations_OnTheFly = compilation_list("",25,1);
+        foreach ( $compilations_OnTheFly as $ofl_id) {
+            $ofl_array =explode(":", $ofl_id["id"]);
+            if (in_array($environment["parameter"][1], $ofl_array)) {
+                if ( count($ofl_id["content"]) > 0 ) {
+                    foreach ( $ofl_id["content"] as $content ) {
+                        if ( $group_content != "" ) $group_content .= ", ";
+                        $used_in = tname2path($content);
+                        $group_content .= "<a href=\"".$used_in.".html\" title=\"/".$used_in.".html\">[".$i."]</a>";
+                        $i++;
+                    }
+                }
+                if ( $group_content != "" ) $group_content = " (#(used_in) ".$group_content.")";
+                $ausgaben["ref_comp"] .= "<b>OnTheFly#".$ofl_id["name"]."</b>".$group_content."<br>";
+            }
+        }
+
         // ersetzen-feld
         if ( $_SESSION["uid"] == $form_values["fuid"]           # nur eigene dateien duerfen ersetzt werden
           || count($intersect_groups) > 0 ) {                   # oder wenn man in berechtigter gruppe ist

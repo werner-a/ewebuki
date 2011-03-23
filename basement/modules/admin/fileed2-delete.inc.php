@@ -102,16 +102,40 @@
                     preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
                     foreach ( $match[1] as $value ) {
                         $view_link = "<a href=\"".$cfg["fileed"]["basis"]."/delete/view,o,".$data["fid"].",".$value.".html\">Gruppe #".$value."</a>";
-                        $dataloop["list"][$data["fid"]] = array(
+                        $dataloop["list"][] = array(
                                     "id" => $data["fid"],
                                   "item" => $data["ffname"],
                                   "link" => $link,
                                 "reason" => "#(group_error)".$view_link,
                         );
+                        $forbidden["sel_db".$value] = $data["fid"];
                     }
-                    $forbidden[$data["fid"]] = $data["fid"];
+             
+                }
+                // selection-check2
+                $compilations_OnTheFly = compilation_list("",25,1);
+                foreach ( $compilations_OnTheFly as $ofl_id) {
+                    $ofl = trim($ofl_id["id"],":");
+                    $ofl_array =explode(":", $ofl);
+                    if (in_array($data["fid"], $ofl_array)) {
+                        if ( count($ofl_id["content"]) > 0 ) {
+                            foreach ( $ofl_id["content"] as $content ) {
+                                $view_link = "<a href=\"".$cfg["fileed"]["basis"]."/delete/view,o,".$ofl_array[0].",".$ofl_id["id"].",.html\">Gruppe (On The Fly)</a>";
+                                $dataloop["list"][] = array(
+                                            "id" => "a".$data["fid"],
+                                          "item" => $data["ffname"],
+                                          "link" => $link,
+                                        "reason" => "#(group_error)".$view_link,
+                                );
+                            }
+                        }
+                        if ( $group_content != "" ) $group_content = " (#(used_in) ".$group_content.")";
+                        $forbidden["sel_fly"] = $data["fid"];
+                    }
                 }
             }
+
+
             if ( !in_array($data["fid"],$forbidden) ) {
                 $dataloop["list"][$data["fid"]] = array(
                             "id" => $data["fid"],

@@ -380,42 +380,44 @@
 
     // funktionen fuer die compilation-liste
     if ( in_array("compilationlist", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
-        function compilation_list( $select="", $length=25 ) {
+        function compilation_list( $select="", $length=25, $OnTheFly=0 ) {
             global $db;
-
-            // selection-bilder, werden aus der site_file geholt
-            $sql = "SELECT *
-                    FROM site_file
-                    WHERE fhit LIKE '%#p%'";
-            $result = $db -> query($sql);
-
+            
             $compilations = array();
-            while ( $data = $db -> fetch_array($result,1) ){
-                // alle gruppeneintraege holen
-                preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);
-                foreach ( $match[1] as $key=>$value ){
+            if ( $OnTheFly == 0 ) {
+            // selection-bilder, werden aus der site_file geholt
+                $sql = "SELECT *
+                        FROM site_file
+                        WHERE fhit LIKE '%#p%'";
+                $result = $db -> query($sql);
 
-                    if ( $match[2][$key] == "" ){
-                        $sort[$value] = 0;
-                    } else {
-                        $sort[$value] = $match[2][$key];
-                    }
-                    // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
-                    if ( is_array($dataloop["compilations"][$value]["pics"]) ){
-                        while ( is_array($dataloop["compilations"][$value]["pics"][$sort[$value]]) ){
-                            $sort[$value]++;
+                while ( $data = $db -> fetch_array($result,1) ){
+                    // alle gruppeneintraege holen
+                    preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);
+                    foreach ( $match[1] as $key=>$value ){
+
+                        if ( $match[2][$key] == "" ){
+                            $sort[$value] = 0;
+                        } else {
+                            $sort[$value] = $match[2][$key];
                         }
-                    }
+                        // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
+                        if ( is_array($dataloop["compilations"][$value]["pics"]) ){
+                            while ( is_array($dataloop["compilations"][$value]["pics"][$sort[$value]]) ){
+                                $sort[$value]++;
+                            }
+                        }
 
-                    $compilations[$value]["id"]         = $value;
-                    $compilations[$value]["name"]       = "---";
-                    $compilations[$value]["name_short"] = "---";
-                    $compilations[$value]["desc"]      .= $data["fdesc"]." ";
+                        $compilations[$value]["id"]         = $value;
+                        $compilations[$value]["name"]       = "---";
+                        $compilations[$value]["name_short"] = "---";
+                        $compilations[$value]["desc"]      .= $data["fdesc"]." ";
 
-                    if ( $value == $select ) {
-                        $compilations[$value]["select"] = ' selected="true"';
-                    } else {
-                        $compilations[$value]["select"] = "";
+                        if ( $value == $select ) {
+                            $compilations[$value]["select"] = ' selected="true"';
+                        } else {
+                            $compilations[$value]["select"] = "";
+                        }
                     }
                 }
             }
@@ -436,7 +438,9 @@
                         $parameter = explode(";",$value);
                         $sel_name  = $match[3][$key];
                         $id = $parameter[0];
-                        if ( !is_numeric($id) ) continue;
+                        if ( $OnTheFly == 1 && is_numeric($id) ) continue;
+                        if ( $OnTheFly == 0 && !is_numeric($id) ) continue;
+
                         // gibt es keine bilder zur gruppe, werden die fehlenden dataloop-eintraege nachgeholt
                         if ( !is_array($compilations[$id]) ){
                             $compilations[$id]["id"]   = $id;
