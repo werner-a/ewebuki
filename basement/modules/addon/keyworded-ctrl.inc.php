@@ -59,7 +59,7 @@
     }
 
     // private function include loader
-    if ( is_array($cfg["keyworded"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["keyworded"]["subdir"]."/".$cfg["keyworded"]["name"]."-functions.inc.php";
+    #if ( is_array($cfg["keyworded"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["keyworded"]["subdir"]."/".$cfg["keyworded"]["name"]."-functions.inc.php";
 
     // shared function include loader
     if ( is_array($cfg["keyworded"]["function"][$environment["kategorie"].",shared"]) ) {
