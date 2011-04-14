@@ -64,7 +64,7 @@
             "resize,shared" => array( "zip_handling", "file_validate" ),
                    "crop" => array( "resize", "arrange", "file_check", "compilationlist" ),
             "crop,shared" => array( "zip_handling", "file_validate" ),
-                   "delete" => array( "file_check","group_permit" ),
+                   "delete" => array( "file_check","group_permit", "compilationlist" ),
                    "upload" => array( "resize", "compilationlist" ),
             "upload,shared" => array( "zip_handling", "file_validate" ),
                      #"used" => "",
