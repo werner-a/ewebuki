@@ -9,6 +9,14 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 14. April 2011
+
+der selection-tag wurde erweitert, man kann nun Galerien "on the fly" erzeugen,
+das heiﬂt, nur durch Angabe der Bild-IDs im SEL-Tag werden Galerien
+gebaut.
+Vorsicht: hierzu muss die filed2.cfg aktualisiert werden:
+beim delete-script muss nun die funktion "compilation_list" geladen werden.
+
 --- 28. Januar 2010
 
 mit einfuehrung des prived wurde die tabelle auth_priv angepasst:
