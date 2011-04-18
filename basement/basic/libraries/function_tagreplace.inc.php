@@ -55,6 +55,8 @@
 
         $preg = "|\[\/[!A-Z0-9]{1,6}\]|";
         $selection_counter = 0;
+        $img_counter = 0;
+        $imgb_counter = 0;
         while ( preg_match($preg, $replace, $match ) ) {
 
             $closetag = $match[0];
@@ -431,6 +433,7 @@
                         }
                         break;
                     case "[/IMG]":
+                        $img_counter ++;
                         $imgsize = ""; $imgurl = "";
                         if ( $sign == "]" ) {
                             if ( !strstr($tagwert, "/") ) {
@@ -470,9 +473,9 @@
                             if ( $defaults["tag"]["img_w3c"] == "" ) $defaults["tag"]["img_w3c"] = "<img src=\"##imgurl##\" title=\"##beschriftung##\" alt=\"##beschriftung##\"##imgsize## style=\"##style_align####style_border####style_hspace####style_vspace##\"##attrib## />";
                             if ( $defaults["tag"]["img"] == "" ) $defaults["tag"]["img"] = "<img src=\"##imgurl##\"##attrib####vspace####hspace## title=\"##beschriftung##\" alt=\"##beschriftung##\"##align####border####imgsize## />";
                             if ( $defaults["tag"]["img_link"] == "" ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\">";
-                            if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" rel=\"lightbox[own]\">";
+                            if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
                             if ( $defaults["tag"]["/img_link"] == "" ) $defaults["tag"]["/img_link"] = "</a>";
-                            $repl = array("imgurl","beschriftung", "funder","fdesc","imgsize","attrib","vspace","hspace","align","border","style_align","style_border","style_hspace","style_vspace","imglnk");
+                            $repl = array("imgurl","beschriftung", "funder","fdesc","imgsize","attrib","vspace","hspace","align","border","style_align","style_border","style_hspace","style_vspace","imglnk","lightbox");
 
                             $tagwerte = explode("]",$tagwert,2);
                             $imgwerte = explode(";",$tagwerte[0]);
@@ -502,6 +505,9 @@
                             } else {
                                 $border = "";
                                 $style_border = "";
+                            }
+                            if ($imgwerte[3] == "l" ) {
+                                $lightbox = "rel=\"lightbox[".$img_counter."]\"";
                             }
                             if ($imgwerte[4] == "" ) {
                                 $vspace = "";
@@ -786,11 +792,11 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["hl"].$tagwert.$defaults["tag"]["/hl"],$replace);
                         break;
                     case "[/IMGB]":
-
+                        $imgb_counter ++;
                         if ( $defaults["tag"]["img_link"] == "" ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\">";
-                        if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" rel=\"lightbox[own]\">";
+                        if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
                         if ( $defaults["tag"]["/img_link"] == "" ) $defaults["tag"]["/img_link"] = "</a>";
-                        $repl = array("imgurl","imglnk","beschriftung", "funder","fdesc");
+                        $repl = array("imgurl","imglnk","beschriftung", "funder","fdesc","lightbox");
 
                         $tagwerte = explode("]",$tagwert,2);
                         $imgwerte = explode(";",$tagwerte[0]);
@@ -825,6 +831,9 @@
                             $ausgaben["border"] = "border-width:".$imgwerte[2].";";
                         } else {
                             $ausgaben["border"] = "";
+                        }
+                        if ($imgwerte[3] == "l" ) {
+                            $lightbox = "rel=\"lightbox[b".$imgb_counter."]\"";
                         }
                         if ( $imgwerte[4] == "" ) {
                             $tspace = "0";
