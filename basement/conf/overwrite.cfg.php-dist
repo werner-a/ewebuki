@@ -109,7 +109,7 @@
     #$defaults["tag"]["img_w3c"] = "<img src=\"##imgurl##\""." title=\"##beschriftung##\" alt=\"##beschriftung##\"##imgsize## style=\"##style_align####style_border####style_hspace####style_vspace##\"##attrib## />";
     #$defaults["tag"]["img"] = "<img src=\"##imgurl##\"##attrib####vspace####hspace## title=\"##beschriftung##\" alt=\"##beschriftung##\"##align####border####imgsize## />";
     #$defaults["tag"]["img_link"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\">";
-    #$defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" rel=\"lightbox[own]\">";
+    #$defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
     #$defaults["tag"]["/img_link"] = "</a>";
 
     // extra tags die tagreplace nicht kennt, koennen mit eigenen skript ersetzt werden
