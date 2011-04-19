@@ -539,6 +539,9 @@
                                 $img_path = explode("/",str_replace($cfg["file"]["base"]["maindir"],"",$tagwerte[0]) );
                                 if ( is_numeric($img_path[3]) ) {
                                     $fid = $img_path[3];
+                                //subdir quickfix
+                                } elseif ( is_numeric($img_path[4]) ) {
+                                    $fid = $img_path[4];
                                 } else {
                                     $fid = substr($tagwerte[0],0,strpos($tagwerte[0],";"));
                                     $fid = strrchr($fid,"_");
