@@ -86,7 +86,7 @@
                             "tname" => "stname",
                      ),
               ),
-            "right" => "right" => $cfg["auth"]["menu"]["usered"][1],,
+            "right" => $cfg["auth"]["menu"]["usered"][1],
     );
 
     // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich
