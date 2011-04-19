@@ -314,7 +314,10 @@
         $ausgaben["ce_upload"] .= "</select>";
 
         $ausgaben["ce_inhalt"] = $ce_inhalt;
-        $ausgaben["ce_eventh"] = "onKeyDown=\"zaehler();\" onSelect=\"chk('content',500);\"";
+        // halbfertige funktion zur mengenbeschraenkung
+	// bis zur überarbeitung deaktiviert
+	#$ausgaben["ce_eventh"] = "onKeyDown=\"zaehler();\" onSelect=\"chk('content',500);\"";
+	$ausgaben["ce_eventh"] = "";
         return $tn;
     }
 
