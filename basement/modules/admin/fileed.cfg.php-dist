@@ -127,7 +127,7 @@
                         "0" => array("Meine", "Gruppe", "Alle"),
                         "1" => array("Bilder", "Dokumente", "Archive"),
                        ),
-            "right" => "cms_edit",
+            "right" => "right" => $cfg["auth"]["menu"]["fileed"][1],,
             "restrict" => array(), # z.B. array("delete", "edit")
     );
 
