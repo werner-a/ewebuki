@@ -67,6 +67,10 @@
             exit;
         }
 
+        // session-array loeschen
+        if ( !$environment["parameter"][2] || !$_POST["send"] ) {
+            unset($_SESSION["chosen_user"]);
+        }
         if ( count($_POST) == 0 ) {
             $sql = "SELECT *
                       FROM ".$cfg["grouped"]["db"]["group"]["entries"]."

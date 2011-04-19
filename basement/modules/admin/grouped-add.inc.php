@@ -69,6 +69,11 @@
             exit;
         }
 
+         // session-array loeschen
+        if ( !$environment["parameter"][2] || !$_POST["send"] ) {
+            unset($_SESSION["chosen_user"]);
+        }
+
         // form options holen
         $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
