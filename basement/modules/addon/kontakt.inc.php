@@ -196,7 +196,7 @@
                 if ( $cfg["kontakt"]["email"]["encoding"] != "" ) {
                     $header1 .= "Content-Type: text/plain; charset=".$cfg["kontakt"]["email"]["encoding"]."\r\n";
                 }
-                $result = mail($cfg["kontakt"]["email"]["owner"],$subject1,$message1,$header1);
+                $result = mail($cfg["kontakt"]["email"]["owner"],$subject1,$message1,$header1,$cfg["kontakt"]["email"]["add_para"]);
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (". htmlspecialchars($cfg["kontakt"]["email"]["owner"]).")</font><br />";
 
                 // kopie an kunden
@@ -211,7 +211,7 @@
                 if ( $cfg["kontakt"]["email"]["encoding"] != "") {
                     $header2 .= "Content-Type: text/plain; charset=".$cfg["kontakt"]["email"]["encoding"]."\r\n";
                 }
-                $result = mail($email_adresse,$subject2,$message2,$header2);
+                $result = mail($email_adresse,$subject2,$message2,$header2,$cfg["kontakt"]["email"]["add_para"]);
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
                 if ( $debugging["html_enable"] ){
