@@ -367,6 +367,7 @@
 
             $result = $this->query_quiet($sql);
             while ( $row = $this->fetch_array($result,$nop) ) {
+                $length = "";
                 if ( $row["lengthvar"] != -1 ) $length = $row["lengthvar"]-4;
                 if ( $row["type"] == "timestamp" ) $row["type"] = "datetime";
                 ( $row["notnull"] == "f" ) ? $row["notnull"] = "YES" : $row["notnull"] = "";
