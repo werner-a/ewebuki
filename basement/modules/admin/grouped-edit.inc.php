@@ -47,7 +47,6 @@
         priv_check_old("",$cfg["grouped"]["right"]) ) {
 
         $hidedata["edit"]["enable"] = "on";
-        $ausgaben["parameter"] = $environment["parameter"][1];
 
         if ( $_POST["ajaxsuche"] == "on") {
             echo "<li><b>Treffer</b></li>";

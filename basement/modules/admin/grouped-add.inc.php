@@ -51,7 +51,6 @@
         $form_values = $HTTP_POST_VARS;
 
         $hidedata["edit"]["enable"] = "on";
-        $ausgaben["parameter"] = $environment["parameter"][1];
 
         if ( $_POST["ajaxsuche"] == "on") {
             echo "<li><b>Treffer</b></li>";

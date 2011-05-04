@@ -61,7 +61,7 @@
 window.onload = create_sortable;
 
 function aj_search() {
-        new Ajax.Updater('avail_user','/auth/admin/grouped/edit,!#ausgaben_parameter.html',{
+        new Ajax.Updater('avail_user','!#pathvars_uri',{
                 parameters: { ajaxsuche:'on',text:$F('user_search')} ,
                 onComplete:function(){ Sortable.destroy('avail_user');Sortable.destroy('chosen_user');create_sortable() }
             } );
@@ -78,7 +78,7 @@ function create_sortable() {
         evalScripts:true,
         asynchronous:true,
         onUpdate: function(){
-            new Ajax.Updater('output','/auth/admin/grouped/edit,!#ausgaben_parameter.html',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
+            new Ajax.Updater('output','!#pathvars_uri',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
                             }
     }
     );
@@ -92,7 +92,7 @@ function create_sortable() {
         evalScripts:true,
         asynchronous:true,
         onUpdate: function(){
-            new Ajax.Updater('output','/auth/admin/grouped/edit,!#ausgaben_parameter.html',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
+            new Ajax.Updater('output','!#pathvars_uri',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
                             }
     }
     );
