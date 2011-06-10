@@ -286,7 +286,7 @@
                 } elseif ( in_array($line,$split_tags["close"]) ) {
                     $close--; $mark = -1;
                 }
-                $allcontent[$i] .= trim($line," ");
+                $allcontent[$i] .= $line;
             }
 
             return array_merge($allcontent);
