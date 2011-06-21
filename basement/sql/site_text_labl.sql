@@ -1,19 +1,19 @@
 -- phpMyAdmin SQL Dump
--- version 2.11.3
+-- version 2.11.9.6
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2009 at 05:10 PM
--- Server version: 4.0.24
--- PHP Version: 5.2.0-8+etch7~bpo.1
+-- Erstellungszeit: 21. Juni 2011 um 16:47
+-- Server Version: 4.0.24
+-- PHP-Version: 5.2.0-8+etch7~bpo.1
 
 
 --
--- Database: `ewebuki_mdelabl`
+-- Datenbank: `ewebuki_mdelabl`
 --
 
 --
--- Dumping data for table `site_text`
+-- Daten für Tabelle `site_text`
 --
 
 REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES
@@ -430,9 +430,17 @@ REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategor
 ('de', 'old_keyword', 'keyworded.rename_tag', 0, '/keywords', 'rename_tag', '-1', '0', 'Altes Schlagwort', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'new_keyword', 'keyworded.rename_tag', 0, '/keywords', 'rename_tag', '-1', '0', 'Neues Schlagwort', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'toggle_zip', '-939795212.modify', 0, '', '', '-1', '0', 'zip-Datei bearbeiten', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'version', 'global', 0, '', '', '-1', '0', 'neue Version', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'version', 'global', 0, '', 'demo', '-1', '0', 'Neue Version', '2010-01-12 10:45:52', 'Ammon', 'Werner', 'chaot@chaos.de', 'chaot', 1),
 ('de', 'esearch', '-939795212.list', 0, '', '', '-1', '0', 'erweiterte Suche', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'fowner', '-939795212.modify', 0, '', '', '-1', '0', 'Eigentümer', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'allowed_groups', '-939795212.modify', 0, '', '', '-1', '0', 'Mitglieder folgender Gruppen dürfen die Datei bearbeiten', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'all_groups_allowed', '-939795212.modify', 0, '', '', '-1', '0', 'Datei darf von allen bearbeitet werden', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'ref_comp', '-939795212.modify', 0, '', '', '-1', '0', 'Ist enthalten in folgenden Gruppierungen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1);
+('de', 'ref_comp', '-939795212.modify', 0, '', '', '-1', '0', 'Ist enthalten in folgenden Gruppierungen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'ueberschrift_edit', '-939795212.collect', 1, '/admin/fileed', 'collect', '-1', '0', 'Gruppierung bearbeiten', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'inhalt', '-939795212.collect', 1, '/admin/fileed', 'collect', '-1', '0', 'Zum Anordnen ziehen Sie die Bilder aus der "Ablage" in den Bereich "Gruppiert"', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'chosen', '-939795212.collect', 1, '/admin/fileed', 'collect', '-1', '0', 'Gruppiert', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'dashboard', '-939795212.collect', 1, '/admin/fileed', 'collect', '-1', '0', 'Ablage', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'get_pics', '-939795212.collect', 1, '/admin/fileed', 'collect', '-1', '0', 'Bilder holen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'ueberschrift_add', '-939795212.collect', 1, '/admin/fileed', 'collect', '-1', '0', 'Neue Bildergalerie', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'save', 'global', 1, '/admin/fileed', 'collect', '-1', '0', 'Speichern', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'prived', 'auth', 0, '/admin/prived', 'auth', '-1', '0', 'Rechte-Editor', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1);
