@@ -180,8 +180,8 @@
             }
 
             // was fuer ein bloedsinn case sensitive? - also umbauen
-            if ( stristr($sql,"LIKE") ) {
-                $sql = str_replace("LIKE","ILIKE",$sql);
+            if ( preg_match ("/ LIKE '/i",$sql) ) {
+                $sql = preg_replace("/ LIKE '/i", " ILIKE '", $sql);
             }
 
             // was fuer ein bloedsinn, concat geht nicht mit postges (scheiss datenbank)
