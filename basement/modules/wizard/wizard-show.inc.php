@@ -876,12 +876,15 @@
                             $content = utf8_encode($content);
                         }
                         header("HTTP/1.0 200 OK");
-                        $content = str_replace($cfg["wizard"]["basis"],$environment["ebene"],$content);
-                        echo preg_replace(
+                        $content = str_replace($cfg["wizard"]["basis"],$environment["ebene"],$content);                                                                    
+                        $preview_content =  preg_replace(
                             array("/#\{.+\}/U","/g\(.+\)/U"),
                             array("",""),
                             $content
                         );
+                        // aendern des rel-namen um in der Vorschau nicht die doppelten bilder in der galerie zu haben
+                        $preview_content = str_replace("rel=\"lightbox[group","rel=\"lightbox[newgroup",$preview_content);
+                        echo $preview_content;
                         die ;
                     }
 
