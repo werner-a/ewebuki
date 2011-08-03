@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2011 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -79,14 +79,14 @@
     $specialvars["newbrmode"] = -1; // \r\n wird nur noch innerhalb von [DIV und [P durch </ br> ersetzt
     $specialvars["newbrblock"] = ""; // \r\n -> </ br> verhindern (zur zeit nur DIV möglich)
     $specialvars["w3c"] = "strict";
-    $specialvars["404"]["enable"] = 0; // 404 fehlermeldungen aktivieren
+    $specialvars["404"]["enable"] = -1; // 404 fehlermeldungen aktivieren
     $specialvars["404"]["nochk"]["ebene"] = array("/cms","/admin"); // ebenen ohne 404 meldung
     $specialvars["404"]["nochk"]["kategorie"] = array("index","view"); // kategorien ohne 404 meldung
     $specialvars["security"]["enable"] = 0; // spezial recht auf content bearbeitung
     $specialvars["security"]["nochk"] = array("auth.logout","index","auth"); // templates die nur admin aendern darf
-    $specialvars["security"]["overwrite"] = "cms_admin"; // wer ist content admin
-    #$specialvars["security"]["new"] = -1;
-    #$specialvars["security"]["content"] = "edit;publish";
+    #$specialvars["security"]["overwrite"] = "cms_admin"; // wer ist content admin
+    $specialvars["security"]["new"] = -1;
+    $specialvars["security"]["content"] = "edit;publish";
     #$specialvars["content_release"] = -1;
 
     // ACHTUNG **************

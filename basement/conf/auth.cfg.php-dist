@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2011 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -86,18 +86,18 @@
                     "file" => "base.name",
                        ),
             "ghost" => array(
-               "contented" => "cms_edit",
-                 "righted" => "cms_admin",
+               "contented" => "edit",
+                 "righted" => "admin",
                        ),
              "menu" => array(
-                 "grouped" => array("list", "disabled"),
-                  "prived" => array("list", "disabled"),
-                 "leveled" => array("list", "cms_admin"),
-                  "usered" => array("list", "cms_admin"),
-                  "menued" => array("list", "cms_admin"),
-                  "fileed" => array("list", "cms_edit"),
-                  "passed" => array("modify","cms_edit"),
-                  "bloged" => array("list","disabled"),
+                 "grouped" => array("list", "admin"),
+                  "prived" => array("list", "admin"),
+                 "leveled" => array("list", "disabled"),
+                  "usered" => array("list", "admin"),
+                  "menued" => array("list", "view"),
+                  "fileed" => array("list", "edit"),
+                  "passed" => array("modify", "edit"),
+                  "bloged" => array("list", "disabled"),
              # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
             "inplace" => array(
