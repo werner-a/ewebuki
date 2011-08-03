@@ -45,9 +45,8 @@
 
     $kategorie2check = substr(make_ebene($environment["parameter"][2]),0,strpos(make_ebene($environment["parameter"][2]),"/"));
     $ebene2check = substr(make_ebene($environment["parameter"][2]),strpos(make_ebene($environment["parameter"][2]),"/"));
-
-    if ( ( $specialvars["security"]["new"] == -1 && priv_check(make_ebene($environment["parameter"][2]),$cfg["menued"]["modify"]["move"][2]) ) ||
-        ( $specialvars["security"]["new"] != -1 && ( function_exists(priv_check_old) && priv_check_old("",$cfg["menued"]["right_admin"]) || right_check("-1",$ebene2check,$kategorie2check != "") ) ) ) {
+    
+    if ( $cfg["menued"]["modify"]["move"][2] == "" || priv_check('', $cfg["menued"]["modify"]["move"][2] ) || ($cfg["auth"]["menu"]["menued"][2] == -1 &&  priv_check('', $cfg["menued"]["modify"]["move"][2],$specialvars["dyndb"] ) ) ) {
 
         $ausgaben["root"] = "";
         $hidedata["move"]["on"] = -1;

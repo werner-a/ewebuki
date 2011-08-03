@@ -85,7 +85,7 @@
 
             if ( strpos($label,",") !== false ) break; // javascript fix
 
-            if ( preg_match("/^v[0-9]*$/",$environment["parameter"][1],$regs) && ( priv_check($environment["ebene"]."/".$environment["kategorie"],"view") || $rechte["cms_edit"] == -1 ) ) {
+            if ( preg_match("/^v[0-9]*$/",$environment["parameter"][1],$regs) && ( $rechte["view"] || $rechte["cms_edit"] == -1 ) ) {
                 $version_sql = "AND version=".substr($environment["parameter"][1],1);
                 $version = substr($environment["parameter"][1],1);
             } else {
@@ -135,42 +135,6 @@
             }
 
             $database = $db->getDb();
-            if ( is_array($_SESSION["dbzugriff"]) ) {
-                // admin darf alles in seiner db !!
-                if ( in_array($database,$_SESSION["dbzugriff"]) && $rechte[$specialvars["security"]["overwrite"]] == -1 ) {
-                    $dbzugriff = -1;
-                    $katzugriff = -1;
-                // sperre fuer bestimmte templates
-                } elseif ( in_array($tname,(array)$specialvars["security"]["nochk"]) ) {
-                    $katzugriff = FALSE;
-                    $dbzugriff = FALSE;
-                // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
-                } else {
-                    if (right_check("-1",$environment["ebene"],$environment["kategorie"],$database) != "") {
-                        $dbzugriff = -1;
-                        $katzugriff = -1;
-                    } else {
-                        $katzugriff = FALSE;
-                        $dbzugriff = FALSE;
-                    }
-                }
-            } else {
-                $dbzugriff = -1;
-                // admin darf alles
-                if ( $rechte[$specialvars["security"]["overwrite"]] == -1 ) {
-                    $katzugriff = -1;
-                // sperre fuer bestimmte templates
-                } elseif ( in_array($tname,(array)$specialvars["security"]["nochk"]) ) {
-                    $katzugriff = FALSE;
-                // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
-                } else {
-                    if (right_check("-1",$environment["ebene"],$environment["kategorie"],$database) != "") {
-                        $katzugriff = -1;
-                    } else {
-                        $katzugriff = FALSE;
-                    }
-                }
-            }
 
             $replace = $row[1];
 
@@ -202,9 +166,7 @@
             $check = "";
             if ( $specialvars["editlock"] == False && $tname != "auth" ) {
                 if ( $specialvars["security"]["new"] == -1 ) {
-                    $check = priv_check($environment["ebene"]."/".$environment["kategorie"],$specialvars["security"]["content"]);
-                } elseif ( $specialvars["security"]["enable"] == -1) {
-                    if ( $katzugriff == -1 && $dbzugriff == -1 ) $check = True;
+                    $check = priv_check('', $specialvars["security"]["content"],$specialvars["dyndb"]);
                 } else {
                     if ( $rechte["cms_edit"] == -1 ) $check = True;
                 }

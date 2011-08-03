@@ -93,9 +93,7 @@
             if ( $data["status"] == -2 ) $wizard_right = "NO";
         }
 
-        if ( $right == ""  ||
-         ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) )  ) && $wizard_right == ""
-         ) {
+        if (  $right == ""  ||  priv_check($check_url, $right )   && $wizard_right == "" ) {
              $hidedata["new"]["link"] = $url;
              $hidedata["new"]["kategorie"] = $kategorie;
             if ( $environment["ebene"] == "/wizard" ) {
@@ -301,9 +299,7 @@
                 $array[$counter]["status"] = $data["status"];
                 // Sortierung ausgeben
                 // ausgabe der aktions-buttons
-                if ( $right == "" ||
-                ( priv_check($check_url,$right) || ( function_exists(priv_check_old) && priv_check_old("",$right) ) ) && $wizard_right == ""
-                ) {
+                if (  $right == ""  ||  priv_check($check_url, $right )   && $wizard_right == "" ) {
 
                     if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {
                         $sort_kat = "";

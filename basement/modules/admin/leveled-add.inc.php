@@ -43,9 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["leveled"]["right"] == "" ||
-        priv_check("/".$cfg["leveled"]["subdir"]."/".$cfg["leveled"]["name"],$cfg["leveled"]["right"]) ||
-        priv_check_old("",$cfg["leveled"]["right"]) ) {
+    if ( $rechte[$cfg["leveled"]["right"]] == -1 ) {
 
         // page basics
         // ***

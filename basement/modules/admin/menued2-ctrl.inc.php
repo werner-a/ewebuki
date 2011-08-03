@@ -60,16 +60,7 @@
 
     // lokale db auswaehlen
     if ( $cfg["menued"]["db"]["change"] == -1 ) {
-        if ( $environment["fqdn"][0] == $specialvars["dyndb"] && in_array($specialvars["dyndb"],$_SESSION["dbzugriff"]) ) {
             $db->selectDb($specialvars["dyndb"],FALSE);
-        } elseif ( $environment["fqdn"][0] == $cfg["menued"]["fqdn0"] && $_SESSION["sti"] == -1 ) {
-            ### loesung?
-        } else {
-            $sql = "SELECT adakz FROM db_adrd where adid='".$_SESSION["custom"]."'";
-            $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,$nop);
-            $db->selectDb("intra".$data["adakz"],FALSE);
-        }
     }
 
     // private function include loader

@@ -46,7 +46,7 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
     $ebene = explode("/",$environment["ebene"]);
-
+    include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
     //
     // menupunkte level 1
     //
@@ -92,7 +92,7 @@
                 $right = -1;
                 $parser = -1;
             } else {
-                if ( $rechte[$level1array["level"]] == -1 ) {
+                if ( priv_check(make_ebene($level1array["mid"]),$level1array["level"]) ) {
                     $right = -1;
                     $parser = -1;
                 } else {
@@ -211,7 +211,7 @@
                 if ( $level2array["level"] == "" ) {
                     $right = -1;
                 } else {
-                    if ( $rechte[$level2array["level"]] == -1 ) {
+                    if ( priv_check(make_ebene($level2array["mid"]),$level2array["level"]) ) {
                         $right = -1;
                     } else {
                         $right = 0;
@@ -295,8 +295,8 @@
                     if ( $cfg["menu"]["level3"]["enable"] == -1 ) {
                         if ( $level3array["level"] == "" ) {
                             $right = -1;
-                        } else {
-                            if ( $rechte[$level3array["level"]] == -1 ) {
+                        } else {                            
+                            if ( priv_check(make_ebene($level3array["mid"]),$level3array["level"]) ) {
                                 $right = -1;
                             } else {
                                 $right = 0;

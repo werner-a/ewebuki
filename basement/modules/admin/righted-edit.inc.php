@@ -45,8 +45,7 @@
 
     $url = make_ebene($environment["parameter"][1]);
 
-    if ( priv_check($url,$cfg["righted"]["right"]) ||
-        priv_check_old("",$cfg["righted"]["right"]) ) {
+    if ( $cfg["righted"]["right"] == "" || priv_check('', $cfg["righted"]["right"] ) ) {
 
         // bauen der legende
         foreach ( $cfg["righted"]["button"]  as $key => $value ) {
@@ -92,34 +91,34 @@
         $sql ="SELECT * FROM ".$cfg["righted"]["db"]["group"]["entries"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
-            $all_groups[] = $all[$cfg["righted"]["db"]["group"]["name"]];
+            $all_groups[$all[$cfg["righted"]["db"]["group"]["key"]]] = $all[$cfg["righted"]["db"]["group"]["name"]];
         }
 
         $infos = array_reverse($infos);
 
         $counter = 0;
-        foreach ( $all_groups as $group_value ) {
+        foreach ( $all_groups as $group_key => $group_value ) {
             $counter++;
-            $dataloop["infos"][$counter]["url"] = $group_value;
+            $dataloop["infos"][$counter]["url"] = " name:".$group_value;
             foreach ( $all_rights as $rights_value ) {
                 $background = $cfg["righted"]["button"]["new"]["color"];
                 $name = "new";
-                foreach ( $infos as $info_key => $info_value ) {
+                foreach ( $infos[$specialvars["dyndb"]] as $info_key => $info_value ) {
 
                     if ( is_array($info_value["add"]) ) {
                         if ( preg_match("/".$rights_value.",/",$info_value["add"][$group_value]) ) {
                             $background = $cfg["righted"]["button"]["add"]["color"];
                             $name = "add";
                         } 
-                   }
+                    }
                     if ( is_array($info_value["del"]) ) {
                         if ( preg_match("/".$rights_value.",/",$info_value["del"][$group_value]) ) {
                             $background = $cfg["righted"]["button"]["del"]["color"];
                             $name = "del";
                         } 
-                   }
+                    }
                 }
-                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$name."#".$group_value."\" value=\"".$rights_value."\" style=width:35px;background:".$background." type=\"submit\"></input>";
+                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$name."#".$group_key."\" value=\"".$rights_value."\" style=width:35px;background:".$background." type=\"submit\"></input>";
             }
         }
 
@@ -181,25 +180,23 @@
                 $raute = strpos(key($HTTP_POST_VARS),"#");
                 $gruppe = substr(key($HTTP_POST_VARS),$raute+1);
                 $recht = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
-                $sql = "SELECT gid FROM auth_group WHERE ggroup='".$gruppe."'";
-                $result = $db -> query($sql);
-                $data_group = $db -> fetch_array($result,1);
+                
                 $sql = "SELECT pid FROM auth_priv WHERE priv='".$recht."'";
                 $result = $db -> query($sql);
                 $data_priv = $db -> fetch_array($result,1);
                 if ( substr(key($HTTP_POST_VARS),0,$raute) == "add" ) {
-                    $sql = "SELECT * FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg !='-1'";
+                    $sql = "SELECT * FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND db='".$specialvars["dyndb"]."' AND tname='".$url."' AND neg !='-1'";
                     $result_pruef = $db -> query($sql);
                     $treffer = $db -> num_rows($result_pruef,1);
                     if ( $treffer == 1 && $url == $url2 ) {
-                        $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg!='-1'";
+                        $sql = "DELETE FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg!='-1'";
                     } else {
-                        $sql = "INSERT INTO auth_content (gid,pid,tname,neg,ebene,kategorie) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','-1','','')";
+                        $sql = "INSERT INTO auth_content (gid,pid,db,tname,neg,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','-1','','')";
                     }
                 } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "del" ) {
-                    $sql = "DELETE FROM auth_content WHERE gid='".$data_group["gid"]."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
+                    $sql = "DELETE FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
                 } else {
-                    $sql = "INSERT INTO auth_content (gid,pid,tname,ebene,kategorie) VALUES ('".$data_group["gid"]."','".$data_priv["pid"]."','".$url."','','')";
+                    $sql = "INSERT INTO auth_content (gid,pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
                 }
                 $result = $db -> query($sql);
 

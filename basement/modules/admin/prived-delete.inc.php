@@ -43,8 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-     if ( priv_check("/".$cfg["prived"]["subdir"]."/".$cfg["prived"]["name"],$cfg["prived"]["right"]) ||
-        priv_check_old("",$cfg["prived"]["right"]) ) {
+    if ( $cfg["prived"]["right"] == "" || priv_check('', $cfg["prived"]["right"] ) ) {
 
         // funktions bereich fuer erweiterungen
         // ***

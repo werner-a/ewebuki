@@ -43,9 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["usered"]["right"] == "" ||
-        priv_check("/".$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"],$cfg["usered"]["right"]) ||
-        priv_check_old("",$cfg["usered"]["right"]) ) {
+    if ( $cfg["usered"]["right"] == "" || priv_check('', $cfg["usered"]["right"] ) ) {
 
         // funktions bereich
         // ***

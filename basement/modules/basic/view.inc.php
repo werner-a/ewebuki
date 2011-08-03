@@ -149,7 +149,7 @@
                 // rechte-check
                 $check = "";
                 if ( $specialvars["security"]["new"] == -1 ) {
-                    $check = priv_check($ebene."/".$kategorie,$specialvars["security"]["content"]);
+                    $check = $rechte[$specialvars["security"]["content"]];
                 } elseif ( $specialvars["security"]["enable"] == -1) {
                     if ( $katzugriff == -1 && $dbzugriff == -1 ) $check = True;
                 } else {

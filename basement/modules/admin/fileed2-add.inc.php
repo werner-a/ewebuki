@@ -43,9 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["fileed"]["right"] == "" ||
-        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
-        priv_check_old("",$cfg["fileed"]["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) || ($cfg["auth"]["menu"]["fileed"][2] == -1 &&  priv_check('', $cfg["fileed"]["right"],$specialvars["dyndb"] ) ) ) {
 
         // auf session losgehen, falls zip bearbeitet wurde
         if ( count($_SESSION["zip_extracted"]) == 0 ) unset($_SESSION["zip_extracted"]);
@@ -119,8 +117,7 @@
         }
         $fhit_dummy = trim(str_replace($block_elements,"",$form_values["fhit"]));
         $fhit_delicate = trim(implode(" ",$block_elements));
-        if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"])
-            && $cfg["fileed"]["no_dummy"] != "" ) {
+        if ( $rechte[$cfg["fileed"]["no_dummy"]] != -1 && $cfg["fileed"]["no_dummy"] != "" ) {
             $fhit_dummy = $form_values["fhit"];
             if ( isset($_POST["fhit_dummy"]) ) {
                 $fhit_dummy = $_POST["fhit_dummy"];
@@ -314,7 +311,7 @@
             // datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
                 // ggf versteckte fhit-eingtraege wieder anhaengen
-                if ( !priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["no_dummy"]) ) {
+                if ( $rechte[$cfg["fileed"]["no_dummy"]] != -1 ) {
                     // dummy wird ergaenzt
                     $fhit = $fhit_delicate." ".trim($fhit_dummy);
                     $_POST["fhit"] = trim($fhit);

@@ -89,7 +89,7 @@
 
                 // berechtigung abfragen
                 if ( $data["level"] != "" ) {
-                    if ( $rechte[$data["level"]] != -1 ) {
+                    if ( !priv_check(make_ebene($data["mid"]),$data["level"]) ){
                         continue;
                     }
                 }
@@ -203,6 +203,7 @@
             return $menu2;
         }
     }
+    include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
     $ausgaben["menu"] = menu_generate();
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];

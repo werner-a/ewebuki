@@ -114,33 +114,20 @@
             $_SESSION["custom"] = $AUTH[$cfg["auth"]["db"]["user"]["custom"]];
 
              if ( $specialvars["security"]["new"] == True ) {
-                 $sql = "SELECT neg,tname,auth_priv.priv FROM auth_content
+                 $sql = "SELECT neg,db,tname,auth_priv.priv FROM auth_content
                          INNER JOIN auth_member ON (auth_content.gid=auth_member.gid )
                          INNER JOIN auth_priv ON ( auth_priv.pid=auth_content.pid )
                          WHERE auth_member.uid=".$AUTH[$cfg["auth"]["db"]["user"]["id"]];
                  $result = $db -> query($sql);
                  while ( $data = $db -> fetch_array($result,$nop) ) {
                     if ( $data["neg"] != -1 ) {
-                        $_SESSION["content"][$data["tname"]]["add"] .= $data["priv"].",";
+                        $_SESSION["content"][$data["db"]][$data["tname"]]["add"] .= $data["priv"].",";
                     } else {
-                        $_SESSION["content"][$data["tname"]]["del"] .= $data["priv"].",";
+                        $_SESSION["content"][$data["db"]][$data["tname"]]["del"] .= $data["priv"].",";
                     }
                  }
 
              }
-
-            // wenn content_right on dann katzugriff array bauen
-            if ( $specialvars["security"]["enable"] == -1 ) {
-                $sql = "SELECT ".$cfg["auth"]["db"]["special"]["contentkey"].",
-                               ".$cfg["auth"]["db"]["special"]["dbasekey"].",
-                               ".$cfg["auth"]["db"]["special"]["tnamekey"]."
-                          FROM ".$cfg["auth"]["db"]["special"]["entries"]."
-                         WHERE ".$cfg["auth"]["db"]["special"]["userkey"]."='".$_SESSION["uid"]."'";
-                $result = $db -> query($sql);
-                while ( $data = $db -> fetch_array($result,$nop) ) {
-                    $_SESSION["katzugriff"][] = $data["content"].":".$data["sdb"].":".$data["stname"];
-                }
-            }
 
             // referer oder aktuelle seite
             if ( $cfg["auth"]["hidden"]["set"] == True ) {
@@ -202,13 +189,15 @@
 
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "uid = ".$_SESSION["uid"].$debugging["char"];
         if ( $_SESSION["uid"] != "" ) {
-            $sql = "SELECT level FROM ".$cfg["auth"]["db"]["level"]["entries"]."
-                    INNER JOIN ".$cfg["auth"]["db"]["right"]["entries"]."
-                    ON ".$cfg["auth"]["db"]["level"]["entries"].".".$cfg["auth"]["db"]["level"]["id"]." = ".$cfg["auth"]["db"]["right"]["entries"].".".$cfg["auth"]["db"]["right"]["levelkey"]."
-                    WHERE ".$cfg["auth"]["db"]["right"]["entries"].".uid = ".$_SESSION["uid"];
-            $result  = $db -> query($sql);
-            while ( $row = $db -> fetch_row($result) ) {
-                $rechte[$row[0]] = -1;
+            if ( $specialvars["security"]["new"] != -1 ) {
+                $sql = "SELECT level FROM ".$cfg["auth"]["db"]["level"]["entries"]."
+                        INNER JOIN ".$cfg["auth"]["db"]["right"]["entries"]."
+                        ON ".$cfg["auth"]["db"]["level"]["entries"].".".$cfg["auth"]["db"]["level"]["id"]." = ".$cfg["auth"]["db"]["right"]["entries"].".".$cfg["auth"]["db"]["right"]["levelkey"]."
+                        WHERE ".$cfg["auth"]["db"]["right"]["entries"].".uid = ".$_SESSION["uid"];
+                $result  = $db -> query($sql);
+                while ( $row = $db -> fetch_row($result) ) {
+                    $rechte[$row[0]] = -1;
+                }
             }
             // load customer addon
             if ( $cfg["auth"]["custom"]["load"] == -1 ) {
@@ -248,7 +237,9 @@
 
         $hidedata["authInPlace"]["links"] = "on";
         foreach ( $cfg["auth"]["inplace"] as $key => $value ) {
-            if ( priv_check_old("",$value[0]) == True  || priv_check($environment["ebene"]."/".$environment["kategorie"],$value[0]) ) {
+            $tmp_base = $specialvars["dyndb"];
+            if ( $value[2] == -1 ) $tmp_base = "";
+            if ( priv_check($environment["ebene"]."/".$environment["kategorie"],$value[0],$tmp_base)   ) {
                 if ( strstr($key,"/") ){
                     $dataloop["authInPlace"][$key]["link"] = $pathvars["virtual"].$key.".html";
                 } else {
@@ -257,7 +248,7 @@
                 $dataloop["authInPlace"][$key]["desc"] = $value[1];
             }
         }
-
+        
         // ed links
         $hidedata["authTools"]["links"] = "on";
         foreach( $cfg["auth"]["menu"] as $funktion => $werte) {
@@ -269,14 +260,13 @@
                 $label = "#(".$funktion.")";
                 $end = "<br />";
             }
-
-            if ( $specialvars["security"]["new"] == -1 ) {
-                $check = priv_check("/admin/".$funktion."/".$werte[0],$werte[1]);
-            } else {
-                $check = priv_check_old("/admin/".$funktion."/".$werte[0]);
+            if ( $werte[2] == -1 ) {
+                $tmp_base = $specialvars["dyndb"];
+            }else {
+                $tmp_base = "";
             }
 
-            if ( $check == True ) {
+            if ( priv_check("/admin/".$funktion."/".$werte[0],$werte[1]) || priv_check("/admin/".$funktion."/".$werte[0],$werte[1],$tmp_base) ) {
                 $dataloop["authTools"][$funktion]["url"] = $pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html";
                 $dataloop["authTools"][$funktion]["label"] = $label;
                 $dataloop["authTools"][$funktion]["title"] = "#(".$funktion.")";

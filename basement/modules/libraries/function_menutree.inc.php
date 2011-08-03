@@ -185,13 +185,13 @@
                 if ( is_array($modify) ) {
                     foreach($modify as $name => $value) {
                         if ( $specialvars["security"]["new"] == -1 ) {
-                            if ( !priv_check(make_ebene($array["mid"]),$value[2]) ) continue;
+                            if ( !priv_check(make_ebene($array["mid"]),$value[2],$specialvars["dyndb"]) && !priv_check(make_ebene($array["mid"]),$value[2])  ) continue;
                         } else {
                             if ( !$rechte[$cfg[$script_name]["right_admin"]] == -1 && $right != "-1" ) continue;
                         }
                         if ( $name == "up" || $name == "down") {
                             if ( $specialvars["security"]["new"] == -1 ) {
-                                if ( !priv_check(make_ebene($array["refid"]),$value[2]) ) continue;
+                                if ( !priv_check(make_ebene($array["refid"]),$value[2],$specialvars["dyndb"])  && !priv_check(make_ebene($array["mid"]),$value[2]) ) continue;
                             } else {
                                 $kategorie2check = substr(make_ebene($array["refid"]),0,strpos(make_ebene($array["refid"]),"/"));
                                 $ebene2check = substr(make_ebene($array["refid"]),strpos(make_ebene($array["refid"]),"/"));
@@ -242,7 +242,7 @@
                     // beim ersten aufruf eine class menued setzen
                     if ( $self == "" ) {
                         $tree .= "<ul class=\"menued\">\n";
-                        if ( $art == "select" && priv_check(make_ebene(0),$cfg["menued"]["modify"]["move"][2]) ) {
+                        if ( $art == "select" && priv_check(make_ebene(0),$cfg["menued"]["modify"]["move"][2], $specialvars["dyndb"]) ) {
                             $tree .= "<li><input type=\"radio\" name=\"refid\" value=\"".$refid."\" />#(root)</li>";
                         }
                     } else {

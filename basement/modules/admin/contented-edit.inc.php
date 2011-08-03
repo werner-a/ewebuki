@@ -75,11 +75,7 @@
         $erlaubnis = priv_check($data["check_url"],$cfg["contented"]["right"]);
     }
 
-    if ( ( $cfg["contented"]["right"] == "" ||
-        priv_check($tname2path,$cfg["contented"]["right"]) ||
-        priv_check_old("",$cfg["contented"]["right"]) ||
-        $erlaubnis == 1) && $tname2path != "" )
-        {
+    if ( ( $cfg["contented"]["right"] == "" || priv_check($tname2path,$cfg["contented"]["right"],$specialvars["dyndb"]) || $erlaubnis == 1) && $tname2path != "" ) {
 
         // page basics
         // ***

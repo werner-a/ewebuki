@@ -43,8 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
-        priv_check_old("",$cfg["menued"]["right"]) ) {
+    if ( $cfg["menued"]["right"] == "" || priv_check('', $cfg["menued"]["right"]) || ($cfg["auth"]["menu"]["menued"][2] == -1 &&  priv_check('', $cfg["menued"]["right"],$specialvars["dyndb"] ) ) ) {
 
         // array umdrehen
         $modify = array_reverse($cfg["menued"]["modify"]);
@@ -133,10 +132,10 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["menued"]["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        if ( priv_check("/",$cfg["menued"]["modify"]["rights"][2]) || priv_check_old("",$cfg["menued"]["right"])) {
+        if ( priv_check("/",$cfg["menued"]["modify"]["rights"][2],$specialvars["dyndb"]) ) {
             $ausgaben["new"] = "<a href=\"".$cfg["menued"]["basis"]."/add,0.html\">g(new)</a>";
             $ausgaben["root"] = "";
-            if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2]) && ( $environment["parameter"][1] == "" || $environment["parameter"][1] == "0" ) ) {
+            if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2],$specialvars["dyndb"]) && ( $environment["parameter"][1] == "" || $environment["parameter"][1] == "0" ) ) {
                 $ausgaben["root"] ="<ul class=\"menued\"><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"/images/default/rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";
             }
         } else {

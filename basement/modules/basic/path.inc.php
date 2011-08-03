@@ -127,9 +127,8 @@
         #if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         if ( $db -> num_rows($result) == 1 ) {
-            $data = $db -> fetch_array($result,1);
-            if ( $data["level"] != "" && $rechte[$data["level"]] != -1 ) break;
-
+            $data = $db -> fetch_array($result,1);                              
+            if ( $data["level"] != "" && !priv_check('', $data["level"]) ) break;
             // gefundene eintraege
             $count_menu++;
 
@@ -246,7 +245,7 @@
                     if ( $navbararray["level"] == "" ) {
                         $right = -1;
                     } else {
-                        if ( $rechte[$navbararray["level"]] == -1 ) {
+                        if ( priv_check('',$navbararray["level"]) ) {
                             $right = -1;
                         } else {
                             $right = 0;
@@ -290,7 +289,7 @@
                     if ( $navbararray["level"] == "" ) {
                         $right = -1;
                     } else {
-                        if ( $rechte[$navbararray["level"]] == -1 ) {
+                        if ( priv_check('',$navbararray["level"]) ) {
                             $right = -1;
                         } else {
                             $right = 0;
@@ -353,7 +352,7 @@
                     if ( $navbararray["level"] == "" ) {
                         $right = -1;
                     } else {
-                        if ( $rechte[$navbararray["level"]] == -1 ) {
+                        if ( priv_check('',$navbararray["level"]) ) {
                             $right = -1;
                         } else {
                             $right = 0;

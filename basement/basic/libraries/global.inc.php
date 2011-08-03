@@ -118,8 +118,8 @@
     }
     require $pathvars["libraries"]."function_parser.inc.php"; // parser funktion
     require $pathvars["libraries"]."function_priv_check.inc.php"; // neu art um rechte in bereichen pruefen
-    require $pathvars["libraries"]."function_priv_check_old.inc.php"; // urspruengliche art um rechte zu pruefen
-    require $pathvars["libraries"]."function_right_check.inc.php"; // rechte in bereichen pruefen
+    #require $pathvars["libraries"]."function_priv_check_old.inc.php"; // urspruengliche art um rechte zu pruefen
+    #require $pathvars["libraries"]."function_right_check.inc.php"; // rechte in bereichen pruefen
     require $pathvars["libraries"]."function_rparser.inc.php"; // parser funktion recursiv
 
     if ( $specialvars["postgres"] == "-1" ) {
