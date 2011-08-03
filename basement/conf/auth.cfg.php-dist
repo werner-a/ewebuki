@@ -101,8 +101,8 @@
              # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
                        ),
             "inplace" => array(
-                              "new" => array("cms_admin","g(new)"),
-       "/admin/contented/history,," => array("cms_admin","g(history)"),
+                              "new" => array("admin","g(new)"),
+       "/admin/contented/history,," => array("admin","g(history)"),
                       #"/wizard/add" => array("disabled","g(wizard-add)"),
                      #"/wizard/show" => array("disabled","g(wizard-show)"),
                   #"/wizard/release" => array("disabled","g(wizard-release)"),
