@@ -93,7 +93,7 @@
         while ( $all = $db -> fetch_array($result,1) ) {
             $all_groups[$all[$cfg["righted"]["db"]["group"]["key"]]] = $all[$cfg["righted"]["db"]["group"]["name"]];
         }
-
+       
         $infos = array_reverse($infos);
 
         $counter = 0;
@@ -103,7 +103,7 @@
             foreach ( $all_rights as $rights_value ) {
                 $background = $cfg["righted"]["button"]["new"]["color"];
                 $name = "new";
-                foreach ( $infos[$specialvars["dyndb"]] as $info_key => $info_value ) {
+                foreach ( $infos as $info_key => $info_value ) {
 
                     if ( is_array($info_value["add"]) ) {
                         if ( preg_match("/".$rights_value.",/",$info_value["add"][$group_value]) ) {

@@ -95,9 +95,9 @@
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
             if ( $all["neg"] == -1 ) {
-                $hit[$all["db"]][$url]["del"][$all["ggroup"]] .= $all["priv"].",";
+                $hit[$url]["del"][$all["ggroup"]] .= $all["priv"].",";
             } else {
-                $hit[$all["db"]][$url]["add"][$all["ggroup"]] .= $all["priv"].",";
+                $hit[$url]["add"][$all["ggroup"]] .= $all["priv"].",";
             }
         }
         if ( $url != "/" ) {
