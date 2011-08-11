@@ -661,27 +661,27 @@
                                     $title = "";
                                 }
                             }
-                            // css-klasse, je nachdem, welche art link vorliegt
+                            // css-klasse
                             $class = "";
-                            if ( preg_match("/^http/",$href) ) {
-                                $class = "link_extern";
+                            if ( preg_match("/^http/",$href) ) { #automatik
+                                $class = " class=\"link_extern\"";
                             } elseif ( preg_match("/^".str_replace("/","\/",$cfg["file"]["base"]["webdir"]).".*\.([a-zA-Z]+)/",$href,$match) ) {
                                 if ( $cfg["file"]["filetyp"][$match[1]] != "" ) {
-                                    $class = "link_".$cfg["file"]["filetyp"][$match[1]];
+                                    $class = " class=\"link_".$cfg["file"]["filetyp"][$match[1]]."\"";
                                 }
-                            }
-                            // klasse manuell hinzufuegen
-                            if ( $linkwerte[3] != "" ) {
-                                $class .= " ".$linkwerte[3];
-                            }
-                            // id
+                            }                            
+                            if ( $linkwerte[3] != "" ) { # oder manuell
+                                $class .= "class=\"".$linkwerte[3]."\"";
+                            } 
+			    // id
                             if ( $linkwerte[4] != "" ) {
                                 $id = " id=\"".$linkwerte[4]."\"";
                             } else {
                                 $id = "";
                             }
 
-                            $ausgabewert  = $pic."<a href=\"".$href."\"".$id.$target." title=\"".$title."\" class=\"".$class."\">".$beschriftung."</a>";
+                            #$ausgabewert  = $pic."<a href=\"".$href."\"".$id.$target." title=\"".$title."\" class=\"".$class."\">".$beschriftung."</a>";
+                            $ausgabewert  = $pic."<a href=\"".$href."\"".$id.$target." title=\"".$title."\"".$class.">".$beschriftung."</a>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
                         break;
