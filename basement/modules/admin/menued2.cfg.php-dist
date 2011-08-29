@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2011 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -106,15 +106,15 @@
                                ),
                        ),
             "modify"=> array(
-                "sort"      => array("","#(button_desc_sort)","edit"),
-                "jump"      => array("", "#(button_desc_jump)","edit"),
-                "add"       => array("", "#(button_desc_add)", "add"),
-                "edit"      => array("", "#(button_desc_edit)", "edit"),
-                "delete"    => array("", "#(button_desc_delete)", "admin"),
-                "up"        => array("sort,", "#(button_desc_up)", "admin"),
-                "down"      => array("sort,", "#(button_desc_down)", "admin"),
-                "move"      => array("", "#(button_desc_move)", "admin"),
-                "rights"    => array("", "#(button_desc_right)", "admin")
+                "sort"      => array("","#(button_desc_sort)", $cfg["auth"]["menu"]["menued"][1]), # edit
+                "jump"      => array("", "#(button_desc_jump)", $cfg["auth"]["menu"]["menued"][1]), # edit
+                "add"       => array("", "#(button_desc_add)", $cfg["auth"]["menu"]["menued"][1]), # add
+                "edit"      => array("", "#(button_desc_edit)", $cfg["auth"]["menu"]["menued"][1]), # edit
+                "delete"    => array("", "#(button_desc_delete)", $cfg["auth"]["menu"]["menued"][1]), # admin
+                "up"        => array("sort,", "#(button_desc_up)", $cfg["auth"]["menu"]["menued"][1]), # admin
+                "down"      => array("sort,", "#(button_desc_down)", $cfg["auth"]["menu"]["menued"][1]), # admin
+                "move"      => array("", "#(button_desc_move)", $cfg["auth"]["menu"]["menued"][1]), # admin
+                "rights"    => array("", "#(button_desc_right)", $cfg["auth"]["menu"]["menued"][1]) # admin
                             ),
         "black_list"=> array(
                     "entry" => array("view", "new", "history"),
@@ -131,9 +131,10 @@
                                     ),
                             ),
             "fqdn0" => "www",
-      "right_admin" => "cms_admin",
-            "right" => $cfg["auth"]["menu"]["menued"][1],
-
+      "right_admin" => $cfg["auth"]["menu"]["menued"][1],
+            "right" => "",
+	
+	# see also rights at $cfg["menued"]["modify"] up in this file
     );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
