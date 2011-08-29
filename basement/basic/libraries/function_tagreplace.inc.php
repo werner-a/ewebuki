@@ -662,17 +662,18 @@
                                 }
                             }
                             // css-klasse
-                            $class = "";
+                            $class = " class=\"link_intern";
                             if ( preg_match("/^http/",$href) ) { # automatik
-                                $class = " class=\"link_extern\"";
+                                $class = " class=\"link_extern";
                             } elseif ( preg_match("/^".str_replace("/","\/",$cfg["file"]["base"]["webdir"]).".*\.([a-zA-Z]+)/",$href,$match) ) {
                                 if ( $cfg["file"]["filetyp"][$match[1]] != "" ) {
-                                    $class = " class=\"link_".$cfg["file"]["filetyp"][$match[1]]."\"";
+                                    $class = " class=\"link_".$cfg["file"]["filetyp"][$match[1]];
                                 }
                             }                            
                             if ( $linkwerte[3] != "" ) { # oder manuell
-                                $class .= " class=\"".$linkwerte[3]."\"";
+                                $class .= " ".$linkwerte[3];
                             } 
+                            $class .= "\"";
 			    // id
                             if ( $linkwerte[4] != "" ) {
                                 $id = " id=\"".$linkwerte[4]."\"";
