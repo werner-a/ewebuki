@@ -103,7 +103,12 @@
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
-
+        
+        // rechte zuweisung der alten rechte einblenden
+        if ( $specialvars["security"]["new"] != -1 ) {
+            $hidedata["old_rights"]["on"] = "on";
+        }
+        
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";

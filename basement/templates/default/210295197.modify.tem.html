@@ -39,6 +39,7 @@
         <label for="chkpass">#(chkpass)
             !#element_chkpass
         </label>
+        <!--##hide-old_rights-->
         <label>#(actual)
             <select name="actual[]" size="10" multiple="multiple">
                 <!--##loop-actual-->
@@ -55,6 +56,7 @@
             </select>
             <input type="submit" name="add[]" value="#(add)" />
         </label>
+        <!--##show-->
     </fieldset>
     <fieldset>
         <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
