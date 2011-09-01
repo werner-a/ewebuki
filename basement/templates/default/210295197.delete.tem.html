@@ -14,10 +14,14 @@
     <p>#(inhalt)</p>
     <p>!#ausgaben_form_error</p>
     <p>#(frage)</p>
+    <!--##hide-old_rights-->
     <h2>#(right)</h2>
     <p>!#ausgaben_rights</p>
-    <h2>#(special)</h2>
-    <p>!#ausgaben_special</p>
+    <!--##show-->
+    <!--##hide-new_rights-->
+        <h2>#(group)</h2>
+        <p>!#ausgaben_group</p>   
+    <!--##show-->
     <fieldset>
         <input type="submit" name="delete" value="g(delete)" class="first" />
         <input type="button" name="cancel" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />

@@ -63,18 +63,30 @@
         $ausgaben["email"]    = $data[$cfg["usered"]["db"]["user"]["email"]];
 
         // level management form form elemente begin
-        // ***
-        $sql = "SELECT auth_right.lid, auth_level.level
-                  FROM auth_level
-            INNER JOIN auth_right ON auth_level.lid = auth_right.lid
-                 WHERE auth_right.uid = ".$environment["parameter"][1]."
-              ORDER BY level";
-        $result = $db -> query($sql);
-        while ( $all = $db -> fetch_array($result,1) ) {
-            if ( isset($ausgaben["level"]) ) $ausgaben["level"] .= ", ";
-            $ausgaben["level"] .= $all["level"]."";
+        // ***        
+        if ( $specialvars["security"]["new"] == -1 ) {
+            $hidedata["new_rights"]["on"] = -1;
+            $sql = "SELECT * from auth_member INNER JOIN auth_group ON ( auth_member.gid=auth_group.gid ) WHERE auth_member.uid = ".$environment["parameter"][1];
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+                if ( isset($ausgaben["group"]) ) $ausgaben["group"] .= ", ";
+                $ausgaben["group"] .= $data["ggroup"]."";                
+            }
+            if ( !isset($ausgaben["group"]) ) $ausgaben["group"] = "---";
+        } else {
+            $hidedata["old_rights"]["on"] = -1;
+            $sql = "SELECT auth_right.lid, auth_level.level
+                      FROM auth_level
+                INNER JOIN auth_right ON auth_level.lid = auth_right.lid
+                     WHERE auth_right.uid = ".$environment["parameter"][1]."
+                  ORDER BY level";
+            $result = $db -> query($sql);
+            while ( $data = $db -> fetch_array($result,1) ) {
+                if ( isset($ausgaben["level"]) ) $ausgaben["level"] .= ", ";
+                $ausgaben["level"] .= $data["level"]."";
+            }
+            if ( !isset($ausgaben["level"]) ) $ausgaben["level"] = "---";
         }
-        if ( !isset($ausgaben["level"]) ) $ausgaben["level"] = "---";
         // +++
         // level management form form elemente end
 

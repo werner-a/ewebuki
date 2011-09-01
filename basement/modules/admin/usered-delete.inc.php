@@ -82,23 +82,20 @@
                 $ausgaben["rights"] .= $data[$cfg["usered"]["db"]["level"]["level"]];
             }
         }
-
-        // spezial-rechte
-        $sql = "SELECT *
-                  FROM ".$cfg["usered"]["db"]["special"]["entries"]."
-                 WHERE ".$cfg["usered"]["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
-        if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-        $result = $db -> query($sql);
-        $ausgaben["special"] = "---";
-        if ( $db->num_rows($result) > 0 ){
-            $hidedata["special"][] = -1;
-            $ausgaben["special"] = "";
+                
+        if ( $specialvars["security"]["new"] == -1 ) {
+            $hidedata["new_rights"]["on"] = -1;
+            $sql = "SELECT * from auth_member INNER JOIN auth_group ON ( auth_member.gid=auth_group.gid ) WHERE auth_member.uid = ".$environment["parameter"][1];
+            $result = $db -> query($sql);
             while ( $data = $db -> fetch_array($result,1) ) {
-                if ( $ausgaben["special"] != "" ) $ausgaben["special"] .= "<br />";
-                $ausgaben["special"] .= $data[$cfg["usered"]["db"]["special"]["tname"]];
+                if ( isset($ausgaben["group"]) ) $ausgaben["group"] .= ", ";
+                $ausgaben["group"] .= $data["ggroup"]."";                
             }
+            if ( !isset($ausgaben["group"]) ) $ausgaben["group"] = "---";
+        } else {
+            $hidedata["old_rights"]["on"] = -1;
         }
-
+        
         // +++
         // funktions bereich fuer erweiterungen
 
@@ -144,15 +141,20 @@
         // ***
         if ( $_POST["delete"] != "" ) {
 
-            // evtl. zusaetzlichen datensatz loeschen
+            // evtl. zusaetzlichen datensatz in der auth_right loeschen
             $sql = "DELETE FROM ".$cfg["usered"]["db"]["right"]["entries"]."
                           WHERE ".$cfg["usered"]["db"]["right"]["user"]." ='".$environment["parameter"][1]."'";
             if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
+           
+            // bei neuen rechten gruppenzugehoerigkeit entfernen und evtl. direkten eintrag in der auth_content
+            if ( $specialvars["security"]["new"] == -1 ) {
+                $sql = "DELETE FROM auth_member  WHERE uid ='".$environment["parameter"][1]."'";
+                if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
 
-            $sql = "DELETE FROM ".$cfg["usered"]["db"]["special"]["entries"]."
-                          WHERE ".$cfg["usered"]["db"]["special"]["user"]." ='".$environment["parameter"][1]."'";
-            if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
-
+                $sql = "DELETE FROM auth_content WHERE uid ='".$environment["parameter"][1]."'";
+                if ( !$db->query($sql) ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");                             
+            }
+                       
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
                 $sql = "DELETE FROM ".$cfg["usered"]["db"]["user"]["entries"]."
