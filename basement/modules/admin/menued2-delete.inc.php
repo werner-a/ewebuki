@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2011 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -165,6 +165,17 @@
                 }
                 // +++
                 // content loeschen
+                
+                // neue Rechte loeschen
+                // ***
+                if ( $specialvars["security"]["new"] == -1 ) {
+                    $sql = "DELETE FROM ".$cfg["menued"]["db"]["content"]["entries"]." WHERE tname ='". tname2path($HTTP_POST_VARS["tname"])."'";
+                    if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                    $result  = $db -> query($sql);
+                    if ( !$result ) $ausgaben["form_error"] = $db -> error("#(text_error)<br />");
+                }                
+                // +++
+                // neue Reche loeschen
 
                 // ohne fehler bezeichnungen loeschen
                 // ***
