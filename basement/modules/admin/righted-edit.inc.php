@@ -93,13 +93,15 @@
         while ( $all = $db -> fetch_array($result,1) ) {
             $all_groups[$all[$cfg["righted"]["db"]["group"]["key"]]] = $all[$cfg["righted"]["db"]["group"]["name"]];
         }
-       
+
         $infos = array_reverse($infos);
 
+        $anzahl_rechte = count($all_rights);
+        $prozent = intval(100/$anzahl_rechte);               
         $counter = 0;
         foreach ( $all_groups as $group_key => $group_value ) {
             $counter++;
-            $dataloop["infos"][$counter]["url"] = " name:".$group_value;
+            $dataloop["infos"][$counter]["url"] = $group_value;
             foreach ( $all_rights as $rights_value ) {
                 $background = $cfg["righted"]["button"]["new"]["color"];
                 $name = "new";
@@ -118,7 +120,7 @@
                         } 
                     }
                 }
-                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$name."#".$group_key."\" value=\"".$rights_value."\" style=width:35px;background:".$background." type=\"submit\"></input>";
+                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$name."#".$group_key."\" value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
             }
         }
 
