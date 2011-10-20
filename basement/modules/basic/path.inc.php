@@ -109,7 +109,7 @@
     $ausgaben["M2"] = "";
 
     foreach ($kekspath as $key => $value) {
-        $search = "like '".$value."'";
+        $search = "like '".preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $value)."'";
         $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
                        ".$cfg["path"]["db"]["menu"]["entries"].".refid,
                        ".$cfg["path"]["db"]["menu"]["entries"].".entry,
