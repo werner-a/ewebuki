@@ -121,6 +121,12 @@
             $ausgaben["charakters"] = "";
             $ausgaben["eventh2"] = "";
         }
+        
+         // eWeBuKi tag schutz part 3
+        $mark_o = array( "#(", "g(", "#{", "!#" );
+        $hide_o = array( "::1::", "::2::", "::3::", "::4::" );
+        $form_values["content"] = str_replace( $mark_o, $hide_o, $form_values["content"]);
+
         $ausgaben["inhalt"] = $form_values["content"];
         // + + +
 
