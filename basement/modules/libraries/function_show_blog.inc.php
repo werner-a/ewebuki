@@ -221,7 +221,7 @@
                 }
                 if (strpos($value,"=")) {
                      $endtag= substr($value,0,strpos($value,"="));
-                    if ( $value == "IMG=") {
+                    if ( $value == "IMG=" || $value == "LINK=" ) {
                         $value .= ".*";
                     } else {
                         $value = $value.$tag_parameter;
