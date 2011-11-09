@@ -107,5 +107,66 @@
         return $hit;
     }
 
+        function plausibleCheck() {
+            global $db;            
+            
+            if ( !function_exists(negCheck) ) {
+                function posnegCheck($all,&$found,$art="neg") {
+                    global $db;
+                    $sql = "";
+                    foreach ( $all as $key => $value ) {
+                        if ( $key == "tname" || $key == "neg" ) continue;
+                        if ( $key == "tmp_tname" ) $key = "tname";
+                        $sqla  .= $key."='".$value."' AND ";
+                    }
+                    $and = strrpos($sqla," AND ");
+                    $sqla = substr($sqla,0,$and);
+                    $sqla = "SELECT * FROM auth_content WHERE ".$sqla;
+
+                    $result = $db -> query($sqla);
+                    $data = $db -> fetch_array($result,1) ;                  
+                    if ( $data["neg"] == -1 ) $found = "neg";
+                    if ( $data["pid"] && $data["neg"] == "" ) $found = "pos";
+                    if  ( $all["tmp_tname"] != "" && $found == FALSE ) {
+                       $all["tmp_tname"] = dirname($all["tmp_tname"]);
+                        posnegCheck($all,$found);
+                    }
+                    return $found;
+                }
+            }
+           
+            // Positiv-Check
+            $sql = "SELECT * FROM auth_content  WHERE tname != '/' AND neg!='-1'";
+            $result = $db -> query($sql);
+            while ( $all = $db -> fetch_array($result,1) ) {
+                $sqla = "";
+                $all["tmp_tname"] = dirname($all["tname"]);            
+                if ( posnegCheck($all,$nop,"pos") == "pos" )  {
+                    foreach ( $all as $key => $value ) {
+                        if ( $key == "tmp_tname" || $key == "neg" ) continue;
+                        $sqla  .= $key."='".$value."' AND ";
+                    }
+                    $sql_end = "DELETE FROM auth_content WHERE ".$sqla." neg =''";
+                    $result_end = $db -> query($sql_end);
+                }
+            }
+            
+            // Negativ-Check
+            $sql = "SELECT * FROM auth_content  WHERE neg='-1'";
+            $result = $db -> query($sql);
+            while ( $all = $db -> fetch_array($result,1) ) {
+                $sqla = "";
+                $all["tmp_tname"] = dirname($all["tname"]);
+                if ( posnegCheck($all,$nop) != TRUE )  {
+                    foreach ( $all as $key => $value ) {
+                        if ( $key == "tmp_tname" || $key == "neg" ) continue;
+                        $sqla  .= $key."='".$value."' AND ";
+                    }
+                    $sql_end = "DELETE FROM auth_content WHERE ".$sqla." neg ='-1'";
+                    $result_end = $db -> query($sql_end);
+                }
+            }
+        }
+    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
