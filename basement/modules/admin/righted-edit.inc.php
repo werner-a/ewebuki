@@ -42,10 +42,15 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+           
     $url = make_ebene($environment["parameter"][1]);
 
     if ( $cfg["righted"]["right"] == "" || priv_check('', $cfg["righted"]["right"] ) ) {
+        
+        // Plausibilitätskontrolle der vergebenen Rechte
+        if ( $cfg["righted"]["plausible_check"]   == TRUE ) {
+            plausibleCheck();
+        }
 
         // bauen der legende
         foreach ( $cfg["righted"]["button"]  as $key => $value ) {
@@ -196,7 +201,13 @@
                         $sql = "INSERT INTO auth_content (gid,pid,db,tname,neg,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','-1','','')";
                     }
                 } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "del" ) {
-                    $sql = "DELETE FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
+                    $sql_test = "SELECT * FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
+                    $result_test = $db -> query($sql_test);
+                    if ( $db -> num_rows($result_test) > 0 ) {
+                        $sql = "DELETE FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
+                    } else {
+                        $sql = "INSERT INTO auth_content (gid,pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
+                    }
                 } else {
                     $sql = "INSERT INTO auth_content (gid,pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
                 }
