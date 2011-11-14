@@ -128,7 +128,7 @@
                     $found = "";
                     if ( $data["neg"] == -1 ) $found = "neg";
                     if ( $data["pid"] && $data["neg"] == "" ) $found = "pos";
-                    if  ( $all["tmp_tname"] != "" && !$found ) {
+                    if  ( $all["tmp_tname"] != "/" && !$found ) {
                        $all["tmp_tname"] = dirname($all["tmp_tname"]);
                         posnegCheck($all,$found);
                     }
