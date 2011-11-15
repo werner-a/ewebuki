@@ -116,7 +116,7 @@
                     $sql = "";
                     $kick = array("tname","neg","priv","ggroup","beschreibung");
                     foreach ( $all as $key => $value ) {
-                        if ( in_array($key, $kick) ) continue;
+                        if ( in_array($key, $kick) || is_integer($key)) continue;
                         if ( $key == "tmp_tname" ) $key = "tname";
                         $sqla  .= "auth_content.".$key."='".$value."' AND ";
                     }
@@ -124,10 +124,10 @@
                     $sqla = substr($sqla,0,$and);
                     $sqla = "SELECT * FROM auth_content INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) INNER JOIN auth_group ON ( auth_content.gid=auth_group.gid ) WHERE ".$sqla;
                     $result = $db -> query($sqla);
-                    $data = $db -> fetch_array($result,1) ;    
+                    $data = $db -> fetch_array($result,1);
                     $found = "";
                     if ( $data["neg"] == -1 ) $found = "neg";
-                    if ( $data["pid"] && $data["neg"] == "" ) $found = "pos";
+                    if ( $data["pid"] && $data["neg"] != -1 ) $found = "pos";
                     if  ( $all["tmp_tname"] != "/" && !$found ) {
                        $all["tmp_tname"] = dirname($all["tmp_tname"]);
                         posnegCheck($all,$found);
