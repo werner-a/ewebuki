@@ -107,22 +107,22 @@
         return $hit;
     }
 
-        function plausibleCheck() {
-            global $db;            
+        function plausibleCheck($modus="display") {
+            global $db,$ausgaben;            
             
             if ( !function_exists(negCheck) ) {
                 function posnegCheck($all,&$found,$art="neg") {
                     global $db;
                     $sql = "";
+                    $kick = array("tname","neg","priv","ggroup","beschreibung");
                     foreach ( $all as $key => $value ) {
-                        if ( $key == "tname" || $key == "neg" ) continue;
+                        if ( in_array($key, $kick) ) continue;
                         if ( $key == "tmp_tname" ) $key = "tname";
-                        $sqla  .= $key."='".$value."' AND ";
+                        $sqla  .= "auth_content.".$key."='".$value."' AND ";
                     }
                     $and = strrpos($sqla," AND ");
                     $sqla = substr($sqla,0,$and);
-                    $sqla = "SELECT * FROM auth_content WHERE ".$sqla;
-
+                    $sqla = "SELECT * FROM auth_content INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) INNER JOIN auth_group ON ( auth_content.gid=auth_group.gid ) WHERE ".$sqla;
                     $result = $db -> query($sqla);
                     $data = $db -> fetch_array($result,1) ;    
                     $found = "";
@@ -136,37 +136,40 @@
                 }
             }
           
+            // array u. variable leeren
+            $plausible_error = "";
+            $counter = 0;
+
             // Positiv-Check
-            $sql = "SELECT * FROM auth_content  WHERE tname != '/' AND neg!='-1'";
+            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) INNER JOIN auth_group ON ( auth_group.gid=auth_content.gid ) WHERE tname != '/' AND neg!='-1'";      
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 $sqla = "";
                 $all["tmp_tname"] = dirname($all["tname"]);            
                 if ( posnegCheck($all,$nop,"pos") == "pos" )  {
-                    foreach ( $all as $key => $value ) {
-                        if ( $key == "tmp_tname" || $key == "neg" ) continue;
-                        $sqla  .= $key."='".$value."' AND ";
-                    }
-                    $sql_end = "DELETE FROM auth_content WHERE ".$sqla." neg =''";
-                    $result_end = $db -> query($sql_end);
+                    $counter++;
+                    $plausible_error[$counter]["message"] = "Fehler: Doppeltes Recht <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b>";
+                    $plausible_error[$counter]["group_beschreibung"] = $all["beschreibung"];
+                    $plausible_error[$counter]["group_id"] = $all["gid"];
+                    $plausible_error[$counter]["user_id"] = $all["uid"];
                 }
             }
             
             // Negativ-Check
-            $sql = "SELECT * FROM auth_content  WHERE neg='-1'";
+            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) INNER JOIN auth_group ON ( auth_group.gid=auth_content.gid ) WHERE neg='-1'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 $sqla = "";
                 $all["tmp_tname"] = dirname($all["tname"]);
                 if ( posnegCheck($all,$nop) != "pos" )  {
-                    foreach ( $all as $key => $value ) {
-                        if ( $key == "tmp_tname" || $key == "neg" ) continue;
-                        $sqla  .= $key."='".$value."' AND ";
-                    }
-                    $sql_end = "DELETE FROM auth_content WHERE ".$sqla." neg ='-1'";
-                   $result_end = $db -> query($sql_end);
+                    $counter++;
+                    $plausible_error[$counter]["message"] = "Fehler: Alleinstehendes Negiertes <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b>";
+                    $plausible_error[$counter]["group_beschreibung"] = $all["beschreibung"];
+                    $plausible_error[$counter]["group_id"] = $all["gid"];
+                    $plausible_error[$counter]["user_id"] = $all["uid"];
                 }
             }
+            return $plausible_error;
         }
     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

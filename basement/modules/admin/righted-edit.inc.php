@@ -48,8 +48,14 @@
     if ( $cfg["righted"]["right"] == "" || priv_check('', $cfg["righted"]["right"] ) ) {
         
         // Plausibilitätskontrolle der vergebenen Rechte
-        if ( $cfg["righted"]["plausible_check"]   == TRUE ) {
-            plausibleCheck();
+        $rechte_check = plausibleCheck();
+        if ( is_array($rechte_check ) ) {
+            $hidedata["plausible_check"]["on"] = -1;
+            foreach ( $rechte_check as $key => $value ) {
+                foreach ( $value as $key_in => $value_in ) {
+                    $dataloop["plausible_check"][$key][$key_in] = $value_in;
+                }
+            }
         }
 
         // bauen der legende
