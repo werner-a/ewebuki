@@ -112,7 +112,7 @@
         $counter = 0;
         foreach ( $all_groups as $group_key => $group_value ) {
             $counter++;
-            $dataloop["infos"][$counter]["url"] = $group_value;
+            $dataloop["infos"][$counter]["gruppe"] = $group_value;
             foreach ( $all_rights as $rights_value ) {
                 $background = $cfg["righted"]["button"]["new"]["color"];
                 $name = "new";

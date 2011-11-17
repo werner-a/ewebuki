@@ -148,8 +148,9 @@
                 $all["tmp_tname"] = dirname($all["tname"]);            
                 if ( posnegCheck($all,$nop,"pos") == "pos" )  {
                     $counter++;
-                    $plausible_error[$counter]["message"] = "Fehler: Doppeltes Recht <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b>";
-                    $plausible_error[$counter]["group_beschreibung"] = $all["beschreibung"];
+                    $plausible_error[$counter]["message"] = "Fehler: Doppeltes Recht <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b> fuer Gruppe ".$all["ggroup"];
+                    $plausible_error[$counter]["group_beschreibung"] = $all["ggroup"];
+                    $plausible_error[$counter]["right"] = $all["priv"];
                     $plausible_error[$counter]["group_id"] = $all["gid"];
                     $plausible_error[$counter]["user_id"] = $all["uid"];
                 }
@@ -163,8 +164,9 @@
                 $all["tmp_tname"] = dirname($all["tname"]);
                 if ( posnegCheck($all,$nop) != "pos" )  {
                     $counter++;
-                    $plausible_error[$counter]["message"] = "Fehler: Alleinstehendes Negiertes <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b>";
-                    $plausible_error[$counter]["group_beschreibung"] = $all["beschreibung"];
+                    $plausible_error[$counter]["message"] = "Fehler: Alleinstehendes Negiertes <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b> fuer Gruppe".$all["ggroup"];
+                    $plausible_error[$counter]["group_beschreibung"] = $all["ggroup"];
+                    $plausible_error[$counter]["right"] = $all["priv"];
                     $plausible_error[$counter]["group_id"] = $all["gid"];
                     $plausible_error[$counter]["user_id"] = $all["uid"];
                 }
