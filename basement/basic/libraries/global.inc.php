@@ -63,6 +63,7 @@
 
     // subdir support
     $specialvars["subdir"] = trim(dirname(dirname($_SERVER["SCRIPT_NAME"])),"/");
+    $pathvars["subdir"] = "";
     if ( $specialvars["subdir"] != "" ) {
         $pathvars["subdir"] = "/".$specialvars["subdir"];
         $pathvars["fileroot"] = $pathvars["fileroot"].$specialvars["subdir"]."/";
