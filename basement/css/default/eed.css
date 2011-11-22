@@ -461,3 +461,65 @@ li.thumbs a.pic {
     }
 
 /* ---------------------*/
+#tabmain {
+    margin: 10px;
+}
+
+#tabmenu {
+    height:2em;
+    border:1px solid #660000;    
+    background-color: white;
+    width: 100%;
+}
+
+#tabmenu .tab {  
+/*    padding: 3px;*/
+    width: 20%;
+    height:2em;
+    float: left;
+    border-right:1px solid #660000;    
+}
+  
+.tab div {
+    padding: 5px;
+}
+
+#tabmenu .active {
+    background-color:#EFEFEF;
+    border-bottom: 1px solid #EFEFEF;
+    color:black;
+}
+
+#tabmenu .tab:hover {
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.tabcontent {
+    background-color: #EFEFEF;
+    width: 100%;
+    border: 1px solid #660000;
+    border-top: none;
+}
+.tabcontent div {
+    padding: 10px;
+    margin-left: 10px;
+}
+
+.tabcontent fieldset {
+    padding:0 5px !important;
+    border:1px solid !important;
+    margin: 10px !important;
+}
+
+.tabcontent legend {
+     margin: 0 10px;
+     padding: 0 10px;
+}
+.tabcontent .legende {
+    border:1px solid ;
+    width:10px;
+    height:10px;
+    float:left;
+    margin-right:20px
+}

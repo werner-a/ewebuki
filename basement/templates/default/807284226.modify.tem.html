@@ -10,55 +10,103 @@
 <!--##begin-->
 <!--$Id$-->
 <script type="text/javascript">
-  function resetForm(){
-     document.forms['modify'].reset();
-  }
 
-function anzeigen(id) {
-show = document.getElementById(id).style.display;
-if ( show == 'none' ) {
-new Effect.BlindDown(id);
-} else {
-new Effect.BlindUp(id)
-}
-return false;
-}
+    function anzeigen(id) {
+    show = document.getElementById(id).style.display;
+    if ( show == 'none' ) {
+    new Effect.BlindDown(id);
+    } else {
+    new Effect.BlindUp(id)
+    }
+    return false;
+    }
+
+
+    var tabids = [];
+    var containerids = [];
+    function create_tabs() {
+        $$('.tab').all( function( el ) {
+                tabids.push( el.id );                            
+                containerids.push( el.id.replace( 'tab_', '' ) );
+                el.observe( 'click', handle_tab_click );
+                return true;
+        } );
+    }
+
+    /**
+     * Hande a clicked tab
+     */
+    function handle_tab_click( event )
+    {
+        // Get container id
+        containerid = this.id.replace( 'tab_', '' );
+        // Set active tab menu point
+        tabids.all( function( tab ) {
+            $(tab).removeClassName( 'active' );
+            return true;
+        } );
+        this.addClassName( 'active' );
+        // Set active tab content container
+        containerids.all( function( container ) {
+            $(container).hide();
+            return true;
+        } );
+        $(containerid).show();
+    }
+    /**
+     * Init tabbing
+     */
+    Event.observe( window, 'load', create_tabs );
+
+
 
 </script>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
-    <p>#(inhalt)</p>
-    <a style="cursor: pointer" onclick="anzeigen('legende');">[ Legende ]</a>
-    <div id="legende" style="display:none;margin-left:10px">
-    <!--##loop-legende-->
-        <div class="clearer"></div>
-        <div style="background:!{color};border:1px solid ;width:1.5em;height:1.5em;float:left"></div>&nbsp;!{text}
-    <!--##cont-->
-    </div>
-    
-    <!--##hide-plausible_check-->    
+<!--    <p>#(inhalt)</p>-->
+
+<!--##hide-plausible_check-->    
     <div class="red" style="margin-top: 10px">
-    <!--##loop-plausible_check-->    
-    !{message}<br />
-    <!--##cont-->
+<!--##loop-plausible_check-->    
+        !{message}<br />
+<!--##cont-->
     </div>
-    <!--##show-->
+<!--##show-->
+<div id="tabmain">
+    <div id="tabmenu">
+        <div  id="tab_datasheet1" class="tab active"><div>Gruppen</div></div>
+        <div id="tab_datasheet2" class="tab"><div>Benutzer</div></div>
+        <div id="tab_datasheet3" class="tab "><div>Legende</div></div>
+    </div>
+
+    <div id="datasheet1" class="tabcontent">
+        <h2>#(url) !#ausgaben_url</h2>
+<!--##loop-infos-->
+        <fieldset>
+            <legend> !{gruppe}</legend>
+            !{info}
+        </fieldset>
+<!--##cont-->
+    </div>
     
-    <p>!#ausgaben_form_error</p>
-    <h2>#(url) !#ausgaben_url</h2>
+    <div id="datasheet2" class="tabcontent" style="display:none">
+        <div>
+        im Aufbau
+        </div>
+    </div>
+    
+    <div id="datasheet3" class="tabcontent" style="display:none">
+        <div>
+<!--##loop-legende-->
+            <div class="legende" style="background:!{color}"></div><div>!{text}</div>
+<!--##cont-->
+        </div>
+    </div>
+</div>
 
-    <!--##loop-infos-->
-    <div class="clearer"></div>
-    <fieldset style="padding:0 5px;border:1px solid;margin: 10px">
-        <legend style="margin: 0 10px;padding: 0 10px"> !{gruppe}</legend>
-         !{info}
-    </fieldset>
-    <!--##cont-->
-
-    <fieldset>
-        <input type="button" name="abort" value="zur&uuml;ck zum Men&uuml;-Editor" onclick="location='!#ausgaben_form_break'"  />
-        <div class="clearer"></div>
-    </fieldset>
+        <fieldset>
+            <input type="button" name="abort" value="zur&uuml;ck zum Men&uuml;-Editor" onclick="location='!#ausgaben_form_break'"  />
+        </fieldset>       
 
 </form>
 <p>!#ausgaben_output</p>
