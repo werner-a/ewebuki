@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -58,7 +58,7 @@
         $ausgaben["form_referer"] = "/".$path[--$a];
         $ausgaben["form_break"] = $ausgaben["form_referer"];
     } else {
-        $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
+        $ausgaben["form_referer"] = htmlentities($HTTP_POST_VARS["form_referer"]);
         $ausgaben["form_break"] = $ausgaben["form_referer"];
     }
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "referer = ".$_SERVER["HTTP_REFERER"].$debugging["char"];
@@ -118,6 +118,7 @@
                          INNER JOIN auth_member ON (auth_content.gid=auth_member.gid )
                          INNER JOIN auth_priv ON ( auth_priv.pid=auth_content.pid )
                          WHERE auth_member.uid=".$AUTH[$cfg["auth"]["db"]["user"]["id"]];
+echo $sql;
                  $result = $db -> query($sql);
                  while ( $data = $db -> fetch_array($result,$nop) ) {
                     if ( $data["neg"] != -1 ) {
@@ -148,7 +149,7 @@
 
             session_write_close();
             header("Location: ".$pathvars["subdir"].$destination);
-            exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgeführt wird.
+            exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgefï¿½hrt wird.
         } else {
             session_start();
             $_SESSION = array();
@@ -248,7 +249,7 @@
                 $dataloop["authInPlace"][$key]["desc"] = $value[1];
             }
         }
-        
+
         // ed links
         $hidedata["authTools"]["links"] = "on";
         foreach( $cfg["auth"]["menu"] as $funktion => $werte) {

@@ -59,7 +59,7 @@
 
     $value = explode("/",$value);
 
-    if ( $value[6] == "d" ) {
+    if ( $value[6] == "d" && $specialvars["wrapper_hide_debug"] != -1 ) {
         echo "<pre>";
         print_r($cfg["file"]["base"]);
         print_r($value);
@@ -133,13 +133,13 @@
     // filenamen zusammensetzen
     $file = $cfg["file"]["base"]["maindir"].$filepath.$value[3].".".$value[2];
 
-    if ( $value[6] == "d" ) {
+    if ( $value[6] == "d" && $specialvars["wrapper_hide_debug"] != -1 ) {
         echo $type."<br>";
     } else {
         header("Content-type: ".$type);
     }
 
-    if ( $value[6] == "d" ) {
+    if ( $value[6] == "d" && $specialvars["wrapper_hide_debug"] != -1 ) {
         echo $file."<br>";
     } else {
         if (($fh = fopen($file, 'rb')) === false) exit;

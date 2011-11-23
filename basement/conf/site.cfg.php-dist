@@ -73,11 +73,12 @@
     $specialvars["old_contented"] = 0; // alten contented verwenden
     $specialvars["crc32"] = -1; // ablage des content mit crc32.tname
     $specialvars["crc32force"] = 0; // schreibt crc32 auf 64-bit systemen
+    #$specialvars["wrapper_hide_debug"] = -1; // verhindert die debug-ausgabe des wrappers
     $specialvars["denyhtml"] = -1; // html im content verbieten
     $specialvars["denyspace"] = -1; // leerzeichen im content verbieten
     $specialvars["nosections"] = 0; // bearbeiten marke pro absatz verhindern
     $specialvars["newbrmode"] = -1; // \r\n wird nur noch innerhalb von [DIV und [P durch </ br> ersetzt
-    $specialvars["newbrblock"] = ""; // \r\n -> </ br> verhindern (zur zeit nur DIV möglich)
+    $specialvars["newbrblock"] = ""; // \r\n -> </ br> verhindern (zur zeit nur DIV mï¿½glich)
     $specialvars["w3c"] = "strict";
     $specialvars["404"]["enable"] = -1; // 404 fehlermeldungen aktivieren
     $specialvars["404"]["nochk"]["ebene"] = array("/cms","/admin"); // ebenen ohne 404 meldung
@@ -91,14 +92,14 @@
 
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.
-    // Eine Konvertierung zurück zu CMSTAG ist derzeit nicht möglich.
+    // Eine Konvertierung zurï¿½ck zu CMSTAG ist derzeit nicht mï¿½glich.
     $specialvars["wysiwyg"] = ""; // composite, epoz unterstuetzung aktivieren
     // ACHTUNG **************
 
     // berliOS Fix **********
     // Korrekte Einstellung fuer Berlios erzwingen.
     #$pathvars["fileroot"] = "/home/groups/PROJEKTNAME/htdocs/";
-    // berliOS betreibt seine Server mit Virtual Host Unterstützung mittels Rewrite Engine
+    // berliOS betreibt seine Server mit Virtual Host Unterstï¿½tzung mittels Rewrite Engine
     // DOCUMENT_ROOT wird dabei nicht auf das Directory des jeweiligen Projektes gesetzt
     // eWeBuKi findet normalerweise anhand dieser Variable die Basis und scheitert.
     // berliOS Fix **********
