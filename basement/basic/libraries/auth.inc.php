@@ -118,7 +118,6 @@
                          INNER JOIN auth_member ON (auth_content.gid=auth_member.gid )
                          INNER JOIN auth_priv ON ( auth_priv.pid=auth_content.pid )
                          WHERE auth_member.uid=".$AUTH[$cfg["auth"]["db"]["user"]["id"]];
-echo $sql;
                  $result = $db -> query($sql);
                  while ( $data = $db -> fetch_array($result,$nop) ) {
                     if ( $data["neg"] != -1 ) {
