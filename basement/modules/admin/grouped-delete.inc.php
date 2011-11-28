@@ -130,21 +130,20 @@
         // ***
         if ( $HTTP_POST_VARS["send"] != "" ) {
 
-            // evtl. zusaetzlichen datensatz loeschen
-#            if ( $HTTP_POST_VARS["id2"] != "" ) {
-                // funktions bereich fuer erweiterungen
-                // ***
-
-                ### put your code here ###
-
-                // z.B. evtl. verknuepfte datensatze loeschen
+                // z.B. evtl. verknuepfte datensatze in auth_member loeschen
                 $sql = "DELETE FROM ".$cfg["grouped"]["db"]["member"]["entries"]."
                                 WHERE ".$cfg["grouped"]["db"]["member"]["group"]." = '".$environment["parameter"][1]."'";
-
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
 
+                // z.B. evtl. verknuepfte datensatze in auth_content loeschen
+                $sql = "DELETE FROM auth_content ".
+                                "WHERE gid = '".$environment["parameter"][1]."'";
+                if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
+                $result  = $db -> query($sql);
+                if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
+                
                 // +++
                 // funktions bereich fuer erweiterungen
 #            }
