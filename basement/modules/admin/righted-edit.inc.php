@@ -112,8 +112,6 @@
             while ( $all = $db -> fetch_array($result,1) ) {
                 $all_user[$all[$cfg["righted"]["db"]["user"]["key"]]] = $all[$cfg["righted"]["db"]["user"]["name"]];
             }
-        } else {
-            echo "error";
         }
         
         $anzahl_rechte = count($all_rights);
@@ -153,34 +151,40 @@
         if ( is_array($infos["user"]) ) {
             $infos["user"] = array_reverse($infos["user"]);
         }
-        $counter = 0;
-        foreach ( $all_user as $user_key => $user_value ) {
-            $counter++;
-            $dataloop["infos_user"][$counter]["user"] = $user_value;
-            foreach ( $all_rights as $rights_key => $rights_value ) {
-                $background = $cfg["righted"]["button"]["new"]["color"];
-                $name = "new";
-                if ( is_array($infos["user"]) ) {
-                    foreach ( $infos["user"] as $info_key => $info_value ) {
+        if ( is_array($all_user) ) {
+            $counter = 0;
+            foreach ( $all_user as $user_key => $user_value ) {
+                $counter++;
+                $dataloop["infos_user"][$counter]["user"] = $user_value;
+                foreach ( $all_rights as $rights_key => $rights_value ) {
+                    $background = $cfg["righted"]["button"]["new"]["color"];
+                    $name = "new";
+                    if ( is_array($infos["user"]) ) {
+                        foreach ( $infos["user"] as $info_key => $info_value ) {
 
                         if ( is_array($info_value["add"]) ) {
-                            if ( preg_match("/".$rights_value.",/",$info_value["add"][$user_value]) ) {
-                                $background = $cfg["righted"]["button"]["add"]["color"];
-                                $name = "add";
-                            } 
+                                if ( preg_match("/".$rights_value.",/",$info_value["add"][$user_value]) ) {
+                                    $background = $cfg["righted"]["button"]["add"]["color"];
+                                    $name = "add";
+                                } 
+                            }
+                            if ( is_array($info_value["del"]) ) {
+                                if ( preg_match("/".$rights_value.",/",$info_value["del"][$user_value]) ) {
+                                    $background = $cfg["righted"]["button"]["del"]["color"];
+                                    $name = "del";
+                                } 
+                            }
                         }
-                        if ( is_array($info_value["del"]) ) {
-                            if ( preg_match("/".$rights_value.",/",$info_value["del"][$user_value]) ) {
-                                $background = $cfg["righted"]["button"]["del"]["color"];
-                                $name = "del";
                             } 
-                        }
-                    }
+                    $dataloop["infos_user"][$counter]["info"] .= "<input name=\"user_".$name."_".$user_key."_".$rights_key."\"  value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
                 }
                 $dataloop["infos_user"][$counter]["info"] .= "<input name=\"user_".$name."_".$user_key."_".$rights_key."\"  value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
             }
+        } else {
+            $dataloop["infos_user"][$counter]["user"] = "ERROR";     
+            $dataloop["infos_user"][$counter]["info"] = "Bitte aktuelle config verwenden";    
         }
-            
+
  
         
         
