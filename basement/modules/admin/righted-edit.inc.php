@@ -45,7 +45,7 @@
            
     $url = make_ebene($environment["parameter"][1]);
 
-    if ( $cfg["righted"]["right"] == "" || priv_check('', $cfg["righted"]["right"] ) ) {
+    if ( $cfg["righted"]["right"] == "" || priv_check($url, $cfg["righted"]["right"] ) ) {
         
         // Plausibilitätskontrolle der vergebenen Rechte
         $rechte_check = plausibleCheck();
@@ -95,7 +95,7 @@
         $sql ="SELECT * FROM ".$cfg["righted"]["db"]["priv"]["entries"];
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
-            $all_rights[] = $all[$cfg["righted"]["db"]["priv"]["name"]];
+            $all_rights[$all[$cfg["righted"]["db"]["priv"]["key"]]] = $all[$cfg["righted"]["db"]["priv"]["name"]];
         }
 
         // holen aller gruppen
@@ -105,36 +105,85 @@
             $all_groups[$all[$cfg["righted"]["db"]["group"]["key"]]] = $all[$cfg["righted"]["db"]["group"]["name"]];
         }
 
-        $infos = array_reverse($infos);
-
+        // holen aller user
+        if ( $cfg["righted"]["db"]["user"]["entries"] != "" ) { 
+            $sql ="SELECT * FROM ".$cfg["righted"]["db"]["user"]["entries"];
+            $result = $db -> query($sql);
+            while ( $all = $db -> fetch_array($result,1) ) {
+                $all_user[$all[$cfg["righted"]["db"]["user"]["key"]]] = $all[$cfg["righted"]["db"]["user"]["name"]];
+            }
+        } else {
+            echo "error";
+        }
+        
         $anzahl_rechte = count($all_rights);
         $prozent = intval(100/$anzahl_rechte);               
-        $counter = 0;
+
+                
+        if ( is_array($infos["group"]) ) {          
+            $infos["group"] = array_reverse($infos["group"]);
+        }          
+                $counter = 0;
         foreach ( $all_groups as $group_key => $group_value ) {
             $counter++;
-            $dataloop["infos"][$counter]["gruppe"] = $group_value;
-            foreach ( $all_rights as $rights_value ) {
+            $dataloop["infos_group"][$counter]["gruppe"] = $group_value;
+            foreach ( $all_rights as $rights_key => $rights_value ) {
                 $background = $cfg["righted"]["button"]["new"]["color"];
                 $name = "new";
-                foreach ( $infos as $info_key => $info_value ) {
-
-                    if ( is_array($info_value["add"]) ) {
-                        if ( preg_match("/".$rights_value.",/",$info_value["add"][$group_value]) ) {
-                            $background = $cfg["righted"]["button"]["add"]["color"];
-                            $name = "add";
-                        } 
-                    }
-                    if ( is_array($info_value["del"]) ) {
-                        if ( preg_match("/".$rights_value.",/",$info_value["del"][$group_value]) ) {
-                            $background = $cfg["righted"]["button"]["del"]["color"];
-                            $name = "del";
-                        } 
+                if ( is_array($infos["group"]) ) {  
+                    foreach ( $infos["group"] as $info_key => $info_value ) {
+                        if ( is_array($info_value["add"]) ) {
+                            if ( preg_match("/".$rights_value.",/",$info_value["add"][$group_value]) ) {
+                                $background = $cfg["righted"]["button"]["add"]["color"];
+                                $name = "add";
+                            } 
+                        }
+                        if ( is_array($info_value["del"]) ) {
+                            if ( preg_match("/".$rights_value.",/",$info_value["del"][$group_value]) ) {
+                                $background = $cfg["righted"]["button"]["del"]["color"];
+                                $name = "del";
+                            } 
+                        }
                     }
                 }
-                $dataloop["infos"][$counter]["info"] .= "<input name=\"".$name."#".$group_key."\" value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
+                $dataloop["infos_group"][$counter]["info"] .= "<input name=\"group_".$name."_".$group_key."_".$rights_key."\" value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
+            }                                  
+        }
+        
+        if ( is_array($infos["user"]) ) {
+            $infos["user"] = array_reverse($infos["user"]);
+        }
+        $counter = 0;
+        foreach ( $all_user as $user_key => $user_value ) {
+            $counter++;
+            $dataloop["infos_user"][$counter]["user"] = $user_value;
+            foreach ( $all_rights as $rights_key => $rights_value ) {
+                $background = $cfg["righted"]["button"]["new"]["color"];
+                $name = "new";
+                if ( is_array($infos["user"]) ) {
+                    foreach ( $infos["user"] as $info_key => $info_value ) {
+
+                        if ( is_array($info_value["add"]) ) {
+                            if ( preg_match("/".$rights_value.",/",$info_value["add"][$user_value]) ) {
+                                $background = $cfg["righted"]["button"]["add"]["color"];
+                                $name = "add";
+                            } 
+                        }
+                        if ( is_array($info_value["del"]) ) {
+                            if ( preg_match("/".$rights_value.",/",$info_value["del"][$user_value]) ) {
+                                $background = $cfg["righted"]["button"]["del"]["color"];
+                                $name = "del";
+                            } 
+                        }
+                    }
+                }
+                $dataloop["infos_user"][$counter]["info"] .= "<input name=\"user_".$name."_".$user_key."_".$rights_key."\"  value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
             }
         }
-
+            
+ 
+        
+        
         // form options holen
         $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
@@ -176,51 +225,47 @@
 
         // +++
         // page basics
-        if ( $environment["parameter"][3] == "verify" && preg_match("/^new#|^del#|^add#/",key($HTTP_POST_VARS)) ){
+        
+       
+        $preg = "/^(group|user)_(add|new|del)_([1-9]*)_([1-9]*)$/";
+        if ( $environment["parameter"][3] == "verify" && preg_match($preg,key($HTTP_POST_VARS),$regs) ){
+            
+            $art = $regs[1];
+            $aktion = $regs[2];
+            $gruppe = $regs[3];
+            $recht = $regs[4];                
 
-            // form eingaben pruefen
-            form_errors( $form_options, $HTTP_POST_VARS );
-
-            // evtl. zusaetzliche datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+            $id = "gid";                
+            if ( $art == "user" ) {
+                $id = "uid";                    
             }
-
-            // datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
-
-                // recht hinzufuegen
-                $raute = strpos(key($HTTP_POST_VARS),"#");
-                $gruppe = substr(key($HTTP_POST_VARS),$raute+1);
-                $recht = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
                 
-                $sql = "SELECT pid FROM auth_priv WHERE priv='".$recht."'";
-                $result = $db -> query($sql);
-                $data_priv = $db -> fetch_array($result,1);
-                if ( substr(key($HTTP_POST_VARS),0,$raute) == "add" ) {
-                    $sql = "SELECT * FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND db='".$specialvars["dyndb"]."' AND tname='".$url."' AND neg !='-1'";
-                    $result_pruef = $db -> query($sql);
-                    $treffer = $db -> num_rows($result_pruef,1);
-                    if ( $treffer == 1 && $url == $url2 ) {
-                        $sql = "DELETE FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg!='-1'";
-                    } else {
-                        $sql = "INSERT INTO auth_content (gid,pid,db,tname,neg,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','-1','','')";
-                    }
-                } elseif ( substr(key($HTTP_POST_VARS),0,$raute) == "del" ) {
-                    $sql_test = "SELECT * FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
-                    $result_test = $db -> query($sql_test);
-                    if ( $db -> num_rows($result_test) > 0 ) {
-                        $sql = "DELETE FROM auth_content WHERE gid='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
-                    } else {
-                        $sql = "INSERT INTO auth_content (gid,pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
-                    }
+            $sql = "SELECT pid FROM auth_priv WHERE pid='".$recht."'";                                
+            $result = $db -> query($sql);
+            $data_priv = $db -> fetch_array($result,1);
+            if ( $aktion == "add" ) {
+                $sql = "SELECT * FROM auth_content WHERE ".$id."='".$gruppe."' AND pid='".$data_priv["pid"]."' AND db='".$specialvars["dyndb"]."' AND tname='".$url."' AND neg !='-1'";
+                $result_pruef = $db -> query($sql);
+                $treffer = $db -> num_rows($result_pruef,1);
+                if ( $treffer == 1 && $url == $url2 ) {
+                    $sql = "DELETE FROM auth_content WHERE ".$id."='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg!='-1'";
                 } else {
-                    $sql = "INSERT INTO auth_content (gid,pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
+                    $sql = "INSERT INTO auth_content (".$id.",pid,db,tname,neg,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','-1','','')";
                 }
-                $result = $db -> query($sql);
-
-                if ( $header == "" ) $header = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].".html";
+            } elseif ( $aktion == "del" ) {
+                $sql_test = "SELECT * FROM auth_content WHERE ".$id."='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
+                $result_test = $db -> query($sql_test);
+                if ( $db -> num_rows($result_test) > 0 ) {
+                    $sql = "DELETE FROM auth_content WHERE ".$id."='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
+                } else {
+                    $sql = "INSERT INTO auth_content (".$id.",pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
+                }
+            } else {
+                $sql = "INSERT INTO auth_content (".$id.",pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
             }
+            $result = $db -> query($sql);
+
+            if ( $header == "" ) $header = $cfg["righted"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].".html#".$art;
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {

@@ -9,8 +9,63 @@
 <body>
 <!--##begin-->
 <!--$Id$-->
-<script type="text/javascript">
 
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+<!--    <p>#(inhalt)</p>-->
+
+<!--##hide-plausible_check-->    
+    <div class="red" style="margin-top: 10px">
+<!--##loop-plausible_check-->    
+        !{message}<br />
+<!--##cont-->
+    </div>
+<!--##show-->
+    <div id="tabmain">
+        <div id="tabmenu">
+            <div id="tab_datasheet1" class="tab active"><div>Gruppen</div></div>
+            <div id="tab_datasheet2" class="tab"><div>Benutzer</div></div>
+            <div id="tab_datasheet3" class="tab "><div>Legende</div></div>
+        </div>
+
+        <div id="datasheet1" class="tabcontent">
+            <h2>#(url) !#ausgaben_url</h2>
+<!--##loop-infos_group-->
+            <fieldset>
+                <legend> !{gruppe}</legend>
+                    !{info}
+            </fieldset>
+<!--##cont-->
+        </div>
+    
+        <div id="datasheet2" class="tabcontent" style="display:none">
+            <h2>#(url) !#ausgaben_url</h2>
+<!--##loop-infos_user-->
+            <fieldset>
+                <legend> !{user}</legend>
+                !{info}
+            </fieldset>
+<!--##cont-->
+        </div>
+    
+        <div id="datasheet3" class="tabcontent" style="display:none">
+            <div>
+<!--##loop-legende-->
+                <div class="legende" style="background:!{color}"></div><div>!{text}</div>
+<!--##cont-->
+            </div>
+        </div>
+    </div>
+
+    <fieldset>
+        <input type="button" name="abort" value="zur&uuml;ck zum Men&uuml;-Editor" onclick="location='!#ausgaben_form_break'"  />
+    </fieldset>       
+
+</form>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<script type="text/javascript">
+    
     function anzeigen(id) {
     show = document.getElementById(id).style.display;
     if ( show == 'none' ) {
@@ -58,59 +113,14 @@
      */
     Event.observe( window, 'load', create_tabs );
 
-
+    if ( window.location.hash == '#user' ) {
+        $('tab_datasheet2').addClassName( 'active' );
+        $('tab_datasheet1').removeClassName( 'active' );
+        $('datasheet1').hide();
+        $('datasheet2').show();
+    };
 
 </script>
-<form method="post" action="!#ausgaben_form_aktion" id="eEd">
-    <h1>#(ueberschrift)</h1>
-<!--    <p>#(inhalt)</p>-->
-
-<!--##hide-plausible_check-->    
-    <div class="red" style="margin-top: 10px">
-<!--##loop-plausible_check-->    
-        !{message}<br />
-<!--##cont-->
-    </div>
-<!--##show-->
-<div id="tabmain">
-    <div id="tabmenu">
-        <div  id="tab_datasheet1" class="tab active"><div>Gruppen</div></div>
-        <div id="tab_datasheet2" class="tab"><div>Benutzer</div></div>
-        <div id="tab_datasheet3" class="tab "><div>Legende</div></div>
-    </div>
-
-    <div id="datasheet1" class="tabcontent">
-        <h2>#(url) !#ausgaben_url</h2>
-<!--##loop-infos-->
-        <fieldset>
-            <legend> !{gruppe}</legend>
-            !{info}
-        </fieldset>
-<!--##cont-->
-    </div>
-    
-    <div id="datasheet2" class="tabcontent" style="display:none">
-        <div>
-        im Aufbau
-        </div>
-    </div>
-    
-    <div id="datasheet3" class="tabcontent" style="display:none">
-        <div>
-<!--##loop-legende-->
-            <div class="legende" style="background:!{color}"></div><div>!{text}</div>
-<!--##cont-->
-        </div>
-    </div>
-</div>
-
-        <fieldset>
-            <input type="button" name="abort" value="zur&uuml;ck zum Men&uuml;-Editor" onclick="location='!#ausgaben_form_break'"  />
-        </fieldset>       
-
-</form>
-<p>!#ausgaben_output</p>
-<p>!#ausgaben_inaccessible</p>
 <!--##end-->
 </body>
 </html>

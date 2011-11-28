@@ -68,6 +68,11 @@
                                 "key" => "gid",
                                "name" => "ggroup",
                                  ),
+                    "user" => array(
+                            "entries" => "auth_user",
+                                "key" => "uid",
+                               "name" => "username",
+                                 ),
                        "priv" => array(
                             "entries" => "auth_priv",
                                 "key" => "pid",

@@ -89,21 +89,49 @@
         }
     }
 
-    function priv_info($url,&$hit) {
-        global $db;
-        $sql = "SELECT * FROM auth_content INNER JOIN auth_group ON (auth_content.gid=auth_group.gid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE tname='".$url."'";
-        $result = $db -> query($sql);
-        while ( $all = $db -> fetch_array($result,1) ) {
-            if ( $all["neg"] == -1 ) {
-                $hit[$url]["del"][$all["ggroup"]] .= $all["priv"].",";
-            } else {
-                $hit[$url]["add"][$all["ggroup"]] .= $all["priv"].",";
+    function priv_info($url,&$hit,$art='',$self='') {
+        global $db,$url_orig;
+
+       if ( $art == "" ) {
+           $art = "group";
+           $url_orig = $url;
+       }
+           
+        if ( $art=="group") {           
+            $sql = "SELECT * FROM auth_content INNER JOIN auth_group ON (auth_content.gid=auth_group.gid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE auth_content.gid != 0 AND tname='".$url."'";
+            $result = $db -> query($sql);
+            while ( $all = $db -> fetch_array($result,1) ) {
+                if ( $all["neg"] == -1 ) {
+                    $hit["group"][$url]["del"][$all["ggroup"]] .= $all["priv"].",";
+                } else {
+                    $hit["group"][$url]["add"][$all["ggroup"]] .= $all["priv"].",";
+                }
             }
+            if ( $url != "/" ) {
+                $url = dirname($url);
+                priv_info($url,$hit,$art,"self");
+            }
+            
+            if ( $self == "" ) {
+                priv_info($url_orig,$hit,"user");
+            }
+                   
+        }  elseif ( $art == "user" ) {  
+            $sql = "SELECT * FROM auth_content INNER JOIN auth_user ON (auth_content.uid=auth_user.uid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE auth_content.uid != 0 AND tname='".$url_orig."'";
+            $result = $db -> query($sql);
+            while ( $all = $db -> fetch_array($result,1) ) {
+                if ( $all["neg"] == -1 ) {
+                    $hit["user"][$url_orig]["del"][$all["username"]] .= $all["priv"].",";
+                } else {
+                    $hit["user"][$url_orig]["add"][$all["username"]] .= $all["priv"].",";
+                }
+            }
+            if ( $url_orig != "/" ) {
+                $url_orig = dirname($url_orig);
+                priv_info($url_orig,$hit,"user","self");
+            }            
         }
-        if ( $url != "/" ) {
-            $url = dirname($url);
-            priv_info($url,$hit);
-        }
+   
         return $hit;
     }
 
