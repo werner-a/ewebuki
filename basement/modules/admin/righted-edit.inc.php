@@ -178,7 +178,6 @@
                             } 
                     $dataloop["infos_user"][$counter]["info"] .= "<input name=\"user_".$name."_".$user_key."_".$rights_key."\"  value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
                 }
-                $dataloop["infos_user"][$counter]["info"] .= "<input name=\"user_".$name."_".$user_key."_".$rights_key."\"  value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
             }
         } else {
             $dataloop["infos_user"][$counter]["user"] = "ERROR";     
