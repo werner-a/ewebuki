@@ -90,19 +90,30 @@
     }
 
     function priv_info($url,&$hit,$art='',$self='') {
-        global $db,$url_orig;
+        global $db,$url_orig,$url_orig_user;
 
-       if ( $art == "" ) {
+        // beim ersten aufruf $art auf gruppe setzen
+        if ( $art == "" ) {
            $art = "group";
+           // einstiegsurl speichern damit man weiss wo man ist
            $url_orig = $url;
-       }
-           
+           // einstiegsurl nochmal speichen fuer den user-zweig
+           $url_orig_user = $url;
+        }
+        
+        // url pruefen
+        if ( !preg_match("/^[A-Za-z_\-\.0-9\/]+$/",$url) ){
+            return;
+        } 
+
         if ( $art=="group") {           
             $sql = "SELECT * FROM auth_content INNER JOIN auth_group ON (auth_content.gid=auth_group.gid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE auth_content.gid != 0 AND tname='".$url."'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 if ( $all["neg"] == -1 ) {
                     $hit["group"][$url]["del"][$all["ggroup"]] .= $all["priv"].",";
+                } elseif ( $url_orig != $all["tname"]) {
+                    $hit["group"][$url]["inh"][$all["ggroup"]] .= $all["priv"].",";
                 } else {
                     $hit["group"][$url]["add"][$all["ggroup"]] .= $all["priv"].",";
                 }
@@ -111,17 +122,20 @@
                 $url = dirname($url);
                 priv_info($url,$hit,$art,"self");
             }
-            
+
+            // nachdem die gruppe abgearbeitet ist, mit user weitermachen
             if ( $self == "" ) {
                 priv_info($url_orig,$hit,"user");
             }
-                   
+
         }  elseif ( $art == "user" ) {  
             $sql = "SELECT * FROM auth_content INNER JOIN auth_user ON (auth_content.uid=auth_user.uid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE auth_content.uid != 0 AND tname='".$url_orig."'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 if ( $all["neg"] == -1 ) {
                     $hit["user"][$url_orig]["del"][$all["username"]] .= $all["priv"].",";
+                } elseif ( $url_orig_user != $all["tname"]) {
+                    $hit["user"][$url_orig]["inh"][$all["username"]] .= $all["priv"].",";
                 } else {
                     $hit["user"][$url_orig]["add"][$all["username"]] .= $all["priv"].",";
                 }
@@ -131,26 +145,28 @@
                 priv_info($url_orig,$hit,"user","self");
             }            
         }
-   
-        return $hit;
+        
+            return $hit;
     }
 
         function plausibleCheck($modus="display") {
             global $db,$ausgaben;            
             
             if ( !function_exists(negCheck) ) {
-                function posnegCheck($all,&$found,$art="neg") {
+                function posnegCheck($all,&$found) {
                     global $db;
                     $sql = "";
-                    $kick = array("tname","neg","priv","ggroup","beschreibung");
+                    $white_list = array("uid","gid","pid","db","tmp_tname");
                     foreach ( $all as $key => $value ) {
-                        if ( in_array($key, $kick) || is_integer($key)) continue;
+                        if ( !in_array($key, $white_list) || is_integer($key)) continue;
                         if ( $key == "tmp_tname" ) $key = "tname";
+                        if ( $key == "gid" && $value == "" ) $value = "0";
+                        if ( $key == "uid" && $value == "" ) $value = "0";
                         $sqla  .= "auth_content.".$key."='".$value."' AND ";
                     }
                     $and = strrpos($sqla," AND ");
                     $sqla = substr($sqla,0,$and);
-                    $sqla = "SELECT * FROM auth_content INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) INNER JOIN auth_group ON ( auth_content.gid=auth_group.gid ) WHERE ".$sqla;
+                    $sqla = "SELECT * FROM auth_content INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_content.gid=auth_group.gid ) LEFT JOIN auth_user ON ( auth_content.uid=auth_user.uid ) WHERE ".$sqla;
                     $result = $db -> query($sqla);
                     $data = $db -> fetch_array($result,1);
                     $found = "";
@@ -169,14 +185,20 @@
             $counter = 0;
 
             // Positiv-Check
-            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) INNER JOIN auth_group ON ( auth_group.gid=auth_content.gid ) WHERE tname != '/' AND neg!='-1'";      
+            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_group.gid=auth_content.gid ) LEFT JOIN auth_user ON ( auth_user.uid=auth_content.uid ) WHERE tname != '/' AND neg!='-1'";      
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 $sqla = "";
-                $all["tmp_tname"] = dirname($all["tname"]);            
+                $all["tmp_tname"] = dirname($all["tname"]);      
                 if ( posnegCheck($all,$nop,"pos") == "pos" )  {
                     $counter++;
-                    $plausible_error[$counter]["message"] = "Fehler: Doppeltes Recht <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b> fuer Gruppe ".$all["ggroup"];
+                    $RechtInhaberText = "Gruppe";
+                    $RechtInhaberDaten = $all["ggroup"];
+                    if ( $all["uid"] != 0 ) {
+                        $RechtInhaberText = "Benutzer";
+                        $RechtInhaberDaten = $all["username"];
+                    }
+                    $plausible_error[$counter]["message"] = "Fehler: Doppeltes Recht <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b> fuer ".$RechtInhaberText.": ".$RechtInhaberDaten;
                     $plausible_error[$counter]["group_beschreibung"] = $all["ggroup"];
                     $plausible_error[$counter]["right"] = $all["priv"];
                     $plausible_error[$counter]["group_id"] = $all["gid"];
@@ -185,14 +207,20 @@
             }
             
             // Negativ-Check
-            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) INNER JOIN auth_group ON ( auth_group.gid=auth_content.gid ) WHERE neg='-1'";
+            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_group.gid=auth_content.gid ) LEFT JOIN auth_user ON ( auth_user.uid=auth_content.uid ) WHERE neg='-1'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 $sqla = "";
                 $all["tmp_tname"] = dirname($all["tname"]);
                 if ( posnegCheck($all,$nop) != "pos" )  {
                     $counter++;
-                    $plausible_error[$counter]["message"] = "Fehler: Alleinstehendes Negiertes <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b> fuer Gruppe".$all["ggroup"];
+                    $RechtInhaberText = "Gruppe";
+                    $RechtInhaberDaten = $all["ggroup"];
+                    if ( $all["uid"] != 0 ) {
+                        $RechtInhaberText = "Benutzer";
+                        $RechtInhaberDaten = $all["username"];
+                    }
+                    $plausible_error[$counter]["message"] = "Fehler: Alleinstehendes Negiertes <b>".$all["priv"]."</b>  bei <b>".$all["tname"]."</b> fuer ".$RechtInhaberText.": ".$RechtInhaberDaten;
                     $plausible_error[$counter]["group_beschreibung"] = $all["ggroup"];
                     $plausible_error[$counter]["right"] = $all["priv"];
                     $plausible_error[$counter]["group_id"] = $all["gid"];

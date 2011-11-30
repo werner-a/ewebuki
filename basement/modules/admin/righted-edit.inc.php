@@ -73,6 +73,10 @@
                     $dataloop["legende"][$key]["color"] = $value["color"];
                     $dataloop["legende"][$key]["text"] = "Negiertes Recht";
                     break;
+                case "inh":
+                    $dataloop["legende"][$key]["color"] = $value["color"];
+                    $dataloop["legende"][$key]["text"] = "Vererbtes Recht";
+                    break;
             }
         } 
 
@@ -82,8 +86,8 @@
         $url2 = $url;
         $infos = "";
         // erstellen der info - box
-        $infos = priv_info($url,$infos);
-
+        $infos = priv_info($url,$nop);
+        
         // wenn parameter 2 gesetzt ist, info-box oeffnen
         if ( $environment["parameter"][2] != "" ) {
             $ausgaben["display"] = "visible";
@@ -136,6 +140,12 @@
                                 $name = "add";
                             } 
                         }
+                        if ( is_array($info_value["inh"]) ) {
+                            if ( preg_match("/".$rights_value.",/",$info_value["inh"][$group_value]) ) {
+                                $background = $cfg["righted"]["button"]["inh"]["color"];
+                                $name = "add";
+                            } 
+                        }
                         if ( is_array($info_value["del"]) ) {
                             if ( preg_match("/".$rights_value.",/",$info_value["del"][$group_value]) ) {
                                 $background = $cfg["righted"]["button"]["del"]["color"];
@@ -167,7 +177,13 @@
                                     $background = $cfg["righted"]["button"]["add"]["color"];
                                     $name = "add";
                                 } 
-                            }
+                        }
+                        if ( is_array($info_value["inh"]) ) {
+                            if ( preg_match("/".$rights_value.",/",$info_value["inh"][$user_value]) ) {
+                                $background = $cfg["righted"]["button"]["inh"]["color"];
+                                $name = "add";
+                    } 
+                        }
                             if ( is_array($info_value["del"]) ) {
                                 if ( preg_match("/".$rights_value.",/",$info_value["del"][$user_value]) ) {
                                     $background = $cfg["righted"]["button"]["del"]["color"];
