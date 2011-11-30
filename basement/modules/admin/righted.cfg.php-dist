@@ -88,6 +88,9 @@
                                  ),
                         "del" => array(
                                 "color" => "#E0691A"
+                                ),
+                         "inh" => array(
+                                "color" => "#84E090"
                                 )
                        ),
             "right" => $cfg["auth"]["ghost"]["righted"],
