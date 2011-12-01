@@ -430,7 +430,7 @@
                                     if ( strstr($cell_tag1,"<th") ) {
                                         $thead = $table;
                                         $table = "";
-                                        $cell_tag1 = "<td".$va; $cell_tag2 = "</td>\n";
+                                        $cell_tag1 = "<td".$va.">"; $cell_tag2 = "</td>\n";
                                         $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
                                     }
                                 $firstln = "";    
