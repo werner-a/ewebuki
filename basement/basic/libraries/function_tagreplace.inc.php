@@ -297,16 +297,16 @@
                             $tabwerte = explode(";",$tagwerte[0]);
                             switch ( $tabwerte[4] ) {
                                 case "o":
-                                    $va = " valign=\"top\">";
+                                    $va = " valign=\"top\"";
                                     break;
                                 case "u":
-                                    $va = " valign=\"bottom\">";
+                                    $va = " valign=\"bottom\"";
                                     break;
                                 case "m":
-                                    $va = " valign=\"middle\">";
+                                    $va = " valign=\"middle\"";
                                     break;
                                 default:
-                                    $va = ">";
+                                    $va = "";
                             }                            
                             if ( $tabwerte[5] != "" ) {
                                 $wochentag = array("So,&nbsp;",
@@ -338,7 +338,7 @@
                                     $cell_tag1 = "<th scope=\"col\">"; $cell_tag2 = "</th>\n";
                                     $row_tag1 = "<thead>\n<tr>"; $row_tag2 = "</tr>\n</thead>";
                                 } else {
-                                    $cell_tag1 = "<td".$va; $cell_tag2 = "</td>\n";
+                                    $cell_tag1 = "<td".$va.">"; $cell_tag2 = "</td>\n";
                                     $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
                                 }
                                 $thead = "";
