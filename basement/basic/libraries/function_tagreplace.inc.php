@@ -295,6 +295,31 @@
                         if ( $sign != "]" ) {
                             $tagwerte = explode("]",$tagwert,2);
                             $tabwerte = explode(";",$tagwerte[0]);
+                            switch ( $tabwerte[4] ) {
+                                case "o":
+                                    $va = " valign=\"top\">";
+                                    break;
+                                case "u":
+                                    $va = " valign=\"bottom\">";
+                                    break;
+                                case "m":
+                                    $va = " valign=\"middle\">";
+                                    break;
+                                default:
+                                    $va = ">";
+                            }                            
+                            if ( $tabwerte[5] != "" ) {
+                                $wochentag = array("So,&nbsp;",
+                                                   "Mo,&nbsp;",
+                                                   "Di,&nbsp;",
+                                                   "Mi,&nbsp;",
+                                                   "Do,&nbsp;",
+                                                   "Fr,&nbsp;",
+                                                   "Sa,&nbsp;");
+                            }
+                            if ( $tabwerte[6] != "" ) { 
+                                $vortext = array("");
+                            }
                             // csv-datei
                             if ( $specialvars["subdir"] != "" ) {
                                 $pfad = str_replace( $specialvars["subdir"]."/", "", $tabwerte[0] );
@@ -313,20 +338,195 @@
                                     $cell_tag1 = "<th scope=\"col\">"; $cell_tag2 = "</th>\n";
                                     $row_tag1 = "<thead>\n<tr>"; $row_tag2 = "</tr>\n</thead>";
                                 } else {
-                                    $cell_tag1 = "<td>"; $cell_tag2 = "</td>\n";
+                                    $cell_tag1 = "<td".$va; $cell_tag2 = "</td>\n";
                                     $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
                                 }
                                 $thead = "";
-                                while ( ($data = fgetcsv ($handle, 1000, ";")) !== FALSE ) {
+                                // beim ersten Durchlauf der Schleife werden die Vortexte eingelesen, also brauchen
+                                // wir dafuer ein Flag. (Man koennte auch aus der while eine for-schleife machen)
+                                $firstln = "1";
+                                while ( ($data = fgetcsv ($handle, 1500, ";")) !== FALSE ) {
                                     $row = "";
-                                    foreach ( $data as $value ) {
-                                        $row .= $cell_tag1.$value.$cell_tag2;
+                                    $wieviele = sizeof($data);
+                                    if ( $firstln != "" ) $vortext = $data;
+                                    for ($i = 0; $i < $wieviele; $i++ ) {
+                                        $value = $data[$i];
+                                        // tabwert 5 = datumspruefung an
+                                        if ( $tabwerte[5] != "" ) {
+                                            // wir pruefen, ob die zelle ein Datum enthaelt
+                                            if ( strtotime ($value) == TRUE ) {
+                                                $beginn = strtotime ($value);
+                                                $jetzt = time ();
+                                                if ( $beginn + 86400 < $jetzt) { 
+                                                // wenn der beginn heute ist (jetzt und den ganzen tag), setzen wir skip
+                                                // wenn $skip mit irgendwas gefuellt ist, wird die Zeile uebersprungen
+                                                    $skip = 1;
+                                                } else {
+                                                // jetzt setzen wir noch den deutschen Wochentag vors Datum
+                                                    $value = $wochentag[date ("w", $beginn)].date ("d.m.Y", $beginn);
+                                                // Hier kommt noch ein undokumentierter "Spezialhack"
+                                                // Wenn der Parameter 5 größer 1 ist, wird geschaut, ob nach dem Datum
+                                                // gleich noch ein Datum kommt. Wenn ja, wird das als "von-bis" in eine 
+                                                // Zelle gesetzt.
+                                                    if ( $tabwerte[5] > 1 ) {
+                                                        $i++;
+                                                        if ( strtotime ($data[$i]) == TRUE ) {
+                                                        $ende = strtotime ($data[$i]);
+                                                        $tbeginn = $wochentag[date ("w", $beginn)].date ("d.m.Y", $beginn);
+                                                        $tende = $wochentag[date ("w", $ende)].date ("d.m.Y", $ende); 
+                                                        $value = $tbeginn."<br />bis<br />".$tende;
+                                                        $tbeginn = ""; $ende = ""; $tende = "";
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        // noch Teil des Spezialhacks: ignorieren.
+                                        if ( $firstln != "" && $tabwerte[5] >1 && $i >= $tabwerte[5] && $tabwerte[6] != "" ) {
+                                            if ($i > $tabwerte[6]-1 ) $i++; $value = $data[$i+1];
+                                        }
+                                        if ( $tabwerte[6] == "" ) {
+                                            $row .= $cell_tag1.$value.$cell_tag2;
+                                        } else {
+                                        // tabwert 6 = don't screw my design-Modus
+                                            if ( $firstln != "" ) {
+                                                // Die Ueberschrift geben wir bis zum angegebenen Wert ganz normal aus,
+                                                // der Rest wird ignoriert.
+                                                if ( $i <= $tabwerte[6] && $tabwerte[3] != "" ) {
+                                                    $row .= $cell_tag1.$value.$cell_tag2;
+                                                }
+                                            } else {
+                                                if ( $i < $tabwerte[6] ) {
+                                                // bis zum Wert, der im tabwert 6 angegeben ist, wird ganz normal ausgegeben.
+                                                    $row .= $cell_tag1.$value.$cell_tag2;
+                                                }
+                                                if ( $i == $tabwerte[6] ) {
+                                                // Beim Wert, der in tabwert 6 angegeben ist, oeffnen wir die Zelle 
+                                                // und setzen einen Zeilenwechsel.
+                                                    if ( $tabwerte[7] != "" ) {
+                                                    $row .= $cell_tag1."<".$tabwerte[7].">".$value."</".$tabwerte[7]."><br />";
+                                                    } else {
+                                                    $row .= $cell_tag1.$value."<br />";
+                                                    }
+                                                } 
+                                                if ( $i > $tabwerte[6] ) {
+                                                    // Die Werte, die nach tabwert 6 kommen, werden bis zum vorletzten Wert
+                                                    // (falls vorhanden) mit Vortext ausgegeben und dann der Wert und ein br
+                                                    if ( $vortext[$i] != "" ) {
+                                                        $row .= $vortext[$i].": ";
+                                                    }
+                                                    if ( $i < $wieviele-1 ) {
+                                                        $row .= $value."<br />";
+                                                    } else {
+                                                    // der letzte Wert schliesst die Zelle ab
+                                                        $row .= $value.$cell_tag2;
+                                                    }
+                                                }
+                                            }
+                                        } 
                                     }
+                                    if ( !$skip == FALSE ) { $row = ""; $skip = ""; } 
                                     if ( $row != "" ) $table .= $row_tag1.$row.$row_tag2;
                                     if ( strstr($cell_tag1,"<th") ) {
                                         $thead = $table;
                                         $table = "";
-                                        $cell_tag1 = "<td>"; $cell_tag2 = "</td>\n";
+                                        $cell_tag1 = "<td".$va; $cell_tag2 = "</td>\n";
+                                        $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
+                                    }
+                                $firstln = "";    
+                                }
+                                // summary
+                                if ( $tagwerte[1] != "" ) {
+                                    $summary = " summary=\"".$tagwerte[1]."\"";
+                                } else {
+                                    $summary = "";
+                                }
+                                // breite
+                                if ( $tabwerte[1] != "" ) {
+                                    $width = " width=\"".$tabwerte[1]."%\"";
+                                } else {
+                                    $width = "";
+                                }
+                                // border
+                                if ( $tabwerte[2] != "" ) {
+                                    $border = " border=\"".$tabwerte[2]."\"";
+                                } else {
+                                    $border = "";
+                                }
+                                if ( $table != "" ) $table = "<table".$border.$width.$summary.">\n".$thead."<tbody>\n".$table."</tbody>\n</table>\n";
+                            } else {
+                                $table = "";
+                            }
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$table,$replace);
+                        } else {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,"",$replace);
+                        }
+                        break;
+                    case "[/TABTOU]":
+                        // Tourentabelle, Spezialformat.
+                        // Folge der Daten im Array ist fix!
+                        $wochentag = array("So,&nbsp;","Mo,&nbsp;","Di,&nbsp;","Mi,&nbsp;","Do,&nbsp;","Fr,&nbsp;","Sa,&nbsp;");
+                        if ( $sign != "]" ) {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $tabwerte = explode(";",$tagwerte[0]);
+                                                        // csv-datei
+                            if ( $specialvars["subdir"] != "" ) {
+                                $pfad = str_replace( $specialvars["subdir"]."/", "", $tabwerte[0] );
+                            } else {
+                                $pfad = $tabwerte[0];
+                            }
+                            $file_path = explode("/",$pfad);
+                            $extension = $cfg["file"]["filetyp"][$file_path[2]];
+                            $directory = $cfg["file"]["fileopt"][$extension]["path"];
+                            $file_name = $extension."_".$file_path[3].".".$file_path[2];
+                            if ( file_exists($directory.$file_name) ) {
+                                $table = "";
+                                $handle = fopen ($directory.$file_name,"r");
+                                // enthaelt die erste zeile spaltenueberschriften
+                                if ( $tabwerte[3] != "" ) {
+                                    $cell_tag1 = "<th scope=\"col\"><i>"; $cell_tag2 = "</i></th>\n";
+                                    $row_tag1 = "<thead>\n<tr>"; $row_tag2 = "</tr>\n</thead>";
+                                } else {
+                                    $cell_tag1 = "<td valign=\"top\">"; $cell_tag2 = "</td>\n";
+                                    $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
+                                }
+                                $thead = "";
+                                while ( ($data = fgetcsv ($handle, 1000, ";")) !== FALSE ) {
+                                    $row = ""; $tourende = "";
+                                    // wir pruefen, ob der beginn in der Vergangenheit liegt
+                                    $beginn = strtotime ($data[1]);
+                                    $ende = strtotime ($data[2]);
+                                    $jetzt = time ();
+                                    if ( $beginn + 86400 < $jetzt) { 
+                                       // wenn $skip mit irgendwas gefuellt ist, wird die Zeile uebersprungen
+                                       $skip = 1;
+                                     } else {
+                                       // jetzt setzen wir den deutschen Wochentag vors Datum
+                                       $tourbeginn = $wochentag[date ("w", $beginn)].date ("d.m.Y", $beginn);
+                                       if ( !$data[2] == FALSE ) { $tourende = $wochentag[date ("w", $ende)].date ("d.m.Y", $ende); }
+                                     }
+                                    $row .= $cell_tag1."<b>".$data[0]."</b>".$cell_tag2;
+                                    if ( !$data[2] == FALSE ) {
+                                        $row .= $cell_tag1.$tourbeginn."<br />bis<br />".$tourende.$cell_tag2;
+                                    } else {
+                                        $row .= $cell_tag1.$tourbeginn.$cell_tag2;
+                                    }
+                                    $row .= $cell_tag1."<h3>".$data[3]."</h3>".$cell_tag2;
+                                    $row .= $cell_tag1."<strong>".$data[4]."</strong>";
+                                    $row .= "<br />Ausr&uuml;stung: ".$data[5];
+                                    $row .= "<br />Voraussetzung: ".$data[6];
+                                    $row .= "<br />Ausgangsort: ".$data[7];
+                                    $row .= "<br />Aufstieg: ".$data[8];
+                                    $row .= "<br />Abfahrt: ".$data[9];
+                                    $row .= "<br />Teilnehmergeb&uuml;hr: ".$data[10].",00 Euro";
+                                    $row .= "<br />Teilnehmer: ".$data[11]. " Personen";
+                                    $row .= "<br />Leitung: ".$data[12].$cell_tag2;
+                                    if ( !$skip == FALSE ) { $row = ""; $skip = ""; } 
+                                    if ( $row != "" ) $table .= $row_tag1.$row.$row_tag2;
+                                    if ( strstr($cell_tag1,"<th") ) {
+                                        $thead = $table;
+                                        $table = "";
+                                        $cell_tag1 = "<td valign=\"top\">"; $cell_tag2 = "</td>\n";
                                         $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
                                     }
                                 }
@@ -356,6 +556,7 @@
                         } else {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"",$replace);
                         }
+                        $wochentag = "";
                         break;
                     case "[/ROW]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = str_replace("\r\n","",$tagwert);
