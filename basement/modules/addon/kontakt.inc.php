@@ -118,7 +118,7 @@
             unset($hidedata["form"]);
             unset($hidedata["captcha"]);
             $hidedata["success"] = array();
-            if ( $_GET["referer"] != "" ) {
+            if ( $_GET["referer"] != "" && preg_match("/^http:\/\/[A-Za-z_\-\.0-9\/]+$/",$_GET["referer"]) ) {
                 $hidedata["referer"]["link"] = htmlentities($_GET["referer"]);
                 $ausgaben["last_viewed"] = "";
             }
