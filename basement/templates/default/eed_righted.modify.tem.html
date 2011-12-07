@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>righted.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+<!--    <p>#(inhalt)</p>-->
+
+<!--##hide-plausible_check-->    
+    <div class="red" style="margin-top: 10px">
+<!--##loop-plausible_check-->    
+        !{message}<br />
+<!--##cont-->
+    </div>
+<!--##show-->
+    <div id="tabmain" style="margin: 10px">
+        <ul id="tabsmenu">
+            <li><a href="#group">Gruppen</a></li>
+            <li><a href="#user">Benutzer</a></li>
+            <li><a href="#leg">Legende</a></li>
+        </ul>
+
+        <div id="group">
+            <h2>#(url) !#ausgaben_url</h2>
+<!--##loop-infos_group-->
+            <fieldset>
+                <legend> !{gruppe}</legend>
+                    !{info}
+            </fieldset>
+<!--##cont-->
+        </div>
+    
+        <div id="user">
+            <h2>#(url) !#ausgaben_url</h2>
+<!--##loop-infos_user-->
+            <fieldset>
+                <legend> !{user}</legend>
+                !{info}
+            </fieldset>
+<!--##cont-->
+        </div>
+    
+        <div id="leg">
+            <div>
+<!--##loop-legende-->
+                <div class="legende" style="background:!{color}"></div><div>!{text}</div>
+<!--##cont-->
+            </div>
+        </div>
+    </div>
+
+    <fieldset>
+        <input type="button" name="abort" value="zur&uuml;ck zum Men&uuml;-Editor" onclick="location='!#ausgaben_form_break'"  />
+    </fieldset>       
+
+</form>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<script type="text/javascript">  
+    $(function() {
+            jQuery( "#tabmain" ).tabs();
+    });
+</script>
+<!--##end-->
+</body>
+</html>

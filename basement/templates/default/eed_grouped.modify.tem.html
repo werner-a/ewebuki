@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>grouped.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<script type="text/javascript">
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset>
+        <label for="level">#(group)</label>
+        !#element_ggroup
+        <label for="description">#(description)</label>
+        !#element_beschreibung
+        <div class="clearer"></div>
+    </fieldset>
+    <fieldset class="float">
+        <input id="user_search" onkeyup="aj_search()" />
+        <div class="clearer"></div>
+        <div class="ui-widget-content ui-tabs" style="width:45%;float:left">
+            <ul  id="avail_user" >
+                <li><b>#(avail)</b></li>
+                <!--##loop-avail-->
+                <li id="doc_!{value}" class="sel_item ui-corner-all ui-state-default"><span style="float:left" class="ui-icon ui-icon-arrowthick-2-e-w"></span>!{vorname} !{name} (!{username})</li>
+                <!--##cont-->
+            </ul>
+        </div>
+        <div class="ui-widget-content ui-tabs" style="width:45%;float:right">
+            <ul id="chosen_user">
+                <li><b>#(actual)</b></li>
+                <!--##loop-actual-->
+                <li id="doc_!{value}" class="sel_item ui-corner-all ui-state-default"><span style="float:left" class="ui-icon ui-icon-arrowthick-2-e-w"></span>!{vorname} !{name} (!{username})</li>
+                <!--##cont-->
+            </ul>
+        </div>
+
+    </fieldset>
+
+    <fieldset>
+        <input type="submit" name="send[]" value="g(send)" class="first ui-buttdon ui-widget ui-state-defauldt ui-corner-all ui-button-text-only" />
+        <input type="reset" name="reset" value="g(reset)" class="next ui-buttdon ui-widget ui-state-defauldt ui-corner-all ui-button-text-only" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next ui-buttdon ui-widget ui-state-defauldt ui-corner-all ui-button-text-only" />
+        <div class="clearer"></div>
+    </fieldset>
+</form>
+<p id="output"></p>
+<p>!#ausgaben_inaccessible</p>
+
+<script type="text/javascript">
+window.onload = create_sortable;
+
+function aj_search() {
+            $.ajax ({
+                type: 'POST',
+                data:   'ajaxsuche=on&text='+jQuery('#user_search').val(), 
+                url:                '!#pathvars_uri',
+                success:      function(ergebnis) {
+                                            jQuery('#avail_user').empty();
+                                            jQuery('#avail_user').append(ergebnis);
+                                    }
+         });
+}
+function create_sortable() {
+    jQuery('#avail_user').sortable({
+        connectWith: '#chosen_user',
+                      items : '.sel_item',
+                     cursor: 'crosshair',
+            receive: function(){
+            $.ajax ({
+                type: 'POST',
+                url:           '!#pathvars_uri',
+                data:       'ajax=on&' +$('#chosen_user').sortable('serialize',{key:'chosen_user[]'}),
+                });
+                    }
+    });
+    jQuery('#chosen_user').sortable({
+        connectWith: '#avail_user',
+                      items : '.sel_item',
+                      cursor: 'crosshair',
+            receive: function(){
+            $.ajax ({
+                type: 'POST',
+                url:           '!#pathvars_uri',
+                data:       'ajax=on&' +$('#chosen_user').sortable('serialize',{key:'chosen_user[]'}),
+                });
+                    }
+    });
+}
+</script>
+<!--##end-->
+</body>
+</html>

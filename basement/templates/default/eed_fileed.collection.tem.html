@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>fileed.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <!--##hide-modus-->
+    <h1>!{heading}</h1>
+    <!--##show-->
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <div class="clearer">&nbsp;</div>
+
+    <fieldset style="padding:0;min-height:90px;border:1px solid #6C757A;">
+        <legend>#(chosen)</legend>
+        <ul id="pics_chosen" style="float:left;width:98% !important;margin:10px 5px 5px 10px;">
+            <li style="list-style:none;border:0 solid silver;float:left;margin:0;width:0;">
+                <img src="/images/default/pos.png" style="width:1px;height:96px;" />
+            </li>
+            <!--##loop-chosen-->
+            <li id="pic_!{id}" class="sel_item thumbs" style="height:102px;">
+                <img src="!{src}" class="sel_item" />
+            </li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
+    <fieldset style="padding:0;min-height:90px;border:1px solid #6C757A;">
+        <legend>#(dashboard)</legend>
+        <ul id="pics_available" style="float:left;width:98% !important;margin:10px 5px 5px 10px;">
+            <li style="list-style:none;border:0 solid silver;float:left;margin:0;width:0;">
+                <img src="/images/default/pos.png" style="width:1px;height:96px;" />
+            </li>
+            <!--##loop-clipboard-->
+            <li id="pic_!{id}" class="sel_item thumbs" style="height:102px;">
+                <img src="!{src}" class="sel_item" />
+            </li>
+            <!--##cont-->
+        </ul>
+    </fieldset>
+
+    <fieldset>
+        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="get_pics[]" value="#(get_pics)" class="first" />
+        <input type="submit" name="send[]" value="g(save)" class="next" />
+        <input type="submit" name="abort[]" value="g(abort)" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
+    <div class="clearer">&nbsp;</div>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+
+<script type="text/javascript">
+
+    jQuery('#pics_available').sortable({
+        connectWith: '#pics_chosen',
+            receive: function(){
+            $.ajax ({
+                type: 'POST',
+                url:           '!#ausgaben_form_ajax_aktion',
+                data:       'ajax=on&compid=!#ausgaben_compid&' + $('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+ $('#pics_available').sortable('serialize',{key:'pics_available[]'})
+                });
+                    }
+    });
+    
+    
+    jQuery('#pics_chosen').sortable({
+        connectWith: '#pics_available',
+        receive: function(){
+            $.ajax ({
+                type: 'POST',
+                url:           '!#ausgaben_form_ajax_aktion',
+                data:       'ajax=on&compid=!#ausgaben_compid&' + $('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+ $('#pics_available').sortable('serialize',{key:'pics_available[]'})
+                });
+        }
+    });
+
+</script>
+<!--##end-->
+</body>
+</html>

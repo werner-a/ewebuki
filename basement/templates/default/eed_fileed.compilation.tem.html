@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>fileed.list</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<div id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <div class="tabbed" style="">
+        <ul style="">
+            <!--##loop-tabs-->
+            <li style="!{style}">
+                <a href="!{link}" class="!{class}" style="">!{label}</a>
+            </li>
+            <!--##cont-->
+        </ul>
+    </div>
+    <div style="clear:both;border-top:1px solid #666666;"></div>
+    <form method="POST" action="!#ausgaben_form_aktion">
+        <fieldset class="float" style="padding:0;">
+            <label class="small">
+                #(search)&nbsp;
+                <input type="text" name="search" value="!#ausgaben_search" class="textfield" />
+            </label>
+            <label class="small">
+                &nbsp;
+                <input type="submit" name="send[]" value="g(send)" />
+            </label>
+            <div class="clearer"></div>
+        </fieldset>
+    </form>
+</div>
+<!-- <p>#(num_comps) !#ausgaben_result</p> -->
+<p style="clear:both" class="toolbox">&nbsp;
+    <!--##hide-cms-->
+    <span style="display:!{display};" id="cms">
+        &nbsp;<a href="!{link}">g(cmslink)</a>
+    </span>
+    <!--##show-->
+</p>
+<div style="clear:both"></div>
+
+<!--##loop-compilation-->
+<div class="selection_teaser">
+    <b style="background:none;" id="cEd">
+        <a style="!{used_title_show}" class="infobox">
+            #(used_title)
+            <span>!{used_title_text}</span>
+        </a>
+        <input id="c!{id}" class="selection_checkbox" type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!{id});" style="vertical-align:middle;margin:0.166em 3px 0 0;"!{check} />
+        ID:!{id}
+    </b>
+    <div style="clear:both;"></div>
+
+    <div>
+        <ul style="">
+            !{pics}
+        </ul>
+    </div>
+
+    <span style="display:block;">
+        !{edit} (Anzahl der Bilder: !{count})!{used_on}</span>
+</div>
+<div style="clear:both;"></div>
+<!--##cont-->
+
+<div style="clear:both"></div>
+<p style="float:left">g(anzahl)!#ausgaben_anzahl</p>
+<p style="float:right">!#ausgaben_inhalt_selector</p>
+<div style="clear:both"></div>
+<p>#(inhalt)</p>
+<p>#(text1)</p>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+
+<script type="text/javascript">
+
+    function session_update(compid,picid) {
+        $.ajax ({
+            type: 'POST',
+            url:                './compilation,' + compid + ',' + picid + '.html',
+            data:           'ajax=on',
+            success:     function() {
+                                            check_boxes(compid,picid,jQuery('#c'+compid).attr('checked'));
+                                    }
+         });
+    }
+    
+    function check_boxes(cid,pid,status) {
+
+        // bild einer sel ausgewaehlt ohne die sel zu waehlen -> sel auch aktivieren
+        if ( jQuery('#c'+cid+':checked').val() != -1 &&  pid ) {
+            jQuery('#c'+cid).attr("checked", "checked");  
+        }
+        
+//        // checkboxen der selectionen
+         jQuery('input.selection_checkbox').each( function(i,element) {
+             if ( 'c'+cid != element.id ) {
+                 jQuery('#'+element.id).attr("checked", false);                 
+             }      
+         });
+
+//        // checkboxen der einzelnen bilder
+        jQuery('input.sel_pic_checkbox').each( function(i,element) {
+//            // selection ausgewaehlt
+            if ( !pid ) {
+                if ( element.id.match('c'+cid+'p') && status == "checked") {
+                    jQuery('#'+element.id).attr("checked", "checked");                                           
+                } else {
+                    jQuery('#'+element.id).attr("checked", false);
+                }
+//            // bild einer sel gewaehlt
+            } else {
+                if ( !element.id.match('c'+cid+'p') ) {
+                     jQuery('#'+element.id).attr("checked", false);       
+                }
+            }
+
+        });
+    }
+</script>
+<!--##end-->
+</body>
+</html>

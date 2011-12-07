@@ -57,7 +57,7 @@
                 $_SESSION["compilation_temp"][$_POST["compid"]]["contain"] = array();
             }
             // bilder die NICHT in der gruppierung enthalten sind
-            if ( $_POST["pics_available"] != "" ) {
+            if ( $_POST["pics_available"][0] != "" ) {
                 $_SESSION["compilation_temp"][$_POST["compid"]]["trash"] = $_POST["pics_available"];
             } else {
                 $_SESSION["compilation_temp"][$_POST["compid"]]["trash"] = array();
@@ -192,7 +192,11 @@
         $ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-        $mapping["main"] = eCRC($environment["ebene"]).".collect";
+        if ( $specialvars["jquery"] == -1 ) {
+            $mapping["main"] = "eed_fileed.collection";  
+        } else {
+            $mapping["main"] = eCRC($environment["ebene"]).".collect";            
+        }
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
