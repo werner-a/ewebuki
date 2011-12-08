@@ -61,7 +61,7 @@
 window.onload = create_sortable;
 
 function aj_search() {
-            $.ajax ({
+            jQuery.ajax ({
                 type: 'POST',
                 data:   'ajaxsuche=on&text='+jQuery('#user_search').val(), 
                 url:                '!#pathvars_uri',
@@ -77,10 +77,10 @@ function create_sortable() {
                       items : '.sel_item',
                      cursor: 'crosshair',
             receive: function(){
-            $.ajax ({
+            jQuery.ajax ({
                 type: 'POST',
                 url:           '!#pathvars_uri',
-                data:       'ajax=on&' +$('#chosen_user').sortable('serialize',{key:'chosen_user[]'}),
+                data:       'ajax=on&' +jQuery('#chosen_user').sortable('serialize',{key:'chosen_user[]'}),
                 });
                     }
     });
@@ -89,10 +89,10 @@ function create_sortable() {
                       items : '.sel_item',
                       cursor: 'crosshair',
             receive: function(){
-            $.ajax ({
+            jQuery.ajax ({
                 type: 'POST',
                 url:           '!#pathvars_uri',
-                data:       'ajax=on&' +$('#chosen_user').sortable('serialize',{key:'chosen_user[]'}),
+                data:       'ajax=on&' +jQuery('#chosen_user').sortable('serialize',{key:'chosen_user[]'}),
                 });
                     }
     });
