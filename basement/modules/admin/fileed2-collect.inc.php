@@ -193,7 +193,7 @@
 
         // was anzeigen
         if ( $specialvars["jquery"] == -1 ) {
-            $mapping["main"] = "eed_fileed.collection";  
+            $mapping["main"] = "eed_fileed.collect";  
         } else {
             $mapping["main"] = eCRC($environment["ebene"]).".collect";            
         }

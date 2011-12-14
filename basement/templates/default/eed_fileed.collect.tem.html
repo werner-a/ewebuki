@@ -62,10 +62,10 @@
     jQuery('#pics_available').sortable({
         connectWith: '#pics_chosen',
             receive: function(){
-            $.ajax ({
+            jQuery.ajax ({
                 type: 'POST',
                 url:           '!#ausgaben_form_ajax_aktion',
-                data:       'ajax=on&compid=!#ausgaben_compid&' + $('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+ $('#pics_available').sortable('serialize',{key:'pics_available[]'})
+                data:       'ajax=on&compid=!#ausgaben_compid&' +  jQuery('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+  jQuery('#pics_available').sortable('serialize',{key:'pics_available[]'})
                 });
                     }
     });
@@ -74,10 +74,10 @@
     jQuery('#pics_chosen').sortable({
         connectWith: '#pics_available',
         receive: function(){
-            $.ajax ({
+            jQuery.ajax ({
                 type: 'POST',
                 url:           '!#ausgaben_form_ajax_aktion',
-                data:       'ajax=on&compid=!#ausgaben_compid&' + $('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+ $('#pics_available').sortable('serialize',{key:'pics_available[]'})
+                data:       'ajax=on&compid=!#ausgaben_compid&' +  jQuery('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+  jQuery('#pics_available').sortable('serialize',{key:'pics_available[]'})
                 });
         }
     });
