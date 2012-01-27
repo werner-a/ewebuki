@@ -54,11 +54,13 @@
                 if ( $url == "" ) $url = $environment["ebene"]."/".$environment["kategorie"];
                 if ( is_array($_SESSION["content"] ) ){                    
                     $array = explode(";",$required);
+                    $del_array = explode(",",$_SESSION["content"][$dbase][$url]["del"]);
+                    $add_array = explode(",",$_SESSION["content"][$dbase][$url]["add"]);
                     foreach ( $array as $value ) {
-                        if ( strpos($_SESSION["content"][$dbase][$url]["del"],$value) !== False ) {
+                        if ( in_array($value,$del_array) ) {
                             $del[$value] = -1;
                         }
-                        if ( strpos($_SESSION["content"][$dbase][$url]["add"],$value) !== False && $del[$value] != -1) {
+                        if ( in_array($value,$add_array) && $del[$value] != -1) {
                             $hit = True;
                         }
                     }
