@@ -111,7 +111,7 @@
             if ( $cfg["bloged"]["blogs"][$url]["sort"][1] != -1 ) {
                 $heute = getdate(mktime(0, 0, 0, ($environment["parameter"][5])+1, 0, $environment["parameter"][4]));
                 if ( $environment["parameter"][5] == "" ) {
-                    $month2 = "1";
+                    $month2 = "01";
                     $month1 = "12";
                 } else {
                     $month1 = $environment["parameter"][5];
@@ -119,7 +119,7 @@
                 }
                 if ( !$environment["parameter"][6] ) {
                     $day1 = $heute["mday"];
-                    $day2 = "1";
+                    $day2 = "01";
                 } else {
                     $day1 = $environment["parameter"][6];
                     $day2 = $environment["parameter"][6];
