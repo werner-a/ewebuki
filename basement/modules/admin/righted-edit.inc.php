@@ -250,7 +250,7 @@
         // page basics
         
        
-        $preg = "/^(group|user)_(add|new|del)_([1-9]*)_([1-9]*)$/";
+        $preg = "/^(group|user)_(add|new|del)_([0-9]*)_([0-9]*)$/";
         if ( $environment["parameter"][3] == "verify" && preg_match($preg,key($HTTP_POST_VARS),$regs) ){
             
             $art = $regs[1];
