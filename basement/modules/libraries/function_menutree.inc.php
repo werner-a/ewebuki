@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 K?nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -74,16 +74,7 @@
 
         }
 
-        $sql = "SELECT  ".$cfg[$script_name]["db"]["menu"]["entries"].".mid,
-                        ".$cfg[$script_name]["db"]["menu"]["entries"].".entry,
-                        ".$cfg[$script_name]["db"]["menu"]["entries"].".refid,
-                        ".$cfg[$script_name]["db"]["menu"]["entries"].".level,
-                        ".$cfg[$script_name]["db"]["menu"]["entries"].".sort,
-                        ".$cfg[$script_name]["db"]["menu"]["entries"].".hide,
-                        ".$cfg[$script_name]["db"]["lang"]["entries"].".lang,
-                        ".$cfg[$script_name]["db"]["lang"]["entries"].".label,
-                        ".$cfg[$script_name]["db"]["lang"]["entries"].".exturl
-                  FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
+        $sql = "SELECT  *  FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
             INNER JOIN  ".$cfg[$script_name]["db"]["lang"]["entries"]."
                     ON  ".$cfg[$script_name]["db"]["menu"]["entries"].".mid = ".$cfg[$script_name]["db"]["lang"]["entries"].".mid
                  WHERE (".$cfg[$script_name]["db"]["menu"]["entries"].".refid=".$refid.")
@@ -161,14 +152,16 @@
                 }
             // hier wird komplett geoeffnet
             } elseif ( $sitemap == -1 ) {
-                $href = "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html\">".$array["label"]."</a>";
+                $title = $array["label"];
+                if ( $array["extend"] ) $title = $array["extend"];
+                $href = "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html\" title=\"".$title."\">".$array["label"]."</a>";
             }else {
                 $href = $array["label"] ;
             }
 
             // schaltflaechen erstellen
             if ( $aktionlinks == -1) {
-                // hier der alte rechte-check ! fällt weg !
+                // hier der alte rechte-check ! faellt weg !
                 if ( $specialvars["security"]["enable"] == -1 ) {
                     // kategorie u. ebene herausfinden
                     $kategorie2check = substr($buffer["pfad"],0,strpos($buffer["pfad"],"/"));
@@ -234,7 +227,7 @@
                 $href = "<a class=".$class_hide." href=".$array["exturl"].">".$array["label"]."</a>";
             }
 
-            // in den buffer schreiben wieviel unterpunkte fuer jeweiligen überpunkt vorhanden sind !
+            // in den buffer schreiben wieviel unterpunkte fuer jeweiligen Ueberpunkt vorhanden sind !
             if ( !isset($buffer[$refid]["zaehler"]) ) {
                 $buffer[$refid]["zaehler"] = $count;
 
@@ -280,10 +273,10 @@
 
             // abschliessendes ul anbringen u. pfad kuerzen
             if ( isset($buffer[$refid]["zaehler"]) ) {
-                // pfad kürzen
+                // pfad kuerzen
                 $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
                 $buffer["pfad_label"] = substr($buffer["pfad_label"],0,strrpos($buffer["pfad_label"],"/"));
-                // zaehler 1 zurücksetzen
+                // zaehler 1 zuruecksetzen
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
                 // ul anbringen wenn zaehler bei 0
                 if ( $buffer[$refid]["zaehler"] == 0  && ( $art == "sitemap" || $refid == $_SESSION["menued_id"]) ) {
