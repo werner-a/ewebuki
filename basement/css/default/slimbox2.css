@@ -19,7 +19,7 @@
 }
 
 .lbLoading {
-	background: #fff url(/images/default/lb/loading.gif) no-repeat center;
+	background: #fff url(/images/default/sb/loading.gif) no-repeat center;
 }
 
 #lbImage {
@@ -43,7 +43,7 @@
 }
 
 #lbPrevLink:hover {
-	background: transparent url(/images/default/lb/prevlabel.gif) no-repeat 0 15%;
+	background: transparent url(/images/default/sb/prevlabel.gif) no-repeat 0 15%;
 }
 
 #lbNextLink {
@@ -51,7 +51,7 @@
 }
 
 #lbNextLink:hover {
-	background: transparent url(/images/default/lb/nextlabel.gif) no-repeat 100% 15%;
+	background: transparent url(/images/default/sb/nextlabel.gif) no-repeat 100% 15%;
 }
 
 #lbBottom {
@@ -66,10 +66,29 @@
 
 #lbCloseLink {
 	display: block;
-/*	float: right;*/
-	width: 66px;
+	float: right;
+	width: 33%;
 	height: 22px;
-	background: transparent url(/images/default/lb/closelabel.gif) no-repeat center;
+	background: transparent url(/images/default/sb/closelabel.gif) no-repeat center;
+	margin: 5px 0;
+	outline: none;
+}
+#lbNextButton {
+	display: block;
+	float: right;
+	width: 33%;
+	height: 22px;
+	background: transparent url(/images/default/sb/nextlabel.gif) no-repeat center;
+	margin: 5px 0;
+	outline: none;
+}
+
+#lbPrevButton {
+	display: block;
+	float: right;
+	width: 33%;
+	height: 22px;
+	background: transparent url(/images/default/sb/prevlabel.gif) no-repeat center;
 	margin: 5px 0;
 	outline: none;
 }
