@@ -12,7 +12,10 @@
     
         g=w('<div id="lbImage" />').appendTo(a).append(p=w('<div style="position: relative;" />').append([I=w('<a id="lbPrevLink" href="#" />').click(B)[0],d=w('<a id="lbNextLink" href="#" />').click(e)[0]])[0])[0];
                     
-        c=w('<div id="lbBottom" />').appendTo(G).append([A=w('<div id="lbCaption" />')[0],K=w('<div id="lbNumber" />')[0],w('<div style="clear: both;" />')[0],I2=w('<a id="lbNextButton" href="#" />').click(e)[0],w('<a id="lbCloseLink" href="#" />').add(H).click(C)[0],I3=w('<a id="lbPrevButton" href="#"/>').click(B)[0]])[0]
+        c=w('<div id="lbBottom" />').appendTo(G).append([A=w('<div id="lbCaption" />')[0],K=w('<div id="lbNumber" />')[0],w('<div style="clear: both;" />')[0]])[0];
+        x=w('<div id="lbNaviNext" />').appendTo(G).append([I2=w('<a id="lbNextButton" href="#" />').click(e)[0]])[0];
+        x=w('<div id="lbNaviClose" />').appendTo(G).append([w('<a id="lbCloseLink" href="#" />').add(H).click(C)[0]])[0];
+        x=w('<div id="lbNaviPref" />').appendTo(G).append([I3=w('<a id="lbPrevButton" href="#"/>').click(B)[0]])[0]
     });
     
     w.slimbox=function(O,N,M){

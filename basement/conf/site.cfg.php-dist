@@ -93,8 +93,8 @@
     
     // dadurch werden die js-spielereien mit jquery durchgefuehrt
     //  Achtung ! hierzu muessen folgende dateien eingebunden werden (jquery ersetzt prototype u. scriptaculous, slimbox ersetzt lightbox):
-    //  "../../js/default/jquery-1.6.2.min.js"
-    //  "../../js/default/jquery-ui-1.8.16.custom.min.js"
+    //  "../../js/default/jquery.js"
+    //  "../../js/default/jquery-ui.js"
     //  "../../js/default/slimbox2.js"
     //  "../../css/default/jquery.css"
     //  "../../css/default/slimbox2.css"
