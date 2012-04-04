@@ -54,7 +54,7 @@
         <div class="clearer"></div>
     </fieldset>
 </form>
-<p id="output"></p>
+<p id="unused"></p>
 <p>!#ausgaben_inaccessible</p>
 
 <script type="text/javascript">
@@ -78,7 +78,7 @@ function create_sortable() {
         evalScripts:true,
         asynchronous:true,
         onUpdate: function(){
-            new Ajax.Updater('output','!#pathvars_uri',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
+            new Ajax.Updater('unused','!#pathvars_uri',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
                             }
     }
     );
