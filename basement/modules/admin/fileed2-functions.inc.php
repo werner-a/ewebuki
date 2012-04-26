@@ -145,11 +145,11 @@
                 if ( $file_ext == "gif" ) {
                     $colorTrans = imagecolortransparent($img_src);
                     imagepalettecopy($img_src,$img_dst);
-                    if ( $cfg["fileed"]["compatible"] != True ) imagefill($img_dst, 0, 0, $colorTrans);
+                    if ( function_exists(imagefill) ) imagefill($img_dst, 0, 0, $colorTrans);
                     imagecolortransparent($img_dst, $colorTrans);
                     imagetruecolortopalette($img_dst,true,256);
                 } elseif ( $file_ext == "png" ) {
-                    if ( $cfg["fileed"]["compatible"] != True ) imageantialias($img_dst,true);
+                    if ( function_exists(imageantialias) ) imageantialias($img_dst,true);
                     imagealphablending($img_dst, False);
                     imagesavealpha($img_dst, True);
                 }
