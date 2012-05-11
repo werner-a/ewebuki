@@ -66,6 +66,9 @@
 
     if ( count($_POST) > 0 ) {
         foreach ( $_POST["areas"] as $key => $value ) {
+        $mark_o = array( "#(", "g(", "#{", "!#" );
+        $hide_o = array( "::1::", "::2::", "::3::", "::4::" );
+        $value = str_replace( $mark_o, $hide_o, $value );
             $buffer[$key] = $value;
         }
         if ( $_POST["new_line"] ) {
@@ -93,7 +96,7 @@
             } else {
                 continue;
             }
-
+                
             $dataloop["faq"][$key]["answer"] = $buffer[$key+1];
             $dataloop["faq"][$key]["question"] = $value;
             $dataloop["faq"][$key]["count"] = $key;
