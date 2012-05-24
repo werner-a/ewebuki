@@ -72,7 +72,7 @@
         $where = "";
 
         // manipulation verhindern
-        if ( $environment["parameter"][2] != "" && !preg_match("/^[0-9]*$/",$environment["parameter"][2]) ) {
+        if ( $environment["parameter"][2] != "" && $environment["ebene"] != "/wizard" && !preg_match("/^[0-9]*$/",$environment["parameter"][2]) ) {
             header('Location: /index.html');
             exit;
         }
@@ -165,7 +165,7 @@
 
         // falls sort auf -1 wird anstatt ein datum ein integer als sortiermerkmal gesetzt um ein manuelles sortieren zu ermoeglichen
         if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1" ) {
-            $art = "SIGNED";
+            $art = "INTEGER";
         } else {
             $art = "DATETIME";
         }
