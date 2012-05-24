@@ -790,47 +790,6 @@
                                      '".$_SESSION["alias"]."'";
                     }
 
-                    // alle dazugehoerigen blogs updaten
-                    if ( is_array($tag_meat["BLOG"]) ) {
-                        $blog_sql = "SELECT tname FROM ".SITETEXT." WHERE content ~ '\\\[KATEGORIE\]".tname2path($environment["parameter"][2])."\\\[\/KATEGORIE\]' group by tname";
-                        $blog_result = $db -> query($blog_sql);
-                        while ( $blog_data = $db -> fetch_array($blog_result,1) ) {
-                            if ( $_SESSION["wizard_content"][DATABASE.",".$blog_data["tname"].",".$environment["parameter"][3]] ) {
-                                // die naechste freie versionsnummer finden
-                                $sql = "SELECT max(version) as max_version, ebene, kategorie
-                                        FROM ". SITETEXT ."
-                                        WHERE lang = '".$environment["language"]."'
-                                        AND label ='".$environment["parameter"][3]."'
-                                        AND tname ='".$blog_data["tname"]."' group by ebene,kategorie";
-                                $result = $db -> query($sql);
-                                $data = $db -> fetch_array($result,1);
-                                $next_blog_version = $data["max_version"] + 1;
-                                $sql = "INSERT INTO ". SITETEXT ."
-                                                    (lang, label, tname, version,
-                                                    ebene, kategorie,
-                                                    crc32, html, content,
-                                                    changed, bysurname, byforename, byemail, byalias".$status1.")
-                                            VALUES (
-                                                    '".$environment["language"]."',
-                                                    '".$environment["parameter"][3]."',
-                                                    '".$blog_data["tname"]."',
-                                                    '".$next_blog_version."',
-                                                    '".$data["ebene"]."',
-                                                    '".$data["kategorie"]."',
-                                                    '".$specialvars["crc32"]."',
-                                                    '0',
-                                                    '".addslashes($_SESSION["wizard_content"][DATABASE.",".$blog_data["tname"].",".$environment["parameter"][3]])."',
-                                                    '".date("Y-m-d H:i:s")."',
-                                                    '".$_SESSION["surname"]."',
-                                                    '".$_SESSION["forename"]."',
-                                                    '".$_SESSION["email"]."',
-                                                    '".$_SESSION["alias"]."'
-                                                    ,-1)";
-                                $result = $db -> query($sql);
-                            }
-                        }
-                    }
-
                     $sql_content = "INSERT INTO ". SITETEXT ."
                                                 (lang, label, tname, version,
                                                  ebene, kategorie,
