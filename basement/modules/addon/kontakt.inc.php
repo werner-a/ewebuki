@@ -121,7 +121,7 @@
             if ( $_GET["referer"] != "" && preg_match("/^http:\/\/[A-Za-z_\-\.0-9\/]+$/",$_GET["referer"]) ) {
                 $hidedata["referer"]["link"] = htmlentities($_GET["referer"]);
                 $ausgaben["last_viewed"] = "";
-            }
+        }
         }
 
         // unzugaengliche #(marken) sichtbar machen
@@ -219,6 +219,27 @@
                     $result = mail($email_adresse,$subject2,$message2,$header2,$cfg["kontakt"]["email"]["add_para"]);
                 } else {
                     $result = mail($email_adresse,$subject2,$message2,$header2);
+                }
+                if ( $cfg["kontakt"]["email"]["save"] == -1 ) {
+
+                    $sqla = "";
+                    $sqlb = "";
+                    $trenner = "";
+                    $kick_array = array("send","last_viewed","form_referer","captcha","captcha_proof");
+                    foreach ( $_POST as $key => $value ) {
+                        if ( in_array($key, $kick_array) ) continue;
+                        if ( $sqla != "" ) $trenner = ",";
+                        $sqla .= $trenner.$key;
+                        if ( !get_magic_quotes_gpc() ) {
+                            $sqlb .= $trenner."'".addslashes($value)."'";
+                        } else {
+                            $sqlb .= $trenner."'".$value."'";
+                        }                           
+                    }
+                    $sqla .= ",secure_key";
+                    $sqlb .= ",'".crc32($_POST["captcha_proof"].$_POST["email"])."'";
+                    $sql = "INSERT INTO ".$cfg["kontakt"]["db"]["entries"]."(".$sqla.") VALUES (".$sqlb.")";
+                    $result = $db -> query($sql);
                 }
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
