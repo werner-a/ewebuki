@@ -43,56 +43,17 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//     if ( priv_check(tname2path(),$cfg["keyworded"]["right"]["content"]) ) {
-
-        // page basics
-        // ***
+    if ( $cfg["keyworded"]["right"]["keywords"] == "" || priv_check(tname2path($environment["parameter"][1]), $cfg["keyworded"]["right"]["keywords"] ) ) {
 
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
-        // form options holen
-//         $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
-
-        // form elememte bauen
-//         $element = form_elements( $cfg["keyworded"]["db"]["leer"]["entries"], $form_values );
-
-        // form elemente erweitern
-        $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
-        $element["extension2"] = "<input name=\"extension2\" type=\"text\" maxlength=\"5\" size=\"5\">";
-
-        // +++
-        // page basics
-
-
-        // funktions bereich fuer erweiterungen
-        // ***
-
-        // ajax fuer autocompleter
-        if ( $_POST["ajax"] == "on" ) {
-            $sql = "SELECT DISTINCT ".$cfg["keyworded"]["db"]["keyword"]["keyword"]."
-                               FROM ".$cfg["keyworded"]["db"]["keyword"]["entries"]."
-                              WHERE ".$cfg["keyworded"]["db"]["keyword"]["keyword"]." LIKE '".$_POST["keywords"]."%'";
-            $result = $db -> query($sql);
-            $output = array();
-            $output[0] = "<li><b>".$_POST["keywords"]."</b></li>";
-            while ( $data = $db -> fetch_array($result,1) ) {
-                $output[] = "<li>".preg_replace("/^(".$_POST["keywords"].")/Ui",'<b>${1}</b>',$data[$cfg["keyworded"]["db"]["keyword"]["keyword"]])."</li>";
-                if ( $_POST["keywords"] == $data[$cfg["keyworded"]["db"]["keyword"]["keyword"]] ) unset($output[0]);
-            }
-            echo "<ul>".implode("\n",$output)."</ul>";
-            die();
-        }
-
-//         $ausgaben["path"] = tname2path($environment["parameter"][1]).".html";
         if ( $_POST["url"] != "" ) {
             $ausgaben["path"] = $_POST["url"];
-            $keywords = explode(",",$_POST["keywords"]);
-            foreach ( $keywords as $key=>$value ) {
+            foreach ( $_POST["keywords"] as $key=>$value ) {
+                if ( $value == "##value##") continue;
                 $keywords[$key] = trim($value);
             }
-            $keywords = array_flip($keywords);$keywords = array_flip($keywords);
-            $ausgaben["keywords"] = implode(", ",$keywords);
         } else {
 
             if ( $environment["parameter"][1] == "" ) {
@@ -105,6 +66,10 @@
                                 "",
                                 $_SERVER["HTTP_REFERER"]
                 );
+                if ( preg_match("/^\/keywords\/edit_page/",$url) ) {                    
+                    header("Location: ".$_SERVER["HTTP_REFERER"]);
+                    exit;
+                }
                 $path = explode("/",$url);
                 $kategorie = array_pop($path);
                 if ( $kategorie == "" ) {
@@ -131,10 +96,6 @@
                 }
             }
 
-            if ( $ausgaben["path"] != "" && !priv_check($ausgaben["path"],$cfg["keyworded"]["right"]["content"]) ) {
-                $ausgaben["form_error"] = "#(error_right)";
-            }
-
             // schlagwoerter fuer die seite holen
             $sql = "SELECT *
                     FROM ".$cfg["keyworded"]["db"]["keyword"]["entries"]."
@@ -143,9 +104,11 @@
             $result = $db -> query($sql);
             $keywords = array();
             while ( $data = $db -> fetch_array($result,1) ) {
+                $dataloop["sitetags"][]["keyword"] = $data[$cfg["keyworded"]["db"]["keyword"]["keyword"]];
                 $keywords[] = $data[$cfg["keyworded"]["db"]["keyword"]["keyword"]];
             }
-            $ausgaben["keywords"] = implode(", ",$keywords);
+            $ausgaben["schlag"] ="";
+            if ( count($dataloop["sitetags"]) == 0 ) $ausgaben["schlag"] ="none";;
         }
 
         // in der site_menu nach titel suchen
@@ -164,18 +127,8 @@
 
         // alle schlagwoerter holen
         $dataloop["tags_all"] = cloud_loop("all","",$keywords);
+                
         if ( count($dataloop["tags_all"]) > 0 ) $hidedata["tags_all"] = array();
-
-
-
-        ### put your code here ###
-
-        // +++
-        // funktions bereich fuer erweiterungen
-
-
-        // page basics
-        // ***
 
         // hidden values
         $ausgaben["form_hidden"] .= "";
@@ -235,8 +188,6 @@
                 // funktions bereich fuer erweiterungen
                 // ***
 
-                ### put your code here ###
-
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
@@ -277,17 +228,6 @@
                                         )";
                     $result  = $db -> query($sql);
                 }
-
-                // Sql um spezielle Felder erweitern
-                #$ldate = $_POST["ldate"];
-                #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
-                #$sqla .= ", ldate='".$ldate."'";
-
-//                 $sql = "update ".$cfg["keyworded"]["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["keyworded"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
-//                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-//                 $result  = $db -> query($sql);
-//                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-//                 if ( $header == "" ) $header = $cfg["keyworded"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
@@ -297,9 +237,9 @@
                 header("Location: ".$header);
             }
         }
-//     } else {
-//         header("Location: ".$pathvars["virtual"]."/");
-//     }
+    } else {
+        header("Location: ".$pathvars["virtual"]."/");
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

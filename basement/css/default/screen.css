@@ -287,7 +287,7 @@ input.submit {
 }
 
 .cloud, .cloud_pages {
-    border:1px solid #A9C0CE;
+    border:1px solid #A9C0CE !important;
     margin:4px 0 6px;
     padding:3px;
 }
@@ -305,25 +305,23 @@ input.submit {
         }
 
         .cloud li.selected {
-            background:#EEEEEE;
             border:1px solid #6C757A;
         }
 
         .cloud li.tag0 a {
-            color:#BBBBBB !important;
+            font-size: 0.8em;
         }
 
         .cloud li.tag1 a {
-            color:#888888 !important;
+            font-size: 1.0em;
         }
 
         .cloud li.tag2 a {
-            color:#444444 !important;
+            font-size: 1.2em;
         }
 
         .cloud li.tag3 a {
-            color:#333333 !important;
-            font-weight:bold;
+            font-size: 1.4em;
         }
 
 .cloud_pages {
