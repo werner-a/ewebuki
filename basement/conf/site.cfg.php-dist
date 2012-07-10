@@ -89,17 +89,6 @@
     $specialvars["security"]["new"] = -1;
     $specialvars["security"]["content"] = "edit;publish";
     #$specialvars["content_release"] = -1;
-
-    
-    // dadurch werden die js-spielereien mit jquery durchgefuehrt
-    //  Achtung ! hierzu muessen folgende dateien eingebunden werden (jquery ersetzt prototype u. scriptaculous, slimbox ersetzt lightbox):
-    //  "../../js/default/jquery.js"
-    //  "../../js/default/jquery-ui.js"
-    //  "../../js/default/slimbox2.js"
-    //  "../../css/default/jquery.css"
-    //  "../../css/default/slimbox2.css"
-
-    #$specialvars["jquery"] = -1;
     
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.

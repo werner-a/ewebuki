@@ -489,11 +489,7 @@
 
         // was anzeigen
         $cfg["fileed"]["path"] = str_replace($pathvars["virtual"],"",$cfg["fileed"]["basis"]);
-        if ( $specialvars["jquery"] == -1 ) {
-            $mapping["main"] = "eed_fileed.list";
-        } else {
-            $mapping["main"] = eCRC($cfg["fileed"]["path"]).".list";
-        }
+        $mapping["main"] = eCRC($cfg["fileed"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

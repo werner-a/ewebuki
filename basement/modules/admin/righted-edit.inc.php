@@ -227,11 +227,8 @@
         $ausgaben["form_hidden"] .= "";
 
         // was anzeigen
-         if ( $specialvars["jquery"] == -1 ) {
-            $mapping["main"] = "eed_righted.modify";
-        } else {
-            $mapping["main"] = eCRC($environment["ebene"]).".modify";
-        }
+        $mapping["main"] = eCRC($environment["ebene"]).".modify";
+
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

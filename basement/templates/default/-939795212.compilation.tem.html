@@ -79,151 +79,53 @@
 <p>!#ausgaben_inaccessible</p>
 
 <script type="text/javascript">
-
+    if(typeof jQuery != "function" || typeof jQuery.ui != "object" ) {
+        alert("jQuery nicht geladen! Der Datei-Editor wird nicht funktionieren !");
+    }
     function session_update(compid,picid) {
-        new Ajax.Request(
-            './compilation,' + compid + ',' + picid + '.html',
-            {
-                asynchronous:true,
-                parameters:'ajax=on',
-                onSuccess:function() {
-                    check_boxes(compid,picid);
-                }
-            }
-        );
+        $.ajax ({
+            type: 'POST',
+            url:                './compilation,' + compid + ',' + picid + '.html',
+            data:           'ajax=on',
+            success:     function() {
+                                            check_boxes(compid,picid,jQuery('#c'+compid).attr('checked'));
+                                    }
+         });
     }
-    function check_boxes(cid,pid) {
-        // checkboxen der selectionen
-        $$('input.selection_checkbox').each(
-            function(celement,i) {
-                if ( celement.id != 'c' + cid ) {
-                    $(celement.id).checked = false;
+    
+    function check_boxes(cid,pid,status) {
+
+        // bild einer sel ausgewaehlt ohne die sel zu waehlen -> sel auch aktivieren
+        if ( jQuery('#c'+cid+':checked').val() != -1 &&  pid ) {
+            jQuery('#c'+cid).attr("checked", "checked");  
+        }
+        
+//        // checkboxen der selectionen
+         jQuery('input.selection_checkbox').each( function(i,element) {
+             if ( 'c'+cid != element.id ) {
+                 jQuery('#'+element.id).attr("checked", false);                 
+             }      
+         });
+
+//        // checkboxen der einzelnen bilder
+        jQuery('input.sel_pic_checkbox').each( function(i,element) {
+//            // selection ausgewaehlt
+            if ( !pid ) {
+                if ( element.id.match('c'+cid+'p') && status == "checked") {
+                    jQuery('#'+element.id).attr("checked", "checked");                                           
                 } else {
-                    if ( !Object.isUndefined(pid) ) {
-                        $(celement.id).checked = true;
-                    }
+                    jQuery('#'+element.id).attr("checked", false);
+                }
+//            // bild einer sel gewaehlt
+            } else {
+                if ( !element.id.match('c'+cid+'p') ) {
+                     jQuery('#'+element.id).attr("checked", false);       
                 }
             }
-        );
-        // checkboxen der einzelnen bilder
-        $$('input.sel_pic_checkbox').each(
-            function(pelement,i) {
-                if ( pelement.id.indexOf('c' + cid + 'p') == -1 ) {
-                    // bilder ausserhalb der gewaehlten selektion ausblenden
-                    $(pelement.id).checked = false;
-                } else {
-                    if ( $('c' + cid).checked == false ) {
-                        // bilder ist ausserhalb der gewaehlten selection
-                        $(pelement.id).checked = false;
-                    } else {
-                        // bilder ist innerhalb der gewaehlten selection
-// <!--##hide-sel_pics_w_sel-->
-                        // und alle bilder der gewaehlten selection werden ausgewaehlt
-                        if ( !pid ) $(pelement.id).checked = true;
-// <!--##show-->
-                    }
-                }
-            }
-        );
+
+        });
     }
 </script>
-<!--##end-->
-
-
-
-
-
-
-<hr />
-
-
-
-<!--##hide-compilation-->
-<h1 id="cEd">
-<!--##show-->
-<!--##hide-long_name-->
-    <a class="infobox">
-        #(all_names)
-        <span>!{title}</span>
-    </a>
-<!--##show-->
-<!--##hide-compilation-->
-    !{title}
-</h1>
-<p>
-<a href="!#ausgaben_edit" style="float:right;">
-    <img src="../../images/default/edit.png" width="24" height="18" alt="g(edit)" title="g(edit)" />
-</a>
-<!--##show-->
-
-<!--##hide-zurueck-->
-<a href="!{link}">g(prev)</a>
-<!--##show-->
-#(compilation) !#ausgaben_aktuell #(of) !#ausgaben_comp_count
-<!--##hide-vor-->
-<a href="!{link}">g(next)</a>
-<!--##show-->
-</p>
-<div style="clear:both"></div>
-<!--##hide-check_error-->
-<p style="display:!{display}" id="error">
-    #(check_error1) <span id="ajax_output">!{count}</span> #(check_error2)
-</p>
-<!--##show-->
-
-<!--##hide-list_ajax-->
-<ul>
-<!--##loop-list_images-->
-    <li class="thumbs">
-        <a href="!{vhref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} g(edit)" /></a>
-        <p>
-            <input id="!{id}" type="checkbox" name="sel_pics[!{id}]" value="-1" onclick="session_update(!#ausgaben_compid,!{id});"!{checked} />
-        </p>
-    </li>
-<!--##cont-->
-</ul>
-<div style="clear:both"></div>
-<script type="text/javascript">
-    function session_update(compid,fileid) {
-        new Ajax.Updater('ajax_output',
-                         './compilation,' + compid + ',' + fileid + '.html?ajax',
-                         {
-                            asynchronous:true,
-                            onSuccess:function(){ new Effect.Fade('error')},
-                            onFailure:function(){
-                                new Effect.Appear('error');
-                                document.getElementById(fileid).checked = false;
-                            }
-                         }
-        );
-    }
-</script>
-<!--##show-->
-
-<!--##hide-list_plain-->
-<ul>
-<!--##loop-list_images-->
-    <li class="thumbs">
-        <a href="!{vhref}" class="pic"><img src="!{src}" alt="!{alt}" title="!{title} g(edit)" /></a>
-        <p>
-            !{cb}
-        </p>
-    </li>
-<!--##cont-->
-</ul>
-<div style="clear:both"></div>
-<!--##show-->
-
-<!--##hide-compilation-->
-<p>#(num_pics) !{pic_count}</p>
-<!--##show-->
-
-
-<div style="clear:both"></div>
-<p>#(inhalt)</p>
-<p>#(text1)</p>
-<p>!#ausgaben_output</p>
-<p>!#ausgaben_inaccessible</p>
 <!--##end-->
 </body>
 </html>

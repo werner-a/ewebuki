@@ -21,14 +21,14 @@
 <!--##cont-->
     </div>
 <!--##show-->
-    <div id="tabmain">
-        <div id="tabmenu">
-            <div id="tab_datasheet1" class="tab active"><div>Gruppen</div></div>
-            <div id="tab_datasheet2" class="tab"><div>Benutzer</div></div>
-            <div id="tab_datasheet3" class="tab "><div>Legende</div></div>
-        </div>
+    <div id="tabmain" style="margin: 10px">
+        <ul id="tabsmenu">
+            <li><a href="#group">Gruppen</a></li>
+            <li><a href="#user">Benutzer</a></li>
+            <li><a href="#leg">Legende</a></li>
+        </ul>
 
-        <div id="datasheet1" class="tabcontent">
+        <div id="group">
             <h2>#(url) !#ausgaben_url</h2>
 <!--##loop-infos_group-->
             <fieldset>
@@ -38,7 +38,7 @@
 <!--##cont-->
         </div>
     
-        <div id="datasheet2" class="tabcontent" style="display:none">
+        <div id="user">
             <h2>#(url) !#ausgaben_url</h2>
 <!--##loop-infos_user-->
             <fieldset>
@@ -48,7 +48,7 @@
 <!--##cont-->
         </div>
     
-        <div id="datasheet3" class="tabcontent" style="display:none">
+        <div id="leg">
             <div>
 <!--##loop-legende-->
                 <div class="legende" style="background:!{color}"></div><div>!{text}</div>
@@ -65,61 +65,12 @@
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
 <script type="text/javascript">
-    
-    function anzeigen(id) {
-    show = document.getElementById(id).style.display;
-    if ( show == 'none' ) {
-    new Effect.BlindDown(id);
-    } else {
-    new Effect.BlindUp(id)
+    if(typeof jQuery != "function" || typeof jQuery.ui != "object" ) {
+        alert("jQuery nicht geladen! Der Rechte-Editor wird nicht funktionieren !");
     }
-    return false;
-    }
-
-
-    var tabids = [];
-    var containerids = [];
-    function create_tabs() {
-        $$('.tab').all( function( el ) {
-                tabids.push( el.id );                            
-                containerids.push( el.id.replace( 'tab_', '' ) );
-                el.observe( 'click', handle_tab_click );
-                return true;
-        } );
-    }
-
-    /**
-     * Hande a clicked tab
-     */
-    function handle_tab_click( event )
-    {
-        // Get container id
-        containerid = this.id.replace( 'tab_', '' );
-        // Set active tab menu point
-        tabids.all( function( tab ) {
-            $(tab).removeClassName( 'active' );
-            return true;
-        } );
-        this.addClassName( 'active' );
-        // Set active tab content container
-        containerids.all( function( container ) {
-            $(container).hide();
-            return true;
-        } );
-        $(containerid).show();
-    }
-    /**
-     * Init tabbing
-     */
-    Event.observe( window, 'load', create_tabs );
-
-    if ( window.location.hash == '#user' ) {
-        $('tab_datasheet2').addClassName( 'active' );
-        $('tab_datasheet1').removeClassName( 'active' );
-        $('datasheet1').hide();
-        $('datasheet2').show();
-    };
-
+    $(function() {
+            jQuery( "#tabmain" ).tabs();
+    });
 </script>
 <!--##end-->
 </body>

@@ -58,53 +58,32 @@
 </form>
 
 <script type="text/javascript">
-    sections = new Array();
-    sections[0] = 'pics_chosen';
-// <!--#hide-storage-->
-    sections[1] = 'pics_available';
-
-    Sortable.create(
-        'pics_available',
-        {
-            constraint: false,
-            overlap:'horizontal',
-            dropOnEmpty: true,
-            containment: sections,
-            only:'sel_item',
-            evalScripts:true,
-            asynchronous:true,
-            onUpdate: function(){
-                new Ajax.Request(
-                    '!#ausgaben_form_ajax_aktion',
-                    {
-                        parameters:'ajax=on&compid=!#ausgaben_compid&' + Sortable.serialize('pics_chosen') + '&' + Sortable.serialize('pics_available')
+    if(typeof jQuery != "function" || typeof jQuery.ui != "object" ) {
+        alert("jQuery nicht geladen! Der Datei-Editor wird nicht funktionieren !");
+    }
+    jQuery('#pics_available').sortable({
+        connectWith: '#pics_chosen',
+            receive: function(){
+            jQuery.ajax ({
+                type: 'POST',
+                url:           '!#ausgaben_form_ajax_aktion',
+                data:       'ajax=on&compid=!#ausgaben_compid&' +  jQuery('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+  jQuery('#pics_available').sortable('serialize',{key:'pics_available[]'})
+                });
                     }
-                );
-            }
+    });
+    
+    
+    jQuery('#pics_chosen').sortable({
+        connectWith: '#pics_available',
+        receive: function(){
+            jQuery.ajax ({
+                type: 'POST',
+                url:           '!#ausgaben_form_ajax_aktion',
+                data:       'ajax=on&compid=!#ausgaben_compid&' +  jQuery('#pics_chosen').sortable('serialize',{key:'pics_chosen[]'}) +'&'+  jQuery('#pics_available').sortable('serialize',{key:'pics_available[]'})
+                });
         }
-    );
-// <!--#show-->
+    });
 
-    Sortable.create(
-        'pics_chosen',
-        {
-            constraint: false,
-            overlap:'horizontal',
-            dropOnEmpty: true,
-            containment: sections,
-            only:'sel_item',
-            evalScripts:true,
-            asynchronous:true,
-            onUpdate: function(){
-                new Ajax.Request(
-                    '!#ausgaben_form_aktion',
-                    {
-                        parameters:'ajax=on&compid=!#ausgaben_compid&' + Sortable.serialize('pics_chosen') + '&' + Sortable.serialize('pics_available')
-                    }
-                );
-            }
-        }
-    );
 </script>
 <!--##end-->
 </body>

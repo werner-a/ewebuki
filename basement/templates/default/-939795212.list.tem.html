@@ -39,8 +39,8 @@
             <input type="submit" name="send[]" value="g(send)" />
         </label>
         <label class="small">
-            &nbsp;<br />
-            <a href="#" onclick="anzeigen('esearch');">#(esearch)</a>
+            &nbsp;
+            <a href="#" onclick="$('#esearch').toggle()">#(esearch)</a>
         </label>
     </fieldset>
     <fieldset id="esearch" class="float" style="padding:0;display:none;">
@@ -253,41 +253,19 @@
 
 <!--##hide-list_ajax-->
 <script type="text/javascript">
+        if(typeof jQuery != "function" || typeof jQuery.ui != "object" ) {
+        alert("jQuery nicht geladen! Der Datei-Editor wird nicht funktionieren !");
+    }
     function session_update(fileid) {
-        new Ajax.Updater('ajax_output',
-                         './list,,' + fileid + '.html?ajax',
-                         {asynchronous:true,
-                          onFailure:function(){ new Effect.Fade('file')},
-                          onSuccess:function(){ new Effect.Appear('file')}
-                         }
-        );
-    }
-    function anzeigen(id,trigger) {
-        show = document.getElementById(id).style.display;
-        if ( show == 'none' ) {
-            new Effect.BlindDown(id, {duration: 0.1});
-        } else {
-            new Effect.BlindUp(id, {duration: 0.1})
-        }
-        return false;
-    }
-    function anzeigen(id) {
-        if ( typeof(id) == 'string' ) {
-            var element = [id];
-        } else {
-            element = id;
-        }
-        for (i=0; i<element.length; i++) {
-            if ( $(element[i]) ) {
-                show = $(element[i]).style.display;
-                if ( show == 'none' ) {
-                    new Effect.BlindDown(element[i], {duration: 0.3});
-                } else {
-                    new Effect.BlindUp(element[i], {duration: 0.3})
-                }
-            }
-        }
-        return false;
+        $.ajax ({
+            url:                './list,,' + fileid + '.html?ajax',
+            context:     'ajax_output',
+            success:      $('#file').fadeIn()
+         });
+         
+        $('#file').ajaxError(function(){
+            $('#file').fadeOut()
+        })
     }
 </script>
 <!--##show-->
