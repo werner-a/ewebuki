@@ -236,10 +236,12 @@
                             $sqlb .= $trenner."'".$value."'";
                         }                           
                     }
-                    $sqla .= ",secure_key";
-                    $sqlb .= ",'".crc32($_POST["captcha_proof"].$_POST["email"])."'";
-                    $sql = "INSERT INTO ".$cfg["kontakt"]["db"]["entries"]."(".$sqla.") VALUES (".$sqlb.")";
-                    $result = $db -> query($sql);
+                    if ( $_POST[$cfg["kontakt"]["email"]["form_email_feld"]] != "" ) {
+                        $sqla .= ",secure_key";
+                        $sqlb .= ",'".crc32($_POST["captcha_proof"].$_POST["email"])."'";
+                    }
+                        $sql = "INSERT INTO ".$cfg["kontakt"]["db"]["entries"]."(".$sqla.") VALUES (".$sqlb.")";
+                        $result = $db -> query($sql);
                 }
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
