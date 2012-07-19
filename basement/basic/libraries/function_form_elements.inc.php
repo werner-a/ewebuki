@@ -176,7 +176,7 @@
                         } else {                           #
                             $label_wert = $value;          #
                         }                                  #
-                        $formularobject .= "<label for=\"".$fields["Field"]."_label_".$key."\">".$label_wert."</label>\n";
+                        $formularobject .= "<label for=\"".$fields["Field"]."_".$key."\">".$label_wert."</label>\n";
                         $formularobject .= "<input id=\"".$fields["Field"]."_".$key."\" type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$class.$checked." />\n";
                     }
                     $element[$fields["Field"].$extend] = $formularobject;
