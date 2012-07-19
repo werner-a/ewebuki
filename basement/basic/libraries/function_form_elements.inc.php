@@ -53,6 +53,9 @@
             $stripslashes = True;
         }
 
+        $element_count = 4;
+        if ( $defaults["form_elements_count"] ) $element_count = $defaults["form_elements_count"];
+
         $columns = $db -> show_columns($table);
         #echo "<pre>".print_r($columns,True)."</pre>";
         foreach ( $columns as /* $key => */ $fields ) {
@@ -131,7 +134,7 @@
                     $formularobject  = "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"\" class=\"hidden\" />\n";
                     $formularobject .= "<label for=\"".$fields["Field"]."\">".$options[0]."</label>\n";
                     $formularobject .= "<input id=\"".$fields["Field"]."\" type=\"checkbox\" name=\"".$fields["Field"].$extend."\" value=\"".$options[0]."\"".$checked." />\n";
-                } elseif ( count($options) >= 4 ) {
+                } elseif ( count($options) >= $element_count ) {
                     ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "size=\"1\"";
                     ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["dropdown"]["class"]."\"";
                     ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
@@ -161,7 +164,7 @@
                     // bleibt der post/get value leer
                     // der required check versagt!
                     $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".htmlspecialchars($form_values[$fields["Field"]])."\" class=\"hidden\" />\n";
-                    foreach( $options as $value ) {
+                    foreach( $options as $key => $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
                             $checked = " checked";
                         } else {
@@ -173,8 +176,8 @@
                         } else {                           #
                             $label_wert = $value;          #
                         }                                  #
-                        $formularobject .= "<label for=\"".$fields["Field"]."\">".$label_wert."</label>\n";
-                        $formularobject .= "<input id=\"".$fields["Field"]."\" type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$class.$checked." />\n";
+                        $formularobject .= "<label for=\"".$fields["Field"]."_label_".$key."\">".$label_wert."</label>\n";
+                        $formularobject .= "<input id=\"".$fields["Field"]."_".$key."\" type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$class.$checked." />\n";
                     }
                     $element[$fields["Field"].$extend] = $formularobject;
                 }
