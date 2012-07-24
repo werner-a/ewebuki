@@ -216,7 +216,27 @@
                         if ( $name == "move" ) {
                             $aktion .= "<a href=\"".$cfg[$script_name]["basis"]."/".$value[0].$name.",0,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                         } else {
-                            $aktion .= "<a href=\"".$cfg[$script_name]["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            if ( $art == "wizard") {
+                                $database = "";
+                                $label = "";
+                                $ebene = make_ebene($array["mid"]);
+                                $last =strrpos($ebene,"/");
+                                $wizard_ebene = substr($ebene, 0, $last);
+                                $wizard_kat = substr($ebene,$last+1);
+                                $dest = $name;
+                                if ( $name == "edit" ) {
+                                    $database = DATABASE;
+                                    $label =",inhalt";
+                                    $dest = "show";    
+                                }
+                                if ( $wizard_ebene == "" ) {
+                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";                                        
+                                } else {
+                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";    
+                                }
+                            } else {
+                                $aktion .= "<a href=\"".$cfg[$script_name]["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            }
                         }
                     }
                 }
