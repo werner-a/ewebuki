@@ -257,14 +257,14 @@
         alert("jQuery nicht geladen! Der Datei-Editor wird nicht funktionieren !");
     }
     function session_update(fileid) {
-        $.ajax ({
+        jQuery.ajax ({
             url:                './list,,' + fileid + '.html?ajax',
             context:     'ajax_output',
-            success:      $('#file').fadeIn()
+            success:      jQuery('#file').fadeIn()
          });
          
-        $('#file').ajaxError(function(){
-            $('#file').fadeOut()
+        jQuery('#file').ajaxError(function(){
+            jQuery('#file').fadeOut()
         })
     }
 </script>
