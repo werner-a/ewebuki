@@ -189,17 +189,20 @@
 
             $_SESSION["wizard_content"][$identifier] = $content;
         }
-
-        if ( strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) || $_SERVER["HTTP_REFERER"] == "" ) {
-            $header = $cfg["wizard"]["basis"]."/show,".
-                                                $environment["parameter"][1].",".
-                                                $environment["parameter"][2].",".
-                                                $environment["parameter"][3].",,".
-                                                $environment["parameter"][5].",".
-                                                $environment["parameter"][6].".html";
-            header("Location: ".$header.$anker);
+        if ( $_GET["sort_save"] == on ) {
+            header("HTTP/1.0 200 OK");
         } else {
-            header("Location: ".$cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html");
+            if ( strstr($_SERVER["HTTP_REFERER"],$cfg["wizard"]["basis"]) || $_SERVER["HTTP_REFERER"] == "" ) {
+                $header = $cfg["wizard"]["basis"]."/show,".
+                                                    $environment["parameter"][1].",".
+                                                    $environment["parameter"][2].",".
+                                                    $environment["parameter"][3].",,".
+                                                    $environment["parameter"][5].",".
+                                                    $environment["parameter"][6].".html";
+                header("Location: ".$header.$anker);
+            } else {
+                header("Location: ".$cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html");
+            }
         }
     } else {
         header("Location: ".$pathvars["virtual"]."/");
