@@ -185,18 +185,6 @@
 // echo "::".$form_values["status"]."<br>";
 // echo "::".$form_values["byalias"]."<br>";
 
-        // verarbeitung fuer die ajax-vorschau auf bestimmte bereiche
-        if ( $_POST["ajax_preview"] == "on" ) {
-            $ajax_buffer = content_level1($form_values["content"]);
-                    echo preg_replace(
-                        array("/#\{.+\}/U","/g\(.+\)/U"),
-                        array("",""),
-                        tagreplace($ajax_buffer[$_POST["block"]])
-                    );
-            header("HTTP/1.0 200 OK");
-            die;
-        }
-
         if ( $_GET["scroll"] != "" ) {
             $hidedata["ajax_scroll"]["section"] = $_GET["scroll"];
         }
@@ -842,7 +830,9 @@
                             $content
                         );
                         // aendern des rel-namen um in der Vorschau nicht die doppelten bilder in der galerie zu haben
-                        $preview_content = str_replace("rel=\"lightbox[group","rel=\"lightbox[newgroup",$preview_content);
+                        $preview_content = str_replace("rel=\"lightbox[group","rel=\"lightbox-preview[newgroup",$preview_content);
+                        $preview_content = str_replace("rel=\"lightbox[","rel=\"lightbox-image[",$preview_content);
+                        
                         echo $preview_content;
                         die ;
                     }
