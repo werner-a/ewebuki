@@ -196,7 +196,7 @@
                 if ( $cfg["kontakt"]["email"]["encoding"] != "" ) {
                     $header1 .= "Content-Type: text/plain; charset=".$cfg["kontakt"]["email"]["encoding"]."\r\n";
                 }
-                if ( $cfg["kontakt"]["email"]["add_para"] ) {
+                if ( $cfg["kontakt"]["email"]["add_para"] ) {                    
                     $result = mail($cfg["kontakt"]["email"]["owner"],$subject1,$message1,$header1,$cfg["kontakt"]["email"]["add_para"]);
                 } else {
                     $result = mail($cfg["kontakt"]["email"]["owner"],$subject1,$message1,$header1);
@@ -229,8 +229,8 @@
                     foreach ( $_POST as $key => $value ) {
                         if ( in_array($key, $kick_array) ) continue;
                         if ( $sqla != "" ) $trenner = ",";
-                        $sqla .= $trenner.$key;
-                        if ( !get_magic_quotes_gpc() ) {
+                        $sqla .= $trenner."\"".$key."\"";
+                        if ( !get_magic_quotes_gpc() && $value != "" ) {
                             $sqlb .= $trenner."'".addslashes($value)."'";
                         } else {
                             $sqlb .= $trenner."'".$value."'";
