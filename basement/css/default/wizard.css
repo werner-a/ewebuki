@@ -1,200 +1,150 @@
-/* project: eWeBuKi stylesheet template for eWeBuKi wizard styles
-   based on a design from: luka cvrk (www.solucija.com)
+#wizard {
+    margin:0;
+    padding:0 0 10px;    
+}
 
-   $Id: eed.css 1230 2008-02-01 09:44:04Z buffy1860 $ */
+#wizard .admin_head {
+    margin-left:0;
+}
 
+/* spalten-definitionen
+----------------------*/
+#wizard .column_1, #wizard .column_2, #wizard .column_3 {
+    float:left;
+    display:inline;
+    min-height:50px;
+    padding:0 0 10px 0;
+}
 
+#wizard .column_1 {
+    display:none;
+    width:160px;
+}
 
-/*----------------------
-  alien styles
-  ----------------------*/
-/*
-body, p, form, ul, ol {
+#wizard .column_2 {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    padding-right: 5px;
+    width: 80%;
+}
+
+#wizard .column_3 {
+    width:20%;
+}
+
+#wizard .column_3 .box h3 {
+    border: medium none;
+    color: #444444;
+    font-size: 0.8em;
     margin: 0;
-    padding: 0;
+    padding: 0.2em 3px;
+    text-align: left;
 }
 
-ul, ol {
-    list-style : none;
+/* box und buttons
+----------------------*/
+#wizard .column_3 .box {
+    background: none;
+    margin:0 0 10px;
+    padding:5px 5px 0;
 }
 
-a img{
-    border:0px;
+#wizard .button, #wizard .buttons a {
+    background:#EFEFEF;
+    border:1px solid #CCCCCC;
+    color:#303030;
+    cursor:pointer;
+    display:block;
+    font-size:0.8em;
+    margin:0 0 5px 0;
+    padding:3px 0;
+    text-align:center;
+    width:100%;
+    -moz-border-radius:5px;
 }
-*/
-/* ---------------------*/
 
-/*----------------------
-  wizard styles
-  ----------------------*/
+#wizard .buttons {
+    padding:6px 0;
+    text-align:right;
+}
 
-    /* allgemeine definitionen */
+#wizard #wiz_ed .button {
+    width:auto;
+}
 
-    #wizard {
-        background-color:#FFFFFF;
-    }
+#wizard .buttons a, #wizard #wiz_ed .button {
+    display:inline;
+    margin:2px 4px 2px 0;
+    padding:3px;
+}
 
-    #wizard form label {
-        display:block;
-        float:left;
-        margin:2px 0;
-        padding:1px;
-        width:180px;
-    }
+#wizard a.button {
+    margin-left:-1px;
+}
 
-        #wizard form label.cbra {
-            clear:both;
-            text-align:left;
-            width:100%;
-        }
+#wizard a.button:hover, #wizard .buttons a:hover {
+    text-decoration:none;
+}
 
-            #wizard form .cbra input, #wizard form .thumbs input {
-                margin:0.3em 5px;
-                width:auto;
-            }
+#wizard .editor_buttons div {
+    display:inline;
+}
 
-            #wizard form table input {
-                margin:0;
-                padding:0;
-                width:100%;
-            }
 
-    #wizard form br {
-        clear:both;
-    }
+/* ajax-definitionen
+----------------------*/
+#vorhang, #vorhang_preview, #vorhang_cancel, #vorhangOverlay {
+    background:#000000;
+    position:absolute;
+    left:0;
+    top:0;
+    opacity:0.5;
+    z-index:80;
+}
 
-    #wizard form input, #wizard form button, #wizard form textarea {
-        border:1px solid #DDDDDD;
-        color:inherit;
-        float:left;
-        font-size:0.95em;
-        line-height:1.4em;
-        margin:2px 0;
-        padding:1px;
-        width:250px;
-    }
+#vorschau {
+    float:left;
+    padding-right:10px;
+}
 
-        #wizard form table textarea {
-            width:100%;
-        }
+#vorschau_container{
+    background:#FFFFFF;
+    position:relative;
+    position:absolute;
+    z-index:85;
+    -moz-border-radius:7px;
+}
 
-        #wizard form input.small {
-            width:50px;
-        }
+#preview_close {
+    border-top:3px solid #CCCCCC;
+    clear:both;
+    background:#FFFFFF;
+    text-align:right;
+}
 
-    #wizard fieldset {
-        border:1px solid #CCCCCC;
-        margin:5px 0;
-        padding:5px;
-    }
+.ajax_pop_up {
+    background:#FFF3CF;
+    border:3px solid #FFCF3F;
+    padding:7px;
+    position:absolute;
+    left:25px;
+    text-align:center;
+    top:50px;
+    width:300px;
+    z-index:85;
+    -moz-border-radius:7px;
+}
 
-        #wizard fieldset fieldset {
-            float:left;
-            margin-right:15px;
-            width:170px;
-        }
-
-    #wizard fieldset.buttons {
-        text-align:right;
-    }
-
-        #wizard fieldset.buttons input, #wizard fieldset.buttons button {
-            float:none;
-        }
-
-    #wizard .button, #content_blocks .buttons a {
-        background-color:#EEEEEE;
-        border:1px solid #CCCCCC;
-        color:inherit;
-        cursor:pointer;
-        margin-right:5px;
-        padding:0.5ex 1ex;
-        text-decoration:none;
-        width:auto;
-    }
-
-    /* beschriftungen der selektions-bilder */
-    #wizard #grid_list a {
-        display:block;
-        position:relative;
-        text-decoration:none;
-    }
-
-        #wizard #grid_list a span {
-            background-color:#EEEEEE;
-            border:1px solid #CCCCCC;
-            display:none;
-            position:absolute;
-            text-align:left;
-            top:0;
-            width:100px;
-        }
-
-            #wizard #grid_list a:hover span {
-                display:block;
-            }
-
-    /* definitionen der uebersichtsseite */
-    #content_blocks {
-        padding:0;
-    }
-
-        #content_blocks li {
-            background:no-repeat right top;
-            border:1px solid #DDDDDD;
-            list-style:none;
-            margin:0 0 3px;
-            padding:20px 4px 0;
-        }
-
-            #content_blocks li.ajax_move {
-                border-color:#FF9148;
-            }
-
-                #content_blocks li .block_edit {
-                    text-align:right;
-                }
-
-                #content_blocks li div.wiz_edit {
-                    border:1px solid #DDDDDD;
-                    float:left;
-                }
-
-                    #content_blocks li div.wiz_edit div.buttons {
-                        clear:both;
-                        padding:0.5ex 0;
-                    }
-
-                #content_blocks li span.wiz_edit {
-                    border:1px solid #DDDDDD;
-                    position:relative;
-                }
-
-                    #content_blocks li span.wiz_edit span.buttons {
-                        display:none;
-                        font-weight:normal;
-                    }
-                    #content_blocks li span.wiz_edit:hover span.buttons {
-                        background:#FFFFFF;
-                        border:1px solid #DDDDDD;
-                        display:block;
-                        left:0;
-                        position:absolute;
-                        top:1.2em;
-                    }
-
-                        #content_blocks li span.wiz_edit:hover span.buttons .button {
-                            clear:both;
-                            display:block;
-                            margin:3px;
-                            padding:0;
-                            width:200px;
-                        }
-
-    #wizard #img_map {
-        margin:0;
-        padding:0;
-    }
+/* Image-Map-Bereich
+----------------------*/
+#wizard #img_map {
+    clear:both;
+    float:left;
+    margin:0;
+    padding:0;
+}
 
     #wizard #img_map li {
         clear:both;
@@ -210,4 +160,185 @@ a img{
         padding:0;
     }
 
-/* ---------------------*/
+/* content-bereich
+----------------------*/
+#content_blocks {
+    display:block;margin:5px;
+}
+
+    #content_blocks li {
+        background:no-repeat right top #FFFFFF;
+        border:1px solid #DDDDDD;
+        list-style:none;
+        margin:0 0 3px;
+        padding:20px 4px 4px;
+    }
+
+        #content_blocks li .block_edit {
+            text-align:right;
+        }
+
+            #content_blocks li .block_edit .button {
+                width:150px;
+            }
+
+    #content_blocks li.ajax_move {
+        border:1px solid #FF9148;
+    }
+
+    #content_blocks .wiz_edit {
+        background:#FFFFFF;
+        border:1px solid #DDDDDD;
+        margin:0 0 3px;
+/*         overflow:hidden; */
+        position:relative;
+    }
+
+    #content_blocks span.wiz_edit .buttons a {
+        display:none;
+        position:relative;
+    }
+
+    #content_blocks span.wiz_edit:hover .buttons a {
+        display:block;
+    }
+
+        #content_blocks li span.wiz_edit:hover span.buttons {
+            background:#FFFFFF;
+            border:1px solid #DDDDDD;
+            display:block;
+            left:0;
+            position:absolute;
+            top:1.2em;
+            z-index:10;
+        }
+
+            #wizard #content_blocks li span.wiz_edit:hover span.buttons a {
+                clear:both;
+                display:block;
+                margin:0 3px 3px;
+                width:200px;
+            }
+
+
+/* formular-definitionen
+----------------------*/
+#wizard h1 {
+    border:none;
+    padding-left:20px;
+}
+#wizard > h1 {
+    background: none;
+}
+#wizard ul {
+    margin:0;
+    padding:0;
+}
+
+#wizard fieldset {
+    background:none;
+    border:1px solid #CCCCCC !important;
+    margin:5px !important;
+    padding:5px !important;
+}
+
+    #wizard fieldset fieldset {
+        border-width:0 !important;
+        float:left;
+        width:45%;
+    }
+
+    #wizard fieldset legend {
+        color:#5F5F5F;
+        font-weight:bold;
+    }
+
+    #wizard fieldset p {
+        clear:both;
+    }
+
+    #wizard fieldset p label {
+        display:block;
+        float:left;
+        margin:2px 0;
+        padding:1px;
+        width:150px;
+    }
+
+    #wizard fieldset input, #wizard fieldset button, #wizard fieldset textarea {
+        border:1px solid #DDDDDD;
+        color:inherit;
+        float:left;
+        font-size:0.95em;
+        line-height:1.4em;
+        margin:2px 0;
+        padding:1px;
+        width:250px;
+    }
+    #wizard fieldset textarea:focus {
+        border:1px solid #FFCF3F;
+    }
+    #wizard fieldset table textarea {
+        width:100%;
+    }
+
+    #wizard fieldset input.radiocheck {
+        border-width:0;
+        margin-right:3px;
+        width:auto;
+    }
+
+#wizard .thumbs {
+    position:relative;
+}
+
+#wizard .thumbs span {
+    background:#EEEEEE;
+    display:none;
+    left:100px;
+    position:absolute;
+    text-align:left;
+    top:3px;
+    width:150px;
+    z-index:100;
+}
+
+#wizard .thumbs:hover span {
+    display:block;
+}
+
+.info_hover {
+    color:#303030;
+    padding:5px 10px 0;
+    text-align:left;
+    float:left;
+}
+    .info_hover div {
+        cursor:help;
+        position:relative;
+    }
+        .info_hover div div {
+            background:#FEEAAD;
+            border:1px solid #FFCF3F;
+            display:none;
+            padding:10px;
+            position:absolute;
+            left:0;
+            text-align:left;
+            top:1.5em;
+            width:300px;
+            z-index:1000;
+        }
+        .info_hover div:hover div {
+            display:block;
+        }
+            .info_hover div div ul li {
+                background:url('/images/html/bg_bullet_arrow.gif') no-repeat left center;
+                float:left;
+                margin:1px 5px;
+                padding-left:10px;
+            }
+
+            .info_hover div div ul li:last-child {
+                font-style:italic;
+            }

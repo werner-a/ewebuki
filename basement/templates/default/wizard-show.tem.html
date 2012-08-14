@@ -8,9 +8,28 @@
 </head>
 <body>
 <!--##begin-->
+
+<div id="preview_dialog"><div id="substance"></div></div>
 <div id="wizard">
 
-    #(inhalt)
+    <div class="admin_head" style="">
+        #(inhalt)
+        <div class="info_hover">
+            <div>
+                <img src="/images/default/details.png" alt="mehr Informationen" width="24" height="18" border="0">
+
+                <div class="info_hidden " id="" style="">
+                    #(info_box)
+                    <ul>
+                        <!--##loop-sima_pos-->
+                        <li>!{label}</li>
+                        <!--##cont -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clearer"></div>
+    </div>
 
     <!--versions-umschalter-->
     <span style="float:right;">
@@ -23,80 +42,139 @@
         <!--##show-->
     </span>
 
+    <pre id="output"></pre>
+
     <div class="clearer">
         <a name="preview">&nbsp;</a>
     </div>
 
+    <hr>
+<!--     <div id="vorhang_cancel" style="display:none;"></div> -->
+    <div id="vorhang_preview" style="display:none;"></div>
 
-    <div id="vorschau" style="display:none;">
-        <div id="substance"></div>
-        <div class="clearer"></div>
+    <div class="column_1">
+        #{image_map}
     </div>
 
-    <ul id="content_blocks">
-        <!--##loop-sort_content-->
-        <li id="item_!{key}" class="!{class}" style="!{style}">
-            <a name="item_!{key}"></a>
-            !{value_html}
-            <div class="clearer"></div>
-            <p class="block_edit" !{modify}>
-                <a href="!{link_up}" class="button" title="#(wiz_moveup_desc)">#(wiz_moveup)</a>
-                <a href="!{link_down}" class="button" title="#(wiz_movedown_desc)">#(wiz_movedown)</a>
-                <a href="!{delete}" class="button" title="#(wiz_delete_desc)">#(wiz_delete)</a>
-            </p>
-            <div class="clearer"></div>
-        </li>
-        <!--##cont-->
-    </ul>
-    <div class="clearer"></div>
+    <div class="column_2">
+        <!--##hide-no_sort_content-->
+        <div style="display:block;margin:5px;background:silver;" id="no_sort_content">#(show_none)</div>
+        <!--##show-->
+        <!--##hide-show_one_content-->
+        <div style="display:block;margin:5px;padding:5px;background:#FFF3CF;" id="no_sort_content">#(show_one)</div>
+        <!--##show-->
+        <!--##hide-sort_content-->
+        <ul id="content_blocks">
+            <!--##loop-sort_content-->
+            <li id="item_!{key}" class="!{class}" style="!{style}">
+<!--                 <a name="item_!{key}" href="#" style="float:right;">nach oben</a> -->
+                <div class="clearer"></div>
+                !{value_html}
+                <div class="clearer"></div>
+                <p class="buttons" !{modify}>
+<!--                    <a href="!{link_up}" class="button" title="#(wiz_moveup_desc)" style="!{display_up}">#(wiz_moveup)</a>
+                    <a href="!{link_down}" class="button" title="#(wiz_movedown_desc)" style="!{display_down}">#(wiz_movedown)</a>-->
+                    <a href="!{delete}" class="button" title="#(wiz_delete_desc)" style="!{display_delete}">#(wiz_delete)</a>
+                </p>
+                <div class="clearer"></div>
+            </li>
+            <!--##cont-->
+        </ul>
+        <!--##show-->
+    </div>
 
-    <fieldset>
-        <legend>#(add_block)</legend>
-        <!--##loop-add_buttons-->
-            <a href="!{link}" class="button">!{item}</a>
-        <!--##cont-->
+    <div class="column_3">
+        <div class="box">
+            <h3>#(add_block)</h3>
+            <!--##loop-add_buttons-->
+            <a href="!{link}" class="button" title="!{item}">!{item}</a>
+            <!--##cont-->
+            <div class="clearer"></div>
+        </div>
+
+        <!--##hide-default-->
+        <div class="box">
+            <form method="post" action="!#ausgaben_form_aktion">
+                <button type="button" onclick="preview();" id="button_preview" class="button">g(preview) d</button>
+                <button type="submit" name="version[]" value="version" class="button">g(save)</button>
+                <button type="button" onclick="jQuery('#cancel').dialog ({modal: true,title: 'Abbrechen',position: ['center',10], width:400,height:400});" class="button">g(abort)</button>
+
+                <div class="clearer"></div>
+            </form>
+        </div>
+        <!--##show-->
+
+        <!--##hide-edit-->
+        <div class="box">
+            <form method="post" action="!#ausgaben_form_aktion">
+                <button type="button" onclick="preview('!#ausgaben_form_aktion');" id="button_preview" class="button">g(preview)</button>
+                <button type="submit" name="version[]" value="version" class="button">g(save)</button>
+                <button type="button" onclick="jQuery('#cancel').dialog ({modal: true,title: 'Abbrechen',position: ['center','center'], width:400,height:200});" class="button">g(abort)</button>
+                <div class="clearer"></div>
+            </form>
+        </div>
+        <div class="box">
+            <button type="button" onclick="jQuery('#release').dialog ({modal: true,title: 'Freigabeanforderung',position: ['center',10], width:400,height:400});" class="button">#(ask_release)</button>
+        </div>
         <div class="clearer"></div>
-    </fieldset>
+        <!--##show-->
 
-    <!--##hide-default-->
-    <fieldset class="buttons">
-        <form method="post" action="!#ausgaben_form_aktion">
-            <button type="button" onclick="preview();" class="button">g(preview)</button>
-            <button type="submit" name="save[]" value="save" class="button">g(save)</button>
-            <button type="submit" name="version[]" value="version" class="button">g(version)</button>
-            <button type="submit" name="cancel[]" value="cancel" class="button">g(abort)</button>
-        </form>
-    </fieldset>
-    <!--##show-->
+        <!--##hide-publish-->
+        <div class="box">
+            <form method="post" action="!#ausgaben_form_aktion">
+                <button type="button" onclick="preview('!#ausgaben_form_aktion');" id="button_preview" class="button">g(preview)</button>
+                <button type="submit" name="version[]" value="version" class="button">g(save)</button>
+                <button type="button" onclick="jQuery('#cancel').dialog ({modal: true,title: 'Abbrechen',position: ['center',10], width:400,height:400});" class="button">g(abort)</button>
 
-    <!--##hide-edit-->
-    <fieldset class="buttons">
-        <form method="post" action="!#ausgaben_form_aktion">
-            <button type="button" onclick="preview();" class="button">g(preview)</button>
-            <button type="submit" name="version[]" value="version" class="button">g(save)</button>
-            <button type="submit" name="cancel[]" value="cancel" class="button">g(abort)</button><br />
-            <label class="cbra"><input type="checkbox" name="release_mark" value="-1" class="button" />#(ask_release)</label>
-        </form>
-    </fieldset>
-    <!--##show-->
+                <div class="clearer"></div>
+            </form>
+        </div>
+        <div class="box">
+            <form method="post" action="!#ausgaben_form_aktion">
+                <button type="submit" class="button" name="version[]" value="version">#(release)</button>
+                <input type="hidden" name="release_mark" value="-1" />
+                <div class="clearer"></div>
+            </form>
+        </div>
+        <!--##show-->
+        
+<!--Abbrechen-Dialog-->
+                <div id="cancel" style="display:none">
+                    <form method="post" action="!#ausgaben_form_aktion">
+                        #(confirm_cancel)
+                        <p >
+                            <button type="submit" name="cancel[]" value="cancel" class="button" style="display:block;margin:3px;width:100px;float:left;">g(yes)</button>
+                            <button type="button" onclick="jQuery('#cancel').dialog ('destroy');" class="button" style="display:block;margin:3px;width:100px;float:right;">g(no)</button>
+                        </p>
+                        </form>
+                </div>
+<!--Abbrechen-Dialog-->
+<!--Freigabe Anfordern-Dialog-->
+                <div id="release" style="display:none;">
+                    <form method="post" action="!#ausgaben_form_aktion">
+                        #(confirm_release)
+                        <p >
+                            <button type="submit" name="version[]" value="version" class="button" style="display:block;margin:3px;width:100px;float:left;">g(yes)</button>
+                            <button type="button" onclick="jQuery('#release').dialog ('destroy');" class="button" style="display:block;margin:3px;width:100px;float:right;">g(no)</button>
+                             <input type="hidden" name="release_mark" value="-1" />
+                        </p>
+                        </form>
+                </div>
+<!--Abbrechen-Dialog-->
 
-    <!--##hide-publish-->
-    <fieldset class="buttons">
-        <form method="post" action="!#ausgaben_form_aktion">
-            <button type="button" onclick="preview();" class="button">g(preview)</button>
-            <button type="submit" name="save[]" value="save" class="button">g(save)</button>
-            <button type="submit" name="version[]" value="version" class="button">g(version)</button>
-            <button type="submit" name="cancel[]" value="cancel" class="button">g(abort)</button>
-            <label class="cbra"><input type="checkbox" name="release_mark" value="-1" class="button" />#(release)</label>
-        </form>
-    </fieldset>
-    <!--##show-->
 
-    <!--##hide-blocked-->
-    <fieldset>
-        <input type="checkbox" name="release_mark" value="-1" checked="true" disabled="true" />#(blocked_release)
-    </fieldset>
-    <!--##show-->
+        <!--##hide-blocked-->
+        <div class="box">
+            <form method="post" action="!#ausgaben_form_aktion">
+                #(blocked)
+                <button type="submit" name="cancel[]" value="cancel" class="button">g(abort)</button>
+                <div class="clearer"></div>
+            </form>
+        </div>
+        <!--##show-->
+    </div>
+
+    <div class="clearer"></div>
 
 </div>
 
@@ -104,49 +182,51 @@
 !#ausgaben_inaccessible
 
 <script type="text/javascript">
-    Sortable.create("content_blocks",
-        {only: 'ajax_move',
-            onUpdate:function(){
-                new Ajax.Request(
-                    '!#ausgaben_ajax_request?' + Sortable.serialize("content_blocks"),
-                    {
-                        onComplete:function(){
-                            new Effect.Highlight("content_blocks",{startcolor: '#FEF6DE'});
-                            location.reload(true);
+//     <!--##hide-sort_content-->
+
+    function sort_save() {
+        jQuery.ajax ({
+            type: 'GET',
+            url: '!#ausgaben_ajax_request',   
+            data: 'sort_save=on&' +jQuery('#content_blocks').sortable('serialize',{key:'content_blocks[]'}),
+            success: function() {
+                jQuery('#img_map').load('!#ausgaben_print_url #img_map');
+                jQuery('#content_blocks').sortable('destroy');
+                jQuery('.column_2').load('!#ausgaben_print_url #content_blocks', function() {
+                    jQuery('#content_blocks').sortable({
+                        items : '.ajax_move',
+                        update: function() {
+                            sort_save();
                         }
-                    }
-                );
-            }
-        }
-    );
-    function preview() {
-        if ( $('vorschau').style.display == 'none' ) {
-            var update = new Ajax.Updater('substance',
-                                        '!#ausgaben_form_aktion',
-                                        {
-                                            asynchronous:true,
-                                            parameters: 'ajax=on&save[]=save',
-                                            onSuccess:function(){
-                                                new Effect.Parallel(
-                                                    [
-                                                        new Effect.BlindDown('vorschau'),
-                                                        new Effect.BlindUp('content_blocks')
-                                                    ]
-                                                );
-                                                self.location.href = '#preview';
-                                            }
-                                        }
-            );
-            return false;
-        } else {
-            new Effect.Parallel(
-                [
-                    new Effect.BlindUp('vorschau'),
-                    new Effect.BlindDown('content_blocks')
-                ]
-            );
-        }
+                    })                    
+                });                
+            }            
+        });        
     }
+
+    jQuery('#content_blocks').sortable({
+        items : '.ajax_move',
+        update: function() {
+            sort_save();
+        }        
+    })
+    
+//    jQuery('#img_map').sortable({
+//        cursor: 'crosshair'
+//    })
+//     <!--##show-->
+
+//     <!--##hide-ajax_scroll-->
+    if (jQuery.browser.opera) {
+        var target = 'html';
+    }else{
+        var target = 'html,body';
+    } 
+    //Definition des zu scrollenden Containers
+    var $container = jQuery('#site');
+    jQuery(target).animate({scrollTop: $container.height()},2000);
+//     <!--##show-->
+
 </script>
 <!--##end-->
 </body>
