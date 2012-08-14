@@ -1,0 +1,24 @@
+<!--##begin-->
+Bitte Suchbegriff eingeben
+<input id="!{bereich}_searchbox" class="autocomplete" type="text" />
+ <script type="text/javascript">
+
+    jQuery("#!{bereich}_searchbox").autocomplete({
+        source: "/auth/login.html?main=ajax_suche&art=!{url}&kate=!{kate}",
+        minLength: 2,
+        select: function(event, ui) {
+            window.location.href = ui.item.edit;
+        }
+    })
+    .data("autocomplete")._renderItem = function( ul, item ) {
+
+    return $( "<li></li>" )
+    .data( "item.autocomplete", item )
+    .append( "<a><b>" + item.label + "</b><br /><i>Letzter Autor:" + item.last_author + "<br /> Freigegeben am "+item.changed+"</i></a>" )
+    .appendTo( ul );
+}; 
+
+
+</script>    
+</div>
+<!--##end-->

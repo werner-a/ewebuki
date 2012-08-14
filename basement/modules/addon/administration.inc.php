@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   "$Id$";
-//   "administration";
+  $script["name"] = "$Id: leer.inc.php 1131 2007-12-12 08:45:50Z chaot $";
+  $Script["desc"] = "short description";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -45,16 +45,13 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    // ip_check
-    $ip_c = explode(".",$_SERVER["REMOTE_ADDR"]);
-    if ( $ip_c[0] == $cfg["admin"]["ip_check"][0] && $ip_c[1] == $cfg["admin"]["ip_check"][1] && $ip_c[2] == $cfg["admin"]["ip_check"][2] ) {
-        header("Location: ".$pathvars["virtual"]."/index.html");
-    }
-
-    if ( $cfg["admin"]["right"] == "" || priv_check("/".$cfg["admin"]["subdir"],$cfg["admin"]["right"]) ) {
-
-        // bereiche werden nach aenderungsdatum sortiert
-        if ( !function_exists("sort_marked_content") ) {
+    if ( $cfg["admin"]["right"] == "" || $rechte[$cfg["admin"]["right"]] == -1 ) {
+        include $pathvars["moduleroot"]."wizard/wizard.cfg.php";
+        unset($cfg["wizard"]["function"]);
+        include $pathvars["moduleroot"]."wizard/wizard-functions.inc.php";
+        
+        // bereiche werden nach aenderungsdatum sortiert        
+        if ( !function_exists("sort_marked_content") ) {            
             function sort_marked_content($a,$b) {
                 if ( $a["changed_db"] < $b["changed_db"] ) {
                     return 1;
@@ -65,33 +62,15 @@
                 }
             }
         }
+        
+        
+        if ( $_GET["main"] == "ajax_suche" ) {
 
-        // page basics
-        // ***
-
-        if ( $_POST["ajax"] != "" ) {
-            echo "<pre>".print_r($_POST,true)."</pre>";
-            if ( $_POST["ajax"] == "blinddown" ) {
-                $_SESSION["admin_toggle"][$_POST['id']] = $_POST['id'];
-            } elseif ( $_POST["ajax"] == "blindup" ) {
-                if ( $_SESSION["admin_toggle"][$_POST['id']] != "" ) {
-                    unset($_SESSION["admin_toggle"][$_POST['id']]);
-                }
-            }
-            header("HTTP/1.0 200 OK");exit;
-            die();
-        }
-
-        include $pathvars["moduleroot"]."wizard/wizard.cfg.php";
-        unset($cfg["wizard"]["function"]);
-        include $pathvars["moduleroot"]."wizard/wizard-functions.inc.php";
-        // +++
-        // page basics
-
-        if ( $_POST["main"] == "ajax_suche" ) {
-            sleep(1.0);
             header("HTTP/1.1 200 OK");
-            $released_content = find_marked_content( $_POST["art"]."/", $cfg, "inhalt", array(1), array("max_age"=>$_POST["time"]), FALSE ,array('presse','ausstellungen','termine'));
+            $released_content = find_marked_content( $_GET["art"], $cfg, "inhalt", array(1), array("max_age"=>1700), FALSE ,array('presse','ausstellungen','termine'));
+
+
+            
             $counter = 0;
             $hit = $released_content[1];
 
@@ -99,12 +78,18 @@
                 uasort($hit,'sort_marked_content');
 
                 foreach ( $hit as $key => $value ) {
-                    if ( $value["path"] == "---" && $value)continue;
 
-                    if ( !priv_check($value["path"],"admin;publish;edit") ) continue;
+//                    if ( $value["kategorie"] == "---")continue;
+//                    if ( $_GET["kate"] == "lokal" ) {
+//                        if ( !strstr($value["kategorie"],"aemter") ) continue;
+//                    } else {
+//                        if ( $value["kategorie"] != $_GET["kate"] ) continue;
+//                    }
 
-                    if ( $_POST["text"] ){
-                        if ( stristr($value["titel"],$_POST["text"]) || stristr($value["ext"],$_POST["text"]) ) {
+//                    if ( !priv_check($value["kategorie"],"admin;publish;edit") ) continue;
+
+                    if ( $_GET["term"] ){
+                        if ( stristr($value["titel"],$_GET["term"]) || stristr($value["ext"],$_GET["term"]) ) {
 
                         } else {
                             continue;
@@ -113,39 +98,34 @@
                     if ( $value["titel"] == "---" ) $value["titel"] = $value["ext"];
 
                     $counter++;
-                    $itext .= "<li style=\"margin:2px 0 0 0;padding:0.2em;border:1px solid ".$cfg["admin"]["color"]["a"].";\">
-                        <span style=\"float: right; text-align: right; display: block;\">
-                        <a href=\"".$value["edit"]."\">Bearbeiten</a><br>
-                        <a href=\"".$value["view"]."\">zur Seite</a>
-                        </span>
-                          <b>".$value["titel"]."</b><br />
-                          freigegeben am :".$value["changed"]."<br />
-                          letzte Version von:".$value["last_author"]."</li>";
+                    $value["titel"] = str_replace("\"","", $value["titel"]);
+                    $value["titel"] = str_replace("'","", $value["titel"]);                    
+                    $value["titel"] = str_replace("\r\n","", $value["titel"]);
+                    $value["titel"] = str_replace("\n","", $value["titel"]);
+                    $value["titel"] = str_replace("\r","", $value["titel"]);
+                    $value["titel"] = str_replace("\n\r","", $value["titel"]);
+                    
+                    $buffer[] = '{
+                            "id": "'.$counter.'",
+                            "label": "'.$value["titel"].'",
+                             "edit":"'.$value["edit"].'",
+                              "view":"'.$value["view"].'",
+                            "last_author": "'.$value["last_author"].'",
+                            "changed": "'.$value["changed"].'"
+                         }';
                 }
             }
-            echo "<ul style=\"margin: 3px; padding: 1px; overflow: hidden; list-style-type: none; list-style-position: outside; list-style-image: none; width: auto;\">";
-            if ( $_POST["time"] > 0 ) {
-                if ( $counter == 0 ) {
-                    echo "<li>Keine Treffer</li><ul>";
-                } else {
-                    echo $itext;
-                }
+            if ( $counter == 0 ) {
+                echo "[{\"label\": \"Keine Treffer\"}]";
             } else {
-                echo "<li>Bitte Zeitraum eingeben!</li>";
+                echo "[ ".implode(" , ",$buffer)." ]";
             }
-            echo "</ul>";
             die();
         }
-
-        // funktions bereich
-        // ***
-
-        // banner einbinden
-        if ( $pathvars["virtual"] == "" || $_GET["edit"] ) {
-            $hidedata["adminbild"] = array();
-        }
-
-        // benutzer und gruppen holen
+              
+        
+                        
+        // Wer bin ich - Benutzer und Gruppen holen
         $ausgaben["user"] = $_SESSION["username"];
         if ( $_SESSION["username"] != "" ) {
             $sql = "SELECT *
@@ -159,8 +139,57 @@
                 $dataloop["group_id"][] = $data["gid"];
             }
         }
-
+        
         if ( $ausgaben["user"] != "" ) {
+            
+            // lokale redakteure erkennen
+            $halt = "";
+            if ( is_array($dataloop["group_id"]) ) {
+                foreach ( $dataloop["group_id"] as $gruppe ) {
+                    $sql = "SELECT *
+                              FROM auth_content
+                             WHERE gid='".$gruppe."'
+                               AND ( pid='3' OR pid='2')"; // 2: edit; 3: publish
+                    $result = $db -> query($sql);
+                    // dataloop mit zugewiesenen aemtern fuellen
+                    while ( $data = $db -> fetch_array($result,1) ) {
+                        if ( substr($data["tname"],0,8) == "/aemter/" ) {
+                            $sql_amt = "SELECT *
+                                          FROM db_aemter
+                                         WHERE adakz='".substr($data["tname"],8,2)."'";
+                            $result_amt = $db -> query($sql_amt);
+                            $data_amt = $db -> fetch_array($result_amt,1);
+                            $halt = -1;
+                            $dataloop["artikel_aemter"][substr($data["tname"],8,2)]["url"] = substr($data["tname"],0,10);
+                            $dataloop["artikel_aemter"][substr($data["tname"],8,2)]["name"] = $data_amt["kat_kurz"]." ".$data_amt["adststelle"];
+                        }
+                    }
+                }
+            }
+
+            if ( priv_check("/aemter","eddit") ) {
+                $sql_amt = "SELECT * FROM db_aemter WHERE adkate in ('3','4')";
+                $result_amt = $db -> query($sql_amt);
+                while ( $data = $db -> fetch_array($result_amt,1) ) {
+                    $dataloop["artikel_aemter"][$data["adakz"]]["url"] = "/aemter/".$data["adakz"];
+                    $dataloop["artikel_aemter"][$data["adakz"]]["name"] = $data["kat_kurz"]." ".$data["adststelle"];
+                }
+            }
+
+            if ( $halt == -1 || priv_check("/aemter","edit") ) {
+                $hidedata["lokal_presse_section"][0] = "on";
+                $hidedata["lokal_artikel_section"][0] = "on";
+                $hidedata["lokal_termine_section"][0] = "on";
+            }
+            // lokale redakteure erkennen
+
+            // marginalspalten-bearbeitung
+            if ( priv_check("/global","publish") ) {
+                $hidedata["marginal"] = array();
+                $hidedata["marginal"]["url"] = "/auth/wizard/show,devel0,global,marginal,,,.html";
+                $hidedata["marginal"]["url"] = $pathvars["virtual"]."/wizard/show,".$db->getDb().",global,marginal.html";
+                $hidedata["marginal"]["url_va"] = $pathvars["virtual"]."/wizard/show,".$db->getDb().",global,marginal_va.html";
+            }
 
             function get_chefred($url) {
                 global $db,$member_edit,$member_publish;
@@ -198,91 +227,65 @@
             }
 
             // einzelne bereiche durchgehen (artikel, termine, ...)
-            foreach ( $cfg["admin"]["specials"] as $url=>$bereich ) {
-               // chefredakteure holen
-                get_chefred($url);
+            foreach ( $cfg["admin"]["specials"] as $url => $bereich ) {
 
+                // chefredakteure holen
+                get_chefred($url);
+                
+                unset($dataloop["edit_section"]);            
+                unset($hidedata["edit_section"]);
+                unset($dataloop["release_wait_section"]);
+                unset($hidedata["release_wait_section"]);
+                unset($dataloop["release_queue"]);
+                unset($hidedata["release_queue"]);
+                
                 // dataloop holen
                 $buffer = find_marked_content( $url, $cfg, "inhalt", array(-2,-1), array(), FALSE );
-                $dataloop[$bereich."_edit"] = $buffer[-1];
-                $dataloop[$bereich."_release_queue"] = $buffer[-2];
-                $dataloop[$bereich."_release_wait"] = $buffer[-2];
 
-                // unterschiedliche "toggle-bereiche" nachbearbeiten
-                $toggle_fields = array(
-                              "edit" => array("all" => "publish;edit"),
-                     "release_queue" => array("all" => "publish"),
-                      "release_wait" => array("all" => "edit"),
-                );
-                foreach ( $toggle_fields as $tog_key=>$tog_value ) {
-                    $ausgaben["toggle_".$bereich."_".$tog_key] = "none";
-                    $ausgaben["toggle_lokal_".$bereich."_".$tog_key] = "none";
-                    if ( is_array ( $dataloop[$bereich."_".$tog_key] )  ) {
-                        foreach ( $dataloop[$bereich."_".$tog_key] as $key => $value ) {
-                            $zugang = 0;
-                            $my = 0;
-                            if ( $value["path"] != "---" && $value["path"] != "" && priv_check($value["path"],"admin;publish;edit") ) {
-                                if ( $value["author"] == $_SESSION["forename"]." ".$_SESSION["surname"] ) {
-                                    $my = -1;
-                                }
-
-                                if ( priv_check($value["path"],$tog_value["all"] ) ){
-                                    $zugang = -1;                                    
-                                }
- 
-                                if ( priv_check($value["path"],$tog_value["own"]) && $zugang != -1 && $tog_value["own"] != "" ) {
-                                    if ( $my == -1 ) {
-                                        $zugang = -1;
-                                    }                                     
-                                }
-          
-                                if ( $zugang != -1 ) {
-                                    continue;
-                                }
-                                $dataloop[$bereich."_".$tog_key][$key]["color"] = "#CCCCCC";
-                                if ( $my == -1 ) $dataloop[$bereich."_".$tog_key][$key]["color"] = "#FF9148";
-                                $dataloop[$bereich."_".$tog_key][$key]["red"] = implode(", ",$member_edit);
-                                $dataloop[$bereich."_".$tog_key][$key]["chefred"] = implode(", ",$member_publish);
-                            } else {
-                                unset($dataloop[$bereich."_".$tog_key][$key]);
+//echo "<pre>";
+//print_r($buffer);
+//echo "</pre>";
+                // 
+                // buffer durchgehen und nach bereiche aufteilen
+                if ( is_array($buffer) ) {                    
+                    foreach ( $buffer as $key => $value ) {
+                        foreach ( $value as $own_key => $own_value ) {
+                            if ( crc32($url) == substr($own_value["tname"],0,strpos($own_value["tname"],".")) ) {
+                                ${$bereich}[$key][] = $buffer[$key][$own_key];
+                                unset($buffer[$key][$own_key]);
                             }
-                        }
+                        } 
                     }
                 }
-
-            if ( is_array($dataloop[$bereich."_edit"]) )           uasort($dataloop[$bereich."_edit"],'sort_marked_content');
-            if ( is_array($dataloop[$bereich."_release_queue"]) )  uasort($dataloop[$bereich."_release_queue"],'sort_marked_content');
-            if ( is_array($dataloop[$bereich."_release_wait"]) )   uasort($dataloop[$bereich."_release_wait"],'sort_marked_content');
-
-                // globale bereiche
-                if ( count($dataloop[$bereich."_edit"]) > 0 && priv_check($url,"admin;edit") ) {
-                    $hidedata[$bereich."_edit"]["num"] = count($dataloop[$bereich."_edit"]);
+            #echo count(${$bereich}[-1])." -".priv_check($url, $cfg["wizard"]["right"]["edit"]);
+ 
+                if ( count(${$bereich}[-1]) > 0 && priv_check($url, $cfg["wizard"]["right"]["edit"]) ) {
+                    $hidedata["edit_section"]["name"] = $bereich;
+                    $dataloop["edit_section"] = ${$bereich}[-1];
+                    
+                    uasort($dataloop["edit_section"],'sort_marked_content');
                 }
-                if ( count($dataloop[$bereich."_release_wait"]) > 0 && !priv_check($url,"admin;publish") && priv_check($url,"admin;edit") ) {
-                    $hidedata[$bereich."_release_wait"]["num"] = count($dataloop[$bereich."_release"]);
+
+                if ( count(${$bereich}[-2]) > 0 && priv_check($url, $cfg["wizard"]["right"]["publish"]) ) {                            
+                    $hidedata["release_queue"]["name"] = $bereich;
+                    $dataloop["release_queue"] = ${$bereich}[-2];                    
                 }
-                if ( count($dataloop[$bereich."_release_queue"]) > 0 && priv_check($url,"admin;publish") ) {
-                    $hidedata[$bereich."_release_queue"]["num"] = count($dataloop[$bereich."_release_queue"]);
+                                
+                if ( ( !is_array($hidedata["release_queue"]) && count(${$bereich}[-2]) ) && priv_check($url, $cfg["wizard"]["right"]["edit"]) ) {
+                    $hidedata["release_wait_section"]["name"] = $bereich;
+                    $dataloop["release_wait_section"] = ${$bereich}[-2]; 
                 }
-                // suche in freigebenen artikeln immer einblenden
-                $search= $url;
-                $id = $url;
-                $kate = $url;
-                $ausgaben[$bereich."_search"] = parser("administration-recent",'');
 
-                // berechtigung checken
-                if ( !priv_check($url,"admin;edit") ) continue;
-                $hidedata[$bereich."_section"] = array(
-                    "heading" => "#(".$bereich."_heading)",
-                        "new" => "#(".$bereich."_new)",
-                );
+ 
+                    $ausgaben["bereiche"] .= parser("administration-specials",'');
+                    $ausgaben["bereiche"] .= parser("administration-search",'');
 
-            }
-
+            }                                                      
             // normalen content ausschliesslich spezielle bereiche durchgehen
             // * * *
             $bereich = "content";
-            $buffer = find_marked_content( "/", $cfg, "inhalt", array(-2,-1), array(), FALSE, array("/blog"));
+            $buffer = find_marked_content( "/", $cfg, "inhalt", array(-2,-1), array(), FALSE, array("/blog","/2_blog"));
+                
             $dataloop[$bereich."_edit"] = $buffer[-1];
             $dataloop[$bereich."_release_queue"] = $buffer[-2];
             $dataloop[$bereich."_release_wait"] = $buffer[-2];
@@ -334,99 +337,62 @@
 
             // TEST MENUED
             if ( $_SESSION["uid"] ) $hidedata["menu_edit"]["on"] = "on";
-            $design = "modern";
-            $stop["nop"] = "nop";
-            $positionArray["nop"] = "nop";
-            include $pathvars["moduleroot"]."admin/menued2.cfg.php";
-            $cfg["menued"]["function"]["login"] = array("locate","make_ebene");
-            include $pathvars["moduleroot"]."admin/menued2-functions.inc.php";
-            include $pathvars["moduleroot"]."libraries/function_menutree.inc.php";
-
-
-            if ( $environment["parameter"][1] == "" ) {
-                $_SESSION["menued_id"] = "";
-                $_SESSION["menued_opentree"] = "";
-                $_SESSION["menued_design"] = "";
-            } else {
-                $_SESSION["menued_id"] = $environment["parameter"][1];
-            }
-
-            if ( $_SESSION["menued_id"] != "" ) {
-
-                $ausgaben["edmenu"] = "<script type=\"text/javascript\">Effect.ScrollTo('trigger_sitemap')</script>";
-
-                // explode des parameters
-                $opentree = explode("-",$_SESSION["menued_opentree"]);
-                // was muss geschlossen werden ?!?!?
-                foreach ( $opentree as $key => $value ) {
-                    if ( $value != "" ) {
-                        delete($value,$value);
-                    }
-                    if ( $stop != "" ) {
-                        if ( in_array($value,$stop) ) {
-                            unset ($opentree[$key]);
-                        }
-                    }
-                }
-
-                // punkt oeffnen
-                if ( !in_array($_SESSION["menued_id"],$stop) ) {
-                    $opentree[] = $_SESSION["menued_id"];
-                }
-
-                // link bauen und positionArray bauen
-                foreach ( $opentree as $key => $value ) {
-                    $treelink == "" ? $trenner = "" : $trenner = "-";
-                    $treelink .= $trenner.$value;
-                    if ( $value != "" ) {
-                        locate($value);
-                    }
-                }
-
-                $_SESSION["menued_design"] = $design;
-            } else {
-                $positionArray[0] = 0;
-            }
-
-            // welche buttons sollen angezeigt werden
-            $mod = array(
-                        "edit"=> array("", "Seite editieren", "edit"),
-                        "add"=> array("", "Seite hinzufuegen", "add"),
+            $ausgaben["ajax_menu"] = "login.html";
+            if ( $_POST["ajax_menu"] != "" ) {
+                 $design = "modern";
+                $stop["nop"] = "nop";
+                $positionArray = "";
+                include $pathvars["moduleroot"]."admin/menued2.cfg.php";
+                $cfg["menued"]["function"]["login"] = array("locate","make_ebene");
+                include $pathvars["moduleroot"]."admin/menued2-functions.inc.php";
+                include $pathvars["moduleroot"]."libraries/function_menutree.inc.php";
+            
+                // welche buttons sollen angezeigt werden
+                $mod = array(
+                            "edit"=> array("", "Seite editieren", "edit"),
+                            "add"=> array("", "Seite hinzufuegen", "add"),
                         "jump"=> array("", "zur Seite", "edit;publish")
-                        );
+                            );
+               
+                $_SESSION["menued_id"] = $_POST["point_id"];
+                locate($_POST["point_id"]);
 
-            $blacklist = "/aktuell";
-            $wizard_menu = sitemap(0, "admin", "menued",$mod,"");
-            $test = explode("<li>",$wizard_menu);
-            array_shift($test);
-            $preg = '/<img.*\/img>/Ui';
-            $preg_link = '/^<a (href)="\/auth\/edit,([0-9]*),[0-9]*\.html"/ui';
-            $preg_black = '/(href="\/auth\/login,)([0-9]*)\.html"/ui';
-            $color = $cfg["wizard"]["color"]["a"];
-            preg_match($preg_black,$line,$black);
+                $wizard_menu = sitemap($_POST["point_id"], "admin", "wizard",$mod,"");
+                                             
+                $lines = explode("<li>",$wizard_menu);                
+                array_shift($lines);
+              
+                $preg = '/(href="\/auth\/login,)([0-9]*)\.html"/i';
 
-            foreach ( $test as $line ) {
-                ( $color == $cfg["wizard"]["color"]["a"] ) ? $color = $cfg["wizard"]["color"]["b"] : $color = $cfg["wizard"]["color"]["a"];
-                preg_match($preg_black,$line,$black);
-                preg_match($preg_link,$line,$regis);
+                $color = $cfg["wizard"]["color"]["a"];
+               echo "<ul style=\"list-style: none\">";
 
-                if ( $black[2] == 263 ) continue;
-
-                if ( $regis[2] ) {
-                    if ( eCrc(substr(make_ebene($regis[2]),0,strrpos(make_ebene($regis[2]),"/"))) == "0" ) {
-                        $make_crc = "";
-                    } else {
-                        $make_crc = eCrc(substr(make_ebene($regis[2]),0,strrpos(make_ebene($regis[2]),"/"))).".";
-                    }
-                    $edit_crc = $make_crc.substr(make_ebene($regis[2]),strrpos(make_ebene($regis[2]),"/")+1);
-                    $line = preg_replace($preg_link,"<a href=/auth/wizard/show,".DATABASE.",".$edit_crc.",inhalt,,,.html",$line);
-                    $line = preg_replace("/<a href=\"\/auth\/add,[0-9]*,[0-9]*.html\"/","<a href=/auth/wizard/add,,".$edit_crc.".html",$line);
-                    $ausgaben["edmenu"] .= "<li style=\"background-color:".$color.";margin:0;padding:0.5em;clear:both;\">".$line."</li>";
-                } else {
-                    $ausgaben["edmenu"] .= "<li style=\"background-color:".$color.";margin:0;padding:0.5em;clear:both;\">".$line."</li>";
+                // zurueck - link bauen              
+                if ( is_numeric($positionArray[0]) ) {
+                   if ( is_numeric($positionArray[1]) ) {
+                       $back_id = $positionArray[1];
+                   } else {
+                       $back_id = 0;
+                   }                             
+                   echo "<li><a onclick=\"aj_menu(".$back_id.")\">zurÃ¼ck</a></li>";
                 }
-            }
+                // zurueck - link bauen   
+                
+                foreach ( $lines as $line ) {
+                    
+                    ( $color == $cfg["wizard"]["color"]["a"] ) ? $color = $cfg["wizard"]["color"]["b"] : $color = $cfg["wizard"]["color"]["a"];
+                    preg_match($preg,$line,$regs);
 
+                    if ( $regs[2] ) {
+                        $line = str_replace("href=\"/auth/login,".$regs[2].".html\"","onclick= aj_menu(".$regs[2].")",$line);
+                       echo "<li style=\"background-color:".$color.";margin:0;padding:0.5em;clear:both;\">".$line."</li>";
+                    } else {
+                       echo "<li style=\"background-color:".$color.";margin:0;padding:0.5em;clear:both;\">".$line."</li>"; 
+                    }
+                }
+               echo "</ul>";
+               exit;
+            }
             // TEST MENUED
 
             // page basics
@@ -480,7 +446,6 @@
         if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (login) #(login)<br />";
-            $ausgaben["inaccessible"] .= "# (adminbild) #(adminbild)<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
         } else {
             $ausgaben["inaccessible"] = "";
@@ -492,6 +457,92 @@
         header("Location: ".$pathvars["virtual"]."/");
     }
 
+    // SPÄTER
+
+    
+    
+    
+    
+//        if ( $_POST["ajax"] != "" ) {
+//            echo "<pre>".print_r($_POST,true)."</pre>";
+//            if ( $_POST["ajax"] == "blinddown" ) {
+//                $_SESSION["admin_toggle"][$_POST['id']] = $_POST['id'];
+//            } elseif ( $_POST["ajax"] == "blindup" ) {
+//                if ( $_SESSION["admin_toggle"][$_POST['id']] != "" ) {
+//                    unset($_SESSION["admin_toggle"][$_POST['id']]);
+//                }
+//            }
+//            header("HTTP/1.0 200 OK");exit;
+//            die();
+//        }
+    
+    
+    // RECHTE
+//                   foreach ( $toggle_fields as $tog_key=>$tog_value ) {
+//                    $ausgaben["toggle_".$bereich."_".$tog_key] = "none";
+//                    $ausgaben["toggle_lokal_".$bereich."_".$tog_key] = "none";
+//                    if ( is_array ( $dataloop[$bereich."_".$tog_key] )  ) {
+//                        foreach ( $dataloop[$bereich."_".$tog_key] as $key => $value ) {
+//                            $zugang = 0;
+//                            $my = 0;
+//                            if ( $value["kategorie"] != "---" && $value["kategorie"] != "" && priv_check($value["kategorie"],"admin;publish;edit") ) {
+//                                if ( $value["author"] == $_SESSION["forename"]." ".$_SESSION["surname"] ) {
+//                                    $my = -1;
+//                                }
+//
+//                                if ( priv_check($value["kategorie"],$tog_value["all"] ) ){
+//                                    $zugang = -1;                                    
+//                                }
+// 
+//                                if ( priv_check($value["kategorie"],$tog_value["own"]) && $zugang != -1 && $tog_value["own"] != "" ) {
+//                                    if ( $my == -1 ) {
+//                                        $zugang = -1;
+//                                    }                                     
+//                                }
+//          
+//                                if ( $zugang != -1 ) {
+//                                    continue;
+//                                }
+//
+//                                // lokale Eintrage
+//                                if ( $value["kategorie"] != "/aktuell/archiv"
+//                                  && $value["kategorie"] != "/aktuell/presse"
+//                                  && $value["kategorie"] != "/aktuell/ausstellungen"
+//                                  && $value["kategorie"] != "/aktuell/termine" ) {
+//                                    if ( $tog_key == "release_wait" ) {
+//                                        get_chefred($value["kategorie"]);
+//                                    }
+//                                    $sql_amt = "SELECT *
+//                                                  FROM db_aemter
+//                                                 WHERE adakz='".substr($value["kategorie"],8,2)."'";
+//                                    $result_amt = $db -> query($sql_amt);
+//                                    $data_amt = $db -> fetch_array($result_amt,1);
+//                                    $value["amt"] = $data_amt["kat_kurz"]." ".$data_amt["adststelle"];
+//                                    $dataloop["lokal_".$bereich."_".$tog_key][$key] = $value;
+//                                    $zw = str_replace("/index","/".$bereich,$value["kategorie"].",,");
+//                                    ( $bereich == "termine" ) ? $regi = str_replace("/","\/",$url).",," : $regi = str_replace("/","\/",$url)."\/";
+//                                    $dataloop["lokal_".$bereich."_".$tog_key][$key]["site"] = preg_replace("/".$regi."/",$zw,$value["view"]);
+//                                    unset($dataloop[$bereich."_".$tog_key][$key]);
+//
+//                                    // tabellen farben wechseln
+//                                    $dataloop["lokal_".$bereich."_".$tog_key][$key]["color"] = $cfg["admin"]["color"]["a"];
+//                                    if ( $my == -1 ) $dataloop["lokal_".$bereich."_".$tog_key][$key]["color"] = $cfg["admin"]["color"]["b"];
+//                                    $dataloop["lokal_".$bereich."_".$tog_key][$key]["red"] = implode(", ",$member_edit);
+//                                    $dataloop["lokal_".$bereich."_".$tog_key][$key]["chefred"] = implode(", ",$member_publish);
+//                                // globale Eintraege
+//                                } else {
+//                                    $dataloop[$bereich."_".$tog_key][$key]["color"] = "#CCCCCC";
+//                                    if ( $my == -1 ) $dataloop[$bereich."_".$tog_key][$key]["color"] = "#FF9148";
+//                                    $dataloop[$bereich."_".$tog_key][$key]["red"] = implode(", ",$member_edit);
+//                                    $dataloop[$bereich."_".$tog_key][$key]["chefred"] = implode(", ",$member_publish);
+//                                }                                                  
+//                            } else {
+//                                unset($dataloop[$bereich."_".$tog_key][$key]);
+//                            }
+//                        }
+//                    }
+//                }
+    
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

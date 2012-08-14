@@ -1,0 +1,109 @@
+<!--##begin-->
+<div class="box">
+    <h2 style="float:left;">!{bereich}</h2>
+    <form action="/auth/admin/bloged/add.html" method="post" style="">
+        <div style="float:right">
+            <input type="submit" value="Neueintrag" name="blog"/>
+            <input type="hidden" name="link" value="!{url}"/>
+            <input type="hidden" name="kategorie" value="!{url}"/>
+        </div>
+    </form>
+    <div style="clear:both"></div>
+
+<!--##hide-edit_section--> 
+    <div id="edit_!{name}">
+        <h3><a href="#">in Bearbeitung</a></h3>            
+        <ul style="overflow:hidden;list-style:none;list-style-image:none;margin:3px;padding:1px;width:auto;">
+        <!--##loop-edit_section-->
+            <li style="margin:2px 0 0 0;padding:0.2em;border:1px solid;">
+                <span style="float:right;text-align:right;display:block;">
+                    <a onclick="preview('!{preview}','vorschau_container')" style="display:block;" title="Pfad: !{path}" >Vorschau</a>
+                    <a href="!{edit}" style="display:block;" title="Seite bearbeiten">Bearbeiten</a>
+                    <a href="!{del}" style="display:block;" title="Seite l&ouml;schen">L&ouml;schen</a>
+                </span>
+                <b>!{titel}</b><br />
+                Autor: !{author}<br />
+                letzte &Auml;nderung: !{changed}<br />
+                letzte Version von: !{last_author}
+                <div class="clearer"></div>
+            </li>    
+        <!--##cont-->
+        </ul>
+    </div>
+    <script>
+        $(document).ready(function() {
+            jQuery('#edit_!{name}').accordion({
+                animated: 'bounceslide',
+                active: 4,
+                collapsible: true,
+                autoHeight: false
+            });
+        })
+    </script>
+<!--##show-->
+                    
+<!--##hide-release_wait_section-->
+    
+    <div id="release_wait_!{name}">
+        <h3><a href="#">Freigabe angefordert</a></h3>
+        <ul style="overflow:hidden;list-style:none;list-style-image:none;margin:3px;padding:1px;width:auto;">
+        <!--##loop-release_wait_section-->
+            <li style="margin:2px 0 0 0;padding:0.2em;border:1px solid !{color};">
+                <span style="float:right;text-align:right;display:block;">
+                    <a href="!{view}" style="display:block;" title="Pfad: !{path}" onclick="ajax_preview('!{view}');return false;">Vorschau</a>
+                </span>
+                <b>!{titel}</b><br />
+                letzte &Auml;nderung: !{changed}<br />
+                Chefredakteure: !{chefred}
+                <div class="clearer"></div>
+            </li>
+        <!--##cont-->
+        </ul>
+    </div>
+        <script>
+        $(document).ready(function() {
+            jQuery('#release_wait_!{name}').accordion({
+                animated: 'bounceslide',
+                active: 4,
+                collapsible: true,
+                autoHeight: false
+            });
+        })
+    </script>
+<!--##show-->         
+
+<!--##hide-release_queue-->
+    <div id="release_queue_!{name}">
+        <h3><a href="#">Warten auf Freigabe</a></h3>
+        <ul style="overflow:hidden;list-style:none;list-style-image:none;margin:3px;padding:1px;width:auto;">
+        <!--##loop-release_queue-->
+            <li style="margin:2px 0 0 0;padding:0.2em;border:1px solid !{color};">
+                <span style="float:right;text-align:right;display:block;">
+                <a href="!{view}" style="display:block;" title="Pfad: !{path}" onclick="ajax_preview('!{view}');return false;">Vorschau</a>
+                <a href="!{edit}" style="display:block;" title="Seite bearbeiten">Bearbeiten</a>
+                <a href="!{release}" style="display:block;" title="Seite freigeben">Freigabe</a>
+                <a href="!{history}" style="display:block;" title="Pfad: !{path}">Versionen</a>
+                <a href="!{unlock}" style="display:block;" title="Seite entsperren">Entsperren</a>
+                </span>
+                <b>!{titel}</b><br />
+                Autor: !{author}<br />
+                letzte &Auml;nderung: !{changed}<br />
+                letzte Version von: !{last_author}
+                <div class="clearer"></div>
+            </li>
+            <!--##cont-->
+        </ul>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            jQuery('#release_queue_!{name}').accordion({
+                animated: 'bounceslide',
+                active: 4,
+                collapsible: true,
+                autoHeight: false
+            });
+        })
+    </script>
+<!--##show-->  
+<!--##end-->
