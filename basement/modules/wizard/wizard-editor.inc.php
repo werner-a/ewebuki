@@ -442,6 +442,9 @@
                     header("Location: ".$header);
                 }
             } elseif ( $ausgaben["form_error"] != "" ) {
+                 if ( $_POST["ajax"] == "on" ) {
+                    die($ausgaben["form_error"]);
+                 }
                 $hidedata["form_error"][] = -1;
             }
             // + + +
