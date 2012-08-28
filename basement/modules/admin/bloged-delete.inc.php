@@ -78,7 +78,7 @@
         // unzugaengliche #(marken) sichtbar machen
         // ***
 
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
         } else {
@@ -89,7 +89,7 @@
 
         // das loeschen wurde bestaetigt, loeschen!
         // ***
-        if (  $HTTP_POST_VARS["send"] != "" ) {
+        if (  $_POST["send"] != "" ) {
             // datensatz loeschen
             if ( $ausgaben["form_error"] == "" ) {
                 $sql = "UPDATE ".$cfg["bloged"]["db"]["bloged"]["entries"]." SET status = 0 WHERE ".$cfg["bloged"]["db"]["bloged"]["key"]."='".eCRC(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."' AND content REGEXP '^\\\[!\\\]'";

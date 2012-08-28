@@ -62,7 +62,7 @@
         if ( $cfg["leer"]["iconpath"] == "" ) $cfg["leer"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $specialvars["editlock"] = 0;
         } else {
             $specialvars["editlock"] = -1;
@@ -128,7 +128,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
         } else {

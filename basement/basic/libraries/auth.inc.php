@@ -51,14 +51,14 @@
     $pathvars["pretorian"] = $pathvars["menuroot"]."/".$cfg["auth"]["hidden"]["kategorie"].".html";
 
     // referer im form mit hidden element mitschleppen
-    if ( $HTTP_POST_VARS["form_referer"] == "" ) {
+    if ( $_POST["form_referer"] == "" ) {
         $a = 4;
         if ( $pathvars["subdir"] != "" ) $a++;
         $path = explode("/",$_SERVER["HTTP_REFERER"],$a);
         $ausgaben["form_referer"] = "/".$path[--$a];
         $ausgaben["form_break"] = $ausgaben["form_referer"];
     } else {
-        $ausgaben["form_referer"] = htmlentities($HTTP_POST_VARS["form_referer"]);
+        $ausgaben["form_referer"] = htmlentities($_POST["form_referer"]);
         $ausgaben["form_break"] = $ausgaben["form_referer"];
     }
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "referer = ".$_SERVER["HTTP_REFERER"].$debugging["char"];
@@ -66,13 +66,13 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form_referer = ".$ausgaben["form_referer"].$debugging["char"];
 
     // login ueberpruefen
-    if ( $HTTP_POST_VARS["login"] == "login" ) {
+    if ( $_POST["login"] == "login" ) {
         if ( $cfg["auth"]["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["auth"]["db"]["user"]["custom"];
         // user-eingabe absichern
         if ( get_magic_quotes_gpc() ) {
-            $post_user = $HTTP_POST_VARS["user"];
+            $post_user = $_POST["user"];
         } else {
-            $post_user = addslashes($HTTP_POST_VARS["user"]);
+            $post_user = addslashes($_POST["user"]);
         }
         $sql = "SELECT ".$cfg["auth"]["db"]["user"]["id"].",
                        ".$cfg["auth"]["db"]["user"]["surname"].",
@@ -98,7 +98,7 @@
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SA = ".$SALT.$debugging["char"];
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "DB = ".$AUTH[$cfg["auth"]["db"]["user"]["pass"]].$debugging["char"];
 
-        $CRYPT_PASS = crypt($HTTP_POST_VARS["pass"],$SALT);
+        $CRYPT_PASS = crypt($_POST["pass"],$SALT);
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "FM = ".$CRYPT_PASS.$debugging["char"];
 
         if ( $AUTH[$cfg["auth"]["db"]["user"]["id"]] != "" && $AUTH[$cfg["auth"]["db"]["user"]["pass"]] == $CRYPT_PASS ) {
@@ -164,7 +164,7 @@
 
 
     // logout durchfuehren und session loeschen
-    if ( $HTTP_POST_VARS["logout"] == "logout" ) {
+    if ( $_POST["logout"] == "logout" ) {
         session_start();
         $_SESSION = array();
         if (isset($_COOKIE[session_name()])) {
@@ -211,7 +211,7 @@
     if ( $cfg["auth"]["hidden"]["set"] == True ) $specialvars["404"]["nochk"]["kategorie"][] =  $cfg["auth"]["hidden"]["kategorie"];
 
     // label bearbeitung aktivieren
-    if ( isset($HTTP_GET_VARS["edit"]) ) {
+    if ( isset($_GET["edit"]) ) {
         $specialvars["editlock"] = 0;
     } else {
         $specialvars["editlock"] = -1;

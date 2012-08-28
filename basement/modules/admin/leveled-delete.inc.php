@@ -105,7 +105,7 @@
 
         // unzugaengliche #(marken) sichtbar machen
         // ***
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result1) #(error_result1)<br />";
             $ausgaben["inaccessible"] .= "# (error_result2) #(error_result2)<br />";
@@ -124,10 +124,10 @@
 
         // das loeschen wurde bestaetigt, loeschen!
         // ***
-        if ( $HTTP_POST_VARS["send"] != "" ) {
+        if ( $_POST["send"] != "" ) {
 
             // evtl. zusaetzlichen datensatz loeschen
-#            if ( $HTTP_POST_VARS["id2"] != "" ) {
+#            if ( $_POST["id2"] != "" ) {
                 // funktions bereich fuer erweiterungen
                 // ***
 

@@ -196,7 +196,7 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                #$ldate = $HTTP_POST_VARS["ldate"];
+                #$ldate = $_POST["ldate"];
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
 

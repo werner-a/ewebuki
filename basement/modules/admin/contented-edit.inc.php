@@ -258,12 +258,12 @@
         / die if abfrage die den save verhindert
         / hat mir nicht gefallen!
         */
-        if ( $HTTP_POST_VARS["PREVIEW"]  ){
+        if ( $_POST["PREVIEW"]  ){
             $hidedata["preview"]["content"] = "#(preview)";
-            $preview = intelilink($HTTP_POST_VARS["content"]);
+            $preview = intelilink($_POST["content"]);
             $preview = tagreplace($preview);
             $hidedata["preview"]["content"] .= nlreplace($preview);
-            $form_values["content"] = $HTTP_POST_VARS["content"];
+            $form_values["content"] = $_POST["content"];
         }
 
 
@@ -389,13 +389,13 @@
 
 
         // referer im form mit hidden element mitschleppen
-        if ( $HTTP_GET_VARS["referer"] != "" ) {
-            $ausgaben["form_referer"] = $HTTP_GET_VARS["referer"];
-            $ausgaben["form_break"] = $HTTP_GET_VARS["referer"];
-        } elseif ( $HTTP_POST_VARS["form_referer"] == "" ) {
+        if ( $_GET["referer"] != "" ) {
+            $ausgaben["form_referer"] = $_GET["referer"];
+            $ausgaben["form_break"] = $_GET["referer"];
+        } elseif ( $_POST["form_referer"] == "" ) {
             $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
         } else {
-            $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
+            $ausgaben["form_referer"] = $_POST["form_referer"];
         }
 
 
@@ -431,7 +431,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
@@ -464,14 +464,14 @@
         }
 
         if ( $environment["parameter"][7] == "verify"
-            &&  ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["add"] != ""
-                || $HTTP_POST_VARS["sel"] != ""
-                || $HTTP_POST_VARS["upload"] != "" ) ) {
+            &&  ( $_POST["send"] != ""
+                || $_POST["add"] != ""
+                || $_POST["sel"] != ""
+                || $_POST["upload"] != "" ) ) {
 
 
             // form eingaben pr�fen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
 
             // gibt es bereits content?
@@ -539,10 +539,10 @@
                     foreach ($allcontent as $key => $value) {
                         if ( $key == $environment["parameter"][4] ) {
                             $length = strlen( $defaults["section"]["tag"] );
-                            if ( substr($HTTP_POST_VARS["content"],0,$length) == $defaults["section"]["tag"] ) {
-                                $content .= $defaults["section"]["tag"].substr($HTTP_POST_VARS["content"],$length);
+                            if ( substr($_POST["content"],0,$length) == $defaults["section"]["tag"] ) {
+                                $content .= $defaults["section"]["tag"].substr($_POST["content"],$length);
                             } else {
-                                $content .= $HTTP_POST_VARS["content"];
+                                $content .= $_POST["content"];
                             }
                         } elseif ( $key > 0 ) {
                             $content .= $defaults["section"]["tag"].$value;
@@ -556,7 +556,7 @@
                     }
                 }
             } else {
-                $content = $HTTP_POST_VARS["content"];
+                $content = $_POST["content"];
             }
 
 
@@ -649,7 +649,7 @@
                                          '".$_SESSION["ebene"]."',
                                          '".$_SESSION["kategorie"]."',
                                          '".$specialvars["crc32"]."',
-                                         '".$HTTP_POST_VARS["html"]."',
+                                         '".$_POST["html"]."',
                                          '".$content."',
                                          '".date("Y-m-d H:i:s")."',
                                          '".$_SESSION["surname"]."',
@@ -660,7 +660,7 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                #$ldate = $HTTP_POST_VARS["ldate"];
+                #$ldate = $_POST["ldate"];
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
 
@@ -684,7 +684,7 @@
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["sel"] || $HTTP_POST_VARS["upload"] > 0 ) {
+                if ( $_POST["add"] || $_POST["sel"] || $_POST["upload"] > 0 ) {
 
                     $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
 
@@ -692,8 +692,8 @@
                     $_SESSION["cms_last_ebene"] = $_SESSION["ebene"];
                     $_SESSION["cms_last_kategorie"] = $_SESSION["kategorie"];
 
-                    if ( $HTTP_POST_VARS["upload"] > 0 ) {
-                        header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$HTTP_POST_VARS["upload"]);
+                    if ( $_POST["upload"] > 0 ) {
+                        header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$_POST["upload"]);
                     } elseif ( $_POST["sel"] != "" ) {
                         header("Location: ".$pathvars["virtual"]."/admin/fileed/compilation.html");
                     } else {

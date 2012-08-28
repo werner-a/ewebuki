@@ -52,7 +52,7 @@
         // 3: anzeige als faq
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
         } else {

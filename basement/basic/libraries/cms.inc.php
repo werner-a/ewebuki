@@ -46,7 +46,7 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
     // label bearbeitung aktivieren
-    if ( isset($HTTP_GET_VARS["edit"]) ) {
+    if ( isset($_GET["edit"]) ) {
         $specialvars["editlock"] = 0;
     } else {
         $specialvars["editlock"] = -1;
@@ -160,12 +160,12 @@
             / die if abfrage die den save verhindert
             / hat mir nicht gefallen!
             */
-            if ( $HTTP_POST_VARS["PREVIEW"]  ){
+            if ( $_POST["PREVIEW"]  ){
                 $hidedata["preview"]["content"] = "#(preview)";
-                $preview = intelilink($HTTP_POST_VARS["content"]);
+                $preview = intelilink($_POST["content"]);
                 $preview = tagreplace($preview);
                 $hidedata["preview"]["content"] .= nlreplace($preview);
-                $data["content"] = $HTTP_POST_VARS["content"];
+                $data["content"] = $_POST["content"];
             }
 
 
@@ -218,13 +218,13 @@
             }
 
             // referer im form mit hidden element mitschleppen
-            if ( $HTTP_GET_VARS["referer"] != "" ) {
-                $ausgaben["form_referer"] = $HTTP_GET_VARS["referer"];
-                $ausgaben["form_break"] = $HTTP_GET_VARS["referer"];
-            } elseif ( $HTTP_POST_VARS["form_referer"] == "" ) {
+            if ( $_GET["referer"] != "" ) {
+                $ausgaben["form_referer"] = $_GET["referer"];
+                $ausgaben["form_break"] = $_GET["referer"];
+            } elseif ( $_POST["form_referer"] == "" ) {
                 $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
             } else {
-                $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
+                $ausgaben["form_referer"] = $_POST["form_referer"];
             }
 
             // navigation erstellen
@@ -236,7 +236,7 @@
             $mapping["navi"] = "";
 
             // unzugaengliche #(marken) sichtbar machen
-            if ( isset($HTTP_GET_VARS["edit"]) ) {
+            if ( isset($_GET["edit"]) ) {
                 $ausgaben["inaccessible"]  = "inaccessible values:<br />";
                 $ausgaben["inaccessible"] .= "# (upload) #(upload)<br />";
                 $ausgaben["inaccessible"] .= "# (file) #(file)<br />";
@@ -256,12 +256,12 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$_SESSION["kategorie"].$debugging["char"];
 
             // referer im form mit hidden element mitschleppen
-            if ( $HTTP_GET_VARS["referer"] != "" ) {
-                $ausgaben["form_referer"] = $HTTP_GET_VARS["referer"];
-            } elseif ( $HTTP_POST_VARS["form_referer"] == "" ) {
+            if ( $_GET["referer"] != "" ) {
+                $ausgaben["form_referer"] = $_GET["referer"];
+            } elseif ( $_POST["form_referer"] == "" ) {
                 $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
             } else {
-                $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
+                $ausgaben["form_referer"] = $_POST["form_referer"];
             }
 
 
@@ -291,10 +291,10 @@
                 foreach ($allcontent as $key => $value) {
                     if ( $key == $environment["parameter"][4] ) {
                         $length = strlen( $defaults["section"]["tag"] );
-                        if ( substr($HTTP_POST_VARS["content"],0,$length) == $defaults["section"]["tag"] ) {
-                            $content .= $defaults["section"]["tag"].substr($HTTP_POST_VARS["content"],$length);
+                        if ( substr($_POST["content"],0,$length) == $defaults["section"]["tag"] ) {
+                            $content .= $defaults["section"]["tag"].substr($_POST["content"],$length);
                         } else {
-                            $content .= $HTTP_POST_VARS["content"];
+                            $content .= $_POST["content"];
                         }
                     } elseif ( $key > 0 ) {
                         $content .= $defaults["section"]["tag"].$value;
@@ -307,7 +307,7 @@
 
                 }
             } else {
-                $content = $HTTP_POST_VARS["content"];
+                $content = $_POST["content"];
             }
 
 
@@ -327,7 +327,7 @@
 
 
             if ( $content_exist == 1 ) {
-                if ( $environment["parameter"][4] == "" && $HTTP_POST_VARS["content"] == "" ) {
+                if ( $environment["parameter"][4] == "" && $_POST["content"] == "" ) {
                     $sql = "DELETE FROM ". SITETEXT ."
                                   WHERE  label ='".$environment["parameter"][3]."'
                                     AND  tname ='".$environment["parameter"][2]."'
@@ -336,7 +336,7 @@
                     $sql = "UPDATE ". SITETEXT ." set
                                     content = '".$content."',
                                       crc32 = '".$specialvars["crc32"]."',
-                                       html = '".$HTTP_POST_VARS["html"]."',
+                                       html = '".$_POST["html"]."',
                                       ebene = '".$_SESSION["ebene"]."',
                                   kategorie = '".$_SESSION["kategorie"]."',
                                     changed = '".date("Y-m-d H:i:s")."',
@@ -360,7 +360,7 @@
                                       '".$environment["parameter"][2]."',
                                       '".$_SESSION["ebene"]."',
                                       '".$_SESSION["kategorie"]."',
-                                      '".$HTTP_POST_VARS["html"]."',
+                                      '".$_POST["html"]."',
                                       '".$content."',
                                       '".date("Y-m-d H:i:s")."',
                                       '".$_SESSION["surname"]."',
@@ -372,15 +372,15 @@
             if ( !$result ) die($db -> error("DB ERROR: "));
 
 
-            if ( $HTTP_POST_VARS["add"] || $HTTP_POST_VARS["upload"] > 0 ) {
+            if ( $_POST["add"] || $_POST["upload"] > 0 ) {
 
                 $_SESSION["cms_last_edit"] = str_replace("save,", "edit,", $pathvars["requested"]);
                 $_SESSION["cms_last_referer"] = $ausgaben["form_referer"];
                 $_SESSION["cms_last_ebene"] = $_SESSION["ebene"];
                 $_SESSION["cms_last_kategorie"] = $_SESSION["kategorie"];
 
-                if ( $HTTP_POST_VARS["upload"] > 0 ) {
-                    header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$HTTP_POST_VARS["upload"]);
+                if ( $_POST["upload"] > 0 ) {
+                    header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$_POST["upload"]);
                 } else {
                     header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
                 }

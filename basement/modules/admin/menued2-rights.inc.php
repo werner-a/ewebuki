@@ -102,7 +102,7 @@
     
         // unzugaengliche #(marken) sichtbar machen
         // ***
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
@@ -150,8 +150,8 @@
         $element["actual"] .= "</select>";
     
         if ( $environment["parameter"][3] == "verify" ) {
-            if ( is_array($HTTP_POST_VARS["avail"]) && isset($HTTP_POST_VARS["add"]) ) {
-                foreach ($HTTP_POST_VARS["avail"] as $name => $value ) {
+            if ( is_array($_POST["avail"]) && isset($_POST["add"]) ) {
+                foreach ($_POST["avail"] as $name => $value ) {
                     if ( is_array($actuallarray)) {
                         if (in_array($value,$actuallarray)) {
                             $ausgaben["form_error"] = "#(error_dupe)"; 
@@ -166,17 +166,17 @@
                         $db -> query($sql);
                     }
                 }
-                if ( isset($HTTP_POST_VARS["add"]) && $ausgaben["form_error"] == "" ) {
+                if ( isset($_POST["add"]) && $ausgaben["form_error"] == "" ) {
                 header("Location: ".$cfg["menued"]["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].".html");
                 }
             }
     
-            if ( is_array($HTTP_POST_VARS["actual"]) && isset($HTTP_POST_VARS["del"]) ) {
-                foreach ($HTTP_POST_VARS["actual"] as $name => $value ) {
+            if ( is_array($_POST["actual"]) && isset($_POST["del"]) ) {
+                foreach ($_POST["actual"] as $name => $value ) {
                     $sql = "DELETE FROM ".$cfg["menued"]["db"]["special"]["entries"]." WHERE ".$cfg["menued"]["db"]["special"]["userkey"]."='".$value."' AND ".$cfg["menued"]["db"]["special"]["dbasekey"]."='".$base."' AND ".$cfg["menued"]["db"]["special"]["contentkey"]." = '-1' AND ".$cfg["menued"]["db"]["special"]["tnamekey"]."='".$crc."'";
                     $db -> query($sql);
                 }
-                if ( isset($HTTP_POST_VARS["del"]) && $ausgaben["form_error"] == "" ) {
+                if ( isset($_POST["del"]) && $ausgaben["form_error"] == "" ) {
                 header("Location: ".$cfg["menued"]["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].".html");
                 }
             }

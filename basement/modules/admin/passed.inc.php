@@ -52,7 +52,7 @@
     if ( $cfg["passed"]["iconpath"] == "" ) $cfg["passed"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
-    if ( isset($HTTP_GET_VARS["edit"]) ) {
+    if ( isset($_GET["edit"]) ) {
         $specialvars["editlock"] = 0;
     } else {
         $specialvars["editlock"] = -1;
@@ -60,12 +60,12 @@
 
     if ( $_SESSION["auth"] == -1 ) {
 
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        if ( count($_POST) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["passed"]["db"]["entries"]." WHERE ".$cfg["passed"]["db"]["key"]."='".$_SESSION["uid"]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,$nop);
         } else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         }
 
         // form otions holen
@@ -89,7 +89,7 @@
         $ausgaben["form_aktion"] = $cfg["passed"]["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_chkpass) #(error_chkpass)<br />";
             $ausgaben["inaccessible"] .= "# (error_oldpass) #(error_oldpass)<br />";
@@ -98,16 +98,16 @@
         }
 
         // referer im form mit hidden element mitschleppen
-        if ( $HTTP_POST_VARS["form_referer"] == "" ) {
+        if ( $_POST["form_referer"] == "" ) {
             $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         } else {
-            $ausgaben["form_referer"] = $HTTP_POST_VARS["form_referer"];
+            $ausgaben["form_referer"] = $_POST["form_referer"];
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         }
 
         if ( $environment["parameter"][3] == "verify"
-            && $HTTP_POST_VARS["send"] != "" ) {
+            && $_POST["send"] != "" ) {
 
             // form eigaben prüfen
             form_errors( $form_options, $form_values );
@@ -122,13 +122,13 @@
             $salt = substr($data[$cfg["passed"]["db"]["pass"]],0,2);
 
             // ist passwort db = gesendetes altes passwort
-            if ( $data[$cfg["passed"]["db"]["pass"]] == crypt($HTTP_POST_VARS["oldpass"],$salt) ) {
+            if ( $data[$cfg["passed"]["db"]["pass"]] == crypt($_POST["oldpass"],$salt) ) {
                 // neues passwort vorhanden und die wiederholung stimmt
-                if ( $HTTP_POST_VARS["newpass"] != ""
-                    && ( $HTTP_POST_VARS["newpass"] == $HTTP_POST_VARS["chkpass"] ) ) {
+                if ( $_POST["newpass"] != ""
+                    && ( $_POST["newpass"] == $_POST["chkpass"] ) ) {
 
                     // neues passwort verschluesseln ( mysql = ecncrypt() )
-                    $checked_password = $HTTP_POST_VARS["newpass"];
+                    $checked_password = $_POST["newpass"];
                     mt_srand((double)microtime()*1000000);
                     $a=mt_rand(1,128);
                     $b=mt_rand(1,128);

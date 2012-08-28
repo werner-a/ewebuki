@@ -53,7 +53,7 @@
         $ausgaben["priv"] = "";
 
 
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        if ( count($_POST) == 0 ) {
             $sql = "SELECT *
                       FROM ".$cfg["prived"]["db"]["priv"]["entries"]."
                      WHERE ".$cfg["prived"]["db"]["priv"]["key"]."='".$environment["parameter"][1]."'";
@@ -61,7 +61,7 @@
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
         } else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         }
 
         // form options holen
@@ -105,7 +105,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
@@ -120,12 +120,12 @@
         // page basics
 
         if ( $environment["parameter"][2] == "verify"
-            &&  ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["extension1"] != ""
-                || $HTTP_POST_VARS["extension2"] != "" ) ) {
+            &&  ( $_POST["send"] != ""
+                || $_POST["extension1"] != ""
+                || $_POST["extension2"] != "" ) ) {
 
             // form eingaben pr�fen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
@@ -144,7 +144,7 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 $kick = array( "PHPSESSID", "form_referer", "send" );
-                foreach($HTTP_POST_VARS as $name => $value) {
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                         if ( $sqla != "" ) $sqla .= ", ";
                         $sqla .= $name."='".$value."'";

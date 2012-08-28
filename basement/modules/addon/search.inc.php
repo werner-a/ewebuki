@@ -62,7 +62,7 @@
         if ( $cfg["search"]["iconpath"] == "" ) $cfg["search"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $specialvars["editlock"] = 0;
         } else {
             $specialvars["editlock"] = -1;
@@ -75,8 +75,8 @@
         // funktions bereich
         // ***
 
-        $sanitized["search"] = preg_replace("/[^A-Za-z0-9_ .,-]+/", "", $HTTP_POST_VARS["search"]);
-        $sanitized["requested"] = preg_replace("/[^A-Za-z0-9_.-]+/", "", $HTTP_POST_VARS["requested"]);
+        $sanitized["search"] = preg_replace("/[^A-Za-z0-9_ .,-]+/", "", $_POST["search"]);
+        $sanitized["requested"] = preg_replace("/[^A-Za-z0-9_.-]+/", "", $_POST["requested"]);
         // txt2regex [^A-Za-z_.-0-9]+, [a-z_.-0-9]+
 
         $ausgaben["search"] = $sanitized["search"];
@@ -138,8 +138,8 @@
         // ***
 
         // fehlermeldungen
-        if ( $HTTP_GET_VARS["error"] != "" ) {
-            if ( $HTTP_GET_VARS["error"] == 1 ) {
+        if ( $_GET["error"] != "" ) {
+            if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
         } else {
@@ -158,7 +158,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (found_nothing) #(found_nothing)<br />";
             $ausgaben["inaccessible"] .= "# (found_something) #(found_something)<br />";

@@ -253,28 +253,28 @@
 
     if (version_compare(PHP_VERSION, "4.3.0", ">=")) {
         // was steht in den post vars
-        if ( $debugging["html_enable"] && count($HTTP_POST_VARS) > 0 ) {
+        if ( $debugging["html_enable"] && count($_POST) > 0 ) {
             $debugging["ausgabe"] .= "form (post):";
-            $debugging["ausgabe"] .= "<pre>".print_r($HTTP_POST_VARS,True)."</pre>";
+            $debugging["ausgabe"] .= "<pre>".print_r($_POST,True)."</pre>";
         }
         // was steht in den get vars
-        if ( $debugging["html_enable"] && count($HTTP_GET_VARS) > 0 ) {
+        if ( $debugging["html_enable"] && count($_GET) > 0 ) {
             $debugging["ausgabe"] .= "form (post):";
-            $debugging["ausgabe"] .= "<pre>".print_r($HTTP_GET_VARS,True)."</pre>";
+            $debugging["ausgabe"] .= "<pre>".print_r($_GET,True)."</pre>";
         }
     } else {
         // was steht in den post vars
-        if ( $debugging["html_enable"] && count($HTTP_POST_VARS) > 0 ) {
+        if ( $debugging["html_enable"] && count($_POST) > 0 ) {
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form (post):".$debugging["char"];
-            foreach($HTTP_POST_VARS as $name => $value) {
+            foreach($_POST as $name => $value) {
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
             }
         }
 
         // was steht in den get vars
-        if ( $debugging["html_enable"] && count($HTTP_GET_VARS) > 0 ) {
+        if ( $debugging["html_enable"] && count($_GET) > 0 ) {
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form (get):".$debugging["char"];
-            foreach($HTTP_GET_VARS as $name => $value) {
+            foreach($_GET as $name => $value) {
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $name." => ".$value.$debugging["char"];
             }
         }
@@ -319,11 +319,11 @@
     require $pathvars["config"]."modules.cfg.php";
 
     // label check
-    if ( isset($HTTP_GET_VARS["edit"]) ) {
-        if ( $HTTP_GET_VARS["edit"] == "" ) {
+    if ( isset($_GET["edit"]) ) {
+        if ( $_GET["edit"] == "" ) {
             $tname = $mapping["main"];
         } else {
-            $tname = eCRC($environment["ebene"]).".".$HTTP_GET_VARS["edit"];
+            $tname = eCRC($environment["ebene"]).".".$_GET["edit"];
         }
         $sql = "SELECT * FROM ". SITETEXT ."
                 WHERE tname='".$tname."'
@@ -356,26 +356,26 @@
     }
 
     // rekursiven parser aufrufen
-    if ( $HTTP_POST_VARS["print"] != "" || $HTTP_GET_VARS["print"] != "" ) {
+    if ( $_POST["print"] != "" || $_GET["print"] != "" ) {
         $debugging["html_enable"] = 0;
-        $print_template = $HTTP_POST_VARS["print"][2].$HTTP_GET_VARS["print"][2];
+        $print_template = $_POST["print"][2].$_GET["print"][2];
         if ( preg_match("/^[a-zA-Z0-9-_]+$/", $print_template) ){
             rparser( $print_template.".tem.html", $specialvars["default_template"].".tem.html");
         }
-    } elseif ( $HTTP_POST_VARS["hijack"] != "" || $HTTP_GET_VARS["hijack"] != "" ) {
-        foreach ( $HTTP_GET_VARS as $key => $value ) {
+    } elseif ( $_POST["hijack"] != "" || $_GET["hijack"] != "" ) {
+        foreach ( $_GET as $key => $value ) {
             if ( $hijack == "" ) {
                 $hijack  = $value;
             } else {
                 $hijack .= "&".$key."=".$value;
             }
         }
-        $frameset_template = $HTTP_POST_VARS["hijack"].$hijack;
+        $frameset_template = $_POST["hijack"].$hijack;
         #$ausgaben["navigation"] = "/templates/net/frameset.head.tem.html";
         $ausgaben["navigation"] = "frameset.head.tem.html?head=true";
         $ausgaben["hijack"] = $frameset_template;
         rparser("frameset.tem.html", $specialvars["default_template"].".tem.html");
-    } elseif ( $HTTP_POST_VARS["head"] != "" || $HTTP_GET_VARS["head"] != "" ) {
+    } elseif ( $_POST["head"] != "" || $_GET["head"] != "" ) {
         $array = explode("?",$_SERVER["HTTP_REFERER"]);
         $ausgaben["seite"] = $array[0];
         rparser("frameset.head.tem.html", $specialvars["default_template"].".tem.html");

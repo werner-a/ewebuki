@@ -48,12 +48,12 @@
 
         // page basics
         // ***
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        if ( count($_POST) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][1]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
         } else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         }
 
         // form options holen
@@ -71,7 +71,7 @@
 
         // verwaltung multi language
         // ***
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        if ( count($_POST) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["db"]["lang"]["entries"]." where mid=".$environment["parameter"][1]." ORDER by lang";
             $result = $db -> query($sql);
             $num_rows = $db -> num_rows($result);
@@ -94,20 +94,20 @@
             }
         } else {
             // nur eine sprache?
-            if ( count($HTTP_POST_VARS["lang"]) <= 1 ) {
+            if ( count($_POST["lang"]) <= 1 ) {
                 $array = array(
-                    "lang"    => $HTTP_POST_VARS["lang"],
-                    "label"   => $HTTP_POST_VARS["label"],
-                    "exturl"  => $HTTP_POST_VARS["exturl"],
+                    "lang"    => $_POST["lang"],
+                    "label"   => $_POST["label"],
+                    "exturl"  => $_POST["exturl"],
                 );
                 $element = array_merge($element, form_elements( $cfg["db"]["lang"]["entries"], $array ));
                 $art = "-single";
             } else {
-                foreach( $HTTP_POST_VARS["lang"] as $key => $value ) {
+                foreach( $_POST["lang"] as $key => $value ) {
                     $array = array(
                         "lang"    => $value,
-                        "label"   => $HTTP_POST_VARS["label"][$key],
-                        "exturl"  => $HTTP_POST_VARS["exturl"][$key],
+                        "label"   => $_POST["label"][$key],
+                        "exturl"  => $_POST["exturl"][$key],
                     );
                     // element erweiterung aus zeile bauen (form options bereits geholt)
                     $ext_element = form_elements( $cfg["db"]["lang"]["entries"], $array, "[".$key."]" );
@@ -177,7 +177,7 @@
 
         // unzugaengliche #(marken) sichtbar machen
         // ***
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
@@ -195,16 +195,16 @@
         // page basics
 
 
-        #$fixed_entry = str_replace(" ", "", $HTTP_POST_VARS["entry"]);
-        $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
+        #$fixed_entry = str_replace(" ", "", $_POST["entry"]);
+        $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $_POST["entry"]);  // PREG:^[a-z_.-0-9]+$
 
         if ( $environment["parameter"][2] == "verify"
-            &&  ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["add"] != ""
-                || $HTTP_POST_VARS["delete"] != "" ) ) {
+            &&  ( $_POST["send"] != ""
+                || $_POST["add"] != ""
+                || $_POST["delete"] != "" ) ) {
 
             // form eigaben prüfen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
             // lang tabellen aenderungen
             if ( $ausgaben["form_error"] == ""  ) {
@@ -212,11 +212,11 @@
                 $checkext = checkext();
 
                 $header_link = $cfg["basis"]."/edit,".$environment["parameter"][1].".html"; #?referer=".$ausgaben["form_referer"]);
-                if ( $HTTP_POST_VARS["add"] && $HTTP_POST_VARS["new_lang"] != "" ) {
+                if ( $_POST["add"] && $_POST["new_lang"] != "" ) {
                     $sql = "SELECT label
                               FROM ".$cfg["db"]["lang"]["entries"]."
                              WHERE mid = ".$environment["parameter"][1]."
-                               AND lang = '".$HTTP_POST_VARS["new_lang"]."'";
+                               AND lang = '".$_POST["new_lang"]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
@@ -228,17 +228,17 @@
                     } else {
                         if ( $checkext != "" ) {
                             $extenda = "extend, ";
-                            $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
+                            $extendb = "'".$_POST["extend"]."', ";
                         }
-                        $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, ".$extenda."label) VALUES ('".$environment["parameter"][1]."', '".$HTTP_POST_VARS["new_lang"]."', ".$extendb."'".$fixed_entry."' )";
+                        $sql = "insert into ".$cfg["db"]["lang"]["entries"]." (mid, lang, ".$extenda."label) VALUES ('".$environment["parameter"][1]."', '".$_POST["new_lang"]."', ".$extendb."'".$fixed_entry."' )";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
                         if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                         #header("Location: ".$cfg["basis"]."/edit,".$environment["parameter"][1].",verify.html"); #?referer=".$ausgaben["form_referer"]);
                         $header = $header_link;
                     }
-                } elseif ( $HTTP_POST_VARS["delete"] ) {
-                    $key = key($HTTP_POST_VARS["delete"]);
+                } elseif ( $_POST["delete"] ) {
+                    $key = key($_POST["delete"]);
                     $sql = "SELECT lang
                               FROM ".$cfg["db"]["lang"]["entries"]."
                              WHERE mlid = ".$key;
@@ -259,23 +259,23 @@
                     }
                 }
 
-                if ( count($HTTP_POST_VARS["lang"]) <= 1 ) {
-                    if ( $checkext != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"]."',";
+                if ( count($_POST["lang"]) <= 1 ) {
+                    if ( $checkext != "" ) $extenddesc = "extend = '".$_POST["extend"]."',";
                     $sql = "update ".$cfg["db"]["lang"]["entries"]."
-                            set label = '".$HTTP_POST_VARS["label"]."',
+                            set label = '".$_POST["label"]."',
                                 ".$extenddesc."
-                                exturl = '".$HTTP_POST_VARS["exturl"]."'
+                                exturl = '".$_POST["exturl"]."'
                             where mid = ".$environment["parameter"][1]; # mid statt mlid weil $key fehlt
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 } else {
-                    foreach( $HTTP_POST_VARS["lang"] as $key => $value ) {
-                        if ( $checkext != "" ) $extenddesc = "extend = '".$HTTP_POST_VARS["extend"][$key]."',";
+                    foreach( $_POST["lang"] as $key => $value ) {
+                        if ( $checkext != "" ) $extenddesc = "extend = '".$_POST["extend"][$key]."',";
                         $sql = "update ".$cfg["db"]["lang"]["entries"]."
-                                set label = '".$HTTP_POST_VARS["label"][$key]."',
+                                set label = '".$_POST["label"][$key]."',
                                     ".$extenddesc."
-                                    exturl = '".$HTTP_POST_VARS["exturl"][$key]."'
+                                    exturl = '".$_POST["exturl"][$key]."'
                                 where mlid=".$key;
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                         $result  = $db -> query($sql);
@@ -300,7 +300,7 @@
                     // gibt den geaenderten entry bereits?
                     $sql = "SELECT entry
                             FROM ".$cfg["db"]["menu"]["entries"]."
-                            WHERE refid = '".$HTTP_POST_VARS["refid"]."'
+                            WHERE refid = '".$_POST["refid"]."'
                             AND entry = '".$fixed_entry."'";
                     $result1 = $db -> query($sql);
                     $test = $db -> fetch_array($result,1);
@@ -308,7 +308,7 @@
 
                     if ( $ausgaben["form_error"] == ""  ) {
                         // content aktuelle seite aendern (alle sprachen)
-                        $ebene = make_ebene($HTTP_POST_VARS["refid"]);
+                        $ebene = make_ebene($_POST["refid"]);
                         if ( $ebene != "/" ) {
                             $crc32 = eCRC($ebene).".";
                         } else {
@@ -345,7 +345,7 @@
                 $kick = array( "PHPSESSID", "send", "add", "delete", "image", "image_x", "image_y", "form_referer",
                                "new_lang", "lang", "label", "extend", "exturl",
                                "entry" );
-                foreach($HTTP_POST_VARS as $name => $value) {
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                         if ( $sqla != "" ) $sqla .= ", ";
                         $sqla .= $name."='".$value."'";
@@ -353,11 +353,11 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                #$entry = strtolower($HTTP_POST_VARS["entry"]); // wird jetzt mit einer regex erledigt
+                #$entry = strtolower($_POST["entry"]); // wird jetzt mit einer regex erledigt
                 #$entry = str_replace(" ", "", $entry); // siehe $fixed_entry
                 $sqla .= ", entry='".$fixed_entry."'";
 
-                #$ldate = $HTTP_POST_VARS["ldate"];
+                #$ldate = $_POST["ldate"];
                 #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
                 #$sqla .= ", ldate='".$ldate."'";
 

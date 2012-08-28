@@ -127,7 +127,7 @@
 
             // unzugaengliche #(marken) sichtbar machen
             // ***
-            if ( isset($HTTP_GET_VARS["edit"]) ) {
+            if ( isset($_GET["edit"]) ) {
                 $ausgaben["inaccessible"] = "inaccessible values:<br />";
                 $ausgaben["inaccessible"] .= "# (error_result1) #(error_result1)<br />";
                 $ausgaben["inaccessible"] .= "# (error_result2) #(error_result2)<br />";
@@ -146,11 +146,11 @@
 
             // das loeschen wurde bestaetigt, loeschen!
             // ***
-            if ( $HTTP_POST_VARS["delete"] != ""
-                && $HTTP_POST_VARS["send"] != "" ) {
+            if ( $_POST["delete"] != ""
+                && $_POST["send"] != "" ) {
 
                 // evtl. zusaetzlichen datensatz loeschen
-                if ( $HTTP_POST_VARS["id2"] != "" ) {
+                if ( $_POST["id2"] != "" ) {
                     // funktions bereich fuer erweiterungen
                     // ***
 
@@ -158,7 +158,7 @@
 
                     /* z.B. evtl. verknuepfte datensatze loeschen
                     $sql = "DELETE FROM ".$cfg["leer"]["db"]["more"]["entries"]."
-                                  WHERE ".$cfg["leer"]["db"]["more"]["key"]." = '".$HTTP_POST_VARS["id2"]."'";
+                                  WHERE ".$cfg["leer"]["db"]["more"]["key"]." = '".$_POST["id2"]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
@@ -171,7 +171,7 @@
                 // datensatz loeschen
                 if ( $ausgaben["form_error"] == "" ) {
                     $sql = "DELETE FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
-                                  WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$HTTP_POST_VARS["id1"]."';";
+                                  WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$_POST["id1"]."';";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result1)<br />");

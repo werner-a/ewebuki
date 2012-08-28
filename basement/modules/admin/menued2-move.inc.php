@@ -56,12 +56,12 @@
 
         // page basics
         // ***
-        if ( count($HTTP_POST_VARS) == 0 ) {
+        if ( count($_POST) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." WHERE ".$cfg["menued"]["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,1);
         } else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         }
 
         // form options holen
@@ -75,7 +75,7 @@
         // +++
         // page basics
         #if ( $_GET["id"] != "" ) {
-        #    locate($HTTP_GET_VARS["id"]);
+        #    locate($_GET["id"]);
         #} else {
         #    $positionArray[] = "nop";
         #}
@@ -109,7 +109,7 @@
 
         // unzugaengliche #(marken) sichtbar machen
         // ***
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
@@ -124,16 +124,16 @@
         // page basics
 
         if ( $environment["parameter"][3] == "verify"
-            && $HTTP_POST_VARS["send"] != "" ) {
+            && $_POST["send"] != "" ) {
 
             // form eigaben prüfen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
             // gibt es in der neuen ebene einen solchen entry?
             $sql = "SELECT entry
                       FROM ".$cfg["menued"]["db"]["menu"]["entries"]."
-                     WHERE refid = '".$HTTP_POST_VARS["refid"]."'
-                       AND entry = '".$HTTP_POST_VARS["entry"]."'";
+                     WHERE refid = '".$_POST["refid"]."'
+                       AND entry = '".$_POST["entry"]."'";
             $result = $db -> query($sql);
             $num_rows = $db -> num_rows($result);
             if ( $num_rows >= 1 ) $ausgaben["form_error"] .= "#(error_dupe)";
@@ -150,7 +150,7 @@
 
                 // menu tabellen aenderungen
                 $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y", "form_referer" );
-                foreach($HTTP_POST_VARS as $name => $value) {
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                         if ( $sqla != "" ) $sqla .= ", ";
                         $sqla .= $name."='".$value."'";
@@ -158,7 +158,7 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                #$entry = strtolower($HTTP_POST_VARS["entry"]);
+                #$entry = strtolower($_POST["entry"]);
                 #$entry = str_replace(" ", "", $entry);
                 #$sqla .= ", entry='".$entry."'";
 

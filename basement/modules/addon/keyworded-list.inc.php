@@ -149,8 +149,8 @@
         // ***
 
         // fehlermeldungen
-        if ( $HTTP_GET_VARS["error"] != "" ) {
-            if ( $HTTP_GET_VARS["error"] == 1 ) {
+        if ( $_GET["error"] != "" ) {
+            if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
         } else {
@@ -168,7 +168,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (edit_page) #(edit_page)<br />";
             $ausgaben["inaccessible"] .= "# (edit_keyword) #(edit_keyword)<br />";

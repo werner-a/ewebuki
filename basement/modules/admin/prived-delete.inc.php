@@ -90,7 +90,7 @@
         
         // das loeschen wurde bestaetigt, loeschen!
         // ***
-        if ( $HTTP_POST_VARS["delete"] != "" ) {
+        if ( $_POST["delete"] != "" ) {
 
             $sql = "DELETE FROM ".$cfg["prived"]["db"]["priv"]["entries"]."
                           WHERE ".$cfg["prived"]["db"]["priv"]["key"]."='".$environment["parameter"][1]."';";
@@ -119,7 +119,7 @@
 
         // unzugaengliche #(marken) sichtbar machen
         // ***
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result1) #(error_result1)<br />";
             $ausgaben["inaccessible"] .= "# (error_result2) #(error_result2)<br />";

@@ -62,8 +62,8 @@
         $ausgaben["output"] .= sitemap(0, "menued", $modify);
 
         // fehlermeldungen
-        if ( $HTTP_GET_VARS["error"] != "" ) {
-            if ( $HTTP_GET_VARS["error"] == 1 ) {
+        if ( $_GET["error"] != "" ) {
+            if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
         } else {
@@ -79,7 +79,7 @@
         $mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
             $ausgaben["inaccessible"] .= "# (disabled) #(disabled)<br />";

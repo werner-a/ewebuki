@@ -47,11 +47,11 @@
     if ( $rechte[$cfg["right"]] == -1 ) {
         // page basics
         // ***
-        #if ( count($HTTP_POST_VARS) == 0 ) {
+        #if ( count($_POST) == 0 ) {
         #    $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$environment["parameter"][2]."'";            $result = $db -> query($sql);
         #    $form_values = $db -> fetch_array($result,1);
         #} else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         #}
 
         // form options holen
@@ -62,10 +62,10 @@
 
         // form elemente erweitern
         $element = array_merge($element, form_elements( $cfg["db"]["lang"]["entries"], $form_values ));
-        if ( $HTTP_POST_VARS["refid"] == "" ) {
+        if ( $_POST["refid"] == "" ) {
             $value = $environment["parameter"][1];
         } else {
-            $value = $HTTP_POST_VARS["refid"];
+            $value = $_POST["refid"];
         }
         $element["refid"] = str_replace("refid\"","refid\" value=\"".$value."\" readonly",$element["refid"]);
         $element["new_lang"] = "<input name=\"new_lang\" type=\"text\" maxlength=\"5\" size=\"3\" value=\"n/a\" readonly>";
@@ -76,7 +76,7 @@
         /*
         // lang management form elemente begin
         // ***
-        $element_lang = form_elements( $cfg["db"]["lang"]["entries"], $HTTP_POST_VARS );
+        $element_lang = form_elements( $cfg["db"]["lang"]["entries"], $_POST );
         $element_lang["lang"] = str_replace("lang\"","lang\" value=\"".$environment["language"]."\"",$element_lang["lang"]);
 
         $ausgaben["langtabelle"]  = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
@@ -113,7 +113,7 @@
 
         // unzugaengliche #(marken) sichtbar machen
         // ***
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
@@ -129,22 +129,22 @@
         // page basics
 
 
-        #$fixed_entry = str_replace(" ", "", $HTTP_POST_VARS["entry"]);
-        $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $HTTP_POST_VARS["entry"]);  // PREG:^[a-z_.-0-9]+$
+        #$fixed_entry = str_replace(" ", "", $_POST["entry"]);
+        $fixed_entry = preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $_POST["entry"]);  // PREG:^[a-z_.-0-9]+$
 
         if ( $environment["parameter"][1] == "verify"
-            && ( $HTTP_POST_VARS["send"] != ""
-                || $HTTP_POST_VARS["image"]
-                || $HTTP_POST_VARS["add"] ) ) {
+            && ( $_POST["send"] != ""
+                || $_POST["image"]
+                || $_POST["add"] ) ) {
 
             // form eigaben prüfen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
             // gibt es einen solchen entry bereits?
             if ( $fixed_entry != "" ) {
                 $sql = "SELECT entry
                         FROM ".$cfg["db"]["menu"]["entries"]."
-                        WHERE refid = '".$HTTP_POST_VARS["refid"]."'
+                        WHERE refid = '".$_POST["refid"]."'
                         AND entry = '".$fixed_entry."'";
                 $result = $db -> query($sql);
                 $test = $db -> fetch_array($result,1);
@@ -156,7 +156,7 @@
                 $kick = array( "PHPSESSID", "send", "image", "image_x", "image_y",
                                "add_x", "add_y", "add", "form_referer", "lang", "label", "extend",
                                "exturl", "new_lang", "entry");
-                foreach($HTTP_POST_VARS as $name => $value) {
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
                         $sqla .= " ".$name;
@@ -166,7 +166,7 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                #$entry = strtolower($HTTP_POST_VARS["entry"]); // wird jetzt mit einer regex erledigt
+                #$entry = strtolower($_POST["entry"]); // wird jetzt mit einer regex erledigt
                 #$entry = str_replace(" ", "", $entry); // siehe $fixed_entry
                 $sqla .= ", entry";
                 $sqlb .= ", '".$fixed_entry."'";
@@ -182,22 +182,22 @@
                 $lastid = $db -> lastid();
                 if ( checkext() != "" ) {
                     $extenda = "extend, ";
-                    $extendb = "'".$HTTP_POST_VARS["extend"]."', ";
+                    $extendb = "'".$_POST["extend"]."', ";
                 }
                 $sql = "INSERT INTO  ".$cfg["db"]["lang"]["entries"]."
                                     ( mid, lang, label, ".$extenda." exturl )
                              VALUES ( '".$lastid."',
-                                      '".$HTTP_POST_VARS["lang"]."',
-                                      '".$HTTP_POST_VARS["label"]."',
+                                      '".$_POST["lang"]."',
+                                      '".$_POST["label"]."',
                                       ".$extendb."
-                                      '".$HTTP_POST_VARS["exturl"]."' )";
+                                      '".$_POST["exturl"]."' )";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             }
 
             // wohin schicken
-            if ( $HTTP_POST_VARS["add"] ) {
+            if ( $_POST["add"] ) {
                 $header = $cfg["basis"]."/edit,".$lastid.",verify.html";
             } else {
                 $header = $cfg["basis"]."/list.html";

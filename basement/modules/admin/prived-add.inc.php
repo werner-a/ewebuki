@@ -52,9 +52,9 @@
         $hidedata["send_button"]["on"] = "on";
         $ausgaben["priv"] = "";
 
-        #if ( count($HTTP_POST_VARS) == 0 ) {
+        #if ( count($_POST) == 0 ) {
         #} else {
-            $form_values = $HTTP_POST_VARS;
+            $form_values = $_POST;
         #}
 
         // form options holen
@@ -83,7 +83,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
@@ -97,10 +97,10 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify" && $HTTP_POST_VARS["send"] != "" ) {
+        if ( $environment["parameter"][2] == "verify" && $_POST["send"] != "" ) {
 
             // form eigaben pruefen
-            form_errors( $form_options, $HTTP_POST_VARS );
+            form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
@@ -111,7 +111,7 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 $kick = array( "PHPSESSID", "form_referer", "send", "avail" );
-                foreach($HTTP_POST_VARS as $name => $value) {
+                foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
                         $sqla .= " ".$name;

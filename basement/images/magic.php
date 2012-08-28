@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    $image["file"] = $HTTP_GET_VARS["path"];
+    $image["file"] = $_GET["path"];
 
     if ( !file_exists($image["file"]) ) {
         die("can't find source file: ".$image["file"]);
@@ -54,19 +54,19 @@
     switch ( $image["size"][2] ) {
         case 1: // gif
             $img_src = @imagecreatefromgif($image["file"]);
-            $img_dst = resize( $img_src, $HTTP_GET_VARS["size"]);
+            $img_dst = resize( $img_src, $_GET["size"]);
             header("Content-type: image/gif");
             echo imagegif($img_dst);
             break;
         case 2: // jpg
             $img_src = @imagecreatefromjpeg($image["file"]);
-            $img_dst = resize( $img_src, $HTTP_GET_VARS["size"]);
+            $img_dst = resize( $img_src, $_GET["size"]);
             header("Content-type: image/jpeg");
             echo imagejpeg($img_dst);
             break;
         case 3: // png
             $img_src = @imagecreatefrompng($image["file"]);
-            $img_dst = resize( $img_src, $HTTP_GET_VARS["size"]);
+            $img_dst = resize( $img_src, $_GET["size"]);
             header("Content-type: image/png");
             echo imagepng($img_dst);
             break;

@@ -456,7 +456,7 @@
     }
 
     // unzugaengliche #(marken) sichtbar machen
-    if ( isset($HTTP_GET_VARS["edit"]) ) {
+    if ( isset($_GET["edit"]) ) {
         $ausgaben["inaccessible"] = "inaccessible values:<br />";
         $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
         $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";

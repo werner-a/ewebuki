@@ -355,7 +355,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "g (cmslink) g(cmslink)<br />";
             $ausgaben["inaccessible"] .= "# (img_plural) #(img_plural)<br />";

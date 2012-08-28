@@ -136,7 +136,7 @@
 
             // unzugaengliche #(marken) sichtbar machen
             // ***
-            if ( isset($HTTP_GET_VARS["edit"]) ) {
+            if ( isset($_GET["edit"]) ) {
                 $ausgaben["inaccessible"] = "inaccessible values:<br />";
                 $ausgaben["inaccessible"] .= "# (error_menu) #(error_menu)<br />";
                 $ausgaben["inaccessible"] .= "# (error_menu_lang) #(error_menu_lang)<br />";
@@ -156,13 +156,13 @@
 
             // das loeschen wurde bestaetigt, loeschen!
             // ***
-            if ( $HTTP_POST_VARS["delete"] ) {
+            if ( $_POST["delete"] ) {
                 unset($result);
 
                 // content loeschen
                 // ***
-                if ( $HTTP_POST_VARS["tname"] != "" ) {
-                    $sql = "DELETE FROM ".$cfg["db"]["text"]["entries"]." WHERE tname = '".$HTTP_POST_VARS["tname"]."'";
+                if ( $_POST["tname"] != "" ) {
+                    $sql = "DELETE FROM ".$cfg["db"]["text"]["entries"]." WHERE tname = '".$_POST["tname"]."'";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(text_error)<br />");
@@ -172,8 +172,8 @@
 
                 // ohne fehler bezeichnungen loeschen
                 // ***
-                if ( $HTTP_POST_VARS["mlids"] != "" && $ausgaben["form_error"] == "" ) {
-                    $array = split(",",$HTTP_POST_VARS["mlids"]);
+                if ( $_POST["mlids"] != "" && $ausgaben["form_error"] == "" ) {
+                    $array = split(",",$_POST["mlids"]);
                     foreach( $array as $value) {
                         $sql = "DELETE FROM ".$cfg["db"]["lang"]["entries"]." WHERE ".$cfg["db"]["lang"]["key"]."='".$value."';";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -186,8 +186,8 @@
 
                 // ohne fehler menupunkte loeschen
                 // ***
-                if ( $HTTP_POST_VARS["mid"] != "" && $ausgaben["form_error"] == "" ) {
-                    $array = split(",",$HTTP_POST_VARS["mid"]);
+                if ( $_POST["mid"] != "" && $ausgaben["form_error"] == "" ) {
+                    $array = split(",",$_POST["mid"]);
                     foreach( $array as $value) {
                         $sql = "DELETE FROM ".$cfg["db"]["menu"]["entries"]." WHERE ".$cfg["db"]["menu"]["key"]."='".$value."';";
                         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];

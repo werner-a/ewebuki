@@ -232,7 +232,7 @@
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen
-        if ( isset($HTTP_GET_VARS["edit"]) ) {
+        if ( isset($_GET["edit"]) ) {
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
@@ -248,7 +248,7 @@
         
        
         $preg = "/^(group|user)_(add|new|del)_([0-9]*)_([0-9]*)$/";
-        if ( $environment["parameter"][3] == "verify" && preg_match($preg,key($HTTP_POST_VARS),$regs) ){
+        if ( $environment["parameter"][3] == "verify" && preg_match($preg,key($_POST),$regs) ){
             
             $art = $regs[1];
             $aktion = $regs[2];

@@ -298,8 +298,8 @@
 
                                     // evtl. globaler print button
                                     #if ( strstr($line,"#{main") ) {
-                                    #  global $HTTP_GET_VARS;
-                                    #  if ( $HTTP_GET_VARS["print"] != true ) $print = "<table cellpadding=\"0\" cellspacing=\"0\" width=\"660\"><tr><td width=\"16\">&nbsp;</td><td width=\"628\" align=\"right\"><a href=\"".$pathvars["uri"]."?print=true\">Print Ausgabe</a></td><td width=\"16\">&nbsp;</td></tr></table>";
+                                    #  global $_GET;
+                                    #  if ( $_GET["print"] != true ) $print = "<table cellpadding=\"0\" cellspacing=\"0\" width=\"660\"><tr><td width=\"16\">&nbsp;</td><td width=\"628\" align=\"right\"><a href=\"".$pathvars["uri"]."?print=true\">Print Ausgabe</a></td><td width=\"16\">&nbsp;</td></tr></table>";
                                     #  if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "print schalter: ".$environment["template"].$debugging["char"];
                                     #}
                                     #$line = str_replace("#{".$name."}","#{".$value."}".$print,$line);
