@@ -286,6 +286,9 @@
     $version = $db->getVERSION();
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db version: ".$version.$debugging["char"];
 
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db access \"server\" value: ".$_SERVER["SERVER_NAME"].$debugging["char"];
+    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db access[\"num\"] selected: ".DB_ACCESS.$debugging["char"];
+
     $connect = $db->connect();
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "db connect: ".$connect.$debugging["char"];
 

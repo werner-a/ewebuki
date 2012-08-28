@@ -83,6 +83,7 @@
     // automatic db access
     foreach ( (array)$access as $name => $value ) {
         if ( strpos($_SERVER["SERVER_NAME"],$value["server"]) !== false ) {
+            define ('DB_ACCESS', $name);
             define ('DB_HOST', $access[$name]["host"]);
             define ('DATABASE', $access[$name]["db"]);
             define ('DB_USER', $access[$name]["user"]);
