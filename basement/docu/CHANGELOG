@@ -9,6 +9,13 @@ $Id$
 
 --- v?.?.?-???? - ??. mon year num
 
+--- 28. August 2012
+
+aus $HTTP_POST_VARS wird $_POST und aus $HTTP_GET_VARS wird $_GET, eingeführt
+mit php 4.1.0, entfernt das die unterstuetzung fuer php versionen kleiner 4.1.0,
+denn $HTTP_POST_VARS, $HTTP_GET_VARS wurden gestrichen und werden in PHP6
+entfernt und sie sind bereits per default in PHP5 deaktiviert.
+
 --- 14. April 2011
 
 der selection-tag wurde erweitert, man kann nun Galerien "on the fly" erzeugen,
