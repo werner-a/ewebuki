@@ -312,7 +312,12 @@
             $path = explode("/",$url);
             $kategorie = array_pop($path);
             $ebene = implode("/",$path);
-
+            
+            if ( $kategorie ) {
+                $tmp_tname = eCRC($url);
+            } else {
+                $tmp_tname = "";
+            }
             // gibt es bereiche, die nicht untersucht werden sollen
             if ( count($ignore) > 0 ) {
                 foreach ( $ignore as $value ) {
@@ -336,25 +341,14 @@
             if ( count($buffer) > 0 ) $filter = "AND ".implode(" AND ",$buffer);
             $sql = "SELECT *
                       FROM site_text
-                     WHERE (
-                            ebene LIKE '".$url."%'
-                            OR (ebene='".$ebene."' AND kategorie='".$kategorie."')
-                           )".$where."
+                     WHERE 
+                            tname LIKE '".$tmp_tname."%'
+                            ".$where."
                        AND label='".$label."'
                        AND status IN (".implode(",",$status).")
                        ".$filter."
                   ORDER BY tname, status ASC, version DESC";
-            $sql = "SELECT *
-                      FROM site_text
-                     WHERE (
-                            ebene LIKE '".$url."%'
-                            OR (ebene='".$ebene."')
-                           )".$where."
-                       AND label='".$label."'
-                       AND status IN (".implode(",",$status).")
-                       ".$filter."
-                  ORDER BY tname, status ASC, version DESC";
-// if ( count($add_filter) > 0 ) echo "$sql<br>";
+
             $result = $db -> query($sql);
 
             $dataset = "";
@@ -456,6 +450,8 @@
 
                 $new_releases[$data["status"]][] = array(
                     "path" => $path,
+                    "tname"=> $data["tname"],
+                    "preview" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt,,,verify.html",
                    "titel" => $titel,
                      "ext" => $ext,
                "kategorie" => $kategorie,

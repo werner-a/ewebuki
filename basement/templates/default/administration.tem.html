@@ -10,33 +10,26 @@
     <body>
 <!--##begin-->
     <div class="admin">
-        <div class="admin_head" style="">
+        <div>
+            <h1>#(ueberschrift)</h1>
             <!--##hide-authTools-->
             <p style="">#(vorher) <b>!#ausgaben_user</b></p>
             <!--##show-->
-            <h1>#(ueberschrift)</h1>
+
             <div class="clearer"></div>
         </div>
         <div id="output"></div>
-
-        #(inhalt)
-
-        !#ausgaben_bereiche
-
-        <div class="box">
-            <h2>Inhaltsbereiche</h2>
-            <div id="ajax_menubaum">
-                <h3><a href="#">Menübaum</a></h3>
-                <div style="height:450px">
-                    <div id="buffy"></div>           
-                </div>
-            </div>            
-        </div>
-           
-        !#ausgaben_output
-        !#ausgaben_inaccessible
+        
+        !#ausgaben_ext_script
+        
+        !#ausgaben_bereiche  
+                
+        
     </div>
-   
+           
+    !#ausgaben_output
+    !#ausgaben_inaccessible
+       
     <div id="preview_dialog" style="display:none;">
         <div id="substance"></div>
     </div>
@@ -48,7 +41,7 @@
                 animated: 'bounceslide',
                 active: 1,
                 collapsible: true,
-                autoHeight: false,
+                autoHeight: false
             });
         })
                 

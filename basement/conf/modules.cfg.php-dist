@@ -78,6 +78,7 @@
 #    // wizard: for testing only !!
 #    if ( $environment["ebene"] == "/wizard" ) {
 #        include $pathvars["moduleroot"]."admin/contented.cfg.php";
+#        $dataloop["js"][]["js"] = "/js/default/wizard.js";
 #        include $pathvars["moduleroot"]."wizard/wizard.cfg.php";
 #        include $pathvars["moduleroot"]."wizard/wizard-ctrl.inc.php";
 #    }

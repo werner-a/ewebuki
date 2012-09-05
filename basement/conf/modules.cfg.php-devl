@@ -50,12 +50,12 @@
     include $pathvars["moduleroot"]."basic/path.cfg.php";
     include $pathvars["moduleroot"]."basic/path.inc.php";
 
-    // basic: view
+        // basic: view
     if ( $environment["kategorie"] == "view" ) {
         include $pathvars["moduleroot"]."basic/view.cfg.php";
         include $pathvars["moduleroot"]."basic/view.inc.php";
     }
-
+           
     // basic: blog(ed)
     include $pathvars["moduleroot"]."admin/bloged.cfg.php";
     include $pathvars["moduleroot"]."admin/bloged-autoload.inc.php";
@@ -158,6 +158,14 @@
         include $pathvars["moduleroot"]."admin/passed.inc.php";
     }
 
+    // addon: admin
+    if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "login" ) )
+    {
+        $dataloop["js"][]["js"] = "/js/default/wizard.js";
+        include $pathvars["moduleroot"]."addon/administration.cfg.php";
+        include $pathvars["moduleroot"]."addon/administration.inc.php";
+    }
+    
 #    // addon: changed
     include $pathvars["moduleroot"]."addon/changed.cfg.php";
     include $pathvars["moduleroot"]."addon/changed.inc.php";

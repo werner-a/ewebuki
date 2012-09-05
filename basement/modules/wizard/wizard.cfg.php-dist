@@ -63,6 +63,7 @@
                    "modify" => array("makece"),
                   "release" => array("makece"),
            "release,shared" => array("menu_convert"),
+                   "delete" => array(""),
               #"edit,shared" => array("shared1", "shared2"),
               #"edit,global" => array("global1", "global2"),
                        ),
