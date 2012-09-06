@@ -215,7 +215,7 @@
                                "_self" => "_self",
                         ),
                 ),
-
+            "utf8_convert" => "",
             "right" => array(
                       "add" => $cfg["auth"]["inplace"]["/wizard/add"][0],
                      "edit" => $cfg["auth"]["inplace"]["/wizard/show"][0],
