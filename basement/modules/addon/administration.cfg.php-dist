@@ -98,7 +98,7 @@
                                        ),
                        ),
 
-         "specials" => array("/blog" => "artikel"),
+       "ext_script" => "",
             "right" => "",
     );
 
