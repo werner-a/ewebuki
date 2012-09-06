@@ -42,7 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+if ( $_GET["buffy"] == "on" ) echo "K"; 
     // parameter-verzeichnis:
     // 1: Datenbank
     // 2: tname
@@ -704,6 +704,12 @@
                 $ausgaben["inaccessible"] .= $debug_add_buttons;
             } else {
                 $ausgaben["inaccessible"] = "";
+            }
+            
+            if ( $_GET["convert"] == "on" && $cfg["wizard"]["utf8_convert"]  == -1 ) {
+                foreach ( $dataloop["sort_content"] as $key => $value ) {
+                    $dataloop["sort_content"][$key]["value_html"] = utf8_encode($dataloop["sort_content"][$key]["value_html"]);
+                }
             }
 
             $publisher = 0;

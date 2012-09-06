@@ -192,7 +192,7 @@
             success: function() {
                 jQuery('#img_map').load('!#ausgaben_print_url #img_map');
                 jQuery('#content_blocks').sortable('destroy');
-                jQuery('.column_2').load('!#ausgaben_print_url #content_blocks', function() {
+                jQuery('.column_2').load('!#ausgaben_print_url?convert=on #content_blocks', function() {
                     jQuery('#content_blocks').sortable({
                         items : '.ajax_move',
                         update: function() {

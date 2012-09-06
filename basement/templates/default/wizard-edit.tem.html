@@ -9,6 +9,7 @@
 <body>
 <!--##begin-->
 !#ausgaben_ce_script
+<div id="preview_dialog"><div id="substance"></div></div>
 <div id="wizard">
 
     <div class="admin_head" style="">
@@ -210,8 +211,8 @@
                     </fieldset>
                     <!--##show-->
 
-        <!--  SEL-Tag bearbeiten  -->
-                    <!--##hide-sel-->
+<!--  SEL-Tag bearbeiten  -->
+<!--##hide-sel_global-->
                     <fieldset >
                         <p>
                             <label>#(description)</label>
@@ -219,7 +220,8 @@
                             <input type="hidden" name="tagwerte[0]" value="!#ausgaben_tagwerte0" />
                         </p>
                     </fieldset>
-
+<!--##show-->
+<!--##hide-sel_db-->
                     <fieldset >
                         <p>
                             <label></label>
@@ -238,7 +240,8 @@
                             <input type="submit" name="uploaded[]" value="#(upload_file)" title="Datei auswaehlen" class="button" />
                         </p>
                     </fieldset>
-
+<!--##show-->
+<!--##hide-sel_global-->
                     <fieldset style="display:none;">
                         <fieldset >
                             <legend>#(detail_size)</legend>
@@ -262,9 +265,50 @@
                             </p>
                         </fieldset>
                     </fieldset>
-
+<!--##show-->
                     <div id="output"></div>
+ <!--##hide-sel2-->
+                    <fieldset>
+                        <button type="submit" name="add[]" value="holen" class="button">Bilder holen</button>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Ausgew&auml;hlte Bilder</legend>
+                        <p id="sel_error" class="error" style="display:none;">
+                            <span id="s1"></span> #(sel_num_error) !#ausgaben_max_sel_num
+                        </p>
+                        <ul id="grid_list_2" style="height:50px" class="connectedSortable">
+                            <!--##loop-chosen_images-->
+                            <li style="height:130px" id="!{id}" class="thumbs sel_item">
+                                    <img src="!{src}" alt="!{under} g(edit)" title="!{under} g(edit)" />
+                                    <input id="hidden_!{id}" name="pics[]" type="hidden" value="!{id}" />
+                                <p><input id="check_!{id}" type="checkbox" style="width:120px" name="tagwerte[3][]" class="radiocheck" value="!{id}" onclick="check_selected('!#ausgaben_check_id')" !{checked} /></p>
+                            </li>                           
+                            <!--##cont-->
+                            <div class="clear"></div>
+                        </ul>
+    
+                    </fieldset>
+                     <fieldset>
+                         <legend>Verf&uuml;gbare Bilder</legend>
+                        <p id="sel_error" class="error" style="display:none;">
+                            <span></span> #(sel_num_error) !#ausgaben_max_sel_num
+                        </p>
+                        <ul style="height:100px" id="grid_list_1"  class="connectedSortable">
+                            <!--##loop-list_images-->
+                            <li style="height:130px" id="!{id}" class="thumbs">
+                                <img src="!{src}" alt="!{under} g(edit)" title="!{under} g(edit)" />
+                                <p>
+                                    <input id="hidden_!{id}" class="avail" name="unset[]"  type="hidden" value="!{id}" />
+                                    <input id="check_!{id}" type="checkbox" style="width:120px; display: none" name="unset[]" class="radiocheck" value="!{id}" onclick="check_selected('!#ausgaben_check_id')" />
+                                </p>
+  
+                            </li>
+                            <!--##cont-->
+                        </ul>
 
+                    </fieldset>
+<!--##show-->
+<!--##hide-sel_db-->
                     <fieldset >
                         <legend>#(grid)</legend>
                         <p id="sel_error" class="error" style="display:none;">
@@ -287,10 +331,17 @@
                             <!--##cont-->
                         </ul>
                     </fieldset>
-
+<!--##show-->
+<!--##hide-youtube-->
+                    <fieldset >
+                        <legend>#(video)</legend>
+                        <input type="text" value="!#ausgaben_tagwerte5" name="tagwerte[5]"></input>
+                    </fieldset>
+<!--##show-->
+<!--##hide-sel-->
                     <script type="text/javascript">
                     </script>
-                    <!--##show-->
+<!--##show-->
 
         <!--  LIST-Tag bearbeiten  -->
             <!--##hide-list-->
@@ -381,11 +432,14 @@
                     <!--##hide-sort-->
         <!--             #(link_inhalt) -->
                     <fieldset >
-                        <div>!#ausgaben_calendar</div>
-                            <input type="hidden" name="day" value="!{day}" /><br />
-                            <input type="hidden" name="month" value="!{month}" /><br />
-                            <input type="hidden" name="year" value="!{year}" /><br />
-                        <label>!{date}</label>
+                        !#ausgaben_error
+                        <p>
+                        <label>Datum</label>
+                            <div>
+                                <input readonly=true style="float:left" type="text" class="datepicker" id="date1" name="SORT" value="!{sort}">
+                                <div class="clear"></div>
+                            </div>
+                        </p>
                     </fieldset>
 
                     <!--##show-->
@@ -396,7 +450,7 @@
                         !#ausgaben_error
                         <p>
                             <label>#(termin_name)</label>
-                            <input id = "tt" type="text" name="_NAME" value="!{_NAME}" onClick="if ($(tt).value=='Neuer Termin'){$(tt).value='';}" />
+                            <input id = "tt" type="text" name="_NAME" value="!{_NAME}" />
                         </p>
                         <p>
                             <label>#(termin_veranstalter)</label>
@@ -406,14 +460,14 @@
                         <p>
                             <label>#(termin_begin)</label>
                             <div>
-                                <input readonly=true style="float:left" type="text" id="date1" name="SORT" value="!{sort}"><button class="button" style="font-size:0.6em;margin-left:5px;" id="trigger1">...</button>
+                                <input readonly=true style="float:left" type="text" class="datepicker" id="date1" name="SORT" value="!{sort}">
                                 <div class="clear"></div>
                             </div>
                         </p>
                         <p>
-                            <label><a onclick="anzeigen('end_termin')" title="#(termin_end_t)">#(termin_end)</a></label>
+                            <label><a onclick="jQuery('#end_termin').toggle();arrange_date('end_termin');" title="#(termin_end_t)">#(termin_end)</a></label>
                                 <div style="display:!{display}" id="end_termin">
-                                    <input readonly=true style="float:left" type="text" id="date2" name="_TERMIN" value="!{_TERMIN}"><button  class="button" style="font-size:0.6em;margin-left:5px;" id="trigger2">...</button>
+                                    <input readonly=true style="float:left" type="text" class="datepicker" id="date2" name="_TERMIN" value="!{_TERMIN}">
                                 </div>
                                 <div class="clear"></div>
                         </p>
@@ -434,23 +488,12 @@
                         #(artikel_inhalt)
                         <p>
                             <label>#(artikel_begin)</label>
-                            <input readonly=true style="float:left" type="text" id="date1" name="SORT" value="!{sort}" /><button class="button" style="font-size:0.6em;margin-left:5px;!{button1_display}" id="trigger1">...</button>
+                            <input readonly=true style="float:left" type="text" class="datepicker" name="SORT" value="!{sort}" />
                         </p>
                         <div class="clear"></div>
                         <p>
                             <label>#(artikel_ende)</label>
-                            <input readonly=true style="float:left" type="text" id="date2" name="ENDE" value="!{ende}" /><button class="button" style="font-size:0.6em;margin-left:5px;" id="trigger2">...</button
-                        </p>
-                    </fieldset>
-
-                    <!--##show-->
-                    <!--##hide-blogsort-->
-                    <fieldset>
-                        !#ausgaben_error
-                        #(artikel_inhalt)
-                        <p>
-                            <label>#(sort)</label>
-                            <input readonly=true style="float:left" type="text" id="date1" name="SORT" value="!{sort}" /><button class="button" style="font-size:0.6em;margin-left:5px;!{button1_display}" id="trigger1">...</button>
+                            <input readonly=true style="float:left" type="text" class="datepicker" name="ENDE" value="!{ende}" />
                         </p>
                     </fieldset>
 
@@ -522,7 +565,7 @@
             </div>
             <!--##show-->
             <div class="box">
-                <button type="button" onclick="preview();" id="button_preview" class="button">g(preview)</button>
+                <button type="button" onclick="preview('!#ausgaben_form_aktion');" id="button_preview" class="button">g(preview)</button>
                 <button type="submit" name="send[]" id="button_send" value="g(send)" accesskey="s" class="button">g(send)</button>
                 <button type="submit" name="cancel[]" id="button_cancel" value="g(abort)" accesskey="a" class="button">g(abort)</button>
                 <div class="clearer"></div>
@@ -533,97 +576,71 @@
     <div style="clear:both"></div>
 
 </div>
-<div id="vorhang_preview" style="display:none;"></div>
-<div id="vorschau_container" style="display:none;">
-    <div id="contenttext">
-        <div id="bodytext" !#ausgaben_class></div>
-    </div>
-    <div id="preview_close">
-        <img style="cursor: pointer;" alt="Vorschau schliessen" onclick="preview()" src="/images/html/lb/closelabel.gif"/>
-    </div>
-</div>
 
 <script type="text/javascript">
 
-    function anzeigen(id) {
-        buffer = document.getElementById(id).style.display;
-        val_b = document.getElementById('date1');
-        val_e = document.getElementById('date2');
-        if ( buffer == "none" ) {
-            val_e.value=val_b.value;
-                new Effect.BlindDown(id, {duration: 0.2});
+    function arrange_date(id) {
+        if ( jQuery('#'+id).is(":visible") == true ) {
+            jQuery('#date2').val(jQuery("#date1").val());   
         } else {
-            val_e.value="01.01.1970";
-            new Effect.BlindUp(id, {duration: 0.0})
-        }
-        return false;
+            jQuery('#date2').val('01.01.1970');
+        }    
     }
-// <!--##loop-calendar-->
-    Calendar.setup(
-    {
-        inputField  : "!{id}",         // ID of the input field
-        ifFormat    : "%d.%m.%Y",    // the date format
-        //  showsTime : true, // will display a time selector
-        button : "!{button}", // trigger for the calendar (button ID)
-        //  singleClick : false, // double-click mode
-        step : 1
+
+    jQuery('.datepicker').datepicker({
+        dateFormat: 'dd.mm.yy',
+        changeMonth: true,
+        changeYear: true
     }
     );
-// <!--##cont-->
 
-
-//     Event.observe(window,'load', function () {
-        lb_preview = new LB_imitate('vorschau_container',{top:100});
-//     });
-
-    function preview() {
-        if ( $('vorschau_container').style.display == 'none' ) {
-            var update = new Ajax.Updater('bodytext',
-                                        '!#ausgaben_form_aktion',
-                                        {
-                                            asynchronous:true,
-                                            parameters: 'ajax=on&send[]=send&' + Form.serialize('cEd'),
-                                            onComplete:function(){
-                                                dd_initialize();
-                                                lb_preview.show();
-                                            }
-                                        }
-            );
-            return false;
-        } else {
-            lb_preview.hide();
-        }
-    }
 
 //     <!--##hide-sel-->
-    function session_update(compid,fileid) {
-        new Ajax.Request('/auth/admin/fileed/compilation,' + compid + ',' + fileid + '.html?ajax',
-                        {asynchronous:true
-                        }
-        );
-        check_selected();
-    }
-    function check_selected() {
-        var i = 0;
-        $$('#grid_list .radiocheck').each( function(element,index) {
-                if ( element.checked == true ) {
-                    i++;
-                }
+    jQuery(function() {
+        jQuery( "#grid_list_1" ).sortable({
+            placeholder: 'galery-highlight',
+            connectWith: ".connectedSortable",
+            receive: function(evt,ui) {
+                var test=ui.item.attr('id');
+                jQuery('#hidden_'+test).attr({'name' :'unset[]'})
+                jQuery('#check_'+test).attr({'name' :'unset[]'})
+                jQuery('#check_'+test).attr({'checked' :''})
+                jQuery('#check_'+test).hide()
             }
-        );
+        }).disableSelection();
+
+        jQuery( "#grid_list_2" ).sortable({
+            placeholder: 'galery-highlight',
+            connectWith: ".connectedSortable",
+            receive: function(evt,ui) {
+                var test=ui.item.attr('id');
+                jQuery('#hidden_'+test).attr({'name' :'pics[]'})
+                jQuery('#check_'+test).attr({'name' :'tagwerte[3][]'})
+                jQuery('#check_'+test).show()
+            }
+        }).disableSelection();
+    });
+    
+    function check_selected(id) {
+        var i = 0;        
+        jQuery('#'+id+' .radiocheck').each( function(element,index) {
+            if ( jQuery(this).attr('checked') == 'checked' ) {
+                i++;
+            }
+        });
+
         if ( i > !#ausgaben_max_sel_num ) {
-            if ( $('sel_error').style.display == 'none' ) new Effect.BlindDown('sel_error',{duration:0.5});
-            new Effect.BlindUp('button_preview',{duration:0.5});
-            new Effect.BlindUp('button_send',{duration:0.5});
-            $('sel_error').down('span').innerHTML = i;
+            if ( jQuery('#sel_error').is(":visible") == false ) jQuery('#sel_error').show();
+            jQuery('#button_preview').hide();
+            jQuery('#button_send').hide();
+            jQuery('#sel_error span').text(i);
         } else {
-            new Effect.BlindUp('sel_error',{duration:0.5});
-            if ( $('button_preview').style.display == 'none' ) new Effect.BlindDown('button_preview',{duration:0.5});
-            if ( $('button_send').style.display == 'none' ) new Effect.BlindDown('button_send',{duration:0.5});
+            jQuery('#sel_error').hide()
+            if ( jQuery('#button_preview').is(":visible") == false ) jQuery('#button_preview').show();
+            if ( jQuery('#button_send').is(":visible") == false ) jQuery('#button_send').show();
         }
-        $('sel_error').down(1);
     }
-    check_selected();
+    check_selected('!#ausgaben_check_id');
 // <!--##show-->
 
 // <!--##hide-list-->
