@@ -218,8 +218,10 @@
                 if ( $cfg["kontakt"]["email"]["add_para"] ) {
                     $result = mail($email_adresse,$subject2,$message2,$header2,$cfg["kontakt"]["email"]["add_para"]);
                 } else {
-                    $result = mail($email_adresse,$subject2,$message2,$header2);
+                    $result = mail($email_adresse,$subject2,$message2,$header2);                    
                 }
+                if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
+                
                 if ( $cfg["kontakt"]["email"]["save"] == -1 ) {
 
                     $sqla = "";
@@ -243,7 +245,6 @@
                         $sql = "INSERT INTO ".$cfg["kontakt"]["db"]["entries"]."(".$sqla.") VALUES (".$sqlb.")";
                         $result = $db -> query($sql);
                 }
-                if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
                 if ( $debugging["html_enable"] ){
                     $ausgaben["output"] = "<textarea name=\"debug1\" cols=\"60\" rows=\"20\">";
