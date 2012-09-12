@@ -64,7 +64,7 @@
             if ( $stripslashes == True ) $form_values[$fields["Field"]] = stripslashes($form_values[$fields["Field"]]);
 
             // not null bedeutet feld ausfuellen
-            if ( $fields["Null"] == "" && $form_options[$fields["Field"]]["frequired"] == "" ) {
+            if ( ( $fields["Null"] == "" || $fields["Null"] == "NO" ) && $form_options[$fields["Field"]]["frequired"] == "" ) {
                 $form_options[$fields["Field"]]["flabel"] = $fields["Field"];
                 $form_options[$fields["Field"]]["frequired"] = "-1";
             }
