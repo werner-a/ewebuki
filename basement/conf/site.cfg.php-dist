@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2011 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2012 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -89,17 +89,18 @@
     $specialvars["security"]["new"] = -1;
     $specialvars["security"]["content"] = "edit;publish";
     #$specialvars["content_release"] = -1;
+    $specialvars["stacked_eEd"] = 0;
     
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.
-    // Eine Konvertierung zur�ck zu CMSTAG ist derzeit nicht m�glich.
+    // Eine Konvertierung zurueck zu CMSTAG ist derzeit nicht moeglich.
     $specialvars["wysiwyg"] = ""; // composite, epoz unterstuetzung aktivieren
     // ACHTUNG **************
 
     // berliOS Fix **********
     // Korrekte Einstellung fuer Berlios erzwingen.
     #$pathvars["fileroot"] = "/home/groups/PROJEKTNAME/htdocs/";
-    // berliOS betreibt seine Server mit Virtual Host Unterst�tzung mittels Rewrite Engine
+    // berliOS betreibt seine Server mit Virtual Host Unterstuetzung mittels Rewrite Engine
     // DOCUMENT_ROOT wird dabei nicht auf das Directory des jeweiligen Projektes gesetzt
     // eWeBuKi findet normalerweise anhand dieser Variable die Basis und scheitert.
     // berliOS Fix **********

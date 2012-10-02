@@ -291,7 +291,24 @@
                 //////////////////////////////////////////////////////////////////////////////////////////////
 
                         if ( strpos($line,"#{") !== false ) {
-                            // tausche wenn nötig die inhalte aus
+
+                            # stacked eEd patch (moves #{main} to #{eEd})
+                            if ( $specialvars["stacked_eEd"] != "" ) {
+                                if ( strpos($environment["ebene"],"/admin") === 0 ) {
+                                    if ( strpos($line,"#{main}") !== false ) {
+                                        $line = str_replace("#{main}","",$line);
+                                    }
+                                    if ( strpos($line,"#{eEd}") !== false ) {
+                                        $line = str_replace("#{eEd}","#{main}",$line);
+                                    }
+                                } else {
+                                    if ( strpos($line,"#{eEd}") !== false ) {
+                                        $line = str_replace("#{eEd}","",$line);
+                                    }
+                                }
+                            }
+			    
+			    // tausche wenn nötig die inhalte aus
                             if ( isset($mapping) ) {
                                 foreach($mapping as $name => $value) {
                                     #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: #{".$name."}:"."#{".$value."}".$debugging["char"];

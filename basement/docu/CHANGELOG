@@ -2,12 +2,19 @@
 eWeBuKi changelog
 
 weitere infos im svn
-http://svn.berlios.de/wsvn/ewebuki/trunk/basement/
+http://code.google.com/p/ewebuki/source/browse/#svn%2Ftrunk%2Fbasement
 
 $Id$
 ================================================================================
 
 --- v?.?.?-???? - ??. mon year num
+
+--- 02. Oktober 2012
+
+Ein neuer Schalter "$specialvars["stacked_eEd"] = -1;" in der site.cfg.php
+ermöglich es die Marke "#{main}" an die Stelle der "#{eEd}" zu verschieben
+wenn man sich im Admin bereich befindet.
+
 
 --- 28. August 2012
 
