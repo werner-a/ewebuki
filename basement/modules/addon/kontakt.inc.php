@@ -175,6 +175,10 @@
                    $$key = $value;
                 }
 
+                if ( $_POST[$cfg["kontakt"]["email"]["form_email_feld"]] != "" ) {
+                    $secure = crc32($_POST["captcha_proof"].$_POST["email"]);
+                }
+
                 $message1 = parser($cfg["kontakt"]["email"]["template1"],"");
                 $message2 = parser($cfg["kontakt"]["email"]["template2"],"");
 
