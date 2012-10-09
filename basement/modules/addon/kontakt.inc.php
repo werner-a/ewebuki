@@ -231,7 +231,7 @@
                     foreach ( $_POST as $key => $value ) {
                         if ( in_array($key, $kick_array) ) continue;
                         if ( $sqla != "" ) $trenner = ",";
-                        $sqla .= $trenner.$key;
+                        $sqla .= $trenner."\"".$key."\"";
                         if ( !get_magic_quotes_gpc() && $value != "" ) {
                             $sqlb .= $trenner."'".addslashes($value)."'";
                         } else {
