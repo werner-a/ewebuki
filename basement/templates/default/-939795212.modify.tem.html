@@ -16,6 +16,7 @@
   }
 //-->
     function anzeigen(id) {
+        alert(id);
         if ( typeof(id) == 'string' ) {
             var element = [id];
         } else {
@@ -140,7 +141,7 @@
             <div class="clearer">&nbsp;</div>
             <input type="submit" name="send[]" value="g(send)" class="first" />
             <!--##hide-zip-->
-            <input type="button" name="abort" value="g(extract)" onclick="anzeigen(['extract_edit','file_edit']);" class="next" />
+            <input type="button" name="abort" value="g(extract)" onclick="jQuery('#extract_edit').toggle();" class="next" />
             <!--##show-->
             <!--##hide-add-->
             <input type="submit" name="continue[]" value="#(continue)" class="next" />
