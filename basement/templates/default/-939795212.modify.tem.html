@@ -14,26 +14,7 @@
   function resetForm(){
      document.forms[0].reset();
   }
-//-->
-    function anzeigen(id) {
-        alert(id);
-        if ( typeof(id) == 'string' ) {
-            var element = [id];
-        } else {
-            element = id;
-        }
-        for (i=0; i<element.length; i++) {
-            if ( $(element[i]) ) {
-                show = $(element[i]).style.display;
-                if ( show == 'none' ) {
-                    new Effect.BlindDown(element[i], {duration: 0.3});
-                } else {
-                    new Effect.BlindUp(element[i], {duration: 0.3})
-                }
-            }
-        }
-        return false;
-    }
+
 </script>
 <form method="post" action="!#ausgaben_form_aktion" id="eEd" enctype="multipart/form-data">
 
@@ -181,7 +162,7 @@
         </fieldset>
         <fieldset>
             <input type="submit" name="extract[]" value="g(send)" class="first" />
-            <input type="button" name="abort" value="#(toggle_zip)" onclick="anzeigen(['extract_edit','file_edit']);" class="next" style="width:auto;" />
+            <input type="button" name="abort" value="#(toggle_zip)" onclick="jQuery('#extract_edit').toggle();" class="next" style="width:auto;" />
             <input type="submit" name="abort[]" value="g(abort)" class="next" />
             <div class="clearer">&nbsp;</div>
         </fieldset>
