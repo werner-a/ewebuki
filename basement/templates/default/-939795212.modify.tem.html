@@ -122,7 +122,7 @@
             <div class="clearer">&nbsp;</div>
             <input type="submit" name="send[]" value="g(send)" class="first" />
             <!--##hide-zip-->
-            <input type="button" name="abort" value="g(extract)" onclick="jQuery('#extract_edit').toggle();" class="next" />
+            <input type="button" name="abort" value="g(extract)" onclick="jQuery('#extract_edit').show();jQuery('#file_edit').hide();" class="next" />
             <!--##show-->
             <!--##hide-add-->
             <input type="submit" name="continue[]" value="#(continue)" class="next" />
@@ -162,7 +162,7 @@
         </fieldset>
         <fieldset>
             <input type="submit" name="extract[]" value="g(send)" class="first" />
-            <input type="button" name="abort" value="#(toggle_zip)" onclick="jQuery('#extract_edit').toggle();" class="next" style="width:auto;" />
+            <input type="button" name="abort" value="#(toggle_zip)" onclick="jQuery('#extract_edit').hide();jQuery('#file_edit').show();" class="next" style="width:auto;" />
             <input type="submit" name="abort[]" value="g(abort)" class="next" />
             <div class="clearer">&nbsp;</div>
         </fieldset>
