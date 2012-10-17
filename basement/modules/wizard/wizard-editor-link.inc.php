@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -51,7 +51,7 @@
     // ausgabenwerte werden belegt
     $ausgaben["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
     $tag_werte = explode(";",str_replace(array("[LINK=","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]));
-    for ($i=0;$i<=2;$i++) {
+    for ($i=0;$i<=4;$i++) {
         $ausgaben["tagwerte".$i] = $tag_werte[$i];
     }
     // link-target
@@ -116,7 +116,7 @@
         if ( is_array($_POST["tagwerte"][3]) ) $_POST["tagwerte"][3] = implode(":",$_POST["tagwerte"][3]);
         if ( $_POST["tagwerte_memo"] != "" ) $_POST["tagwerte"][0] = $_POST["tagwerte_memo"];
         $tag_werte = array();
-        for ($i = 0; $i <= 2; $i++) {
+        for ($i = 0; $i <= 4; $i++) {
             $tag_werte[] = $_POST["tagwerte"][$i];
         }
         $to_insert = "[LINK=".implode(";",$tag_werte)."]".$_POST["description"]."[/LINK]";
