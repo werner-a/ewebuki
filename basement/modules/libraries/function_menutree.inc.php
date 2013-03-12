@@ -64,7 +64,8 @@
             case wizard:
                 $flapmenu = -1;
                 $aktionlinks = -1;
-                $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
+                $hidestatus = -1;
+#                $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
             case sitemap:
                 $sitemap = -1;
