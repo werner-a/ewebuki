@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secure="",$start_parameter=3) {
+function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secure="",$start_parameter=3,$inhalt="") {
     global $environment,$pathvars;
     $tage = array( "Mo", "Di", "Mi","Do", "Fr", "Sa","So");
     $monate = array( "Jan", "Feb", "M&auml;r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
@@ -160,8 +160,17 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
                 $class = "";
             }
             $counter++;
+            $style = "";
             if ( $counter > $start && $counter <= ($heute["mday"]+$start) ) {
                 $int_counter++;
+                if (is_array($inhalt) ) {
+                    $style = "";
+                    $linked = 0;
+                    if ( mktime(0,0,0,$monat,$int_counter,$jahr) >= $inhalt[0]["begin"]  && mktime(0,0,0,$monat,$int_counter,$jahr) <= $inhalt[0]["end"] )  {
+                        $linked = -1;
+                        $style = " style=\"background-color:".$inhalt[0]["color"]."\"";
+                    }
+                }
             } else {
                 $int_counter = "";
             }
@@ -170,7 +179,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             if ( $int_counter != "" && $linked == -1 ) {
                 $out = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$heute["year"].",".$heute["mon"].",".$int_counter.".html\">".$int_counter."</a>";
             }
-            $ausgabe .= "<td class=\"".$class.$class_today."\">".$out."</td>";
+            $ausgabe .= "<td".$style." class=\"".$class.$class_today."\">".$out."</td>";
         }
         $ausgabe .= "</tr>";
         if ( $counter >= $heute["mday"]+7) $stop = -1;
