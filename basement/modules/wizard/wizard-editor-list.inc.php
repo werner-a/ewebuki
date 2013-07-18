@@ -87,11 +87,11 @@
     foreach ( $buffer as $key => $value ) {
         if ( $art == "def"  ) { 
             if ( $key % 2 == 0 ) {
-                if ( (preg_match("/^\[DIV.*\/DIV\]$/is",$buffer[$key+1]) || $_POST[$key+1] == $key+1) ) {
-                    $dataloop["faq"][$key]["checked"] = "checked";
-                    $buffer[$key+1] = str_replace("[DIV]","",$buffer[$key+1]);
-                    $buffer[$key+1] = str_replace("[/DIV]","",$buffer[$key+1]);
-                }
+//                if ( (preg_match("/^\[DIV.*\/DIV\]$/is",$buffer[$key+1]) || $_POST[$key+1] == $key+1) ) {
+//                    $dataloop["faq"][$key]["checked"] = "checked";
+//                    $buffer[$key+1] = str_replace("[DIV]","",$buffer[$key+1]);
+//                    $buffer[$key+1] = str_replace("[/DIV]","",$buffer[$key+1]);
+//                }
                 $buffer[$key+1] = str_replace("[/DIV][DIV]","[/DIV]\n[DIV]",$buffer[$key+1] );
             } else {
                 continue;
