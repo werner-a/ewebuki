@@ -151,6 +151,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
     while ( $stop != "-1" ) {
         $ausgabe .= "<tr>";
         foreach ( $tage as $key => $value ) {
+            if ( $counter >= $heute["mday"]) $stop = -1;
             // ersten und letzten tag kennzeichnen
             if ( $key == 0 ) {
                 $class = "first";
@@ -161,14 +162,15 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             }
             $counter++;
             $style = "";
-            if ( $counter > $start && $counter <= ($heute["mday"]+$start) ) {
+            if ( $counter > $start && $counter <= ($heute["mday"]+$start) ) {                
                 $int_counter++;
+                $timestamp =mktime(0,0,0,$monat,$int_counter,$jahr);
                 if (is_array($inhalt) ) {
-                    $style = "";
-                    $linked = 0;
-                    if ( mktime(0,0,0,$monat,$int_counter,$jahr) >= $inhalt[0]["begin"]  && mktime(0,0,0,$monat,$int_counter,$jahr) <= $inhalt[0]["end"] )  {
-                        $linked = -1;
-                        $style = " style=\"background-color:".$inhalt[0]["color"]."\"";
+                    foreach ( $inhalt as $key => $value ) {
+                        $int_array = key($value);
+                        if ( $timestamp >= key($value)  && $timestamp <= $value[$int_array]["end"] )  {
+                            $style = " title=\"".$value[$int_array]["name"]."\" style=\"background-color:".$value[$int_array]["color"]."\"";
+                        }
                     }
                 }
             } else {
@@ -181,8 +183,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             }
             $ausgabe .= "<td".$style." class=\"".$class.$class_today."\">".$out."</td>";
         }
-        $ausgabe .= "</tr>";
-        if ( $counter >= $heute["mday"]+7) $stop = -1;
+        $ausgabe .= "</tr>";     
     }
     $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";
