@@ -154,10 +154,7 @@
                 // form eingaben prüfen erweitern
                 if ( $_POST["newpass"] != "" && $_POST["newpass"] == $_POST["chkpass"] ) {
                     $checked_password = $_POST["newpass"];
-                    mt_srand((double)microtime()*1000000);
-                    $a=mt_rand(1,128);
-                    $b=mt_rand(1,128);
-                    $mysalt = chr($a).chr($b);
+                    $mysalt = substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 2);
                     $checked_password = crypt($checked_password, $mysalt);
                     // da ich das passwort erstellt habe, klappt magic_quotes_gpc nicht
                     $checked_password = addslashes($checked_password);
