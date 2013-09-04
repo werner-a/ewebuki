@@ -110,7 +110,9 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         foreach ( $monate as $key => $value ) {
             $month = $key+1;
             if ($month > 12) $month = $month-12;
-            if ( $linked == -1 ) $value = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$heute["year"].",".$month.".html\">".$value."</a>";
+            if ( $linked == -1 || $linked == -2 ) {
+                $value = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$heute["year"].",".$month.".html\">".$value."</a>";
+            }
             $class_m = "";
             if ( is_int($key/4)  ) {
                 if ( $key != 0 ) $ausgabe .= "</tr><tr>";
@@ -162,6 +164,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             }
             $counter++;
             $style = "";
+            $onclick = "";
             if ( $counter > $start && $counter <= ($heute["mday"]+$start) ) {                
                 $int_counter++;
                 $timestamp =mktime(0,0,0,$monat,$int_counter,$jahr);
@@ -170,6 +173,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
                         $int_array = key($value);
                         if ( $timestamp >= key($value)  && $timestamp <= $value[$int_array]["end"] )  {
                             $style = " title=\"".$value[$int_array]["name"]."\" style=\"background-color:".$value[$int_array]["color"]."\"";
+                            $onclick="onclick=\"alert('".$value[$int_array]["text"]."');return false\" ";
                         }
                     }
                 }
@@ -181,7 +185,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             if ( $int_counter != "" && $linked == -1 ) {
                 $out = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$heute["year"].",".$heute["mon"].",".$int_counter.".html\">".$int_counter."</a>";
             }
-            $ausgabe .= "<td".$style." class=\"".$class.$class_today."\">".$out."</td>";
+            $ausgabe .= "<td ".$onclick." ".$style." class=\"".$class.$class_today."\">".$out."</td>";
         }
         $ausgabe .= "</tr>";     
     }
