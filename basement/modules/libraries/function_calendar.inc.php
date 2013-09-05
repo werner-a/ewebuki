@@ -173,7 +173,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
                         $int_array = key($value);
                         if ( $timestamp >= key($value)  && $timestamp <= $value[$int_array]["end"] )  {
                             $style = " title=\"".$value[$int_array]["name"]."\" style=\"background-color:".$value[$int_array]["color"]."\"";
-                            $onclick="onclick=\"alert('".$value[$int_array]["text"]."');return false\" ";
+                            $onclick="onclick=\"jQuery('#dialog".$value[$int_array]["id"]."').dialog ()\"";
                         }
                     }
                 }
