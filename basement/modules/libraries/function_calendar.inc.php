@@ -153,7 +153,10 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
     while ( $stop != "-1" ) {
         $ausgabe .= "<tr>";
         foreach ( $tage as $key => $value ) {
-            if ( $counter >= $heute["mday"]) $stop = -1;
+            if ( $int_counter == $heute["mday"]) {
+                $stop = -1;
+                break;
+            }
             // ersten und letzten tag kennzeichnen
             if ( $key == 0 ) {
                 $class = "first";
@@ -189,6 +192,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         }
         $ausgabe .= "</tr>";     
     }
+
     $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";
 
