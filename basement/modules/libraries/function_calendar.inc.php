@@ -175,7 +175,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
                     foreach ( $inhalt as $key => $value ) {
                         $int_array = key($value);
                         if ( $timestamp >= key($value)  && $timestamp <= $value[$int_array]["end"] )  {
-                            $style = " title=\"".$value[$int_array]["name"]."\" style=\"background-color:".$value[$int_array]["color"]."\"";
+                            $style = " title=\"".$value[$int_array]["name"]."\" style=\"font-weight:bold;color:white;background-color:".$value[$int_array]["color"]."\"";
                             $onclick="onclick=\"jQuery('#dialog".$value[$int_array]["id"]."').dialog ()\"";
                         }
                     }
