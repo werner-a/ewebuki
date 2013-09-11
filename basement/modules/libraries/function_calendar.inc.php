@@ -78,17 +78,25 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
     // start-tag
 
     if ( $extendend == -1 ) {
-//         // array mit den monaten zurechtlegen
-//         for ( $i=1;$i<$heute["mon"];$i++ ) {
-//             $shift = array_shift($monate);
-//             array_push($monate,$shift);
-//         }
 
         for ( $i=1; $i<=$start_parameter;$i++ ) {
             ( $i == 1 ) ? $para = "" : $para = $environment["parameter"][$i];
             $protect_parameter .= ",".$para;
         }
-
+       
+        $jump_month_for = $monat+1;
+        $jump_month_bac = $monat-1;
+        $jump_year_bac = $jahr;
+        $jump_year_for = $jahr;
+        if ( $jump_month_bac == 0 ) {
+            $jump_month_bac = 12;
+            $jump_year_bac = $jahr-1;
+        }
+        if ( $jump_month_for == 13 ) {
+            $jump_month_for = 1;
+            $jump_year_for = $jahr+1;
+        }
+        
         $forward = $jahr+1;
         $back = $jahr-1;
         // bauen der monatstabelle
@@ -96,16 +104,31 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         $ausgabe .= "<table class=\"".$class." ".$class."_months\" >\n";
         $jump_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$back.".html\">";
         $jump_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$forward.".html\">";
-        if ( $no_secure == "" ) {
-            if ( is_int($environment["parameter"][$start_parameter+1]) && abs($aktuell["year"] - $environment["parameter"][$start_parameter+1]) > 1) {
-                header("Location: ".$pathvars["virtual"]."/index.html");
-            } elseif ( $jahr-1-$aktuell["year"] < -1) {
-                    $jump_back = "";
-            } elseif ( $jahr+1-$aktuell["year"] > 1) {
-                    $jump_forward = "";
-            }
+        
+        $jump_month_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$jump_year_bac.",".$jump_month_bac.".html\">";
+        $jump_month_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$jump_year_for.",".$jump_month_for.".html\">";
+                
+        // SECURITY
+        $SecureYear = 1;
+        if ( $no_secure > $SecureYear ) $SecureYear = $no_secure;                    
+        if (is_numeric($environment["parameter"][$start_parameter+1]) && abs($aktuell["year"] - $environment["parameter"][$start_parameter+1]) > $SecureYear) {
+            header("Location: ".$pathvars["virtual"]."/index.html");
+        } 
+        if ( $back-$aktuell["year"] < -$SecureYear) {
+            $jump_back = "";
         }
-        $ausgabe .= "<tr class=\"first_line\"><td class=\"first\">".$jump_back."<img src=\"/images/default/left.png\" alt=\"\" /></a></td><td colspan=\"2\"><b><a href=\"".$environment["parameter"][0].$protect_parameter.",".$jahr.".html\">".$jahr."</a></b></td><td class=\"last\">".$jump_forward."<img src=\"/images/default/right.png\" alt=\"\" /></a></td></tr>\n";
+        if ( $forward-$aktuell["year"] > $SecureYear) {
+            $jump_forward = "";            
+        }
+        
+        if ( $jump_year_bac-$aktuell["year"] < -$SecureYear) {
+            $jump_month_back = "";
+        }
+        if ( $jump_year_for-$aktuell["year"] > $SecureYear) {
+            $jump_month_forward = "";
+        }
+
+        $ausgabe .= "<tr class=\"first_line\"><td class=\"first\">".$jump_back."<img src=\"/images/default/left.png\" alt=\"\" /></a></td><td style=\"text-align:center\" colspan=\"2\"><b><a href=\"".$environment["parameter"][0].$protect_parameter.",".$jahr.".html\">".$jahr."</a></b></td><td style=\"text-align:right\" class=\"last\">".$jump_forward."<img src=\"/images/default/right.png\" alt=\"\" /></a></td></tr>\n";
         $ausgabe .= "<tr class=\"first_line\" >\n";
         foreach ( $monate as $key => $value ) {
             $month = $key+1;
@@ -132,8 +155,8 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
 
     // bauen der tabellenbeschriftung
     $mon_out = preg_replace("/^0/","",strftime ("%m", $heute[0]));
-
-    $ausgabe .= "<thead><tr><th colspan=\"7\" scope=\"col\" class=\"monat\">".$monate_full[$mon_out-1]."</th></tr>";
+    $ausgabe .= "<colgroup><col width=\"14%\"><col width=\"14%\"><col width=\"14%\"><col width=\"14%\"><col width=\"14%\"><col width=\"14%\"><col width=\"14%\"></colgroup>";
+    $ausgabe .= "<thead><tr><th>".$jump_month_back."<img src=\"/images/default/left.png\" alt=\"\" /></img></a></th><th style=\"text-align:center\" colspan=\"5\" scope=\"col\" class=\"monat\">".$monate_full[$mon_out-1]."</th><th>".$jump_month_forward."<img src=\"/images/default/right.png\" alt=\"\" /></th></tr>";
     $ausgabe .= "<tr>";
     foreach ( $tage as $key => $value ) {
         // ersten und letzten tag kennzeichnen
