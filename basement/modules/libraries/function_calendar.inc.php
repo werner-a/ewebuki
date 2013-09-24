@@ -141,7 +141,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
                 if ( $key != 0 ) $ausgabe .= "</tr><tr>";
                 $class_m = "first";
             }
-            if ( !strstr($key/4-0.75,",") ) {
+            if ( is_int(($key+1)/4) ) {
                 $class_m = "last";
             }
             $ausgabe .= "<td class=\"".$class_m."\">".$value."</td>";
