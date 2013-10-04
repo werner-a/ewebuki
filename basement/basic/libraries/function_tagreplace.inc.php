@@ -1406,14 +1406,18 @@
                     case "[/YT]":
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);
-                        $yt =  "<object width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\">
-                                <param name=\"movie\" value=\"http://www.youtube.com/v/".$tagwerte[1]."&hl=de_DE&fs=1&\"></param>
-                                <param name=\"allowFullScreen\" value=\"true\"></param>
-                                <param name=\"allowscriptaccess\" value=\"always\"></param>
-                                <embed src=\"http://www.youtube.com/v/".$tagwerte[1]."&hl=de_DE&fs=1&\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\"></embed>
-                                </object>";
+                        $yt =  "<iframe width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\" src=\"//www.youtube.com/embed/".$tagwerte[1]."\" frameborder=\"0\" allowfullscreen></iframe>";
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
-                        break;
+                        break;                    
+                    case "[/VIDEO]":
+                        $tagwerte = explode("]",$tagwert,2);
+                        $ytwerte = explode(";",$tagwerte[0]);
+                        $video =  "<video controls width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\"";
+                        $video .= "<source src=\"".$tagwerte[1]."\"></source>";
+                        $video .= "<object><embed width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\" src=\"".$tagwerte[1]."\" type= \"application/x-shockwave-flash\" allowfullscreen=\"false\" allowscriptaccess=\"always\" /></object>";
+                        $video .= "</video>";
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,$video,$replace);
+                        break; 
                     default:
                         $extra_tag = str_replace(array("/","]","["),array("","",""),$closetag);
                         if ( $defaults["extra_tags"][$extra_tag] != "" ) {
