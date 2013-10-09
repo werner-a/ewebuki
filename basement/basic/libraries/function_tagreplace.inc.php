@@ -365,7 +365,7 @@
                                                 // jetzt setzen wir noch den deutschen Wochentag vors Datum
                                                     $value = $wochentag[date ("w", $beginn)].date ("d.m.Y", $beginn);
                                                 // Hier kommt noch ein undokumentierter "Spezialhack"
-                                                // Wenn der Parameter 5 größer 1 ist, wird geschaut, ob nach dem Datum
+                                                // Wenn der Parameter 5 groesser 1 ist, wird geschaut, ob nach dem Datum
                                                 // gleich noch ein Datum kommt. Wenn ja, wird das als "von-bis" in eine 
                                                 // Zelle gesetzt.
                                                     if ( $tabwerte[5] > 1 ) {
@@ -1405,8 +1405,13 @@
                         break;
                     case "[/YT]":
                         $tagwerte = explode("]",$tagwert,2);
-                        $ytwerte = explode(";",$tagwerte[0]);
-                        $yt =  "<iframe width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\" src=\"//www.youtube.com/embed/".$tagwerte[1]."\" frameborder=\"0\" allowfullscreen></iframe>";
+                        $ytwerte = explode(";",$tagwerte[0]);       
+                        $src = "//www.youtube.com/embed/".$tagwerte[1];
+                        $yt = parser("youtube_head",'');
+                        $yt .=  "<iframe width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\" src=\"".$src."\" frameborder=\"0\" allowfullscreen></iframe>";
+                        if ( $ytwerte[2] == -1 && !$_COOKIE["youtube_access"]) {
+                            $yt = parser("youtube",'');                       
+                        }                                                                       
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
                         break;                    
                     case "[/VIDEO]":
