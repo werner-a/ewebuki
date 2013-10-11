@@ -1409,7 +1409,7 @@
                         $src = "//www.youtube.com/embed/".$tagwerte[1];
                         $yt = "<div style=\"width:".$ytwerte[0].";float:left\">"; 
                         $yt .= parser("youtube_head",'');
-                        $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[1]."\" src=\"".$src."?autohide=1\"  frameborder=\"0\" allowfullscreen></iframe>";
+                        $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[1]."\" src=\"".$src."?autohide=1&wmode=opaque&showinfo=0\"  frameborder=\"0\" allowfullscreen></iframe>";
                         $yt .= "</div>";
                         if ( $ytwerte[2] == -1 && !$_COOKIE["youtube_access"]) {
                             $yt = parser("youtube",'');                       
