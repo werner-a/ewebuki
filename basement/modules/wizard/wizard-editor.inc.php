@@ -215,10 +215,10 @@
                     foreach ( $allowed_tags as $value ) {
                         $buffer[] = "[/".strtoupper($value)."]";
                         // ist der tag geschlossen
-                        if ( strstr($_POST["content"],"[".strtoupper($value)) ) {
+                        if ( strstr($_POST["content"],"[/".strtoupper($value)."]") ) {
                             // oeffnende Tags zaehlen
-                            preg_match_all( "/"."\[".strtoupper($value).".*\]"."/Us" , $_POST["content"], $match);
-                            $count_open = count($match[0]);
+                            preg_match_all( "/"."(\[".strtoupper($value)."=.*\])|(\[".strtoupper($value)."\])"."/Us" , $_POST["content"], $match);
+                            $count_open = count($match[0]);                            
                             // schliessende Tags zaehlen
                             preg_match_all( "/"."\[\/".strtoupper($value)."\]"."/Us" , $_POST["content"], $match);
                             $count_close = count($match[0]);
@@ -319,7 +319,7 @@
                 // + + +
 
             }
-
+echo "MAIN";
             if ( $environment["parameter"][7] == "verify" && $_POST["cancel"] != "" ) {
                 $header = $cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".
                                                     $environment["parameter"][2].",".
