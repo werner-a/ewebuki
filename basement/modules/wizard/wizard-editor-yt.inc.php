@@ -47,24 +47,29 @@
     $mapping["main"] = "wizard-edit";
     $hidedata["youtube"] = array();
 
-    $ausgaben["check50"] = "";
-    $ausgaben["check100"] = "checked";
     
+    $ausgaben["radio-right"] = "";
+    $ausgaben["radio-left"] = "checked";
+
     $ausgaben["yurl"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
     $ausgaben["height"] = "";
     $complete = $tag_meat[$tag_marken[0]][$tag_marken[1]]["complete"];
     $tag_werte = explode(";",str_replace(array("[YT=","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]));
-    if ( $tag_werte[0] == "50%") {
-        $ausgaben["check100"] = "";
-        $ausgaben["check50"] = "checked";        
+
+    if ( $tag_werte[0] == "r") {
+        $ausgaben["radio-left"] = "";
+        $ausgaben["radio-right"] = "checked";        
     }
-    $ausgaben["height"] = $tag_werte[1];
+        
+    $ausgaben["align"] = $tag_werte[0];
+    $ausgaben["width"] = $tag_werte[1];
+    $ausgaben["height"] = $tag_werte[2];
 
     // abspeichern
     // * * *
 
     if ( $_POST["send"] ) {        
-        $to_insert = "[YT=".$_POST["width"].";".$_POST["height"]."]".$_POST["yurl"]."[/YT]";
+        $to_insert = "[YT=".$_POST["align"].";".$_POST["width"].";".$_POST["height"].";".$tag_werte[3]."]".$_POST["yurl"]."[/YT]";
         
     }
     // + + +
