@@ -1406,13 +1406,17 @@
                     case "[/YT]":     
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);       
+                        $ytalign = "left";
+                        if ( $ytwerte[0] == "r") $ytalign = "right";
                         $src = "//www.youtube.com/embed/".$tagwerte[1];
-                        $yt = "<div class=\"youtube\" style=\"width:".$ytwerte[0].";float:left\">"; 
+                        $yt = "<div class=\"youtube\" style=\"float:".$ytalign.";width:".$ytwerte[1]."\">"; 
                         $ausgaben["yt_counter"]++;
+                        $ausgaben["yt_width"] = $ytwerte[1];
+                        $ausgaben["yt_align"] = $ytalign;
                         $yt .= parser("youtube_head",'');
-                        $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[1]."\" src=\"".$src."?autohide=1&wmode=opaque&showinfo=0\"  frameborder=\"0\" allowfullscreen></iframe>";
+                        $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[2]."\" src=\"".$src."?autohide=1&wmode=opaque&showinfo=0\"  frameborder=\"0\" allowfullscreen></iframe>";
                         $yt .= "</div>";
-                        if ( $ytwerte[2] == -1 && !$_COOKIE["youtube_access"]) {
+                        if ( $ytwerte[3] == -1 && !$_COOKIE["youtube_access"]) {
                             $yt = parser("youtube",'');                       
                         }                                                                       
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
