@@ -1403,11 +1403,12 @@
                         $tagwerte = explode("]",$tagwert,2);
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<param name=\"".$tagwerte[0]."\" value=\"".$tagwerte[1]."\"></param>",$replace);
                         break;
-                    case "[/YT]":
+                    case "[/YT]":     
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);       
                         $src = "//www.youtube.com/embed/".$tagwerte[1];
-                        $yt = "<div style=\"width:".$ytwerte[0].";float:left\">"; 
+                        $yt = "<div class=\"youtube\" style=\"width:".$ytwerte[0].";float:left\">"; 
+                        $ausgaben["yt_counter"]++;
                         $yt .= parser("youtube_head",'');
                         $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[1]."\" src=\"".$src."?autohide=1&wmode=opaque&showinfo=0\"  frameborder=\"0\" allowfullscreen></iframe>";
                         $yt .= "</div>";
