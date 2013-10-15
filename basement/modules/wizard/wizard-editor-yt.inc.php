@@ -50,7 +50,7 @@
     
     $ausgaben["radio-right"] = "";
     $ausgaben["radio-left"] = "checked";
-
+    
     $ausgaben["yurl"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
     $ausgaben["height"] = "";
     $complete = $tag_meat[$tag_marken[0]][$tag_marken[1]]["complete"];
@@ -60,7 +60,11 @@
         $ausgaben["radio-left"] = "";
         $ausgaben["radio-right"] = "checked";        
     }
-        
+    $ausgaben["info"] = "";
+    if ( $tag_werte[4] == "-1") {
+        $ausgaben["info"] = "checked";
+    } 
+    
     $ausgaben["align"] = $tag_werte[0];
     $ausgaben["width"] = $tag_werte[1];
     $ausgaben["height"] = $tag_werte[2];
@@ -69,9 +73,8 @@
     // * * *
 
     if ( $_POST["send"] ) {        
-        $to_insert = "[YT=".$_POST["align"].";".$_POST["width"].";".$_POST["height"].";".$tag_werte[3]."]".$_POST["yurl"]."[/YT]";
-        
-    }
+        $to_insert = "[YT=".$_POST["align"].";".$_POST["width"].";".$_POST["height"].";".$tag_werte[3].";".$_POST["info"]."]".$_POST["yurl"]."[/YT]";
+    }    
     // + + +
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
