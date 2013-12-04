@@ -1415,7 +1415,9 @@
                         $yt = "<div class=\"youtube\" style=\"float:".$ytalign.";width:".$ytwerte[1]."\">"; 
                         $ausgaben["yt_counter"]++;
                         $ausgaben["yt_width"] = $ytwerte[1];
+                        $ausgaben["yt_height"] = $ytwerte[2];
                         $ausgaben["yt_align"] = $ytalign;
+                        $ausgaben["yt_id"]=$tagwerte[1];
                         $yt .= parser("youtube_head",'');
                         $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[2]."\" src=\"".$src."?autohide=1&wmode=opaque".$ytinfo."\"  frameborder=\"0\" allowfullscreen></iframe>";
                         $yt .= "</div>";
