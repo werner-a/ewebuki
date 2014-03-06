@@ -109,7 +109,8 @@
 
         if ( $error_code == 0 ) {
             $MySafeModeUid = getmyuid();
-            passthru ("chuid ".$file["tmp_name"]." ".$MySafeModeUid);
+            #passthru ("chuid ".$file["tmp_name"]." ".$MySafeModeUid);
+            passthru ("chuid ".$file." ".$MySafeModeUid);
             chmod($file,0664);
         }
 
