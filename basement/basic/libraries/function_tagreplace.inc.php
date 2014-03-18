@@ -307,7 +307,7 @@
                                     break;
                                 default:
                                     $va = "";
-                            }                            
+                            }
                             if ( $tabwerte[5] != "" ) {
                                 $wochentag = array("So,&nbsp;",
                                                    "Mo,&nbsp;",
@@ -317,7 +317,7 @@
                                                    "Fr,&nbsp;",
                                                    "Sa,&nbsp;");
                             }
-                            if ( $tabwerte[6] != "" ) { 
+                            if ( $tabwerte[6] != "" ) {
                                 $vortext = array("");
                             }
                             // csv-datei
@@ -357,7 +357,7 @@
                                             if ( strtotime ($value) == TRUE ) {
                                                 $beginn = strtotime ($value);
                                                 $jetzt = time ();
-                                                if ( $beginn + 86400 < $jetzt) { 
+                                                if ( $beginn + 86400 < $jetzt) {
                                                 // wenn der beginn heute ist (jetzt und den ganzen tag), setzen wir skip
                                                 // wenn $skip mit irgendwas gefuellt ist, wird die Zeile uebersprungen
                                                     $skip = 1;
@@ -366,14 +366,14 @@
                                                     $value = $wochentag[date ("w", $beginn)].date ("d.m.Y", $beginn);
                                                 // Hier kommt noch ein undokumentierter "Spezialhack"
                                                 // Wenn der Parameter 5 groesser 1 ist, wird geschaut, ob nach dem Datum
-                                                // gleich noch ein Datum kommt. Wenn ja, wird das als "von-bis" in eine 
+                                                // gleich noch ein Datum kommt. Wenn ja, wird das als "von-bis" in eine
                                                 // Zelle gesetzt.
                                                     if ( $tabwerte[5] > 1 ) {
                                                         $i++;
                                                         if ( strtotime ($data[$i]) == TRUE ) {
                                                         $ende = strtotime ($data[$i]);
                                                         $tbeginn = $wochentag[date ("w", $beginn)].date ("d.m.Y", $beginn);
-                                                        $tende = $wochentag[date ("w", $ende)].date ("d.m.Y", $ende); 
+                                                        $tende = $wochentag[date ("w", $ende)].date ("d.m.Y", $ende);
                                                         $value = $tbeginn."<br />bis<br />".$tende;
                                                         $tbeginn = ""; $ende = ""; $tende = "";
                                                         }
@@ -382,8 +382,9 @@
                                             }
                                         }
                                         // noch Teil des Spezialhacks: ignorieren.
-                                        if ( $firstln != "" && $tabwerte[5] >1 && $i >= $tabwerte[5] && $tabwerte[6] != "" ) {
-                                            if ($i > $tabwerte[6]-1 ) $i++; $value = $data[$i+1];
+                                        if ( $firstln != "" && $tabwerte[5] >1 && $i >= $tabwerte[5]-1 ) {
+                                            if ($i == $tabwerte[5]-1 ) $i++;
+                                            $value = $data[$i];
                                         }
                                         if ( $tabwerte[6] == "" ) {
                                             $row .= $cell_tag1.$value.$cell_tag2;
@@ -401,14 +402,14 @@
                                                     $row .= $cell_tag1.$value.$cell_tag2;
                                                 }
                                                 if ( $i == $tabwerte[6] ) {
-                                                // Beim Wert, der in tabwert 6 angegeben ist, oeffnen wir die Zelle 
+                                                // Beim Wert, der in tabwert 6 angegeben ist, oeffnen wir die Zelle
                                                 // und setzen einen Zeilenwechsel.
                                                     if ( $tabwerte[7] != "" ) {
                                                     $row .= $cell_tag1."<".$tabwerte[7].">".$value."</".$tabwerte[7]."><br />";
                                                     } else {
                                                     $row .= $cell_tag1.$value."<br />";
                                                     }
-                                                } 
+                                                }
                                                 if ( $i > $tabwerte[6] ) {
                                                     // Die Werte, die nach tabwert 6 kommen, werden bis zum vorletzten Wert
                                                     // (falls vorhanden) mit Vortext ausgegeben und dann der Wert und ein br
@@ -423,9 +424,9 @@
                                                     }
                                                 }
                                             }
-                                        } 
+                                        }
                                     }
-                                    if ( !$skip == FALSE ) { $row = ""; $skip = ""; } 
+                                    if ( !$skip == FALSE ) { $row = ""; $skip = ""; }
                                     if ( $row != "" ) $table .= $row_tag1.$row.$row_tag2;
                                     if ( strstr($cell_tag1,"<th") ) {
                                         $thead = $table;
@@ -433,7 +434,7 @@
                                         $cell_tag1 = "<td".$va.">"; $cell_tag2 = "</td>\n";
                                         $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
                                     }
-                                $firstln = "";    
+                                $firstln = "";
                                 }
                                 // summary
                                 if ( $tagwerte[1] != "" ) {
@@ -774,12 +775,12 @@
                                 if ( $cfg["file"]["filetyp"][$match[1]] != "" ) {
                                     $class = " class=\"link_".$cfg["file"]["filetyp"][$match[1]];
                                 }
-                            }                            
+                            }
                             if ( $linkwerte[3] != "" ) { # oder manuell
                                 $class .= " ".$linkwerte[3];
-                            } 
+                            }
                             $class .= "\"";
-			    // id
+                            // id
                             if ( $linkwerte[4] != "" ) {
                                 $id = " id=\"".$linkwerte[4]."\"";
                             } else {
@@ -1131,7 +1132,7 @@
                                 array_multisort($sort, $files);
 
                             }
-                            
+
                             $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
 
                             // wenn video-parameter vorhanden dann marken ersetzen
@@ -1141,7 +1142,7 @@
                                 [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
                                 [PARAM=wmode]transparent[/PARAM]
                                 [/OBJECT]
-                                <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schlie√üen</a></b></span></div>",$sel);
+                                <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schlieﬂen</a></b></span></div>",$sel);
                                 $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
                             } else {
                                 $sel = str_replace("##youtube_div##","",$sel);
@@ -1403,16 +1404,16 @@
                         $tagwerte = explode("]",$tagwert,2);
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<param name=\"".$tagwerte[0]."\" value=\"".$tagwerte[1]."\"></param>",$replace);
                         break;
-                    case "[/YT]":     
+                    case "[/YT]":
                         // para1 = ausrichtung, para2 = weite, para3 = hoehe, para4 = 2klick, para5 = youtube info anzeigen
                         $tagwerte = explode("]",$tagwert,2);
-                        $ytwerte = explode(";",$tagwerte[0]);       
+                        $ytwerte = explode(";",$tagwerte[0]);
                         $ytalign = "left";
                         $ytinfo = "&showinfo=0";
                         if ( $ytwerte[0] == "r") $ytalign = "right";
                         if ( $ytwerte[4] == "-1") $ytinfo = "&showinfo=1";
                         $src = "//www.youtube.com/embed/".$tagwerte[1];
-                        $yt = "<div class=\"youtube\" style=\"float:".$ytalign.";width:".$ytwerte[1]."\">"; 
+                        $yt = "<div class=\"youtube\" style=\"float:".$ytalign.";width:".$ytwerte[1]."\">";
                         $ausgaben["yt_counter"]++;
                         $ausgaben["yt_width"] = $ytwerte[1];
                         $ausgaben["yt_height"] = $ytwerte[2];
@@ -1422,10 +1423,10 @@
                         $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[2]."\" src=\"".$src."?autohide=1&wmode=opaque".$ytinfo."\"  frameborder=\"0\" allowfullscreen></iframe>";
                         $yt .= "</div>";
                         if ( $ytwerte[3] == -1 && !$_COOKIE["youtube_access"]) {
-                            $yt = parser("youtube",'');                       
-                        }                                                                       
+                            $yt = parser("youtube",'');
+                        }
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
-                        break;                    
+                        break;
                     case "[/VIDEO]":
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);
@@ -1434,7 +1435,7 @@
                         $video .= "<object><embed width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\" src=\"".$tagwerte[1]."\" type= \"application/x-shockwave-flash\" allowfullscreen=\"false\" allowscriptaccess=\"always\" /></object>";
                         $video .= "</video>";
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$video,$replace);
-                        break; 
+                        break;
                     default:
                         $extra_tag = str_replace(array("/","]","["),array("","",""),$closetag);
                         if ( $defaults["extra_tags"][$extra_tag] != "" ) {
