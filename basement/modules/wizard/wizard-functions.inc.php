@@ -122,8 +122,12 @@
                 //                                                     );
 
                 $ausgaben["njs"] .= "ebButtons[ebButtons.length] = new ebButton(\n";
+                $button_label = strtoupper($key);
+                if ( $cfg["wizard"]["rename_buttons"][$key])  {                    
+                    $button_label = $cfg["wizard"]["rename_buttons"][$key];
+                }
                 $ausgaben["njs"] .= "'eb_".$key."'
-                                    ,'".strtoupper($key)."'
+                                    ,'".$button_label."'
                                     ,'".$label[$key].$k."'
                                     ,'".$value[0]."'
                                     ,'".$value[1]."'
