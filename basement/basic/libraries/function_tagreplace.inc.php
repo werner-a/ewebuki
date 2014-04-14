@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tagreplace($replace) {
-        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars,$dataloop,$hidedata,$mapping;
+        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars,$dataloop,$hidedata,$mapping, $LB_IMG_counter;
 
         // cariage return + linefeed fix
         if ( $specialvars["newbrmode"] != True ) {
@@ -55,7 +55,6 @@
 
         $preg = "|\[\/[!A-Z0-9]{1,6}\]|";
         $selection_counter = 0;
-        $img_counter = 0;
         $imgb_counter = 0;
         while ( preg_match($preg, $replace, $match ) ) {
 
@@ -539,7 +538,7 @@
                         }
                         break;
                     case "[/IMG]":
-                        $img_counter ++;
+                        $LB_IMG_counter ++;
                         $imgsize = ""; $imgurl = "";
                         if ( $sign == "]" ) {
                             if ( !strstr($tagwert, "/") ) {
@@ -613,7 +612,7 @@
                                 $style_border = "";
                             }
                             if ($imgwerte[3] == "l" ) {
-                                $lightbox = "rel=\"lightbox[".$img_counter."]\"";
+                                $lightbox = "rel=\"lightbox[".$LB_IMG_counter."]\"";
                             }
                             if ($imgwerte[4] == "" ) {
                                 $vspace = "";
