@@ -71,7 +71,7 @@
 
                     if ( strstr($value["fcheck"], "PREG:") ) {
                         $preg = substr($value["fcheck"],5);
-                        if (!preg_match_all("/$preg/",$form_values[$name],$regs) && !$form_values[$name] == "") {
+                        if (!preg_match_all("/$preg/",$form_values[$name],$regs) && $form_values[$name] != "") {
                             if ( $value["fchkerror"] == "" ) {
                                 $ausgaben["form_error"] .= "Field: ".$value["flabel"]." check failed!<br />";
                                 $dataloop["form_error"][$name]["text"] = "Field: ".$value["flabel"]." check failed!<br />";
