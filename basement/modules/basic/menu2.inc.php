@@ -122,8 +122,8 @@
                 if ( $data["extend"] != "" ) $titel = $data["extend"];
 
                 // was wird wodurch ersetzt
-                $marken = array("##target##", "##link##", "##title##", "##label##", "##picture##", "##extend##", "##aktiv##");
-                $ersatz = array($target, $link, $titel, $label, $data["picture"], $data["extend"], $aktiv);
+                $marken = array("##target##", "##link##", "##title##", "##label##", "##picture##", "##extend##", "##aktiv##", '##mid##');
+                $ersatz = array($target, $link, $titel, $label, $data["picture"], $data["extend"], $aktiv, $data["mid"]);
 
                 // version mit template
                 if ( $cfg["menu"]["generate"] == false ) {
