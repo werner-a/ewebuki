@@ -129,6 +129,7 @@
                     $content = implode(chr(13).chr(10).chr(13).chr(10),$buffer);
                     break;
                 case "delete":
+                    $buffer = "";
                     if ( $tag_marken[0] == "section" ) {
                         $allcontent = content_level1($form_values["content"]);
                         foreach ( $allcontent as $key=>$value ) {
