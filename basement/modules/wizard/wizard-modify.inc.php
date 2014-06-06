@@ -148,6 +148,7 @@
                                substr($form_values["content"],$tag_meat[$tag_marken[0]][$tag_marken[1]]["end"]);
                     break;
                 case "move":
+                    $buffer = "";
                     $allcontent = content_level1($form_values["content"]);
                     // sortier-array bestimmen
                     if ( is_array($_GET["content_blocks"]) ) {
