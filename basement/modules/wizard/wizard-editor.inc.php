@@ -319,7 +319,7 @@
                 // + + +
 
             }
-echo "MAIN";
+
             if ( $environment["parameter"][7] == "verify" && $_POST["cancel"] != "" ) {
                 $header = $cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".
                                                     $environment["parameter"][2].",".
