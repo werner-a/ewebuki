@@ -1403,7 +1403,7 @@
                         $tagwerte = explode("]",$tagwert,2);
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<param name=\"".$tagwerte[0]."\" value=\"".$tagwerte[1]."\"></param>",$replace);
                         break;
-                    case "[/YT]":
+                    case "[/OYT]":
                         // para1 = ausrichtung, para2 = weite, para3 = hoehe, para4 = 2klick, para5 = youtube info anzeigen
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);
