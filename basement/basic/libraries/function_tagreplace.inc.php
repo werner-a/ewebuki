@@ -1403,6 +1403,27 @@
                         $tagwerte = explode("]",$tagwert,2);
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<param name=\"".$tagwerte[0]."\" value=\"".$tagwerte[1]."\"></param>",$replace);
                         break;
+                    case "[/YT]":
+                        // para0 = ausrichtung, para1 = breite, para2 = hoehe, 
+                        // para3 = datenschutz aus, para4 = showinfo off, para5 = video tipps
+                        $tagwerte = explode("]",$tagwert,2);
+                        $ytwerte = explode(";",$tagwerte[0]);
+                        $src = "//www.youtube-nocookie.com/embed/".$tagwerte[1]."?autohide=1"; # timecode #t=1m5s
+			$class = "";
+			$style = "";
+                        if ( $ytwerte[0] != "") $class = " class=\"".$ytwerte[0]."\"";
+                        if ( $ytwerte[0] == "l") { $style = " style=\"float:left\""; $class = ""; }
+                        if ( $ytwerte[0] == "r") { $style = " style=\"float:right\""; $class = ""; }
+                        if ( $ytwerte[3] == "-1") $src = "//www.youtube.com/embed/".$tagwerte[1]."?autohide=1";
+                        if ( $ytwerte[4] == "") $src .= "&showinfo=0";
+                        if ( $ytwerte[4] == "-1") $src .= "&showinfo=1";
+                        if ( $ytwerte[5] != "-1") $src .= "&rel=0";
+			$yt = "";
+                        if ( $ytwerte[0] != "") $yt = "<div".$class.$style.">\n";
+                        $yt .= "<iframe width=\"".$ytwerte[1]."\" height=\"".$ytwerte[2]."\" src=\"".$src."\" frameborder=\"0\" allowfullscreen></iframe>\n";
+                        if ( $ytwerte[0] != "") $yt .= "</div>\n";
+                        $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
+                        break;
                     case "[/OYT]":
                         // para1 = ausrichtung, para2 = weite, para3 = hoehe, para4 = 2klick, para5 = youtube info anzeigen
                         $tagwerte = explode("]",$tagwert,2);
