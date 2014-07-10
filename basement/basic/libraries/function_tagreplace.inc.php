@@ -1405,10 +1405,10 @@
                         break;
                     case "[/YT]":
                         // para0 = ausrichtung, para1 = breite, para2 = hoehe, 
-                        // para3 = datenschutz aus, para4 = showinfo off, para5 = video tipps
+                        // para3 = datenschutz aus, para4 = showinfo on, para5 = video tipps
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);
-                        $src = "//www.youtube-nocookie.com/embed/".$tagwerte[1]."?autohide=1"; # timecode #t=1m5s
+                        $src = "//www.youtube-nocookie.com/embed/".$tagwerte[1]."?autohide=1";
 			$class = "";
 			$style = "";
                         if ( $ytwerte[0] != "") $class = " class=\"".$ytwerte[0]."\"";
