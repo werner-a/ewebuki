@@ -196,25 +196,26 @@
                     $right = str_pad ( $var, $opentaglen, 'e' );
 
                     // wie lautet der tagwert
-                    $tagwertbeg = strlen($haystack) - (strpos(strrev($haystack), strrev($real_opentag)) + strlen($real_opentag)) + $opentaglen + 1;
+                    $tagwertbeg = strlen($haystack) - (strpos(strrev($haystack), strrev($real_opentag)) + strlen($real_opentag)) + $opentaglen;
 
-                    $tagoriginal = substr($tmp_content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
+                    $tagoriginal = substr($tmp_content,$tagwertbeg,$closetagbeg-$tagwertbeg);
                     $tagoriginal_org = substr($content,$opentagbeg,$closetagbeg+strlen($closetag)-$opentagbeg);
+                    $tmp_content = str_replace($real_opentag.$tagoriginal.$closetag,$right.$tagoriginal."==".$match[2]."#",$tmp_content);    
 
                      // open und endtags zerstören
-                     $tmp_content = preg_replace(
-                                "/".preg_quote($haystack.$closetag,"/")."/" ,
-                                $haystack."==".$match[2]."#" ,
-                                $tmp_content,
-                                1
-                    );
-                     $tmp_content = preg_replace(
-                                "/^".preg_quote(substr($haystack,0,$opentagbeg).$real_opentag,"/")."/" ,
-                                substr($haystack,0,$opentagbeg).$right ,
-                                $tmp_content,
-                                1
-                    );
-
+//                     $tmp_content = preg_replace(
+//                                "/".preg_quote($haystack.$closetag,"/")."/" ,
+//                                $haystack."==".$match[2]."#" ,
+//                                $tmp_content,
+//                                1
+//                    );
+//                     $tmp_content = preg_replace(
+//                                "/^".preg_quote(substr($haystack,0,$opentagbeg).$real_opentag,"/")."/" ,
+//                                substr($haystack,0,$opentagbeg).$right ,
+//                                $tmp_content,
+//                                1
+//                    );
+                     
                     $buffer[$index] = array(
                                "start" => strrpos($haystack,$real_opentag),
                                  "end" => strlen($haystack)+strlen($closetag),
