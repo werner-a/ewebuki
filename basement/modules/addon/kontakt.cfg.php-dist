@@ -74,6 +74,7 @@
                     "add_para" => "",   // mail(): additional_parameters (optional)
               ),
 //           "captcha" => array(
+//               "delete_time" => 600,                  // sekunden nach dem alte captcha-bilder geloescht werden
 //                 "randomize" => "changeme",          // beliebiger wert, verfaelscht nur den captcha-kontrollwert
 //                    "length" => "5",                     // laenge des zufalls-"wortes"
 //                "letter_pot" => "abcdefghijkmnpqrstuvwxyz123456789",     // zu benutzende zeichen

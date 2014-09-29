@@ -69,7 +69,10 @@
         // ***
 
         if ( is_array($cfg["kontakt"]["captcha"]) ) {
-
+            $captcha_delete_time = 600;
+            if ( $cfg["kontakt"]["captcha"]["delete_time"] ) {
+                $captcha_delete_time = $cfg["kontakt"]["captcha"]["delete_time"];
+            }
             // zufaellige zeichen erzeugen
             $captcha_text = captcha_randomize($cfg["kontakt"]["captcha"]["length"],$cfg["kontakt"]["captcha"]);
             // bild erzeugen
@@ -84,7 +87,7 @@
             $hidedata["captcha"]["proof"] = $captcha_crc;
             // alte, unnuetze bilder entfernen
             foreach ( glob($captcha_path_srv."captcha-*.png") as $captcha_file) {
-                if ( (mktime() - filemtime($captcha_file)) > 600 ) unlink($captcha_file);
+                if ( (time() - filemtime($captcha_file)) > $captcha_delete_time ) unlink($captcha_file);
             }
         }
 
