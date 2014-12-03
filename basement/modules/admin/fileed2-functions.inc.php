@@ -385,16 +385,16 @@
                                  OR ".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$new."')
                            ORDER BY version DESC";
 // echo $sql3."<br>";
-                    $result3 = $db -> query($sql3);
-                    $versions = array();
-                    while ( $data3 = $db -> fetch_array($result3,1) ) {
-//                         if ( !strstr($data3["content"],str_replace("\\","",$old)) && !strstr($data3["content"],$new) ) continue;
-                        $url = $pathvars["virtual"].tname2path($data2["tname"]).",v".$data3["version"].".html";
-                        $class = "";
-                        if ( $data3["status"] == 1 ) $class = " class=\"red\"";
-                        $versions[] = "<a href=\"".$url."\" title=\"Version ".$data3["version"]."\"".$class.">v".$data3["version"]."</a>";
-                    }
-                    $found_in[] = "<b>".$label."</b> (".implode(", ",$versions).")";
+//                    $result3 = $db -> query($sql3);
+//                    $versions = array();
+//                    while ( $data3 = $db -> fetch_array($result3,1) ) {
+////                         if ( !strstr($data3["content"],str_replace("\\","",$old)) && !strstr($data3["content"],$new) ) continue;
+//                        $url = $pathvars["virtual"].tname2path($data2["tname"]).",v".$data3["version"].".html";
+//                        $class = "";
+//                        if ( $data3["status"] == 1 ) $class = " class=\"red\"";
+//                        $versions[] = "<a href=\"".$url."\" title=\"Version ".$data3["version"]."\"".$class.">v".$data3["version"]."</a>";
+//                    }
+                    $found_in[] = "<b>".$label."</b> (".$url.")";
                 }
             }
 
