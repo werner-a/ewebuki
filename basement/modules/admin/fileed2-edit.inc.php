@@ -241,7 +241,7 @@
         $hidedata["references"] = array();
 
         // wo im content wird die datei verwendet
-        $used_in = content_check($environment["parameter"][1]);
+        $used_in = content_check($environment["parameter"][1]);       
         if ( count($used_in) > 0 ) {
             $ausgaben["reference"] = implode("<br />",$used_in);
         } else {
@@ -449,7 +449,7 @@
                         } else {
                             header("Location: ".$cfg["fileed"]["basis"]."/add.html");
                             exit;
-                        }
+                        }                        
                     }
 
                     // ggf versteckte fhit-eingtraege wieder anhaengen
@@ -501,10 +501,10 @@
                     if ( !$result ) {
                         $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                     }
-                    if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/edit.html";
+                    if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/list.html";
 
                 } else {
-                    if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/edit.html";
+                    if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/edit,.".$environment["parameter"][1].".html";
                 }
 
                 if ( $_SESSION["file_memo"][$environment["parameter"][1]] != "" ) unset ($_SESSION["file_memo"][$environment["parameter"][1]]);
