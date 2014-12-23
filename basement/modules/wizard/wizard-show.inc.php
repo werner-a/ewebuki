@@ -37,12 +37,12 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 KÃ¶nigsbrunn
+    86343 Königsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    header("HTTP/1.0 200 OK");
     // parameter-verzeichnis:
     // 1: Datenbank
     // 2: tname
@@ -153,8 +153,7 @@
 
     if ( priv_check($tname2path,$cfg["wizard"]["right"]["edit"])
       || $artikel_check
-      || priv_check($tname2path,$cfg["wizard"]["right"]["publish"])
-      || priv_check_old("",$cfg["wizard"]["right"]) ) {
+      || priv_check($tname2path,$cfg["wizard"]["right"]["publish"]) ) {
 
         // page basics
         // ***
@@ -706,7 +705,7 @@
                 $ausgaben["inaccessible"] = "";
             }
             
-            if ( $_GET["convert"] == "on" && $cfg["wizard"]["utf8_convert"]  == -1 ) {
+            if ( $_GET["convert"] == "on" && $cfg["wizard"]["utf8_convert"]  == -1 ) {                  
                 foreach ( $dataloop["sort_content"] as $key => $value ) {
                     $dataloop["sort_content"][$key]["value_html"] = utf8_encode($dataloop["sort_content"][$key]["value_html"]);
                 }
