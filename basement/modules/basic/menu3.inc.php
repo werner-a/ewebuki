@@ -45,79 +45,163 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    function menu_create($refid, $self = "") {
+    function menu_create($refid = 0, $level = 1) {
         global $buffy,$count,$counter,$last_refid,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $buffer,$positionArray;
-                                                 
-        $where = "AND (".$cfg["menu"]["db"]["entries"].".hide IS NULL OR ".$cfg["menu"]["db"]["entries"].".hide IN ('','0'))";
         
-        $sql = "SELECT  *  FROM  ".$cfg["menu"]["db"]["entries"]."
-            INNER JOIN  ".$cfg["menu"]["db"]["language"]."
-                    ON  ".$cfg["menu"]["db"]["entries"].".mid = ".$cfg["menu"]["db"]["language"].".mid
-                 WHERE (".$cfg["menu"]["db"]["entries"].".refid=".$refid.")
-                   AND (".$cfg["menu"]["db"]["language"].".lang='".$environment["language"]."')
-                   ".$where."
-              ORDER BY  sort;";
-
-        $result  = $db -> query($sql);
-        $count = $db->num_rows($result);
+        // Variablen definieren, falls sie nicht in der cfg gesetzt wurden
+        if ( $cfg["menu"]["css"]["item_active"]         == "" ) $cfg["menu"]["css"]["item_active"]         = "menu-active";
+        if ( $cfg["menu"]["level".$level]["enable"]     == "" ) $cfg["menu"]["level".$level]["enable"]     = -1; 
+        if ( $cfg["menu"]["level".$level]["full"]       == "" ) $cfg["menu"]["level".$level]["full"]       = -1; 
+        if ( $cfg["menu"]["level".$level]["force"]      == "" ) $cfg["menu"]["level".$level]["force"]      =  0; 
+        if ( $cfg["menu"]["level".$level]["length"]     == "" ) $cfg["menu"]["level".$level]["length"]     =  1000; 
+        if ( $cfg["menu"]["level".$level]["target"]     == "" ) $cfg["menu"]["level".$level]["target"]     = ""; 
+        if ( $cfg["menu"]["level".$level]["on"]         == "" ) $cfg["menu"]["level".$level]["on"]         = "<ul>"; 
+        if ( $cfg["menu"]["level".$level]["link_on"]    == "" ) $cfg["menu"]["level".$level]["link_on"]    = "<li class=\"##class##\">"; 
+        if ( $cfg["menu"]["level".$level]["item_link"]  == "" ) $cfg["menu"]["level".$level]["item_link"]  = "<a href=\"##href##\" title=\"##title##\">##label##</a>"; 
+        if ( $cfg["menu"]["level".$level]["item_blank"] == "" ) $cfg["menu"]["level".$level]["item_blank"] = "<span>##label##</span>"; 
+        if ( $cfg["menu"]["level".$level]["link_off"]   == "" ) $cfg["menu"]["level".$level]["link_off"]   = "</li>"; 
+        if ( $cfg["menu"]["level".$level]["off"]        == "" ) $cfg["menu"]["level".$level]["off"]        = "</ul>"; 
         
-        while ( $array = $db -> fetch_array($result,1) ) {
+        if ( $cfg["menu"]["level".$level]["enable"] == "-1" ) {
 
-            // aufbau des pfads
-            $buffer["pfad"] .= "/".$array["entry"];
-            $buffer["pfad_label"] .= "/".$array["label"];
-
-            $tmp = explode("/", $buffer["pfad"]);
-            $ebene = count ($tmp)-1;
-
-            
-            
-            $title = $array["label"];
-            if ( $array["extend"] ) $title = $array["extend"];
-            $href = "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html\" title=\"".$title."\">".$array["label"]."</a>";
-
-            // wo geht der href hin?
-            if ( $array["exturl"] != "" ) {
-                $href = "<a href=".$array["exturl"].">".$array["label"]."</a>";
+            // SQL-Filter bauen
+            $where_array = array();
+            // ID des Menü-Punktes
+            $where_array[] = "(".$cfg["menu"]["db"]["entries"].".refid=".$refid.")";
+            // Sprache des Menüpunktes
+            $where_array[] = "(".$cfg["menu"]["db"]["language"].".lang='".$environment["language"]."')";
+            // keine versteckten Punkte anzeigen
+            $where_array[] = "(".$cfg["menu"]["db"]["entries"].".hide IS NULL OR ".$cfg["menu"]["db"]["entries"].".hide IN ('','0'))";
+            // nur wenn die Level-Variable "full" gesetzt (-1) wird der Menü-Punkt unabhängig vom Mandatory-Wert angezeigt
+            if ( $cfg["menu"]["level".$level]["full"] != "-1" ) {
+                $where_array[] = "(".$cfg["menu"]["db"]["entries"].".mandatory='-1')";
             }
-            ;
-            // in den buffer schreiben wieviel unterpunkte fuer jeweiligen Ueberpunkt vorhanden sind !
-            if ( !isset($buffer[$refid]["zaehler"]) ) {
-                $buffer[$refid]["zaehler"] = $count;
-                if ( $cfg["menu"]["level".$ebene]["on"] ) {
-                    $tree .= $cfg["menu"]["level".$ebene]["on"];
+
+            // SQL zusammensetzen
+            $sql = "SELECT  *  
+                      FROM  ".$cfg["menu"]["db"]["entries"]."
+                INNER JOIN  ".$cfg["menu"]["db"]["language"]."
+                        ON (".$cfg["menu"]["db"]["entries"].".mid = ".$cfg["menu"]["db"]["language"].".mid)
+                     WHERE  ".implode("
+                       AND  ",$where_array)."
+                  ORDER BY  sort;";
+
+            $result  = $db -> query($sql);
+            $count = $db->num_rows($result);
+
+            while ( $array = $db -> fetch_array($result,1) ) {
+
+                // aufbau des pfads
+                $buffer["pfad"] .= "/".$array["entry"];
+                $buffer["pfad_label"] .= "/".$array["label"];
+
+                // feststellen in welcher Ebene man sich befindet
+                $arrEbene = explode("/", $buffer["pfad"]);
+                $level    = count($arrEbene)-1;
+
+                // Link-Infos definieren
+                $label = $array["label"];
+                if ( strlen($label) > $cfg["menu"]["level".$level]["length"] ) {
+                    $label = substr($label,0,$cfg["menu"]["level".$level]["length"]-3)."...";
+                }
+                $title = $array["label"];
+                if ( $array["extend"] ) $title = $array["extend"];
+                if ( $array["exturl"] != "" ) {
+                    $href   = $array["exturl"];
+                    $target = $cfg["menu"]["level".$level]["target"];
+                } else {
+                    $href   = $pathvars["virtual"].$buffer["pfad"].".html";
+                    $target = "";
                 }
 
-            }    
-            
-            $last_refid = $refid;
-            if ( $cfg["menu"]["level".$ebene]["on"] ) {
-            // listenpunkt schreiben
-            $tree .= $cfg["menu"]["level".$ebene]["link_on"].$href;
+                // Link bauen
+                if ( $array["menu_no_link"] == -1 ) {
+                    // Falls laut site_menu-Eintrag kein Link gewünscht ist...
+                    $link = str_replace(
+                                array("##label##", "##title##", "##href##", "##target##"),
+                                array($label, $title, $href, $target),
+                                $cfg["menu"]["level".$level]["item_blank"]
+                            );
+                } else {
+                    $link = str_replace(
+                                array("##label##", "##title##", "##href##", "##target##"),
+                                array($label, $title, $href, $target),
+                                $cfg["menu"]["level".$level]["item_link"]
+                            );
+                }
 
-            // funktionsaufruf
-            $tree .= menu_create($array["mid"],-1);
+                // in den Buffer schreiben wieviel Unterpunkte fuer den jeweiligen Ueberpunkt vorhanden sind!
+                // Falls wir beim ersten Menü-Punkt sind wird der Start der Ebene geschrieben
+                if ( !isset($buffer[$refid]["zaehler"]) ) {
+                    $buffer[$refid]["zaehler"] = $count;
+                    if ( $cfg["menu"]["level".$level]["on"] ) {
+                        $tree .= $cfg["menu"]["level".$level]["on"];
+                    }
 
-            // abschliessendes li anbringen
-            $tree .= $cfg["menu"]["level".$ebene]["link_off"];
-            }
-            // abschliessendes ul anbringen u. pfad kuerzen
-            if ( isset($buffer[$refid]["zaehler"]) ) {
-                // pfad kuerzen
-                $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
-                $buffer["pfad_label"] = substr($buffer["pfad_label"],0,strrpos($buffer["pfad_label"],"/"));
-                // zaehler 1 zuruecksetzen
-                $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
-                // ul anbringen wenn zaehler bei 0
-                if ( $buffer[$refid]["zaehler"] == 0  ) {
-                    $tree .= $cfg["menu"]["level".$ebene]["off"];
+                }    
+
+                $last_refid = $refid;
+                if ( $cfg["menu"]["level".$level]["on"] ) {
+
+                    // Start des Punktes
+                    $item_start   = $cfg["menu"]["level".$level]["link_on"];
+
+                    // Inhalt des Punktes
+                    $item_content = $link;
+
+                    // CSS-Klasse festlegen
+                    if ( $array["menu_css"] != "" ) {
+                        $class = $array["menu_css"];
+                    } else {
+                        $class = "";
+                    }
+
+                    // Unterpunkte des Punktes
+                    if (preg_match("/^".preg_quote($buffer["pfad"],"/")."/", $environment["ebene"]."/".$environment["kategorie"]) ) {
+                        // Der Menü-Punkt kommt in der Url vor:
+                        $item_sub = menu_create($array["mid"], $level + 1);
+                        // Überprüfen, ob der Menüpunkt der Url entspricht
+                        $class .= " ".$cfg["menu"]["css"]["item_active"];
+                    } elseif ( $cfg["menu"]["level".($level+1)]["force"] == -1 ) {
+                        // laut cfg soll das Anzeigen der Menü-Ebenen erzwungen werden:
+                        $item_sub = menu_create($array["mid"], $level + 1);
+                    } else {
+                        $item_sub = "";
+                    }
+
+                    // Ende des Punktes
+                    $item_end     = $cfg["menu"]["level".$level]["link_off"];
+
+                    // Menü-Punkt zusammenbauen
+                    $tree .= str_replace(
+                                "##class##",
+                                $class,
+                                $item_start.$item_content
+                             )
+                             .$item_sub
+                             .$item_end;
+
+                }
+
+                // Überprüfen, ob man beim letzten Menüpunkt der Ebene ist
+                // Wenn das der Fall ist wird das Ende der Ebene geschrieben
+                if ( isset($buffer[$refid]["zaehler"]) ) {
+                    // pfad kuerzen
+                    $buffer["pfad"] = substr($buffer["pfad"],0,strrpos($buffer["pfad"],"/"));
+                    $buffer["pfad_label"] = substr($buffer["pfad_label"],0,strrpos($buffer["pfad_label"],"/"));
+                    // zaehler 1 zuruecksetzen
+                    $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] - 1;
+                    // Ende der Ebene anbringen wenn zaehler bei 0
+                    if ( $buffer[$refid]["zaehler"] == 0  ) {
+                        $tree .= $cfg["menu"]["level".$level]["off"];
+                    }
                 }
             }
+            return $tree;
         }
-        return $tree;
     }
 
-    $ausgaben["menu"] = menu_create('0');
+    $ausgaben["menu"] = menu_create();
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
