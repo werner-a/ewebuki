@@ -42,7 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    $buffer = "";
     // was anzeigen
     $mapping["main"] = "wizard-edit";
     $hidedata["list"]["new_point"] = "#(new_list)";
