@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -79,7 +79,7 @@
         #} else {
         #    $positionArray[] = "nop";
         #}
-
+        $buffer = "";
         $ausgaben["show_menu"] .= sitemap(0,"menued", "select", "");
 
 
@@ -126,7 +126,7 @@
         if ( $environment["parameter"][3] == "verify"
             && $_POST["send"] != "" ) {
 
-            // form eigaben prüfen
+            // form eigaben prï¿½fen
             form_errors( $form_options, $_POST );
 
             // gibt es in der neuen ebene einen solchen entry?
