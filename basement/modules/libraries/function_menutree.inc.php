@@ -209,10 +209,10 @@
                         }
                         // anzeige des icons zur content-seite
                         if ( $name == "jump" ) {
-                            $aktion .= "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
+                            $aktion .= "<a target=\"_blank\" href=\"".$pathvars["virtual"].make_ebene($array["mid"]).".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                             continue;
                         }
-
+                                                
                         // beim move ausnahme!
                         if ( $name == "move" ) {
                             $aktion .= "<a href=\"".$cfg[$script_name]["basis"]."/".$value[0].$name.",0,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
@@ -230,6 +230,26 @@
                                     $label =",inhalt";
                                     $dest = "show";    
                                 }
+                                
+                                if ( $value[3] ) {
+                                        $dest = "show";
+                                        $database = DATABASE;
+                                        $wizard_array = explode(":",$value[3]);
+                                        $wizard_template = array_shift($wizard_array);                                        
+                                        if ( $array["defaulttemplate"] == $wizard_template ) {
+                                            foreach ( $wizard_array as $wizard_marken ) {
+                                                $label = ",".$wizard_marken;
+                                                if ( $wizard_ebene == "" ) {
+                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";                                        
+                                                } else {
+                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";    
+                                                }
+                                            }  
+                                            continue;
+                                        }                                        
+                                }
+                                if (preg_match("/^wizard/", $name )) continue;
+                                
                                 if ( $wizard_ebene == "" ) {
                                     $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";                                        
                                 } else {
