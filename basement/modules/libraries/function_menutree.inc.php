@@ -240,9 +240,9 @@
                                             foreach ( $wizard_array as $wizard_marken ) {
                                                 $label = ",".$wizard_marken;
                                                 if ( $wizard_ebene == "" ) {
-                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";                                        
+                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><span style=\"float:right\">".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";                                        
                                                 } else {
-                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";    
+                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><span style=\"float:right\">|".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";    
                                                 }
                                             }  
                                             continue;
