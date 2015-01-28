@@ -72,6 +72,11 @@
     preg_match_all("/\[ROW\](.*)\[\/ROW\]/Us",$tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"],$rows);
     $tab_rows_tag = array();
     $row_index = 0; $ausgaben["num_col_tag"] = 0;
+    
+    $row_header_marker = 0;
+    $col_header_marker = 0;
+    
+    // DIE ZEILEN WERDEN DURCHGEGANGEN
     foreach ( $rows[1] as $row_value ) {
         // ist die erste spalte der kopf
         if ( $row_index == 0 ) {
@@ -84,15 +89,43 @@
         // tag nach zellen aufsplitten
         preg_match_all("/\[(COL|TH).*\](.*)\[\/(COL|TH)\]/Us",$row_value,$cells);
         $col_index = 0; $row_buffer = array();
-        foreach ( $cells[2] as $cell_value ) {
+        
+        
+        // DIE ZELLLEN DER ZEILE WERDEN DURCHGEGANGEN
+        foreach ( $cells[2] as $key=>$cell_value ) {
+            // besteht die erste zeile komplett aus TH?
+            if ( $row_index == 0 ) {
+                if ( $cells[1][$key] == "TH" ) {
+                    $col_header_marker++;
+                }
+            }
+            // besteht die erst Spalte komplett aus TH?
+            if ( $col_index == 0 ) {
+                if ( $cells[1][$key] == "TH" ) {
+                    $row_header_marker++;
+                }
+            }
+            
+            
             $row_buffer[] = "<td>\n".
                                 "<textarea name=\"cells[".$row_index."][".$col_index."]\" onclick=\"ebCanvas=this\">".$cell_value."</textarea>\n".
                             "</td>\n";
             $col_index++;
         }
+        
         if ( $col_index >= $ausgaben["num_col_tag"] = 0 ) $ausgaben["num_col_tag"] = $col_index;
         if ( count($row_buffer) > 0 ) $tab_rows_tag[] = implode("",$row_buffer);
         $row_index++;
+    }
+    if ( $row_index == $row_header_marker ) {
+        $hidedata["tab"]["row_header_check"] = " checked=\"true\"";
+    } else {
+        $hidedata["tab"]["row_header_check"] = "";
+    }
+    if ( $col_index == $col_header_marker ) {
+        $hidedata["tab"]["col_header_check"] = " checked=\"true\"";
+    } else {
+        $hidedata["tab"]["col_header_check"] = "";
     }
     $ausgaben["num_row_tag"] = $row_index;
     // + + +
@@ -169,21 +202,31 @@
 
             $tab = "[TAB=".implode(";",$_POST["tagwerte"])."]\n";
             $num_cell = 0;
+            // $i: Zeilen-Index
+            // $k: Spalten-Index
             for ($i=0;$i<$_POST["num_row"];$i++) {
                 $tab .= "[ROW]\n";
                 for ($k=0;$k<$_POST["num_col"];$k++) {
-                    if ( $i == 0 && $_POST["col_header"] == -1 ) {
-                        $tab .= "[TH]".tagremove(trim($_POST["cells"][$i][$k]))."[/TH]\n";
+                    
+                    if ( $_POST["col_header"] == -1 && $_POST["row_header"] == -1 && ($i == 0 || $k == 0) ) {
+                        $cell_type = "TH";
+                    } elseif ( $_POST["col_header"] == -1 && $i == 0 ) {
+                        $cell_type = "TH";
+                    } elseif ( $_POST["row_header"] == -1 && $k == 0 ) {
+                        $cell_type = "TH";
                     } else {
-                        $tab .= "[COL]".trim($_POST["cells"][$i][$k])."[/COL]\n";
+                        $cell_type = "COL";
                     }
+                    
+                    $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
+                    
                     $num_cell++;
                 }
                 $tab .= "[/ROW]\n";
             }
             $tab .= "[/TAB]";
             $to_insert = $tab;
-
+            
     }
     // + + +
 
