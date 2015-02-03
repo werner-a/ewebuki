@@ -112,7 +112,7 @@
         }
 
         //wohin schicken
-        $ausgaben["form_aktion"] = $pathvars["virtual"]."/wizard/delete,devel0,".$environment["parameter"][2].",inhalt.html";
+        $ausgaben["form_aktion"] = $pathvars["virtual"]."/wizard/delete,devel0,".$environment["parameter"][2].",".$environment["parameter"][3].".html";
         $ausgaben["refid"] = $point["mid"];
 
         $url = $pathvars["virtual"].tname2path($environment["parameter"][2]);

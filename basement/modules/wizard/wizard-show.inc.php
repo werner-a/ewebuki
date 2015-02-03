@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Kï¿½nigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -50,7 +50,10 @@
     // 4: [leer]
     // 5: version
     // 6: index des bereichs der im show angezeigt wird
-
+    
+    $entrance = make_id(tname2path($environment["parameter"][2]));
+    $_SESSION["menu_entrance"] = $entrance["refid"];
+      
     // erlaubnis bei intrabvv speziell setzen
     $database = $environment["parameter"][1];
     if ( is_array($_SESSION["katzugriff"]) ) {
@@ -520,7 +523,7 @@
                     $style = "";
                     while ( count($pic_array) > 0 ) {
                         $buffer = "wizard-icon-".implode("-",$pic_array).".png";
-                        if ( file_exists($pathvars["fileroot"].$pathvars["images"].$buffer) ) {
+                        if ( file_exists($pathvars["fileroot"].$pathvars["images"].$buffer) ) {                            
                             $style = "background-image:url('".$pathvars["images"].$buffer."');";
                             break;
                         } elseif ( file_exists($pathvars["fileroot"]."/images/default/".$buffer) ) {

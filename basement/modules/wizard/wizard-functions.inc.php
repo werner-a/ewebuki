@@ -312,7 +312,7 @@
         //
         function find_marked_content( $url = "/", $cfg, $label, $status = array(-2,-1), $add_filter = array(), $check_privs = TRUE, $ignore = array() ) {
             global $db, $pathvars, $environment;
-
+            
             $path = explode("/",$url);
             $kategorie = array_pop($path);
             $ebene = implode("/",$path);
@@ -467,8 +467,8 @@
                     "sort" => $sort_date,
                  "sort_db" => $sort_date_db,
                     "view" => $view_link,
-                    "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",inhalt.html",
-                     "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",inhalt.html",
+                    "edit" => $pathvars["virtual"]."/wizard/show,".$db->getDb().",".$tname.",".$label.".html",
+                     "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",".$label.".html",
                   "unlock" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",unlock,".$data["version"].".html",
                  "release" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",release,".$data["version"].".html",
                  "history" => $pathvars["virtual"]."/admin/contented/history,,".$tname.",".$label.",".$dat_akt["version"].",".$data["version"].".html",
