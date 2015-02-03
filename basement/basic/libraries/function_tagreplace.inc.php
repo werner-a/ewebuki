@@ -106,7 +106,14 @@
                           $defaults["tag"]["h1"] = "<h1>";
                           $defaults["tag"]["/h1"] = "</h1>";
                         }
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h1"].$tagwert.$defaults["tag"]["/h1"],$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h1"].$tagwert.$defaults["tag"]["/h1"],$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $attrib = " class=\"".$tagwerte[0]."\">";
+                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h1"]);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h1"],$replace);
+                        }
                         break;
                     case "[/H2]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
@@ -114,7 +121,14 @@
                           $defaults["tag"]["h2"] = "<h2>";
                           $defaults["tag"]["/h2"] = "</h2>";
                         }
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h2"].$tagwert.$defaults["tag"]["/h2"],$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h2"].$tagwert.$defaults["tag"]["/h2"],$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $attrib = " class=\"".$tagwerte[0]."\">";
+                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h2"]);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h2"],$replace);
+                        }
                         break;
                     case "[/H3]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
@@ -122,7 +136,14 @@
                           $defaults["tag"]["h3"] = "<h3>";
                           $defaults["tag"]["/h3"] = "</h3>";
                         }
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h3"].$tagwert.$defaults["tag"]["/h3"],$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h3"].$tagwert.$defaults["tag"]["/h3"],$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $attrib = " class=\"".$tagwerte[0]."\">";
+                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h3"]);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h3"],$replace);
+                        }
                         break;
                     case "[/H4]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
@@ -130,7 +151,14 @@
                           $defaults["tag"]["h4"] = "<h4>";
                           $defaults["tag"]["/h4"] = "</h4>";
                         }
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h4"].$tagwert.$defaults["tag"]["/h4"],$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h4"].$tagwert.$defaults["tag"]["/h4"],$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $attrib = " class=\"".$tagwerte[0]."\">";
+                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h4"]);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h4"],$replace);
+                        }
                         break;
                     case "[/H5]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
@@ -138,7 +166,14 @@
                           $defaults["tag"]["h5"] = "<h5>";
                           $defaults["tag"]["/h5"] = "</h5>";
                         }
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h5"].$tagwert.$defaults["tag"]["/h5"],$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h5"].$tagwert.$defaults["tag"]["/h5"],$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $attrib = " class=\"".$tagwerte[0]."\">";
+                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h5"]);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h5"],$replace);
+                        }
                         break;
                     case "[/H6]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
@@ -146,7 +181,14 @@
                           $defaults["tag"]["h6"] = "<h6>";
                           $defaults["tag"]["/h6"] = "</h6>";
                         }
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $attrib = " class=\"".$tagwerte[0]."\">";
+                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h6"]);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h6"],$replace);
+                        }
                         break;
                     case "[/P]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
@@ -1141,7 +1183,7 @@
                                 [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
                                 [PARAM=wmode]transparent[/PARAM]
                                 [/OBJECT]
-                                <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schlieﬂen</a></b></span></div>",$sel);
+                                <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schliessen</a></b></span></div>",$sel);
                                 $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
                             } else {
                                 $sel = str_replace("##youtube_div##","",$sel);
