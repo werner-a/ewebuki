@@ -210,23 +210,24 @@
                     
                     if ( $_POST["col_header"] == -1 && $_POST["row_header"] == -1 && ($i == 0 || $k == 0) ) {
                         $cell_type = "TH";
+                        $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
                     } elseif ( $_POST["col_header"] == -1 && $i == 0 ) {
                         $cell_type = "TH";
+                        $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
                     } elseif ( $_POST["row_header"] == -1 && $k == 0 ) {
                         $cell_type = "TH";
+                        $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
                     } else {
                         $cell_type = "COL";
-                    }
-                    
-                    $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
-                    
+                        $tab .= "[".$cell_type."]".trim($_POST["cells"][$i][$k])."[/".$cell_type."]\n";
+                    }                                       
                     $num_cell++;
                 }
                 $tab .= "[/ROW]\n";
             }
             $tab .= "[/TAB]";
             $to_insert = $tab;
-            
+
     }
     // + + +
 
