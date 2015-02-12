@@ -294,7 +294,14 @@
                           $defaults["tag"]["hr"] = "<hr />";
                           $defaults["tag"]["/hr"] = "";
                         }
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["hr"].$tagwert.$defaults["tag"]["/hr"],$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["hr"].$tagwert.$defaults["tag"]["/hr"],$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $attrib = " class=\"".$tagwerte[0]."\">";
+                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["hr"]);
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/hr"],$replace);
+                        }
                         break;
                     case "[/TAB]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = str_replace("\r\n","",$tagwert);
