@@ -1247,8 +1247,8 @@
                                     continue;
                                 }
 
-                                $s = array("##link##", "##lb##", "##tn##", "##funder##", "##fdesc##","##style##");
-                                $r = array($changed, $lb, $tn, $row["funder"], $row["fdesc"],$style);
+                                $s = array("##link##", "##lb##", "##tn##", "##img##", "##funder##", "##fdesc##","##style##");
+                                $r = array($changed, $lb, $tn, $img, $row["funder"], $row["fdesc"],$style);
                                 $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                             }
 
