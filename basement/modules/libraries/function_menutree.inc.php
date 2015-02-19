@@ -234,17 +234,19 @@
                                 if ( $value[3] ) {
                                         $dest = "show";
                                         $database = DATABASE;
-                                        $wizard_array = explode(":",$value[3]);
-                                        $wizard_template = array_shift($wizard_array);                                        
-                                        if ( $array["defaulttemplate"] == $wizard_template ) {
+                                        $wizard_array = explode(":",$value[4]);
+                                        $template_array = explode(":",$value[3]);
+                                        if ( in_array($array["defaulttemplate"],$template_array )) {
                                             foreach ( $wizard_array as $wizard_marken ) {
-                                                $label = ",".$wizard_marken;
-                                                if ( $wizard_ebene == "" ) {
-                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><span style=\"float:right\">".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";                                        
-                                                } else {
-                                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><span style=\"float:right\">|".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";    
+                                                if ( $wizard_marken ) {
+                                                    $label = ",".$wizard_marken;
+                                                    if ( $wizard_ebene == "" ) {
+                                                        $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><span style=\"float:right\">".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";                                        
+                                                    } else {
+                                                        $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><span style=\"float:right\">|".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";    
+                                                    }
                                                 }
-                                            }  
+                                            }
                                             continue;
                                         }                                        
                                 }
