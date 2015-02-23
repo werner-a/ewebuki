@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cp -a .htaccess-dist .htaccess
+
+find . -name \*.php-dist | \
+awk '{ printf "cp -a \"%s\" `dirname \"%s\"`/`basename \"%s\" .php-dist`.php\n",$0,$0,$0; }' | \
+sh
+
+tar xvjf ../site_file_sample.tar.bz2 
