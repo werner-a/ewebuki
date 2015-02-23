@@ -97,13 +97,5 @@
     $specialvars["wysiwyg"] = ""; // composite, epoz unterstuetzung aktivieren
     // ACHTUNG **************
 
-    // berliOS Fix **********
-    // Korrekte Einstellung fuer Berlios erzwingen.
-    #$pathvars["fileroot"] = "/home/groups/PROJEKTNAME/htdocs/";
-    // berliOS betreibt seine Server mit Virtual Host Unterstuetzung mittels Rewrite Engine
-    // DOCUMENT_ROOT wird dabei nicht auf das Directory des jeweiligen Projektes gesetzt
-    // eWeBuKi findet normalerweise anhand dieser Variable die Basis und scheitert.
-    // berliOS Fix **********
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

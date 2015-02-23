@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -215,16 +215,16 @@
     if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
        || ( $environment["ebene"] == "/my" ))
     {
-        include $pathvars["moduleroot"]."customer/leer.cfg.php";
-        include $pathvars["moduleroot"]."customer/leer.inc.php"; # einfaches modul
+        include $pathvars["moduleroot"]."custom/leer.cfg.php";
+        include $pathvars["moduleroot"]."custom/leer.inc.php"; # einfaches modul
     }
 
 #    // customer: modul beispiel "my" eweitert
     if (  ( $environment["ebene"] == "/dir" && $environment["kategorie"] == "my" )
        || ( $environment["ebene"] == "/dir/my" ))
     {
-        include $pathvars["moduleroot"]."customer/leer.cfg.php";
-        include $pathvars["moduleroot"]."customer/leer-ctrl.inc.php"; # erweitertes modul
+        include $pathvars["moduleroot"]."custom/leer.cfg.php";
+        include $pathvars["moduleroot"]."custom/leer-ctrl.inc.php"; # erweitertes modul
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
