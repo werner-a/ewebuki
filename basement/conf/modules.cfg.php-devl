@@ -211,7 +211,7 @@
     $dataloop["rel_page"] = related_pages();
     if ( count($dataloop["rel_page"]) > 0 ) $hidedata["rel_page"] = array();
 
-#    // customer: modul beispiel "my" einfach
+#    // custom: modul beispiel "my" einfach
     if (  ( $environment["ebene"] == "" && $environment["kategorie"] == "my" )
        || ( $environment["ebene"] == "/my" ))
     {
@@ -219,7 +219,7 @@
         include $pathvars["moduleroot"]."custom/leer.inc.php"; # einfaches modul
     }
 
-#    // customer: modul beispiel "my" eweitert
+#    // custom: modul beispiel "my" eweitert
     if (  ( $environment["ebene"] == "/dir" && $environment["kategorie"] == "my" )
        || ( $environment["ebene"] == "/dir/my" ))
     {
