@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,14 +36,14 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 
     $cfg["leer"] = array(
-           "subdir" => "customer",
+           "subdir" => "custom",
              "name" => "leer",
             "basis" => $pathvars["virtual"]."/dir/my", # crc = -1468826685 *
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
