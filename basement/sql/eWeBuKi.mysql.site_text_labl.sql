@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 26. Februar 2015 um 19:57
+-- Erstellungszeit: 27. Februar 2015 um 12:50
 -- Server Version: 5.1.73
 -- PHP-Version: 5.3.3-7+squeeze25
 
@@ -89,7 +89,6 @@ REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategor
 ('de', 'enabled', '-555504947.list', 0, '/admin/menued', 'list', '-1', '0', 'Eingeschaltet', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'error1', '-555504947.list', 0, '/admin/menued', 'list', '-1', '0', 'Menüpunkte mit Unterpunkten lassen sich nicht löschen.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'extern', '-555504947.list', 0, '/admin/menued', 'list', '-1', '0', '(extern)', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'ueberschrift', 'my', 0, '', 'my', '-1', '0', 'Modul Beispiel "my" einfach', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'renumber', '-555504947.list', 0, '/admin/menued', 'list', '-1', '0', 'Neu durchnummerieren', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'ueberschrift', '-555504947.list', 0, '/admin/menued', 'list', '-1', '0', 'Menu-Editor - Übersicht', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'abort', '-555504947.move', 0, '/admin/menued', 'move', '-1', '0', 'Abbrechen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
@@ -270,20 +269,6 @@ REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategor
 ('de', 'forename', '210295197.details', 0, '/admin/usered', 'details', '-1', '0', 'Vorname', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'email', '210295197.details', 0, '/admin/usered', 'details', '-1', '0', 'E-Mail', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'level', '210295197.details', 0, '/admin/usered', 'details', '-1', '0', 'Rechte', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field1', 'my', 0, '', 'my', '-1', '0', 'Feld 1', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field2', 'my', 0, '', 'my', '-1', '0', 'Feld 2', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'inhalt', 'my', 0, '', 'my', '-1', '0', 'Beispiel für eine einfache Funktion.', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'ueberschrift', '-1468826685.list', 0, '/dir/my', 'list', '-1', '0', 'Modul Beispiel "my" erweitert - Übersicht', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field1', '-1468826685.list', 0, '/dir/my', 'list', '-1', '0', 'Feld 1', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'ueberschrift', '-1468826685.modify', 0, '/dir/my', 'edit', '-1', '0', 'Modul Beispiel "my" erweitert - Bearbeiten', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field1', '-1468826685.modify', 0, '/admin/leveled', 'list', '-1', '0', 'Feld 1', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field2', '-1468826685.modify', 0, '/dir/my', 'edit', '-1', '0', 'Feld 2', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'ueberschrift', '-1468826685.delete', 0, '/dir/my', 'delete', '-1', '0', 'Modul Beispiel "my" erweitert - Löschen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field1', '-1468826685.delete', 0, '/dir/my', 'delete', '-1', '0', 'Feld 1', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field2', '-1468826685.delete', 0, '/dir/my', 'delete', '-1', '0', 'Feld 2', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'ueberschrift', '-1468826685.details', 0, '/dir/my', 'details', '-1', '0', 'Modul Beispiel "my" erweitert - Details', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field1', '-1468826685.details', 0, '/dir/my', 'details', '-1', '0', 'Feld 1', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'field2', '-1468826685.details', 0, '/dir/my', 'details', '-1', '0', 'Feld 2', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'acr', '-141347382.modify', 0, '', 'bilderstrecke', '-1', '0', 'Akronym', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'ueberschrift', '-102562964.list', 0, '/admin/grouped', 'list', '-1', '0', 'Gruppen-Editor - Übersicht', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'filelist', 'global', 0, '/admin/fileed', 'list', '-1', '0', 'Datei-Editor', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
@@ -316,8 +301,7 @@ REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategor
 ('de', 'add', '-102562964.modify', 0, '/admin/grouped', 'edit', '-1', '0', 'Hinzufügen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'description', '-102562964.modify', 0, '/admin/grouped', 'edit', '-1', '0', 'Beschreibung', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'frage', '-102562964.delete', 0, '/admin/grouped', 'delete', '-1', '0', 'Wollen Sie die Gruppe "!#ausgaben_ggroup" wirklich löschen ?', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'members', '-102562964.delete', 0, '/admin/grouped', 'delete', '-1', '0', 'Mitglieder', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1);
-REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES
+('de', 'members', '-102562964.delete', 0, '/admin/grouped', 'delete', '-1', '0', 'Mitglieder', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'user', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Mitglieder', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'group', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Gruppe', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'beschreibung', '-102562964.details', 0, '/admin/grouped', 'details', '-1', '0', 'Beschreibung', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
@@ -332,7 +316,8 @@ REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategor
 ('de', 'button_desc_jump', '-555504947.list', 0, '/admin/menued', 'list', '-1', '0', 'zur Content-Seite', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'grouped', 'auth', 0, '', 'auth', '-1', '0', 'Gruppen-Editor', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'url', '807284226.modify', 0, '/admin/righted', 'edit', '-1', '0', 'Pfad: ', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
-('de', 'actual', '807284226.modify', 0, '/admin/righted', 'edit', '-1', '0', 'Vorhanden Rechte für diese Url', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
+('de', 'actual', '807284226.modify', 0, '/admin/righted', 'edit', '-1', '0', 'Vorhanden Rechte für diese Url', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1);
+REPLACE INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`, `status`) VALUES
 ('de', 'group', '807284226.modify', 0, '/admin/righted', 'edit', '-1', '0', 'Gruppen', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'priv', '807284226.modify', 0, '/admin/righted', 'edit', '-1', '0', 'Rechte', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
 ('de', 'ueberschrift', '807284226.modify', 0, '/admin/righted', 'edit', '-1', '0', 'Rechte-Editor', '1970-01-01 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki', 1),
