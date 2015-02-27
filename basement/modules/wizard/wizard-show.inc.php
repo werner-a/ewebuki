@@ -53,7 +53,7 @@
     
     $entrance = make_id(tname2path($environment["parameter"][2]));
     $_SESSION["menu_entrance"] = $entrance["refid"];
-      
+
     // erlaubnis bei intrabvv speziell setzen
     $database = $environment["parameter"][1];
     if ( is_array($_SESSION["katzugriff"]) ) {
@@ -158,6 +158,14 @@
       || $artikel_check
       || priv_check($tname2path,$cfg["wizard"]["right"]["publish"]) ) {
 
+        // LOCK Check
+        if ( $cfg["wizard"]["lock_time"] > 0 ) {
+            if ( $_GET["time_check"] == "on" ) {
+                lockat();                                
+            } else {
+                lockat("check");                                
+            }
+        }
         // page basics
         // ***
         if ( $environment["parameter"][5] != "" ) {
@@ -263,9 +271,22 @@
             // freigabe-test
             // * * *
             $blocked = 0;
-            if ( $specialvars["content_release"] == -1 ) {
+            if ( $specialvars["content_release"] == -1 ) {                
                 if ( priv_check($tname2path,"publish") || $artikel_check_publish ) {
                     $hidedata["publish"] = array();
+                    $menu_entry = make_id(tname2path($environment["parameter"][2]));
+                    $sql = "SELECT hide FROM site_menu WHERE mid=".$menu_entry["mid"];
+                    $result = $db -> query($sql);
+                    $data = $db -> fetch_array($result, $nop);
+                    
+                    if ( $data["hide"] == -1 ) {
+                        $menu_hide = -1;
+                        $hidedata["publish"]["release_radio_on"] = "checked";
+                    } else {
+                        $menu_hide = "0";
+                        $hidedata["publish"]["release_radio_off"] = "checked";
+                    }
+                    
                 } else {
                     // ist bereits eine freigabe angefordert, dann blocken
                     $sql = "SELECT *
@@ -882,9 +903,14 @@
                                             AND tname ='".$environment["parameter"][2]."'";
                         $result_del  = $db -> query($sql_del);
                     }
-                    unset($_SESSION["wizard_content"]);
+                    unset($_SESSION["wizard_content"]);                    
                 }
-
+                
+                // LOCK Sperre loesen
+                if ( $cfg["wizard"]["lock_time"] > 0 ) {
+                    lockat('close');
+                }
+                
                 if ( $sql_content != "" ) {
                     if ( $db -> query($sql_content) ) {
                         if ( $cfg["wizard"]["wizardtyp"][$wizard_name]["blog_date"] == true ) {
@@ -920,12 +946,12 @@
                 // content ggf. sofort freigeben
                 if ( $specialvars["content_release"] == -1
                   && $publisher == -1
-                  && $_POST["release_mark"] == -1 ) {
+                  && ( $_POST["release_mark"] == "-1" || $_POST["release_mark"] == "0" ) ) {
                     $header = $cfg["wizard"]["basis"]."/release,".
                                 $environment["parameter"][1].",".
                                 $environment["parameter"][2].",".
                                 $environment["parameter"][3].",release,".
-                                $release_version.".html";
+                                $release_version.",".$_POST["release_mark"].".html";
                     header("Location: ".$header);
                 } else {
                     unset($_SESSION["form_referer"]);

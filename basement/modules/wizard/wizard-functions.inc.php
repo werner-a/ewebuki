@@ -480,6 +480,80 @@
             return $new_releases;
         }
 
+        function lockat( $art="update" ) {
+            global  $db, $cfg, $pathvars, $environment, $ausgaben, $hidedata;
+            
+            $sql = "SELECT byalias, lockat
+                    FROM site_lock
+                    WHERE lang = '".$environment["language"]."'
+                    AND label ='".$environment["parameter"][3]."'
+                    AND tname ='".$environment["parameter"][2]."'";
+            $result = $db -> query($sql);
+            $data = $db -> fetch_array($result, $nop);
+            
+            $LockYear = substr($data["lockat"],0,4);
+            $LockMonth = substr($data["lockat"],5,2);
+            $LockDay= substr($data["lockat"],8,2);
+
+            $LockHour = substr($data["lockat"],11,2);
+            $LockMinute = substr($data["lockat"],14,2);
+            $LockSecond = substr($data["lockat"],17,2);
+
+            $timestamp = mktime($LockHour,$LockMinute,$LockSecond,$LockMonth,$LockDay,$LockYear);
+            $check_time = $timestamp+$cfg["wizard"]["lock_time"]+60;
+            $ausgaben["lock_time"] = $cfg["wizard"]["lock_time"]*1000;
+            
+            // lockat setzen oder updaten
+            if ( $art == "update" ) {
+                // VON MIR GESPERRT
+                if ( $_SESSION["alias"] == $data["byalias"] ) {                     
+                    $sql = "UPDATE site_lock SET byalias='".$_SESSION["alias"]."',lockat='".date("Y-m-d H:i:s")."' WHERE tname='".$environment["parameter"][2]."' and lang = '".$environment["language"]."' and label='".$environment["parameter"][3]."'";
+                    $result  = $db -> query($sql);
+                // VON KEINEM GESPERRT
+                } elseif ( !$data ) {
+                    $sql = "INSERT INTO site_lock
+                            (tname, lang, label, byalias, lockat)
+                    VALUES ('".$environment["parameter"][2]."',
+                            '".$environment["language"]."',
+                            '".$environment["parameter"][3]."',
+                            '".$_SESSION["alias"]."',
+                            '".date("Y-m-d H:i:s")."')";
+                    $result  = $db -> query($sql);
+                }
+            } elseif ( $art == "check" ) {
+                if ( $_SESSION["alias"] != $data["byalias"] ) { 
+                    if (  $check_time < time() ) {
+                        if ( $data ) {
+                            $sql = "DELETE from site_lock WHERE tname='".$environment["parameter"][2]."' and lang = '".$environment["language"]."' and label='".$environment["parameter"][3]."'";
+                            $result = $db -> query($sql);
+                        }
+                        $sql = "INSERT INTO site_lock
+                            (tname, lang, label, byalias, lockat)
+                            VALUES ('".$environment["parameter"][2]."',
+                                    '".$environment["language"]."',
+                                    '".$environment["parameter"][3]."',
+                                    '".$_SESSION["alias"]."',
+                                    '".date("Y-m-d H:i:s")."')";
+                        $result  = $db -> query($sql);
+                    } else {
+
+                        $hidedata["lock_time"]["user"] = $data["byalias"];
+                        $hidedata["lock_time"]["time"] = date("d.m.Y H:i:s",$check_time);
+                        $hidedata["lock_time"]["akt_time"] = date("d.m.Y H:i:s");
+                        header("HTTP/1.0 404 Not Found");
+                    }
+                } else {
+                    $sql = "UPDATE site_lock SET byalias='".$_SESSION["alias"]."',lockat='".date("Y-m-d H:i:s")."' WHERE tname='".$environment["parameter"][2]."' and lang = '".$environment["language"]."' and label='".$environment["parameter"][3]."'";
+                    $result  = $db -> query($sql); 
+                }
+
+            } elseif ( $art == "close") {
+                if ( $_SESSION["alias"] == $data["byalias"] ) {
+                    $sql = "DELETE from site_lock WHERE byalias='".$_SESSION["alias"]."' and tname='".$environment["parameter"][2]."' and lang = '".$environment["language"]."' and label='".$environment["parameter"][3]."'";
+                    $result = $db -> query($sql);
+                }
+            }
+        }
     ### platz fuer weitere funktionen ###
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
