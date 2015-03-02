@@ -12,18 +12,18 @@
 <h1>#(ueberschrift)</h1>
 <p>#(inhalt)</p>
 <!--##hide-leer-->
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table style="width:100%; border-collapse:collapse;">
     <thead>
         <tr>
-            <th align="left">#(field1)</th>
-            <th align="left">#(field2)</th>
+            <th style="text-align:left;">#(field1)</th>
+            <th style="text-align:left;">#(field2)</th>
         </tr>
     </thead>
     <tbody>
         <!--##loop-leer-->
         <tr>
-            <td>!{0}</td>
-            <td>!{1}</td>
+            <td style="border:1px solid #000;">!{0}</td>
+            <td style="border:1px solid #000;">!{1}</td>
         </tr>
         <!--##cont-->
     </tbody>
