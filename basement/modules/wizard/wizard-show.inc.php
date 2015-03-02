@@ -946,12 +946,12 @@
                 // content ggf. sofort freigeben
                 if ( $specialvars["content_release"] == -1
                   && $publisher == -1
-                  && ( $_POST["release_mark"] == "-1" || $_POST["release_mark"] == "0" ) ) {
+                  && $_POST["release_mark"] == -1 ) {
                     $header = $cfg["wizard"]["basis"]."/release,".
                                 $environment["parameter"][1].",".
                                 $environment["parameter"][2].",".
                                 $environment["parameter"][3].",release,".
-                                $release_version.",".$_POST["release_mark"].".html";
+                                $release_version.",".$_POST["menu_hide"].".html";
                     header("Location: ".$header);
                 } else {
                     unset($_SESSION["form_referer"]);

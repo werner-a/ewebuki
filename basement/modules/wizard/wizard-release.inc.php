@@ -239,10 +239,17 @@
                 $result = $db -> query($sql);
                 // checken, ob menuepunkt aktivert ist
                 $menu_entry = make_id(tname2path($environment["parameter"][2]));
-                $sql = "UPDATE site_menu
-                           SET hide='".$environment["parameter"][6]."'
-                         WHERE mid=".$menu_entry["mid"];
-                $result = $db -> query($sql);
+                if ( $environment["parameter"][6] != "") {
+                    $sql = "UPDATE site_menu
+                               SET hide='".$environment["parameter"][6]."'
+                             WHERE mid=".$menu_entry["mid"];
+                    $result = $db -> query($sql);
+                } else {
+                    $sql = "UPDATE site_menu
+                               SET hide='0'
+                             WHERE mid=".$menu_entry["mid"];
+                    $result = $db -> query($sql);                    
+                }
             } elseif ( $environment["parameter"][4] == "unlock" ) {
                 // version wird wieder entsperrt
                 $sql = "UPDATE ". SITETEXT ."
