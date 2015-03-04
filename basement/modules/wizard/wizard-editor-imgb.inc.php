@@ -159,6 +159,34 @@
         );
     }
 
+    // Border-radiobutton
+    if ( count($cfg["wizard"]["img_edit"]["cb_border"]) > 0 ) {
+        $checked = false;
+        foreach ( $cfg["wizard"]["img_edit"]["cb_border"] as $value=>$label ) {
+            $check = "";
+            if ( $ausgaben["tagwerte2"] == $value ) {
+                $check   = " checked=\"checked\"";
+                $checked = true;
+            }
+            $dataloop["border"][] = array(
+                "type"  => "radio",
+                "value" => $value,
+                "label" => "#(".$label.")",
+                "check" => $check,
+            );
+        }
+        if ( $checked == false ) {
+            $dataloop["border"][0]["check"] = " checked=\"checked\"";
+        } 
+    } else {
+        $dataloop["border"][] = array(
+            "type"  => "text",
+            "value" => $ausgaben["tagwerte2"],
+            "label" => "#(border)",
+            "check" => "",
+        );
+    }
+
     // size-radiobutton
     if ( count($cfg["wizard"]["img_edit"]["cb_link_size"]) > 0 ) {
         foreach ( $cfg["wizard"]["img_edit"]["cb_link_size"] as $value=>$label ) {
