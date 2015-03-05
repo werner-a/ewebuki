@@ -76,47 +76,73 @@
     $row_header_marker = 0;
     $col_header_marker = 0;
     
-    // DIE ZEILEN WERDEN DURCHGEGANGEN
-    foreach ( $rows[1] as $row_value ) {
-        // ist die erste spalte der kopf
-        if ( $row_index == 0 ) {
-            if ( strstr($row_value,"[TH]") ) {
-                $hidedata["tab"]["col_header_check"] = " checked=\"true\"";
-            } else {
-                $hidedata["tab"]["col_header_check"] = "";
+    if ( $_POST["resort"] ) {
+
+        $cell_count = 0;
+        foreach ( $_POST["cells"] as $key => $value) {
+            $cell_count++;
+            foreach ( $value as $cell_key => $cell_value ) {                
+                $new_cells[1][$cell_count] .=  "[COL]".$cell_value."[/COL]";
             }
-        }
-        // tag nach zellen aufsplitten
-        preg_match_all("/\[(COL|TH).*\](.*)\[\/(COL|TH)\]/Us",$row_value,$cells);
-        $col_index = 0; $row_buffer = array();
-        
-        
-        // DIE ZELLLEN DER ZEILE WERDEN DURCHGEGANGEN
-        foreach ( $cells[2] as $key=>$cell_value ) {
-            // besteht die erste zeile komplett aus TH?
-            if ( $row_index == 0 ) {
-                if ( $cells[1][$key] == "TH" ) {
-                    $col_header_marker++;
-                }
-            }
-            // besteht die erst Spalte komplett aus TH?
-            if ( $col_index == 0 ) {
-                if ( $cells[1][$key] == "TH" ) {
-                    $row_header_marker++;
-                }
-            }
-            
-            
-            $row_buffer[] = "<td>\n".
-                                "<textarea name=\"cells[".$row_index."][".$col_index."]\" onclick=\"ebCanvas=this\">".$cell_value."</textarea>\n".
-                            "</td>\n";
-            $col_index++;
-        }
-        
-        if ( $col_index >= $ausgaben["num_col_tag"] = 0 ) $ausgaben["num_col_tag"] = $col_index;
-        if ( count($row_buffer) > 0 ) $tab_rows_tag[] = implode("",$row_buffer);
-        $row_index++;
+        }       
+        build_table($new_cells[1]);        
+        $new_table .= "<tr><td class=\"tab-button\"><button onclick=\"$(this).closest('tr').remove();resort();return false;\">Delete</button></td>\n".implode("</tr>\n<tr>\n<td class=\"tab-button\"><button onclick=\"$(this).closest('tr').remove();resort();return false;\">Delete</button></td>",$tab_rows_tag)."</tr>\n";              
+        header("HTTP/1.0 200 OK");
+        echo $new_table;
+        exit;
     }
+
+    
+    build_table($rows[1]);
+    
+    function build_table($rows) {
+        global $ausgaben,$hidedata,$col_index, $row_index,$tab_rows_tag,$row_buffer,$tab_rows_tag,$col_header_marker,$row_header_marker;
+        
+        foreach ( $rows as $row_value ) {
+            
+            // ist die erste spalte der kopf
+            if ( $row_index == 0 ) {
+                if ( strstr($row_value,"[TH]") ) {
+                    $hidedata["tab"]["col_header_check"] = " checked=\"true\"";
+                } else {
+                    $hidedata["tab"]["col_header_check"] = "";
+                }
+            }
+            // tag nach zellen aufsplitten
+            preg_match_all("/\[(COL|TH).*\](.*)\[\/(COL|TH)\]/Us",$row_value,$cells);
+            $col_index = 0; $row_buffer = array();
+
+
+            // DIE ZELLLEN DER ZEILE WERDEN DURCHGEGANGEN
+            foreach ( $cells[2] as $key=>$cell_value ) {
+                // besteht die erste zeile komplett aus TH?
+                if ( $row_index == 0 ) {
+                    if ( $cells[1][$key] == "TH" ) {
+                        $col_header_marker++;
+                    }
+                }
+                // besteht die erst Spalte komplett aus TH?
+                if ( $col_index == 0 ) {
+                    if ( $cells[1][$key] == "TH" ) {
+                        $row_header_marker++;
+                    }
+                }
+
+
+                $row_buffer[] = "<td>\n".
+                                    "<textarea name=\"cells[".$row_index."][".$col_index."]\" onclick=\"ebCanvas=this\">".$cell_value."</textarea>\n".
+                                "</td>\n";
+                $col_index++;
+            }
+
+            if ( $col_index >= $ausgaben["num_col_tag"] = 0 ) $ausgaben["num_col_tag"] = $col_index;
+            if ( count($row_buffer) > 0 ) $tab_rows_tag[] = implode("",$row_buffer);
+            $row_index++;
+        }        
+    }
+    
+    // DIE ZEILEN WERDEN DURCHGEGANGEN
+
     if ( $row_index == $row_header_marker ) {
         $hidedata["tab"]["row_header_check"] = " checked=\"true\"";
     } else {
@@ -186,9 +212,13 @@
 
     // tabelle zusammenbauen
     if ( count($tab_rows) > 0 ) {
-        $ausgaben["tabelle"]  = "<table width=\"100%\">\n";
-        $ausgaben["tabelle"] .= "<tr>\n".implode("</tr>\n<tr>\n",$tab_rows)."</tr>\n";
-        $ausgaben["tabelle"] .= "</table>";
+        $delete_tab_button = "";
+        if ( $cfg["wizard"]["delete_tab_row"] ) {
+            $delete_tab_button = "<td class=\"tab-button\"><button onclick=\"$(this).closest('tr').remove();resort();return false;\">Delete</button></td>";
+        }
+        $ausgaben["tabelle"]  = "<table id=\"sort\" width=\"100%\"><tbody id=\"body_id\">\n";       
+        $ausgaben["tabelle"] .= "<tr>".$delete_tab_button."\n".implode("</tr>\n<tr>".$delete_tab_button."\n",$tab_rows)."</tr>\n";
+        $ausgaben["tabelle"] .= "</tbody></table>";
     }
 
     // abspeichern, part 2
