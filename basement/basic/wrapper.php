@@ -46,6 +46,7 @@
     # example: http://dev2/file/jpg/6/o/filename.extension/d
 
     $pathvars["fileroot"] = dirname(dirname(__FILE__))."/";
+    $pathvars["subdir"]= null; // fix for "Undefined index: subdir" in file.cfg.php notice
 
     require $pathvars["fileroot"]."conf/site.cfg.php";
     require $pathvars["fileroot"]."conf/file.cfg.php";
@@ -118,6 +119,10 @@
             $type ="application/pdf";
             $filepath = $path["doc"];
             break;
+        case "csv":
+            $type ="text/csv";
+            $filepath = $path["doc"];
+            break;            
         case "bz2":
             $type ="application/octet-stream";
             $filepath = $path["arc"];
