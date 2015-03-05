@@ -1,4 +1,5 @@
 <?php
+$Id = null;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $main_script_name = "$Id$";
     $main_script_desc = "main include file";
@@ -42,9 +43,9 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     // path config
-    if ( $_SERVER["HTTPS"] == "on" ) {
+    if ( @$_SERVER["HTTPS"] == "on" ) {
         $pathvars["protocol"] = "https";
     } else {
         $pathvars["protocol"] = "http";
@@ -55,15 +56,21 @@
 
     // site config
     require dirname(dirname(dirname(__FILE__)))."/conf/site.cfg.php";
+    
+    if ( !isset($debugging["error_reporting"]) ) $debugging["error_reporting"] = E_ALL ^ E_NOTICE;
+    error_reporting($debugging["error_reporting"]);
 
-    // berlios fix
-    if ( $pathvars["fileroot"] == "" ) {
+    if ( !isset($debugging["error_display"]) ) $debugging["error_display"] = "Off";
+    ini_set('display_errors', $debugging["error_display"]);
+
+    // optinal own fileroot (was: berlios fix)
+    if ( !isset($pathvars["fileroot"]) ) {
         $pathvars["fileroot"] = rtrim($_SERVER["DOCUMENT_ROOT"],"/")."/";
     }
-
+    
     // subdir support
     $specialvars["subdir"] = trim(dirname(dirname($_SERVER["SCRIPT_NAME"])),"/");
-    $pathvars["subdir"] = "";
+    $pathvars["subdir"] = null;
     if ( $specialvars["subdir"] != "" ) {
         $pathvars["subdir"] = "/".$specialvars["subdir"];
         $pathvars["fileroot"] = $pathvars["fileroot"].$specialvars["subdir"]."/";
