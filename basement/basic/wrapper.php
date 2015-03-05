@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -42,12 +42,14 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # http://dev2/file/jpg/6/o/filename.extension
+
+    # example: http://dev2/file/jpg/6/o/filename.extension/d
 
     $pathvars["fileroot"] = dirname(dirname(__FILE__))."/";
 
     require $pathvars["fileroot"]."conf/site.cfg.php";
     require $pathvars["fileroot"]."conf/file.cfg.php";
+    error_reporting($debugging["error_reporting"]);
 
     // subdir support
     $specialvars["subdir"] = trim(dirname(dirname($_SERVER["SCRIPT_NAME"])),"/");
@@ -58,6 +60,8 @@
     }
 
     $value = explode("/",$value);
+    if ( !isset($value[6]) ) $value[6] = null;
+    if ( !isset($specialvars["wrapper_hide_debug"]) ) $specialvars["wrapper_hide_debug"] = null;
 
     if ( $value[6] == "d" && $specialvars["wrapper_hide_debug"] != -1 ) {
         echo "<pre>";
