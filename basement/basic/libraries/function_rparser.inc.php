@@ -183,7 +183,7 @@
                             foreach( $environment as $name => $value) {
                                 if ( !is_array($value) ) {
                                     $line = str_replace("!#environment_$name", $value, $line);
-                                    #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (environment): ".$name." : ".$environment[$name].$debugging["char"];                                        
+                                    #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (environment): ".$name." : ".$environment[$name].$debugging["char"];
                                 }
                             }
                         }
@@ -194,7 +194,7 @@
                                 if ( !is_array($value) ) {
                                     $line = str_replace("!#pathvars_$name", $value, $line);
                                     #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (pathvars): ".$name." : ".$pathvars[$name].$debugging["char"];
-                                }                                    
+                                }
                             }
                         }
 
@@ -218,13 +218,7 @@
                             if ( strpos($line,"##cont") !== false ) {
                                 $loop = false;
                                 $loop_block = "";
-                                if ( isset($dataloop[$loop_label]) ) {
-                                    $labelloop = $dataloop[$loop_label];
-                                } else {
-                                    $labelloop = [];
-                                }
-                                #foreach ( (array) $labelloop as $data ) {
-                                foreach ( $labelloop as $data ) {                                    
+                                foreach ( @(array)$dataloop[$loop_label] as $data ) {
                                     $loop_work = $loop_buffer;
                                     foreach ( (array)$data as $name => $value ) {
                                         $loop_work = str_replace("!{".$name."}",$value,$loop_work);
@@ -321,7 +315,7 @@
                                     }
                                 }
                             }
-			    
+
 			    // tausche wenn nötig die inhalte aus
                             if ( isset($mapping) ) {
                                 if ( !isset($specialvars["changed"]) ) $specialvars["changed"] = null;
@@ -343,9 +337,9 @@
                                             $db->selectDb($specialvars["dyndb"],FALSE);
                                             #echo "1: ".$db->getDb();
                                             $specialvars["changed"] = "###switchback###";
-                                        }                                        
+                                        }
                                     }
-                                    $line = str_replace("#{".$name."}","#{".$value."}".$specialvars["changed"],$line);                                                                            
+                                    $line = str_replace("#{".$name."}","#{".$value."}".$specialvars["changed"],$line);
                                 }
                             }
 

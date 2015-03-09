@@ -51,13 +51,7 @@
         if ( $cfg["menu"]["level".$level]["enable"] == "-1" ) {
             $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
             if ( $cfg["menu"]["level".$level]["full"] == "-1" ) $mandatory = "";
-
-            $extenddesc = null;
-            if ( isset($cfg["menu"]["level".$level]["extend"]) ) {
-                $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
-            } else {
-                $extenddesc = null;
-            }
+            $cfg["menu"]["level".$level]["extend"] == "-1" ? $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend," : $extenddesc = null;
 
             if ( $arrEbene == "" ) {
                 $ebene = $environment["ebene"]."/".$environment["kategorie"];
@@ -199,7 +193,7 @@
                 }
 
                 // komplett
-                $buffer .= str_replace( $marken, $ersatz, $cfg["menu"]["level".$level][$link_build] );
+                $buffer .= str_replace( $marken, $ersatz, @$cfg["menu"]["level".$level][$link_build] );
             }
 
             if ( $cfg["menu"]["generate"] == true ) {
