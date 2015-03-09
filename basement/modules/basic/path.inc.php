@@ -513,14 +513,16 @@
         }
         if ( $nochk == "" && $count_url != $count_menu ) {
             $ausgaben["404seite"] = $environment["ebene"]."/".$environment["kategorie"].".html";
-            if ( $_SERVER["HTTP_REFERER"] ) {
+            if ( isset($_SERVER["HTTP_REFERER"]) ) {
                 $ausgaben["404referer"] = $_SERVER["HTTP_REFERER"];
                 $mapping["main"] = "404referer";
                 header("HTTP/1.0 404 Not Found");
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<b>404 error detected (with referer): ".$_SERVER["HTTP_REFERER"]."</b>".$debugging["char"];
             } else {
                 $mapping["main"] = "404";
                 header("HTTP/1.0 404 Not Found");
                 #$ausgaben["404referer"] = "#(unbekannt)";
+                if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<b>404 error detected</b>".$debugging["char"];
             }
 
         }
