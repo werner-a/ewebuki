@@ -470,7 +470,8 @@
                     for ( $i=0 ; $i < $tiefe ; $i++ ) {
                         $last["entry"] = "../".$last["entry"];
                     }
-                    $next = $next = "<a href=\"".$last["entry"].".html\">".$last["label"]."</a>";
+                    if ( !isset($last["label"]) ) $last["label"] = null;
+                    $next = "<a href=\"".$last["entry"].".html\">".$last["label"]."</a>";
                 }
                 $ausgaben["prev"] = $prev;
                 $ausgaben["next"] = $next;
