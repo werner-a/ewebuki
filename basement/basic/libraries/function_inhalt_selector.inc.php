@@ -74,7 +74,7 @@
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result  = $db -> query($sql);
 
-        $inh_selector = null;
+        $inh_selector = null; $weiter = null;
         if ( $gesamt > $menge ) {
             $links = $position-$menge;
             $rechts = $position+$menge;
@@ -106,7 +106,7 @@
             }
 
             // die start und stop werte setzen
-            $dirselbeg = $dirselbeg + $shift;
+            $dirselbeg = null; $dirselbeg = $dirselbeg + $shift;
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "beg: ".$dirselbeg.$debugging["char"];
             $dirselend = ( $selpages - ( $menge - 1 )) + $shift;
             if ( $dirselend > $gesamt ) {

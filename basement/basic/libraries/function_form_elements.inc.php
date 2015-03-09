@@ -88,11 +88,11 @@
                 } else {
                     $type = "text";
                 }
-                ( @$form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".@$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
-                ( @$form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".@$defaults["form"]["textfield"]["class"]."\"";
-                ( @$form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".htmlspecialchars($form_values[$fields["Field"]])."\"" : $value = " value=\"".$fields["Default"]."\"";
-                ( strstr(@$form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
+                ( @$form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".@$form_options[$fields["Field"]]["fsize"]."\"" : $size = null;
+                ( isset($form_options[$fields["Field"]]["fclass"]) ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".@$defaults["form"]["textfield"]["class"]."\"";
+                ( isset($form_options[$fields["Field"]]["fstyle"]) ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = null;
+                ( isset($form_values[$fields["Field"]]) ) ? $value = " value=\"".htmlspecialchars($form_values[$fields["Field"]])."\"" : $value = " value=\"".$fields["Default"]."\"";
+                ( strstr(@$form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = null;
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);
@@ -111,7 +111,7 @@
                 }
                 ( isset($form_options[$fields["Field"]]["fclass"]) ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".@$defaults["form"]["textbox"]["class"]."\"";
                 ( isset($form_options[$fields["Field"]]["fstyle"]) ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                $formularobject = "<textarea id=\"".$fields["Field"]."\"".$cols.$rows.$class.$style." name=\"".$fields["Field"].$extend."\">".htmlspecialchars($form_values[$fields["Field"]])."</textarea>\n";
+                $formularobject = "<textarea id=\"".$fields["Field"]."\"".$cols.$rows.$class.$style." name=\"".$fields["Field"].$extend."\">".htmlspecialchars(@$form_values[$fields["Field"]])."</textarea>\n";
                 $element[$fields["Field"].$extend] = $formularobject;
             }
             // checkbox, dropdown
