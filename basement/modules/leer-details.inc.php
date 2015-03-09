@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -59,7 +59,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["leer"]["iconpath"] == "" ) $cfg["leer"]["iconpath"] = "/images/default/";
+        if ( !isset($cfg["leer"]["iconpath"]) ) $cfg["leer"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($_GET["edit"]) ) {
@@ -94,12 +94,12 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
         } else {
-            $ausgaben["form_error"] = "";
+            $ausgaben["form_error"] = null;
         }
 
         // navigation erstellen
@@ -108,7 +108,7 @@
         #$mapping["navi"] = "leer";
 
         // hidden values
-        #$ausgaben["form_hidden"] .= "";
+        #$ausgaben["form_hidden"] = null;
 
         // was anzeigen
         #$mapping["main"] = eCRC($environment["ebene"]).".list";
@@ -119,7 +119,7 @@
             $ausgaben["inaccessible"] = "inaccessible values:<br />";
             $ausgaben["inaccessible"] .= "# (error1) #(error1)<br />";
         } else {
-            $ausgaben["inaccessible"] = "";
+            $ausgaben["inaccessible"] = null;
         }
 
         // wohin schicken

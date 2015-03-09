@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -86,14 +86,14 @@
         // ***
 
         // fehlermeldungen
-        $ausgaben["form_error"] = "";
+        $ausgaben["form_error"] = null;
 
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["leer"]["basis"]."/edit,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["leer"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = null;
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
@@ -105,7 +105,7 @@
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
-            $ausgaben["inaccessible"] = "";
+            $ausgaben["inaccessible"] = null;
         }
 
         // wohin schicken
@@ -114,16 +114,17 @@
         // +++
         // page basics
 
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( $environment["parameter"][2] == "verify"
-            &&  ( $_POST["send"] != ""
-                || $_POST["extension1"] != ""
-                || $_POST["extension2"] != "" ) ) {
+            &&  ( isset($_POST["send"])
+                || isset($_POST["extension1"])
+                || isset($_POST["extension2"]) ) ) {
 
             // form eingaben prüfen
             form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
+            if ( !isset($ausgaben["form_error"]) ) {
 
                 // funktions bereich fuer erweiterungen
                 // ***
@@ -136,12 +137,12 @@
             }
 
             // datensatz aendern
-            if ( $ausgaben["form_error"] == ""  ) {
+            if ( !isset($ausgaben["form_error"]) ) {
 
                 $kick = array( "PHPSESSID", "form_referer", "send" );
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
-                        if ( $sqla != "" ) $sqla .= ", ";
+                        if ( isset($sqla) ) $sqla .= ", ";
                         $sqla .= $name."='".$value."'";
                     }
                 }
@@ -155,11 +156,11 @@
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["leer"]["basis"]."/list.html";
+                if ( !isset($header) ) $header = $cfg["leer"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
-            if ( $ausgaben["form_error"] == "" ) {
+            if ( !isset($ausgaben["form_error"]) ) {
                 header("Location: ".$header);
             }
         }

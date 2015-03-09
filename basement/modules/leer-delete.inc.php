@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -57,6 +57,7 @@
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
         */
+        $num_rows = 0; // es gibt keine
 
         // +++
         // funktions bereich fuer erweiterungen
@@ -78,7 +79,7 @@
                      WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,$nop);
+            $data = $db -> fetch_array($result, null);
             $ausgaben["form_id1"] = $data["id"];
             $ausgaben["field1"] = $data["field1"];
             $ausgaben["field2"] = $data["field2"];
@@ -111,15 +112,15 @@
             // ***
 
             // fehlermeldungen
-            $ausgaben["form_error"] = "";
+            $ausgaben["form_error"] = null;
 
             // navigation erstellen
             $ausgaben["form_aktion"] = $cfg["leer"]["basis"]."/delete,".$environment["parameter"][1].".html";
             $ausgaben["form_break"] = $cfg["leer"]["basis"]."/list.html";
 
             // hidden values
-            $ausgaben["form_hidden"] = "";
-            $ausgaben["form_delete"] = "true";
+            $ausgaben["form_hidden"] = null;
+            $ausgaben["form_delete"] = true;
 
             // was anzeigen
             #$mapping["main"] = eCRC($environment["ebene"]).".delete";
@@ -132,7 +133,7 @@
                 $ausgaben["inaccessible"] .= "# (error_result1) #(error_result1)<br />";
                 $ausgaben["inaccessible"] .= "# (error_result2) #(error_result2)<br />";
             } else {
-                $ausgaben["inaccessible"] = "";
+                $ausgaben["inaccessible"] = null;
             }
             // +++
             // unzugaengliche #(marken) sichtbar machen
@@ -146,11 +147,11 @@
 
             // das loeschen wurde bestaetigt, loeschen!
             // ***
-            if ( $_POST["delete"] != ""
-                && $_POST["send"] != "" ) {
+            if ( isset($_POST["delete"])
+                && isset($_POST["send"]) ) {
 
                 // evtl. zusaetzlichen datensatz loeschen
-                if ( $_POST["id2"] != "" ) {
+                if ( isset($_POST["id2"]) ) {
                     // funktions bereich fuer erweiterungen
                     // ***
 
@@ -169,7 +170,7 @@
                 }
 
                 // datensatz loeschen
-                if ( $ausgaben["form_error"] == "" ) {
+                if ( !isset($ausgaben["form_error"]) ) {
                     $sql = "DELETE FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
                                   WHERE ".$cfg["leer"]["db"]["leer"]["key"]."='".$_POST["id1"]."';";
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
@@ -178,7 +179,7 @@
                 }
 
                 // wohin schicken
-                if ( $ausgaben["form_error"] == "" ) {
+                if ( !isset($ausgaben["form_error"]) ) {
                     header("Location: ".$cfg["leer"]["basis"]."/list.html");
                 }
             }

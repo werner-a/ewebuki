@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -49,7 +49,7 @@
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
     // path fuer die schaltflaechen anpassen
-    if ( $cfg["leer"]["iconpath"] == "" ) $cfg["leer"]["iconpath"] = "/images/default/";
+    if ( !isset($cfg["leer"]["iconpath"]) ) $cfg["leer"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
     if ( isset($_GET["edit"]) ) {
@@ -59,17 +59,17 @@
     }
 
     // private function include loader
-    if ( is_array($cfg["leer"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["leer"]["subdir"]."/".$cfg["leer"]["name"]."-functions.inc.php";
+    if ( isset($cfg["leer"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["leer"]["subdir"]."/".$cfg["leer"]["name"]."-functions.inc.php";
 
     // shared function include loader
-    if ( is_array($cfg["leer"]["function"][$environment["kategorie"].",shared"]) ) {
+    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",shared"]) ) {
         foreach ( $cfg["leer"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // global function include loader
-    if ( is_array($cfg["leer"]["function"][$environment["kategorie"].",global"]) ) {
+    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",global"]) ) {
         foreach ( $cfg["leer"]["function"][$environment["kategorie"].",global"] as $value ) {
             include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
         }

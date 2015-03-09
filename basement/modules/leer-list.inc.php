@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -58,6 +58,8 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
+        $parameter = null; $getvalues = null;
         $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["leer"]["db"]["leer"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
@@ -67,6 +69,7 @@
         while ( $data = $db -> fetch_array($result,1) ) {
 
             // platz fuer vorbereitungen hier z.B.tabellen farben wechseln
+            if ( !isset($cfg["leer"]["color"]["set"]) ) $cfg["leer"]["color"]["set"] = null;
             if ( $cfg["leer"]["color"]["set"] == $cfg["leer"]["color"]["a"]) {
                 $cfg["leer"]["color"]["set"] = $cfg["leer"]["color"]["b"];
             } else {
@@ -94,22 +97,22 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
         } else {
-            $ausgaben["form_error"] = "";
+            $ausgaben["form_error"] = null;
         }
 
         // navigation erstellen
         $ausgaben["link_new"] = $cfg["leer"]["basis"]."/add.html";
 
         // hidden values
-        #$ausgaben["form_hidden"] .= "";
+        #$ausgaben["form_hidden"] = null;
 
         // was anzeigen
-        $cfg["leer"]["path"] = str_replace($pathvars["virtual"],"",$cfg["leer"]["basis"]);
+        $cfg["leer"]["path"] = str_replace($pathvars["virtual"],null,$cfg["leer"]["basis"]);
         $mapping["main"] = eCRC($cfg["leer"]["path"]).".list";
         #$mapping["navi"] = "leer";
 
@@ -120,7 +123,7 @@
             $ausgaben["inaccessible"] .= "# (edittitel) #(edittitel)<br />";
             $ausgaben["inaccessible"] .= "# (deletetitel) #(deletetitel)<br />";
         } else {
-            $ausgaben["inaccessible"] = "";
+            $ausgaben["inaccessible"] = null;
         }
 
         // wohin schicken

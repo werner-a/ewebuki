@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -97,7 +97,7 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
@@ -106,6 +106,7 @@
         }
 
         // navigation erstellen
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         $ausgaben["add"] = $cfg["leer"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
         #$mapping["navi"] = "leer";
 
