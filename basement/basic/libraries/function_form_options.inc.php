@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -49,6 +49,7 @@
     function form_options($tname) {
         global $environment, $db;
         $sql = "SELECT * FROM site_form LEFT JOIN site_form_lang ON site_form.fid = site_form_lang.fid WHERE ( site_form.ftname = '".$tname."' ) AND ( site_form_lang.flang = '".$environment["language"]."' or site_form_lang.flang Is Null );";
+        $nop = null;
         $result = $db -> query($sql);
         while ( $site_form = $db -> fetch_array($result,$nop) ) {
             $form_options[$site_form["flabel"]] = $site_form;

@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -49,12 +49,12 @@
 
         // wenn magic_quotes_gpc an ist muessen alle daten
         // eines post von \ befreit werden.
+        $stripslashes = False;
         if ( get_magic_quotes_gpc() ) {
             $stripslashes = True;
         }
 
-        $element_count = 4;
-        if ( $defaults["form_elements_count"] ) $element_count = $defaults["form_elements_count"];
+        if ( !isset($defaults["form_elements_count"]) ) $defaults["form_elements_count"] = 4;
 
         $columns = $db -> show_columns($table);
         #echo "<pre>".print_r($columns,True)."</pre>";
@@ -64,35 +64,35 @@
             if ( $stripslashes == True ) $form_values[$fields["Field"]] = stripslashes($form_values[$fields["Field"]]);
 
             // not null bedeutet feld ausfuellen
-            if ( ( $fields["Null"] == "" || $fields["Null"] == "NO" ) && $form_options[$fields["Field"]]["frequired"] == "" ) {
+            if ( ( $fields["Null"] == "" || $fields["Null"] == "NO" ) && @$form_options[$fields["Field"]]["frequired"] == "" ) {
                 $form_options[$fields["Field"]]["flabel"] = $fields["Field"];
                 $form_options[$fields["Field"]]["frequired"] = "-1";
             }
 
             // postgres workaround to get the enum option :)
-            if ( ($form_options[$fields["Field"]]["foption"] == "pgenum") && ($form_options[$fields["Field"]]["fpgenum"] != "") ) {
+            if ( (@$form_options[$fields["Field"]]["foption"] == "pgenum") && (@$form_options[$fields["Field"]]["fpgenum"] != "") ) {
                 $fields["Type"] = "enum(".$form_options[$fields["Field"]]["fpgenum"].")";
             }
 
 
             // textfelder
             if ( strstr($fields["Type"], "char")) {
-                if ( strstr($form_options[$fields["Field"]]["foption"], "hidden") ) {
+                if ( strstr(@$form_options[$fields["Field"]]["foption"], "hidden") ) {
                     $type = "hidden";
-                } elseif ( strstr($form_options[$fields["Field"]]["foption"], "password") ) {
+                } elseif ( strstr(@$form_options[$fields["Field"]]["foption"], "password") ) {
                     $type = "password";
                     $form_values[$fields["Field"]]= "";
-                } elseif ( strstr($form_options[$fields["Field"]]["foption"], "file") ) {
+                } elseif ( strstr(@$form_options[$fields["Field"]]["foption"], "file") ) {
                     $type = "file";
                     $form_values[$fields["Field"]]= "";
                 } else {
                     $type = "text";
                 }
-                ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
-                ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["textfield"]["class"]."\"";
-                ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
+                ( @$form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".@$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
+                ( @$form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".@$defaults["form"]["textfield"]["class"]."\"";
+                ( @$form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
                 ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".htmlspecialchars($form_values[$fields["Field"]])."\"" : $value = " value=\"".$fields["Default"]."\"";
-                ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
+                ( strstr(@$form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);
@@ -134,7 +134,7 @@
                     $formularobject  = "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"\" class=\"hidden\" />\n";
                     $formularobject .= "<label for=\"".$fields["Field"]."\">".$options[0]."</label>\n";
                     $formularobject .= "<input id=\"".$fields["Field"]."\" type=\"checkbox\" name=\"".$fields["Field"].$extend."\" value=\"".$options[0]."\"".$checked." />\n";
-                } elseif ( count($options) >= $element_count ) {
+                } elseif ( count($options) >= $defaults["form_elements_count"] ) {
                     ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "size=\"1\"";
                     ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["dropdown"]["class"]."\"";
                     ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
@@ -235,16 +235,16 @@
                 $element[$fields["Field"].$extend] = $formularobject;
             // id feld
             } elseif ( strstr($fields["Type"], "int")) {
-                if ( strstr($form_options[$fields["Field"]]["foption"], "hidden") ) {
+                if ( strstr(@$form_options[$fields["Field"]]["foption"], "hidden") ) {
                     $type = "hidden";
                 } else {
                     $type = "text";
                 }
-                ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
-                ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["int"]["class"]."\"";
-                ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                ( $form_values[$fields["Field"]] != "" ) ? $value = " value=\"".htmlspecialchars($form_values[$fields["Field"]])."\"" : $value = " value=\"".$fields["Default"]."\"";
-                ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
+                ( @$form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
+                ( @$form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".@$defaults["form"]["int"]["class"]."\"";
+                ( @$form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
+                ( @$form_values[$fields["Field"]] != "" ) ? $value = " value=\"".htmlspecialchars($form_values[$fields["Field"]])."\"" : $value = " value=\"".$fields["Default"]."\"";
+                ( strstr(@$form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);

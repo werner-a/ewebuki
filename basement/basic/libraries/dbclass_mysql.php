@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -306,6 +306,7 @@
         // new show_columns funktion for pg
         function show_columns($table) {
             $sql = "SHOW COLUMNS FROM ". $table;
+            $nop = null;
             $result = $this->query_quiet($sql);
             while ( $row = $this->fetch_array($result,$nop) ) {
                 #$columns[] = array( "Field"=>$row["Field"], "Type"=>$row["Type"], "Null"=>$row["Null"] );

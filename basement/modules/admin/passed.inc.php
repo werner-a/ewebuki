@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -62,6 +62,7 @@
 
         if ( count($_POST) == 0 ) {
             $sql = "SELECT * FROM ".$cfg["passed"]["db"]["entries"]." WHERE ".$cfg["passed"]["db"]["key"]."='".$_SESSION["uid"]."'";
+            $nop = null;
             $result = $db -> query($sql);
             $form_values = $db -> fetch_array($result,$nop);
         } else {
@@ -86,6 +87,7 @@
 
         // wohin schicken
         $ausgaben["form_error"] = "";
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         $ausgaben["form_aktion"] = $cfg["passed"]["basis"]."/modify,edit,".$environment["parameter"][2].",verify.html";
 
         // unzugaengliche #(marken) sichtbar machen
@@ -98,7 +100,7 @@
         }
 
         // referer im form mit hidden element mitschleppen
-        if ( $_POST["form_referer"] == "" ) {
+        if ( @$_POST["form_referer"] == "" ) {
             $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         } else {
@@ -106,6 +108,7 @@
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         }
 
+        if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = null;
         if ( $environment["parameter"][3] == "verify"
             && $_POST["send"] != "" ) {
 
