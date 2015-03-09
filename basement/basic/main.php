@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -84,6 +84,7 @@
     // design detection
     // wegen einem bug in php 4.1.0 unterdrueckt ein @is_dir die falsche warning
     // http://bugs.php.net/bug.php?id=14420 und http://bugs.php.net/bug.php?id=14424
+    $authcount = null;
     if ( $pathvars["level_depth"] >= 2 && @is_dir($pathvars["fileroot"]."templates/".$pathvars["level"][1]) ) {
       $environment["design"] = $pathvars["level"][1];
       $pathvars["virtual"] = "/".$environment["design"];
@@ -96,11 +97,14 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "design".$designsw.": ".$environment["design"].$debugging["char"];
 
     // language detection
+    $position = null;
     for ( $i=1; $i<=2 ; $i++ ) {
-      if ( in_array($pathvars["level"][$i],$specialvars["available_languages"]) ) {
-        $position = $i;
-        break;
-      }
+        if ( isset($pathvars["level"][$i]) ) {
+            if ( in_array($pathvars["level"][$i],$specialvars["available_languages"]) ) {
+                $position = $i;
+                break;
+            }
+        }
     }
     if ( $position >= 1) {
 
@@ -356,13 +360,13 @@
     }
 
     // rekursiven parser aufrufen
-    if ( $_POST["print"] != "" || $_GET["print"] != "" ) {
+    if ( isset($_POST["print"]) || isset($_GET["print"]) ) {
         $debugging["html_enable"] = 0;
         $print_template = $_POST["print"][2].$_GET["print"][2];
         if ( preg_match("/^[a-zA-Z0-9-_]+$/", $print_template) ){
             rparser( $print_template.".tem.html", $specialvars["default_template"].".tem.html");
         }
-    } elseif ( $_POST["hijack"] != "" || $_GET["hijack"] != "" ) {
+    } elseif ( isset($_POST["hijack"]) || isset($_GET["hijack"]) ) {
         foreach ( $_GET as $key => $value ) {
             if ( $hijack == "" ) {
                 $hijack  = $value;
@@ -375,7 +379,7 @@
         $ausgaben["navigation"] = "frameset.head.tem.html?head=true";
         $ausgaben["hijack"] = $frameset_template;
         rparser("frameset.tem.html", $specialvars["default_template"].".tem.html");
-    } elseif ( $_POST["head"] != "" || $_GET["head"] != "" ) {
+    } elseif ( isset($_POST["head"]) || isset($_GET["head"]) ) {
         $array = explode("?",$_SERVER["HTTP_REFERER"]);
         $ausgaben["seite"] = $array[0];
         rparser("frameset.head.tem.html", $specialvars["default_template"].".tem.html");

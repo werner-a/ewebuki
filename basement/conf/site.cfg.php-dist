@@ -42,13 +42,6 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // debugging
-    $debugging["html_enable"] = -1; // -1 or 0
-    $debugging["sql_enable"] = -1; // -1 or 0
-    $debugging["char"] = "\n"; // <br> or \n
-    $debugging["head"] = "<!--"; // z.B <!--
-    $debugging["footer"] = "//-->"; // z.B //-->
-
     // zugangsdaten datenbank
     // depends on: $_SERVER["SERVER_NAME"], http.conf: UseCanonicalName On/Off
     $access["0"]["server"] = "ewebuki";
@@ -90,7 +83,30 @@
     $specialvars["security"]["content"] = "edit;publish";
     #$specialvars["content_release"] = -1;
     $specialvars["stacked_eEd"] = 0;
-    
+
+    // debugging
+    #$debugging["error_display"] = "On";
+    $debugging["error_display"] = "Off";
+
+    $debugging["error_reporting"] = E_ALL; // development
+    #$debugging["error_reporting"] = E_ALL ^ E_NOTICE; // development, no notices
+    #$debugging["error_reporting"] = E_ALL & ~(E_NOTICE|E_STRICT); //  development & !notices, !coding warnings
+    #$debugging["error_reporting"] = E_ALL & ~(E_NOTICE|E_STRICT|E_DEPRECATED); // debian default
+
+    #$debugging["html_enable"] = -1;
+    #$debugging["sql_enable"] = -1;
+
+    $debugging["html_enable"] = 0;
+    $debugging["sql_enable"] = 0;
+
+    $debugging["char"] = "<br \>";
+    $debugging["head"] = "";
+    $debugging["footer"] = "";
+    #$debugging["char"] = "\n";
+    #$debugging["head"] = "<!--";
+    #$debugging["footer"] = "//-->";
+
+
     // ACHTUNG **************
     // Das Aktivieren dieser Funktion konvertiert den Content nach HTML.
     // Eine Konvertierung zurueck zu CMSTAG ist derzeit nicht moeglich.

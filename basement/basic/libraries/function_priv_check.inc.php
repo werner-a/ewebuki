@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -46,21 +46,21 @@
     // aufruf: $priv_check(ebene,kategorie,database,$right);
     // funktion prueft rekursiv, ob die aktuelle url rechte in der $_SESSION["content"] besitzt !
 
-    function priv_check($url,$required,$dbase="") { 
+    function priv_check($url,$required,$dbase="") {
         global $cfg,$specialvars,$rechte;
-        if ( !function_exists(priv_check_path) ) {            
-            function priv_check_path($url,$required,&$hit,&$del,$dbase) {                
+        if ( !function_exists('priv_check_path') ) {
+            function priv_check_path($url,$required,&$hit,&$del,$dbase) {
                 global $environment;
                 if ( $url == "" ) $url = $environment["ebene"]."/".$environment["kategorie"];
-                if ( is_array($_SESSION["content"] ) ){                    
+                if ( @is_array($_SESSION["content"] ) ){
                     $array = explode(";",$required);
-                    $del_array = explode(",",$_SESSION["content"][$dbase][$url]["del"]);
-                    $add_array = explode(",",$_SESSION["content"][$dbase][$url]["add"]);
+                    $del_array = explode(",",@$_SESSION["content"][$dbase][$url]["del"]);
+                    $add_array = explode(",",@$_SESSION["content"][$dbase][$url]["add"]);
                     foreach ( $array as $value ) {
                         if ( in_array($value,$del_array) ) {
                             $del[$value] = -1;
                         }
-                        if ( in_array($value,$add_array) && $del[$value] != -1) {
+                        if ( in_array($value,$add_array) && @$del[$value] != -1) {
                             $hit = True;
                         }
                     }
@@ -102,13 +102,13 @@
            // einstiegsurl nochmal speichen fuer den user-zweig
            $url_orig_user = $url;
         }
-        
+
         // url pruefen
         if ( !preg_match("/^[A-Za-z_\-\.0-9\/]+$/",$url) ){
             return;
-        } 
+        }
 
-        if ( $art=="group") {           
+        if ( $art=="group") {
             $sql = "SELECT * FROM auth_content INNER JOIN auth_group ON (auth_content.gid=auth_group.gid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE auth_content.gid != 0 AND tname='".$url."'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
@@ -130,7 +130,7 @@
                 priv_info($url_orig,$hit,"user");
             }
 
-        }  elseif ( $art == "user" ) {  
+        }  elseif ( $art == "user" ) {
             $sql = "SELECT * FROM auth_content INNER JOIN auth_user ON (auth_content.uid=auth_user.uid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE auth_content.uid != 0 AND tname='".$url_orig."'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
@@ -145,16 +145,16 @@
             if ( $url_orig != "/" ) {
                 $url_orig = dirname($url_orig);
                 priv_info($url_orig,$hit,"user","self");
-            }            
+            }
         }
-        
+
             return $hit;
     }
 
         function plausibleCheck($modus="display") {
-            global $db,$ausgaben;            
-            
-            if ( !function_exists(negCheck) ) {
+            global $db,$ausgaben;
+
+            if ( !function_exists("negCheck") ) {
                 function posnegCheck($all,&$found) {
                     global $db;
                     $sql = "";
@@ -181,17 +181,17 @@
                     return $found;
                 }
             }
-          
+
             // array u. variable leeren
             $plausible_error = "";
             $counter = 0;
 
             // Positiv-Check
-            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_group.gid=auth_content.gid ) LEFT JOIN auth_user ON ( auth_user.uid=auth_content.uid ) WHERE tname != '/' AND neg!='-1'";      
+            $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_group.gid=auth_content.gid ) LEFT JOIN auth_user ON ( auth_user.uid=auth_content.uid ) WHERE tname != '/' AND neg!='-1'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 $sqla = "";
-                $all["tmp_tname"] = dirname($all["tname"]);      
+                $all["tmp_tname"] = dirname($all["tname"]);
                 if ( posnegCheck($all,$nop,"pos") == "pos" )  {
                     $counter++;
                     $RechtInhaberText = "Gruppe";
@@ -207,7 +207,7 @@
                     $plausible_error[$counter]["user_id"] = $all["uid"];
                 }
             }
-            
+
             // Negativ-Check
             $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_group.gid=auth_content.gid ) LEFT JOIN auth_user ON ( auth_user.uid=auth_content.uid ) WHERE neg='-1'";
             $result = $db -> query($sql);
@@ -231,6 +231,6 @@
             }
             return $plausible_error;
         }
-    
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

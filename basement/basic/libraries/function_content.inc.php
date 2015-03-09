@@ -85,7 +85,7 @@
 
             if ( strpos($label,",") !== false ) break; // javascript fix
 
-             if ( preg_match("/^v[0-9]*$/",$environment["parameter"][1],$regs) && ( priv_check($environment["ebene"]."/".$environment["kategorie"],"view") || $rechte["cms_edit"] == -1 ) ) {
+            if ( preg_match("/^v[0-9]*$/",@$environment["parameter"][1],$regs) && ( priv_check($environment["ebene"]."/".$environment["kategorie"],"view") || $rechte["cms_edit"] == -1 ) ) {
                 $version_sql = "AND version=".substr($environment["parameter"][1],1);
                 $version = substr($environment["parameter"][1],1);
             } else {
@@ -148,6 +148,7 @@
             }
 
             // eWeBuKi tag schutz part 1 (siehe part 2 (weiter unten), part 3 (cms.in.php), part 4 (function_rparser.inc.php))
+            $mark_l = null; $hide_l = null; $mark_o = null; $hide_o = null;
             if ( strpos( $replace, "[/E]") !== false ) {
                 $preg = "|\[E\](.*)\[/E\]|Us";
                 preg_match_all($preg, $replace, $match, PREG_PATTERN_ORDER );
@@ -173,8 +174,8 @@
 
                 if ( $check == True ) {
 
-                    if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
-                    if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
+                    if ( !isset($defaults["section"]["label"]) ) $defaults["section"]["label"] = "inhalt";
+                    if ( !isset($defaults["section"]["tag"]) ) $defaults["section"]["tag"] = "[H";
 
                     if ( $specialvars["nosections"] != True && $label == $defaults["section"]["label"] ) {
 
@@ -228,7 +229,7 @@
                         $editurl = $pathvars["virtual"]."/admin/contented/edit,".$db->getDb().",".$dbtname.",".$label.",,,".$version;
                     }
 
-                    if ( $defaults["cms-tag"]["link"] == "" ) {
+                    if ( !isset($defaults["cms-tag"]["link"]) ) {
                         $defaults["cms-tag"]["link"] = "<a href=\"##url##\"><img src=\"/images/default/cms-tag-##signal##.png\" width=\"4\" height=\"4\" alt=\"Bearbeiten\" /></a>";
                     }
 

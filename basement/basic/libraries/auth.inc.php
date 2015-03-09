@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -51,22 +51,24 @@
     $pathvars["pretorian"] = $pathvars["menuroot"]."/".$cfg["auth"]["hidden"]["kategorie"].".html";
 
     // referer im form mit hidden element mitschleppen
-    if ( $_POST["form_referer"] == "" ) {
-        $a = 4;
-        if ( $pathvars["subdir"] != "" ) $a++;
-        $path = explode("/",$_SERVER["HTTP_REFERER"],$a);
-        $ausgaben["form_referer"] = "/".$path[--$a];
-        $ausgaben["form_break"] = $ausgaben["form_referer"];
-    } else {
-        $ausgaben["form_referer"] = htmlentities($_POST["form_referer"]);
-        $ausgaben["form_break"] = $ausgaben["form_referer"];
+    if ( isset($post) ) {
+        if ( $_POST["form_referer"] == "" ) {
+            $a = 4;
+            if ( $pathvars["subdir"] != "" ) $a++;
+            $path = explode("/",$_SERVER["HTTP_REFERER"],$a);
+            $ausgaben["form_referer"] = "/".$path[--$a];
+            $ausgaben["form_break"] = $ausgaben["form_referer"];
+        } else {
+            $ausgaben["form_referer"] = htmlentities($_POST["form_referer"]);
+            $ausgaben["form_break"] = $ausgaben["form_referer"];
+        }
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "referer = ".$_SERVER["HTTP_REFERER"].$debugging["char"];
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path = ".$path[$a].$debugging["char"];
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form_referer = ".$ausgaben["form_referer"].$debugging["char"];
     }
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "referer = ".$_SERVER["HTTP_REFERER"].$debugging["char"];
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path = ".$path[$a].$debugging["char"];
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "form_referer = ".$ausgaben["form_referer"].$debugging["char"];
 
     // login ueberpruefen
-    if ( $_POST["login"] == "login" ) {
+    if ( @$_POST["login"] == "login" ) {
         if ( $cfg["auth"]["db"]["user"]["custom"] != "" ) $custom = ", ".$cfg["auth"]["db"]["user"]["custom"];
         // user-eingabe absichern
         if ( get_magic_quotes_gpc() ) {
@@ -148,7 +150,7 @@
 
             session_write_close();
             header("Location: ".$pathvars["subdir"].$destination);
-            exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgef�hrt wird.
+            exit; // Sicherstellen, dass nicht trotz Umleitung der nachfolgende Code ausgefuehrt wird.
         } else {
             session_start();
             $_SESSION = array();
@@ -164,7 +166,7 @@
 
 
     // logout durchfuehren und session loeschen
-    if ( $_POST["logout"] == "logout" ) {
+    if ( @$_POST["logout"] == "logout" ) {
         session_start();
         $_SESSION = array();
         if (isset($_COOKIE[session_name()])) {
@@ -218,7 +220,7 @@
     }
 
     // daten fuer login, logout formular setzen
-    if ( $_SESSION["auth"] != -1 ) {
+    if ( @$_SESSION["auth"] != -1 ) {
         if ( $cfg["auth"]["hidden"]["set"] != True || $environment["kategorie"] == $cfg["auth"]["hidden"]["kategorie"] ) {
             if ( $cfg["auth"]["hidden"]["set"] != True ) {
                 $hidedata["authArea"]["message"] = "";
@@ -238,7 +240,7 @@
         $hidedata["authInPlace"]["links"] = "on";
         foreach ( $cfg["auth"]["inplace"] as $key => $value ) {
             $tmp_base = $specialvars["dyndb"];
-            if ( $value[2] == -1 ) $tmp_base = "";
+            if ( @$value[2] == -1 ) $tmp_base = "";
             if ( priv_check($environment["ebene"]."/".$environment["kategorie"],$value[0],$tmp_base)   ) {
                 if ( strstr($key,"/") ){
                     $dataloop["authInPlace"][$key]["link"] = $pathvars["virtual"].$key.".html";
@@ -260,9 +262,9 @@
                 $label = "#(".$funktion.")";
                 $end = "<br />";
             }
-            if ( $werte[2] == -1 ) {
+            if ( @$werte[2] == -1 ) {
                 $tmp_base = $specialvars["dyndb"];
-            }else {
+            } else {
                 $tmp_base = "";
             }
 

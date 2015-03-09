@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -51,7 +51,13 @@
         if ( $cfg["menu"]["level".$level]["enable"] == "-1" ) {
             $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
             if ( $cfg["menu"]["level".$level]["full"] == "-1" ) $mandatory = "";
-            if ( $cfg["menu"]["level".$level]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
+
+            $extenddesc = null;
+            if ( isset($cfg["menu"]["level".$level]["extend"]) ) {
+                $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
+            } else {
+                $extenddesc = null;
+            }
 
             if ( $arrEbene == "" ) {
                 $ebene = $environment["ebene"]."/".$environment["kategorie"];
@@ -101,7 +107,7 @@
                     $target = "";
 
                     // eintrag aktiv?
-                    if ( $data["entry"] == $arrEbene[1] ) {
+                    if ( $data["entry"] == @$arrEbene[1] ) {
                         $aktiv = "aktiv";
                     } else {
                         $aktiv = "";
@@ -119,7 +125,7 @@
                 }
 
                 $titel = $data["label"];
-                if ( $data["extend"] != "" ) $titel = $data["extend"];
+                isset($data["extend"]) ? $titel = $data["extend"] : $data["extend"] = null;
 
                 // was wird wodurch ersetzt
                 $marken = array("##target##", "##link##", "##title##", "##label##", "##picture##", "##extend##", "##aktiv##", '##mid##');
@@ -143,7 +149,7 @@
                 // css-klasse und naechste ebene
                 $class = "Level".$level;
                 $next_level = "";
-                if ( $data["entry"] == $arrEbene[1] ) {
+                if ( $data["entry"] == @$arrEbene[1] ) {
                     // css-klasse erzeugen
                     $class = "Level".$level."Active";
 
@@ -152,7 +158,7 @@
                     $arrEbene = array_values($arrEbene);
 
                     $ausgaben["pagetitle"] = $data["label"];
-                    if ( $cfg["menu"]["level".$level]["extend"] == "-1" ) $ausgaben["extenddesc"] = $data["extend"];
+                    if ( @$cfg["menu"]["level".$level]["extend"] == "-1" ) $ausgaben["extenddesc"] = $data["extend"];
 
                     // naechste ebene abarbeiten
                     $next_level = menu_generate($data["mid"],$level + 1,$arrEbene, $url."/".$data["entry"]);

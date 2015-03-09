@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -88,15 +88,18 @@
 
         if ( file_exists($template) ) {
             $fd = fopen($template, "r");
+            $begin = true;
+            $loop = false;
+            $hide = false;
             while (!feof($fd)) {
                 $line = fgets($fd,1024);
                 // alles vor ##begin und nach ##end wird nicht ausgegeben
                 if ( strpos($line,"##begin")  !== false ) {
-                    $begin="1";
+                    $begin = true;
                 } else {
                     if ( strpos($line,"##end") !== false ) {
-                        $begin="0";
-                    } elseif ($begin=="1") {
+                        $begin = false;
+                    } elseif ( $begin == true ) {
 
                         // style path korrektur + dynamic style
                         if ( strpos($line,"css/".$environment["design"]."/") !== false ) {
@@ -167,25 +170,31 @@
 
                         // !#element array pruefen und evtl. einsetzen
                         if ( strpos($line,"!#element_" ) !== false ) {
-                            foreach( (array)$element as $name => $value) {
-                                $line = str_replace("!#element_$name", $value, $line);
-                                #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (element): ".$name." : ".$element[$name].$debugging["char"];
+                            foreach( $element as $name => $value) {
+                                if ( !is_array($value) ) {
+                                    $line = str_replace("!#element_$name", $value, $line);
+                                    #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (element): ".$name." : ".$element[$name].$debugging["char"];
+                                }
                             }
                         }
 
                         // !#environment array pruefen und evtl. einsetzen
                         if ( strpos($line,"!#environment_" ) !== false ) {
-                            foreach( (array)$environment as $name => $value) {
-                                $line = str_replace("!#environment_$name", $value, $line);
-                                #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (environment): ".$name." : ".$environment[$name].$debugging["char"];
+                            foreach( $environment as $name => $value) {
+                                if ( !is_array($value) ) {
+                                    $line = str_replace("!#environment_$name", $value, $line);
+                                    #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (environment): ".$name." : ".$environment[$name].$debugging["char"];                                        
+                                }
                             }
                         }
 
                         // !#pathvars array pruefen und evtl. einsetzen
                         if ( strpos($line,"!#pathvars_" ) !== false ) {
-                            foreach( (array)$pathvars as $name => $value) {
-                                $line = str_replace("!#pathvars_$name", $value, $line);
-                                #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (pathvars): ".$name." : ".$pathvars[$name].$debugging["char"];
+                            foreach( $pathvars as $name => $value) {
+                                if ( !is_array($value) ) {
+                                    $line = str_replace("!#pathvars_$name", $value, $line);
+                                    #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info (pathvars): ".$name." : ".$pathvars[$name].$debugging["char"];
+                                }                                    
                             }
                         }
 
@@ -201,16 +210,21 @@
                         // ##loop-??? -> ##cont bereich bearbeiten
                         // und inhalte aus $dataloop array einbauen
                         if ( strpos($line,"##loop")  !== false ) {
-                            $loop   = "1";
+                            $loop = true;
                             $loop_mark   = explode("-",strstr($line,"##loop"),3);
                             $loop_label  = $loop_mark[1];
                             $loop_buffer = "";
                         } else {
                             if ( strpos($line,"##cont") !== false ) {
-                                $loop  = "0";
+                                $loop = false;
                                 $loop_block = "";
-                                $labelloop = $dataloop[$loop_label];
-                                foreach ( (array) $labelloop as $data ) {
+                                if ( isset($dataloop[$loop_label]) ) {
+                                    $labelloop = $dataloop[$loop_label];
+                                } else {
+                                    $labelloop = [];
+                                }
+                                #foreach ( (array) $labelloop as $data ) {
+                                foreach ( $labelloop as $data ) {                                    
                                     $loop_work = $loop_buffer;
                                     foreach ( (array)$data as $name => $value ) {
                                         $loop_work = str_replace("!{".$name."}",$value,$loop_work);
@@ -219,7 +233,7 @@
                                     $loop_block .= $loop_work;
                                 }
                                 $line = $loop_block.trim($line)."\n";
-                            } elseif ( $loop == "1" ) {
+                            } elseif ( $loop == true ) {
                                 $loop_buffer .= trim($line)."\n";
                                 continue;
                             }
@@ -228,16 +242,16 @@
                         // ##hide-??? - ##show bereich bearbeiten
                         // nur wenn $hidedata["???"] verfuegbar ist einblenden
                         if ( strpos($line,"##hide") !== false ) {
-                            $hide   = "1";
+                            $hide = true;
                             $hide_mark   = explode("-",strstr($line,"##hide"),3);
                             $hide_label  = $hide_mark[1];
                             $hide_buffer = "";
                             continue; // marke ebenfalls kicken!
                         } else {
                             if ( strpos($line,"##show") !== false ) {
-                                $hide  = "0";
+                                $hide = false;
                                 $hide_block = "";
-                                if ( is_array($hidedata[$hide_label]) ) {
+                                if ( isset($hidedata[$hide_label]) ) {
                                     foreach ( $hidedata[$hide_label] as $name => $value ) {
                                         $hide_buffer = str_replace("!{".$name."}",$value,$hide_buffer);
                                     }
@@ -245,7 +259,7 @@
                                 }
                                #$line = $block.trim($line)."\n";
                                 $line = $hide_block; // marke ebenfalls kicken!
-                            } elseif ( $hide == "1" ) {
+                            } elseif ( $hide == true ) {
                                 $hide_buffer .= trim($line)."\n";
                                 continue;
                             }
@@ -310,6 +324,7 @@
 			    
 			    // tausche wenn nötig die inhalte aus
                             if ( isset($mapping) ) {
+                                if ( !isset($specialvars["changed"]) ) $specialvars["changed"] = null;
                                 foreach($mapping as $name => $value) {
                                     #if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "parser info: #{".$name."}:"."#{".$value."}".$debugging["char"];
 
@@ -323,15 +338,14 @@
                                     #if ( strstr($line,"#{main}") ) {
 
                                     // datenbank wechseln -> variablen in menuctrl.inc.php
-                                    if ( strpos($line,"#{main}")  !== false && $specialvars["dynlock"] == "" ) {
+                                    if ( strpos($line,"#{main}")  !== false && isset($specialvars["dynlock"]) ) {
                                         if ( $environment["fqdn"][0] == $specialvars["dyndb"] ) {
                                             $db->selectDb($specialvars["dyndb"],FALSE);
                                             #echo "1: ".$db->getDb();
                                             $specialvars["changed"] = "###switchback###";
-                                        }
+                                        }                                        
                                     }
-
-                                    $line = str_replace("#{".$name."}","#{".$value."}".$specialvars["changed"],$line);
+                                    $line = str_replace("#{".$name."}","#{".$value."}".$specialvars["changed"],$line);                                                                            
                                 }
                             }
 

@@ -43,7 +43,7 @@ $Id = null;
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     // path config
     if ( @$_SERVER["HTTPS"] == "on" ) {
         $pathvars["protocol"] = "https";
@@ -54,9 +54,24 @@ $Id = null;
     $pathvars["webimages"] = "/images/main"."/";                        # gilt nur fuer select seite
     $pathvars["webcss"]    = "/css/main/"."/";                          # gilt nur fuer select seite
 
+
+    // init important variables
+    $pathvars["virtual"] = null;
+
+    $environment["ebene"] = null;
+    $environment["kategorie"] = null;
+
+    $environment["param"] = null;
+    $environment["subparam"] = null;
+
+    $specialvars["content_release"] = null;
+    $specialvars["dyndb"] = null;
+    $specialvars["phpsessid"] = null;
+
+
     // site config
     require dirname(dirname(dirname(__FILE__)))."/conf/site.cfg.php";
-    
+
     if ( !isset($debugging["error_reporting"]) ) $debugging["error_reporting"] = E_ALL ^ E_NOTICE;
     error_reporting($debugging["error_reporting"]);
 
@@ -67,7 +82,7 @@ $Id = null;
     if ( !isset($pathvars["fileroot"]) ) {
         $pathvars["fileroot"] = rtrim($_SERVER["DOCUMENT_ROOT"],"/")."/";
     }
-    
+
     // subdir support
     $specialvars["subdir"] = trim(dirname(dirname($_SERVER["SCRIPT_NAME"])),"/");
     $pathvars["subdir"] = null;
@@ -101,7 +116,7 @@ $Id = null;
 
     // debug array init
     $debugging["ausgabe"] = "";
-    if ( $debugging["html_enable"] == -1 ) {
+    if ( $debugging["html_enable"] ==    -1 ) {
         $debugging["ausgabe"] .= $debugging["char"].$debugging["char"].$debugging["head"].$debugging["char"];
         $debugging["ausgabe"] .= "#### Debug Ausgabe: ####".$debugging["char"];
     }

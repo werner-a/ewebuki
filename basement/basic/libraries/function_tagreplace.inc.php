@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -75,7 +75,7 @@
 
                 // fehlenden open tag abfangen
                 if ( (strpos($haystack,$opentag."]") === false) && (strpos($haystack,$opentag."=") === false) ) {
-                    if ( $defaults["tag"]["error"] == "" ) {
+                    if ( !isset($defaults["tag"]["error"]) ) {
                         $error = " <font color=\"#FF0000\">".$opentag."]?</font> ";
                     } else {
                         $error = $defaults["tag"]["error"].$opentag."]".$defaults["tag"]["/error"];
@@ -102,7 +102,7 @@
                     //
                     case "[/H1]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( $defaults["tag"]["h1"] == "" ) {
+                        if ( !isset($defaults["tag"]["h1"]) ) {
                           $defaults["tag"]["h1"] = "<h1>";
                           $defaults["tag"]["/h1"] = "</h1>";
                         }
@@ -117,7 +117,7 @@
                         break;
                     case "[/H2]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( $defaults["tag"]["h2"] == "" ) {
+                        if ( !isset($defaults["tag"]["h2"]) ) {
                           $defaults["tag"]["h2"] = "<h2>";
                           $defaults["tag"]["/h2"] = "</h2>";
                         }
@@ -132,7 +132,7 @@
                         break;
                     case "[/H3]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( $defaults["tag"]["h3"] == "" ) {
+                        if ( !isset($defaults["tag"]["h3"]) ) {
                           $defaults["tag"]["h3"] = "<h3>";
                           $defaults["tag"]["/h3"] = "</h3>";
                         }
@@ -147,7 +147,7 @@
                         break;
                     case "[/H4]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( $defaults["tag"]["h4"] == "" ) {
+                        if ( !isset($defaults["tag"]["h4"]) ) {
                           $defaults["tag"]["h4"] = "<h4>";
                           $defaults["tag"]["/h4"] = "</h4>";
                         }
@@ -162,7 +162,7 @@
                         break;
                     case "[/H5]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( $defaults["tag"]["h5"] == "" ) {
+                        if ( !isset($defaults["tag"]["h5"]) ) {
                           $defaults["tag"]["h5"] = "<h5>";
                           $defaults["tag"]["/h5"] = "</h5>";
                         }
@@ -177,7 +177,7 @@
                         break;
                     case "[/H6]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( $defaults["tag"]["h6"] == "" ) {
+                        if ( !isset($defaults["tag"]["h6"]) ) {
                           $defaults["tag"]["h6"] = "<h6>";
                           $defaults["tag"]["/h6"] = "</h6>";
                         }
@@ -199,14 +199,14 @@
                             $tagwerte = explode("]",$tagwert,2);
                             $pwerte = explode(";",$tagwerte[0]);
                             $extrawerte = explode(":",$pwerte[0]);
-                            if ( $extrawerte[1] != "" ) $pwerte[0] = $extrawerte[1];
+                            if ( isset($extrawerte[1]) ) $pwerte[0] = $extrawerte[1];
                             if ( $extrawerte[0] == "id" ) {
                                 $art = "id";
                             } else {
                                 $art = "class";
                             }
-                            $attrib = "";
-                            if ( $pwerte[0] != "" ) {
+                            $attrib = null;
+                            if ( isset($pwerte[0]) ) {
                                 $attrib = " ".$art."=\"".$pwerte[0]."\"";
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"<p".$attrib.">".$tagwerte[1]."</p>",$replace);
@@ -224,14 +224,14 @@
                             $tagwerte = explode("]",$tagwert,2);
                             $divwerte = explode(";",$tagwerte[0]);
                             $extrawerte = explode(":",$divwerte[0]);
-                            if ( $extrawerte[1] != "" ) $divwerte[0] = $extrawerte[1];
+                            if ( isset($extrawerte[1]) ) $divwerte[0] = $extrawerte[1];
                             if ( $extrawerte[0] == "id" ) {
                                 $art = "id";
                             } else {
                                 $art = "class";
                             }
-                            $attrib = "";
-                            if ( $divwerte[0] != "" ) {
+                            $attrib = null;
+                            if ( isset($divwerte[0]) ) {
                                 $attrib = " ".$art."=\"".$divwerte[0]."\"";
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"<div".$attrib.">".$tagwerte[1]."</div>",$replace);
@@ -290,9 +290,9 @@
                         }
                         break;
                     case "[/HR]":
-                        if ( $defaults["tag"]["hr"] == "" ) {
+                        if ( !isset($defaults["tag"]["hr"]) ) {
                           $defaults["tag"]["hr"] = "<hr />";
-                          $defaults["tag"]["/hr"] = "";
+                          $defaults["tag"]["/hr"] = null;
                         }
                         if ( $sign == "]" ) {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["hr"].$tagwert.$defaults["tag"]["/hr"],$replace);
@@ -317,20 +317,20 @@
                             } elseif ( $tabwerte[0] == "r" ) {
                                 $align = " align=\"right\"";
                             } else {
-                                $align = "";
+                                $align = null;
                             }
-                            if ( $tabwerte[1] != "" ) {
+                            if ( isset($tabwerte[1]) ) {
                                 $width = " width=\"".$tabwerte[1]."\"";
                             }
-                            if ( $tabwerte[2] != "" ) {
+                            if ( isset($tabwerte[2]) ) {
                                 $border = " border=\"".$tabwerte[2]."\"";
                             }
-                            if ( $tabwerte[3] != "" ) {
+                            if ( isset($tabwerte[3]) ) {
                                 $cellspacing = " cellspacing=\"".$tabwerte[3]."\"";
                             } else {
                                 $cellspacing = " cellspacing=\"0\"";
                             }
-                            if ( $tabwerte[4] != "" ) {
+                            if ( isset($tabwerte[4]) ) {
                                 $cellpadding = " cellpadding=\"".$tabwerte[4]."\"";
                             } else {
                                 $cellpadding = " cellpadding=\"1\"";
@@ -354,9 +354,9 @@
                                     $va = " valign=\"middle\"";
                                     break;
                                 default:
-                                    $va = "";
+                                    $va = null;
                             }
-                            if ( $tabwerte[5] != "" ) {
+                            if ( isset($tabwerte[5]) ) {
                                 $wochentag = array("So,&nbsp;",
                                                    "Mo,&nbsp;",
                                                    "Di,&nbsp;",
@@ -365,11 +365,11 @@
                                                    "Fr,&nbsp;",
                                                    "Sa,&nbsp;");
                             }
-                            if ( $tabwerte[6] != "" ) {
+                            if ( isset($tabwerte[6]) ) {
                                 $vortext = array("");
                             }
                             // csv-datei
-                            if ( $specialvars["subdir"] != "" ) {
+                            if ( isset($specialvars["subdir"]) ) {
                                 $pfad = str_replace( $specialvars["subdir"]."/", "", $tabwerte[0] );
                             } else {
                                 $pfad = $tabwerte[0];
@@ -379,24 +379,24 @@
                             $directory = $cfg["file"]["fileopt"][$extension]["path"];
                             $file_name = $extension."_".$file_path[3].".".$file_path[2];
                             if ( file_exists($directory.$file_name) ) {
-                                $table = "";
+                                $table = null;
                                 $handle = fopen ($directory.$file_name,"r");
                                 // enthaelt die erste zeile spaltenueberschriften
-                                if ( $tabwerte[3] != "" ) {
+                                if ( isset($tabwerte[3]) ) {
                                     $cell_tag1 = "<th scope=\"col\">"; $cell_tag2 = "</th>\n";
                                     $row_tag1 = "<thead>\n<tr>"; $row_tag2 = "</tr>\n</thead>";
                                 } else {
                                     $cell_tag1 = "<td".$va.">"; $cell_tag2 = "</td>\n";
                                     $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
                                 }
-                                $thead = "";
+                                $thead = null;
                                 // beim ersten Durchlauf der Schleife werden die Vortexte eingelesen, also brauchen
                                 // wir dafuer ein Flag. (Man koennte auch aus der while eine for-schleife machen)
                                 $firstln = "1";
                                 while ( ($data = fgetcsv ($handle, 1500, ";")) !== FALSE ) {
-                                    $row = "";
+                                    $row = null;
                                     $wieviele = sizeof($data);
-                                    if ( $firstln != "" ) $vortext = $data;
+                                    if ( isset($firstln) ) $vortext = $data;
                                     for ($i = 0; $i < $wieviele; $i++ ) {
                                         $value = $data[$i];
                                         // tabwert 5 = datumspruefung an
@@ -430,18 +430,18 @@
                                             }
                                         }
                                         // noch Teil des Spezialhacks: ignorieren.
-                                        if ( $firstln != "" && $tabwerte[5] >1 && $i >= $tabwerte[5]-1 ) {
+                                        if ( isset($firstln) && $tabwerte[5] >1 && $i >= $tabwerte[5]-1 ) {
                                             if ($i == $tabwerte[5]-1 ) $i++;
                                             $value = $data[$i];
                                         }
-                                        if ( $tabwerte[6] == "" ) {
+                                        if ( !isset($tabwerte[6]) ) {
                                             $row .= $cell_tag1.$value.$cell_tag2;
                                         } else {
                                         // tabwert 6 = don't screw my design-Modus
-                                            if ( $firstln != "" ) {
+                                            if ( isset($firstln) ) {
                                                 // Die Ueberschrift geben wir bis zum angegebenen Wert ganz normal aus,
                                                 // der Rest wird ignoriert.
-                                                if ( $i <= $tabwerte[6] && $tabwerte[3] != "" ) {
+                                                if ( $i <= $tabwerte[6] && isset($tabwerte[3]) ) {
                                                     $row .= $cell_tag1.$value.$cell_tag2;
                                                 }
                                             } else {
@@ -452,7 +452,7 @@
                                                 if ( $i == $tabwerte[6] ) {
                                                 // Beim Wert, der in tabwert 6 angegeben ist, oeffnen wir die Zelle
                                                 // und setzen einen Zeilenwechsel.
-                                                    if ( $tabwerte[7] != "" ) {
+                                                    if ( isset($tabwerte[7]) ) {
                                                     $row .= $cell_tag1."<".$tabwerte[7].">".$value."</".$tabwerte[7]."><br />";
                                                     } else {
                                                     $row .= $cell_tag1.$value."<br />";
@@ -474,37 +474,37 @@
                                             }
                                         }
                                     }
-                                    if ( !$skip == FALSE ) { $row = ""; $skip = ""; }
-                                    if ( $row != "" ) $table .= $row_tag1.$row.$row_tag2;
+                                    if ( !$skip == FALSE ) { $row = null; $skip = null; }
+                                    if ( isset($row) ) $table .= $row_tag1.$row.$row_tag2;
                                     if ( strstr($cell_tag1,"<th") ) {
                                         $thead = $table;
-                                        $table = "";
+                                        $table = null;
                                         $cell_tag1 = "<td".$va.">"; $cell_tag2 = "</td>\n";
                                         $row_tag1 = "<tr>"; $row_tag2 = "</tr>\n";
                                     }
-                                $firstln = "";
+                                $firstln = null;
                                 }
                                 // summary
-                                if ( $tagwerte[1] != "" ) {
+                                if ( isset($tagwerte[1]) ) {
                                     $summary = " summary=\"".$tagwerte[1]."\"";
                                 } else {
-                                    $summary = "";
+                                    $summary = null;
                                 }
                                 // breite
-                                if ( $tabwerte[1] != "" ) {
+                                if ( isset($tabwerte[1]) ) {
                                     $width = " width=\"".$tabwerte[1]."%\"";
                                 } else {
-                                    $width = "";
+                                    $width = null;
                                 }
                                 // border
-                                if ( $tabwerte[2] != "" ) {
+                                if ( isset($tabwerte[2]) ) {
                                     $border = " border=\"".$tabwerte[2]."\"";
                                 } else {
-                                    $border = "";
+                                    $border = null;
                                 }
-                                if ( $table != "" ) $table = "<table".$border.$width.$summary.">\n".$thead."<tbody>\n".$table."</tbody>\n</table>\n";
+                                if ( isset($table) ) $table = "<table".$border.$width.$summary.">\n".$thead."<tbody>\n".$table."</tbody>\n</table>\n";
                             } else {
-                                $table = "";
+                                $table = null;
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$table,$replace);
                         } else {
@@ -524,7 +524,6 @@
                         if ( $sign == "]" ) {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"<td valign=\"top\">".$tagwert."</td>",$replace);
                         } else {
-
                             $tagwerte = explode("]",$tagwert,2);
                             $colwerte = explode(";",$tagwerte[0]);
                             if ( $colwerte[0] == "l" ) {
@@ -534,19 +533,23 @@
                             } elseif ( $colwerte[0] == "r" ) {
                                 $align = " align=\"right\"";
                             } else {
-                                $align = "";
+                                $align = null;
                             }
-                            if ( $colwerte[1] != "" ) {
+                            if ( isset($colwerte[1]) ) {
                                 $width = " width=\"".$colwerte[1]."\"";
+                            } else {
+                                $width = null;
                             }
-                            if ( $colwerte[2] == "o" ) {
-                                $valign = " valign=\"top\"";
-                            } elseif ( $colwerte[2] == "m" ) {
-                                $valign = " valign=\"middle\"";
-                            } elseif ( $colwerte[2] == "u" ) {
-                                $valign = " valign=\"bottom\"";
-                            } elseif ( $colwerte[2] == "g" ) {
-                                $valign = " valign=\"baseline\"";
+                            if ( isset($colwerte[2]) ) {
+                                if ( $colwerte[2] == "o" ) {
+                                    $valign = " valign=\"top\"";
+                                } elseif ( $colwerte[2] == "m" ) {
+                                    $valign = " valign=\"middle\"";
+                                } elseif ( $colwerte[2] == "u" ) {
+                                    $valign = " valign=\"bottom\"";
+                                } elseif ( $colwerte[2] == "g" ) {
+                                    $valign = " valign=\"baseline\"";
+                                }
                             } else {
                                 $valign = " valign=\"top\"";
                             }
@@ -576,8 +579,8 @@
                                 $clear = "clear=\"right\"";
                                 $style_clear = "style=\"clear:right;\"";
                             } else {
-                                $clear = "";
-                                $style_clear = "";
+                                $clear = null;
+                                $style_clear = null;
                             }
                             if ( $specialvars["w3c"] == "strict" ) {
                                 $replace = str_replace($opentag.$tagoriginal.$closetag,"<br ".$style_clear."/>",$replace);
@@ -588,7 +591,7 @@
                         break;
                     case "[/IMG]":
                         $LB_IMG_counter ++;
-                        $imgsize = ""; $imgurl = "";
+                        $imgsize = null; $imgurl = null;
                         if ( $sign == "]" ) {
                             if ( !strstr($tagwert, "/") ) {
                                 $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/".$tagwert;
@@ -616,7 +619,7 @@
                                         $imgsize = getimagesize($imgfile);
                                         $imgsize = " ".$imgsize[3];
                                     } else {
-                                        $imgsize = "";
+                                        $imgsize = null;
                                     }
                                 }
                             }
@@ -624,23 +627,23 @@
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         } else {
 
-                            if ( $defaults["tag"]["img_w3c"] == "" ) $defaults["tag"]["img_w3c"] = "<img src=\"##imgurl##\" title=\"##beschriftung##\" alt=\"##beschriftung##\"##imgsize## style=\"##style_align####style_border####style_hspace####style_vspace##\"##attrib## />";
-                            if ( $defaults["tag"]["img"] == "" ) $defaults["tag"]["img"] = "<img src=\"##imgurl##\"##attrib####vspace####hspace## title=\"##beschriftung##\" alt=\"##beschriftung##\"##align####border####imgsize## />";
-                            if ( $defaults["tag"]["img_link"] == "" ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\">";
-                            if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
-                            if ( $defaults["tag"]["/img_link"] == "" ) $defaults["tag"]["/img_link"] = "</a>";
+                            if ( !isset($defaults["tag"]["img_w3c"]) ) $defaults["tag"]["img_w3c"] = "<img src=\"##imgurl##\" title=\"##beschriftung##\" alt=\"##beschriftung##\"##imgsize## style=\"##style_align####style_border####style_hspace####style_vspace##\"##attrib## />";
+                            if ( !isset($defaults["tag"]["img"]) ) $defaults["tag"]["img"] = "<img src=\"##imgurl##\"##attrib####vspace####hspace## title=\"##beschriftung##\" alt=\"##beschriftung##\"##align####border####imgsize## />";
+                            if ( !isset($defaults["tag"]["img_link"]) ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\">";
+                            if ( !isset($defaults["tag"]["img_link_lb"]) ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
+                            if ( !isset($defaults["tag"]["/img_link"]) ) $defaults["tag"]["/img_link"] = "</a>";
                             $repl = array("imgurl","beschriftung", "funder","fdesc","imgsize","attrib","vspace","hspace","align","border","style_align","style_border","style_hspace","style_vspace","imglnk","lightbox");
 
                             $tagwerte = explode("]",$tagwert,2);
                             $imgwerte = explode(";",$tagwerte[0]);
                             $extrawerte = explode(":",$imgwerte[1]);
-                            if ( $extrawerte[1] != "" ) $imgwerte[1] = $extrawerte[1];
+                            if ( isset($extrawerte[1]) ) $imgwerte[1] = $extrawerte[1];
                             if ( $extrawerte[0] == "id" ) {
                                 $art = " id";
                             } else {
                                 $art = " class";
                             }
-                            $align = ""; $attrib = ""; $style_align = "";
+                            $align = null; $attrib = null; $style_align = null;
                             if ( $imgwerte[1] == "r" ) {
                                 $align = " align=\"right\"";
                                 $style_align = "float:right;";
@@ -657,22 +660,22 @@
                                 $border = " border=\"".$imgwerte[2]."\"";
                                 $style_border = "border-width:".$imgwerte[2]."px;";
                             } else {
-                                $border = "";
-                                $style_border = "";
+                                $border = null;
+                                $style_border = null;
                             }
                             if ($imgwerte[3] == "l" ) {
                                 $lightbox = "rel=\"lightbox[".$LB_IMG_counter."]\"";
                             }
-                            if ($imgwerte[4] == "" ) {
-                                $vspace = "";
-                                $style_vspace = "";
+                            if ( !isset($imgwerte[4]) ) {
+                                $vspace = null;
+                                $style_vspace = null;
                             } else {
                                 $vspace = " vspace=\"".$imgwerte[4]."\"";
                                 $style_vspace = "margin-top:".$imgwerte[4]."px;margin-bottom:".$imgwerte[4]."px;";
                             }
-                            if ($imgwerte[6] == "" ) {
-                                $hspace = "";
-                                $style_hspace = "";
+                            if ( !isset($imgwerte[6]) ) {
+                                $hspace = null;
+                                $style_hspace = null;
                             } else {
                                 $hspace = " hspace=\"".$imgwerte[6]."\"";
                                 if ( $imgwerte[1] == "r" ) {
@@ -683,7 +686,7 @@
                                     $style_hspace = "margin-left:".$imgwerte[6]."px;margin-right:".$imgwerte[6]."px;";
                                 }
                             }
-                            if ( $tagwerte[1] == "" ) {
+                            if ( !isset($tagwerte[1]) ) {
                                 $beschriftung = $imgwerte[0];
                             } else {
                                 $beschriftung = $tagwerte[1];
@@ -713,8 +716,8 @@
                                 $fdesc = $beschriftung;
                             }
 
-                            $linka = "";
-                            $linkb = "";
+                            $linka = null;
+                            $linkb = null;
                             if ( !strstr($imgwerte[0], "/") ) {
                                 $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/".$imgwerte[0];
                                 if ( file_exists($imgfile) ) {
@@ -722,7 +725,7 @@
                                     $imgsize = " ".$imgsize[3];
                                     $imgurl = $pathvars["images"].$imgwerte[0];
                                 } else {
-                                    $imgsize = "";
+                                    $imgsize = null;
                                 }
                             } else {
                                 $imgurl = $imgwerte[0];
@@ -743,17 +746,18 @@
                                         $imgsize = getimagesize($imgfile);
                                         $imgsize = " ".$imgsize[3];
                                     }
-                                    if ( $imgwerte[3] != "" ) {
-                                        $bilderstrecke = ",".$imgwerte[7];
+                                    if ( isset($imgwerte[3]) ) {
+                                        $bilderstrecke = ",".@$imgwerte[7];
                                     } else {
-                                        $bilderstrecke = "";
+                                        $bilderstrecke = null;
                                     }
-                                    if ( $imgwerte[3] != "" ) {
+                                    if ( isset($imgwerte[3]) ) {
                                         if ( strpos($imgurl,$cfg["file"]["base"]["pic"]["root"]) === false ) {
                                             $opt = explode("/",str_replace($pathvars["subdir"],"",$imgurl));
                                             $imgid = $opt[3];
                                         } else {
-                                            $opt = split("[_.]",$imgurl);
+                                            #$opt = split("[_.]",$imgurl); // deprecated
+                                            $opt = preg_split("[_.]",$imgurl);
                                             $imgid = $opt[1];
                                         }
                                         $path = dirname($pathvars["requested"]);
@@ -768,7 +772,7 @@
                                         $linkb = $defaults["tag"]["/img_link"];
                                     }
                                 } else {
-                                    $imgsize = "";
+                                    $imgsize = null;
                                 }
                             }
 
@@ -778,8 +782,10 @@
                                 $ausgabewert = $linka.$defaults["tag"]["img"].$linkb;
                             }
                             foreach ( $repl as $value ) {
-                                $ausgabewert = str_replace("##".$value."##",$$value,$ausgabewert);
-                                $$value = "";
+                                if ( isset($$value) ) {
+                                    $ausgabewert = str_replace("##".$value."##",$$value,$ausgabewert);
+                                    $$value = null;
+                                }
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
@@ -792,27 +798,28 @@
                             $tagwerte = explode("]",$tagwert,2);
                             $linkwerte = explode(";",$tagwerte[0]);
                             $href = $linkwerte[0];
-                            if ( $tagwerte[1] == "" ) {
+                            if ( !isset($tagwerte[1]) ) {
                                 $beschriftung = $href;
                             } else {
                                 $beschriftung = $tagwerte[1];
                             }
                             // ziel
-                            if ( $linkwerte[1] != "" ) {
+                            if ( isset($linkwerte[1]) ) {
                                 $target = " target=\"".$linkwerte[1]."\"";
                             } else {
-                                $target = "";
+                                $target = null;
                             }
                             // title-tag
-                            if ( $linkwerte[2] != "" ) {
+                            if ( isset($linkwerte[2]) ) {
                                 $title = $linkwerte[2];
                             } else {
+                                if ( !isset($linkwerte[1]) ) $linkwerte[1] = null;
                                 if ( $linkwerte[1] == "_blank" ) {
                                     $title = "Link in neuem Fenster: ".str_replace("http://","",$href);
                                 } elseif ( !strstr($beschriftung,"<") ) {
                                     $title = $beschriftung;
                                 } else {
-                                    $title = "";
+                                    $title = null;
                                 }
                             }
                             // css-klasse
@@ -824,16 +831,17 @@
                                     $class = " class=\"link_".$cfg["file"]["filetyp"][$match[1]];
                                 }
                             }
-                            if ( $linkwerte[3] != "" ) { # oder manuell
+                            if ( isset($linkwerte[3]) ) { # oder manuell
                                 $class .= " ".$linkwerte[3];
                             }
                             $class .= "\"";
                             // id
-                            if ( $linkwerte[4] != "" ) {
+                            if ( isset($linkwerte[4]) ) {
                                 $id = " id=\"".$linkwerte[4]."\"";
                             } else {
-                                $id = "";
+                                $id = null;
                             }
+                            if ( !isset($pic) ) $pic = null;
                             $ausgabewert = $pic."<a href=\"".$href."\"".$id.$target." title=\"".$title."\"".$class.">".$beschriftung."</a>";
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
@@ -849,8 +857,8 @@
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
                             $acrwerte = explode(";",$tagwerte[0]);
-                            $attrib = "";
-                            if ( $acrwerte[0] != "" ) {
+                            $attrib = null;
+                            if ( isset($acrwerte[0]) ) {
                                 $attrib = " title=\"".$acrwerte[0]."\"";
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"<acronym".$attrib.">".$tagwerte[1]."</acronym>",$replace);
@@ -928,7 +936,7 @@
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
-                            if ( $tagwerte[1] == "" ) {
+                            if ( !isset($tagwerte[1]) ) {
                                 $beschriftung = $tagwerte[0];
                             } else {
                                 $beschriftung = $tagwerte[1];
@@ -941,30 +949,30 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwert,$replace);
                         break;
                     case "[/HL]":
-                        if ( $defaults["tag"]["hl"] == "" ) {
+                        if ( !isset($defaults["tag"]["hl"]) ) {
                           $defaults["tag"]["hl"] = "<hr />";
-                          $defaults["tag"]["/hl"] = "";
+                          $defaults["tag"]["/hl"] = null;
                         }
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["hl"].$tagwert.$defaults["tag"]["/hl"],$replace);
                         break;
                     case "[/IMGB]":
                         $imgb_counter ++;
-                        if ( $defaults["tag"]["img_link"] == "" ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\">";
-                        if ( $defaults["tag"]["img_link_lb"] == "" ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
-                        if ( $defaults["tag"]["/img_link"] == "" ) $defaults["tag"]["/img_link"] = "</a>";
+                        if ( !isset($defaults["tag"]["img_link"] ) ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\">";
+                        if ( !isset($defaults["tag"]["img_link_lb"]) ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
+                        if ( !isset($defaults["tag"]["/img_link"]) ) $defaults["tag"]["/img_link"] = "</a>";
                         $repl = array("imgurl","imglnk","beschriftung", "funder","fdesc","lightbox");
 
                         $tagwerte = explode("]",$tagwert,2);
                         $imgwerte = explode(";",$tagwerte[0]);
                         $extrawerte = explode(":",$imgwerte[1]);
-                        if ( $extrawerte[1] != "" ) $imgwerte[1] = $extrawerte[1];
-                        $ausgaben["align"] = ""; $lspace = ""; $rspace = ""; $ausgaben["imgstyle"] = "";$ausgaben["float"] = "";$ausgaben["class"] = "";
+                        if ( isset($extrawerte[1]) ) $imgwerte[1] = $extrawerte[1];
+                        $ausgaben["align"] = null; $lspace = null; $rspace = null; $ausgaben["imgstyle"] = null;$ausgaben["float"] = null;$ausgaben["class"] = null;
                         // "id" or "class" wird im template gesetzt (!#ausgaben_imgstyle)
                         if ( $imgwerte[1] == "r" ) {
                             $ausgaben["align"] = "right";
                             $ausgaben["float"] = "float:right;";
                             $ausgaben["class"] = "imgb-right";
-                            if ( $imgwerte[6] == "" ) {
+                            if ( !isset($imgwerte[6]) ) {
                                 $lspace = "10";
                             } else {
                                 $lspace = $imgwerte[6];
@@ -975,35 +983,40 @@
                             $ausgaben["float"] = "float:left;";
                             $ausgaben["class"] = "imgb-left";
                             $lspace = "0";
-                            if ( $imgwerte[6] == "" ) {
+                            if ( !isset($imgwerte[6]) ) {
                                 $rspace = "10";
                             } else {
                                 $rspace = $imgwerte[6];
                             }
-                        } elseif ( $imgwerte[1] != "" ) {
+                        } elseif ( isset($imgwerte[1]) ) {
                             $ausgaben["imgstyle"] = $imgwerte[1];
                         }
-                        if ( $imgwerte[2] == "0" ) {
-                            $ausgaben["border"] = "border-width:0;";
-                        } elseif ( $imgwerte[2] > 0 ) {
-                            $ausgaben["border"] = "border-width:".$imgwerte[2].";";
+                        if ( isset($imgwerte[2]) ) {
+                            if ( $imgwerte[2] == "0" ) {
+                                $ausgaben["border"] = "border-width:0;";
+                            } elseif ( $imgwerte[2] > 0 ) {
+                                $ausgaben["border"] = "border-width:".$imgwerte[2].";";
+                            }
                         } else {
-                            $ausgaben["border"] = "";
+                            $ausgaben["border"] = null;
                         }
-                        if ($imgwerte[3] == "l" ) {
-                            $lightbox = "rel=\"lightbox[b".$imgb_counter."]\"";
+
+                        if ( isset($imgwerte[3]) ) {
+                            if ($imgwerte[3] == "l" ) {
+                                $lightbox = "rel=\"lightbox[b".$imgb_counter."]\"";
+                            }
                         }
-                        if ( $imgwerte[4] == "" ) {
+                        if ( !isset($imgwerte[4]) ) {
                             $tspace = "0";
                         } else {
                             $tspace = $imgwerte[4];
                         }
-                        if ( $imgwerte[5] == "" ) {
+                        if ( !isset($imgwerte[5]) ) {
                             $bspace = "0";
                         } else {
                             $bspace = $imgwerte[5];
                         }
-                        if ( $tagwerte[1] == "" ) {
+                        if ( !isset($tagwerte[1]) ) {
                             $beschriftung = $imgwerte[0];
                         } else {
                             $beschriftung = $tagwerte[1];
@@ -1030,8 +1043,8 @@
                             $fdesc = $beschriftung;
                         }
 
-                        $ausgaben["linka"] = "";
-                        $ausgaben["linkb"] = "";
+                        $ausgaben["linka"] = null;
+                        $ausgaben["linkb"] = null;
                         if ( strpos($imgwerte[0],"/") === false ) {
                             $imgfile = $pathvars["fileroot"]."images/".$environment["design"]."/".$imgwerte[0];
                             if ( file_exists($imgfile) ) {
@@ -1058,20 +1071,21 @@
                                     $ausgaben["tabwidth"] = $imgsize[0];
                                     $ausgaben["imgsize"] = " ".$imgsize[3];
                                 } else {
-                                    $ausgaben["tabwidth"] = "";
-                                    $ausgaben["imgsize"] = "";
+                                    $ausgaben["tabwidth"] = null;
+                                    $ausgaben["imgsize"] = null;
                                 }
-                                if ( $imgwerte[7] != "" ) {
+                                if ( isset($imgwerte[7]) ) {
                                     $bilderstrecke = ",".$imgwerte[7];
                                 } else {
                                     $bilderstrecke = "";
                                 }
-                                if ( $imgwerte[3] != "" ) {
+                                if ( isset($imgwerte[3]) ) {
                                     if ( strpos($imgurl,$cfg["file"]["base"]["pic"]["root"]) === false ) {
                                         $opt = explode("/",str_replace($pathvars["subdir"],"",$imgurl));
                                         $imgid = $opt[3];
                                     } else {
-                                        $opt = split("[_.]",$imgurl);
+                                        #$opt = split("[_.]",$imgurl); // deprecated
+                                        $opt = preg_split("[_.]",$imgurl);
                                         $imgid = $opt[1];
                                     }
                                     if ( substr( $pathvars["requested"], 0, 1 ) == '/') $path = substr( $pathvars["requested"], 1 );
@@ -1085,13 +1099,16 @@
                                         $ausgaben["linka"] = $defaults["tag"]["img_link"];
                                     }
                                     foreach ( $repl as $value ) {
-                                        $ausgaben["linka"] = str_replace("##".$value."##",$$value,$ausgaben["linka"]);
+                                        if ( isset($$value) ) {
+                                            $ausgaben["linka"] = str_replace("##".$value."##",$$value,$ausgaben["linka"]);
+                                            $$value = null;
+                                        }
                                     }
                                     $ausgaben["linkb"] = $defaults["tag"]["/img_link"];
 
                                 } else {
-                                    $ausgaben["linka"] = "";
-                                    $ausgaben["linkb"] = "";
+                                    $ausgaben["linka"] = null;
+                                    $ausgaben["linkb"] = null;
                                 }
                             }
                             $ausgaben["imgurl"] = $imgurl;
@@ -1122,17 +1139,17 @@
                             if ( substr( $path, -1 ) != '/') $path = $path."/";
                             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,groesse,bild,selektion,thumbs
 
-                            if ( $defaults["tag"]["sel"] == "" ) $defaults["tag"]["sel"] = "<div style=\"position:relative\" class=\"selection_teaser\">##no_image####youtube_div##\n<b>##title## ##youtube_link##</b>\n##no_image_end##<div>\n<ul>\n";
-                            if ( $defaults["tag"]["*sel"] == "" ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
-                            if ( $defaults["tag"]["/sel"] == "" ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span##display##>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
+                            if ( !isset($defaults["tag"]["sel"]) ) $defaults["tag"]["sel"] = "<div style=\"position:relative\" class=\"selection_teaser\">##no_image####youtube_div##\n<b>##title## ##youtube_link##</b>\n##no_image_end##<div>\n<ul>\n";
+                            if ( !isset($defaults["tag"]["*sel"]) ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
+                            if ( !isset($defaults["tag"]["/sel"]) ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span##display##>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
                             if ( strstr($tag_param[0],":") ) {
-                                $sel_pics = "";
+                                $sel_pics = null;
                                 foreach ( $tag_special as $pics ) {
-                                    if ( $pics == "" ) continue;
-                                    ( $sel_pics != "" ) ? $trenner = " ," : $trenner = "";
+                                    if ( !isset($pics) ) continue;
+                                    ( isset($sel_pics) ) ? $trenner = " ," : $trenner = null;
                                     $sel_pics .= $trenner.$pics;
                                 }
-                                if ( $sel_pics == "" ) $sel_pics = 0;
+                                if ( !isset($sel_pics) ) $sel_pics = 0;
                                 $sql = "SELECT * FROM site_file WHERE fid in (".$sel_pics.")";
                                 $sel_pics1 = explode(":",$tag_param[0]);
                                 $i = 0;
@@ -1186,7 +1203,7 @@
                             $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
 
                             // wenn video-parameter vorhanden dann marken ersetzen
-                            if ( $tag_param[5] != "") {
+                            if ( isset($tag_param[5]) ) {
                                 $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">
                                 [OBJECT=http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&;250;192;application/x-shockwave-flash]
                                 [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
@@ -1199,7 +1216,7 @@
                                 $sel = str_replace("##youtube_link##","",$sel);
                             }
 
-                            $lb_helper = "";
+                            $lb_helper = null;
                             $file_counter = 0;
                             foreach ( $files as $row ) {
                                 $file_counter ++;
@@ -1226,8 +1243,9 @@
                                          ."tn_".$row["fid"].".".$row["ffart"];
                                 }
 
+                                $style = null;
+                                if ( !isset($tag_param[4]) ) $tag_param[4] = null;
 
-                                $style = "";
                                 if ( !in_array( $row["fid"], $tag_extra ) && $tag_param[3] != "a" ) {
                                     if ( $tag_param[4] == "l" ) {
                                         $style = " style=\"display:none;\"";
@@ -1236,15 +1254,15 @@
                                     }
                                 }
 
-
                                 if ( $tag_param[4] == "l" ) {
                                     $changed = $img;
                                     $lb = "rel=\"lightbox[group_".$selection_counter."]\" ";
                                 } else {
                                     $changed = str_replace( "#", $row["fid"], $link);
-                                    $lb = "";
+                                    $lb = null;
                                 }
-                                if ( $tag_param[3] == "" && $tag_param[4] == "l" && $file_counter == 1 ){
+
+                                if ( !isset($tag_param[3]) && $tag_param[4] == "l" && $file_counter == 1 ){
                                     $tn1 = $img;
                                     continue;
                                 }
@@ -1277,7 +1295,7 @@
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
                         }
                     case "[/IN]":
-                        if ( $defaults["tag"]["in"] == "" ) {
+                        if ( !isset($defaults["tag"]["in"]) ) {
                           $defaults["tag"]["in"] = "<em>";
                           $defaults["tag"]["/in"] = "</em>";
                         }
@@ -1299,35 +1317,35 @@
                         break;
                     case "[/M1]":
                         if ( $sign == "]" ) {
-                            if ( $tagwert == "" ) {
+                            if ( !isset($tagwert) ) {
                                 $label = " .. ";
                             } else {
                                 $label = $tagwert;
                             }
-                            if ( $ausgaben["M1"] != "" ) {
+                            if ( isset($ausgaben["M1"]) ) {
                                 $trenner = $defaults["split"]["m1"];
                             } else {
-                                $trenner = "";
+                                $trenner = null;
                             }
                             $m1 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>".$trenner.$ausgaben["M1"];
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$m1,$replace);
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
                             $m1werte = explode(";",$tagwerte[0]);
-                            if ( $tagwerte[1] == "" ) {
+                            if ( !isset($tagwerte[1]) ) {
                                 $label = " .. ";
                             } else {
                                 $label = $tagwerte[1];
                             }
                             if ( $m1werte[0] == "l" ) {
-                                $m1 = "";
-                                if ( $m1werte[1] == "b" ) {
+                                $m1 = null;
+                                if ( @$m1werte[1] == "b" ) {
                                     $m1 = $defaults["split"]["l1"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br />";
                                 }
                                 $m1 .= $ausgaben["L1"];
                             } else {
-                                $m1 = "";
-                                if ( $m1werte[1] == "b" ) {
+                                $m1 = null;
+                                if ( @$m1werte[1] == "b" ) {
                                     if ( $ausgaben["M1"] != "" ) {
                                         $trenner = $defaults["split"]["m1"];
                                     } else {
@@ -1342,39 +1360,38 @@
                         break;
                     case "[/M2]":
                         if ( $sign == "]" ) {
-                            if ( $tagwert == "" ) {
+                            if ( !isset($tagwert) ) {
                                 $label = " .. ";
                             } else {
                                 $label = $tagwert;
                             }
-                            if ( $ausgaben["M2"] != "" ) {
+                            if ( isset($ausgaben["M2"]) ) {
                                 $trenner = $defaults["split"]["m2"];
                             } else {
-                                $trenner = "";
+                                $trenner = null;
                             }
                             $m2 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>".$trenner.$ausgaben["M2"];
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$m2,$replace);
                         } else {
                             $tagwerte = explode("]",$tagwert,2);
                             $m2werte = explode(";",$tagwerte[0]);
-                            if ( $tagwerte[1] == "" ) {
+                            if ( !isset($tagwerte[1]) ) {
                                 $label = " .. ";
                             } else {
                                 $label = $tagwerte[1];
                             }
+                            $m2 = null;
                             if ( $m2werte[0] == "l" ) {
-                                $m2 = "";
-                                if ( $m2werte[1] == "b" ) {
+                                if ( @$m2werte[1] == "b" ) {
                                     $m2 = $defaults["split"]["l2"]."<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a><br />";
                                 }
                                 $m2 .= $ausgaben["L2"];
                             } else {
-                                $m2 = "";
                                 if ( $m2werte[1] == "b" ) {
-                                    if ( $ausgaben["M2"] != "" ) {
+                                    if ( isset($ausgaben["M2"]) ) {
                                         $trenner = $defaults["split"]["m2"];
                                     } else {
-                                        $trenner = "";
+                                        $trenner = null;
                                     }
                                     $m2 = "<a class=\"menu_punkte\" href=\"".$ausgaben["UP"]."\">".$label."</a>".$trenner;
                                 }
@@ -1387,7 +1404,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgaben["M3"],$replace);
                         break;
                     case "[/UP]":
-                        if ( $tagwert == "" ) {
+                        if ( !isset($tagwert) ) {
                             $label = " .. ";
                         } else {
                             $label = $tagwert;
@@ -1412,7 +1429,7 @@
                         if ( $environment["ebene"] == "/wizard" && $environment["kategorie"] == "show" ) {
                             $kat = tname2path($environment["parameter"][2]);
                         } else {
-                            if ( $environment["ebene"] == "" ) {
+                            if ( !isset($environment["ebene"]) ) {
                                 $kat = "/".$environment["kategorie"];
                             } else {
                                 $kat = $environment["ebene"]."/".$environment["kategorie"];
@@ -1431,7 +1448,7 @@
                         require_once $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
                         require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
-                        if ( $environment["parameter"][2] == "" || $environment["ebene"] == "/wizard" ) {
+                        if ( !isset($environment["parameter"][2]) || $environment["ebene"] == "/wizard" ) {
                             $dataloop["list"] = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["rows"],$kat);
                         } else {
                             $all = show_blog($url,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$url]["rows"],$kat);
@@ -1439,7 +1456,7 @@
                             $hidedata["all"]["inhalt"] = $all[1]["all"];
                         }
 
-                        if ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
+                        if ( isset($cfg["bloged"]["blogs"][$url]["category"]) ) {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,parser($mapping["main"],""),$replace);
                         } else {
                             $replace = str_replace($opentag.$tagoriginal.$closetag,"not allowed",$replace);
@@ -1455,24 +1472,24 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<param name=\"".$tagwerte[0]."\" value=\"".$tagwerte[1]."\"></param>",$replace);
                         break;
                     case "[/YT]":
-                        // para0 = ausrichtung, para1 = breite, para2 = hoehe, 
+                        // para0 = ausrichtung, para1 = breite, para2 = hoehe,
                         // para3 = datenschutz aus, para4 = showinfo on, para5 = video tipps
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);
                         $src = "//www.youtube-nocookie.com/embed/".$tagwerte[1]."?autohide=1";
-			$class = "";
-			$style = "";
-                        if ( $ytwerte[0] != "") $class = " class=\"".$ytwerte[0]."\"";
+                        $class = null;
+                        $style = null;
+                        if ( isset($ytwerte[0]) ) $class = " class=\"".$ytwerte[0]."\"";
                         if ( $ytwerte[0] == "l") { $style = " style=\"float:left\""; $class = ""; }
                         if ( $ytwerte[0] == "r") { $style = " style=\"float:right\""; $class = ""; }
                         if ( $ytwerte[3] == "-1") $src = "//www.youtube.com/embed/".$tagwerte[1]."?autohide=1";
-                        if ( $ytwerte[4] == "") $src .= "&showinfo=0";
+                        if ( !isset($ytwerte[4]) ) $src .= "&showinfo=0";
                         if ( $ytwerte[4] == "-1") $src .= "&showinfo=1";
                         if ( $ytwerte[5] != "-1") $src .= "&rel=0";
-			$yt = "";
-                        if ( $ytwerte[0] != "") $yt = "<div".$class.$style.">\n";
+                        $yt = null;
+                        if ( isset($ytwerte[0]) ) $yt = "<div".$class.$style.">\n";
                         $yt .= "<iframe width=\"".$ytwerte[1]."\" height=\"".$ytwerte[2]."\" src=\"".$src."\" frameborder=\"0\" allowfullscreen></iframe>\n";
-                        if ( $ytwerte[0] != "") $yt .= "</div>\n";
+                        if ( isset($ytwerte[0]) ) $yt .= "</div>\n";
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);
                         break;
                     case "[/OYT]":
@@ -1489,7 +1506,7 @@
                         $ausgaben["yt_width"] = $ytwerte[1];
                         $ausgaben["yt_height"] = $ytwerte[2];
                         $ausgaben["yt_align"] = $ytalign;
-                        $ausgaben["yt_id"]=$tagwerte[1];
+                        $ausgaben["yt_id"] = $tagwerte[1];
                         $yt .= parser("youtube_head",'');
                         $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[2]."\" src=\"".$src."?autohide=1&wmode=opaque".$ytinfo."\"  frameborder=\"0\" allowfullscreen></iframe>";
                         $yt .= "</div>";

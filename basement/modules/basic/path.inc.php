@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -46,20 +46,26 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
     // datenbank wechseln -> variablen in menuctrl.inc.php
-    if ( $environment["fqdn"][0] == $specialvars["dyndb"] ) {
+    if ( $environment["fqdn"][0] == @$specialvars["dyndb"] ) {
         $db->selectDb($specialvars["dyndb"],FALSE);
         $specialvars["rootname"] = $db->getDb();
     }
 
     // altes verhalten wiederherstellen
-    $defaults["split"]["title"] == "" ? $defaults["split"]["title"] = " - " : NOP;
-    $defaults["split"]["kekse"] == "" ? $defaults["split"]["kekse"] = " - " : NOP;
-    $defaults["split"]["m1"] == "" ? $defaults["split"]["m0"] = " &middot; " : NOP ;
-    $defaults["split"]["m1"] == "" ? $defaults["split"]["m1"] = " &middot; " : NOP ;
-    $defaults["split"]["m2"] == "" ? $defaults["split"]["m2"] = " &middot; " : NOP ;
-    $defaults["split"]["l0"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;
-    $defaults["split"]["l1"] == "" ? $defaults["split"]["l1"] = " &middot; " : NOP ;
-    $defaults["split"]["l2"] == "" ? $defaults["split"]["l2"] = " &middot; " : NOP ;
+    if ( !isset($defaults["split"]["title"]) ) $defaults["split"]["title"] = " - " ;
+    if ( !isset($defaults["split"]["kekse"]) ) $defaults["split"]["kekse"] = " - ";
+    if ( !isset($defaults["split"]["m1"]) ) $defaults["split"]["m0"] = " &middot; ";
+    if ( !isset($defaults["split"]["m1"]) ) $defaults["split"]["m1"] = " &middot; ";
+    if ( !isset($defaults["split"]["m2"]) ) $defaults["split"]["m2"] = " &middot; ";
+    if ( !isset($defaults["split"]["l0"]) ) $defaults["split"]["l0"] = " &middot; ";
+    if ( !isset($defaults["split"]["l1"]) ) $defaults["split"]["l1"] = " &middot; ";
+    if ( !isset($defaults["split"]["l2"]) ) $defaults["split"]["l2"] = " &middot; ";
+
+    $ausgaben["M0"] = null;
+    $ausgaben["M1"] = null;
+    $ausgaben["M2"] = null;
+    $ausgaben["L0"] = null;
+    $ausgaben["L1"] = null;
 
     // dynamic style - db test/extension
     $sql = "select dynamiccss from ".$cfg["path"]["db"]["menu"]["entries"];
@@ -67,7 +73,7 @@
     if ( $result ) {
         $dynamiccss = $cfg["path"]["db"]["menu"]["entries"].".dynamiccss,";
     } else {
-        unset($dynamiccss);
+        $dynamiccss = null;
     }
 
     // dynamic bg - db test/extension
@@ -76,12 +82,15 @@
     if ( $result ) {
         $dynamicbg = $cfg["path"]["db"]["menu"]["entries"].".dynamicbg,";
     } else {
-        unset($dynamicbg);
+        $dynamicbg = null;
     }
 
     // zusaetzliche informationen aus den feld extended (muss vorhanden sein!)
-    $extenddesc = "";
-    if ( $cfg["path"]["ext_info"] == "-1" ) $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend,";
+    if ( $cfg["path"]["ext_info"] == "-1" ) {
+        $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend,";
+    } else {
+        $extenddesc = null;
+    }
 
     // link zum webroot
     $kekse["html"][]  = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
@@ -104,10 +113,6 @@
     $actid = 0;
     unset($path);
 
-    $ausgaben["M0"] = "";
-    $ausgaben["M1"] = "";
-    $ausgaben["M2"] = "";
-
     foreach ($kekspath as $key => $value) {
         $search = "like '".preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $value)."'";
         $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
@@ -127,7 +132,7 @@
         #if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
         if ( $db -> num_rows($result) == 1 ) {
-            $data = $db -> fetch_array($result,1);                              
+            $data = $db -> fetch_array($result,1);
             if ( $data["level"] != "" && !priv_check('', $data["level"]) ) break;
             // gefundene eintraege
             $count_menu++;
@@ -163,7 +168,8 @@
             // prev + next handling
 
             // navbar links
-            if ( $path == "" ) {
+            if ( !isset($path) ) {
+                $path = null;
                 $ausgaben["UP"] = $pathvars["virtual"]."/index.html";
             } else {
                 $ausgaben["UP"] = $pathvars["virtual"].$path.".html";
@@ -172,12 +178,13 @@
             // seitentitel
             $path .= "/".$data["entry"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
+            if ( !isset($cfg["path"]["title_reverse"]) ) $cfg["path"]["title_reverse"] = null;
             if ( $cfg["path"]["title_reverse"] == -1 ) {
                 $specialvars["pagetitle"] = $data["label"].$defaults["split"]["title"].$specialvars["pagetitle"];
             } else {
                 $specialvars["pagetitle"] .= $defaults["split"]["title"].$data["label"];
             }
-            if ( $data["extend"] != "" ) {
+            if ( isset($data["extend"]) ) {
                 $title = $data["extend"];
             } else {
                 $title = $data["label"];
@@ -205,18 +212,19 @@
             $specialvars["default_template"] = $data["defaulttemplate"];
 
             // variables css file - erweiterung laut menueintrag setzen
-            if ( $data["dynamiccss"] != "" ) {
+            if ( isset($data["dynamiccss"]) ) {
                 $specialvars["dynamiccss"] = $data["dynamiccss"];
             }
 
             // variables bg bild - erweiterung laut menueintrag setzen
-            if ( $data["dynamicbg"] != "" ) {
+            if ( isset($data["dynamicbg"]) ) {
                 $specialvars["dynamicbg"] = $data["dynamicbg"];
             }
 
 
             // content navigation erstellen
             // ***
+            if ( !isset($back) ) $back = null;
             $ausgaben["M3"] = eCRC($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
 
             // M0 -> ebene darueber
@@ -285,6 +293,8 @@
                                )
                       ORDER BY  ".$cfg["path"]["db"]["menu"]["order"].";";
                 $navbarresult  = $db -> query($sql);
+
+
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
                         $right = -1;
@@ -312,8 +322,8 @@
                             $prev = "<a href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
                         }
                         if ( $navbararray["entry"] == $environment["kategorie"] ) {
-                            if ( $prev == "" ) {
-                                $prev = "<a href=\"../".$lower[$navbararray["refid"]]["entry"].".html\">".$lower[$navbararray["refid"]]["label"]."</a>";
+                            if ( !isset($prev) ) {
+                                $prev = "<a href=\"../".@$lower[$navbararray["refid"]]["entry"].".html\">".@$lower[$navbararray["refid"]]["label"]."</a>";
                             }
                             #echo sprintf("<pre>%s</pre>",print_r($lower[$navbararray["refid"]],True));
                             #echo sprintf("<pre>%s</pre>",print_r($lower,True));
@@ -348,6 +358,8 @@
                            AND (".$cfg["path"]["db"]["lang"]["entries"].".lang='".$environment["language"]."'))
                       ORDER BY  ".$cfg["path"]["db"]["menu"]["order"].";";
                 $navbarresult  = $db -> query($sql);
+
+                $ausgaben["L2"] = null;
                 while ( $navbararray = $db -> fetch_array($navbarresult,1) ) {
                     if ( $navbararray["level"] == "" ) {
                         $right = -1;
@@ -408,6 +420,7 @@
                         return $prev;
                     } else {
                         #echo sprintf("<pre>%s</pre>",print_r($children,True));
+                        $path = null;
                         foreach ( $children as $entry ) {
                             $path .= "/".$entry["entry"];
                         }
@@ -415,6 +428,7 @@
                         return $prev;
                     }
                 }
+
                 // eintrag vorher suchen
                 $sort = $data["sort"] - 10;
                 $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
@@ -435,7 +449,7 @@
                     $children[] = array( "entry" => $data2["entry"], "label" => $data2["label"] );
                     $prev = prev_child_find( $data2["mid"] );
                 }
-                if ( $next == "" ) {
+                if ( !isset($next) ) {
                     $last = @end($upper);
                     function depth_find( $refid, &$count ) {
                         global $debugging, $db, $cfg;
@@ -470,6 +484,7 @@
     }
 
     // brotkrumen zusammensetzen
+    if ( !isset($cfg["path"]["max_length"]) ) $cfg["path"]["max_length"] = null;
     if ( $cfg["path"]["max_length"] != "" ) {
         // kekse werden so lange gekuerzt bis sie passen
         $cut_link = "";
@@ -483,12 +498,13 @@
             array_unshift( $kekse["html"] , "<a href=\"".$cut_link."\" title=\"".$cut_title."\" class=\"".$cfg["path"]["css"]["crumb"]."\">...</a>" );
         }
     }
-    $environment["kekse"] = implode($defaults["split"]["kekse"],$kekse["html"]);
+    $environment["kekse"] = implode($defaults["split"]["kekse"], $kekse["html"]);
 
 
     // 404 error handling
     // ***
     if ( $specialvars["404"]["enable"] ) {
+        $nochk = null;
         foreach( $specialvars["404"]["nochk"]["ebene"] as $value ) {
            $nochk .= strstr($environment["ebene"],$value);
         }

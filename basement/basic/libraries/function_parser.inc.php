@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -67,7 +67,7 @@
     function parser($parse_name, $parse_path) {
 
         // variableninit
-        global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben,$dataloop,$hidedata;
+        global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $dataloop, $hidedata;
 
         // original template find
         #$template = $pathvars["templates"].$parse_path.$parse_name.".tem.html";
@@ -85,6 +85,9 @@
             $parse_print = 0;
             $parse_mod = "";
             $parse_out = "";
+
+            $loop = false;
+            $hide = false;
 
             // wenn "disabled" uebergeben wurde, parser ausgabe generell aktivieren
             #if ( $parse_marke == "disabled" ) $parse_print = 1;
@@ -123,14 +126,14 @@
                     }
 
                     if ( strpos($parse_mod,"##loop")  !== false ) {
-                        $loop   = "1";
+                        $loop = true;
                         $loop_mark   = explode("-",strstr($parse_mod,"##loop"),3);
                         $loop_label  = $loop_mark[1];
                         $loop_buffer = "";
                         continue; // marke ebenfalls kicken!
                     } else {
                         if ( strpos($parse_mod,"##cont") !== false ) {
-                            $loop  = "0";
+                            $loop  = false;
                             $loop_block = "";
                             $labelloop = $dataloop[$loop_label];
                             foreach ( (array) $labelloop as $data ) {
@@ -143,7 +146,7 @@
                                 $loop_block .= $loop_work;
                             }
                             $parse_mod = $loop_block."\n"; // marke ebenfalls kicken!
-                        } elseif ( $loop == "1" ) {
+                        } elseif ( $loop == true ) {
                             $loop_buffer .= trim($parse_mod)."\n";
                             continue;
                         }
@@ -152,14 +155,14 @@
                     // ##hide-??? - ##show bereich bearbeiten
                     // nur wenn $hidedata["???"] verfuegbar ist einblenden
                     if ( strpos($parse_mod,"##hide") !== false ) {
-                        $hide   = "1";
+                        $hide   = true;
                         $hide_mark   = explode("-",strstr($parse_mod,"##hide"),3);
                         $hide_label  = $hide_mark[1];
                         $hide_buffer = "";
                         continue; // marke ebenfalls kicken!
                     } else {
                         if ( strpos($parse_mod,"##show") !== false ) {
-                            $hide  = "0";
+                            $hide  = false;
                             $hide_block = "";
                             if ( is_array($hidedata[$hide_label]) ) {
                                 foreach ( $hidedata[$hide_label] as $name => $value ) {
@@ -170,9 +173,8 @@
                             #$line = $block.trim($line)."\n";
                             $parse_mod = $hide_block; // marke ebenfalls kicken!
 
-                        } elseif ( $hide == "1" ) {
+                        } elseif ( $hide == true ) {
                             $hide_buffer .= trim($parse_mod)."\n";
-
                             continue;
                         }
                     }
@@ -227,6 +229,7 @@
         }
         // variable ausgabe variable erstellen
         $parse_vari = "$parse_name"."_out";
+        if (!isset($$parse_vari) ) $$parse_vari = null;
         $$parse_vari .= $parse_out;
 
         // parse marke fuer spaetere verwendung zurueck setzen
