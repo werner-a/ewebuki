@@ -101,7 +101,7 @@
             }
             // textfelder (mehrzeilig)
             if ( strstr($fields["Type"], "text")) {
-                if ( $form_options[$fields["Field"]]["fsize"] != "" ) {
+                if ( isset($form_options[$fields["Field"]]["fsize"]) ) {
                     $col_row = explode(";",$form_options[$fields["Field"]]["fsize"],2);
                     $cols = " cols=\"".$col_row[0]."\"";
                     $rows = " rows=\"".$col_row[1]."\"";
@@ -109,8 +109,8 @@
                     $cols = " cols=\"45\"";
                     $rows = " rows=\"5\"";
                 }
-                ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["textbox"]["class"]."\"";
-                ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
+                ( isset($form_options[$fields["Field"]]["fclass"]) ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".@$defaults["form"]["textbox"]["class"]."\"";
+                ( isset($form_options[$fields["Field"]]["fstyle"]) ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
                 $formularobject = "<textarea id=\"".$fields["Field"]."\"".$cols.$rows.$class.$style." name=\"".$fields["Field"].$extend."\">".htmlspecialchars($form_values[$fields["Field"]])."</textarea>\n";
                 $element[$fields["Field"].$extend] = $formularobject;
             }

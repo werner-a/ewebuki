@@ -48,6 +48,7 @@
 
     function form_options($tname) {
         global $environment, $db;
+        $form_options = null;
         $sql = "SELECT * FROM site_form LEFT JOIN site_form_lang ON site_form.fid = site_form_lang.fid WHERE ( site_form.ftname = '".$tname."' ) AND ( site_form_lang.flang = '".$environment["language"]."' or site_form_lang.flang Is Null );";
         $nop = null;
         $result = $db -> query($sql);

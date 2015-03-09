@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -52,13 +52,13 @@
         global $db, $debugging, $pathvars, $environment, $defaults;
 
         // default images setzen
-        $defaults["select"]["none"] == "" ? $defaults["select"]["none"] = "<img src=\"/images/default/pos.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"\" />" : NOP;
-        $defaults["select"]["prev"] == "" ? $defaults["select"]["prev"] = "<img src=\"/images/default/left.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(prev)\" title=\"#(prev)\" />" : NOP;
-        $defaults["select"]["next"] == "" ? $defaults["select"]["next"] = "<img src=\"/images/default/right.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(next)\" title=\"#(next)\" />" : NOP;
-        $defaults["select"]["separator"] == "" ? $defaults["select"]["separator"] = "|" : NOP;
+        if ( !isset($defaults["select"]["none"]) ) $defaults["select"]["none"] = "<img src=\"/images/default/pos.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"\" />";
+        if ( !isset($defaults["select"]["prev"]) ) $defaults["select"]["prev"] = "<img src=\"/images/default/left.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(prev)\" title=\"#(prev)\" />";
+        if ( !isset($defaults["select"]["next"]) ) $defaults["select"]["next"] = "<img src=\"/images/default/right.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(next)\" title=\"#(next)\" />";
+        if ( !isset($defaults["select"]["separator"]) ) $defaults["select"]["separator"] = "|";
 
         // muss ein integer sein, sonst geht der select daneben!
-        $position = (int) $position;
+        $position = (int)$position;
 
         if ( $getvalues != False ) {
             $getvalues = "?".$getvalues;
@@ -74,6 +74,7 @@
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result  = $db -> query($sql);
 
+        $inh_selector = null;
         if ( $gesamt > $menge ) {
             $links = $position-$menge;
             $rechts = $position+$menge;
@@ -118,8 +119,7 @@
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sft: ".$shift.$debugging["char"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sep: ".$selpages.$debugging["char"];
 
-            $trenner = "";
-
+            $trenner = null;
             for ( $j = $dirselbeg, $i = $dirselbeg; $i < $dirselend; $i+=$menge ) {
             #for ( $j = 0, $i = 0; $i < $gesamt; $i+=$menge ) {
                 $j++;
