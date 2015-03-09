@@ -138,7 +138,7 @@
           break;
         }
       }
-      if ( $environment["language"] == "" ) {
+      if ( !isset($environment["language"]) ) {
         $environment["language"] = $specialvars["default_language"];
         $langsw = " (default)";
       }
