@@ -163,7 +163,8 @@
                 $num_rows = $db -> num_rows($result);
                 if ( $num_rows >= 1 ) $ausgaben["form_error"] = "#(error_dupe)";
 
-                #if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                if ( !isset($error) ) $error = null;
+                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
             }
