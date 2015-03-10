@@ -88,7 +88,7 @@
 
         if ( file_exists($template) ) {
             $fd = fopen($template, "r");
-            $begin = true;
+            $begin = false;
             $loop = false;
             $hide = false;
             while (!feof($fd)) {
