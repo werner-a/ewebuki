@@ -400,7 +400,7 @@
                                     for ($i = 0; $i < $wieviele; $i++ ) {
                                         $value = $data[$i];
                                         // tabwert 5 = datumspruefung an
-                                        if ( $tabwerte[5] != "" ) {
+                                        if ( isset($tabwerte[5]) ) {
                                             // wir pruefen, ob die zelle ein Datum enthaelt
                                             if ( strtotime ($value) == TRUE ) {
                                                 $beginn = strtotime ($value);
@@ -461,7 +461,7 @@
                                                 if ( $i > $tabwerte[6] ) {
                                                     // Die Werte, die nach tabwert 6 kommen, werden bis zum vorletzten Wert
                                                     // (falls vorhanden) mit Vortext ausgegeben und dann der Wert und ein br
-                                                    if ( $vortext[$i] != "" ) {
+                                                    if ( isset($vortext[$i]) ) {
                                                         $row .= $vortext[$i].": ";
                                                     }
                                                     if ( $i < $wieviele-1 ) {
@@ -650,7 +650,7 @@
                             } elseif ( $imgwerte[1] == "l" ) {
                                 $align = " align=\"left\"";
                                 $style_align = "float:left;";
-                            } elseif ( $imgwerte[1] != "" ) {
+                            } elseif ( isset($imgwerte[1]) ) {
                                 $attrib = " ".$art."=\"".$imgwerte[1]."\"";
                             }
                             if ( $imgwerte[2] == "0" ) {
@@ -782,10 +782,9 @@
                                 $ausgabewert = $linka.$defaults["tag"]["img"].$linkb;
                             }
                             foreach ( $repl as $value ) {
-                                if ( isset($$value) ) {
-                                    $ausgabewert = str_replace("##".$value."##",$$value,$ausgabewert);
-                                    $$value = null;
-                                }
+                                if ( !isset($$value) ) $$value = null;
+                                $ausgabewert = str_replace("##".$value."##",$$value,$ausgabewert);
+                                $$value = "";
                             }
                             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
                         }
@@ -1077,7 +1076,7 @@
                                 if ( isset($imgwerte[7]) ) {
                                     $bilderstrecke = ",".$imgwerte[7];
                                 } else {
-                                    $bilderstrecke = "";
+                                    $bilderstrecke = null;
                                 }
                                 if ( isset($imgwerte[3]) ) {
                                     if ( strpos($imgurl,$cfg["file"]["base"]["pic"]["root"]) === false ) {
@@ -1101,6 +1100,7 @@
                                     foreach ( $repl as $value ) {
                                         if ( !isset($$value) ) $$value = null;
                                         $ausgaben["linka"] = str_replace("##".$value."##",$$value,$ausgaben["linka"]);
+                                        $$value = "";
                                     }
                                     $ausgaben["linkb"] = $defaults["tag"]["/img_link"];
 
@@ -1160,7 +1160,7 @@
 
                                 $result = $db -> query($sql);
                                 $files = array();
-                                $sortarray = array();                                
+                                $sortarray = array();
                                 while ( $data = $db -> fetch_array($result,1) ) {
                                     $sortarray[] = $tmp_sort[$data["fid"]];
                                     $files[] = array(
@@ -1215,7 +1215,7 @@
                                     $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
                                 } else {
                                     $sel = str_replace("##youtube_div##","",$sel);
-                                    $sel = str_replace("##youtube_link##","",$sel);                                    
+                                    $sel = str_replace("##youtube_link##","",$sel);
                                 }
                             } else {
                                 $sel = str_replace("##youtube_div##","",$sel);
@@ -1278,7 +1278,7 @@
                                 $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
                             }
 
-                            if ( $tag_param[3] == "" && $tag_param[4] == "l" ) {
+                            if ( !isset($tag_param[3]) && $tag_param[4] == "l" ) {
                                $ArrayReplace = array(count($files)," style=\"display:none\"");
                             } else {
                                $ArrayReplace = array(count($files),"");
@@ -1286,7 +1286,7 @@
 
                             $sel .= str_replace(array("##count##","##display##"),$ArrayReplace,$defaults["tag"]["/sel"]);
 
-                            if ( $tag_param[3] == "" ) {
+                            if ( !isset($tag_param[3]) ) {
                                 if ( $tag_param[4] == "l" ) {
                                     $sel = str_replace("##no_image##","<a href=\"".$tn1."\" ".$lb.">",$sel);
                                     $sel = str_replace("##no_image_end##","</a>",$sel);
@@ -1352,7 +1352,7 @@
                             } else {
                                 $m1 = null;
                                 if ( @$m1werte[1] == "b" ) {
-                                    if ( $ausgaben["M1"] != "" ) {
+                                    if ( isset($ausgaben["M1"]) ) {
                                         $trenner = $defaults["split"]["m1"];
                                     } else {
                                         $trenner = "";
