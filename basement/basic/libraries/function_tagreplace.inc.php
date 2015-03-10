@@ -323,14 +323,16 @@
                                 $width = " width=\"".$tabwerte[1]."\"";
                             }
                             if ( isset($tabwerte[2]) ) {
-                                $border = " border=\"".$tabwerte[2]."\"";
+                                if ( $tabwerte[2] != "" ) {
+                                    $border = " border=\"".$tabwerte[2]."\"";
+                                }
                             }
                             if ( isset($tabwerte[3]) ) {
                                 $cellspacing = " cellspacing=\"".$tabwerte[3]."\"";
                             } else {
                                 $cellspacing = " cellspacing=\"0\"";
                             }
-                            if ( isset($tabwerte[4]) ) {
+                            if ( isset($tabwerte[4]) ) {                               
                                 $cellpadding = " cellpadding=\"".$tabwerte[4]."\"";
                             } else {
                                 $cellpadding = " cellpadding=\"1\"";
