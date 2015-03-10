@@ -98,7 +98,7 @@
         $ausgaben["form_break"] = $cfg["prived"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
@@ -118,13 +118,14 @@
 
         // +++
         // page basics
-
+        
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""
                 || $_POST["extension1"] != ""
                 || $_POST["extension2"] != "" ) ) {
 
-            // form eingaben pr�fen
+            // form eingaben pruefen
             form_errors( $form_options, $_POST );
 
             // evtl. zusaetzliche datensatz aendern

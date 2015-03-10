@@ -64,19 +64,20 @@
         $element = form_elements( $cfg["prived"]["db"]["priv"]["entries"], $form_values );
 
         // form elemente erweitern
-        $element["extension1"] = "";
-        $element["extension2"] = "";
+        $element["extension1"] = null;
+        $element["extension2"] = null;
 
 
         // fehlermeldungen
-        $ausgaben["form_error"] = "";
+        $ausgaben["form_error"] = null;
 
         // navigation erstellen
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         $ausgaben["form_aktion"] = $cfg["prived"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["prived"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = null;
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
@@ -88,7 +89,7 @@
             $ausgaben["inaccessible"] .= "# (error_result) #(error_result)<br />";
             $ausgaben["inaccessible"] .= "# (error_dupe) #(error_dupe)<br />";
         } else {
-            $ausgaben["inaccessible"] = "";
+            $ausgaben["inaccessible"] = null;
         }
 
         // wohin schicken
@@ -96,7 +97,7 @@
 
         // +++
         // page basics
-
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( $environment["parameter"][2] == "verify" && $_POST["send"] != "" ) {
 
             // form eigaben pruefen
@@ -104,6 +105,7 @@
 
             // evtl. zusaetzliche datensatz anlegen
             if ( $ausgaben["form_error"] == ""  ) {
+                if ( !isset($error) ) $error = null;
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
             }
 
@@ -111,8 +113,9 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 $kick = array( "PHPSESSID", "form_referer", "send", "avail" );
+                $sqla = null; $sqlb = null;
                 foreach($_POST as $name => $value) {
-                    if ( !in_array($name,$kick) ) {
+                    if ( !in_array($name, $kick) ) {
                         if ( $sqla != "" ) $sqla .= ",";
                         $sqla .= " ".$name;
                         if ( $sqlb != "" ) $sqlb .= ",";
@@ -124,7 +127,7 @@
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                if ( $header == "" ) $header = $cfg["prived"]["basis"]."/list.html";
+                if ( !isset($header) ) $header = $cfg["prived"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden

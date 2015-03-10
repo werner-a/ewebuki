@@ -64,6 +64,8 @@
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
 
+        $id = 0;
+        $element["priv"] = null; // fix für rparser fehler
         if ( $num_rows > 0 ) {
             $hidedata["delete_liste"]["on"] = "on";
             while ( $data = $db -> fetch_array($result,$nop) ) {
@@ -83,14 +85,14 @@
 
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,$nop);
+            $data = $db -> fetch_array($result, null);
             $ausgaben["priv"] = $data["priv"];
 
         }
 
         // das loeschen wurde bestaetigt, loeschen!
         // ***
-        if ( $_POST["delete"] != "" ) {
+        if ( isset($_POST["delete"]) ) {
 
             $sql = "DELETE FROM ".$cfg["prived"]["db"]["priv"]["entries"]."
                           WHERE ".$cfg["prived"]["db"]["priv"]["key"]."='".$environment["parameter"][1]."';";

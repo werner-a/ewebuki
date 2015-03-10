@@ -66,7 +66,7 @@
         }
 
         // suche verarbeiten
-        if ( $_SESSION["prived_search"] ) {
+        if ( @$_SESSION["prived_search"] ) {
             $ausgaben["search"] = $_SESSION["prived_search"];
             $filters[] = $_SESSION["prived_search"];
             $array1 = explode( " ", $_SESSION["prived_search"] );
@@ -98,6 +98,8 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
+        $parameter = null; $getvalues = null;
         $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["prived"]["db"]["priv"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
@@ -107,6 +109,7 @@
         while ( $data = $db -> fetch_array($result,1) ) {
 
             // platz fuer vorbereitungen hier z.B.tabellen farben wechseln
+            if ( !isset($cfg["prived"]["color"]["set"]) ) $cfg["prived"]["color"]["set"] = null;
             if ( $cfg["prived"]["color"]["set"] == $cfg["prived"]["color"]["a"]) {
                 $cfg["prived"]["color"]["set"] = $cfg["prived"]["color"]["b"];
             } else {
@@ -133,7 +136,7 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }

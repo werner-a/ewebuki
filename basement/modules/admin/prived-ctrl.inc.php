@@ -49,7 +49,7 @@
     if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
     // path fuer die schaltflaechen anpassen
-    if ( $cfg["leer"]["iconpath"] == "" ) $cfg["leer"]["iconpath"] = "/images/default/";
+    if ( !isset($cfg["prived"]["iconpath"]) ) $cfg["leer"]["iconpath"] = "/images/default/";
 
     // label bearbeitung aktivieren
     if ( isset($_GET["edit"]) ) {
@@ -59,17 +59,17 @@
     }
 
     // private function include loader
-    if ( is_array($cfg["prived"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["prived"]["subdir"]."/".$cfg["prived"]["name"]."-functions.inc.php";
+    #if ( isset($cfg["prived"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["prived"]["subdir"]."/".$cfg["prived"]["name"]."-functions.inc.php";
 
     // shared function include loader
-    if ( is_array($cfg["prived"]["function"][$environment["kategorie"].",shared"]) ) {
+    if ( isset($cfg["prived"]["function"][$environment["kategorie"].",shared"]) ) {
         foreach ( $cfg["prived"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // global function include loader
-    if ( is_array($cfg["prived"]["function"][$environment["kategorie"].",global"]) ) {
+    if ( isset($cfg["prived"]["function"][$environment["kategorie"].",global"]) ) {
         foreach ( $cfg["prived"]["function"][$environment["kategorie"].",global"] as $value ) {
             include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
         }

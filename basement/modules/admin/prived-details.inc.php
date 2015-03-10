@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // "$Id$";
-  // "prived - details funktion";
+// "$Id$";
+// "prived - details funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -43,8 +43,6 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
-
     if ( $cfg["prived"]["right"] == "" || priv_check('', $cfg["prived"]["right"] ) ) {
 
         ////////////////////////////////////////////////////////////////////
@@ -59,7 +57,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["leer"]["iconpath"] == "" ) $cfg["leer"]["iconpath"] = "/images/default/";
+        if ( isset($cfg["prived"]["iconpath"]) ) $cfg["leer"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($_GET["edit"]) ) {
@@ -89,9 +87,11 @@
         $result = $db -> query($sql);
         $num_rows = $db -> num_rows($result);
 
+        $id = 0;
+        $element["priv"] = null; // fix für rparser fehler
         if ( $num_rows > 0 ) {
             $hidedata["delete_liste"]["on"] = "on";
-            while ( $data = $db -> fetch_array($result,$nop) ) {
+            while ( $data = $db -> fetch_array($result, null) ) {
                 $id++;
                 ($data["neg"] == -1 ) ? $data["neg"] = "entzogen" : $data["neg"] = "erteilt";
                 $ausgaben["priv"] = $data["priv"];
@@ -108,7 +108,7 @@
 
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
             $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,$nop);
+            $data = $db -> fetch_array($result, null);
             $ausgaben["priv"] = $data["priv"];
 
         }
@@ -141,8 +141,6 @@
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
-
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
