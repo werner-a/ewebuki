@@ -1099,10 +1099,10 @@
                                         $ausgaben["linka"] = $defaults["tag"]["img_link"];
                                     }
                                     foreach ( $repl as $value ) {
-                                        if ( isset($$value) ) {
-                                            $ausgaben["linka"] = str_replace("##".$value."##",$$value,$ausgaben["linka"]);
-                                            $$value = null;
+                                        if ( !isset($$value) ) {
+                                            $$value = "";
                                         }
+                                        $ausgaben["linka"] = str_replace("##".$value."##",$$value,$ausgaben["linka"]);
                                     }
                                     $ausgaben["linkb"] = $defaults["tag"]["/img_link"];
 
