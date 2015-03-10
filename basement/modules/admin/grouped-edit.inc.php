@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
+// "$Id $";
 // "grouped edit funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -47,7 +47,7 @@
 
         $hidedata["edit"]["enable"] = "on";
 
-        if ( $_POST["ajaxsuche"] == "on") {
+        if ( @$_POST["ajaxsuche"] == "on") {
             echo "<li><b>Treffer</b></li>";
             $sql = "SELECT * FROM auth_user WHERE username like '%".$_POST["text"]."%' OR vorname like '%".$_POST["text"]."%' OR nachname like '%".$_POST["text"]."%' ORDER BY ".$cfg["grouped"]["db"]["user"]["order"];
             $result = $db -> query($sql);
@@ -60,12 +60,13 @@
             exit;
         }
 
-        if ( $_POST["ajax"] == "on") {
+        if ( @$_POST["ajax"] == "on") {
             $_SESSION["chosen_user"] = $_POST["chosen_user"];
             exit;
         }
 
         // session-array loeschen
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( !$environment["parameter"][2] || !$_POST["send"] ) {
             unset($_SESSION["chosen_user"]);
         }
@@ -117,11 +118,11 @@
         $ausgaben["form_break"] = $cfg["grouped"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
-        
+
         #$mapping["navi"] = "leer";
 
         // unzugaengliche #(marken) sichtbar machen

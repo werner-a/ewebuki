@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
+// "$Id $";
 // "grouped - delete funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -51,7 +51,7 @@
         // ausgaben variablen bauen
         $sql = "SELECT * FROM ".$cfg["grouped"]["db"]["group"]["entries"]." WHERE gid='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
-        $field = $db -> fetch_array($result,$nop);
+        $field = $db -> fetch_array($result,null);
         foreach($field as $name => $value) {
             $ausgaben[$name] = $value;
         }
@@ -64,7 +64,7 @@
                 WHERE auth_member.".$cfg["grouped"]["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
 
         $result = $db -> query($sql);
-
+        $ausgaben["members"] = null;
         while ( $members = $db -> fetch_array($result,1) ) {
             ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
             $ausgaben["members"] .= $trenner.$members["username"];
@@ -81,10 +81,10 @@
 
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
-        $data = $db -> fetch_array($result,$nop);
-        $ausgaben["form_id1"] = $data["id"];
-        $ausgaben["field1"] = $data["field1"];
-        $ausgaben["field2"] = $data["field2"];
+        $data = $db -> fetch_array($result,null);
+        #$ausgaben["form_id1"] = $data["id"];
+        #$ausgaben["field1"] = $data["field1"];
+        #$ausgaben["field2"] = $data["field2"];
 
         // funktions bereich fuer erweiterungen
         // ***
@@ -128,7 +128,7 @@
 
         // das loeschen wurde bestaetigt, loeschen!
         // ***
-        if ( $_POST["send"] != "" ) {
+        if ( isset($_POST["send"]) ) {
 
                 // z.B. evtl. verknuepfte datensatze in auth_member loeschen
                 $sql = "DELETE FROM ".$cfg["grouped"]["db"]["member"]["entries"]."
@@ -143,7 +143,7 @@
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] = $db -> error("#(error_result2)<br />");
-                
+
                 // +++
                 // funktions bereich fuer erweiterungen
 #            }

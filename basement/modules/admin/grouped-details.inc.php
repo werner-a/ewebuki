@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
+  $script["name"] = "$Id $";
   $Script["desc"] = "gruppieren von usern";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -59,7 +59,7 @@
         if ( get_cfg_var('register_globals') == 1 ) $debugging["ausgabe"] .= "Warnung: register_globals in der php.ini steht auf on, evtl werden interne Variablen ueberschrieben!".$debugging["char"];
 
         // path fuer die schaltflaechen anpassen
-        if ( $cfg["grouped"]["iconpath"] == "" ) $cfg["grouped"]["iconpath"] = "/images/default/";
+        if ( !isset($cfg["grouped"]["iconpath"]) ) $cfg["grouped"]["iconpath"] = "/images/default/";
 
         // label bearbeitung aktivieren
         if ( isset($_GET["edit"]) ) {
@@ -94,6 +94,7 @@
                  ON ( auth_member.uid=auth_user.uid )
                 WHERE ".$cfg["grouped"]["db"]["member"]["group"]."='".$environment["parameter"][1]."'";
         $result = $db -> query($sql);
+        $ausgaben["members"] = null;
         while ( $members = $db -> fetch_array($result,1) ) {
             ( $ausgaben["members"] == "" ) ? $trenner = "" : $trenner = ", ";
             $ausgaben["members"] .= $trenner.$members["username"];
@@ -108,7 +109,7 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }

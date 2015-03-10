@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id: grouped-ctrl.inc.php 914 2007-10-15 11:49:39Z chaot $";
+  $script["name"] = "$Id$";
   $Script["desc"] = "grouped - kontroll funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -58,8 +58,22 @@
         $specialvars["editlock"] = -1;
     }
 
-    // include function loader
-    if ( is_array($cfg["grouped"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"]."-functions.inc.php";
+    // private function include loader
+    #if ( isset($cfg["grouped"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"]."-functions.inc.php";
+
+    // shared function include loader
+    if ( isset($cfg["grouped"]["function"][$environment["kategorie"].",shared"]) ) {
+        foreach ( $cfg["grouped"]["function"][$environment["kategorie"].",shared"] as $value ) {
+            include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
+        }
+    }
+
+    // global function include loader
+    if ( isset($cfg["grouped"]["function"][$environment["kategorie"].",global"]) ) {
+        foreach ( $cfg["grouped"]["function"][$environment["kategorie"].",global"] as $value ) {
+            include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
+        }
+    }
 
     // magic include loader
     if ( array_key_exists($environment["kategorie"], $cfg["grouped"]["function"]) ) {

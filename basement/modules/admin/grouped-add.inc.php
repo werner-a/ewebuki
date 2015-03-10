@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
+// "$Id $";
 // "grouped - add funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2006 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -51,7 +51,7 @@
 
         $hidedata["edit"]["enable"] = "on";
 
-        if ( $_POST["ajaxsuche"] == "on") {
+        if ( @$_POST["ajaxsuche"] == "on") {
             echo "<li><b>Treffer</b></li>";
             $sql = "SELECT * FROM auth_user WHERE username like '%".$_POST["text"]."%' OR vorname like '%".$_POST["text"]."%' OR nachname like '%".$_POST["text"]."%'";
             $result = $db -> query($sql);
@@ -62,12 +62,13 @@
             exit;
         }
 
-        if ( $_POST["ajax"]) {
+        if ( @$_POST["ajax"]) {
             $_SESSION["chosen_user"] = $_POST["chosen_user"];
             exit;
         }
 
          // session-array loeschen
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( !$environment["parameter"][2] || !$_POST["send"] ) {
             unset($_SESSION["chosen_user"]);
         }
@@ -79,8 +80,8 @@
         $element = form_elements( $cfg["grouped"]["db"]["group"]["entries"], $form_values );
 
         // form elemente erweitern
-        $element["extension1"] = "";
-        $element["extension2"] = "";
+        $element["extension1"] = null;
+        $element["extension2"] = null;
 
         // +++
         // page basics
@@ -114,11 +115,12 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         $ausgaben["form_aktion"] = $cfg["grouped"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["grouped"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
@@ -161,8 +163,7 @@
                 $num_rows = $db -> num_rows($result);
                 if ( $num_rows >= 1 ) $ausgaben["form_error"] = "#(error_dupe)";
 
-
-                if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                #if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
             }
