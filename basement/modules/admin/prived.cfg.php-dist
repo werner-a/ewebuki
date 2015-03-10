@@ -1,10 +1,10 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: prived.cfg.php-dist 1677 2009-12-07 12:16:57Z chaot $";
+// "$Id$";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -78,10 +78,6 @@
               ),
             "right" => $cfg["auth"]["menu"]["prived"][1],
     );
-
-    // * tipp: fuer das einfache modul muss der wert $cfg["basis"] natuerlich
-    // "/my" lauten. es funktioniert im beispiel nur ohne aenderung, da das
-    // einfache script $cfg["basis] nicht nutzt.
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
 ?>

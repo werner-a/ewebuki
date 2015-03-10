@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: leer-edit.inc.php 1355 2008-05-29 12:38:53Z buffy1860 $";
+// "$Id$";
 // "leer - edit funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
