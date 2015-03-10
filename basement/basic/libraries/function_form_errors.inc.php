@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -48,7 +48,6 @@
 
     function form_errors( $form_options, $form_values ) {
         global $ausgaben, $element, $dataloop, $hidedata;
-        #$ausgaben["form_error"] = "";
         if ( is_array($form_options) && count($form_values) > 0 ) {
             // form options durchlaufen
             foreach($form_options as $name => $value) {
@@ -56,7 +55,7 @@
                     // ist das form feld leer ?
                     if ( $form_values[$name] == "" ) {
                         // gibt es eine fehlermeldung in der db ?
-                        if ( $value["ferror"] == "" ) {
+                        if ( !isset($value["ferror"]) ) {
                             $ausgaben["form_error"] .= "Field: ".$value["flabel"]." required!<br />";
                             $dataloop["form_error"][$name]["text"] = "Field: ".$value["flabel"]." required!";
                         } else {
@@ -66,9 +65,7 @@
                     }
                 }
                 // sind die eingaben plausibel?
-                if ( $value["fcheck"] != "" ) {
-                    # thanks @ buffy-1860@gmx.net
-
+                if ( isset($value["fcheck"]) ) {
                     if ( strstr($value["fcheck"], "PREG:") ) {
                         $preg = substr($value["fcheck"],5);
                         if (!preg_match_all("/$preg/",$form_values[$name],$regs) && $form_values[$name] != "") {
@@ -83,14 +80,14 @@
                     }
                 }
                 // form_element manipulieren
-                if ( $dataloop["form_error"][$name]["text"] != "" && $element[$name] != "" ) {
+                if ( isset($dataloop["form_error"][$name]["text"]) && isset($element[$name]) ) {
                     preg_match("/class=\"(.*)\"/Ui",$element[$name],$match);
                     $class = "form_error";
-                    if ( $match[1] != "" ) $class .= " ".$match[1];
+                    if ( isset($match[1]) ) $class .= " ".$match[1];
                     $element[$name] = str_replace($match[0],"class=\"".$class."\"",$element[$name]);
                 }
             }
-            if ( count($dataloop["form_error"]) > 0 ) $hidedata["form_error"] = array();
+            if ( isset($dataloop["form_error"]) ) $hidedata["form_error"] = array();
         }
     }
 
