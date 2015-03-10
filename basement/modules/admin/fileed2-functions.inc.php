@@ -306,7 +306,7 @@
             } else {
                 $old = "_".$id."[\.]";
             }
-            
+            $FileTypTmp = null;
             // Einbindung ueber wrapper
             foreach ( $cfg["file"]["filetyp"] as $key => $value ) {
                 if ( $value == "img" ) {
@@ -332,12 +332,16 @@
 //                        FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
 //                       WHERE ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
 //                          OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%'";
+            $status = null;
+            if ( isset($cfg["fileed"]["delete_used"]) ) {
+                $status = " AND status=1";
+            }
             $sql2 = "SELECT DISTINCT ".$cfg["fileed"]["db"]["content"]["path"]."
                        FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
                       WHERE ".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$old."'
-                         OR ".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$new."'";
+                         OR ".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$new."'".$status;
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
-
+            $url = null;
             /* multi-db-support */
             if ( $cfg["fileed"]["db"]["multi"]["change"] == True ) {
                 $sql = "SELECT ".$cfg["fileed"]["db"]["multi"]["field"]."
@@ -366,34 +370,11 @@
 
             $result2 = $db -> query($sql2);
             $num_rows = $db -> num_rows($result2);
-            if ( $num_rows > 0 && $error == 0 ){
+            if ( $num_rows > 0 ){
                 while ( $data2 = $db -> fetch_array($result2,1) ) {
                     $ebene = $data2["ebene"]."/";
                     $kategorie = $data2["kategorie"];
                     $label = tname2path($data2["tname"]).".html";
-                    // versionen abarbeiten
-//                     $sql3 = "SELECT *
-//                                FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
-//                               WHERE tname='".$data2["tname"]."'
-//                                 AND (".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$old."%'
-//                                  OR ".$cfg["fileed"]["db"]["content"]["content"]." LIKE '%".$new."%')
-//                            ORDER BY version DESC";
-                    $sql3 = "SELECT *
-                               FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
-                              WHERE tname='".$data2["tname"]."'
-                                AND (".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$old."'
-                                 OR ".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$new."')
-                           ORDER BY version DESC";
-// echo $sql3."<br>";
-//                    $result3 = $db -> query($sql3);
-//                    $versions = array();
-//                    while ( $data3 = $db -> fetch_array($result3,1) ) {
-////                         if ( !strstr($data3["content"],str_replace("\\","",$old)) && !strstr($data3["content"],$new) ) continue;
-//                        $url = $pathvars["virtual"].tname2path($data2["tname"]).",v".$data3["version"].".html";
-//                        $class = "";
-//                        if ( $data3["status"] == 1 ) $class = " class=\"red\"";
-//                        $versions[] = "<a href=\"".$url."\" title=\"Version ".$data3["version"]."\"".$class.">v".$data3["version"]."</a>";
-//                    }
                     $found_in[] = "<b>".$label."</b> (".$url.")";
                 }
             }

@@ -68,7 +68,9 @@
             }
 
             // berechtigte gruppen rausfinden
-            $group_permit = group_permit( $data[$cfg["fileed"]["db"]["file"]["grant_grp"]] );
+            if ( isset($cfg["fileed"]["db"]["file"]["grant_grp"]) ) {
+                $group_permit = group_permit( $data[$cfg["fileed"]["db"]["file"]["grant_grp"]] );
+            }
 
 
             // berechtigter personenkreis
@@ -90,11 +92,11 @@
                                     "id" => $data["fid"],
                                   "item" => $data["ffname"],
                                   "link" => $link,
-                                "reason" => "#(content_error)".$value,
+                                "reason" => "#(content_error)"
                         );
                     }
-                    $forbidden[$data["fid"]] = $data["fid"];
-                }
+                        $forbidden[$data["fid"]] = $data["fid"];
+                    }
                 // selection-check
                 if ( strstr($data["fhit"],"#p") ) {
                     preg_match_all("/#p([0-9]*)[,0-9]*#/i",$data["fhit"],$match);
@@ -118,7 +120,7 @@
                     if (in_array($data["fid"], $ofl_array)) {
                         if ( count($ofl_id["content"]) > 0 ) {
                             foreach ( $ofl_id["content"] as $content ) {
-                                $view_link = "<a href=\"".$cfg["fileed"]["basis"]."/delete/view,o,".$ofl_array[0].",".$ofl_id["id"].",.html\">Gruppe (On The Fly)</a>";
+                                $view_link = "Gruppe (On The Fly)";
                                 $dataloop["list"][] = array(
                                             "id" => "a".$data["fid"],
                                           "item" => $data["ffname"],
@@ -127,7 +129,7 @@
                                 );
                             }
                         }
-                        if ( $group_content != "" ) $group_content = " (#(used_in) ".$group_content.")";
+                        if ( isset($group_content) ) $group_content = " (#(used_in) ".$group_content.")";
                         $forbidden["sel_fly"] = $data["fid"];
                     }
                 }
@@ -194,10 +196,15 @@
 
         // das loeschen wurde bestaetigt, loeschen!
         // ***
-        if ( $_POST["send"] != "" ) {
-
+        if ( isset($_POST["send"]) ) {
+            $delete_admin = FALSE;
+            if ( isset($cfg["fileed"]["delete_admin"] ) ) {
+                if ( priv_check("/", $cfg["fileed"]["delete_admin"] ) ) {
+                    $delete_admin = TRUE;        
+                }
+            }
             foreach ( $_SESSION["file_memo"] as $value ) {
-                if ( !in_array($value,$forbidden) ) {
+                if ( !in_array($value,$forbidden) || $delete_admin == TRUE ) {
                     // feststellen ob es ein bild ist
                     $sql = "SELECT ffart, fuid
                               FROM site_file

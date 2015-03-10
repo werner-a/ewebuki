@@ -53,10 +53,10 @@
 //         }
 
         $dataloop["list"] = array();
-
+        $i = 0;
         while ( $data = $db -> fetch_array($result,1) ) {
 
-            if ( is_array($_SESSION["file_memo"]) && $environment["parameter"][0] == "list" ) {
+            if ( isset($_SESSION["file_memo"]) && $environment["parameter"][0] == "list" ) {
                 if (in_array($data["fid"],$_SESSION["file_memo"])) {
                     $link = $cfg[$script_name]["basis"]."/list,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
                     $icon = $cfg[$script_name]["iconpath"]."cms-cb1.png";
@@ -66,7 +66,7 @@
                     $icon = $cfg[$script_name]["iconpath"]."cms-cb0.png";
                     $checked = "";
                 }
-            } elseif ( is_array($_SESSION["compilation_memo"][$environment["parameter"][1]]) && $environment["parameter"][0] == "compilation") {
+            } elseif ( isset($_SESSION["compilation_memo"][$environment["parameter"][1]]) && $environment["parameter"][0] == "compilation") {
                 if (in_array($data["fid"],$_SESSION["compilation_memo"][$environment["parameter"][1]])) {
                     $link = $cfg[$script_name]["basis"]."/compilation,".$environment["parameter"][1].",".$data["fid"].",".$environment["parameter"][3].".html".$getvalues;
                     $icon = $cfg[$script_name]["iconpath"]."cms-cb1.png";
@@ -84,12 +84,13 @@
             $cb = "<a href=".$link."><img width=\"13\" height\"13\" border=\"0\" src=\"".$icon."\"></a>";
 
             // table color change
-            if ( $cfg[$script_name]["color"]["set"] == $cfg[$script_name]["color"]["a"]) {
-                $cfg[$script_name]["color"]["set"] = $cfg[$script_name]["color"]["b"];
-            } else {
-                $cfg[$script_name]["color"]["set"] = $cfg[$script_name]["color"]["a"];
+            if ( isset( $cfg[$script_name]["color"]["a"]) && isset($cfg[$script_name]["color"]["b"]) ) {
+                if ( $cfg[$script_name]["color"]["set"] == $cfg[$script_name]["color"]["a"]) {
+                    $cfg[$script_name]["color"]["set"] = $cfg[$script_name]["color"]["b"];
+                } else {
+                    $cfg[$script_name]["color"]["set"] = $cfg[$script_name]["color"]["a"];
+                }
             }
-
             // file art
             $type = $cfg["file"]["filetyp"][$data["ffart"]];
 
@@ -102,7 +103,8 @@
 
             // new line?
             if ( $cfg[$script_name]["db"]["file"]["line"] != "" ) {
-                $i++; $even = $i / $cfg[$script_name]["db"]["file"]["line"];
+                $i++;
+                $even = $i / $cfg[$script_name]["db"]["file"]["line"];
                 if ( is_int($even) ) {
                     $newline = $cfg[$script_name]["db"]["file"]["newline"];
                 } else {
@@ -111,7 +113,14 @@
             }
 
             // onclick link start / end
-            if ( $cfg[$script_name]["image_tag"] == "" ) $cfg[$script_name]["image_tag"] = "img"; # kompatibilitaet
+            if ( !isset($cfg[$script_name]["image_tag"]) ) $cfg[$script_name]["image_tag"] = "img"; # kompatibilitaet
+            
+            if ( !isset($cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][3]) ){
+                $cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][3] = "";
+            }
+            if ( !isset($cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][4]) ){
+                $cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][4] = "";
+            }
             $la = $cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][3]
                  .$cfg["file"]["base"]["webdir"]
                  .$data["ffart"]."/"
@@ -173,7 +182,12 @@
             } else {
                 $name = "list_other";
             }
-
+            if ( !isset($cfg[$script_name]["color"]["set"]) ){
+                $cfg[$script_name]["color"]["set"] = "";
+            }
+            if ( !isset($cfg[$script_name]["tags"]["img"][5]) ){
+                $cfg[$script_name]["tags"]["img"][5] = "";
+            }
             $dataloop[$name][$data["fid"]] = array (
                                                "id" => $data["fid"],
                                               "art" => $data["ffart"],
@@ -210,9 +224,15 @@
                                               );
             $dataloop["list_files"][$data["fid"]] = $dataloop[$name][$data["fid"]];
         }
-        if ( count($dataloop["list_images"]) > 0 ) $hidedata["list_images"] = array();
-        if ( count($dataloop["list_other"]) > 0 )  $hidedata["list_other"]  = array();
-        if ( count($dataloop["list_files"]) > 0 )  $hidedata["list_files"]  = array();
+        if ( isset($dataloop["list_images"]) ) {
+            if ( count($dataloop["list_images"]) > 0 ) $hidedata["list_images"] = array();
+        }
+        if ( isset($dataloop["list_other"]) ) {
+            if ( count($dataloop["list_other"]) > 0 )  $hidedata["list_other"]  = array();
+        }
+        if ( isset($dataloop["list_files"]) ) {
+            if ( count($dataloop["list_files"]) > 0 )  $hidedata["list_files"]  = array();
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

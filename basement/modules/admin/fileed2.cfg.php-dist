@@ -134,6 +134,8 @@
                        ),
 //      "default_view" => "symbols",                           # standardansicht im fileed-list
 //      "replace_used" => true,                                # duerfen benutzte dateien ausgetauscht werden
+//       "delete_used" => true,                                # duerfen benutzte dateien in historischen Versionen geloescht werden
+//      "delete_admin" => admin,                               # darf alle bilder löschen auch in aktuellen Versionen
 //       "dummy_regex" => array("#p[0-9]+,[0-9]+#"),           # regex, muster fuer fhit-sperre
 //          "no_dummy" => "admin",                             # noetiges recht um den fhit komplett zu bearbeiten
             "right" => $cfg["auth"]["menu"]["fileed"][1],

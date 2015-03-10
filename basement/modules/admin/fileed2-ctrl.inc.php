@@ -61,15 +61,15 @@
     // include function loader
     if ( is_array($cfg["fileed"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"]."-functions.inc.php";
 
-    // shared function include loader
-    if ( is_array($cfg["fileed"]["function"][$environment["kategorie"].",shared"]) ) {
+    // shared function include loader    
+    if ( isset($cfg["fileed"]["function"][$environment["kategorie"].",shared"]) ) {
         foreach ( $cfg["fileed"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // global function include loader
-    if ( is_array($cfg["fileed"]["function"][$environment["kategorie"].",global"]) ) {
+    if ( isset($cfg["fileed"]["function"][$environment["kategorie"].",global"]) ) {
         foreach ( $cfg["fileed"]["function"][$environment["kategorie"].",global"] as $value ) {
             include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
         }
@@ -92,9 +92,9 @@
 
     // ajax-funktionalitaet aktivieren
     if ( $cfg["fileed"]["ajax-modus"] == FALSE ) {
-        $hidedata["list_plain"]["pic_count"] = count($dataloop["list"]);
+        $hidedata["list_plain"]["pic_count"] = 0;
     } else {
-        $hidedata["list_ajax"]["pic_count"] = count($dataloop["list"]);
+        $hidedata["list_ajax"]["pic_count"] = 0;
     }
 
     // magic include loader

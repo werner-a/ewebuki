@@ -47,6 +47,22 @@
         // funktions bereich ( aufbau )
         // ***
 
+        
+        if ( !isset($environment["parameter"][1]) ) { 
+            $environment["parameter"][1] = NULL;
+        }
+        if ( !isset($environment["parameter"][2]) ) { 
+            $environment["parameter"][2] = NULL;
+        }
+        if ( !isset($environment["parameter"][3]) ) { 
+            $environment["parameter"][3] = NULL;
+        }
+        if ( !isset($environment["parameter"][4]) ) { 
+            $environment["parameter"][4] = NULL;
+        }
+        if ( !isset($environment["parameter"][5]) ) { 
+            $environment["parameter"][5] = NULL;
+        }
         // file_memo verwalten, inkl. ajax-checkboxen
         if ( $environment["parameter"][2] ){
             if ( isset($_SESSION["file_memo"][$environment["parameter"][2]]) ){
@@ -64,13 +80,13 @@
                 header("Location: ".$cfg["fileed"]["basis"]."/".$environment["parameter"][0].",".$environment["parameter"][1].",,".$environment["parameter"][3].".html");
             }
         }
-        $debugging["ausgabe"] .= "<pre>".print_r($_SESSION["file_memo"],True)."</pre>";
+        #$debugging["ausgabe"] .= "<pre>".print_r($_SESSION["file_memo"],True)."</pre>";
 
         // get-verarbeitung: mimes
         $mime_session = 0;
-        if ( is_array($_SESSION["fileed_filter_mime"]) ) $mime_session = -1;
+        if ( isset($_SESSION["fileed_filter_mime"]) ) $mime_session = -1;
         foreach ( $cfg["file"]["filetyp"] as $key => $value ) {
-            if ( !is_array($_GET["mimes"]) && $mime_session == 0 ) {
+            if ( !isset($_GET["mimes"]) && $mime_session == 0 ) {
                 $_SESSION["fileed_filter_mime"][$value] = $value;
             } elseif ( !isset($_GET["mimes"])
                    && !isset($_GET["send"])
@@ -85,7 +101,7 @@
         }
 
         // get-verarbeitung: filter-remove
-        if ( is_array($_GET["remove_filter"]) ) {
+        if ( isset($_GET["remove_filter"]) ) {
             foreach ( $_GET["remove_filter"] as $key => $value ) {
                 if ( $key == "mime" ) {
                     if ( $_SESSION["fileed_filter_mime"][$value] != "" ) {
@@ -116,7 +132,7 @@
         $_SESSION["fileed_filter0"] = $_SESSION["fileed_filter0"] + 0;
         $_SESSION["fileed_filter1"] = $_SESSION["fileed_filter1"] + 0;
         foreach( $cfg["fileed"]["filter"] as $set => $data ) {
-            if ( $_GET["filter".$set] != "" ) {
+            if ( isset($_GET["filter".$set]) ) {
                 $_SESSION["fileed_filter".$set] = $_GET["filter".$set];
             }
             if ( $environment["parameter"][2] != "" ){
@@ -184,12 +200,12 @@
 
         // ansichtslinks bauen
         $views = array("default","details","symbols");
-        if ( $_COOKIE["fileed_view"][$_SESSION["uid"]] != "" ) {
+        if ( isset($_COOKIE["fileed_view"][$_SESSION["uid"]]) ) {
             $cfg["fileed"]["default_view"] = $_COOKIE["fileed_view"][$_SESSION["uid"]];
             $view_mode = $_COOKIE["fileed_view"][$_SESSION["uid"]];
         }
         if ( $cfg["fileed"]["default_view"] == "" ) $cfg["fileed"]["default_view"] = "default";
-        if ( $environment["parameter"][4] != "" ) {
+        if ( isset($environment["parameter"][4]) ) {
             $view_mode = $environment["parameter"][4];
         } else {
             $view_mode = $cfg["fileed"]["default_view"];
@@ -214,8 +230,8 @@
         }
 
         // content editor link erstellen
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_edit): ".$_SESSION["cms_last_edit"].$debugging["char"];
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_referer): ".$_SESSION["cms_last_referer"].$debugging["char"];
+//        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_edit): ".$_SESSION["cms_last_edit"].$debugging["char"];
+//        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_referer): ".$_SESSION["cms_last_referer"].$debugging["char"];
         if ( isset($_SESSION["comp_last_edit"]) ) {
             $hidedata["cms"] = array(
                    "link" => $_SESSION["comp_last_edit"]."?referer=".$_SESSION["cms_last_referer"],
@@ -242,7 +258,7 @@
                "collect" => $cfg["fileed"]["basis"]."/collect.html",
                "display" => "inline"
         );
-        if ( count($_SESSION["file_memo"]) == 0 ) {
+        if ( !isset($_SESSION["file_memo"]) ) {
             $hidedata["file"]["display"] = "none";
         }
 
@@ -258,7 +274,7 @@
         $part = array();
 
         // suche verarbeiten
-        if ( $_SESSION["fileed_search"] ) {
+        if ( isset($_SESSION["fileed_search"]) ) {
             $ausgaben["search"] = $_SESSION["fileed_search"];
             $filters[] = $_SESSION["fileed_search"];
             $array1 = explode( " ", $_SESSION["fileed_search"] );
@@ -267,7 +283,11 @@
             foreach ( $array1 as $value1 ) {
                 if ( $value1 != "" ) {
                     foreach ( $array2 as $value2 ) {
-                        if ( $part["search"] != "" ) $part["search"] .= " or ";
+                        if ( isset($part["search"]) ) {
+                            $part["search"] .= " or ";
+                        } else {
+                            $part["search"] = "";
+                        }
                         if ( $value2 == "fid" ) {
                             $part["search"] .= "CAST(".$value2." as char) LIKE '%".$value1."%'";
                         } else {
@@ -280,7 +300,7 @@
                     );
                 }
             }
-            if ( $part["search"] != "" ) $part["search"] = "(".$part["search"].")";
+            if ( isset($part["search"])) $part["search"] = "(".$part["search"].")";
         } else {
             $ausgaben["search"] = "";
         }
