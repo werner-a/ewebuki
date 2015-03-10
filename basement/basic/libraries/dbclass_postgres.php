@@ -54,7 +54,7 @@
         var $USER           = DB_USER;
         var $PASS           = DB_PASSWORD;
         var $ROOT_RUN       = "";
-        var $DEBUG          = DEBUG;
+        var $DEBUG          = "";
         var $VERSION        = "eWeBuKi postgres-driver v0.1.6 ";
 
         // connection to our db - change defines in config.inc.php
