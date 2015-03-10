@@ -1143,7 +1143,9 @@
                             if ( strstr($tag_param[0],":") ) {
                                 $sel_pics = null;
                                 foreach ( $tag_special as $pics ) {
-                                    if ( !isset($pics) ) continue;
+                                    if ( isset($pics) ) {
+                                        if ( $pics == "" ) continue;
+                                    }
                                     ( isset($sel_pics) ) ? $trenner = " ," : $trenner = null;
                                     $sel_pics .= $trenner.$pics;
                                 }
@@ -1157,7 +1159,8 @@
                                 }
 
                                 $result = $db -> query($sql);
-                                $files = array();$sortarray = array();
+                                $files = array();
+                                $sortarray = array();                                
                                 while ( $data = $db -> fetch_array($result,1) ) {
                                     $sortarray[] = $tmp_sort[$data["fid"]];
                                     $files[] = array(
@@ -1202,13 +1205,18 @@
 
                             // wenn video-parameter vorhanden dann marken ersetzen
                             if ( isset($tag_param[5]) ) {
-                                $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">
-                                [OBJECT=http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&;250;192;application/x-shockwave-flash]
-                                [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
-                                [PARAM=wmode]transparent[/PARAM]
-                                [/OBJECT]
-                                <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schliessen</a></b></span></div>",$sel);
-                                $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
+                                if ( $tag_param[5] != "" ) {
+                                    $sel = str_replace("##youtube_div##","<div class=\"new_box new_space_inside\" style=\"background: #EEF3FB;height:212px;width:250px;display:none\" id=\"".$tag_param[0]."_video\">
+                                    [OBJECT=http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&;250;192;application/x-shockwave-flash]
+                                    [PARAM=movie]http://www.youtube.com/v/".$tag_param[5]."&hl=de_DE&fs=1&[/PARAM]
+                                    [PARAM=wmode]transparent[/PARAM]
+                                    [/OBJECT]
+                                    <span style=\"float:right\"><b><a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:none');\">Schliessen</a></b></span></div>",$sel);
+                                    $sel = str_replace("##youtube_link##","<a onclick=\"Element.setStyle('".$tag_param[0]."_video', 'display:block;position:absolute;left:-1px;top:-228px');\">Video</a>",$sel);
+                                } else {
+                                    $sel = str_replace("##youtube_div##","",$sel);
+                                    $sel = str_replace("##youtube_link##","",$sel);                                    
+                                }
                             } else {
                                 $sel = str_replace("##youtube_div##","",$sel);
                                 $sel = str_replace("##youtube_link##","",$sel);
