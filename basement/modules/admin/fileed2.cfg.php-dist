@@ -53,7 +53,7 @@
        "ajax-modus" => True,
          #"function" => array("describe", "list", "note", "preview", "select"),
          "function" => array(
-                     "list" => "", # array( "function_name" ),
+                     "list" => "", // array( "function_name" ),
               "list,shared" => array("filelist"),
                       "add" => array( "thumbnail", "resize", "arrange", "compilationlist","group_permit" ),
                "add,shared" => array( "zip_handling", "file_validate" ),
