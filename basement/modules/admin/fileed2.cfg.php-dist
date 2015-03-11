@@ -49,7 +49,7 @@
            "subdir" => "admin",
              "name" => "fileed2",
             "basis" => $pathvars["virtual"]."/admin/fileed",
-         "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
+         "iconpath" => "", // leer: /images/default/; automatik: $pathvars["images"]
        "ajax-modus" => True,
          #"function" => array("describe", "list", "note", "preview", "select"),
          "function" => array(
@@ -77,11 +77,11 @@
                           "entries" => "site_file",
                               "key" => "fid",
                             "order" => "fid DESC",
-                             "rows" => "10",   # pro seite
-                             "line" => "5",    # pro zeile  (rows / line)
+                             "rows" => "10", // pro seite
+                             "line" => "5", //  pro zeile  (rows / line)
                           "newline" => "<br clear=\"all\" />",
                              "user" => "fuid",
-                        #"grant_grp" => "fgroups",          # dort steht, welche gruppen das bild editiern koennen
+                        #"grant_grp" => "fgroups", // dort steht, welche gruppen das bild editiern koennen
                                ),
                      "lang" => array(
                             #"entries" => "site_file_lang",
@@ -118,14 +118,14 @@
                     "items" => "3",
                      "rows" => "3",
                  "selektor" => "5",
-           "sel_pics_w_sel" => -1,                          # wenn die selection ausgewaehlt wird werden auch alle bilder ausgewaehlt
-            #"blocked_used" => true,                        # duerfen benutzte gruppierungen bearbeitet werden
+           "sel_pics_w_sel" => -1, // wenn die selection ausgewaehlt wird werden auch alle bilder ausgewaehlt
+            #"blocked_used" => true, // duerfen benutzte gruppierungen bearbeitet werden
                        ),
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),
                         "1" => array("Bilder", "Dokumente", "Archive", "Markierte Bilder"),
                        ),
-             "tabs" => array(      #  beschriftung,  link,  anordung (L/R), url-muster
+             "tabs" => array( // beschriftung,  link,  anordung (L/R), url-muster
                        #"0" => array("g(all_files)", "list,,,all.html" , "L", "/list[,0-9]*[all]*\.html/i"),
                        #"1" => array("g(sel_files)", "list,,,sel.html", "L", "/list[,0-9]*,sel.*\.html/i"),
                         "2" => array("g(all_files)", "list,,,.html", "L", "/list/i"),
