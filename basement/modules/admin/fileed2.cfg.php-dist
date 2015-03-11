@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2012 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -119,28 +119,28 @@
                      "rows" => "3",
                  "selektor" => "5",
            "sel_pics_w_sel" => -1,                          # wenn die selection ausgewaehlt wird werden auch alle bilder ausgewaehlt
-//              "blocked_used" => true,                        # duerfen benutzte gruppierungen bearbeitet werden
+            #"blocked_used" => true,                        # duerfen benutzte gruppierungen bearbeitet werden
                        ),
            "filter" => array(
                         "0" => array("Meine", "Gruppe", "Alle"),
                         "1" => array("Bilder", "Dokumente", "Archive", "Markierte Bilder"),
                        ),
              "tabs" => array(      #  beschriftung,  link,  anordung (L/R), url-muster
-//                         "0" => array("g(all_files)", "list,,,all.html" , "L", "/list[,0-9]*[all]*\.html/i"),
-//                         "1" => array("g(sel_files)", "list,,,sel.html", "L", "/list[,0-9]*,sel.*\.html/i"),
+                       #"0" => array("g(all_files)", "list,,,all.html" , "L", "/list[,0-9]*[all]*\.html/i"),
+                       #"1" => array("g(sel_files)", "list,,,sel.html", "L", "/list[,0-9]*,sel.*\.html/i"),
                         "2" => array("g(all_files)", "list,,,.html", "L", "/list/i"),
                         "3" => array("g(fileupload)", "upload.html", "R", "/upload[,0-9]*.html/"),
                         "4" => array("g(filecompilation)", "compilation.html", "R", "/compilation[,0-9]*.html/"),
                        ),
-//      "default_view" => "symbols",                           # standardansicht im fileed-list
-//      "replace_used" => true,                                # duerfen benutzte dateien ausgetauscht werden
-//       "delete_used" => true,                                # duerfen benutzte dateien in historischen Versionen geloescht werden
-//      "delete_admin" => admin,                               # darf alle bilder löschen auch in aktuellen Versionen
-//       "dummy_regex" => array("#p[0-9]+,[0-9]+#"),           # regex, muster fuer fhit-sperre
-//          "no_dummy" => "admin",                             # noetiges recht um den fhit komplett zu bearbeiten
+    #"default_view" => "symbols",                           # standardansicht im fileed-list
+    #"replace_used" => true,                                # duerfen benutzte dateien ausgetauscht werden
+     #"delete_used" => true,                                # duerfen benutzte dateien in historischen Versionen geloescht werden
+     #"dummy_regex" => array("#p[0-9]+,[0-9]+#"),           # regex, muster fuer fhit-sperre
+         "no_dummy" => "admin",                             # noetiges recht um den fhit komplett zu bearbeiten
+    #"delete_admin" => "admin",                               # darf alle bilder löschen auch in aktuellen Versionen
             "right" => $cfg["auth"]["menu"]["fileed"][1],
          "restrict" => array(), # z.B. array("delete", "edit")
-        #"su_groups" => array(1),       # beinhaltet die ids der gruppen, die alle bilder bearbeiten koennen
+       #"su_groups" => array(1),       # beinhaltet die ids der gruppen, die alle bilder bearbeiten koennen
     );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
