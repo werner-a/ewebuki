@@ -96,7 +96,7 @@
                   "content" => array(
                           "entries" => "site_text",
                           "content" => "content",
-                             "path" => "ebene, kategorie, tname"
+                             "path" => "ebene, kategorie, tname, status, version"
                                ),
                     "multi" => array(
                            "change" => False,
