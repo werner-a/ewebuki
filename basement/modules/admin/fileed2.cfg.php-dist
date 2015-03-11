@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: fileed.cfg.php-dist 779 2007-09-14 09:53:39Z chaot $";
+// "$Id$";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -132,15 +132,15 @@
                         "3" => array("g(fileupload)", "upload.html", "R", "/upload[,0-9]*.html/"),
                         "4" => array("g(filecompilation)", "compilation.html", "R", "/compilation[,0-9]*.html/"),
                        ),
-    #"default_view" => "symbols",                           # standardansicht im fileed-list
-    #"replace_used" => true,                                # duerfen benutzte dateien ausgetauscht werden
-     #"delete_used" => true,                                # duerfen benutzte dateien in historischen Versionen geloescht werden
-     #"dummy_regex" => array("#p[0-9]+,[0-9]+#"),           # regex, muster fuer fhit-sperre
-         "no_dummy" => "admin",                             # noetiges recht um den fhit komplett zu bearbeiten
-    #"delete_admin" => "admin",                               # darf alle bilder löschen auch in aktuellen Versionen
+     #"default_view" => "symbols", // standardansicht im fileed-list
+     #"replace_used" => true, // duerfen benutzte dateien ausgetauscht werden
+      #"delete_used" => true, // duerfen benutzte dateien in historischen Versionen geloescht werden
+      #"dummy_regex" => array("#p[0-9]+,[0-9]+#"), // regex, muster fuer fhit-sperre
+         "no_dummy" => "admin", // noetiges recht um den fhit komplett zu bearbeiten
+     #"delete_admin" => "admin", // darf alle bilder löschen auch in aktuellen Versionen
             "right" => $cfg["auth"]["menu"]["fileed"][1],
-         "restrict" => array(), # z.B. array("delete", "edit")
-       #"su_groups" => array(1),       # beinhaltet die ids der gruppen, die alle bilder bearbeiten koennen
+         "restrict" => array(), // z.B. array("delete", "edit")
+        #"su_groups" => array(1), // beinhaltet die ids der gruppen, die alle bilder bearbeiten koennen
     );
 
 ////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
