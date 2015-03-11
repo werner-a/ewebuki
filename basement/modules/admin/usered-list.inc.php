@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -63,6 +63,8 @@
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
+        $parameter = null; $getvalues = null;
         $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["usered"]["db"]["user"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
@@ -72,6 +74,7 @@
         while ( $data = $db -> fetch_array($result,1) ) {
 
             // tabellen farben wechseln
+            if ( !isset($cfg["usered"]["color"]["set"]) ) $cfg["usered"]["color"]["set"] = null;
             if ( $cfg["usered"]["color"]["set"] == $cfg["usered"]["color"]["a"]) {
                 $cfg["usered"]["color"]["set"] = $cfg["usered"]["color"]["b"];
             } else {
@@ -97,7 +100,7 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }

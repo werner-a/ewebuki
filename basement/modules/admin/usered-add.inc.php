@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -75,9 +75,9 @@
               ORDER BY level";
         $result = $db -> query($sql);
         if ( $db->num_rows($result) > 0 ) $hidedata["avail"][] = -1;
-        while ( $all = $db -> fetch_array($result,1) ) {
+        while ( $all = $db -> fetch_array($result, 1) ) {
             $sel = "";
-            if ( is_array($form_values["avail"]) && in_array($all["lid"],$form_values["avail"]) ) $sel = ' selected="true"';
+            if ( is_array(@$form_values["avail"]) && in_array($all["lid"],$form_values["avail"]) ) $sel = ' selected="true"';
             $dataloop["avail"][] = array(
                 "id" => $all["lid"],
                 "level" => $all["level"],
@@ -98,17 +98,18 @@
         $ausgaben["form_error"] = "";
 
         // navigation erstellen
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         $ausgaben["form_aktion"] = $cfg["usered"]["basis"]."/add,".$environment["parameter"][1].",verify.html";
         $ausgaben["form_break"] = $cfg["usered"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
-        
+        $ausgaben["form_hidden"] = "";
+
         // rechte zuweisung der alten rechte einblenden
         if ( $specialvars["security"]["new"] != -1 ) {
             $hidedata["old_rights"]["on"] = "on";
         }
-        
+
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
@@ -129,7 +130,7 @@
         // page basics
 
         // referer im form mit hidden element mitschleppen
-        if ( $_POST["form_referer"] == "" ) {
+        if ( !isset($_POST["form_referer"]) ) {
             $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         } else {
@@ -137,6 +138,7 @@
             $ausgaben["form_break"] = $ausgaben["form_referer"];
         }
 
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""
                 || $_POST["add"] != ""
@@ -162,6 +164,7 @@
                     $ausgaben["form_error"] .= $form_options["pass"]["ferror"];
                 }
 
+                if ( !isset($error) ) $error = null;
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen

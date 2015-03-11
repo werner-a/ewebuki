@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -59,7 +59,21 @@
     }
 
     // include function loader
-    if ( is_array($cfg["usered"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"]."-functions.inc.php";
+    #if ( isset($cfg["usered"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"]."-functions.inc.php";
+    
+    // shared function include loader
+    if ( isset($cfg["usered"]["function"][$environment["kategorie"].",shared"]) ) {
+        foreach ( $cfg["usered"]["function"][$environment["kategorie"].",shared"] as $value ) {
+            include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
+        }
+    }
+
+    // global function include loader
+    if ( isset($cfg["usered"]["function"][$environment["kategorie"].",global"]) ) {
+        foreach ( $cfg["usered"]["function"][$environment["kategorie"].",global"] as $value ) {
+            include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
+        }
+    }
 
     // magic include loader
     if ( array_key_exists($environment["kategorie"], $cfg["usered"]["function"]) ) {

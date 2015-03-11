@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -93,7 +93,7 @@
             }
             // wurde das element schon angewaehlt
             $sel = "";
-            if ( is_array($form_values[$loop_label]) && in_array($all["lid"],$form_values[$loop_label]) ) $sel = ' selected="true"';
+            if ( is_array(@$form_values[$loop_label]) && in_array($all["lid"],$form_values[$loop_label]) ) $sel = ' selected="true"';
             $hidedata[$loop_label][0] = -1;
             $dataloop[$loop_label][] = array(
                 "id" => $all["lid"],
@@ -119,7 +119,7 @@
         $ausgaben["form_break"] = $cfg["usered"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = "";
 
          // rechte zuweisung der alten rechte einblenden
         if ( $specialvars["security"]["new"] != -1 ) {
@@ -149,10 +149,11 @@
         // +++
         // page basics
 
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( $environment["parameter"][2] == "verify"
-            &&  ( $_POST["send"] != ""
-                || $_POST["add"] != ""
-                || $_POST["del"] != "" ) ) {
+            &&  ( isset($_POST["send"])
+                || isset($_POST["add"])
+                || isset($_POST["del"]) ) ) {
 
             // form eigaben prüfen
             form_errors( $form_options, $_POST );
@@ -176,6 +177,7 @@
                     }
                 }
 
+                if ( !isset($error) ) $error = null;
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
@@ -185,6 +187,7 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 $kick = array( "PHPSESSID", "pass", "newpass", "chkpass", "form_referer", "send", "avail", "actual", "add", "del" );
+                $sqla = null; $sqlb = null; 
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ", ";
@@ -193,7 +196,7 @@
                 }
 
                 // Sql um spezielle Felder erweitern
-                if ( $checked_password != "" ) {
+                if ( isset($checked_password) ) {
                     $sqla .= ", pass='".$checked_password."'";
                 }
 
@@ -204,7 +207,7 @@
 
                     // level management sql begin
                     // ***
-                    if ( is_array($_POST["avail"]) || $_POST["add"] != "" ) {
+                    if ( isset($_POST["avail"]) || isset($_POST["add"]) ) {
                         foreach ($_POST["avail"] as $name => $value ) {
                             $sql = "INSERT INTO auth_right (uid, lid) VALUES ('".$environment["parameter"][1]."', '".$value."')";
                             $db -> query($sql);
@@ -212,7 +215,7 @@
                         }
                     }
 
-                    if ( is_array($_POST["actual"]) || $_POST["del"] != "" ) {
+                    if ( isset($_POST["actual"]) || isset($_POST["del"]) ) {
                         foreach ($_POST["actual"] as $name => $value ) {
                             $sql = "DELETE FROM auth_right WHERE lid='".$value."' AND uid=".$environment["parameter"][1];
                             $db -> query($sql);
@@ -222,9 +225,9 @@
                     // +++
                     // level management sql end
 
-                    if ( $_POST["add"] != "" || $_POST["del"] != "" ) {
+                    if ( isset($_POST["add"]) || isset($_POST["del"]) ) {
                         $header = $cfg["usered"]["basis"]."/edit,".$environment["parameter"][1].".html";
-                    }else{
+                    } else {
                         $header = $ausgaben["form_referer"];
                     }
 
@@ -240,11 +243,11 @@
                     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= $error.$debugging["char"];
                 }
 
-                if ( $header == "" ) $header = $cfg["usered"]["basis"]."/list.html";
+                if ( !isset($header) ) $header = $cfg["usered"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
-            if ( $ausgaben["form_error"] == "" ) {
+            if ( isset($ausgaben["form_error"]) ) {
                 header("Location: ".$header);
             }
         }
