@@ -88,7 +88,6 @@
         $num_rows = $db -> num_rows($result);
 
         $id = 0;
-        $element["priv"] = null; // fix für rparser fehler
         if ( $num_rows > 0 ) {
             $hidedata["delete_liste"]["on"] = "on";
             while ( $data = $db -> fetch_array($result, null) ) {

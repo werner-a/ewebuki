@@ -63,7 +63,9 @@ $Id = null;
 
     $environment["param"] = null;
     $environment["subparam"] = null;
-
+    
+    $element = array(""); // fix für rparser fehler bei leerem array
+    
     $specialvars["content_release"] = null;
     $specialvars["dyndb"] = null;
     $specialvars["phpsessid"] = null;
