@@ -216,7 +216,7 @@
 
                     if ( strpos($parse_mod,"#(") !== false || strpos($parse_mod,"g(") !== false ) {
                          // wie heisst das template
-                         $tname = substr($startfile,0,strpos($startfile,".tem.html"));
+                         $tname = substr($parse_name,0,strpos($parse_name,".tem.html")); // hier stimmt was nicht, vergleiche mit Revision 2068!
                          $parse_mod = content($parse_mod, $parse_name);
                     }
 
