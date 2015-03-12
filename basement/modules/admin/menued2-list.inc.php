@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -53,8 +53,9 @@
         $positionArray["nop"] = "nop";
         $ausgaben["path"] = "";
         $ausgaben["back"] = "";
+        if (!isset($ausgaben["show_menu"]) ) $ausgaben["show_menu"] = null;
 
-        if ( $environment["parameter"][1] == "" ) {
+        if ( !isset($environment["parameter"][1]) ) {
             $_SESSION["menued_id"] = "";
             $_SESSION["menued_opentree"] = "";
             $_SESSION["menued_design"] = "";
@@ -85,6 +86,7 @@
             }
 
             // link bauen und positionArray bauen
+            $treelink = null;
             foreach ( $opentree as $key => $value ) {
                 $treelink == "" ? $trenner = "" : $trenner = "-";
                 $treelink .= $trenner.$value;
@@ -93,7 +95,7 @@
                 }
             }
 
-            $_SESSION["menued_design"] = $design;
+            //$_SESSION["menued_design"] = $design; design ist hier immer leer???
         } else {
             $positionArray[0] = 0;
         }
@@ -105,10 +107,10 @@
             if ( $_SESSION["menued_design"] != "" ) {
                 $design = $_SESSION["menued_design"];
             }
-            // design - umschalter 
+            // design - umschalter
             foreach ( $cfg["menued"]["design_available"] as $value ) {
                 if ( $value != $design ) {
-                    if ( $_SESSION["menued_design"] == "" ) { 
+                    if ( $_SESSION["menued_design"] == "" ) {
                         $ausgaben["design"] = "<a href=\"".str_replace("list.","list,,,".$value.".",$pathvars["uri"])."\">".$value."</a>";
                     } else {
                         $ausgaben["design"] = "<a href=\"".str_replace($_SESSION["menued_design"],$value,$pathvars["uri"])."\">".$value."</a>";
@@ -122,7 +124,7 @@
         $ausgaben["show_menu"] .= sitemap(0, "menued", "menued", $modify,"");
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
@@ -132,18 +134,23 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["menued"]["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        $check_parameter = $environment["parameter"][1];
-        if ( !$environment["parameter"][1] ) $check_parameter = 0;
+        
+        if ( isset($environment["parameter"][1]) ) {
+            $check_parameter = $environment["parameter"][1];
+        } else {
+            $check_parameter = 0;
+        }
+
+        $ausgaben["new"] = null; $ausgaben["root"] = null;
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         if ( priv_check( make_ebene($check_parameter),$cfg["menued"]["modify"]["add"][2],$specialvars["dyndb"]) ) {
-            $ausgaben["new"] .= "<a href=\"".$cfg["menued"]["basis"]."/add,".$check_parameter.",".$array["refid"].".html\">g(new)</a>";            
+            $ausgaben["new"] .= "<a href=\"".$cfg["menued"]["basis"]."/add,".$check_parameter.",".@$array["refid"].".html\">g(new)</a>";
             $ausgaben["root"] = "";
             if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2],$specialvars["dyndb"]) && ( $environment["parameter"][1] == "" || $environment["parameter"][1] == "0" ) ) {
                 $ausgaben["root"] ="<ul class=\"menued\"><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"/images/default/rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";
             }
-        } else {
-            $ausgaben["new"] = "";
-            $ausgaben["root"] = "";
         }
+                
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".list";
         $mapping["navi"] = "leer";
