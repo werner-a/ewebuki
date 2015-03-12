@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -36,7 +36,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -45,25 +45,18 @@
     $cfg["contented"] = array(
            "subdir" => "admin",
              "name" => "contented",
-            "basis" => $pathvars["virtual"]."/admin/contented", # crc = -1468826685 *
+            "basis" => $pathvars["virtual"]."/admin/contented", # crc = -141347382 *
          "iconpath" => "", # leer: /images/default/; automatik: $pathvars["images"]
             #"debug" => True,
-/*            "color" => array(
-                        "a" => "#eee",
-                        "b" => "#fff",
-                       ),*/
        "diff_engine"=> "phpdiff3",
       "history_rows"=> 15,
          "function" => array(
-//                       "add" => "",
                      "edit" => array("makece"),
               "edit,shared" => array("filelist","phpdiff","menu_convert"),
                   "history" => "",
             "history,shared" => array("phpdiff3","phpdiff2","Diff","Render","Render_inline","Engine_native","menu_convert"),
               #"edit,shared" => array("sha","klo"),
               #"edit,global" => array("glo"),
-//                    "delete" => "",
-//                   "details" => "",
                        ),
 
                "db" => array(
@@ -77,8 +70,8 @@
                           "entries" => "site_file",
                               "key" => "fid",
                             "order" => "fid DESC",
-                             "rows" => "10",   # pro seite
-                             "line" => "5",    # pro zeile  (rows / line)
+                             "rows" => "10", // pro seite
+                             "line" => "5", // pro zeile  (rows / line)
                           "newline" => "<br clear=\"all\" />",
                                ),
                        ),
@@ -88,7 +81,7 @@
           "letters" => "",
             "tagjs" => "-141347382.modify.js-nextgen",
         "image_tag" => "img",
-          "sel_tag" => array("o","True","l","Bildergalerie"),     // array(size des zielbildes,thumbs in viewer(TRUE),Lightbox-Modus(l),defaultTitle)
+          "sel_tag" => array("o","True","l","Bildergalerie"), // array(size des zielbildes,thumbs in viewer(TRUE),Lightbox-Modus(l),defaultTitle)
              "tags" => array( // position (T=top, B=bottom), access key, no select, links, mitte, rechts, eingener tag
                    // block-elemente
                    "h1"     => array( "T", "1" ),

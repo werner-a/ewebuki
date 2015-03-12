@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "leer - list funktion";
+// "contented - list funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -48,9 +48,6 @@
         // funktions bereich
         // ***
 
-        ### put your code here ###
-
-        /* z.B. db query */
         $sql = "SELECT version, html, content, changed, byalias
                     FROM ". SITETEXT ."
                     WHERE lang = '".$environment["language"]."'
@@ -86,6 +83,7 @@
             );*/
         }
         #echo sprintf("<pre>%s</pre>",print_r($dataloop,True));
+
         // +++
         // funktions bereich
 
@@ -94,7 +92,7 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( isset($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
@@ -106,7 +104,7 @@
         $ausgaben["link_new"] = $cfg["contented"]["basis"]."/add.html";
 
         // hidden values
-        #$ausgaben["form_hidden"] .= "";
+        #$ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $cfg["contented"]["path"] = str_replace($pathvars["virtual"],"",$cfg["contented"]["basis"]);

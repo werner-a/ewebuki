@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,21 +37,20 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
     // erlaubnis bei intrabvv speziell setzen
     $database = $environment["parameter"][1];
-    if ( is_array($_SESSION["katzugriff"]) ) {
+
+    if ( @is_array($_SESSION["katzugriff"]) ) {
         if ( in_array("-1:".$database.":".$environment["parameter"][2],$_SESSION["katzugriff"]) ) $erlaubnis = -1;
     }
 
-    if ( is_array($_SESSION["dbzugriff"]) ) {
+    if ( @is_array($_SESSION["dbzugriff"]) ) {
         if ( in_array($database,$_SESSION["dbzugriff"]) ) $erlaubnis = -1;
     }
 
@@ -61,7 +60,7 @@
     // spezial-check fuer artikel
     $tname2path = tname2path($environment["parameter"][2]);
     $erlaubnis = "";
-    if ( is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))])
+    if ( @is_array($cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))])
         && $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"] != "" ) {
         $kate = $cfg["bloged"]["blogs"][substr($tname2path,0,strrpos($tname2path,"/"))]["category"];
         $laenge = strlen($kate)+2;
@@ -134,23 +133,19 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        ### put your code here ###
+        if ( !isset($defaults["section"]["label"]) ) $defaults["section"]["label"] = "inhalt";
+        if ( !isset($defaults["section"]["tag"]) ) $defaults["section"]["tag"] = "[H";
 
-        // funktion_content.inc.php zeile 181,182 reicht nicht (mehr)
-        // eine funktion die nicht aufgerufen wird f�llt auch die variablen nicht
-        if ( $defaults["section"]["label"] == "" ) $defaults["section"]["label"] = "inhalt";
-        if ( $defaults["section"]["tag"] == "" ) $defaults["section"]["tag"] = "[H";
-
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".$_SESSION["ebene"].$debugging["char"];
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".$_SESSION["kategorie"].$debugging["char"];
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "ebene: ".@$_SESSION["ebene"].$debugging["char"];
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "kategorie: ".@$_SESSION["kategorie"].$debugging["char"];
 
 
 
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "last edit: ".$_SESSION["cms_last_edit"].$debugging["char"];;
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "last ebene: ".$_SESSION["cms_last_ebene"].$debugging["char"];;
-        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "last kategorie: ".$_SESSION["cms_last_kategorie"].$debugging["char"];;
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "last edit: ".@$_SESSION["cms_last_edit"].$debugging["char"];;
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "last ebene: ".@$_SESSION["cms_last_ebene"].$debugging["char"];;
+        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "last kategorie: ".@$_SESSION["cms_last_kategorie"].$debugging["char"];;
 
-        if ( isset($_SESSION["cms_last_edit"]) && $_GET["referer"] != "" ) {
+        if ( isset($_SESSION["cms_last_edit"]) && isset($_GET["referer"]) ) {
             unset($_SESSION["cms_last_edit"]);
 
             $_SESSION["ebene"] = $_SESSION["cms_last_ebene"];
@@ -162,8 +157,6 @@
 
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "neue ebene    : ".$_SESSION["ebene"].$debugging["char"];;
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "neue kategorie: ".$_SESSION["kategorie"].$debugging["char"];;
-
-
 
         // status anzeigen
         $ausgaben["ce_tem_db"]      = "#(db): ".$environment["parameter"][1];
@@ -185,8 +178,9 @@
                      AND tname ='".$environment["parameter"][2]."'";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
-        if ( $data = $db -> fetch_array($result, $nop) ) {
-            $ausgaben["lock"] .= "lock by ".$data["byalias"]." @ ".$data["lockat"];
+
+        if ( $data = $db -> fetch_array($result, null) ) {
+            $ausgaben["lock"] = "lock by ".$data["byalias"]." @ ".$data["lockat"];
             $ausgaben["class"] = "ta_lock";
         } else {
             $sql = "INSERT INTO site_lock
@@ -197,23 +191,22 @@
                     '".$_SESSION["alias"]."',
                     '".date("Y-m-d H:i:s")."')";
             $result  = $db -> query($sql);
-            $ausgaben["lock"] .= "lock by ".$_SESSION["alias"]." @ ".date("Y-m-d H:i:s");
+            $ausgaben["lock"] = "lock by ".$_SESSION["alias"]." @ ".date("Y-m-d H:i:s");
             $ausgaben["class"] = "ta_norm";
         }
 
-
         // eWeBuKi tag schutz - sections 1
+        $mark = $defaults["section"]["tag"];
+        $hide = "++";
+
         if ( strpos( $form_values["content"], "[/E]") !== false ) {
             $preg = "|\[E\](.*)\[/E\]|Us";
             preg_match_all($preg, $form_values["content"], $match, PREG_PATTERN_ORDER );
-            $mark = $defaults["section"]["tag"];
-            $hide = "++";
             foreach ( $match[0] as $key => $value ) {
                 $escape = str_replace( $mark, $hide, $match[1][$key]);
                 $form_values["content"] = str_replace( $value, "[E]".$escape."[/E]", $form_values["content"]);
             }
         }
-
 
         // evtl. spezielle section
         if ( is_array($defaults["section"]["tag"]) ) {
@@ -243,11 +236,8 @@
             }
         }
 
-
         // eWeBuKi tag schutz - sections 2
         $form_values["content"] = str_replace( $hide, $mark, $form_values["content"]);
-
-
 
         /*
         / wenn preview gedrueckt wird, hidedata erzeugen und $form_values["content"] aendern
@@ -258,15 +248,13 @@
         / die if abfrage die den save verhindert
         / hat mir nicht gefallen!
         */
-        if ( $_POST["PREVIEW"]  ){
+        if ( isset($_POST["PREVIEW"])  ){
             $hidedata["preview"]["content"] = "#(preview)";
             $preview = intelilink($_POST["content"]);
             $preview = tagreplace($preview);
             $hidedata["preview"]["content"] .= nlreplace($preview);
             $form_values["content"] = $_POST["content"];
         }
-
-
 
         // convert tag 2 html
         switch ( $environment["parameter"][5] ) {
@@ -289,7 +277,6 @@
             default:
                 $form_values["html"] = 0;
         }
-
 
         // eWeBuKi tag schutz part 3
         $mark_o = array( "#(", "g(", "#{", "!#" );
@@ -335,7 +322,7 @@
             $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
 
             // file memo auslesen und zuruecksetzen
-            if ( is_array($_SESSION["file_memo"]) ) {
+            if ( is_array(@$_SESSION["file_memo"]) ) {
                 $array = array_merge($_SESSION["file_memo"],$found);
 //                 unset($_SESSION["file_memo"]);
             } else {
@@ -369,7 +356,7 @@
                 filelist($result, "contented");
             }
 
-            if ( is_array($_SESSION["compilation_memo"]) ) {
+            if ( is_array(@$_SESSION["compilation_memo"]) ) {
                 foreach ( $_SESSION["compilation_memo"] as $compid=>$value ) {
                     $pics = implode(":",$value);
                     $dataloop["selection"][] = array(
@@ -386,19 +373,15 @@
             $art = "";
         }
 
-
-
         // referer im form mit hidden element mitschleppen
-        if ( $_GET["referer"] != "" ) {
+        if ( isset($_GET["referer"]) ) {
             $ausgaben["form_referer"] = $_GET["referer"];
             $ausgaben["form_break"] = $_GET["referer"];
-        } elseif ( $_POST["form_referer"] == "" ) {
-            $ausgaben["form_referer"] = $_SERVER["HTTP_REFERER"];
+        } elseif ( !isset($_POST["form_referer"]) ) {
+            $ausgaben["form_referer"] = @$_SERVER["HTTP_REFERER"];
         } else {
             $ausgaben["form_referer"] = $_POST["form_referer"];
         }
-
-
 
         // +++
         // funktions bereich fuer erweiterungen
@@ -419,12 +402,10 @@
         #$ausgaben["form_abbrechen"] = $_SESSION["page"];
         $ausgaben["form_break"] = $cfg["contented"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].",".$environment["parameter"][4].",,,unlock.html";
 
-
         // hidden values
-        #$ausgaben["form_hidden"] .= "";
-        $ausgaben["form_hidden_html"] .= $form_values["html"];
-        $ausgaben["form_hidden_version"] .= $form_values["version"];
-        $ausgaben["form_hidden_status"] .= $form_values["status"];
+        $ausgaben["form_hidden_html"] = $form_values["html"];
+        $ausgaben["form_hidden_version"] = @$form_values["version"];
+        $ausgaben["form_hidden_status"] = @$form_values["status"];
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify".$art;
@@ -449,11 +430,11 @@
         // wohin schicken
         #n/a
 
-
         // +++
         // page basics
 
         // lock aufheben
+        if ( !isset($environment["parameter"][7]) ) $environment["parameter"][7] = null;
         if ( $environment["parameter"][7] != "" ) {
             $sql = "DELETE FROM site_lock
                           WHERE label ='".$environment["parameter"][3]."'
@@ -464,15 +445,14 @@
         }
 
         if ( $environment["parameter"][7] == "verify"
-            &&  ( $_POST["send"] != ""
-                || $_POST["add"] != ""
-                || $_POST["sel"] != ""
-                || $_POST["upload"] != "" ) ) {
+            &&  ( isset($_POST["send"])
+                || isset($_POST["add"])
+                || isset($_POST["upload"]) )
+                || isset($_POST["sel"]) ) {
 
-
-            // form eingaben pr�fen
+            // form eingaben pruefen
+            if ( !isset($form_options) ) $form_options = array();
             form_errors( $form_options, $_POST );
-
 
             // gibt es bereits content?
             $sql = "SELECT version, html, content
@@ -484,7 +464,7 @@
                      LIMIT 0,1";
             $result = $db -> query($sql);
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
-            $data = $db -> fetch_array($result, $nop);
+            $data = $db -> fetch_array($result, null);
             $content_exist = $db -> num_rows($result);
 
             // evtl. spezielle section
@@ -494,8 +474,6 @@
                 if ( strpos( $data["content"], "[/E]") !== false ) {
                     $preg = "|\[E\](.*)\[/E\]|Us";
                     preg_match_all($preg, $data["content"], $match, PREG_PATTERN_ORDER );
-                    $mark = $defaults["section"]["tag"];
-                    $hide = "++";
                     foreach ( $match[0] as $key => $value ) {
                         $escape = str_replace( $mark, $hide, $match[1][$key]);
                         $data["content"] = str_replace( $value, "[E]".$escape."[/E]", $data["content"]);
@@ -559,12 +537,10 @@
                 $content = $_POST["content"];
             }
 
-
             // html killer :)
             if ( $specialvars["denyhtml"] == -1 ) {
                 $content = strip_tags($content);
             }
-
 
             // space killer
             if ( $specialvars["denyspace"] == -1 ) {
@@ -574,20 +550,17 @@
                 }
             }
 
-
-
-
             // evtl. zusaetzliche datensatz aendern
             if ( $ausgaben["form_error"] == ""  ) {
 
                 // funktions bereich fuer erweiterungen
                 // ***
 
-                ### put your code here ###
-
+                if ( !isset($error) ) $error = null;
                 if ( $error ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
                 // +++
                 // funktions bereich fuer erweiterungen
+
             }
 
             // datensatz aendern
@@ -596,7 +569,7 @@
                 // ticks sicher maskieren
                 $content = addslashes(stripslashes($content));
 
-                $mark = "";$marka = "";$markb = "";
+                $mark = ""; $marka = ""; $markb = "";
                 if ( $specialvars["content_release"] == -1 ) {
                     $mark = ", status=1";
                     $marka = ", status";
@@ -611,12 +584,17 @@
                     $result  = $db -> query($sql);
                 }
 
-                if ( $content_exist == 1 && isset($_POST["send"]["save"]) ) {
+                if ( $content_exist == 1 && ( isset($_POST["send"]["save"])
+                                           || isset($_POST["add"])
+                                           || isset($_POST["sel"])
+                                           || isset($_POST["upload"])
+                                            ) ) {
                     if ( $environment["parameter"][4] == "" && $_POST["content"] == "" ) {
                         $sql = "DELETE FROM ". SITETEXT ."
                                       WHERE lang = '".$environment["language"]."'
                                         AND label ='".$environment["parameter"][3]."'
                                         AND tname ='".$environment["parameter"][2]."'";
+                        //  echo "alle versionen loeschen";
                     } else {
                         $sql = "UPDATE ". SITETEXT ." SET
                                        ebene = '".$_SESSION["ebene"]."',
@@ -634,8 +612,10 @@
                                    AND label ='".$environment["parameter"][3]."'
                                    AND tname ='".$environment["parameter"][2]."'
                                    AND version=".$_POST["version"];
+                        //  echo "gleiche version";
                     }
                 } else {
+                    if ( !isset($data["version"]) ) $data["version"] = 0;
                     $sql = "INSERT INTO ". SITETEXT ."
                                         (lang, label, tname, version,
                                         ebene, kategorie,
@@ -657,14 +637,8 @@
                                          '".$_SESSION["email"]."',
                                          '".$_SESSION["alias"]."'".
                                             $markb.")";
+                        //echo "neue version";
                 }
-
-                // Sql um spezielle Felder erweitern
-                #$ldate = $_POST["ldate"];
-                #$ldate = substr($ldate,6,4)."-".substr($ldate,3,2)."-".substr($ldate,0,2)." ".substr($ldate,11,9);
-                #$sqla .= ", ldate='".$ldate."'";
-
-//                 $sql = "update ".$cfg["contented"]["db"]["leer"]["entries"]." SET ".$sqla." WHERE ".$cfg["contented"]["db"]["leer"]["key"]."='".$environment["parameter"][1]."'";
 
                 // notwendig fuer die artikelverwaltung , der bisher aktive artikel wird auf inaktiv gesetzt
                 if ( preg_match("/^\[!\]/",$content,$regs) ) {
@@ -679,12 +653,11 @@
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
-                #if ( $header == "" ) $header = $cfg["contented"]["basis"]."/list.html";
             }
 
             // wenn es keine fehlermeldungen gab, die uri $header laden
             if ( $ausgaben["form_error"] == "" ) {
-                if ( $_POST["add"] || $_POST["sel"] || $_POST["upload"] > 0 ) {
+                if ( @$_POST["add"] || @$_POST["sel"] || @$_POST["upload"] > 0 ) {
 
                     $_SESSION["cms_last_edit"] = str_replace(",verify", "", $pathvars["requested"]);
 
@@ -692,35 +665,33 @@
                     $_SESSION["cms_last_ebene"] = $_SESSION["ebene"];
                     $_SESSION["cms_last_kategorie"] = $_SESSION["kategorie"];
 
-                    if ( $_POST["upload"] > 0 ) {
-                        header("Location: ".$pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$_POST["upload"]);
-                    } elseif ( $_POST["sel"] != "" ) {
-                        header("Location: ".$pathvars["virtual"]."/admin/fileed/compilation.html");
+                    if ( @$_POST["upload"] > 0 ) {
+                        $header = $pathvars["virtual"]."/admin/fileed/upload.html?anzahl=".$_POST["upload"];
+                    } elseif ( isset($_POST["sel"]) ) {
+                        $header = $pathvars["virtual"]."/admin/fileed/compilation.html";
                     } else {
-                        header("Location: ".$pathvars["virtual"]."/admin/fileed/list.html");
+                        $header = $pathvars["virtual"]."/admin/fileed/list.html";
                     }
 
                 } else {
                     $pattern = ",v[0-9]*\.html$";
                     $ausgaben["form_referer"] = preg_replace("/".$pattern."/",".html",$ausgaben["form_referer"] );
-                    header("Location: ".$ausgaben["form_referer"]."");
+                    $header = $ausgaben["form_referer"];
                 }
-                #header("Location: ".$header);
+                header("Location: ".$header);
             }
         }
+
         // abbrechen button verarbeiten (siehe 465 $header variable)
         if ( $environment["parameter"][7] == "unlock" ) {
             header("Location: ".$header);
         }
+
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
 
-
-
     $db -> selectDb(DATABASE,FALSE);
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

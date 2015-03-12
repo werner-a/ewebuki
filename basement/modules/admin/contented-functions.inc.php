@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,23 +37,11 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /* um funktionen z.b. in der kategorie add zu laden, leer.cfg.php wie folgt aendern
-    /*
-    /*    "function" => array(
-    /*                 "add" => array( "function1_name", "function2_name"),
-    */
-
-//     if ( in_array("makece", $cfg["contented"]["function"][$environment["kategorie"]]) ) {
-//          function function_name(  $var1, $var2 = "") {
-//             ### put your code here ###
-//          }
-//     }
 
     // content editor erstellen
     if ( in_array("makece", $cfg["contented"]["function"][$environment["kategorie"]]) ) {
@@ -61,15 +49,22 @@
         function makece($ce_formname, $ce_name, $ce_inhalt) {
             global $debugging, $environment, $db, $cfg, $pathvars, $ausgaben, $specialvars, $defaults;
 
+            if ( !isset($ausgaben["extension"]) ) $ausgaben["extension"] = null;
+            if ( !isset($ausgaben["js"]) ) $ausgaben["js"] = null;
+            if ( !isset($ausgaben["njs"]) ) $ausgaben["njs"] = null;
+            
+            $sp = "    ";
+            $tn = null;
+
             // vogelwilde regex die alte & neue file links findet
             // und viel arbeit erspart
-            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",$form_values["content"],$found1);
-            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",$form_values["content"],$found2);
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/([0-9]+)\//",@$form_values["content"],$found1);
+            preg_match_all("/".str_replace("/","\/",$cfg["file"]["base"]["webdir"])."[a-z]+\/[a-z]+\/[a-z]+_([0-9]+)\./",@$form_values["content"],$found2);
             $found = array_merge($found1[1],$found2[1]);
             $debugging["ausgabe"] .= "<pre>".print_r($found,True)."</pre>";
 
             // file memo auslesen und zuruecksetzen
-            if ( is_array($_SESSION["file_memo"]) ) {
+            if ( isset($_SESSION["file_memo"]) ) {
                 $array = array_merge($_SESSION["file_memo"],$found);
 //                 unset($_SESSION["file_memo"]);
             } else {
@@ -82,6 +77,7 @@
                 if ( $merken != DATABASE ) {
                     $db -> selectDB( DATABASE ,"");
                 }
+                $where = null;
                 foreach ( $array as $value ) {
                     if ( $where != "" ) $where .= " OR ";
                     $where .= "fid = '".$value."'";
@@ -92,10 +88,11 @@
                     $db -> selectDB($merken,"");
                 }
 
-                $ausgaben["extension"] = ""; $sp = "    ";
                 #$tn = "\n<table width=\"100%\"><tr><td>";
-                $tn2 ="<br clear=\"all\" /><br />";
-                while ( $data = $db -> fetch_array($result, NOP) ) {
+                $tn1 = null;
+                $tn2 = "<br clear=\"all\" /><br />";
+                $i = 0;
+                while ( $data = $db -> fetch_array($result, null) ) {
                     #$file[$data["fid"]] = array(
                     #                        "fart"  =>  $data["ffart"],
                     #                        "fdesc" =>  $data["fdesc"],
@@ -159,7 +156,7 @@
                             $tn1 .= "<tr><td><a href=\"#\" onclick=\"INSst('imo".$data["fid"]."','".$ce_formname."','".$ce_name."')\"><img".$imgsize." border=\"0\" src=\"".$cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["pic"]["root"].$cfg["file"]["base"]["pic"]["tn"]."tn_".$data["fid"].".".$data["ffart"]."\" alt=\"id:".$data["fid"].", .".$data["ffart"]."\" title=\"id:".$data["fid"].", .".$data["ffart"]."\"></a></td></tr>";
                             $tn1 .= "</table>";
 
-                            if ( $defaults["cms-tag"]["grafik"] == "" ) {
+                            if ( !isset($defaults["cms-tag"]["grafik"]) ) {
                                 $defaults["cms-tag"]["grafik"] = "[IMG=";
                                 $defaults["cms-tag"][",grafik"] = "";
                                 $defaults["cms-tag"]["/grafik"] = "[/IMG]";
@@ -179,13 +176,13 @@
                             $a = $i / 6;
                             if ( is_int($a) ) $tn1 .="<br clear=\"all\" />";
                     }
-                }
+                }                
                 $tn .= $tn1.$tn2;
                 #."</td></tr></table>";
             }
 
             // path fuer alle schaltflaechen anpassen
-            if ( $defaults["cms-tag"]["path"] == "" ) $defaults["cms-tag"]["path"] = "/images/default/";
+            if ( !isset($defaults["cms-tag"]["path"]) ) $defaults["cms-tag"]["path"] = "/images/default/";
 
             $danei ='[TAB=l;300]\n[ROW]\n[COL]1,1[\/COL]\n[COL]1,2[\/COL]\n[COL]1,3[\/COL]\n[\/ROW][ROW]\n[COL]2,1[\/COL]\n[COL]2,2[\/COL]\n[COL]2,3[\/COL]\n[\/ROW]\n[\/TAB]';
 
@@ -210,6 +207,8 @@
 
             $cms_old_mode = False;
             foreach( $cfg["contented"]["tags"] as $key => $value ) {
+
+                $value[1] = null; $value[2] = null; $value[3] = null; $value[4] = null; $value[5] = null; $value[6] = null;
 
                 // js code erstellen
                 if ( $ausgaben["js"] == "" ) {
@@ -249,8 +248,8 @@
                 $ausgaben["js"] .= "        st='[".strtoupper($key).$l.$s.$value[4]."[\/".strtoupper($key)."]'\n";
 
 
-
-                if ( $value[0] == "" && $cfg["contented"]["debug"] == True ) $value[0] = "T";
+                if ( !isset($cfg["contented"]["debug"]) ) $cfg["contented"]["debug"] = False;
+                if ( $cfg["contented"]["debug"] == True && $value[0] == "" ) $value[0] = "T";
 
                 // position (T=top, B=bottom), access key, no select, links, rechts, disable
                 //                                                     ebButtons[ebButtons.length] = new ebButton(
@@ -264,11 +263,11 @@
                 // tagMid       mid tag                                  ,''
                 // tagEnd       close tag                                ,'[/H1]'
                 //                                                     );
-
+                
                 $ausgaben["njs"] .= "ebButtons[ebButtons.length] = new ebButton(\n";
                 $ausgaben["njs"] .= "'eb_".$key."'
                                     ,'".strtoupper($key)."'
-                                    ,'".$label[$key].$k."'
+                                    ,'".@$label[$key].$k."'
                                     ,'".$value[0]."'
                                     ,'".$value[1]."'
                                     ,'noSelect'
@@ -280,6 +279,7 @@
 
 
                 // buttons bauen
+                $ausgaben["ce_button"] = null; $ausgaben["ce_bottom_button"] = null;
                 if ( $value[0] == "T" ) {
                     if ( $cms_old_mode == True ) {
                         #$ausgaben["ce_button"] .= "<a href=\"#\" onclick=\"INSst('".$key."','".$ce_formname."','".$ce_name."')\" onMouseOver=\"status='".$value[3]."';return true;\" onMouseOut=\"status='';return true;\"><img src=\"".$defaults["cms-tag"]["path"]."cms-tag-".$key.".png\" alt=\"".$value[3]."\" title=\"".$value[3]."\" width=\"23\" height=\"22\" border=\"0\" /></a>\n ";
@@ -298,12 +298,12 @@
                 #ce_anker
             }
 
-#echo "<pre>".$ausgaben["njs"]."</pre>";
-
             $ausgaben["ce_dropdown"] .= "</select>";
 
-            // script in seite parsen
+            // debug ausgabe script in seite
             #echo "<pre>".$ausgaben["js"]."</pre>";
+            #echo "<pre>".$ausgaben["njs"]."</pre>";
+            
             $ausgaben["ce_script"] = parser($cfg["contented"]["tagjs"],"");
 
             if ( $cms_old_mode == True ) {
@@ -312,6 +312,7 @@
                 $ausgaben["ce_button"] .= "<input type=\"submit\" name=\"add[]\" value=\"FILE\" title=\"#(add)\" class=\"butoth\">";
             }
 
+            $ausgaben["ce_upload"] = null;
             $ausgaben["ce_upload"] .= "<select style=\"width:95px;font-family:Helvetica, Verdana, Arial, sans-serif;font-size:12px;\" name=\"upload\" onChange=\"submit()\">";
             $ausgaben["ce_upload"] .= "<option value=\"\">#(upload)</option>";
             $ausgaben["ce_upload"] .= "<option value=\"1\">1 #(file)</option>";
