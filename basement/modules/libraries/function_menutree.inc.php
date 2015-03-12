@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: function_menutree.inc.php 311 2005-03-12 21:46:39Z chaot $";
+// "$Id$";
 // "menubaum bauen";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,38 +37,39 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K?nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function sitemap($refid, $script_name, $art = "", $modify = "", $self = "") {
-        global $hidedata,$design,$opentree,$treelink,$ausgaben,$cfg, $environment, $db, $pathvars, $specialvars, $rechte, $buffer,$positionArray;
+        global $hidedata, $design, $opentree, $treelink, $ausgaben, $cfg, $environment, $db, $pathvars, $specialvars, $rechte, $buffer, $positionArray;
 
-        if ( !$ausgaben["path"] ) $ausgaben["path"] = "";
+        if ( isset($ausgaben["path"]) ) $ausgaben["path"] = null;
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
+        $tree = null; $sitemap = null; $where = null;
 
-        $where = "";
         switch($art) {
-            case menued:
+            case 'menued':
                 $flapmenu = -1;
                 $aktionlinks = -1;
                 $hidestatus = -1;
                 $sortinfo = -1;
                 break;
-            case select:
+            case 'select':
                 $flapmenu = -1;
                 $radiorefid = -1;
                 $hidestatus = -1;
                 break;
-            case wizard:
+            case 'wizard':
                 $flapmenu = -1;
                 $aktionlinks = -1;
                 $hidestatus = -1;
 #                $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
-            case sitemap:
-                $sitemap = -1;
+            case 'sitemap':
+                    $sitemap = -1;
                 $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
             default:
@@ -86,6 +87,7 @@
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
 
+        $buffer["pfad"] = null; $buffer["pfad_label"] = null;
         while ( $array = $db -> fetch_array($result,1) ) {
 
             // aufbau des pfads
@@ -106,7 +108,7 @@
             if ( $flapmenu == -1) {
 
                 // zweiten parameter mitziehen wenn er gesetzt ist
-                if ( $environment["parameter"][2] != "" ) {
+                if ( isset($environment["parameter"][2]) ) {
                     $move_parameter = ",".$environment["parameter"][2];
                 } else {
                     $move_parameter = "";
@@ -209,10 +211,11 @@
                         }
                         // anzeige des icons zur content-seite
                         if ( $name == "jump" ) {
+                            $ankerlnk = null;
                             $aktion .= "<a target=\"_blank\" href=\"".$pathvars["virtual"].make_ebene($array["mid"]).".html".$ankerlnk."\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                             continue;
                         }
-                                                
+
                         // beim move ausnahme!
                         if ( $name == "move" ) {
                             $aktion .= "<a href=\"".$cfg[$script_name]["basis"]."/".$value[0].$name.",0,".$array["mid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
@@ -228,9 +231,9 @@
                                 if ( $name == "edit" ) {
                                     $database = DATABASE;
                                     $label =",inhalt";
-                                    $dest = "show";    
+                                    $dest = "show";
                                 }
-                                
+
                                 if ( $value[3] ) {
                                         $dest = "show";
                                         $database = DATABASE;
@@ -241,21 +244,21 @@
                                                 if ( $wizard_marken ) {
                                                     $label = ",".$wizard_marken;
                                                     if ( $wizard_ebene == "" ) {
-                                                        $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><span style=\"float:right\">".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";                                        
+                                                        $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><span style=\"float:right\">".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";
                                                     } else {
-                                                        $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><span style=\"float:right\">|".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";    
+                                                        $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><span style=\"float:right\">|".$cfg["menubaum_desc"][$wizard_marken]."</span></a>";
                                                     }
                                                 }
                                             }
                                             continue;
-                                        }                                        
+                                        }
                                 }
                                 if (preg_match("/^wizard/", $name )) continue;
-                                
+
                                 if ( $wizard_ebene == "" ) {
-                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";                                        
+                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                                 } else {
-                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";    
+                                    $aktion .= "<a href=/auth/wizard/".$dest.",".$database.",".eCRC($wizard_ebene).".".$wizard_kat.$label.".html><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
                                 }
                             } else {
                                 $aktion .= "<a href=\"".$cfg[$script_name]["basis"]."/".$value[0].$name.",".$array["mid"].",".$array["refid"].".html\"><img style=\"float:right\" src=\"".$cfg[$script_name]["iconpath"].$name.".png\" alt=\"".$value[1]."\" title=\"".$value[1]."\" width=\"24\" height=\"18\"></img></a>";
@@ -274,6 +277,7 @@
             if ( !isset($buffer[$refid]["zaehler"]) ) {
                 $buffer[$refid]["zaehler"] = $count;
 
+                if ( !isset($buffer[$refid]["display"]) ) $buffer[$refid]["display"] = null;
                 if ( $buffer[$refid]["display"] != "none" ) {
                     // beim ersten aufruf eine class menued setzen
                     if ( $self == "" ) {
@@ -292,7 +296,8 @@
             }
 
             // refid radio button
-            if ( $radiorefid != "" ) {
+            $radiobutton = null;
+            if ( isset($radiorefid) ) {
                 if ( $array["mid"] == $environment["parameter"][2] || ( $specialvars["security"]["new"] == -1 && !priv_check(make_ebene($array["mid"]),$cfg["menued"]["modify"]["move"][2]) ) ) {
                     $radio_disabled = " disabled";
                 } else {

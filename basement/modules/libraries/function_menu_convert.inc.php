@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: menu-convert.inc.php 311 2005-03-12 21:46:39Z chaot $";
+// "$Id$";
 // "menu convert funktion loader";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -75,7 +75,7 @@
                     FROM site_menu
                     WHERE mid='".$mid."'";
             $result = $db -> query($sql);
-            $array = $db -> fetch_array($result,$nop);
+            $array = $db -> fetch_array($result, null);
             $ebene = "/".$array["entry"].$ebene;
             if ( $array["refid"] != 0 ) {
                 $ebene = make_ebene($array["refid"],$ebene);
@@ -84,10 +84,11 @@
         }
     }
 
-    if ( !function_exists("tname2path")) {
+    if ( !function_exists( 'tname2path' )) {
         // findet zu einem tname die passende url
         function tname2path($tname,$refid=0,$ebene="") {
             global $db;
+            $return_value = null;
 
             $sql = "SELECT *
                       FROM site_menu
