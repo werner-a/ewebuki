@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tagreplace($replace) {
-        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars,$dataloop,$hidedata,$mapping, $LB_IMG_counter;
+        global $db, $debugging, $cfg, $pathvars, $environment, $ausgaben, $defaults, $specialvars, $dataloop, $hidedata, $mapping, $LB_IMG_counter;
 
         // cariage return + linefeed fix
         if ( $specialvars["newbrmode"] != True ) {
@@ -747,6 +747,7 @@
                                         $imgsize = " ".$imgsize[3];
                                     }
                                     if ( !isset($imgwerte[3]) ) $imgwerte[3] = null;
+                                    if ( !isset($imgwerte[7]) ) $imgwerte[7] = null;
                                     if ( $imgwerte[3] != "" ) {
                                         $bilderstrecke = ",".$imgwerte[7];
                                     } else {
