@@ -620,8 +620,6 @@
                                     if ( file_exists($imgfile) ) {
                                         $imgsize = getimagesize($imgfile);
                                         $imgsize = " ".$imgsize[3];
-                                    } else {
-                                        $imgsize = null;
                                     }
                                 }
                             }
@@ -748,12 +746,13 @@
                                         $imgsize = getimagesize($imgfile);
                                         $imgsize = " ".$imgsize[3];
                                     }
-                                    if ( isset($imgwerte[3]) ) {
-                                        $bilderstrecke = ",".@$imgwerte[7];
+                                    if ( !isset($imgwerte[3]) ) $imgwerte[3] = null;
+                                    if ( $imgwerte[3] != "" ) {
+                                        $bilderstrecke = ",".$imgwerte[7];
                                     } else {
                                         $bilderstrecke = null;
                                     }
-                                    if ( isset($imgwerte[3]) ) {
+                                    if ( $imgwerte[3] != "" ) {
                                         if ( strpos($imgurl,$cfg["file"]["base"]["pic"]["root"]) === false ) {
                                             $opt = explode("/",str_replace($pathvars["subdir"],"",$imgurl));
                                             $imgid = $opt[3];
@@ -1001,11 +1000,9 @@
                         } else {
                             $ausgaben["border"] = null;
                         }
-
-                        if ( isset($imgwerte[3]) ) {
-                            if ($imgwerte[3] == "l" ) {
-                                $lightbox = "rel=\"lightbox[b".$imgb_counter."]\"";
-                            }
+                        if ( !isset($imgwerte[3]) ) $imgwerte[3] = null;
+                        if ($imgwerte[3] == "l" ) {
+                            $lightbox = "rel=\"lightbox[b".$imgb_counter."]\"";
                         }
                         if ( !isset($imgwerte[4]) ) {
                             $tspace = "0";
