@@ -54,7 +54,6 @@ $Id = null;
     $pathvars["webimages"] = "/images/main"."/";                        # gilt nur fuer select seite
     $pathvars["webcss"]    = "/css/main/"."/";                          # gilt nur fuer select seite
 
-
     // init important variables
     $pathvars["virtual"] = null;
 
@@ -63,13 +62,12 @@ $Id = null;
 
     $environment["param"] = null;
     $environment["subparam"] = null;
-    
+
     $element = array(""); // fix für rparser fehler bei leerem array
-    
+
     $specialvars["content_release"] = null;
     $specialvars["dyndb"] = null;
     $specialvars["phpsessid"] = null;
-
 
     // site config
     require dirname(dirname(dirname(__FILE__)))."/conf/site.cfg.php";
@@ -124,7 +122,9 @@ $Id = null;
     }
 
     // ausgaben array init
-    $ausgaben["output"] = "";
+    $ausgaben["output"] = null;
+    $ausgaben["menu"] = null;
+    $ausgaben["buffer"] = null;
 
     // required libs
     require $pathvars["libraries"]."function_crc32handle.inc.php"; // crc32/crc64 handling
