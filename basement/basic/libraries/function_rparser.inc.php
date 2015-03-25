@@ -44,12 +44,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-  aufruf rparser("template-name.tem.html", "default-template.tem.html");
+  aufruf rparser("template-name.tem.html", "default-template.tem.html", "overwrite-template.tem.html", TRUE);
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function rparser($startfile, $default_template, $overwrite_template="") {
+    function rparser($startfile, $default_template, $overwrite_template = "", $buffer = FALSE) {
 
         global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $dataloop, $hidedata, $mapping, $loopcheck;
 
@@ -407,9 +407,13 @@
                                 }
 
                                 // gemerkten zeilen anfang ausgeben
-                                echo ltrim($lline);
+                                if ( $buffer != True ) {
+                                    echo ltrim($lline);
+                                } else {
+                                    $ausgaben["buffer"] = $ausgaben["buffer"].ltrim($lline);
+                                }
                                 // parser nochmal aufrufen um untertemplate mit dem namen: "$token".tem.html zu parsen
-                                rparser($newstartfile, $default_template, $overwrite_template);
+                                rparser($newstartfile, $default_template, $overwrite_template, $buffer);
 
                                 // reset template overwrite outer recursive procedure
                                 $overwrite_template = "";
@@ -422,7 +426,11 @@
                                 }
 
                                 // gemerktes zeilen ende ausgeben
-                                echo rtrim($rline)."\n";
+                                if ( $buffer != True ) {
+                                    echo rtrim($rline)."\n";
+                                } else {
+                                    $ausgaben["buffer"] = $ausgaben["buffer"].rtrim($rline)."\n";
+                                }   
                             }
                         } else {
                             // eWeBuKi tag schutz part 4
@@ -431,7 +439,11 @@
                             $line = str_replace( $hide_o, $mark_o, $line );
 
                             // da keine marken fuer sub templates da waren zeile unveraendert ausgeben
-                            echo trim($line)."\n";
+                            if ( $buffer != True ) {
+                                echo trim($line)."\n";
+                            } else {
+                                $ausgaben["buffer"] = $ausgaben["buffer"].trim($line)."\n";
+                            }
                         } # ende automatic "#{marke}"
                     } # hier passiert alles bevor ##end
                 } # ende zeile enthaelt kein ##begin
