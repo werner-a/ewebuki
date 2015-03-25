@@ -51,10 +51,10 @@
 
         //_______________________________________________________________________________________________________
 
-        // create new PDF document 
+        // create new PDF document
         // TCPDF(P, mm, A4, , , );
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        
+
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
         #$pdf->SetAuthor('Nicola Asuni');
@@ -67,7 +67,7 @@
 
         // set default header data
         #$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 061', PDF_HEADER_STRING);
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' ewebuki', PDF_HEADER_STRING);
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'eWeBuKi - TCPDF Connector', 'by Werner Ammon - ChaoS Networks');
 
         // set header and footer fonts
         $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -118,8 +118,35 @@
         #$html = <<<EOF
         #EOF;
 
+        //[IMG=/file/picture/medium/img_10.jpg;;0;b]Wolkenblick[/IMG]
+        #$suchmuster = '~src="/file/(jpg|png|gif)/(\d+)/(b|m|s|o|tn)/.+"~';
+        #$ersetzung = 'src="/file/picture/$3/img_${2}.${1}"';
+        #$buffer = preg_replace($suchmuster, $ersetzung, $buffer);
+
+        $s = '~src="/file/(jpg|png|gif)/(\d+)/tn/.+"~';
+        $r = 'src="/file/picture/thumbnail/tn_${2}.${1}"';
+        $buffer = preg_replace($s, $r, $buffer);       
+
+        $s = '~src="/file/(jpg|png|gif)/(\d+)/s/.+"~';
+        $r = 'src="/file/picture/small/img_${2}.${1}"';
+        $buffer = preg_replace($s, $r, $buffer);
+        
+        $s = '~src="/file/(jpg|png|gif)/(\d+)/m/.+"~';
+        $r = 'src="/file/picture/medium/img_${2}.${1}"';
+        $buffer = preg_replace($s, $r, $buffer);
+
+        $s = '~src="/file/(jpg|png|gif)/(\d+)/b/.+"~';
+        $r = 'src="/file/picture/medium/img_${2}.${1}"';
+        $buffer = preg_replace($s, $r, $buffer);
+        
+        $s = '~src="/file/(jpg|png|gif)/(\d+)/o/.+"~';
+        $r = 'src="/file/picture/original/img_${2}.${1}"';
+        $buffer = preg_replace($s, $r, $buffer);
+   
         $html = utf8_encode($buffer);
 
+        #echo $html;
+        
         // output the HTML content
         $pdf->writeHTML($html, true, false, true, false, '');
 
@@ -127,7 +154,7 @@
         $pdf->lastPage();
 
         // ---------------------------------------------------------
-
+        
         //Close and output PDF document
         #$pdf->Output('example_061.pdf', 'I');
         $pdf->Output('ewebuki_test.pdf', 'I');
