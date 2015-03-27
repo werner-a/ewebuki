@@ -48,7 +48,7 @@
     function menu_generate($refid=0, $level=1, $arrEbene="", $url=""){
         global $db, $cfg, $debugging, $environment, $pathvars, $rechte, $dataloop, $hidedata, $ausgaben;
 
-        if ( $cfg["menu"]["level".$level]["enable"] == "-1" ) {
+        if ( @$cfg["menu"]["level".$level]["enable"] == "-1" ) {
             $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
             if ( $cfg["menu"]["level".$level]["full"] == "-1" ) $mandatory = "";
             $cfg["menu"]["level".$level]["extend"] == "-1" ? $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend," : $extenddesc = null;

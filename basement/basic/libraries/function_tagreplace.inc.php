@@ -663,6 +663,7 @@
                                 $border = null;
                                 $style_border = null;
                             }
+                            if ( !isset($imgwerte[3]) ) $imgwerte[3] = null;
                             if ($imgwerte[3] == "l" ) {
                                 $lightbox = "rel=\"lightbox[".$LB_IMG_counter."]\"";
                             }
