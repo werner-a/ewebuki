@@ -367,16 +367,29 @@
             rparser( $print_template.".tem.html", $specialvars["default_template"].".tem.html");
         }
     } elseif ( isset($_POST["pdf"]) || isset($_GET["pdf"]) ) {
-        $debugging["html_enable"] = 0;
-        $debugging["sql_enable"] = 0;
-        rparser("base.tem.html", $specialvars["default_template"].".tem.html", "", true);
-        #echo $ausgaben["buffer"];
+
+        $environment["pdfc"]["state"] = true;
+        $environment["pdfc"]["template"] = "pdfc";
+        $environment["pdfc"]["debug"] = false;
+
+        switch( $_GET["pdf"] ) {
+            case 0;
+                $template = $environment["pdfc"]["template"].".tem.html";
+                $environment["pdfc"]["debug"] = true;
+                break;
+            case 2;
+                $template = $environment["pdfc"]["template"].".tem.html";
+                break;
+            default;
+                $template = "base.tem.html";
+        }
+        rparser($template, $specialvars["default_template"].".tem.html", "", $environment["pdfc"]["state"]);
 
         $path_to_tcpdf = "/usr/local/share/php5/tcpdf/tcpdf.php";
         if ( file_exists($path_to_tcpdf) ) {
             require_once($path_to_tcpdf);
         } else {
-            die("Can't find TCPDF library");
+            die("Can't find TCPDF library.");
         }
 
         $path_to_tcpdf_function = $pathvars["libraries"]."function_tcpdf.inc.php";

@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -46,7 +46,7 @@
     function content($line, $tname) {
 
         global $db, $debugging, $pathvars, $specialvars, $environment, $defaults, $ausgaben, $rechte, $eWeBuKi, $RightConcept;
-
+        
         if ( $specialvars["crc32"] == -1 ) {
             if ( $environment["ebene"] != "" && $tname == $environment["kategorie"] ) {
                 $tname = eCRC($environment["ebene"]).".".$tname;
@@ -57,7 +57,6 @@
             if ( $environment["subkatid"] != "" && $tname == $environment["katid"] ) {
                 $tname = $tname.".".$environment["subkatid"];
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sub tname \"".$tname."\" forced!!!".$debugging["char"];
-                #$dbtname = $tname;
             }
         }
 
@@ -69,6 +68,7 @@
             $art = "#(";
             $bez = "# (";
             $dbtname = $tname;
+            if ( $tname == @$environment["pdfc"]["template"] ) $dbtname = "base";
             if ( $labelbeg === false ) {
                 $labelbeg = strpos($line,"g(");
                 $art = "g(";

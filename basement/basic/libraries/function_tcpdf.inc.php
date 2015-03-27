@@ -44,13 +44,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tcpdf_it($buffer) {
-
-        // remove default header/footer
-        #$pdf->setPrintHeader(false);
-        #$pdf->setPrintFooter(false);
-
-        //_______________________________________________________________________________________________________
-
+        
+        global $debugging, $environment;
+        
+        if ( $environment["pdfc"]["debug"] == False ) {
+            $debugging["html_enable"] = 0;
+            $debugging["sql_enable"] = 0;
+        }
+      
         // create new PDF document
         // TCPDF(P, mm, A4, , , );
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -77,8 +78,9 @@
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
         // set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        #$pdf->SetMargins(10, 0, 10);
+        #$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);       
+        #$pdf->SetMargins(15, 27, 15);
+        $pdf->SetMargins(15, 20, 15);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -90,10 +92,13 @@
 
         // set auto page breaks
         #$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        $pdf->SetAutoPageBreak(TRUE, 10);
+        #$pdf->SetAutoPageBreak(TRUE, 25);
+        $pdf->SetAutoPageBreak(TRUE, 20);
 
         // set image scale factor
         #$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setImageScale(1.25);
+        
 
         // ---------------------------------------------------------
 
@@ -125,40 +130,44 @@
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/tn/.+"~';
         $r = 'src="/file/picture/thumbnail/tn_${2}.${1}"';
-        $buffer = preg_replace($s, $r, $buffer);       
+        $buffer = preg_replace($s, $r, $buffer);
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/s/.+"~';
         $r = 'src="/file/picture/small/img_${2}.${1}"';
         $buffer = preg_replace($s, $r, $buffer);
-        
+
         $s = '~src="/file/(jpg|png|gif)/(\d+)/m/.+"~';
         $r = 'src="/file/picture/medium/img_${2}.${1}"';
         $buffer = preg_replace($s, $r, $buffer);
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/b/.+"~';
-        $r = 'src="/file/picture/medium/img_${2}.${1}"';
+        $r = 'src="/file/picture/big/img_${2}.${1}"';
         $buffer = preg_replace($s, $r, $buffer);
-        
+
         $s = '~src="/file/(jpg|png|gif)/(\d+)/o/.+"~';
         $r = 'src="/file/picture/original/img_${2}.${1}"';
         $buffer = preg_replace($s, $r, $buffer);
-   
-        $html = utf8_encode($buffer);
 
-        #echo $html;
+        $html = utf8_encode($buffer);   
+
+        // html tip & tricks
+        #$pdf->SetCellPadding(0);
+        #$pdf->setCellHeightRatio(1.25);
+        #$pdf->setImageScale(1.2);
         
-        // output the HTML content
+        // output the HTML content      
         $pdf->writeHTML($html, true, false, true, false, '');
 
         // reset pointer to the last page
         $pdf->lastPage();
 
-        // ---------------------------------------------------------
-        
-        //Close and output PDF document
-        #$pdf->Output('example_061.pdf', 'I');
-        $pdf->Output('ewebuki_test.pdf', 'I');
-
+        //Close and output PDF document                
+        if ( $environment["pdfc"]["debug"] == true ) {
+            echo $html;
+        } else {
+            #$pdf->Output('example_061.pdf', 'I');            
+            $pdf->Output('ewebuki_test.pdf', 'I');
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
