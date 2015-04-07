@@ -135,6 +135,15 @@ $Id = null;
     require $pathvars["libraries"]."function_nlreplace.inc.php"; // new line in <br /> wandeln und formatieren
     require $pathvars["libraries"]."function_intelilink.inc.php"; // intelligenter link funktion (kompatibel)
     require $pathvars["libraries"]."function_tagreplace.inc.php"; // tagreplace funktion
+    if ($handle=opendir($pathvars["libraries"]))
+    {
+      while ( false!==( $file=readdir($handle )) ) {
+        if ( strstr($file, "function_tagreplace_") ) // ausgelagerte tagreplace unterfunktionen
+        {
+            require_once $pathvars["libraries"].$file;
+        }
+      }
+    }    
     require $pathvars["libraries"]."function_tagremove.inc.php"; // tagremove funktion
     require $pathvars["libraries"]."function_content.inc.php"; // content sprachabhaengig holen
     require $pathvars["libraries"]."function_gerdate.inc.php"; // german date

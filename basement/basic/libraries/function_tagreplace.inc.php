@@ -92,103 +92,21 @@
                 // parameter?
                 $sign = substr($replace,$tagwertbeg-1,1);
                 // opentag komplettieren
-                $opentag = $opentag.$sign;
-
+                $opentag = $opentag.$sign;               
+                
                 // kompletten tag mit tagwert ersetzen
                 switch ($closetag) {
                     //
                     // Block Elemente
                     // H1-6 | P | PRE | DIV | LIST | HR | TAB, ROW, COL | CENTER
                     //
-                    case "[/H1]":
-                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( !isset($defaults["tag"]["h1"]) ) {
-                          $defaults["tag"]["h1"] = "<h1>";
-                          $defaults["tag"]["/h1"] = "</h1>";
-                        }
-                        if ( $sign == "]" ) {
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h1"].$tagwert.$defaults["tag"]["/h1"],$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $attrib = " class=\"".$tagwerte[0]."\">";
-                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h1"]);
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h1"],$replace);
-                        }
-                        break;
+                    case "[/H1]":                       
                     case "[/H2]":
-                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( !isset($defaults["tag"]["h2"]) ) {
-                          $defaults["tag"]["h2"] = "<h2>";
-                          $defaults["tag"]["/h2"] = "</h2>";
-                        }
-                        if ( $sign == "]" ) {
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h2"].$tagwert.$defaults["tag"]["/h2"],$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $attrib = " class=\"".$tagwerte[0]."\">";
-                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h2"]);
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h2"],$replace);
-                        }
-                        break;
-                    case "[/H3]":
-                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( !isset($defaults["tag"]["h3"]) ) {
-                          $defaults["tag"]["h3"] = "<h3>";
-                          $defaults["tag"]["/h3"] = "</h3>";
-                        }
-                        if ( $sign == "]" ) {
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h3"].$tagwert.$defaults["tag"]["/h3"],$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $attrib = " class=\"".$tagwerte[0]."\">";
-                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h3"]);
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h3"],$replace);
-                        }
-                        break;
+                    case "[/H3]":                    
                     case "[/H4]":
-                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( !isset($defaults["tag"]["h4"]) ) {
-                          $defaults["tag"]["h4"] = "<h4>";
-                          $defaults["tag"]["/h4"] = "</h4>";
-                        }
-                        if ( $sign == "]" ) {
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h4"].$tagwert.$defaults["tag"]["/h4"],$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $attrib = " class=\"".$tagwerte[0]."\">";
-                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h4"]);
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h4"],$replace);
-                        }
-                        break;
                     case "[/H5]":
-                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( !isset($defaults["tag"]["h5"]) ) {
-                          $defaults["tag"]["h5"] = "<h5>";
-                          $defaults["tag"]["/h5"] = "</h5>";
-                        }
-                        if ( $sign == "]" ) {
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h5"].$tagwert.$defaults["tag"]["/h5"],$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $attrib = " class=\"".$tagwerte[0]."\">";
-                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h5"]);
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h5"],$replace);
-                        }
-                        break;
                     case "[/H6]":
-                        if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        if ( !isset($defaults["tag"]["h6"]) ) {
-                          $defaults["tag"]["h6"] = "<h6>";
-                          $defaults["tag"]["/h6"] = "</h6>";
-                        }
-                        if ( $sign == "]" ) {
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$defaults["tag"]["h6"].$tagwert.$defaults["tag"]["/h6"],$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $attrib = " class=\"".$tagwerte[0]."\">";
-                            $tagwithclass = str_replace(">", $attrib, $defaults["tag"]["h6"]);
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$tagwithclass.$tagwerte[1].$defaults["tag"]["/h6"],$replace);
-                        }
+                        $replace = tagreplace_h($replace, $opentag, $tagoriginal, $closetag, $sign);
                         break;
                     case "[/P]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
@@ -793,60 +711,7 @@
                         }
                         break;
                     case "[/LINK]":
-                        if ( $sign == "]" ) {
-                            $ausgabewert  = "<a href=\"".$tagwert."\" title=\"".$tagwert."\">".$tagwert."</a>";
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $linkwerte = explode(";",$tagwerte[0]);
-                            $href = $linkwerte[0];
-                            if ( !isset($tagwerte[1]) ) {
-                                $beschriftung = $href;
-                            } else {
-                                $beschriftung = $tagwerte[1];
-                            }
-                            // ziel
-                            if ( isset($linkwerte[1]) ) {
-                                $target = " target=\"".$linkwerte[1]."\"";
-                            } else {
-                                $target = null;
-                            }
-                            // title-tag
-                            if ( isset($linkwerte[2]) ) {
-                                $title = $linkwerte[2];
-                            } else {
-                                if ( !isset($linkwerte[1]) ) $linkwerte[1] = null;
-                                if ( $linkwerte[1] == "_blank" ) {
-                                    $title = "Link in neuem Fenster: ".str_replace("http://","",$href);
-                                } elseif ( !strstr($beschriftung,"<") ) {
-                                    $title = $beschriftung;
-                                } else {
-                                    $title = null;
-                                }
-                            }
-                            // css-klasse
-                            $class = " class=\"link_intern";
-                            if ( preg_match("/^http/",$href) ) { # automatik
-                                $class = " class=\"link_extern";
-                            } elseif ( preg_match("/^".str_replace("/","\/",$cfg["file"]["base"]["webdir"]).".*\.([a-zA-Z]+)/",$href,$match) ) {
-                                if ( $cfg["file"]["filetyp"][$match[1]] != "" ) {
-                                    $class = " class=\"link_".$cfg["file"]["filetyp"][$match[1]];
-                                }
-                            }
-                            if ( isset($linkwerte[3]) ) { # oder manuell
-                                $class .= " ".$linkwerte[3];
-                            }
-                            $class .= "\"";
-                            // id
-                            if ( isset($linkwerte[4]) ) {
-                                $id = " id=\"".$linkwerte[4]."\"";
-                            } else {
-                                $id = null;
-                            }
-                            if ( !isset($pic) ) $pic = null;
-                            $ausgabewert = $pic."<a href=\"".$href."\"".$id.$target." title=\"".$title."\"".$class.">".$beschriftung."</a>";
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
-                        }
+                        $replace = tagreplace_link($replace, $opentag, $tagoriginal, $closetag, $sign);
                         break;
                     //
                     // Inline Elemente - Logische Auszeichnungen
