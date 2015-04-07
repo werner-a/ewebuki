@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "tcpdf ausgabe";
+// "TCPDF connector";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -45,9 +45,9 @@
 
     function tcpdf_it($buffer) {
         
-        global $debugging, $environment;
+        global $debugging, $cfg;
         
-        if ( $environment["pdfc"]["debug"] == False ) {
+        if ( $cfg["pdfc"]["debug"] == False ) {
             $debugging["html_enable"] = 0;
             $debugging["sql_enable"] = 0;
         }
@@ -162,13 +162,15 @@
         $pdf->lastPage();
 
         //Close and output PDF document                
-        if ( $environment["pdfc"]["debug"] == true ) {
+        if ( $cfg["pdfc"]["debug"] == true ) {
             echo $html;
         } else {
             #$pdf->Output('example_061.pdf', 'I');            
             $pdf->Output('ewebuki_test.pdf', 'I');
         }
     }
+    
+    tcpdf_it($ausgaben["buffer"]);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

@@ -358,7 +358,7 @@
             $debugging["ausgabe"] .= "<B>ATTENTION: template overwrite -> ".$mapping["main"].".tem.html</B>".$debugging["char"];
         }
     }
-
+    
     // rekursiven parser aufrufen
     if ( isset($_POST["print"]) || isset($_GET["print"]) ) {
         $debugging["html_enable"] = 0;
@@ -368,34 +368,27 @@
         }
     } elseif ( isset($_POST["pdf"]) || isset($_GET["pdf"]) ) {
 
-        $environment["pdfc"]["state"] = true;
-        $environment["pdfc"]["template"] = "pdfc";
-        $environment["pdfc"]["debug"] = false;
-
+        $cfg["pdfc"]["state"] = true;
+        
         switch( $_GET["pdf"] ) {
             case 0;
-                $template = $environment["pdfc"]["template"].".tem.html";
-                $environment["pdfc"]["debug"] = true;
+                $template = $cfg["pdfc"]["template"].".tem.html";
+                $cfg["pdfc"]["debug"] = true;
                 break;
             case 2;
-                $template = $environment["pdfc"]["template"].".tem.html";
+                $template = $cfg["pdfc"]["template"].".tem.html";
                 break;
             default;
                 $template = "base.tem.html";
         }
-        rparser($template, $specialvars["default_template"].".tem.html", "", $environment["pdfc"]["state"]);
+        rparser($template, $specialvars["default_template"].".tem.html", "", $cfg["pdfc"]["state"]);
 
-        $path_to_tcpdf = "/usr/local/share/php5/tcpdf/tcpdf.php";
-        if ( file_exists($path_to_tcpdf) ) {
-            require_once($path_to_tcpdf);
+        if ( file_exists($cfg["pdfc"]["path"]["lib"]) ) {
+            require_once($cfg["pdfc"]["path"]["lib"]);
         } else {
             die("Can't find TCPDF library.");
         }
-
-        $path_to_tcpdf_function = $pathvars["libraries"]."function_tcpdf.inc.php";
-        if ( file_exists($path_to_tcpdf_function) ) require_once($path_to_tcpdf_function);
-
-        tcpdf_it($ausgaben["buffer"]);
+        if ( file_exists($cfg["pdfc"]["path"]["function"]) ) require_once($cfg["pdfc"]["path"]["function"]);
 
     } elseif ( isset($_POST["hijack"]) || isset($_GET["hijack"]) ) {
         foreach ( $_GET as $key => $value ) {

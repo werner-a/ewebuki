@@ -68,7 +68,7 @@
             $art = "#(";
             $bez = "# (";
             $dbtname = $tname;
-            if ( $tname == @$environment["pdfc"]["template"] ) $dbtname = "base";
+            if ( $tname == @$cfg["pdfc"]["template"] ) $dbtname = "base";
             if ( $labelbeg === false ) {
                 $labelbeg = strpos($line,"g(");
                 $art = "g(";
