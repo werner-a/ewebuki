@@ -130,23 +130,23 @@
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/tn/.+"~';
         $r = 'src="/file/picture/thumbnail/tn_${2}.${1}"';
-        $buffer = preg_replace($s, $r, $buffer);
+        #$buffer = preg_replace($s, $r, $buffer);
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/s/.+"~';
         $r = 'src="/file/picture/small/img_${2}.${1}"';
-        $buffer = preg_replace($s, $r, $buffer);
+        #$buffer = preg_replace($s, $r, $buffer);
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/m/.+"~';
         $r = 'src="/file/picture/medium/img_${2}.${1}"';
-        $buffer = preg_replace($s, $r, $buffer);
+        #$buffer = preg_replace($s, $r, $buffer);
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/b/.+"~';
         $r = 'src="/file/picture/big/img_${2}.${1}"';
-        $buffer = preg_replace($s, $r, $buffer);
+        #$buffer = preg_replace($s, $r, $buffer);
 
         $s = '~src="/file/(jpg|png|gif)/(\d+)/o/.+"~';
         $r = 'src="/file/picture/original/img_${2}.${1}"';
-        $buffer = preg_replace($s, $r, $buffer);
+        #$buffer = preg_replace($s, $r, $buffer);
 
         $html = utf8_encode($buffer);   
 

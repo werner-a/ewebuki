@@ -45,7 +45,7 @@
 
     function tagreplace_tmpl($replace, $opentag, $tagoriginal, $closetag, $sign) {
 
-        global $specialvars, $defaults;
+        global $cfg, $defaults, $specialvars;
 
         $tagwert = $tagoriginal;
         // ------------------------------

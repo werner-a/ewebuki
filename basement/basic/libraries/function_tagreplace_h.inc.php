@@ -45,7 +45,7 @@
 
     function tagreplace_h($replace, $opentag, $tagoriginal, $closetag, $sign) {
 
-        global $specialvars, $defaults;
+        global $defaults ,$specialvars;
 
         $tagwert = $tagoriginal;
         // ------------------------------            

@@ -45,13 +45,18 @@
 
     function tagreplace_link($replace, $opentag, $tagoriginal, $closetag, $sign) {
 
-        global $cfg, $specialvars, $defaults;
+        global $cfg, $defaults, $specialvars;
 
         $tagwert = $tagoriginal;
         // ------------------------------
 
-        #echo $cfg["pdfc"]["state"];
-        
+        // tcpdf fix
+        if ( $cfg["pdfc"]["state"] == true ) {
+            if ( !preg_match("/^http/",$tagwert) ) {
+                $tagwert = "http://".$_SERVER["SERVER_NAME"]."/".$tagwert;
+            }
+        }
+
         if ( $sign == "]" ) {
             $ausgabewert  = "<a href=\"".$tagwert."\" title=\"".$tagwert."\">".$tagwert."</a>";
             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
@@ -71,7 +76,7 @@
             } else {
                 $target = null;
             }
-            
+
             // title-tag
             if ( isset($linkwerte[2]) ) {
                 $title = $linkwerte[2];
@@ -85,7 +90,7 @@
                     $title = null;
                 }
             }
-            
+
             // css-klasse
             $class = " class=\"link_intern";
             if ( preg_match("/^http/",$href) ) { # automatik
@@ -99,14 +104,14 @@
                 $class .= " ".$linkwerte[3];
             }
             $class .= "\"";
-            
+
             // id
             if ( isset($linkwerte[4]) ) {
                 $id = " id=\"".$linkwerte[4]."\"";
             } else {
                 $id = null;
             }
-            
+
             if ( !isset($pic) ) $pic = null;
             $ausgabewert = $pic."<a href=\"".$href."\"".$id.$target." title=\"".$title."\"".$class.">".$beschriftung."</a>";
             $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
