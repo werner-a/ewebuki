@@ -182,7 +182,7 @@
                 $hidedata["level".$level][0] = "enable";
 
                 // welcher link aufbau
-                if ( $cfg["menu"]["level1"]["link2"] == "" ) {
+                 if ( !isset($cfg["menu"]["level1"]["link2"]) ) {
                     $link_build = "link";
                 } else {
                     if ( $aktiv == "" ) {
