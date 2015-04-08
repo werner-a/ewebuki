@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -100,7 +100,7 @@
         }
 
         if ( $changed[$lang][$cfg["changed"]["db"]["changed"]["alias"]] != "" ) {
-            if ( $ext_date != "" ) {
+            if ( isset($ext_date) ) {
                 $changed[$lang][$cfg["changed"]["db"]["changed"]["changed"]] = $ext_date;
             }
             $hidedata["changed"]["changed"] = date($cfg["changed"]["format"],strtotime($changed[$lang][$cfg["changed"]["db"]["changed"]["changed"]]));
