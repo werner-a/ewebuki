@@ -44,14 +44,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function tcpdf_it($buffer) {
-        
+
         global $debugging, $cfg;
-        
+
         if ( $cfg["pdfc"]["debug"] == False ) {
             $debugging["html_enable"] = 0;
             $debugging["sql_enable"] = 0;
         }
-      
+
         // create new PDF document
         // TCPDF(P, mm, A4, , , );
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -78,7 +78,7 @@
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
         // set margins
-        #$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);       
+        #$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         #$pdf->SetMargins(15, 27, 15);
         $pdf->SetMargins(15, 20, 15);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
@@ -98,7 +98,7 @@
         // set image scale factor
         #$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         $pdf->setImageScale(1.25);
-        
+
 
         // ---------------------------------------------------------
 
@@ -148,28 +148,34 @@
         $r = 'src="/file/picture/original/img_${2}.${1}"';
         #$buffer = preg_replace($s, $r, $buffer);
 
-        $html = utf8_encode($buffer);   
+        if ( $cfg["pdfc"]["force_utf8"] == true ) {
+            $html = utf8_encode($buffer);
+        }
+        else
+        {
+            $html = $buffer;
+        }
 
         // html tip & tricks
         #$pdf->SetCellPadding(0);
         #$pdf->setCellHeightRatio(1.25);
         #$pdf->setImageScale(1.2);
-        
-        // output the HTML content      
+
+        // output the HTML content
         $pdf->writeHTML($html, true, false, true, false, '');
 
         // reset pointer to the last page
         $pdf->lastPage();
 
-        //Close and output PDF document                
+        //Close and output PDF document
         if ( $cfg["pdfc"]["debug"] == true ) {
             echo $html;
         } else {
-            #$pdf->Output('example_061.pdf', 'I');            
+            #$pdf->Output('example_061.pdf', 'I');
             $pdf->Output('ewebuki_test.pdf', 'I');
         }
     }
-    
+
     tcpdf_it($ausgaben["buffer"]);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
