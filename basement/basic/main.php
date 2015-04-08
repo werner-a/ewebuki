@@ -372,16 +372,19 @@
         
         switch( $_GET["pdf"] ) {
             case 0;
-                $template = $cfg["pdfc"]["template"].".tem.html";
+                $template = "base.pdf.html";
+                $default = $specialvars["default_template"].".pdf.html";
                 $cfg["pdfc"]["debug"] = true;
                 break;
             case 2;
-                $template = $cfg["pdfc"]["template"].".tem.html";
+                $template = "base.pdf.html";
+                $default = $specialvars["default_template"].".pdf.html";
                 break;
             default;
                 $template = "base.tem.html";
+                $default = $specialvars["default_template"].".pdf.html";
         }
-        rparser($template, $specialvars["default_template"].".tem.html", "", $cfg["pdfc"]["state"]);
+        rparser($template, $default, "", $cfg["pdfc"]["state"]);
 
         if ( file_exists($cfg["pdfc"]["path"]["lib"]) ) {
             require_once($cfg["pdfc"]["path"]["lib"]);
