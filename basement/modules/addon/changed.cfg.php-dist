@@ -47,7 +47,7 @@
                "db" => array(
                   "changed" => array(
                              "lang" => "lang",
-                          "entries" => "site_text",
+                          "entries" => site_text,
                           "changed" => "changed",
                           "surname" => "bysurname",
                          "forename" => "byforename",
