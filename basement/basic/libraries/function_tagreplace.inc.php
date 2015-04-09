@@ -240,11 +240,8 @@
                             if ( isset($tabwerte[1]) ) {
                                 $width = " width=\"".$tabwerte[1]."\"";
                             }
-                            if ( isset($tabwerte[2]) ) {
-                                if ( $tabwerte[2] != "" ) {
-                                    $border = " border=\"".$tabwerte[2]."\"";
-                                }
-                            }
+                            $border = null;
+                            if ( !empty($tabwerte[2]) ) $border = " border=\"".$tabwerte[2]."\"";
                             if ( isset($tabwerte[3]) ) {
                                 $cellspacing = " cellspacing=\"".$tabwerte[3]."\"";
                             } else {
@@ -1169,12 +1166,14 @@
                         // para1 = ausrichtung, para2 = weite, para3 = hoehe, para4 = 2klick, para5 = youtube info anzeigen
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);
+                        if ( !isset($ytwerte[4]) ) $ytwerte[4] = null;
                         $ytalign = "left";
                         $ytinfo = "&showinfo=0";
                         if ( $ytwerte[0] == "r") $ytalign = "right";
                         if ( $ytwerte[4] == "-1") $ytinfo = "&showinfo=1";
                         $src = "//www.youtube.com/embed/".$tagwerte[1];
                         $yt = "<div class=\"youtube\" style=\"float:".$ytalign.";width:".$ytwerte[1]."\">";
+                        if ( !isset($ausgaben["yt_counter"]) ) $ausgaben["yt_counter"] = null;;
                         $ausgaben["yt_counter"]++;
                         $ausgaben["yt_width"] = $ytwerte[1];
                         $ausgaben["yt_height"] = $ytwerte[2];
@@ -1183,7 +1182,7 @@
                         $yt .= parser("youtube_head",'');
                         $yt .=  "<iframe width=\"100%\" height=\"".$ytwerte[2]."\" src=\"".$src."?autohide=1&wmode=opaque".$ytinfo."\"  frameborder=\"0\" allowfullscreen></iframe>";
                         $yt .= "</div>";
-                        if ( $ytwerte[3] == -1 && !$_COOKIE["youtube_access"]) {
+                        if ( $ytwerte[3] == -1 && @!$_COOKIE["youtube_access"]) {
                             $yt = parser("youtube",'');
                         }
                         $replace = str_replace($opentag.$tagoriginal.$closetag,$yt,$replace);

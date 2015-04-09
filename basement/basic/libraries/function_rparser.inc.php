@@ -103,7 +103,7 @@
 
                         // style path korrektur + dynamic style
                         if ( strpos($line,"css/".$environment["design"]."/") !== false ) {
-                            if ( $specialvars["dynamiccss"] != "" ) {
+                            if ( isset($specialvars["dynamiccss"]) ) {
                                 $line = str_replace("_default","_".$specialvars["dynamiccss"],$line);
                             }
                             $line = str_replace("../../css/",$pathvars["subdir"]."/css/",$line);
@@ -301,6 +301,7 @@
                         if ( strpos($line,"#{") !== false ) {
 
                             # stacked eEd patch (moves #{main} to #{eEd})
+                            if ( !isset($specialvars["stacked_eEd"]) ) $specialvars["stacked_eEd"] = null;
                             if ( $specialvars["stacked_eEd"] != "" ) {
                                 if ( strpos($environment["ebene"],"/admin") === 0 ) {
                                     if ( strpos($line,"#{main}") !== false ) {

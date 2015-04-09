@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,15 +37,15 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( !function_exists(cloud_loop)) {
+    if ( !function_exists('cloud_loop')) {
         include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
-        if ( !is_array($cfg["keyworded"]) ) include $pathvars["moduleroot"]."addon/keyworded.cfg.php";
+        if ( @!is_array($cfg["keyworded"]) ) include $pathvars["moduleroot"]."addon/keyworded.cfg.php";
 
         function cloud_loop( $area, $quantum=0, $sel_tags=array() ) {
             global $db, $environment, $pathvars, $cfg, $debugging;
