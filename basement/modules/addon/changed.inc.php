@@ -64,6 +64,7 @@
         }
         $where = "";
         if ( $specialvars["content_release"] == -1 ) {
+            if ( !isset($cfg["changed"]["blog_date"]) ) $cfg["changed"]["blog_date"] = null;
             if ( is_array($cfg["changed"]["blog_date"]) ){
                 if ( array_key_exists($environment["ebene"],$cfg["changed"]["blog_date"]) ) {
                     $sort_len = strlen($cfg["changed"]["blog_date"][$environment["ebene"]])+2;
