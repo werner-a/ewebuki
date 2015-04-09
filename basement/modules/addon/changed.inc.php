@@ -92,7 +92,8 @@
         while ( $data = $db -> fetch_array($result,1) ) {
             $changed[$data["lang"]] = $data;
         }
-
+        
+        if ( !isset($changed[$environment["language"]]) ) { $changed[$environment["language"]] = null; }
         if ( is_array($changed[$environment["language"]]) ) {
             $lang = $environment["language"];
         } else {

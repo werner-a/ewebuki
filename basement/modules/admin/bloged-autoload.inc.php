@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -59,6 +59,7 @@
             require_once $pathvars["moduleroot"]."libraries/function_show_blog.inc.php";
 
             // erstellen der tags die angezeigt werden
+            if ( !isset($cfg["bloged"]["blogs"][$key]["addons"]) ) { $cfg["bloged"]["blogs"][$key]["addons"] = null;}
             if ( is_array($cfg["bloged"]["blogs"][$key]["addons"]) ) {
                 foreach ( $cfg["bloged"]["blogs"][$key]["addons"] as $key_tag => $value) {
                     $tags[$key_tag] = $value;
@@ -71,18 +72,16 @@
                     $tags[$key_tag] = $value;
                 }
             }
-
-            if ( $cfg["bloged"]["blogs"][$key]["category"] != "" ) {
+            $show_kat = "";
+            if ( isset($cfg["bloged"]["blogs"][$key]["category"]) ) {
                 if ( $environment["ebene"] == "" ) {
                     $show_kat = "/".$environment["kategorie"];
                 } else {
                     $show_kat = $environment["ebene"]."/".$environment["kategorie"];
                 }
-            } else {
-                $show_kat = "";
             }
-
-            if ( $environment["parameter"][2] == "" ) {
+            
+            if ( empty($environment["parameter"][2]) ) {
                 $dataloop["list"] = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$key]["rows"],$show_kat);
             } else {
                 $all = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$limit,$show_kat);

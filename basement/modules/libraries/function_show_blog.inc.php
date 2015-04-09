@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -66,13 +66,17 @@
             $specialvars["editlock"] = -1;
         }
 
+        // Variablen 
+        $parameter = "";
+        $getvalues = "";
+        
         // aus der url eine id machen
         $id = make_id($url);
         $new = $id["mid"];
         $where = "";
 
         // manipulation verhindern
-        if ( $environment["parameter"][2] != "" && $environment["ebene"] != "/wizard" && !preg_match("/^[0-9]*$/",$environment["parameter"][2]) ) {
+        if ( !empty($environment["parameter"][2]) && $environment["ebene"] != "/wizard" && !preg_match("/^[0-9]*$/",$environment["parameter"][2]) ) {
             header('Location: /index.html');
             exit;
         }
@@ -86,13 +90,14 @@
         $order = "";
         $wizard_right = "";
         // falls der der content bei dem der blog eingebunden ist, zur Freigabe angefordert ist, darf hier nichts mehr passieren
-        if ( $kategorie == tname2path($environment["parameter"][2]) && !priv_check($check_url,"publish")) {
-            $sql = "SELECT status from site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' ORDER by version DESC";
-            $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,1);
-            if ( $data["status"] == -2 ) $wizard_right = "NO";
+        if ( !empty($environment["parameter"][2]) ) {
+            if ( $kategorie == tname2path($environment["parameter"][2]) && !priv_check($check_url,"publish")) {
+                $sql = "SELECT status from site_text WHERE tname='".$environment["parameter"][2]."' AND label='".$environment["parameter"][3]."' ORDER by version DESC";
+                $result = $db -> query($sql);
+                $data = $db -> fetch_array($result,1);
+                if ( $data["status"] == -2 ) $wizard_right = "NO";
+            }
         }
-
         if (  $right == ""  ||  priv_check($check_url, $right )   && $wizard_right == "" ) {
              $hidedata["new"]["link"] = $url;
              $hidedata["new"]["kategorie"] = $kategorie;
@@ -106,7 +111,7 @@
         // erster test einer suchanfrage per kalender
         //
 
-        if ( $environment["parameter"][4] && $environment["kategorie"] != "delete" ) {
+        if ( !empty($environment["parameter"][4]) && $environment["kategorie"] != "delete" ) {
             $parameter = ",,,".$environment["parameter"][4].",".$environment["parameter"][5].",".$environment["parameter"][6];
             if ( $cfg["bloged"]["blogs"][$url]["sort"][1] != -1 ) {
                 $heute = getdate(mktime(0, 0, 0, ($environment["parameter"][5])+1, 0, $environment["parameter"][4]));
@@ -159,22 +164,23 @@
         $tname = eCRC($url).".%";
 
         // falls parameter 2 gesetzt, wird nur dieser content geholt
-        if ( $environment["parameter"][2] != "" && $environment["ebene"] != "/wizard" ) {
+        if ( !empty($environment["parameter"][2]) && $environment["ebene"] != "/wizard" ) {
             $tname = eCRC($url).".".$environment["parameter"][2];
         }
 
         // falls sort auf -1 wird anstatt ein datum ein integer als sortiermerkmal gesetzt um ein manuelles sortieren zu ermoeglichen
-        if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1" ) {
-            $art = "INTEGER";
-        } else {
-            $art = "DATETIME";
+        $art = "DATETIME";
+        if ( isset($cfg["bloged"]["blogs"][$url]["sort"][1]) ) {
+            if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1" ) {
+                $art = "INTEGER";
+            }
         }
-
         // hier der endgueltige sql !!
         $sql = "SELECT Cast(SUBSTRING(content,POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)+".$sort_len.",POSITION('[/".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$url]["sort"][0]."]' IN content)-".$sort_len.") AS ".$art.") AS date,status,content,tname from site_text WHERE ".$status." AND tname like '".$tname."'".$where." order by date".$order." DESC";
         // damit kann man beliebig viele blogs manuell holen
 
         $ausgaben["inhalt_selector"] = "";
+        if ( empty($environment["parameter"][1]) ) { $environment["parameter"][1] = null;}
         if ( strpos($limit,"," ) ){
             $sql = $sql." LIMIT ".$limit;
         } else {
@@ -204,8 +210,9 @@
         while ( $data = $db -> fetch_array($result,1) ) {
             $tag_parameter="";
             $counter++;
+            
             // im wizard wird der content aus der SESSION-Variablen genommen
-            if ( $_SESSION["wizard_content"][DATABASE.",".$data["tname"].",inhalt"] && $environment["ebene"] == "/wizard") {
+            if ( isset($_SESSION["wizard_content"][DATABASE.",".$data["tname"].",inhalt"]) && $environment["ebene"] == "/wizard") {
                 $test = preg_replace("|\r\n|","\\r\\n",$_SESSION["wizard_content"][DATABASE.",".$data["tname"].",inhalt"]);
             } else {
                 $test = preg_replace("|\r\n|","\\r\\n",$data["content"]);
@@ -216,7 +223,10 @@
                 if (is_array($value)) {
                     $tag_parameter= $value["parameter"];
                     $invisible = $value["invisible"];
-                    $show = $value["show"];
+                    $show = "";
+                    if ( isset($value["show"]) ) {
+                        $show = $value["show"];
+                    }
                     $value = $value["tag"];
                 }
                 if (strpos($value,"=")) {
@@ -279,7 +289,7 @@
             }
 
             preg_match("/$preg1/",$data["tname"],$regs);
-            if ( $environment["parameter"][2] != "" && $environment["ebene"] != "/wizard" ) {
+            if ( !empty($environment["parameter"][2]) && $environment["ebene"] != "/wizard" ) {
                 $array[$counter]["all"] = tagreplace($data["content"]);
                 $array[$counter]["id"] = $regs[1];
             } else {
@@ -300,9 +310,9 @@
                 // Sortierung ausgeben
                 // ausgabe der aktions-buttons
                 if (  $right == ""  ||  priv_check($check_url, $right )   && $wizard_right == "" ) {
-
-                    if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {
-                        $sort_kat = "";
+                    $sort_kat = "";
+                    if ( !isset($cfg["bloged"]["blogs"][$url]["sort"][1]) ) { $cfg["bloged"]["blogs"][$url]["sort"][1] = null; }
+                    if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {                        
                         if ( $kategorie != "" ) {
                             $id = make_id($kategorie);
                             $sort_kat = $id["mid"];
@@ -323,7 +333,7 @@
                     $array[$counter]["sort"] = "";
                 }
             }
-
+            if ( empty($environment["parameter"][3]) ) { $environment["parameter"][3] = ""; }
             if ( $environment["parameter"][3] == $regs[1] ) {
                 if ( is_array($invisible_array) ){
                     foreach ( $invisible_array[$counter] as $key => $value ) {
@@ -333,24 +343,24 @@
             }
         }
 
-            // was anzeigen
-            if ( $environment["ebene"] == "" ) {
-                $templ = $environment["kategorie"];
-            } else {
-                $templ = eCRC($environment["ebene"]).".".$environment["kategorie"];
-            }
-
-            if ( file_exists($pathvars["templates"].$templ.".tem.html") ) {
-                $mapping["main"] = $templ;
-            } elseif ( $cfg["bloged"]["blogs"][$url]["own_list_template"] != "" ) {
-                $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$url]["own_list_template"];
-            } elseif ( $cfg["bloged"]["blogs"][$url]["sort"][1] != "" ) {
-                $mapping["main"] = "-2051315182.faq";
-            } else {
-                $mapping["main"] = "-2051315182.list";
-            }
-            return $array;
+        // was anzeigen
+        if ( $environment["ebene"] == "" ) {
+            $templ = $environment["kategorie"];
+        } else {
+            $templ = eCRC($environment["ebene"]).".".$environment["kategorie"];
         }
+        if ( !isset($cfg["bloged"]["blogs"][$url]["sort"][1]) ) { $cfg["bloged"]["blogs"][$url]["sort"][1] = ""; }
+        if ( file_exists($pathvars["templates"].$templ.".tem.html") ) {
+            $mapping["main"] = $templ;
+        } elseif ( $cfg["bloged"]["blogs"][$url]["own_list_template"] != "" ) {
+            $mapping["main"] = "-2051315182.".$cfg["bloged"]["blogs"][$url]["own_list_template"];
+        } elseif ( $cfg["bloged"]["blogs"][$url]["sort"][1] != "" ) {
+            $mapping["main"] = "-2051315182.faq";
+        } else {
+            $mapping["main"] = "-2051315182.list";
+        }
+        return $array;
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
