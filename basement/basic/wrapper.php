@@ -50,6 +50,8 @@
 
     require $pathvars["fileroot"]."conf/site.cfg.php";
     require $pathvars["fileroot"]."conf/file.cfg.php";
+    
+    if ( !isset($debugging["error_reporting"]) ) $debugging["error_reporting"] = E_ALL & ~(E_NOTICE|E_STRICT|E_DEPRECATED); 
     error_reporting($debugging["error_reporting"]);
 
     // subdir support
