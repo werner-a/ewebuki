@@ -56,7 +56,7 @@
 
             // /file/jpg/10/s/wolken.jpg;;0;l]Wolkenblick
             // /file/picture/medium/img_10.jpg;;0;b]Wolkenblick
-
+                      
             $tagwerte = explode("]",$tagwert,2);
             $imgwerte = explode(";",$tagwerte[0]);
 
@@ -73,6 +73,10 @@
             }
             
             $newpath = array( $oldpath[0], $oldpath[1]."/picture", $oldpath[4], $name.$oldpath[3].".".$oldpath[2] );
+            
+            #echo "<pre>"; print_r($imgwerte); echo "</pre>";
+            // no view
+            $imgwerte[3] = null;
             
             $imgwerte[0] = implode("/", $newpath);
             $tagwerte[0] = implode(";", $imgwerte);           

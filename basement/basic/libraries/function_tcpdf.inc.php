@@ -150,9 +150,7 @@
 
         if ( $cfg["pdfc"]["force_utf8"] == true ) {
             $html = utf8_encode($buffer);
-        }
-        else
-        {
+        } else {
             $html = $buffer;
         }
 
