@@ -43,6 +43,23 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    foreach($cfg["pdfc"]["constant"] as $key => $value) {
+        if ( isset($cfg["pdfc"]["constant"][$key]) ) define($key, $value);
+    }
+    
+    if ( file_exists($cfg["pdfc"]["path"]["lib"]) ) {
+        require_once($cfg["pdfc"]["path"]["lib"]);
+    } else {
+        die("Can't find TCPDF library.");
+    }
+
+    $defined = get_defined_constants(true);    
+    foreach($defined["user"] as $key => $value) {
+        if ( substr($key, 0, 4) == "PDF_" ) { 
+            if ( !isset($cfg["pdfc"]["change"][$key]) ) $cfg["pdfc"]["change"][$key] = constant($key);
+        }
+    }
+
     function tcpdf_it($buffer) {
 
         global $debugging, $cfg;
@@ -68,7 +85,11 @@
 
         // set default header data
         #$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 061', PDF_HEADER_STRING);
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'eWeBuKi - TCPDF Connector', 'by Werner Ammon - ChaoS Networks');
+        $pdf->SetHeaderData($cfg["pdfc"]["change"]["PDF_HEADER_LOGO"],
+                            $cfg["pdfc"]["change"]["PDF_HEADER_LOGO_WIDTH"],
+                            $cfg["pdfc"]["change"]["PDF_HEADER_TITLE"],
+                            $cfg["pdfc"]["change"]["PDF_HEADER_STRING"]
+                            );
 
         // set header and footer fonts
         $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -79,10 +100,12 @@
 
         // set margins
         #$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        #$pdf->SetMargins(15, 27, 15);
-        $pdf->SetMargins(15, 20, 15);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        $pdf->SetMargins($cfg["pdfc"]["change"]["PDF_MARGIN_LEFT"], // 15
+                         $cfg["pdfc"]["change"]["PDF_MARGIN_TOP"], // 27, 30
+                         $cfg["pdfc"]["change"]["PDF_MARGIN_RIGHT"] // 15
+                         );
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER); // 5
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // 10
 
         // remove default header/footer
         $pdf->setPrintHeader(true);
@@ -98,9 +121,6 @@
         // set image scale factor
         #$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         $pdf->setImageScale(1.25);
-
-
-        // ---------------------------------------------------------
 
         // set font
         $pdf->SetFont('helvetica', '', 10);

@@ -44,12 +44,23 @@
 
     $cfg["pdfc"] = array(
              "path" => array (
-                     "lib" => "/usr/local/share/php5/tcpdf/tcpdf.php",
-                "function" => $pathvars["libraries"]."function_tcpdf.inc.php"
-                     ),
+                      "lib" => "/usr/local/share/php5/tcpdf/tcpdf.php",
+                 "function" => $pathvars["libraries"]."function_tcpdf.inc.php",
+                       ),
+         "constant" => array (
+            #"K_PATH_IMAGES" => "/images/custom/",
+                       ),            
+           "change" => array (            
+          #"PDF_HEADER_LOGO" => "header_tcpdf.png",
+    #"PDF_HEADER_LOGO_WIDTH" => "180",
+           #"PDF_MARGIN_TOP" => "30",
+         "PDF_HEADER_TITLE" => "eWeBuKi - TCPDF Connector",
+        "PDF_HEADER_STRING" => "by Werner Ammon - ChaoS Networks\nwww.ewebuki.de",
+                       ),
             "state" => false,
             "debug" => false,
-       "force_utf8" => true,			
+         "template" => "pdfc",
+       "force_utf8" => true,
     );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

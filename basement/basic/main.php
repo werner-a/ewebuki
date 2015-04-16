@@ -358,7 +358,7 @@
             $debugging["ausgabe"] .= "<B>ATTENTION: template overwrite -> ".$mapping["main"].".tem.html</B>".$debugging["char"];
         }
     }
-    
+
     // rekursiven parser aufrufen
     if ( isset($_POST["print"]) || isset($_GET["print"]) ) {
         $debugging["html_enable"] = 0;
@@ -367,9 +367,7 @@
             rparser( $print_template.".tem.html", $specialvars["default_template"].".tem.html");
         }
     } elseif ( isset($_POST["pdf"]) || isset($_GET["pdf"]) ) {
-
         $cfg["pdfc"]["state"] = true;
-        
         switch( $_GET["pdf"] ) {
             case 0;
                 $template = "base.pdf.html";
@@ -385,14 +383,7 @@
                 $default = $specialvars["default_template"].".pdf.html";
         }
         rparser($template, $default, "", $cfg["pdfc"]["state"]);
-
-        if ( file_exists($cfg["pdfc"]["path"]["lib"]) ) {
-            require_once($cfg["pdfc"]["path"]["lib"]);
-        } else {
-            die("Can't find TCPDF library.");
-        }
         if ( file_exists($cfg["pdfc"]["path"]["function"]) ) require_once($cfg["pdfc"]["path"]["function"]);
-
     } elseif ( isset($_POST["hijack"]) || isset($_GET["hijack"]) ) {
         foreach ( $_GET as $key => $value ) {
             if ( $hijack == "" ) {
