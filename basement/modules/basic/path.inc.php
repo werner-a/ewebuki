@@ -93,7 +93,11 @@
     }
 
     // link zum webroot
-    $kekse["html"][]  = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
+    if ( $cfg["pdfc"]["state"] == true ) {        
+        $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";        
+    } else {
+        $kekse["html"][] = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";                
+    }
     $kekse["label"][] = $specialvars["rootname"];
     $kekse["title"][] = $specialvars["rootname"];
     $kekse["link"][]  = $pathvars["virtual"]."/index.html";
