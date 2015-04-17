@@ -49,8 +49,8 @@
                        ),
          "constant" => array (
             #"K_PATH_IMAGES" => "/images/custom/",
-                       ),            
-           "change" => array (            
+                       ),
+           "change" => array (
           #"PDF_HEADER_LOGO" => "header_tcpdf.png",
     #"PDF_HEADER_LOGO_WIDTH" => "180",
            #"PDF_MARGIN_TOP" => "30",

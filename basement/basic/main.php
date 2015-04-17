@@ -319,6 +319,18 @@
         }
     }
 
+    // states frühzeitig erkennen   
+    $cfg["print"]["state"] = false; $cfg["pdfc"]["state"] = false; $cfg["hijack"]["state"] = false; $cfg["head"]["state"] = false;
+    if ( isset($_POST["print"]) || isset($_GET["print"]) ) {
+        $cfg["print"]["state"] = true;
+    } elseif ( isset($_POST["pdf"]) || isset($_GET["pdf"]) ) {
+        $cfg["pdfc"]["state"] = true;
+    } elseif ( isset($_POST["hijack"]) || isset($_GET["hijack"]) ) {
+        $cfg["hijack"]["state"] = true;
+    } elseif ( isset($_POST["head"]) || isset($_GET["head"]) ) {
+        $cfg["head"]["state"] = true;
+    }
+
     // steuerung der funktionen
     require $pathvars["config"]."modules.cfg.php";
 
@@ -360,14 +372,13 @@
     }
 
     // rekursiven parser aufrufen
-    if ( isset($_POST["print"]) || isset($_GET["print"]) ) {
+    if ( $cfg["print"]["state"] == true ) {
         $debugging["html_enable"] = 0;
         $print_template = $_POST["print"][2].$_GET["print"][2];
         if ( preg_match("/^[a-zA-Z0-9-_]+$/", $print_template) ){
             rparser( $print_template.".tem.html", $specialvars["default_template"].".tem.html");
         }
-    } elseif ( isset($_POST["pdf"]) || isset($_GET["pdf"]) ) {
-        $cfg["pdfc"]["state"] = true;
+    } elseif ( $cfg["pdfc"]["state"] == true ) {
         switch( $_GET["pdf"] ) {
             case 0;
                 $template = "base.pdf.html";
@@ -384,7 +395,7 @@
         }
         rparser($template, $default, "", $cfg["pdfc"]["state"]);
         if ( file_exists($cfg["pdfc"]["path"]["function"]) ) require_once($cfg["pdfc"]["path"]["function"]);
-    } elseif ( isset($_POST["hijack"]) || isset($_GET["hijack"]) ) {
+    } elseif ( $cfg["hijack"]["state"] == true ) {
         foreach ( $_GET as $key => $value ) {
             if ( $hijack == "" ) {
                 $hijack  = $value;
@@ -397,7 +408,7 @@
         $ausgaben["navigation"] = "frameset.head.tem.html?head=true";
         $ausgaben["hijack"] = $frameset_template;
         rparser("frameset.tem.html", $specialvars["default_template"].".tem.html");
-    } elseif ( isset($_POST["head"]) || isset($_GET["head"]) ) {
+    } elseif ( $cfg["head"]["state"] == true ) {
         $array = explode("?",$_SERVER["HTTP_REFERER"]);
         $ausgaben["seite"] = $array[0];
         rparser("frameset.head.tem.html", $specialvars["default_template"].".tem.html");

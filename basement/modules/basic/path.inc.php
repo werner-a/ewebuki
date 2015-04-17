@@ -202,7 +202,11 @@
                 $kekse["title"][] = $data["label"];
                 $kekse["link"][]  = "";
             } else {
-                $kekse["html"][] = "<a href=\"".$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
+                if ( $cfg["pdfc"]["state"] == true ) {
+                    $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
+                } else {
+                    $kekse["html"][] = "<a href=\"".$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
+                }
                 $kekse["label"][] = $data["label"];
                 $kekse["title"][] = $title;
                 $kekse["link"][]  = $pathvars["virtual"].$path.".html";
