@@ -45,42 +45,42 @@
 
     function tagreplace_img($replace, $opentag, $tagoriginal, $closetag, $sign) {
 
-        global $db, $pathvars, $cfg, $defaults, $specialvars, $LB_IMG_counter;
+        global $db, $pathvars, $cfg, $defaults, $specialvars, $LB_IMG_counter, $hidedata, $dataloop;
 
         $tagwert = $tagoriginal;
         // ------------------------------
 
 
-        // tcpdf fix
+        // tcpdf extra
         if ( $cfg["pdfc"]["state"] == true ) {
 
             // /file/jpg/10/s/wolken.jpg;;0;l]Wolkenblick
             // /file/picture/medium/img_10.jpg;;0;b]Wolkenblick
-                      
+
             $tagwerte = explode("]",$tagwert,2);
             $imgwerte = explode(";",$tagwerte[0]);
 
             $s = array("/tn/", "/s/", "/m/", "/b/", "/o/");
-            $r = array("/thumbnail/", "/small/", "/medium/", "/big/", "/original/");          
+            $r = array("/thumbnail/", "/small/", "/medium/", "/big/", "/original/");
             $imgwerte[0] = str_replace($s, $r, $imgwerte[0]);
-                     
+
             $oldpath = explode("/", $imgwerte[0]);
-            
+
             if ( $oldpath[4] == "thumbnail" ) {
                 $name = "tn_";
             } else {
                 $name = "img_";
             }
-            
+
             $newpath = array( $oldpath[0], $oldpath[1]."/picture", $oldpath[4], $name.$oldpath[3].".".$oldpath[2] );
-            
+
             #echo "<pre>"; print_r($imgwerte); echo "</pre>";
             // no view
             $imgwerte[3] = null;
-            
+
             $imgwerte[0] = implode("/", $newpath);
-            $tagwerte[0] = implode(";", $imgwerte);           
-            $tagwert = implode(";", $tagwerte);
+            $tagwerte[0] = implode(";", $imgwerte);
+            $tagwert = implode("]", $tagwerte);
 
             #echo "<pre>"; print_r($tagwerte); echo "</pre>";
             #echo $tagwert."<br />";
@@ -126,9 +126,9 @@
             if ( !isset($defaults["tag"]["img_link"]) ) $defaults["tag"]["img_link"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\">";
             if ( !isset($defaults["tag"]["img_link_lb"]) ) $defaults["tag"]["img_link_lb"] = "<a href=\"##imglnk##\" title=\"##beschriftung##\" ##lightbox## >";
             if ( !isset($defaults["tag"]["/img_link"]) ) $defaults["tag"]["/img_link"] = "</a>";
-            $repl = array("imgurl", "beschriftung", "funder", "fdesc", 
-                          "imgsize", "attrib", "vspace", "hspace", 
-                          "align", "border", "style_align", "style_border", 
+            $repl = array("imgurl", "beschriftung", "funder", "fdesc",
+                          "imgsize", "attrib", "vspace", "hspace",
+                          "align", "border", "style_align", "style_border",
                           "style_hspace", "style_vspace", "imglnk", "lightbox");
             $tagwerte = explode("]",$tagwert,2);
             $imgwerte = explode(";",$tagwerte[0]);
@@ -183,7 +183,7 @@
                     $style_hspace = "margin-left:".$imgwerte[6]."px;margin-right:".$imgwerte[6]."px;";
                 }
             }
-            if ( !isset($tagwerte[1]) ) {
+            if ( empty($tagwerte[1]) ) {
                 $beschriftung = $imgwerte[0];
             } else {
                 $beschriftung = $tagwerte[1];
@@ -279,6 +279,15 @@
             } else {
                 $ausgabewert = $linka.$defaults["tag"]["img"].$linkb;
             }
+
+            // tcpdf extra
+            $hidedata["img_meta"][] = true;
+            $dataloop["img_meta"][] = array(
+                                        "tag" => $beschriftung,
+                                    "caption" => $funder,
+                                "description" => $fdesc
+                                      );
+
             foreach ( $repl as $value ) {
                 if ( !isset($$value) ) $$value = null;
                 $ausgabewert = str_replace("##".$value."##",$$value,$ausgabewert);
