@@ -68,6 +68,7 @@ $Id = null;
     $specialvars["content_release"] = null;
     $specialvars["dyndb"] = null;
     $specialvars["phpsessid"] = null;
+    $specialvars["actual_label"] = null;
 
     // site config
     require dirname(dirname(dirname(__FILE__)))."/conf/site.cfg.php";

@@ -281,8 +281,8 @@
             }
 
             // tcpdf extra
-            $hidedata["img_meta"][] = true;
-            $dataloop["img_meta"][] = array(
+            $hidedata["img_meta"][0] = true;
+            $dataloop["img_meta_".$specialvars["actual_label"]][] = array(
                                         "tag" => $beschriftung,
                                     "caption" => $funder,
                                 "description" => $fdesc

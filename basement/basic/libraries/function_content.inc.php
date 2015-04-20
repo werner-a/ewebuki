@@ -81,6 +81,7 @@
             $labellen = $labelend-$labelbeg;
             // token name extrahieren
             $label = substr($line,$labelbeg+2,$labellen-2);
+            $specialvars["actual_label"] = $label;
 
             if ( strpos($label,",") !== false ) break; // javascript fix
 
