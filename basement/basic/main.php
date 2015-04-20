@@ -391,7 +391,7 @@
                 break;
             default;
                 $template = "base.tem.html";
-                $default = $specialvars["default_template"].".pdf.html";
+                $default = $specialvars["default_template"].".tem.html";
         }
         rparser($template, $default, "", $cfg["pdfc"]["state"]);
         if ( file_exists($cfg["pdfc"]["path"]["function"]) ) require_once($cfg["pdfc"]["path"]["function"]);

@@ -44,14 +44,17 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-  aufruf rparser("template-name.tem.html", "default-template.tem.html", "overwrite-template.tem.html", TRUE);
+  aufruf rparser("template-name.$medium.html", "default-template.$medium.html", "overwrite-template.$medium.html", TRUE);  
+  
+  medium: tem = html template
+  medium: pdf = html for pdf template
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function rparser($startfile, $default_template, $overwrite_template = "", $buffer = FALSE) {
 
-        global $db, $debugging, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $dataloop, $hidedata, $mapping, $loopcheck;
+        global $db, $debugging, $cfg, $pathvars, $specialvars, $environment, $ausgaben, $element, $lnk, $dataloop, $hidedata, $mapping, $loopcheck;
 
         if ( $overwrite_template == "" ) {
             if ( file_exists($pathvars["templates"].$startfile) ) {
@@ -59,7 +62,7 @@
             } else {
                 $template = $pathvars["fileroot"]."templates/default/".$startfile;
             }
-            // wenn es fuer eine unterseite kein eigenes template gibt default.tem.html verwenden.
+            // wenn es fuer eine unterseite kein eigenes template gibt $default_template verwenden.
             if ( !file_exists($template) && $default_template != "" ) {
                 if ( $startfile == $loopcheck ) {
                     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "rparser note: template \"".$template."\" not found. Loop detect!!!".$debugging["char"];
@@ -86,6 +89,11 @@
         // reset template overwrite inner recursive procedure
         $overwrite_template = "";
 
+        $medium= "tem";
+        if ( $cfg["pdfc"]["state"] == true ) {
+            $medium = "pdf";
+        }
+        
         if ( file_exists($template) ) {
             $fd = fopen($template, "r");
             $begin = false;
@@ -147,7 +155,7 @@
 
                         if ( strpos($line,"#(") !== false || strpos($line,"g(") !== false ) {
                             // wie heisst das template
-                            $tname = substr($startfile,0,strpos($startfile,".tem.html"));
+                            $tname = substr($startfile,0,strpos($startfile,".".$medium.".html"));
                             $line = content($line, $tname);
                         }
 
@@ -274,7 +282,7 @@
 
                         if ( strpos($line,"#(") !== false || strpos($line,"g(") !== false ) {
                             // wie heisst das template
-                            $tname = substr($startfile,0,strpos($startfile,".tem.html"));
+                            $tname = substr($startfile,0,strpos($startfile,".".$medium.".html"));
                             $line = content($line, $tname);
                         }
 
@@ -286,7 +294,7 @@
                             // images in templates + funktionen
                             $line = str_replace("/images/",$pathvars["subdir"]."/images/",$line);
                             // images im content aber nur bei der ausgabe (nicht im cms editor und im filesystem (magic.php))
-    #                        if ( strpos($line,"=".$cfg["file"]["base"]["webdir"]) === false && strpos($line,$cfg["file"]["base"]["maindir"]) === false ) {
+                            #if ( strpos($line,"=".$cfg["file"]["base"]["webdir"]) === false && strpos($line,$cfg["file"]["base"]["maindir"]) === false ) {
                             if ( strpos($line,"textarea") === false && strpos($line,$cfg["file"]["base"]["maindir"]) === false ) {
                                 $line = str_replace($cfg["file"]["base"]["webdir"],$pathvars["subdir"].$cfg["file"]["base"]["webdir"],$line);
                             } #else {
@@ -317,7 +325,7 @@
                                 }
                             }
 
-			    // tausche wenn nötig die inhalte aus
+                            // tausche wenn nötig die inhalte aus
                             if ( isset($mapping) ) {
                                 if ( !isset($specialvars["changed"]) ) $specialvars["changed"] = null;
                                 foreach($mapping as $name => $value) {
@@ -364,8 +372,9 @@
 
                                 if ( $specialvars["crc32"] == -1 ) {
                                     if ( $environment["ebene"] != "" && $token_name == $environment["kategorie"] ) {
+                                        #echo "i am here";
                                         // das normale template ist!
-                                        $newstartfile = eCRC($environment["ebene"]).".".$token_name.".tem.html";
+                                        $newstartfile = eCRC($environment["ebene"]).".".$token_name.".".$medium.".html";
                                         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 template/content basis: ".$newstartfile." for ebene (".$environment["ebene"].")".$debugging["char"];
                                         // gibt es ein overwrite template?
                                         $path_element = explode("/", substr($environment["ebene"]."/",1).$environment["kategorie"]);
@@ -374,9 +383,9 @@
                                             if ( $value != "" ) {
                                                 $find_ebene = "/".implode("/",$path_element);
                                                 if ( $find_ebene != "/" ) {
-                                                    $overwrite_template = eCRC($find_ebene).".".$find_kategorie.".tem.html";
+                                                    $overwrite_template = eCRC($find_ebene).".".$find_kategorie.".".$medium.".html";
                                                 } else {
-                                                    $overwrite_template = $find_kategorie.".tem.html";
+                                                    $overwrite_template = $find_kategorie.".".$medium.".html";
                                                 }
                                                 if ( !file_exists($pathvars["templates"].$overwrite_template) ) {
                                                     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "crc32 overwrite template search: ".$overwrite_template." for ebene (".$find_ebene.")".$debugging["char"];
@@ -389,21 +398,21 @@
                                         }
                                     } else {
                                         // token name und template endung zusammen bauen
-                                        $newstartfile = $token_name.".tem.html";
+                                        $newstartfile = $token_name.".".$medium.".html";
                                     }
                                 } else {
                                     // ist das eine sub kategorie ?
                                     if ( $token_name == $environment["katid"] && $environment["subkatid"] != "" ) {
                                         // token name und template endung zusammen bauen
-                                        $newstartfile = $token_name.".".$environment["subkatid"].".tem.html";
+                                        $newstartfile = $token_name.".".$environment["subkatid"].".".$medium.".html";
                                         // es gibt kein besonderes template
                                         if ( !file_exists($pathvars["templates"].$newstartfile)) {
-                                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$newstartfile." template found using ".$token_name.".tem.html".$debugging["char"];
-                                            $newstartfile = $token_name.".tem.html";
+                                            if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "no ".$newstartfile." template found using ".$token_name.".".$medium.".html".$debugging["char"];
+                                            $newstartfile = $token_name.".".$medium.".html";
                                         }
                                     } else {
                                         // token name und template endung zusammen bauen
-                                        $newstartfile = $token_name.".tem.html";
+                                        $newstartfile = $token_name.".".$medium.".html";
                                     }
                                 }
 
@@ -413,7 +422,7 @@
                                 } else {
                                     $ausgaben["buffer"] = $ausgaben["buffer"].ltrim($lline);
                                 }
-                                // parser nochmal aufrufen um untertemplate mit dem namen: "$token".tem.html zu parsen
+                                // parser nochmal aufrufen um untertemplate mit dem namen: "$token".$medium.html zu parsen
                                 rparser($newstartfile, $default_template, $overwrite_template, $buffer);
 
                                 // reset template overwrite outer recursive procedure
@@ -431,7 +440,7 @@
                                     echo rtrim($rline)."\n";
                                 } else {
                                     $ausgaben["buffer"] = $ausgaben["buffer"].rtrim($rline)."\n";
-                                }   
+                                }
                             }
                         } else {
                             // eWeBuKi tag schutz part 4
