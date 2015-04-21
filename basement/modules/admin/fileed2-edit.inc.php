@@ -419,6 +419,8 @@
                                 arrange( $file_id, $newname, $_FILES["upload"]["name"] );
                             } else {
                                 $ausgaben["form_error"] .= "#(error_replace) ".$file["name"]." g(file_error".$error.")";
+                                $dataloop["form_error"]["error_replace"]["text"] = "#(error_replace) ".$file["name"]." g(file_error".$error.")";
+                                $hidedata["form_error"] = array();
                             }
                     }
 
@@ -446,6 +448,8 @@
                                 $buffer[] = $value["name"];
                             }
                             $ausgaben["form_error"] .= "#(not_compl_extracted)".implode(", ",$buffer);
+                            $dataloop["form_error"]["not_compl_extracted"]["text"] = "#(not_compl_extracted)".implode(", ",$buffer);
+                            $hidedata["form_error"] = array();
                         } else {
                             header("Location: ".$cfg["fileed"]["basis"]."/add.html");
                             exit;
@@ -462,7 +466,7 @@
                     // +++
                     // funktions bereich fuer erweiterungen
 
-                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder", "fhit_dummy", "grant_all", "perm_groups" );
+                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder", "fhit_dummy", "grant_all", "perm_groups", "upload" );
                     foreach($_POST as $name => $value) {
                         if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                             if ( $sqla != "" ) $sqla .= ",\n ";
@@ -500,6 +504,8 @@
                     $result  = $db -> query($sql);
                     if ( !$result ) {
                         $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");
+                        $dataloop["form_error"]["error_result"]["text"] = $db -> error("#(error_result)");
+                        $hidedata["form_error"] = array();
                     }
                     if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/list.html";
 
