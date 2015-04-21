@@ -50,7 +50,7 @@
         $tagwert = $tagoriginal;
         // ------------------------------
 
-        // tcpdf fix
+        // tcpdf extra
         if ( $cfg["pdfc"]["state"] == true ) {
             if ( !preg_match("/^http/",$tagwert) ) {
                 $tagwert = "http://".$_SERVER["SERVER_NAME"]."/".$tagwert;

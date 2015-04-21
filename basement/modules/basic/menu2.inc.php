@@ -95,7 +95,7 @@
                 }
 
                 // link und ziel
-                $aktiv =  "";
+                $aktiv = "";
                 if ( $data["exturl"] == "" ) {
                     $link   = $url."/".$data["entry"].".html";
                     $target = "";
@@ -105,6 +105,11 @@
                         $aktiv = "aktiv";
                     } else {
                         $aktiv = "";
+                    }
+
+                    // tcpdf extra
+                    if ( $cfg["pdfc"]["state"] == true ) {
+                        $link = "http://".$_SERVER["SERVER_NAME"]."/".$link;
                     }
 
                 } else {
