@@ -69,7 +69,10 @@
 #                $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
             case 'sitemap':
-                    $sitemap = -1;
+                $aktionlinks = 0;
+                $hidestatus = 0;
+                $flapmenu = 0;
+                $sitemap = -1;
                 $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
             default:
@@ -87,7 +90,8 @@
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
 
-        $buffer["pfad"] = null; $buffer["pfad_label"] = null;
+        if ( empty($buffer["pfad"]) ) $buffer["pfad"] = null;
+        if ( empty($buffer["pfad_label"]) ) $buffer["pfad_label"] = null;
         while ( $array = $db -> fetch_array($result,1) ) {
 
             // aufbau des pfads
@@ -156,12 +160,12 @@
             // hier wird komplett geoeffnet
             } elseif ( $sitemap == -1 ) {
                 $title = $array["label"];
-                if ( $array["extend"] ) $title = $array["extend"];
+                if ( isset($array["extend"]) ) $title = $array["extend"];
                 $href = "<a href=\"".$pathvars["virtual"].$buffer["pfad"].".html\" title=\"".$title."\">".$array["label"]."</a>";
             }else {
                 $href = $array["label"] ;
             }
-
+            $aktion = "";
             // schaltflaechen erstellen
             if ( $aktionlinks == -1) {
                 // hier der alte rechte-check ! faellt weg !
@@ -177,7 +181,6 @@
                     }
                 }
 
-                $aktion = "";
                 if ( is_array($modify) ) {
                     foreach($modify as $name => $value) {
                         if ( $specialvars["security"]["new"] == -1 ) {

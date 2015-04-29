@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,18 +37,19 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["sitemap"]["right"] == "" || $rechte[$cfg["sitemap"]["right"]] == -1 ) {
+    if ( empty($cfg["sitemap"]["right"]) || $rechte[$cfg["sitemap"]["right"]] == -1 ) {
 
         // funktions bereich
         // ***
 
         $positionArray["nop"] = "nop";
+        if ( !isset($modify) ) $modify = null;
         $ausgaben["sitemap"] = sitemap(0, "sitemap", "sitemap", $modify);
 
         // +++
@@ -59,7 +60,7 @@
         // ***
 
         // fehlermeldungen
-        if ( $_GET["error"] != "" ) {
+        if ( !empty($_GET["error"]) ) {
             if ( $_GET["error"] == 1 ) {
                 $ausgaben["form_error"] = "#(error1)";
             }
