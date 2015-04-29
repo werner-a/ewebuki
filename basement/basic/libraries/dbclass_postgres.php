@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -276,26 +276,22 @@
             return $object_return;
         }
 
-        function fetch_array($result,$int="") {
+        function fetch_array($result, $int=null) {
             switch($int) {
                 case 1:
-                    #$row = pg_fetch_array($result,$nop,PGSQL_ASSOC);
-                    $row = pg_fetch_array($result);
+                    $row = pg_fetch_array($result, null, PGSQL_ASSOC);
                     break;
 
                 case 2:
-                    #$row = pg_fetch_array($result,$nop,PGSQL_NUM);
-                    $row = pg_fetch_array($result);
+                    $row = pg_fetch_array($result, null, PGSQL_NUM);
                     break;
 
                 case 3:
-                    #$row = pg_fetch_array($result,$nop,PGSQL_BOTH);
-                    $row = pg_fetch_array($result);
+                    $row = pg_fetch_array($result, null, PGSQL_BOTH);
                     break;
 
                 default:
-                    #$row = pg_fetch_array($result,$nop,PGSQL_BOTH);
-                    $row = pg_fetch_array($result);
+                    $row = pg_fetch_array($result, null, PGSQL_BOTH);
                     break;
             }
             return $row;
@@ -366,7 +362,7 @@
                     ORDER BY a.attnum";
 
             $result = $this->query_quiet($sql);
-            while ( $row = $this->fetch_array($result,$nop) ) {
+            while ( $row = $this->fetch_array($result, null) ) {
                 $length = "";
                 if ( $row["lengthvar"] != -1 ) $length = $row["lengthvar"]-4;
                 if ( $row["type"] == "timestamp" ) $row["type"] = "datetime";
