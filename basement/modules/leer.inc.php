@@ -79,7 +79,7 @@
 
 
         $sql = "SELECT *
-                  FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
+                  FROM ".$cfg["leer"]["db"]["main"]["entries"]."
                  WHERE 1";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result = $db -> query($sql);
