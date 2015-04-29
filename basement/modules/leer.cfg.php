@@ -60,7 +60,7 @@
               #"edit,global" => array("global1", "global2"),
                        ),
                "db" => array(
-                     "leer" => array(
+                     "main" => array(
                           "entries" => "db_leer",
                               "key" => "id",
                             "order" => "sort, label",

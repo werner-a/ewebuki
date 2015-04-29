@@ -57,7 +57,7 @@
         $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["leer"]["db"]["leer"]["entries"], $form_values );
+        $element = form_elements( $cfg["leer"]["db"]["main"]["entries"], $form_values );
 
         // form elemente erweitern
         $element["extension1"] = null;
@@ -149,7 +149,7 @@
                 #$sqla .= ", pass";
                 #$sqlb .= ", password('".$checked_password."')";
 
-                $sql = "insert into ".$cfg["leer"]["db"]["leer"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
+                $sql = "insert into ".$cfg["leer"]["db"]["main"]["entries"]." (".$sqla.") VALUES (".$sqlb.")";
                 if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                 $result  = $db -> query($sql);
                 if ( !$result ) $ausgaben["form_error"] .= $db -> error("#(error_result)<br />");

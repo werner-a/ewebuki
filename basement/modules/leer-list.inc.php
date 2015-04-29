@@ -53,14 +53,14 @@
         /* z.B. db query */
 
         $sql = "SELECT *
-                  FROM ".$cfg["leer"]["db"]["leer"]["entries"]."
+                  FROM ".$cfg["leer"]["db"]["main"]["entries"]."
                  WHERE 1";
         if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
 
         // seiten umschalter
         if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         $parameter = null; $getvalues = null;
-        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["leer"]["db"]["leer"]["rows"], $parameter, 1, 3, $getvalues );
+        $inhalt_selector = inhalt_selector( $sql, $environment["parameter"][1], $cfg["leer"]["db"]["main"]["rows"], $parameter, 1, 3, $getvalues );
         $ausgaben["inhalt_selector"] = $inhalt_selector[0]."<br />";
         $sql = $inhalt_selector[1];
         $ausgaben["anzahl"] = $inhalt_selector[2];
