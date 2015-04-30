@@ -206,7 +206,7 @@
                             continue;
                         }
                         // anzeige der sortierung
-                        if ( $sortinfo != "" ) {
+                        if ( !empty($sortinfo) ) {
                             if ( $name == "sort") {
                                 $aktion .= "<span title=\"".$value[1]."\" style=\"float:right\">(".$array["sort"].")</span>";
                                 continue;
@@ -237,7 +237,7 @@
                                     $dest = "show";
                                 }
 
-                                if ( $value[3] ) {
+                                if ( isset($value[3]) ) {
                                         $dest = "show";
                                         $database = DATABASE;
                                         $wizard_array = explode(":",$value[4]);

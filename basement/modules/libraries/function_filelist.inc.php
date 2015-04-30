@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,13 +37,13 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function filelist($result,$script_name,$group="") {
+    function filelist($result, $script_name, $group="") {
         global $db, $cfg, $defaults, $pathvars, $environment, $dataloop, $hidedata;
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
@@ -114,7 +114,7 @@
 
             // onclick link start / end
             if ( !isset($cfg[$script_name]["image_tag"]) ) $cfg[$script_name]["image_tag"] = "img"; # kompatibilitaet
-            
+
             if ( !isset($cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][3]) ){
                 $cfg[$script_name]["tags"][$cfg[$script_name]["image_tag"]][3] = "";
             }

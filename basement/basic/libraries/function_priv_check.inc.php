@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
-  $Script["desc"] = "rekursive pruefung der rechte";
+// $script["name"] = "$Id $";
+// $Script["desc"] = "rekursive pruefung der rechte";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -113,11 +113,11 @@
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 if ( $all["neg"] == -1 ) {
-                    $hit["group"][$url]["del"][$all["ggroup"]] .= $all["priv"].",";
+                    @$hit["group"][$url]["del"][$all["ggroup"]] .= $all["priv"].",";
                 } elseif ( $url_orig != $all["tname"]) {
-                    $hit["group"][$url]["inh"][$all["ggroup"]] .= $all["priv"].",";
+                    @$hit["group"][$url]["inh"][$all["ggroup"]] .= $all["priv"].",";
                 } else {
-                    $hit["group"][$url]["add"][$all["ggroup"]] .= $all["priv"].",";
+                    @$hit["group"][$url]["add"][$all["ggroup"]] .= $all["priv"].",";
                 }
             }
             if ( $url != "/" ) {
