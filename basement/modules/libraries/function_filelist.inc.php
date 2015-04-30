@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "funktion loader";
+// "funktion loader: filelist";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -48,9 +48,8 @@
 
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
         $getvalues = "";
-//         if ( $_SERVER["QUERY_STRING"] != "" ){
-//             $getvalues = "?".$_SERVER["QUERY_STRING"];
-//         }
+
+        if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = null;
 
         $dataloop["list"] = array();
         $i = 0;
@@ -84,6 +83,7 @@
             $cb = "<a href=".$link."><img width=\"13\" height\"13\" border=\"0\" src=\"".$icon."\"></a>";
 
             // table color change
+            if ( !isset($cfg[$script_name]["color"]["set"]) ) $cfg[$script_name]["color"]["set"] = null;
             if ( isset( $cfg[$script_name]["color"]["a"]) && isset($cfg[$script_name]["color"]["b"]) ) {
                 if ( $cfg[$script_name]["color"]["set"] == $cfg[$script_name]["color"]["a"]) {
                     $cfg[$script_name]["color"]["set"] = $cfg[$script_name]["color"]["b"];
@@ -102,14 +102,11 @@
             }
 
             // new line?
-            if ( $cfg[$script_name]["db"]["file"]["line"] != "" ) {
+            $newline = "";
+            if ( !empty($cfg[$script_name]["db"]["file"]["line"]) ) {
                 $i++;
                 $even = $i / $cfg[$script_name]["db"]["file"]["line"];
-                if ( is_int($even) ) {
-                    $newline = $cfg[$script_name]["db"]["file"]["newline"];
-                } else {
-                    $newline = "";
-                }
+                if ( is_int($even) ) $newline = $cfg[$script_name]["db"]["file"]["newline"];
             }
 
             // onclick link start / end
