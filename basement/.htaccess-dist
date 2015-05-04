@@ -17,6 +17,7 @@
   RewriteRule ^js.* - [L] 			
   RewriteRule ^modules.* - [L] 			
   RewriteRule ^templates.* - [L] 			
+  RewriteRule ^third-party.* - [L]
   
   RewriteRule ^robots.txt - [L] 			
   
