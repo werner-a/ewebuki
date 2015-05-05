@@ -246,7 +246,7 @@
         // give me last insert id
         function lastid() {
             global $sql;
-            $table = split(" ", $sql, 4);
+            $table = preg_split("/\s/", $sql, 4);
 
             $sql = "select * from ".$table[2];
             $result = $this->query_quiet($sql);

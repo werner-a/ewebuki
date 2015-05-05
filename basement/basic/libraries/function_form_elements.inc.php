@@ -209,7 +209,7 @@
             // date
             } elseif ( strstr($fields["Type"], "date")) {
                 $preg = "^([0-9]{4})\-([0-9]{2})\-([0-9]{2})";
-                if ( $form_values[$fields["Field"]] == "" ) {
+                if ( empty($form_values[$fields["Field"]]) ) {
                     if ( $fields["Default"] != "" ) {
                         $form_values[$fields["Field"]] = $fields["Default"];
                     } else {

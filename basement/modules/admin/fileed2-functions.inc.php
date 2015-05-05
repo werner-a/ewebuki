@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "funktion loader";
+// "fileed2 - funktionen";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -342,6 +342,7 @@
                          OR ".$cfg["fileed"]["db"]["content"]["content"]." REGEXP '".$new."'".$status;
             if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql2: ".$sql2.$debugging["char"];
             $url = null;
+            $found_in = null;
             /* multi-db-support */
             if ( $cfg["fileed"]["db"]["multi"]["change"] == True ) {
                 $sql = "SELECT ".$cfg["fileed"]["db"]["multi"]["field"]."
@@ -402,7 +403,7 @@
 
                 while ( $data = $db -> fetch_array($result,1) ){
                     // alle gruppeneintraege holen
-                    preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);
+                    preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);                    
                     foreach ( $match[1] as $key=>$value ){
 
                         if ( $match[2][$key] == "" ){
@@ -411,7 +412,7 @@
                             $sort[$value] = $match[2][$key];
                         }
                         // falsche ausgabe verhindern, falls zwei dateien die gleiche sortiernummer hat
-                        if ( is_array($dataloop["compilations"][$value]["pics"]) ){
+                        if ( is_array(@$dataloop["compilations"][$value]["pics"]) ){
                             while ( is_array($dataloop["compilations"][$value]["pics"][$sort[$value]]) ){
                                 $sort[$value]++;
                             }
@@ -420,6 +421,7 @@
                         $compilations[$value]["id"]         = $value;
                         $compilations[$value]["name"]       = "---";
                         $compilations[$value]["name_short"] = "---";
+                        if ( !isset($compilations[$value]["desc"]) ) $compilations[$value]["desc"] = null;
                         $compilations[$value]["desc"]      .= $data["fdesc"]." ";
 
                         if ( $value == $select ) {
@@ -451,7 +453,7 @@
                         if ( $OnTheFly == 0 && !is_numeric($id) ) continue;
 
                         // gibt es keine bilder zur gruppe, werden die fehlenden dataloop-eintraege nachgeholt
-                        if ( !is_array($compilations[$id]) ){
+                        if ( !is_array(@$compilations[$id]) ){
                             $compilations[$id]["id"]   = $id;
                             if ( $id == $select ) {
                                 $compilations[$id]["select"] = ' selected="true"';
@@ -460,8 +462,8 @@
                             }
                         }
 
-                        if ( $compilations[$id]["name"] == "---"
-                          || $compilations[$id]["name"] == "" ){
+                        if ( @$compilations[$id]["name"] == "---"
+                          || @$compilations[$id]["name"] == "" ){
                             $name = $sel_name;
                         } else {
                             // name wird nur erfasst, wenn er nicht schon drinsteht
@@ -507,7 +509,7 @@
 
             // freigegeben gruppen rausfinden
             $perm_groups = array();
-            if ( is_array($_POST["perm_groups"]) ) {
+            if ( @is_array($_POST["perm_groups"]) ) {
                 $perm_groups = $_POST["perm_groups"];
             } elseif ( $grant_grp == "-1" ) {
                 $sql = "SELECT *

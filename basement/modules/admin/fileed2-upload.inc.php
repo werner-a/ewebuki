@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "fileed - upload funktion";
+// "fileed2 - upload";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -62,7 +62,7 @@
         // form elemente erweitern
         #$element["extension1"] = "";
         #$element["extension2"] = "";
-        if ( $_GET["anzahl"] ) {
+        if ( isset($_GET["anzahl"]) ) {
             $anzahl = $_GET["anzahl"];
         } else {
             $anzahl = $cfg["fileed"]["upload"]["inputs"];
@@ -87,8 +87,8 @@
         // ***
 
         ### put your code here ###
-        if ( !strstr($_SERVER["HTTP_REFERER"],$environment["ebene"]."/".$environment["kategorie"]) ) {
-            $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]] = $_SERVER["HTTP_REFERER"];
+        if ( !strstr(@$_SERVER["HTTP_REFERER"],$environment["ebene"]."/".$environment["kategorie"]) ) {
+            $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]] = @$_SERVER["HTTP_REFERER"];
         }
 
         // +++

@@ -49,6 +49,7 @@
         // Suchstring wird mitgegeben - wird (vermutlich nicht mehr benoetigt)
         $getvalues = "";
 
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = null;
 
         $dataloop["list"] = array();
@@ -168,7 +169,7 @@
             // sortierkritierium fuer die compilations
             if ( $group != "" ) {
                 preg_match("/#p".$group."[,]*([0-9]*)#/i",$data["fhit"],$match);
-                $sort = $match[1];
+                $sort = @$match[1];
             } else {
                 $sort = "";
             }

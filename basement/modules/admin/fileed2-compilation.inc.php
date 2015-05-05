@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "leer - list funktion";
+// "fileed2 - compilation";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -48,13 +48,17 @@
         return ($a["sort"] < $b["sort"]) ? -1 : 1;
     }
     
+    if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
+    if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
+    if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = null;
+    
     if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) || ($cfg["auth"]["menu"]["fileed"][2] == -1 &&  priv_check('', $cfg["fileed"]["right"],$specialvars["dyndb"] ) ) ) {
 
         // funktions bereich
         // ***
 
         // ajax-steuerung der compilation-auswahl
-        if ( $_POST["ajax"] != "" ) {
+        if ( !empty($_POST["ajax"]) ) {
 
             echo "<pre>";
             echo print_r($environment["parameter"],true);
@@ -114,15 +118,15 @@
 
         /* suchfeld */
         $filters = array();
-        if ( $_POST["send"] != "" ) {
+        if ( !empty($_POST["send"]) ) {
             if ( $_POST["search"] != "" ) {
                 $_SESSION["compilation_search"] = $_POST["search"];
             } elseif ( isset($_SESSION["compilation_search"]) ) {
                 unset( $_SESSION["compilation_search"] );
             }
         }
-        $ausgaben["search"] = $_SESSION["compilation_search"];
-        if ( $_SESSION["compilation_search"] != "" ) {
+        $ausgaben["search"] = @$_SESSION["compilation_search"];
+        if ( @$_SESSION["compilation_search"] != "" ) {
             // array wird durchsucht
             function compilation_search($comp) {
                 if ( $comp["id"] == $_SESSION["compilation_search"]
@@ -136,7 +140,7 @@
         }
 
         /* nur ausgewaehlte gruppierungen */
-        if ( $_POST["send"] != "" ) {
+        if ( !empty($_POST["send"]) ) {
             if ( $_POST["sel_search"] == -1 ) {
                 $header = $cfg["fileed"]["basis"]."/compilation,,sel,".$environment["parameter"][3].".html";
             } else {
@@ -152,7 +156,7 @@
         } else {
             $hidedata["search_sel"]["check"] = "";
         }
-        if ( is_array($_SESSION["compilation_memo"]) ) {
+        if ( @is_array($_SESSION["compilation_memo"]) ) {
             $hidedata["search_sel"]["display"] = "block";
             $hidedata["search_sel"]["count"] = count($_SESSION["compilation_memo"]);
         } else {
@@ -250,9 +254,9 @@
         foreach ( $sliced_groups as $key=>$value ){
             $id = $value["id"];
             $check = "";
-            if ( is_array($_SESSION["compilation_memo"][$id]) ) $check = " checked=\"true\"";
+            if ( @is_array($_SESSION["compilation_memo"][$id]) ) $check = " checked=\"true\"";
             $edit = "&nbsp;";
-            if ( $value["name"] == "---" || $cfg["fileed"]["compilation"]["blocked_used"] != true ) {
+            if ( $value["name"] == "---" || @$cfg["fileed"]["compilation"]["blocked_used"] != true ) {
                 $edit  = "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.".html\" title=\"g(edit)\"><img src=\"/images/default/edit.png\" alt=\"g(edit)\" /></a>";
                 $edit .= "<a href=\"".$cfg["fileed"]["basis"]."/collect,".$id.",delete.html\" title=\"g(delete)\"><img src=\"/images/default/delete.png\" alt=\"g(delete)\" /></a>";
             }
@@ -275,7 +279,7 @@
 
             $dataloop["compilation"][$id] = array(
                         "id" => $id,
-                     "count" => $num_pics,
+                     "count" => @$num_pics,
                    "used_on" => $used_on,
                      "check" => $check,
                       "edit" => $edit,
@@ -308,7 +312,7 @@
             foreach ( $dataloop["list_images"] as $pic ) {
 
                 $check = "";
-                if ( $_SESSION["compilation_memo"][$id][$pic["id"]] != "" ) $check = " checked=\"true\"";
+                if ( @$_SESSION["compilation_memo"][$id][$pic["id"]] != "" ) $check = " checked=\"true\"";
                 $replace = array(
                     $pic["under"],
                     $id,

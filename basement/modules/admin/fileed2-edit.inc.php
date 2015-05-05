@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "edit - edit funktion";
+// "fileed2 - edit";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -45,6 +45,9 @@
 
     if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) || ($cfg["auth"]["menu"]["fileed"][2] == -1 &&  priv_check('', $cfg["fileed"]["right"],$specialvars["dyndb"] ) ) ) {
 
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = NULL;
+        if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = NULL;
+    
         // funktions bereich fuer erweiterungen
         // ***
 
@@ -110,7 +113,7 @@
                         $form_values["ffart"]."/".
                         $form_values["fid"]."/".
                         $cfg["file"]["fileopt"]["preview_size"]."/".
-                        $form_values["fname"];
+                        @$form_values["fname"];
             $hidedata["preview_img"]["id"] = $form_values["fid"];
             $hidedata["preview_img"]["path"] = $cfg["file"]["base"]["webdir"].
                                                $form_values["ffart"]."/";
@@ -205,7 +208,7 @@
                 while ( $data = $db -> fetch_array($result,1) ) {
                     $check = "";
                     if ( in_array($data["gid"],$perm_groups)
-                    && $form_values["grant_all"] != "-1"
+                    && @$form_values["grant_all"] != "-1"
                     && $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] != "-1"  ) {
                         $check = " checked=\"true\"";
                     }
@@ -345,10 +348,10 @@
         // navigation erstellen
         $ausgaben["form_aktion"] = $cfg["fileed"]["basis"]."/edit,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
-        if ( $_SESSION["wizard_last_edit"] != "" ) $ausgaben["form_break"] = $_SESSION["wizard_last_edit"];
+        if ( !empty($_SESSION["wizard_last_edit"]) ) $ausgaben["form_break"] = $_SESSION["wizard_last_edit"];
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        if ( empty($ausgaben["form_hidden"]) ) $ausgaben["form_hidden"] = null;
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
@@ -380,7 +383,7 @@
         // page basics
 
         // beim abbrechen werden alle eigenen dateien aus new-ordner geloescht
-        if ( $_POST["abort"] != "" ) {
+        if ( !empty($_POST["abort"]) ) {
             $header = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
             unset($_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]]);
             $dp = opendir($cfg["file"]["base"]["maindir"].$cfg["file"]["base"]["new"]);

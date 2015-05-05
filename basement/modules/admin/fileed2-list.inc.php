@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "fileed - list funktion";
+// "fileed2 - list";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -46,23 +46,13 @@
     if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) || ($cfg["auth"]["menu"]["fileed"][2] == -1 &&  priv_check('', $cfg["fileed"]["right"],$specialvars["dyndb"] ) ) ) {
         // funktions bereich ( aufbau )
         // ***
-
         
-        if ( !isset($environment["parameter"][1]) ) { 
-            $environment["parameter"][1] = NULL;
-        }
-        if ( !isset($environment["parameter"][2]) ) { 
-            $environment["parameter"][2] = NULL;
-        }
-        if ( !isset($environment["parameter"][3]) ) { 
-            $environment["parameter"][3] = NULL;
-        }
-        if ( !isset($environment["parameter"][4]) ) { 
-            $environment["parameter"][4] = NULL;
-        }
-        if ( !isset($environment["parameter"][5]) ) { 
-            $environment["parameter"][5] = NULL;
-        }
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = NULL;
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = NULL;
+        if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = NULL;
+        if ( !isset($environment["parameter"][4]) ) $environment["parameter"][4] = NULL;
+        if ( !isset($environment["parameter"][5]) ) $environment["parameter"][5] = NULL;
+        
         // file_memo verwalten, inkl. ajax-checkboxen
         if ( $environment["parameter"][2] ){
             if ( isset($_SESSION["file_memo"][$environment["parameter"][2]]) ){
@@ -72,7 +62,7 @@
             }
             if ( count($_SESSION["file_memo"]) == 0 ) unset($_SESSION["file_memo"]);
             if ( isset($_GET["ajax"]) ){
-                if ( count($_SESSION["file_memo"]) == 0 ) {
+                if ( count(@$_SESSION["file_memo"]) == 0 ) {
                     header("HTTP/1.0 404 Not Found");
                 }
                 exit;

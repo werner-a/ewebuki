@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // "$Id$";
-// "edit - edit funktion";
+// "fileed2 - collect";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -49,7 +49,7 @@
         // ***
 
         // ajax-handling
-        if ( $_POST["ajax"] != "" ) {
+        if ( !empty($_POST["ajax"]) ) {
             // bilder die in der gruppierung enthalten sind
             if ( $_POST["pics_chosen"] != "" ) {
                 $_SESSION["compilation_temp"][$_POST["compid"]]["contain"] = $_POST["pics_chosen"];
@@ -69,9 +69,12 @@
                                                                       );
             die();
         }
-
+        
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
+        
         // feststellen, ob die galerie schon irgendwo verwendet wird
-        if ( $environment["parameter"][1] != "" ) {
+        if ( !empty($environment["parameter"][1]) ) {
             $sql = "SELECT *
                       FROM site_text
                      WHERE content LIKE '%[SEL=".$environment["parameter"][1]."]%'
@@ -84,7 +87,7 @@
         }
 
         // galerie loeschen
-        if ( $environment["parameter"][2] == "delete" && $environment["parameter"][1] != "" ) {
+        if ( $environment["parameter"][2] == "delete" && !empty($environment["parameter"][1]) ) {
             $sql = "SELECT *
                       FROM site_file
                      WHERE fhit LIKE '%#p".$environment["parameter"][1].",%'";
@@ -100,7 +103,7 @@
             header("Location:".$cfg["fileed"]["basis"]."/compilation.html");
         }
 
-        if ( $environment["parameter"][1] != "" ) {
+        if ( !empty($environment["parameter"][1]) ) {
             /* compilation bearbeiten */
 
             $hidedata["modus"]["heading"] = "#(ueberschrift_edit)";
@@ -143,7 +146,7 @@
             $ausgaben["compid"] = key($dataloop["group_dropdown"]) + 1;
 
             // dateien aus der gruppierung (Session)
-            if ( count($_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]) > 0 ) {
+            if ( count(@$_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]) > 0 ) {
                 $sql = "SELECT *
                           FROM ".$cfg["fileed"]["db"]["file"]["entries"]."
                          WHERE ".$cfg["fileed"]["db"]["file"]["key"]." IN (".implode(",",$_SESSION["compilation_temp"][$ausgaben["compid"]]["contain"]).")";
@@ -157,10 +160,10 @@
 
         // dateien aus ablage und file_memo
         $clipboard = array();
-        if ( is_array($_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"]) ) $clipboard = array_merge($_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"],$clipboard);
+        if ( is_array(@$_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"]) ) $clipboard = array_merge($_SESSION["compilation_temp"][$ausgaben["compid"]]["trash"],$clipboard);
         if ( is_array($_SESSION["file_memo"]) ) $clipboard = array_merge($_SESSION["file_memo"],$clipboard);
         // ids die bereist im chosen sind auslassen
-        if ( count($dataloop["chosen"]) > 0 ) {
+        if ( count(@$dataloop["chosen"]) > 0 ) {
             $clipboard = array_flip($clipboard);
             $clipboard = array_diff_key($clipboard, $dataloop["chosen"]);
             $clipboard = array_flip($clipboard);
@@ -189,7 +192,7 @@
         $ausgaben["form_break"] = $cfg["fileed"]["basis"]."/list.html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        if ( empty($ausgaben["form_hidden"]) ) $ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".collect";          
