@@ -119,8 +119,8 @@
 
         // auswahllisten erstellen
         $set = array(); $data = array();
-        $_SESSION["fileed_filter0"] = $_SESSION["fileed_filter0"] + 0;
-        $_SESSION["fileed_filter1"] = $_SESSION["fileed_filter1"] + 0;
+        $_SESSION["fileed_filter0"] = @$_SESSION["fileed_filter0"] + 0;
+        $_SESSION["fileed_filter1"] = @$_SESSION["fileed_filter1"] + 0;
         foreach( $cfg["fileed"]["filter"] as $set => $data ) {
             if ( isset($_GET["filter".$set]) ) {
                 $_SESSION["fileed_filter".$set] = $_GET["filter".$set];

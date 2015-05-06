@@ -48,6 +48,9 @@
         // page basics
         // ***
 
+        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
+        if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
+        
         #if ( count($_POST) == 0 ) {
         #} else {
             $form_values = $_POST;
@@ -107,7 +110,7 @@
         $ausgaben["form_break"] = $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]];
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".upload";

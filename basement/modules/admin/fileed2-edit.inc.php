@@ -51,7 +51,7 @@
         // funktions bereich fuer erweiterungen
         // ***
 
-        if ( strstr($_SERVER["HTTP_REFERER"],$pathvars["virtual"]."/wizard") ) {
+        if ( strstr(@$_SERVER["HTTP_REFERER"],$pathvars["virtual"]."/wizard") ) {
             $_SESSION["wizard_last_edit"] = $_SERVER["HTTP_REFERER"];
         }
 
@@ -69,8 +69,8 @@
         }
 
         // advanced referer
-        if ( !strstr($_SERVER["HTTP_REFERER"],$environment["ebene"]."/".$environment["kategorie"]) ) {
-            $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]] = $_SERVER["HTTP_REFERER"];
+        if ( !strstr(@$_SERVER["HTTP_REFERER"],$environment["ebene"]."/".$environment["kategorie"]) ) {
+            $_SESSION["adv_referer"][$environment["ebene"]."/".$environment["kategorie"]] = @$_SERVER["HTTP_REFERER"];
         }
 
         // +++
@@ -168,7 +168,7 @@
 
             if ( $_SESSION["uid"] == $form_values["fuid"] ) {
             // nur besitzer darf gruppenrechte setzen
-                if ( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] == "-1" || $form_values["grant_all"] == "-1" ) {
+                if ( $form_values[$cfg["fileed"]["db"]["file"]["grant_grp"]] == "-1" || @$form_values["grant_all"] == "-1" ) {
                     $hidedata["grant"]["radio_grant_me"] = "";
                     $hidedata["grant"]["radio_grant_all"] = " checked=\"true\"";
                 } else {
@@ -397,9 +397,9 @@
         }
 
         if ( $environment["parameter"][3] == "verify"
-            &&  ( $_POST["send"] != ""
-                || $_POST["extract"] != ""
-                || $_POST["extension2"] != "" ) ) {
+            &&  ( !empty($_POST["send"])
+                || !empty($_POST["extract"])
+                || !empty($_POST["extension2"]) ) ) {
 
             // form eingaben pruefen
             form_errors( $form_options, $_POST );
