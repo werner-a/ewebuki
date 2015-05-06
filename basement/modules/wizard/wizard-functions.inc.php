@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: contented-functions.inc.php 1252 2008-02-25 11:46:56Z krompi $";
-// "funktion loader";
+// "$Id: wizard-functions.inc.php 1252 2008-02-25 11:46:56Z krompi $";
+// "wizard-functions: funktion loader";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -56,7 +56,7 @@
 //     }
 
     // content editor erstellen
-    if ( is_array($cfg["wizard"]["function"]) && in_array("makece", $cfg["wizard"]["function"][$environment["kategorie"]]) ) {
+    if ( is_array(@$cfg["wizard"]["function"]) && in_array("makece", $cfg["wizard"]["function"][$environment["kategorie"]]) ) {
 
         function makece($ce_formname, $ce_name, $ce_inhalt,$allowed_tags=array()) {
             global $debugging, $environment, $db, $cfg, $pathvars, $ausgaben, $specialvars, $defaults;
@@ -312,10 +312,13 @@
         //
         function find_marked_content( $url = "/", $cfg, $label, $status = array(-2,-1), $add_filter = array(), $check_privs = TRUE, $ignore = array() ) {
             global $db, $pathvars, $environment;
-            
+
             $path = explode("/",$url);
             $kategorie = array_pop($path);
             $ebene = implode("/",$path);
+            $new_releases = null;
+
+            if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
             
             if ( $kategorie ) {
                 $tmp_tname = eCRC($url);
@@ -323,6 +326,7 @@
                 $tmp_tname = "";
             }
             // gibt es bereiche, die nicht untersucht werden sollen
+            $where = null; $filter = null;
             if ( count($ignore) > 0 ) {
                 foreach ( $ignore as $value ) {
                     $where[] = "ebene NOT LIKE '".$value."%'";
@@ -393,7 +397,7 @@
                 // ggf kategorie
                 $kategorie = "---";
                 $ext = "---";
-                if  ( $cfg["bloged"]["blogs"][$url]["category"] != "" ) {
+                if  ( !empty($cfg["bloged"]["blogs"][$url]["category"]) ) {
                     preg_match("/\[".$cfg["bloged"]["blogs"][$url]["addons"]["name"]["tag"]."\](.+)\[\/".$cfg["bloged"]["blogs"][$url]["addons"]["name"][0]."/Us",$data["content"],$termine_match);
                     if ( count($termine_match) > 1 ) {
                         $ext = $termine_match[1];
@@ -430,7 +434,7 @@
                 }
 
                 // tabellen farben wechseln
-                if ( $cfg[$data["status"]]["color"]["set"] == $cfg["wizard"]["color"]["a"]) {
+                if ( @$cfg[$data["status"]]["color"]["set"] == $cfg["wizard"]["color"]["a"]) {
                     $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["b"];
                 } else {
                     $cfg[$data["status"]]["color"]["set"] = $cfg["wizard"]["color"]["a"];
@@ -471,7 +475,7 @@
                      "del" => $pathvars["virtual"]."/wizard/delete,".$db->getDb().",".$tname.",".$label.".html",
                   "unlock" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",unlock,".$data["version"].".html",
                  "release" => $pathvars["virtual"]."/wizard/release,".$environment["parameter"][1].",".$tname.",".$label.",release,".$data["version"].".html",
-                 "history" => $pathvars["virtual"]."/admin/contented/history,,".$tname.",".$label.",".$dat_akt["version"].",".$data["version"].".html",
+                 "history" => $pathvars["virtual"]."/admin/contented/history,,".$tname.",".$label.",".@$dat_akt["version"].",".$data["version"].".html",
                    "color" => $cfg[$data["status"]]["color"]["set"],
                    "status" => $data["status"],
                 );

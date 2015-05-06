@@ -255,7 +255,7 @@
                                 $hide_block = "";
                                 if ( isset($hidedata[$hide_label]) ) {
                                     foreach ( $hidedata[$hide_label] as $name => $value ) {
-                                        $hide_buffer = str_replace("!{".$name."}",$value,$hide_buffer);
+                                        $hide_buffer = @str_replace("!{".$name."}",$value,$hide_buffer);
                                     }
                                     $hide_block = preg_replace("/!\{[0-9a-zA-Z]+\}/","&nbsp;",$hide_buffer);
                                 }
