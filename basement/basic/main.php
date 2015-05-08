@@ -245,6 +245,7 @@
     $pathvars["templates"] = $pathvars["fileroot"]."templates/".$environment["design"]."/";
 
     // grundmapping main output
+    $mapping["main"] = null;
     if ( $specialvars["crc32"] == -1 ) {
         if ( $environment["kategorie"] != "" ) {
              $mapping["main"] = $environment["kategorie"];

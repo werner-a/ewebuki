@@ -65,7 +65,7 @@
                         }
                     }
                 }
-                if ( $url != "/" ) {
+                if ( $url != "/" && $url != ".html/" ) {
                     $url = dirname($url);
                     priv_check_path($url,$required,$hit,$del,$dbase);
                 }
