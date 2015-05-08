@@ -135,7 +135,11 @@
                 if ( !isset($buffer[$refid]["zaehler"]) ) {
                     $buffer[$refid]["zaehler"] = $count;
                     if ( $cfg["menu"]["level".$level]["on"] ) {
-                        $tree .= $cfg["menu"]["level".$level]["on"];
+                        $tree .= str_replace(
+                                array("##refid##"),
+                                array($refid),
+                                $cfg["menu"]["level".$level]["on"]
+                            );
                     }
 
                 }    
@@ -174,8 +178,8 @@
 
                     // Menü-Punkt zusammenbauen
                     $tree .= str_replace(
-                                "##class##",
-                                $class,
+                                array("##class##", "##id##"),
+                                array($class, $array[$cfg["menu"]["db"]["key"]]),
                                 $item_start.$item_content
                              )
                              .$item_sub
