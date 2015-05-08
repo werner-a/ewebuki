@@ -48,35 +48,32 @@
 
         if ( isset($ausgaben["path"]) ) $ausgaben["path"] = null;
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
-        $tree = null; $sitemap = null; $where = null;
-
+        
+        $tree = null;
+        $flapmenu = -1;
+        $aktionlinks = -1;
+        $hidestatus = -1;
+        $sitemap = 0;
+        $where = null;
         switch($art) {
-            case 'menued':
-                $flapmenu = -1;
-                $aktionlinks = -1;
-                $hidestatus = -1;
+            case 'menued':                
                 $sortinfo = -1;
                 break;
             case 'select':
-                $flapmenu = -1;
+                $aktionlinks = 0;
                 $radiorefid = -1;
-                $hidestatus = -1;
                 break;
             case 'wizard':
-                $flapmenu = -1;
-                $aktionlinks = -1;
                 $hidestatus = -1;
-#                $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
             case 'sitemap':
+                $flapmenu = 0;
                 $aktionlinks = 0;
                 $hidestatus = 0;
-                $flapmenu = 0;
                 $sitemap = -1;
                 $where = "AND (".$cfg[$script_name]["db"]["menu"]["entries"].".hide IS NULL OR ".$cfg[$script_name]["db"]["menu"]["entries"].".hide IN ('','0'))";
                 break;
             default:
-
         }
 
         $sql = "SELECT  *  FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
