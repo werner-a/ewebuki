@@ -95,7 +95,7 @@
         while ( $array = $db -> fetch_array($result,1) ) {
 
             // aufbau des pfads
-            if ( $refid == 0 || in_array($refid,$positionArray) || $sitemap == -1 ) {
+            if ( $refid == 0 || ( isset($positionArray) && in_array($refid, $positionArray) ) || $sitemap == -1 ) {
                 $buffer["pfad"] .= "/".$array["entry"];
                 $buffer["pfad_label"] .= "/".$array["label"];
             }
@@ -119,7 +119,7 @@
                 }
 
                 // alle punkte die nicht im array sind nicht anzeigen
-                if ( $refid != 0 && !in_array($refid,$positionArray) ) {
+                if ( $refid != 0 && ( isset($positionArray) && !in_array($refid, $positionArray) ) ) {
                     continue;
                 } else {
                     // menu auf werner-art, hier auch noch den gesamten ast ausblenden !

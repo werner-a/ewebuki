@@ -47,10 +47,7 @@
 
         // funktions bereich
         // ***
-
-        $positionArray["nop"] = "nop";
-        if ( !isset($modify) ) $modify = null;
-        $ausgaben["sitemap"] = sitemap(0, "sitemap", "sitemap", $modify);
+        $ausgaben["sitemap"] = sitemap(0, "sitemap", "sitemap");
 
         // +++
         // funktions bereich
