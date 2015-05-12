@@ -71,34 +71,28 @@
             $title = $array["label"];
             if ( isset($array["extend"]) ) $title = $array["extend"];
 
-            $href = str_replace(array('##href##','##title##','##label##'), array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"]),$defaults["sitemap"]["items"]["main"]);
-            
+            $item = str_replace(array('##href##','##title##','##label##'), array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"]),$cfg["publikationen"]["tree"]["item0"]["b"]);
+                                    
             $ausgaben["label"] = $array["label"];
             // wo geht der href hin?
             if ( $array["exturl"] != "" ) {
-                $href = "<a class="." href=".$array["exturl"].">".$array["label"]."</a>";
+                $item = "<a class="." href=".$array["exturl"].">".$array["label"]."</a>";
             }
 
             // in den buffer schreiben wieviel unterpunkte fuer jeweiligen Ueberpunkt vorhanden sind !
             if ( !isset($buffer[$refid]["zaehler"]) ) {
                 $buffer[$refid]["zaehler"] = $count;
-
-                // beim ersten aufruf was eigenes machen
-                if ( $self == "" ) {
-                    $tree .= $defaults["sitemap"]["container"]["main"];
-                } else {
-                    $tree .= $defaults["sitemap"]["container"]["inner"];
-                }
+                $tree .= $cfg["publikationen"]["tree"]["node"]["b"];
             }
 
             // listenpunkt schreiben
-            $tree .= $defaults["sitemap"]["items"]["begin"].$href;
+            $tree .= $cfg["publikationen"]["tree"]["line"]["b"].$item.$cfg["publikationen"]["tree"]["item0"]["e"];
 
             // selbstaendiger funktionsaufruf
             $tree .= menutree2($array["mid"], $script_name, $art, $modify, -1);
 
             // abschliessendes li anbringen
-            $tree .= $defaults["sitemap"]["items"]["end"];
+            $tree .= $cfg["publikationen"]["tree"]["line"]["e"];
 
             // abschliessendes ul anbringen u. pfad kuerzen
             if ( isset($buffer[$refid]["zaehler"]) ) {
@@ -109,10 +103,8 @@
                 $buffer[$refid]["zaehler"] = $buffer[$refid]["zaehler"] -1;
                 // ul anbringen wenn zaehler bei 0
                 if ( $buffer[$refid]["zaehler"] == 0 ) {
-                    if ( $self == "" ) {
-                        $tree .= $defaults["sitemap"]["container"]["main_end"];
-                    } else {
-                        $tree .= $defaults["sitemap"]["container"]["end"];
+                    if ( $self != "" ) {
+                        $tree .= $cfg["publikationen"]["tree"]["node"]["e"];
                     }
                 }
             }
