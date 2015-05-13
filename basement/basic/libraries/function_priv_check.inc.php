@@ -155,28 +155,32 @@
             global $db,$ausgaben;
 
             if ( !function_exists("negCheck") ) {
-                function posnegCheck($all,&$found) {
+                function posnegCheck($all, &$found) {
                     global $db;
                     $sql = "";
-                    $white_list = array("uid","gid","pid","db","tmp_tname");
+                    $white_list = array("uid", "gid", "pid", "db", "tmp_tname");
                     foreach ( $all as $key => $value ) {
                         if ( !in_array($key, $white_list) || is_integer($key)) continue;
                         if ( $key == "tmp_tname" ) $key = "tname";
                         if ( $key == "gid" && $value == "" ) $value = "0";
                         if ( $key == "uid" && $value == "" ) $value = "0";
-                        $sqla  .= "auth_content.".$key."='".$value."' AND ";
+                        $sql  .= "auth_content.".$key."='".$value."' AND ";
                     }
-                    $and = strrpos($sqla," AND ");
-                    $sqla = substr($sqla,0,$and);
-                    $sqla = "SELECT * FROM auth_content INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_content.gid=auth_group.gid ) LEFT JOIN auth_user ON ( auth_content.uid=auth_user.uid ) WHERE ".$sqla;
-                    $result = $db -> query($sqla);
+                    $and = strrpos($sql, " AND ");
+                    $sql = substr($sql, 0, $and);
+                    $sql = "SELECT * FROM auth_content
+                             INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid )
+                             LEFT JOIN auth_group ON ( auth_content.gid=auth_group.gid )
+                             LEFT JOIN auth_user ON ( auth_content.uid=auth_user.uid )
+                             WHERE ".$sql;
+                    $result = $db -> query($sql);
                     $data = $db -> fetch_array($result,1);
                     $found = "";
                     if ( $data["neg"] == -1 ) $found = "neg";
                     if ( $data["pid"] && $data["neg"] != -1 ) $found = "pos";
                     if  ( $all["tmp_tname"] != "/" && !$found ) {
                        $all["tmp_tname"] = dirname($all["tmp_tname"]);
-                        posnegCheck($all,$found);
+                       posnegCheck($all, $found);
                     }
                     return $found;
                 }
@@ -190,7 +194,6 @@
             $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_group.gid=auth_content.gid ) LEFT JOIN auth_user ON ( auth_user.uid=auth_content.uid ) WHERE tname != '/' AND neg!='-1'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
-                $sqla = "";
                 $all["tmp_tname"] = dirname($all["tname"]);
                 if ( posnegCheck($all,$nop,"pos") == "pos" )  {
                     $counter++;
@@ -212,7 +215,6 @@
             $sql = "SELECT * FROM auth_content  INNER JOIN auth_priv ON ( auth_content.pid=auth_priv.pid ) LEFT JOIN auth_group ON ( auth_group.gid=auth_content.gid ) LEFT JOIN auth_user ON ( auth_user.uid=auth_content.uid ) WHERE neg='-1'";
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
-                $sqla = "";
                 $all["tmp_tname"] = dirname($all["tname"]);
                 if ( posnegCheck($all,$nop) != "pos" )  {
                     $counter++;

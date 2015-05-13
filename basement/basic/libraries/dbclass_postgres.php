@@ -128,6 +128,7 @@
             $sqlquery = ": ".$sql." ";
 
             // emulate mysql_errno()
+            $no = null;
             if ( strstr(pg_errormessage(), "Cannot insert a duplicate key") || strstr(pg_errormessage(), "Unique-Constraint") ) $no = "1062";
             $msg = pg_errormessage();
 
@@ -277,22 +278,25 @@
         }
 
         function fetch_array($result, $int=null) {
-            switch($int) {
-                case 1:
-                    $row = pg_fetch_array($result, null, PGSQL_ASSOC);
-                    break;
+            $row = null;
+            if ( !empty($result) ) {
+                switch($int) {
+                    case 1:
+                        $row = pg_fetch_array($result, null, PGSQL_ASSOC);
+                        break;
 
-                case 2:
-                    $row = pg_fetch_array($result, null, PGSQL_NUM);
-                    break;
+                    case 2:
+                        $row = pg_fetch_array($result, null, PGSQL_NUM);
+                        break;
 
-                case 3:
-                    $row = pg_fetch_array($result, null, PGSQL_BOTH);
-                    break;
+                    case 3:
+                        $row = pg_fetch_array($result, null, PGSQL_BOTH);
+                        break;
 
-                default:
-                    $row = pg_fetch_array($result, null, PGSQL_BOTH);
-                    break;
+                    default:
+                        $row = pg_fetch_array($result, null, PGSQL_BOTH);
+                        break;
+                }
             }
             return $row;
         }

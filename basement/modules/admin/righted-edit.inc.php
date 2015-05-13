@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -42,12 +42,16 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-           
+
+    if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
+    if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
+    if ( !isset($environment["parameter"][2]) ) $environment["parameter"][3] = null;
+
     $url = make_ebene($environment["parameter"][1]);
 
     if ( $cfg["righted"]["right"] == "" || priv_check($url, $cfg["righted"]["right"] ) ) {
-        
-        // Plausibilitätskontrolle der vergebenen Rechte
+
+        // Plausibilitaetskontrolle der vergebenen Rechte
         $rechte_check = plausibleCheck();
         if ( is_array($rechte_check ) ) {
             $hidedata["plausible_check"]["on"] = -1;
@@ -78,7 +82,7 @@
                     $dataloop["legende"][$key]["text"] = "Vererbtes Recht";
                     break;
             }
-        } 
+        }
 
         // ausgeben der url wo man sich gerade befindet
         $ausgaben["url"] = $url;
@@ -87,9 +91,9 @@
         $infos = "";
         // erstellen der info - box
         $infos = priv_info($url,$nop);
-        
+
         // wenn parameter 2 gesetzt ist, info-box oeffnen
-        if ( $environment["parameter"][2] != "" ) {
+        if ( !empty($environment["parameter"][2]) ) {
             $ausgaben["display"] = "visible";
         } else {
             $ausgaben["display"] = "none";
@@ -110,104 +114,105 @@
         }
 
         // holen aller user
-        if ( $cfg["righted"]["db"]["user"]["entries"] != "" ) { 
+        if ( $cfg["righted"]["db"]["user"]["entries"] != "" ) {
             $sql ="SELECT * FROM ".$cfg["righted"]["db"]["user"]["entries"];
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 $all_user[$all[$cfg["righted"]["db"]["user"]["key"]]] = $all[$cfg["righted"]["db"]["user"]["name"]];
             }
         }
-        
-        $anzahl_rechte = count($all_rights);
-        $prozent = intval(100/$anzahl_rechte);               
 
-                
-        if ( is_array($infos["group"]) ) {          
+        $anzahl_rechte = count($all_rights);
+        $prozent = intval(100/$anzahl_rechte);
+
+
+        if ( is_array($infos["group"]) ) {
             $infos["group"] = array_reverse($infos["group"]);
-        }          
-                $counter = 0;
+        }
+        $counter = 0;
         foreach ( $all_groups as $group_key => $group_value ) {
             $counter++;
+            $dataloop["infos_group"][$counter]["info"] = null;
             $dataloop["infos_group"][$counter]["gruppe"] = $group_value;
             foreach ( $all_rights as $rights_key => $rights_value ) {
                 $background = $cfg["righted"]["button"]["new"]["color"];
                 $name = "new";
-                if ( is_array($infos["group"]) ) {  
+                if ( is_array($infos["group"]) ) {
                     foreach ( $infos["group"] as $info_key => $info_value ) {
-                        if ( is_array($info_value["add"]) ) {
-                            if ( preg_match("/".$rights_value.",/",$info_value["add"][$group_value]) ) {
+                        if ( isset($info_value["add"]) && is_array($info_value["add"]) ) {
+                            if ( preg_match("/".$rights_value.",/", @$info_value["add"][$group_value]) ) {
                                 $background = $cfg["righted"]["button"]["add"]["color"];
                                 $name = "add";
-                            } 
+                            }
                         }
-                        if ( is_array($info_value["inh"]) ) {
-                            if ( preg_match("/".$rights_value.",/",$info_value["inh"][$group_value]) ) {
+                        if ( isset($info_value["inh"]) && is_array($info_value["inh"]) ) {
+                            if ( preg_match("/".$rights_value.",/", @$info_value["inh"][$group_value]) ) {
                                 $background = $cfg["righted"]["button"]["inh"]["color"];
                                 $name = "add";
-                            } 
+                            }
                         }
-                        if ( is_array($info_value["del"]) ) {
-                            if ( preg_match("/".$rights_value.",/",$info_value["del"][$group_value]) ) {
+                        if ( isset($info_value["del"]) && is_array($info_value["del"]) ) {
+                            if ( preg_match("/".$rights_value.",/", $info_value["del"][$group_value]) ) {
                                 $background = $cfg["righted"]["button"]["del"]["color"];
                                 $name = "del";
-                            } 
+                            }
                         }
                     }
                 }
                 $dataloop["infos_group"][$counter]["info"] .= "<input name=\"group_".$name."_".$group_key."_".$rights_key."\" value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
-            }                                  
+            }
         }
-        
-        if ( is_array($infos["user"]) ) {
+
+        if ( isset($infos["user"]) && is_array($infos["user"]) ) {
             $infos["user"] = array_reverse($infos["user"]);
         }
         if ( is_array($all_user) ) {
             $counter = 0;
             foreach ( $all_user as $user_key => $user_value ) {
                 $counter++;
+                $dataloop["infos_user"][$counter]["info"] = null;
                 $dataloop["infos_user"][$counter]["user"] = $user_value;
                 foreach ( $all_rights as $rights_key => $rights_value ) {
                     $background = $cfg["righted"]["button"]["new"]["color"];
                     $name = "new";
-                    if ( is_array($infos["user"]) ) {
+                    if ( isset($infos["user"]) && is_array($infos["user"]) ) {
                         foreach ( $infos["user"] as $info_key => $info_value ) {
-
-                        if ( is_array($info_value["add"]) ) {
+                            if ( is_array($info_value["add"]) ) {
                                 if ( preg_match("/".$rights_value.",/",$info_value["add"][$user_value]) ) {
                                     $background = $cfg["righted"]["button"]["add"]["color"];
                                     $name = "add";
-                                } 
-                        }
-                        if ( is_array($info_value["inh"]) ) {
-                            if ( preg_match("/".$rights_value.",/",$info_value["inh"][$user_value]) ) {
-                                $background = $cfg["righted"]["button"]["inh"]["color"];
-                                $name = "add";
-                    } 
-                        }
+                                }
+                            }
+                            if ( is_array($info_value["inh"]) ) {
+                                if ( preg_match("/".$rights_value.",/",$info_value["inh"][$user_value]) ) {
+                                    $background = $cfg["righted"]["button"]["inh"]["color"];
+                                    $name = "add";
+                                }
+                            }
                             if ( is_array($info_value["del"]) ) {
                                 if ( preg_match("/".$rights_value.",/",$info_value["del"][$user_value]) ) {
                                     $background = $cfg["righted"]["button"]["del"]["color"];
                                     $name = "del";
-                                } 
+                                }
                             }
                         }
-                            } 
+                    }
                     $dataloop["infos_user"][$counter]["info"] .= "<input name=\"user_".$name."_".$user_key."_".$rights_key."\"  value=\"".$rights_value."\" style=width:". $prozent."%;background:".$background." type=\"submit\"></input>";
                 }
             }
         } else {
-            $dataloop["infos_user"][$counter]["user"] = "ERROR";     
-            $dataloop["infos_user"][$counter]["info"] = "Bitte aktuelle config verwenden";    
+            $dataloop["infos_user"][$counter]["user"] = "ERROR";
+            $dataloop["infos_user"][$counter]["info"] = "Bitte aktuelle config verwenden";
         }
 
- 
-        
-        
+
+
+
         // form options holen
         $form_options = form_options(eCRC($environment["ebene"]).".".$environment["kategorie"]);
 
         // form elememte bauen
-        $element = form_elements( $cfg["righted"]["db"]["content"]["entries"], $form_values );
+        $element = form_elements( $cfg["righted"]["db"]["content"]["entries"], @$form_values );
 
         // form elemente erweitern
         $element["extension1"] = "<input name=\"extension1\" type=\"text\" maxlength=\"5\" size=\"5\">";
@@ -224,7 +229,7 @@
         $ausgaben["form_break"] = $pathvars["virtual"]."/admin/menued/list,".$data["refid"].".html";
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
@@ -245,22 +250,22 @@
 
         // +++
         // page basics
-        
-       
+
+
         $preg = "/^(group|user)_(add|new|del)_([0-9]*)_([0-9]*)$/";
         if ( $environment["parameter"][3] == "verify" && preg_match($preg,key($_POST),$regs) ){
-            
+
             $art = $regs[1];
             $aktion = $regs[2];
             $gruppe = $regs[3];
-            $recht = $regs[4];                
+            $recht = $regs[4];
 
-            $id = "gid";                
+            $id = "gid";
             if ( $art == "user" ) {
-                $id = "uid";                    
+                $id = "uid";
             }
-                
-            $sql = "SELECT pid FROM auth_priv WHERE pid='".$recht."'";                                
+
+            $sql = "SELECT pid FROM auth_priv WHERE pid='".$recht."'";
             $result = $db -> query($sql);
             $data_priv = $db -> fetch_array($result,1);
             if ( $aktion == "add" ) {
@@ -278,10 +283,10 @@
                 if ( $db -> num_rows($result_test) > 0 ) {
                     $sql = "DELETE FROM auth_content WHERE ".$id."='".$gruppe."' AND pid='".$data_priv["pid"]."' AND tname='".$url."' AND neg='-1'";
                 } else {
-                    $sql = "INSERT INTO auth_content (".$id.",pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
+                    $sql = "INSERT INTO auth_content (".$id.",pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";
                 }
             } else {
-                $sql = "INSERT INTO auth_content (".$id.",pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";  
+                $sql = "INSERT INTO auth_content (".$id.",pid,db,tname,ebene,kategorie) VALUES ('".$gruppe."','".$data_priv["pid"]."','".$specialvars["dyndb"]."','".$url."','','')";
             }
             $result = $db -> query($sql);
 

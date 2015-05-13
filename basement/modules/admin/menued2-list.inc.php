@@ -55,15 +55,18 @@
         $ausgaben["back"] = "";
         if (!isset($ausgaben["show_menu"]) ) $ausgaben["show_menu"] = null;
 
-        if ( !isset($environment["parameter"][1]) ) {
+        if ( empty($environment["parameter"][1]) ) $environment["parameter"][1] = 0;
+        if ( $environment["parameter"][1] == 0 ) {
             $_SESSION["menued_id"] = "";
             $_SESSION["menued_opentree"] = "";
             $_SESSION["menued_design"] = "";
+            $check_parameter = 0;
         } else {
             $_SESSION["menued_id"] = $environment["parameter"][1];
+            $check_parameter = $environment["parameter"][1];
         }
 
-        if ( $_SESSION["menued_id"] != "" ) {
+        if ( !empty($_SESSION["menued_id"]) ) {
 
             // explode des parameters
             $opentree = explode("-",$_SESSION["menued_opentree"]);
@@ -134,23 +137,16 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["menued"]["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
-        
-        if ( isset($environment["parameter"][1]) ) {
-            $check_parameter = $environment["parameter"][1];
-        } else {
-            $check_parameter = 0;
-        }
 
         $ausgaben["new"] = null; $ausgaben["root"] = null;
-        if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         if ( priv_check( make_ebene($check_parameter),$cfg["menued"]["modify"]["add"][2],$specialvars["dyndb"]) ) {
             $ausgaben["new"] .= "<a href=\"".$cfg["menued"]["basis"]."/add,".$check_parameter.",".@$array["refid"].".html\">g(new)</a>";
             $ausgaben["root"] = "";
-            if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2],$specialvars["dyndb"]) && ( $environment["parameter"][1] == "" || $environment["parameter"][1] == "0" ) ) {
+            if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2],$specialvars["dyndb"]) && $environment["parameter"][1] == "0" ) {
                 $ausgaben["root"] ="<ul class=\"menued\"><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"/images/default/rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";
             }
         }
-                
+
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".list";
         $mapping["navi"] = "leer";
