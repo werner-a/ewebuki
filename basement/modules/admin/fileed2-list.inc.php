@@ -194,7 +194,7 @@
             $cfg["fileed"]["default_view"] = $_COOKIE["fileed_view"][$_SESSION["uid"]];
             $view_mode = $_COOKIE["fileed_view"][$_SESSION["uid"]];
         }
-        if ( $cfg["fileed"]["default_view"] == "" ) $cfg["fileed"]["default_view"] = "default";
+        if ( empty($cfg["fileed"]["default_view"]) ) $cfg["fileed"]["default_view"] = "default";
         if ( isset($environment["parameter"][4]) ) {
             $view_mode = $environment["parameter"][4];
         } else {
