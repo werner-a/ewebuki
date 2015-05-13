@@ -43,7 +43,8 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["leer"]["right"] == "" || $rechte[$cfg["leer"]["right"]] == -1 ) {
+    if ( $cfg["leer"]["right"] == "" || priv_check('', $cfg["leer"]["right"]) ) {
+    #if ( $cfg["leer"]["right"] == "" || $rechte[$cfg["leer"]["right"]] == -1 ) {
 
         // page basics
         // ***

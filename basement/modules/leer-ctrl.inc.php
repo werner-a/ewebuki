@@ -62,14 +62,19 @@
     if ( isset($cfg["leer"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["leer"]["subdir"]."/".$cfg["leer"]["name"]."-functions.inc.php";
 
     // shared function include loader
-    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",shared"]) ) {
+    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",shared"]) &&
+         is_array($cfg["leer"]["function"][$environment["kategorie"].",shared"]) 
+       ) 
+    {
         foreach ( $cfg["leer"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
         }
     }
 
     // global function include loader
-    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",global"]) ) {
+    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",global"]) && 
+         is_array($cfg["leer"]["function"][$environment["kategorie"].",global"]) )
+    {
         foreach ( $cfg["leer"]["function"][$environment["kategorie"].",global"] as $value ) {
             include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
         }
