@@ -54,16 +54,19 @@
 
         $ReplaceArray1 = array('##href##','##title##','##label##', '##mid##','##refid##','##checked##');
         
-        $sql = "SELECT pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label 
-                FROM  site_menu
-                INNER JOIN  site_menu_lang
+        $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label 
+                  FROM  site_menu
+            INNER JOIN  site_menu_lang
                     ON  site_menu.mid = site_menu_lang.mid
-                LEFT JOIN  db_publikationen_assignment
-                    ON  ( site_menu.mid=db_publikationen_assignment.mid 
-                        AND pub_id=".$environment["parameter"][1].")
+             LEFT JOIN  db_publikationen_assignment
+                    ON  (
+                            site_menu.mid=db_publikationen_assignment.mid 
+                        AND 
+                            pub_id=".$environment["parameter"][1]."
+                        )
                  WHERE ( site_menu.refid=".$refid.")
                    AND ( site_menu_lang.lang='".$environment["language"]."')
-              ORDER BY  site_menu.sort;";
+              ORDER BY site_menu.sort;";
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
 
