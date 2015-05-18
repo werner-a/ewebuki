@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function menutree2($refid, $script_name, $art = "", $modify = "", $self = "") {
+    function menutree2( $refid, $script_name, $art = "", $modify = "", $self = "" ) {
         global $cfg, $defaults, $environment, $db, $pathvars, $ausgaben, $buffer;
 
         if ( isset($ausgaben["path"]) ) $ausgaben["path"] = null;
@@ -53,16 +53,17 @@
         $where = null;
 
         $ReplaceArray1 = array('##href##','##title##','##label##', '##mid##','##refid##','##checked##');
-
-        $sql = "SELECT pub_id,site_menu.mid,site_menu.entry,site_menu.refid,site_menu_lang.label,site_menu_lang.exturl,site_menu.sort,site_menu_lang.label  FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
-            INNER JOIN  ".$cfg[$script_name]["db"]["lang"]["entries"]."
-                    ON  ".$cfg[$script_name]["db"]["menu"]["entries"].".mid = ".$cfg[$script_name]["db"]["lang"]["entries"].".mid
-            LEFT JOIN  db_publikationen_assignment
-                    ON  (site_menu.mid=db_publikationen_assignment.mid )
-                 WHERE (".$cfg[$script_name]["db"]["menu"]["entries"].".refid=".$refid.")
-                   AND (".$cfg[$script_name]["db"]["lang"]["entries"].".lang='".$environment["language"]."')
-                   ".$where."
-              ORDER BY  ".$cfg[$script_name]["db"]["menu"]["order"].";";
+        
+        $sql = "SELECT pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label 
+                FROM  site_menu
+                INNER JOIN  site_menu_lang
+                    ON  site_menu.mid = site_menu_lang.mid
+                LEFT JOIN  db_publikationen_assignment
+                    ON  ( site_menu.mid=db_publikationen_assignment.mid 
+                        AND pub_id=".$environment["parameter"][1].")
+                 WHERE ( site_menu.refid=".$refid.")
+                   AND ( site_menu_lang.lang='".$environment["language"]."')
+              ORDER BY  site_menu.sort;";
         $result  = $db -> query($sql);
         $count = $db->num_rows($result);
 
