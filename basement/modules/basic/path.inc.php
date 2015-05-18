@@ -205,6 +205,7 @@
                 $kekse["label"][] = $data["label"];
                 $kekse["title"][] = $data["label"];
                 $kekse["link"][]  = "";
+                $kekse["active"]["mid"] = $actid;
             } else {
                 if ( $cfg["pdfc"]["state"] == true ) {
                     $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
