@@ -52,11 +52,13 @@
         $tree = null;
         $where = null;
 
-        $ReplaceArray1 = array('##href##','##title##','##label##', '##mid##','##refid##');
+        $ReplaceArray1 = array('##href##','##title##','##label##', '##mid##','##refid##','##checked##');
 
-        $sql = "SELECT  *  FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
+        $sql = "SELECT pub_id,site_menu.mid,site_menu.entry,site_menu.refid,site_menu_lang.label,site_menu_lang.exturl,site_menu.sort,site_menu_lang.label  FROM  ".$cfg[$script_name]["db"]["menu"]["entries"]."
             INNER JOIN  ".$cfg[$script_name]["db"]["lang"]["entries"]."
                     ON  ".$cfg[$script_name]["db"]["menu"]["entries"].".mid = ".$cfg[$script_name]["db"]["lang"]["entries"].".mid
+            LEFT JOIN  db_publikationen_assignment
+                    ON  (site_menu.mid=db_publikationen_assignment.mid )
                  WHERE (".$cfg[$script_name]["db"]["menu"]["entries"].".refid=".$refid.")
                    AND (".$cfg[$script_name]["db"]["lang"]["entries"].".lang='".$environment["language"]."')
                    ".$where."
@@ -71,9 +73,12 @@
             $buffer["pfad"] .= "/".$array["entry"];
             $buffer["pfad_label"] .= "/".$array["label"];
             $title = $array["label"];
+            $pub_id = $array["pub_id"];
+            $checked = "";
+            if ( $pub_id ) $checked = "checked";
             if ( isset($array["extend"]) ) $title = $array["extend"];
             
-            $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"]);
+            $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"],$checked);
             
             $item = str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["item0"]["b"]);
             
