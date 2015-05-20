@@ -47,7 +47,7 @@
     //         $inhalt_selector[0] = $ausgaben["inh_selektor"]
     //         $inhalt_selector[1] = $sql
 
-    function inhalt_selector($sql, $position = 0, $menge, $parameter, $art = False, $selects = 6, $getvalues = False) {
+    function inhalt_selector($sql, $position=0, $menge=10, $parameter=Null, $art=0, $selects=6, $getvalues=Null ) {
 
         global $db, $debugging, $pathvars, $environment, $defaults;
 
@@ -57,13 +57,21 @@
         if ( !isset($defaults["select"]["next"]) ) $defaults["select"]["next"] = "<img src=\"/images/default/right.png\" height=\"18\" width=\"24\" border=\"0\" align=\"top\" alt=\"#(next)\" title=\"#(next)\" />";
         if ( !isset($defaults["select"]["separator"]) ) $defaults["select"]["separator"] = "|";
 
-        // muss ein integer sein, sonst geht der select daneben!
+        // integer erzwingen
         $position = (int)$position;
+        $menge = (int)$menge;
 
-        if ( $getvalues != False ) {
-            $getvalues = "?".$getvalues;
-        } else {
+        //devide by zero verhindern
+        if ( $menge == 0 ) $menge = 10;
+
+        if ( empty($getvalues) ) {
             $getvalues = "";
+        } else {
+            if ( strpos($getvalues, "?") == 0 ) {
+                $getvalues = $getvalues;
+            } else {
+                $getvalues = "?".$getvalues;
+            }
         }
 
         $result  = $db -> query($sql);
