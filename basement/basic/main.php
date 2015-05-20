@@ -264,7 +264,7 @@
         }
         // was steht in den get vars
         if ( $debugging["html_enable"] && count($_GET) > 0 ) {
-            $debugging["ausgabe"] .= "form (post):";
+            $debugging["ausgabe"] .= "form (get):";
             $debugging["ausgabe"] .= "<pre>".print_r($_GET,True)."</pre>";
         }
     } else {
