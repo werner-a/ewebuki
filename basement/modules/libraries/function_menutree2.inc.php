@@ -52,7 +52,7 @@
         $tree = null;
         $where = null;
 
-        $ReplaceArray1 = array('##href##','##title##','##label##', '##mid##','##refid##','##checked##');
+        $ReplaceArray1 = array( '##href##', '##title##', '##label##', '##mid##', '##refid##', '##checked##' );
         
         $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label 
                   FROM  site_menu
@@ -62,7 +62,7 @@
                     ON  (
                             site_menu.mid=db_publikationen_assignment.mid 
                         AND 
-                            pub_id=".$environment["parameter"][1]."
+                            pub_id=".$environment["parameter"][3]."
                         )
                  WHERE ( site_menu.refid=".$refid.")
                    AND ( site_menu_lang.lang='".$environment["language"]."')
@@ -88,6 +88,8 @@
             
             $item1 = str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["item1"]["b"]);
             
+            $item2 = str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["item2"]["b"]);
+            
             $ausgaben["label"] = $array["label"];
             // wo geht der href hin?
             if ( $array["exturl"] != "" ) {
@@ -103,6 +105,9 @@
             // listenpunkt schreiben
             $tree .= str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["line"]["b"]).$item.$cfg["publikationen"]["tree"]["item0"]["e"];
             $tree .= $item1.$cfg["publikationen"]["tree"]["item1"]["e"];
+            if ( !empty($array["pub_id"]) ) {
+                $tree .= $item2.$cfg["publikationen"]["tree"]["item2"]["e"];
+            }
             
             // selbstaendiger funktionsaufruf
             $tree .= menutree2($array["mid"], $script_name, $art, $modify, -1);
