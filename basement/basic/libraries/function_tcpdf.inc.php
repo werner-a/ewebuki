@@ -98,10 +98,10 @@
         // set default monospaced font
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        // set margins
+        // set margins       
         #$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetMargins($cfg["pdfc"]["change"]["PDF_MARGIN_LEFT"], // 15
-                         $cfg["pdfc"]["change"]["PDF_MARGIN_TOP"], // 27, 30
+                         $cfg["pdfc"]["change"]["PDF_MARGIN_TOP"], // 27
                          $cfg["pdfc"]["change"]["PDF_MARGIN_RIGHT"] // 15
                          );
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER); // 5
@@ -114,8 +114,7 @@
         #$pdf->setPrintFooter(false);
 
         // set auto page breaks
-        #$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        #$pdf->SetAutoPageBreak(TRUE, 25);
+        #$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM); // 25
         $pdf->SetAutoPageBreak(TRUE, 20);
 
         // set image scale factor

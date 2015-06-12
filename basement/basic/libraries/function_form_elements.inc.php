@@ -187,7 +187,7 @@
                 $preg = "^([0-9]{4})\-([0-9]{2})\-([0-9]{2})";
                 #$formularobject = date("d.m.Y G:i:s");
                 #$element[$fields["Field"]] = $formularobject;
-                if ( $form_values[$fields["Field"]] == "" ) {
+                if ( empty($form_values[$fields["Field"]]) ) {
                     $form_values[$fields["Field"]] = date("d.m.Y G:i:s");
                 } elseif ( substr($form_values[$fields["Field"]],2,1) != "." ) {
                     $convert = $form_values[$fields["Field"]];
@@ -196,11 +196,11 @@
 
                 }
 
-                ( $form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
-                ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["date"]["class"]."\"";;
-                ( $form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
-                ( strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
-                ( strstr($form_options[$fields["Field"]]["foption"], "hidden") ) ? $type = "hidden" : $type = "";
+                ( @$form_options[$fields["Field"]]["fsize"] > 0 ) ? $size = " size=\"".$form_options[$fields["Field"]]["fsize"]."\"" : $size = "";
+                ( @$form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".@$defaults["form"]["date"]["class"]."\"";;
+                ( @$form_options[$fields["Field"]]["fstyle"] != "" ) ? $style = " style=\"".$form_options[$fields["Field"]]["fstyle"]."\"" : $style = "";
+                ( @strstr($form_options[$fields["Field"]]["foption"], "readonly") ) ? $readonly = " readonly" : $readonly = "";
+                ( @strstr($form_options[$fields["Field"]]["foption"], "hidden") ) ? $type = "hidden" : $type = "";
                 $maxlength = strstr($fields["Type"],"(");
                 $maxlength = str_replace("("," maxlength=\"",$maxlength);
                 $maxlength = str_replace(")","\"",$maxlength);
