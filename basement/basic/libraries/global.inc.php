@@ -104,7 +104,6 @@ $Id = null;
     require $pathvars["config"]."file.cfg.php";
 
     // pdfc init
-    $cfg["pdfc"]["state"] = false;
     if ( file_exists($pathvars["config"]."pdfc.cfg.php") ) require_once($pathvars["config"]."pdfc.cfg.php");
 
     // automatic db access

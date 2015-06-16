@@ -69,34 +69,43 @@
 
     // dynamic style - db test/extension
     $sql = "select dynamiccss from ".$cfg["path"]["db"]["menu"]["entries"];
-    $result = $db -> query($sql);
+    @$result = $db -> query($sql);
     if ( $result ) {
-        $dynamiccss = $cfg["path"]["db"]["menu"]["entries"].".dynamiccss,";
+        $dynamiccss = $cfg["path"]["db"]["menu"]["entries"].".dynamiccss, ";
     } else {
         $dynamiccss = null;
     }
 
     // dynamic bg - db test/extension
     $sql = "select dynamicbg from ".$cfg["path"]["db"]["menu"]["entries"];
-    $result = $db -> query($sql);
+    @$result = $db -> query($sql);
     if ( $result ) {
-        $dynamicbg = $cfg["path"]["db"]["menu"]["entries"].".dynamicbg,";
+        $dynamicbg = $cfg["path"]["db"]["menu"]["entries"].".dynamicbg, ";
     } else {
         $dynamicbg = null;
     }
 
     // zusaetzliche informationen aus den feld extended (muss vorhanden sein!)
     if ( $cfg["path"]["ext_info"] == "-1" ) {
-        $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend,";
+        $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend, ";
     } else {
         $extenddesc = null;
     }
 
-    // link zum webroot
-    if ( $cfg["pdfc"]["state"] == true ) {        
-        $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";        
+    // disable pdf - db test/extension
+    $sql = "select disablepdf from ".$cfg["path"]["db"]["menu"]["entries"];
+    @$result = $db -> query($sql);
+    if ( $result ) {
+        $disablepdf = $cfg["path"]["db"]["menu"]["entries"].".disablepdf, ";
     } else {
-        $kekse["html"][] = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";                
+        $disablepdf = null;
+    }
+
+    // link zum webroot
+    if ( $cfg["pdfc"]["state"] == true ) {
+        $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
+    } else {
+        $kekse["html"][] = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
     }
     $kekse["label"][] = $specialvars["rootname"];
     $kekse["title"][] = $specialvars["rootname"];
@@ -115,9 +124,9 @@
     $count_menu = 0;
 
     $actid = 0;
-    unset($path);
+    $path = null;
 
-    foreach ($kekspath as $key => $value) {
+    foreach ($kekspath as $value) {
         $search = "like '".preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $value)."'";
         $sql = "SELECT ".$cfg["path"]["db"]["menu"]["entries"].".mid,
                        ".$cfg["path"]["db"]["menu"]["entries"].".refid,
@@ -125,7 +134,7 @@
                        ".$cfg["path"]["db"]["menu"]["entries"].".sort,
                        ".$cfg["path"]["db"]["menu"]["entries"].".level,
                        ".$cfg["path"]["db"]["menu"]["entries"].".defaulttemplate,
-                       ".$dynamiccss.$dynamicbg.$extenddesc."
+                       ".$dynamiccss.$dynamicbg.$extenddesc.$disablepdf."
                        ".$cfg["path"]["db"]["lang"]["entries"].".label
                   FROM ".$cfg["path"]["db"]["menu"]["entries"]."
             INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
@@ -155,7 +164,7 @@
                         ".$cfg["path"]["db"]["menu"]["entries"].".sort,
                         ".$cfg["path"]["db"]["menu"]["entries"].".level,
                         ".$cfg["path"]["db"]["menu"]["entries"].".defaulttemplate,
-                        ".$dynamiccss.$dynamicbg.$extenddesc."
+                        ".$dynamiccss.$dynamicbg.$extenddesc.$disablepdf."
                         ".$cfg["path"]["db"]["lang"]["entries"].".label
                    FROM ".$cfg["path"]["db"]["menu"]["entries"]."
              INNER JOIN ".$cfg["path"]["db"]["lang"]["entries"]."
@@ -172,11 +181,19 @@
             // prev + next handling
 
             // navbar links
-            if ( !isset($path) ) {
-                $path = null;
+            if ( empty($path) ) {
                 $ausgaben["UP"] = $pathvars["virtual"]."/index.html";
             } else {
                 $ausgaben["UP"] = $pathvars["virtual"].$path.".html";
+            }
+
+            // pdf button disabled?
+            $ausgaben["pdfbutton0"] = null; $ausgaben["pdfbutton1"] = null; $ausgaben["pdfbutton2"] = null;
+            if ( isset($data["disablepdf"]) && ( $data["disablepdf"] == 0 && empty($path) )) {
+                //<a href="/index.html?pdf=2" target="_blank" title="Link in neuem Fenster: /index.html?pdf=2" class="link_intern">PDF: pdf</a>
+                $ausgaben["pdfbutton0"] = $cfg["pdfc"]["buttons"]["b0"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e0"];
+                $ausgaben["pdfbutton1"] = $cfg["pdfc"]["buttons"]["b1"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e1"];
+                $ausgaben["pdfbutton2"] = $cfg["pdfc"]["buttons"]["b2"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e2"];
             }
 
             // seitentitel
@@ -229,7 +246,6 @@
             if ( isset($data["dynamicbg"]) ) {
                 $specialvars["dynamicbg"] = $data["dynamicbg"];
             }
-
 
             // content navigation erstellen
             // ***
@@ -327,6 +343,7 @@
 
                         // prev + next handling
                         // ***
+                        $prev = null; $next = null;
                         if ( $navbararray["sort"] == $data["sort"] - 10 ) {
                             $prev = "<a href=\"./".$navbararray["entry"].".html\">".$navbararray["label"]."</a>";
                         }

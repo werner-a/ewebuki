@@ -320,7 +320,7 @@
         }
     }
 
-    // states frühzeitig erkennen   
+    // states fruehzeitig erkennen
     $cfg["print"]["state"] = false; $cfg["pdfc"]["state"] = false; $cfg["hijack"]["state"] = false; $cfg["head"]["state"] = false;
     if ( isset($_POST["print"]) || isset($_GET["print"]) ) {
         $cfg["print"]["state"] = true;

@@ -61,6 +61,14 @@
             "debug" => false,
          "template" => "pdfc",
        "force_utf8" => true,
+          "buttons" => array(
+                        "b0" => "<a href=\"",
+                        "e0" => "?pdf=0\" target=\"_blank\" title=\"PDF Datei in einem neuen Fenster\">PDF: debug</a>",
+                        "b1" => "<a href=\"",
+                        "e1" => "?pdf=1\" target=\"_blank\" title=\"PDF Datei in einem neuen Fenster\">PDF: base</a>",
+                        "b2" => "<a href=\"",
+                        "e2" => "?pdf=2\" target=\"_blank\" title=\"PDF Datei in einem neuen Fenster\">PDF: pdf</a>",
+                       ),
     );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
