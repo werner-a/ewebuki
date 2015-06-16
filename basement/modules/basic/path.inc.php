@@ -206,7 +206,7 @@
             }
 
             // pdf button disabled?               
-            if ( isset($data["disablepdf"]) && ( $data["disablepdf"] == 0 && $path == $environment["ebene"]."/".$environment["kategorie"] )) {
+            if ( isset($data["disablepdf"]) && ( $data["disablepdf"] != -1 && $path == $environment["ebene"]."/".$environment["kategorie"] )) {
                 //<a href="/index.html?pdf=2" target="_blank" title="Link in neuem Fenster: /index.html?pdf=2" class="link_intern">PDF: pdf</a>
                 $ausgaben["pdfbutton0"] = $cfg["pdfc"]["buttons"]["b0"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e0"];
                 $ausgaben["pdfbutton1"] = $cfg["pdfc"]["buttons"]["b1"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e1"];
