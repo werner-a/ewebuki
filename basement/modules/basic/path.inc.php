@@ -125,6 +125,9 @@
 
     $actid = 0;
     $path = null;
+    $ausgaben["pdfbutton0"] = null; 
+    $ausgaben["pdfbutton1"] = null; 
+    $ausgaben["pdfbutton2"] = null;
 
     foreach ($kekspath as $value) {
         $search = "like '".preg_replace("/[^A-Za-z_\-\.0-9]+/", "", $value)."'";
@@ -188,14 +191,13 @@
             }
 
             // pdf button disabled?
-            $ausgaben["pdfbutton0"] = null; $ausgaben["pdfbutton1"] = null; $ausgaben["pdfbutton2"] = null;
-            if ( isset($data["disablepdf"]) && ( $data["disablepdf"] == 0 && empty($path) )) {
+            if ( isset($data["disablepdf"]) && ( $data["disablepdf"] == 0 && empty($path) )) {                
                 //<a href="/index.html?pdf=2" target="_blank" title="Link in neuem Fenster: /index.html?pdf=2" class="link_intern">PDF: pdf</a>
                 $ausgaben["pdfbutton0"] = $cfg["pdfc"]["buttons"]["b0"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e0"];
                 $ausgaben["pdfbutton1"] = $cfg["pdfc"]["buttons"]["b1"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e1"];
                 $ausgaben["pdfbutton2"] = $cfg["pdfc"]["buttons"]["b2"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e2"];
             }
-
+    
             // seitentitel
             $path .= "/".$data["entry"];
             if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "path: ".$path.$debugging["char"];
