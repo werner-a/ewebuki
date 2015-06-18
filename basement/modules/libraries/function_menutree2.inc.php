@@ -52,7 +52,7 @@
         $tree = null;
         $where = null;
 
-        $ReplaceArray1 = array( '##href##', '##title##', '##label##', '##mid##', '##refid##', '##checked##' );
+        $ReplaceArray1 = array( '##href##', '##title##', '##label##', '##mid##', '##refid##', '##checked##', '##pub_id##' );
         
         $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label 
                   FROM  site_menu
@@ -82,7 +82,7 @@
             if ( $pub_id ) $checked = "checked";
             if ( isset($array["extend"]) ) $title = $array["extend"];
             
-            $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"],$checked);
+            $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"],$checked,$environment["parameter"][3]);
             
             $item = str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["item0"]["b"]);
             
@@ -104,8 +104,12 @@
 
             // listenpunkt schreiben
             $tree .= str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["line"]["b"]).$item.$cfg["publikationen"]["tree"]["item0"]["e"];
-            $tree .= $item1.$cfg["publikationen"]["tree"]["item1"]["e"];
-            if ( !empty($array["pub_id"]) ) {
+            
+            if ( is_array($cfg["publikationen"]["tree"]["item1"]) ) {
+                $tree .= $item1.$cfg["publikationen"]["tree"]["item1"]["e"];
+            }
+                
+            if ( !empty($array["pub_id"]) && is_array($cfg["publikationen"]["tree"]["item2"]) ) {
                 $tree .= $item2.$cfg["publikationen"]["tree"]["item2"]["e"];
             }
             
