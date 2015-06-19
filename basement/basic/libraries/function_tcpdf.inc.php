@@ -46,16 +46,16 @@
     foreach($cfg["pdfc"]["constant"] as $key => $value) {
         if ( isset($cfg["pdfc"]["constant"][$key]) ) define($key, $value);
     }
-    
+
     if ( file_exists($cfg["pdfc"]["path"]["lib"]) ) {
         require_once($cfg["pdfc"]["path"]["lib"]);
     } else {
         die("Can't find TCPDF library.");
     }
 
-    $defined = get_defined_constants(true);    
+    $defined = get_defined_constants(true);
     foreach($defined["user"] as $key => $value) {
-        if ( substr($key, 0, 4) == "PDF_" ) { 
+        if ( substr($key, 0, 4) == "PDF_" ) {
             if ( !isset($cfg["pdfc"]["change"][$key]) ) $cfg["pdfc"]["change"][$key] = constant($key);
         }
     }
@@ -98,7 +98,7 @@
         // set default monospaced font
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        // set margins       
+        // set margins
         #$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetMargins($cfg["pdfc"]["change"]["PDF_MARGIN_LEFT"], // 15
                          $cfg["pdfc"]["change"]["PDF_MARGIN_TOP"], // 27
@@ -178,16 +178,16 @@
         #$pdf->setCellHeightRatio(1.25);
         #$pdf->setImageScale(1.2);
 
-        // output the HTML content
-        $pdf->writeHTML($html, true, false, true, false, '');
-
-        // reset pointer to the last page
-        $pdf->lastPage();
-
-        //Close and output PDF document
         if ( $cfg["pdfc"]["debug"] == true ) {
             echo $html;
         } else {
+            // output the HTML content
+            $pdf->writeHTML($html, true, false, true, false, '');
+
+            // reset pointer to the last page
+            $pdf->lastPage();
+
+            //Close and output PDF document
             #$pdf->Output('example_061.pdf', 'I');
             $pdf->Output('ewebuki_test.pdf', 'I');
         }
