@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function menutree2( $refid, $script_name, $art = "", $modify = "", $self = "" ) {
+    function menutree2( $refid, $show_item = array() ,$self = "" ) {
         global $cfg, $defaults, $environment, $db, $pathvars, $ausgaben, $buffer;
 
         if ( isset($ausgaben["path"]) ) $ausgaben["path"] = null;
@@ -51,7 +51,7 @@
        
         $tree = null;
         $where = null;
-
+                
         $ReplaceArray1 = array( '##href##', '##title##', '##label##', '##mid##', '##refid##', '##checked##', '##pub_id##' );
         
         $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label 
@@ -83,13 +83,7 @@
             if ( isset($array["extend"]) ) $title = $array["extend"];
             
             $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"],$checked,$environment["parameter"][3]);
-            
-            $item = str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["item0"]["b"]);
-            
-            $item1 = str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["item1"]["b"]);
-            
-            $item2 = str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["item2"]["b"]);
-            
+                        
             $ausgaben["label"] = $array["label"];
             // wo geht der href hin?
             if ( $array["exturl"] != "" ) {
@@ -101,20 +95,20 @@
                 $buffer[$refid]["zaehler"] = $count;
                 $tree .=  str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["node"]["b"]);
             }
+            
+            $items = "";
+            foreach ( $show_item as $value ) {
+                if ( empty($cfg["publikationen"]["tree"][$value]) ) continue;
+                // HIER IST NOCH EINE AUSNAHME
+                if ( $value == "item2" && empty($array["pub_id"]) ) continue;
+                $items .= str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"][$value]["b"]).str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"][$value]["e"]);
+            }
 
-            // listenpunkt schreiben
-            $tree .= str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["line"]["b"]).$item.$cfg["publikationen"]["tree"]["item0"]["e"];
-            
-            if ( is_array($cfg["publikationen"]["tree"]["item1"]) ) {
-                $tree .= $item1.$cfg["publikationen"]["tree"]["item1"]["e"];
-            }
-                
-            if ( !empty($array["pub_id"]) && is_array($cfg["publikationen"]["tree"]["item2"]) ) {
-                $tree .= $item2.$cfg["publikationen"]["tree"]["item2"]["e"];
-            }
-            
+            // listenpunkt schreiben                 
+            $tree .= str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["line"]["b"]).$items;
+
             // selbstaendiger funktionsaufruf
-            $tree .= menutree2($array["mid"], $script_name, $art, $modify, -1);
+            $tree .= menutree2( $array["mid"],$show_item,-1 );
 
             // abschliessendes li anbringen
             $tree .= $cfg["publikationen"]["tree"]["line"]["e"];
