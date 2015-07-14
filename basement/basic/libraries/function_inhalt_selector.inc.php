@@ -78,7 +78,7 @@
         $gesamt = $db -> num_rows($result);
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "Gesamt: ".$gesamt.$debugging["char"];
 
-        $sql = $sql." LIMIT ".$position.",".$menge;
+        if ( $menge != -1 ) $sql = $sql." LIMIT ".$position.",".$menge;
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
         $result  = $db -> query($sql);
 
@@ -168,7 +168,7 @@
                 if ( $art == 1 ) {
                     $inh_selector .= $weiter;
                 }
-                $inh_selector .= "<a href=\"".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"].",".$rechts.$parameter.".html".$getvalues."\">".$defaults["select"]["next"]."</a> ";
+                if ( $menge != -1 ) $inh_selector .= "<a href=\"".$pathvars["virtual"].$environment["ebene"]."/".$environment["kategorie"].",".$rechts.$parameter.".html".$getvalues."\">".$defaults["select"]["next"]."</a> ";
             } else {
                 $inh_selector .= $defaults["select"]["none"];
             }

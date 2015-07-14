@@ -205,9 +205,8 @@
                 $title = $data["label"];
             }
 
-            // pdf button disabled?               
+            // pdf button disabled?
             if ( array_key_exists("disablepdf", $data) && ( $data["disablepdf"] != -1 && $path == $environment["ebene"]."/".$environment["kategorie"] )) {
-                //<a href="/index.html?pdf=2" target="_blank" title="Link in neuem Fenster: /index.html?pdf=2" class="link_intern">PDF: pdf</a>
                 $ausgaben["pdfbutton0"] = $cfg["pdfc"]["buttons"]["b0"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e0"];
                 $ausgaben["pdfbutton1"] = $cfg["pdfc"]["buttons"]["b1"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e1"];
                 $ausgaben["pdfbutton2"] = $cfg["pdfc"]["buttons"]["b2"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e2"];
