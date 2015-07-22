@@ -65,8 +65,8 @@
             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; # /view,groesse,bild,selektion,thumbs
 
             if ( $cfg["pdfc"]["state"] == true ) {
-                if ( empty($defaults["tag"]["sel_pdfc"]) )  $defaults["tag"]["sel_pdfc"]  = "<b>##title##</b><br /><br />";
-                if ( empty($defaults["tag"]["*sel_pdfc"]) ) $defaults["tag"]["*sel_pdfc"] = "<img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/>";
+                if ( empty($defaults["tag"]["sel_pdfc"]) )  $defaults["tag"]["sel_pdfc"]  = "<b>##title##</b><br />\n<br />\n";
+                if ( empty($defaults["tag"]["*sel_pdfc"]) ) $defaults["tag"]["*sel_pdfc"] = "<img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\" ##imgsize## />\n";
                 if ( empty($defaults["tag"]["/sel_pdfc"]) ) $defaults["tag"]["/sel_pdfc"] = "";
                 
                 $selection["sel"]  = $defaults["tag"]["sel_pdfc"];
@@ -168,6 +168,13 @@
             foreach ( $files as $row ) {
                 $file_counter ++;
 
+                $file = $cfg["file"]["base"]["maindir"]
+                       .$cfg["file"]["base"]["pic"]["root"]
+                       .$cfg["file"]["base"]["pic"]["tn"]
+                       ."tn_".$row["fid"].".".$row["ffart"];
+                $imgsize = getimagesize($file);
+                #echo "<pre>"; print_r($imgsize); echo "</pre>";
+                
                 if ( $cfg["pdfc"]["state"] == true ) {
                     $img = $cfg["file"]["base"]["webdir"]
                           .$row["ffart"]."/"
@@ -224,8 +231,8 @@
                     continue;
                 }
 
-                $s = array("##link##", "##lb##", "##tn##", "##img##", "##funder##", "##fdesc##","##style##");
-                $r = array($changed, $lb, $tn, $img, $row["funder"], $row["fdesc"],$style);
+                $s = array("##link##", "##lb##", "##tn##", "##img##", "##funder##", "##fdesc##", "##style##", "##imgsize##");
+                $r = array($changed, $lb, $tn, $img, $row["funder"], $row["fdesc"], $style, $imgsize[3]);
                 $sel .= str_replace($s, $r, $selection["*sel"]);
             }
 
