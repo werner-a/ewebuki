@@ -58,15 +58,30 @@
 
         if ( !preg_match("/[0-9]+/", $tag_param[0])  ) {
             $sel = "selection not ready";
-            $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
+            $replace = str_replace($opentag.$tagoriginal.$closetag, $sel, $replace);
         } else {
             $path = dirname($pathvars["requested"]);
             if ( substr( $path, -1 ) != '/') $path = $path."/";
-            $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; #/view,groesse,bild,selektion,thumbs
+            $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; # /view,groesse,bild,selektion,thumbs
 
-            if ( !isset($defaults["tag"]["sel"]) ) $defaults["tag"]["sel"] = "<div style=\"position:relative\" class=\"selection_teaser\">##no_image####youtube_div##\n<b>##title## ##youtube_link##</b>\n##no_image_end##<div>\n<ul>\n";
-            if ( !isset($defaults["tag"]["*sel"]) ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
-            if ( !isset($defaults["tag"]["/sel"]) ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span##display##>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
+            if ( $cfg["pdfc"]["state"] == true ) {
+                if ( empty($defaults["tag"]["sel_pdfc"]) )  $defaults["tag"]["sel_pdfc"]  = "<b>##title##</b><br /><br />";
+                if ( empty($defaults["tag"]["*sel_pdfc"]) ) $defaults["tag"]["*sel_pdfc"] = "<img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/>";
+                if ( empty($defaults["tag"]["/sel_pdfc"]) ) $defaults["tag"]["/sel_pdfc"] = "";
+                
+                $selection["sel"]  = $defaults["tag"]["sel_pdfc"];
+                $selection["*sel"] = $defaults["tag"]["*sel_pdfc"];
+                $selection["/sel"] = $defaults["tag"]["/sel_pdfc"];                
+            } else {
+                if ( empty($defaults["tag"]["sel"]) )  $defaults["tag"]["sel"]  = "<div style=\"position:relative\" class=\"selection_teaser\">##no_image####youtube_div##\n<b>##title## ##youtube_link##</b>\n##no_image_end##<div>\n<ul>\n";
+                if ( empty($defaults["tag"]["*sel"]) ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
+                if ( empty($defaults["tag"]["/sel"]) ) $defaults["tag"]["/sel"] = "</ul>\n</div>\n<span##display##>g(compilation_info)(##count## g(compilation_pics))</span>\n</div>";
+
+                $selection["sel"]  = $defaults["tag"]["sel"];
+                $selection["*sel"] = $defaults["tag"]["*sel"];
+                $selection["/sel"] = $defaults["tag"]["/sel"];                
+            }
+
             if ( strstr($tag_param[0],":") ) {
                 $sel_pics = null;
                 foreach ( $tag_special as $pics ) {
@@ -92,7 +107,7 @@
                     $sortarray[] = $tmp_sort[$data["fid"]];
                     $files[] = array(
                                 "fid"    => $data["fid"],
-                                "sort"   => $counter,
+                                "sort"   => -1, // $counter ?????
                                 "ffart"  => $data["ffart"],
                                 "ffname" => $data["ffname"],
                                 "funder" => $data["funder"],
@@ -125,10 +140,9 @@
                     $sort[$key]  = $row['sort'];
                 }
                 array_multisort($sort, $files);
-
             }
 
-            $sel = str_replace("##title##",$tag_value[1],$defaults["tag"]["sel"]);
+            $sel = str_replace("##title##", $tag_value[1], $selection["sel"]);
 
             // wenn video-parameter vorhanden dann marken ersetzen
             if ( isset($tag_param[5]) ) {
@@ -154,7 +168,17 @@
             foreach ( $files as $row ) {
                 $file_counter ++;
 
-                if ( $cfg["file"]["base"]["realname"] == True ) {
+                if ( $cfg["pdfc"]["state"] == true ) {
+                    $img = $cfg["file"]["base"]["webdir"]
+                          .$row["ffart"]."/"
+                          .$row["fid"]."/"
+                          .$tag_param[1]."/"
+                          .$row["ffname"];
+                    $tn = $cfg["file"]["base"]["webdir"]
+                         .$cfg["file"]["base"]["pic"]["root"]
+                         .$cfg["file"]["base"]["pic"]["tn"]
+                         ."tn_".$row["fid"].".".$row["ffart"];
+                } elseif ( $cfg["file"]["base"]["realname"] == True ) {
                     $img = $cfg["file"]["base"]["webdir"]
                           .$row["ffart"]."/"
                           .$row["fid"]."/"
@@ -202,31 +226,31 @@
 
                 $s = array("##link##", "##lb##", "##tn##", "##img##", "##funder##", "##fdesc##","##style##");
                 $r = array($changed, $lb, $tn, $img, $row["funder"], $row["fdesc"],$style);
-                $sel .= str_replace($s,$r,$defaults["tag"]["*sel"]);
+                $sel .= str_replace($s, $r, $selection["*sel"]);
             }
 
             if ( !isset($tag_param[3]) && $tag_param[4] == "l" ) {
-               $ArrayReplace = array(count($files)," style=\"display:none\"");
+               $ArrayReplace = array(count($files), " style=\"display:none\"");
             } else {
-               $ArrayReplace = array(count($files),"");
+               $ArrayReplace = array(count($files), "");
             }
 
-            $sel .= str_replace(array("##count##","##display##"),$ArrayReplace,$defaults["tag"]["/sel"]);
+            $sel .= str_replace(array("##count##", "##display##"), $ArrayReplace, $selection["/sel"]);
 
             if ( !isset($tag_param[3]) ) {
                 if ( $tag_param[4] == "l" ) {
-                    $sel = str_replace("##no_image##","<a href=\"".$tn1."\" ".$lb.">",$sel);
-                    $sel = str_replace("##no_image_end##","</a>",$sel);
+                    $sel = str_replace("##no_image##", "<a href=\"".$tn1."\" ".$lb.">",$sel);
+                    $sel = str_replace("##no_image_end##", "</a>",$sel);
                 } else {
                     $changed = str_replace( "#", $files[0]["fid"], $link);
                     $sel = "<a href=\"".$changed."\">".$tag_value[1]."</a>";
                 }
             } else {
-                $sel = str_replace("##no_image##","",$sel);
-                $sel = str_replace("##no_image_end##","",$sel);
+                $sel = str_replace("##no_image##", "", $sel);
+                $sel = str_replace("##no_image_end##", "", $sel);
             }
             $replace = str_replace($opentag.$tagoriginal.$closetag,$sel,$replace);
-        }        
+        }
 
         // ------------------------------
         return $replace;
