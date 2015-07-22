@@ -117,5 +117,11 @@
     
     // ab wann werden in der form_elements dropdowns anstatt radio button gebaut
     #$defaults["form_elements_count"] = set it;
+    // Formular-Elemente definieren
+    #$defaults["form"]["hidden"]["html"] = "<input type=\"hidden\" name=\"##name##\" value=\"##value##\" class=\"hidden\"##extend##>\n";
+    #$defaults["form"]["radio"]["html"]  = "<label for=\"##id##\">##label##</label>\n".
+    #                                      "<input id=\"##id##\" type=\"radio\" name=\"##name##\" value=\"##value##\"##class####check####extend##>\n";
+    #$defaults["form"]["radio"]["class"] = "";
+    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

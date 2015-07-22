@@ -159,11 +159,31 @@
                     $formularobject .= "</select>\n";
                 } else {
                     unset($formularobject);
+                    // ggf defaults definieren
+                    if ( !isset($defaults["form"]["radio"]["html"]) ) {
+                        $defaults["form"]["radio"]["html"] = "<label for=\"##id##\">##label##</label>\n".
+                                                             "<input id=\"##id##\" type=\"radio\" name=\"##name##\" value=\"##value##\"##class####check####extend##>\n";
+                    }
+                    if ( !isset($defaults["form"]["hidden"]["html"]) ) {
+                        $defaults["form"]["hidden"]["html"] = "<input type=\"hidden\" name=\"##name##\" value=\"##value##\" class=\"hidden\"##extend##>\n";
+                    }
+                    // CSS-Klasse aus form_options/defaults holen
                     ( $form_options[$fields["Field"]]["fclass"] != "" ) ? $class = " class=\"".$form_options[$fields["Field"]]["fclass"]."\"" : $class = " class=\"".$defaults["form"]["radio"]["class"]."\"";
                     // hack: bei nicht auf "checked" gesetzten radio buttons
                     // bleibt der post/get value leer
                     // der required check versagt!
-                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".htmlspecialchars($form_values[$fields["Field"]])."\" class=\"hidden\" />\n";
+                    $ele_name   = $fields["Field"];
+                    $ele_extend = $extend;
+                    $ele_value  = htmlspecialchars($form_values[$fields["Field"]]);
+                    $formularobject .= str_replace(
+                                            array("##name##", "##value##", "##extend##"), 
+                                            array($ele_name,  $ele_value,  $ele_extend), 
+                                            $defaults["form"]["hidden"]["html"]
+                                       );
+                    
+//                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".htmlspecialchars($form_values[$fields["Field"]])."\" class=\"hidden\" />\n";
+                    
+                    // Radio-Elemente durchgehen
                     foreach( $options as $key => $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
                             $checked = " checked";
@@ -176,8 +196,20 @@
                         } else {                           #
                             $label_wert = $value;          #
                         }                                  #
-                        $formularobject .= "<label for=\"".$fields["Field"]."_".$key."\">".$label_wert."</label>\n";
-                        $formularobject .= "<input id=\"".$fields["Field"]."_".$key."\" type=\"radio\" name=\"".$fields["Field"].$extend."\" value=\"".$value."\"".$class.$checked." />\n";
+                        // Vorbereitung für den str_replace
+                        $ele_id     = $fields["Field"]."_".$key;
+                        $ele_label  = $label_wert;
+                        $ele_name   = $fields["Field"];
+                        $ele_value  = $value;
+                        $ele_class  = $class;
+                        $ele_check  = $checked;
+                        $ele_extend = $extend;
+                        // Formular-Object aus $defaults["form"]["radio"]["html"] erzeugen
+                        $formularobject .= str_replace(
+                                                array("##id##", "##label##", "##name##", "##value##", "##class##", "##check##", "##extend##"), 
+                                                array($ele_id,  $ele_label,  $ele_name,  $ele_value,  $ele_class,  $ele_check,  $ele_extend), 
+                                                $defaults["form"]["radio"]["html"]
+                                           );
                     }
                     $element[$fields["Field"].$extend] = $formularobject;
                 }
