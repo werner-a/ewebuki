@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -46,13 +46,18 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
     $ebene = explode("/",$environment["ebene"]);
+    if ( empty($ebene[1]) ) $ebene[1] = null;
+    if ( empty($ebene[2]) ) $ebene[2] = null;
+    
     include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
     //
     // menupunkte level 1
     //
     $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
     if ( $cfg["menu"]["level1"]["full"] == "-1" ) $mandatory = "";
-    if ( $cfg["menu"]["level1"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
+
+    $extenddesc = null;
+    if ( !empty($cfg["menu"]["level1"]["extend"]) && $cfg["menu"]["level1"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
 
     $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
                     ".$cfg["menu"]["db"]["entries"].".refid,
@@ -87,6 +92,7 @@
 
     if ( $cfg["menu"]["level1"]["enable"] == -1 ) $ausgaben[$cfg["menu"]["name"]] = $cfg["menu"]["level1"]["on"];
     while ( $level1array = $db -> fetch_array($level1result,1) ) {
+        if ( empty($level1array["extend"]) ) $level1array["extend"] = null;
         if ( $cfg["menu"]["level1"]["enable"] == -1 ) {
             if ( $level1array["level"] == "" ) {
                 $right = -1;
@@ -113,8 +119,8 @@
                     $href = $cfg["menu"]["base"]."/".$level1array["entry"].".html";
                     $target = "";
                     $aktiv = "";
-                    if ( "" == $ebene[1]
-                      && "" == $ebene[2]
+                    if ( empty($ebene[1])
+                      && empty($ebene[2])
                       && $level1array["entry"] == $environment["kategorie"] ) {
                         $aktiv = "aktiv";
                     }
@@ -128,6 +134,7 @@
                 $ersatz = array($target, $href, $level1array["label"], $level1array["picture"], $level1array["extend"], $aktiv);
 
                 // multiple db support
+                $aktdb = null; $aktlev = null;
                 if ( $cfg["menu"]["mdbsupp"] == -1 ) {
                   $aktdb = $db->getDb();
                   if ( $environment["fqdn"][0] == $cfg["menu"]["mdbname"] ) {
@@ -137,18 +144,21 @@
                   }
                 }
 
-                if ( @strpos($environment["ebene"],$level1array["entry"]) == 1 && $aktlev == $aktdb || ( $environment["kategorie"] == $level1array["entry"] && $environment["ebene"] == "" && $aktlev == $aktdb ) ) {
+                if ( strpos($environment["ebene"], $level1array["entry"]) == 1 && $aktlev == $aktdb || ( $environment["kategorie"] == $level1array["entry"] && $environment["ebene"] == "" && $aktlev == $aktdb ) ) {
                     // open folder
+                    if ( empty($cfg["menu"]["level1"]["icona"]) ) $cfg["menu"]["level1"]["icona"] = null;
                     $ausgaben["ordner"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["icona"]);
 
                     if ( $cfg["menu"]["level2"]["full"] == -1 ) $mandatory = "";
                     if ( $cfg["menu"]["level2"]["dynamic"] == -1 ) $cfg["menu"]["level2"]["enable"] = -1;
                 } else {
                     // closed folder
+                    if ( empty($cfg["menu"]["level1"]["iconb"]) ) $cfg["menu"]["level1"]["iconb"] = null;
                     $ausgaben["ordner"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["iconb"]);
 
                     if ( $cfg["menu"]["level2"]["dynamic"] == -1 ) $cfg["menu"]["level2"]["enable"] = 0;
                 }
+                if ( empty($cfg["menu"]["level1"]["link"]) ) $cfg["menu"]["level1"]["link"] = null;
                 $ausgaben["ueberschrift"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["link"]);
                 if ( $cfg["menu"]["level1"]["link2"] == "" ) {
                     $ausgaben["ueberschrift"] = str_replace($marken,$ersatz,$cfg["menu"]["level1"]["link"]);
@@ -168,7 +178,8 @@
         //
         // menupunkte level 2
         //
-        if ( $cfg["menu"]["level2"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
+        $extenddesc = null;
+        if ( !empty($cfg["menu"]["level2"]["extend"]) && $cfg["menu"]["level2"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
         $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
                         ".$cfg["menu"]["db"]["entries"].".refid,
                         ".$cfg["menu"]["db"]["entries"].".entry,
@@ -202,11 +213,13 @@
         #}
 
         if ( $level2rows > 0 ) {
+            if ( empty($cfg["menu"]["level2"]["on"]) ) $cfg["menu"]["level2"]["on"] = null;
             $ausgaben["punkte"] = $cfg["menu"]["level2"]["on"];
         } else {
             $ausgaben["punkte"] = "";
         }
-        while ( $level2array = $db -> fetch_array($level2result,$nop) ) {
+        while ( $level2array = $db -> fetch_array($level2result, 1) ) {
+            if ( empty($level2array["extend"]) ) $level2array["extend"] = null;
             if ( $cfg["menu"]["level2"]["enable"] == -1 ) {
                 if ( $level2array["level"] == "" ) {
                     $right = -1;
@@ -228,7 +241,7 @@
                         $target = "";
                         $aktiv = "";
                         if ( $level1array["entry"] == $ebene[1]
-                          && "" == $ebene[2]
+                          && empty($ebene[2])
                           && $level2array["entry"] == $environment["kategorie"] ) {
                             $aktiv = "aktiv";
                         }
@@ -249,7 +262,8 @@
                     $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##", "##aktiv##");
                     $ersatz = array($target, $href, $level2array["label"], $level2array["picture"], $level2array["extend"], $aktiv);
 
-                    $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level2"]["link"]);
+                    if ( empty($cfg["menu"]["level2"]["link"]) ) $cfg["menu"]["level2"]["link"] = null;
+                    $ausgaben["punkte"] .= str_replace($marken, $ersatz, $cfg["menu"]["level2"]["link"]);
                 }
             }
 
@@ -258,7 +272,8 @@
             //
             #if ( strstr($environment["ebene"],"/".$level1array["entry"]) || strstr($environment["kategorie"],$level1array["entry"]) ) {
             if ( strpos($environment["ebene"]."/".$environment["kategorie"],$level1array["entry"]."/".$level2array["entry"]) !== false ) {
-                if ( $cfg["menu"]["level3"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
+                $extenddesc = null;
+                if ( !empty($cfg["menu"]["level3"]["extend"]) && $cfg["menu"]["level3"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
                 $sql = "SELECT  ".$cfg["menu"]["db"]["entries"].".mid,
                                 ".$cfg["menu"]["db"]["entries"].".refid,
                                 ".$cfg["menu"]["db"]["entries"].".entry,
@@ -292,10 +307,11 @@
 
                 if ( $level3rows > 0 ) $ausgaben["punkte"] .= $cfg["menu"]["level3"]["on"];
                 while ( $level3array = $db -> fetch_array($level3result,$nop) ) {
+                    if ( empty($level3array["extend"]) ) $level3array["extend"] = null;
                     if ( $cfg["menu"]["level3"]["enable"] == -1 ) {
                         if ( $level3array["level"] == "" ) {
                             $right = -1;
-                        } else {                            
+                        } else {
                             if ( priv_check(make_ebene($level3array["mid"]),$level3array["level"]) ) {
                                 $right = -1;
                             } else {
@@ -324,13 +340,16 @@
                             $marken = array("##target##", "##link##", "##label##", "##picture##", "##extend##", "##aktiv##");
                             $ersatz = array($target, $href, $level3array["label"], $level3array["picture"], $level3array["extend"], $aktiv);
 
+                            if ( empty($cfg["menu"]["level3"]["link"]) ) $cfg["menu"]["level3"]["link"] = null;
                             $ausgaben["punkte"] .= str_replace($marken,$ersatz,$cfg["menu"]["level3"]["link"]);
                         }
                     }
                 }
+                if ( empty($cfg["menu"]["level3"]["off"]) ) $cfg["menu"]["level3"]["off"] = null;
                 if ( $level3rows > 0 ) $ausgaben["punkte"] .= $cfg["menu"]["level3"]["off"];
             }
         }
+        if ( empty($cfg["menu"]["level2"]["off"]) ) $cfg["menu"]["level2"]["off"] = null;
         if ( $level2rows > 0 ) $ausgaben["punkte"] .= $cfg["menu"]["level2"]["off"];
         if ( $cfg["menu"]["level1"]["enable"] == -1 && $parser == -1 ) {
             if ( $cfg["menu"]["generate"] == true ) {
