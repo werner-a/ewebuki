@@ -48,14 +48,12 @@
     $ebene = explode("/",$environment["ebene"]);
     if ( empty($ebene[1]) ) $ebene[1] = null;
     if ( empty($ebene[2]) ) $ebene[2] = null;
-    
     include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
     //
     // menupunkte level 1
     //
     $mandatory = " AND ((".$cfg["menu"]["db"]["entries"].".mandatory)='-1')";
     if ( $cfg["menu"]["level1"]["full"] == "-1" ) $mandatory = "";
-
     $extenddesc = null;
     if ( !empty($cfg["menu"]["level1"]["extend"]) && $cfg["menu"]["level1"]["extend"] == "-1" ) $extenddesc = $cfg["menu"]["db"]["entries"]."_lang.extend,";
 
@@ -359,6 +357,7 @@
             }
         }
     }
+    if ( empty($cfg["menu"]["level1"]["off"]) ) $cfg["menu"]["level1"]["off"] = null;
     $ausgaben[$cfg["menu"]["name"]] .= $cfg["menu"]["level1"]["off"];
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
