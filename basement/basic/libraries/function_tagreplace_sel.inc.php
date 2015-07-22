@@ -45,7 +45,7 @@
 
     function tagreplace_sel($replace, $opentag, $tagoriginal, $closetag, $sign) {
 
-        global $db, $pathvars, $cfg, $defaults, $specialvars, $SEL_GRP_counter;
+        global $db, $pathvars, $cfg, $defaults, $specialvars, $SEL_GRP_counter, $hidedata, $dataloop;
 
         $tagwert = $tagoriginal;
         // ------------------------------
@@ -64,14 +64,15 @@
             if ( substr( $path, -1 ) != '/') $path = $path."/";
             $link = $path.basename($pathvars["requested"],".html")."/view,".$tag_param[1].",#,".$tag_param[0].",".$tag_param[2].".html"; # /view,groesse,bild,selektion,thumbs
 
+            // tcpdf extra
             if ( $cfg["pdfc"]["state"] == true ) {
                 if ( empty($defaults["tag"]["sel_pdfc"]) )  $defaults["tag"]["sel_pdfc"]  = "<b>##title##</b><br />\n<br />\n";
                 if ( empty($defaults["tag"]["*sel_pdfc"]) ) $defaults["tag"]["*sel_pdfc"] = "<img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\" ##imgsize## />\n";
                 if ( empty($defaults["tag"]["/sel_pdfc"]) ) $defaults["tag"]["/sel_pdfc"] = "";
-                
+
                 $selection["sel"]  = $defaults["tag"]["sel_pdfc"];
                 $selection["*sel"] = $defaults["tag"]["*sel_pdfc"];
-                $selection["/sel"] = $defaults["tag"]["/sel_pdfc"];                
+                $selection["/sel"] = $defaults["tag"]["/sel_pdfc"];
             } else {
                 if ( empty($defaults["tag"]["sel"]) )  $defaults["tag"]["sel"]  = "<div style=\"position:relative\" class=\"selection_teaser\">##no_image####youtube_div##\n<b>##title## ##youtube_link##</b>\n##no_image_end##<div>\n<ul>\n";
                 if ( empty($defaults["tag"]["*sel"]) ) $defaults["tag"]["*sel"] = "<li class=\"thumbs\"##style##>\n<a href=\"##link##\" ##lb##class=\"pic\" title=\"##fdesc##\"><img src=\"##tn##\" alt=\"##funder##\" title=\"##funder##\"/></a>\n</li>\n";
@@ -79,7 +80,7 @@
 
                 $selection["sel"]  = $defaults["tag"]["sel"];
                 $selection["*sel"] = $defaults["tag"]["*sel"];
-                $selection["/sel"] = $defaults["tag"]["/sel"];                
+                $selection["/sel"] = $defaults["tag"]["/sel"];
             }
 
             if ( strstr($tag_param[0],":") ) {
@@ -174,7 +175,8 @@
                        ."tn_".$row["fid"].".".$row["ffart"];
                 $imgsize = getimagesize($file);
                 #echo "<pre>"; print_r($imgsize); echo "</pre>";
-                
+
+                // tcpdf extra
                 if ( $cfg["pdfc"]["state"] == true ) {
                     $img = $cfg["file"]["base"]["webdir"]
                           .$row["ffart"]."/"
@@ -185,6 +187,12 @@
                          .$cfg["file"]["base"]["pic"]["root"]
                          .$cfg["file"]["base"]["pic"]["tn"]
                          ."tn_".$row["fid"].".".$row["ffart"];
+                    $hidedata["img_meta"][0] = true;
+                    $dataloop["img_meta_".$specialvars["actual_label"]][] = array(
+                                                "tag" => "", //$beschriftung
+                                            "caption" => $row["funder"],
+                                        "description" => $row["fdesc"]
+                                              );
                 } elseif ( $cfg["file"]["base"]["realname"] == True ) {
                     $img = $cfg["file"]["base"]["webdir"]
                           .$row["ffart"]."/"
