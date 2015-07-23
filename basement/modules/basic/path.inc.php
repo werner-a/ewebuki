@@ -80,13 +80,13 @@
     if ( $result ) $dynamicbg = $cfg["path"]["db"]["menu"]["entries"].".dynamicbg, ";
 
     // zusaetzliche informationen aus den feld extended (muss vorhanden sein!)
-    $extenddesc = null;    
+    $extenddesc = null;
     if ( $cfg["path"]["ext_info"] == "-1" ) $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend, ";
 
     // disable pdf - db test/extension
     $sql = "select disablepdf from ".$cfg["path"]["db"]["menu"]["entries"];
     @$result = $db -> query($sql);
-    $disablepdf = null;    
+    $disablepdf = null;
     if ( $result ) $disablepdf = $cfg["path"]["db"]["menu"]["entries"].".disablepdf, ";
 
     // link zum webroot
@@ -200,29 +200,30 @@
                 $ausgaben["pdfbutton2"] = $cfg["pdfc"]["buttons"]["b2"].$ausgaben["auth_url"].$cfg["pdfc"]["buttons"]["e2"];
             }
 
-            // css-auszeichnung
+            // aktuelle seite?
             if ( $path == $environment["ebene"]."/".$environment["kategorie"] ) {
+                $actual = true;
+                $kekse["active"]["mid"] = $actid;
                 $css = $cfg["path"]["css"]["last"];
             } else {
+                $actual = false;
                 $css = $cfg["path"]["css"]["crumb"];
             }
-            
-            // kekse-array bauen
-            if ( $path == $environment["ebene"]."/".$environment["kategorie"] && $cfg["path"]["link_last"] != "-1" ) {
-                $kekse["html"][]  = "<span class=\"".$css."\">".$data["label"]."</span>";
-                $kekse["label"][] = $data["label"];
-                $kekse["title"][] = $data["label"];
-                $kekse["link"][]  = "";
-                $kekse["active"]["mid"] = $actid;
+
+            // kekse array bauen
+            if ( $cfg["pdfc"]["state"] == true ) {
+                $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
             } else {
-                if ( $cfg["pdfc"]["state"] == true ) {
-                    $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
-                } else {
-                    $kekse["html"][] = "<a href=\"".$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
-                }
-                $kekse["label"][] = $data["label"];
-                $kekse["title"][] = $title;
-                $kekse["link"][]  = $pathvars["virtual"].$path.".html";
+                $kekse["html"][] = "<a href=\"".$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
+            }
+            $kekse["label"][] = $data["label"];
+            $kekse["title"][] = $title;
+            $kekse["link"][]  = $pathvars["virtual"].$path.".html";
+
+            // wenn konfiguriert und keine pdf seite, aktuelle seite als ohne link ersetzen
+            if ( $cfg["path"]["link_last"] != "-1" && $cfg["pdfc"]["state"] != true && $actual == true ) {
+                end($kekse["html"]);
+                $kekse["html"][key($kekse["html"])]  = "<span class=\"".$css."\">".$data["label"]."</span>";
             }
 
             // variables template laut menueintrag setzen
@@ -494,17 +495,14 @@
                 $ausgaben["next"] = $next;
                 // +++
                 // prev + next handling
-
             }
             // +++
             // content navigation erstellen
         }
     }
 
-    // brotkrumen zusammensetzen
-    if ( !isset($cfg["path"]["max_length"]) ) $cfg["path"]["max_length"] = null;
-    if ( $cfg["path"]["max_length"] != "" ) {
-        // kekse werden so lange gekuerzt bis sie passen
+    // brotkrumen kuerzen, bis sie passen
+    if ( !empty($cfg["path"]["max_length"]) && $cfg["pdfc"]["state"] != true ) {
         $cut_link = "";
         while ( strlen(implode(" > ",$kekse["label"])) > $cfg["path"]["max_length"] ) {
             array_shift($kekse["html"]);
@@ -512,10 +510,12 @@
             $cut_title = array_shift($kekse["title"]);
             $cut_link  = array_shift($kekse["link"]);
         }
-        if ( $cut_link != "" ) {
+        if ( !empty($cut_link) ) {
             array_unshift( $kekse["html"] , "<a href=\"".$cut_link."\" title=\"".$cut_title."\" class=\"".$cfg["path"]["css"]["crumb"]."\">...</a>" );
         }
     }
+
+    // brotkrumen zusammensetzen
     $environment["kekse"] = implode($defaults["split"]["kekse"], $kekse["html"]);
 
     // 404 error handling
@@ -541,7 +541,6 @@
                 #$ausgaben["404referer"] = "#(unbekannt)";
                 if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "<b>404 error detected</b>".$debugging["char"];
             }
-
         }
     }
     // +++
