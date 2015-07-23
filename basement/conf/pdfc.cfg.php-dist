@@ -47,9 +47,17 @@
                       "lib" => "/usr/local/share/php5/tcpdf/tcpdf.php",
                  "function" => $pathvars["libraries"]."function_tcpdf.inc.php",
                        ),
+         "document" => array (
+                    "title" => "eWeBuKi - ChaoS Networks",
+                   "author" => "ChaoS Networks",
+                 "keywords" => "Content, PDF, Export",
+              "name_prefix" => "eWeBuKi_-_",
+                       ),
+
          "constant" => array (
             #"K_PATH_IMAGES" => "/images/custom/",
                        ),
+
            "change" => array (
           #"PDF_HEADER_LOGO" => "header_tcpdf.png",
     #"PDF_HEADER_LOGO_WIDTH" => "180",
@@ -57,10 +65,12 @@
          "PDF_HEADER_TITLE" => "eWeBuKi - TCPDF Connector",
         "PDF_HEADER_STRING" => "by Werner Ammon - ChaoS Networks\nwww.ewebuki.de",
                        ),
+
             "state" => false,
             "debug" => false,
          "template" => "pdfc",
        "force_utf8" => true,
+
           "buttons" => array(
                         "b0" => "<a href=\"",
                         "e0" => "?pdf=0\" target=\"_blank\" title=\"PDF Datei in einem neuen Fenster\">PDF: debug</a>",

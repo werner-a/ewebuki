@@ -62,11 +62,17 @@
 
     function tcpdf_it($buffer) {
 
-        global $debugging, $cfg;
+        global $debugging, $cfg, $environment, $kekse;
 
         if ( $cfg["pdfc"]["debug"] == False ) {
             $debugging["html_enable"] = 0;
             $debugging["sql_enable"] = 0;
+        }
+
+        $array = array_slice($kekse["label"], 1); $subject = null;
+        foreach ( $array as $value ) {
+            if ( !empty($subject) ) $subject .= " > ";
+            $subject .= $value;
         }
 
         // create new PDF document
@@ -74,14 +80,11 @@
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         // set document information
-        $pdf->SetCreator(PDF_CREATOR);
-        #$pdf->SetAuthor('Nicola Asuni');
-        $pdf->SetAuthor('ChaoS Networks');
-        #$pdf->SetTitle('TCPDF Example 061');
-        $pdf->SetTitle('eWeBuKi Test');
-        #$pdf->SetSubject('TCPDF Tutorial');
-        $pdf->SetSubject('Direkte Ausgabe der Seite als PDF');
-        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+        $pdf->SetCreator('eWeBuKi'); // PDF_CREATOR
+        $pdf->SetTitle($cfg["pdfc"]["document"]["title"]); // TCPDF Example 061
+        $pdf->SetAuthor($cfg["pdfc"]["document"]["author"]); // Nicola Asuni
+        $pdf->SetSubject($subject); // TCPDF Tutorial
+        $pdf->SetKeywords($cfg["pdfc"]["document"]["keywords"]); // 'TCPDF, PDF, example, test, guide'
 
         // set default header data
         #$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 061', PDF_HEADER_STRING);
@@ -187,9 +190,10 @@
             // reset pointer to the last page
             $pdf->lastPage();
 
-            //Close and output PDF document
-            #$pdf->Output('example_061.pdf', 'I');
-            $pdf->Output('ewebuki_test.pdf', 'I');
+            // close and output PDF document
+            #echo "<pre>"; print_r($kekse); echo "</pre>";
+            $name = $cfg["pdfc"]["document"]["name_prefix"].end($kekse["label"]).".pdf";
+            $pdf->Output($name, 'I');
         }
     }
 
