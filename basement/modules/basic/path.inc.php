@@ -70,36 +70,24 @@
     // dynamic style - db test/extension
     $sql = "select dynamiccss from ".$cfg["path"]["db"]["menu"]["entries"];
     @$result = $db -> query($sql);
-    if ( $result ) {
-        $dynamiccss = $cfg["path"]["db"]["menu"]["entries"].".dynamiccss, ";
-    } else {
-        $dynamiccss = null;
-    }
+    $dynamiccss = null;
+    if ( $result ) $dynamiccss = $cfg["path"]["db"]["menu"]["entries"].".dynamiccss, ";
 
     // dynamic bg - db test/extension
     $sql = "select dynamicbg from ".$cfg["path"]["db"]["menu"]["entries"];
     @$result = $db -> query($sql);
-    if ( $result ) {
-        $dynamicbg = $cfg["path"]["db"]["menu"]["entries"].".dynamicbg, ";
-    } else {
-        $dynamicbg = null;
-    }
+    $dynamicbg = null;
+    if ( $result ) $dynamicbg = $cfg["path"]["db"]["menu"]["entries"].".dynamicbg, ";
 
     // zusaetzliche informationen aus den feld extended (muss vorhanden sein!)
-    if ( $cfg["path"]["ext_info"] == "-1" ) {
-        $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend, ";
-    } else {
-        $extenddesc = null;
-    }
+    $extenddesc = null;    
+    if ( $cfg["path"]["ext_info"] == "-1" ) $extenddesc = $cfg["path"]["db"]["lang"]["entries"].".extend, ";
 
     // disable pdf - db test/extension
     $sql = "select disablepdf from ".$cfg["path"]["db"]["menu"]["entries"];
     @$result = $db -> query($sql);
-    if ( $result ) {
-        $disablepdf = $cfg["path"]["db"]["menu"]["entries"].".disablepdf, ";
-    } else {
-        $disablepdf = null;
-    }
+    $disablepdf = null;    
+    if ( $result ) $disablepdf = $cfg["path"]["db"]["menu"]["entries"].".disablepdf, ";
 
     // link zum webroot
     if ( $cfg["pdfc"]["state"] == true ) {
@@ -218,6 +206,7 @@
             } else {
                 $css = $cfg["path"]["css"]["crumb"];
             }
+            
             // kekse-array bauen
             if ( $path == $environment["ebene"]."/".$environment["kategorie"] && $cfg["path"]["link_last"] != "-1" ) {
                 $kekse["html"][]  = "<span class=\"".$css."\">".$data["label"]."</span>";
@@ -528,7 +517,6 @@
         }
     }
     $environment["kekse"] = implode($defaults["split"]["kekse"], $kekse["html"]);
-
 
     // 404 error handling
     // ***
