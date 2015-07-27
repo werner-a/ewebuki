@@ -666,7 +666,7 @@
                         } else {
                             $ausgaben["border"] = null;
                         }
-                        if ( !isset($imgwerte[3]) ) $imgwerte[3] = null;
+                        if ( empty($imgwerte[3]) ) $imgwerte[3] = null;
                         if ($imgwerte[3] == "l" ) {
                             $lightbox = "rel=\"lightbox[b".$imgb_counter."]\"";
                         }
