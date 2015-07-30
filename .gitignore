@@ -1,0 +1,120 @@
+
+# /
+.htaccess
+examples
+fonts
+
+# /basic/
+/basic/basic.ppj
+/basic/fonts
+
+# /basic/libraries/
+/basic/libraries/xtra.pdf.php
+/basic/libraries/xtra.ezpdf.php
+
+# /conf/
+/conf/*.cfg.php
+
+# /css/
+/css/custom
+/css/business.css
+/css/classic.css
+/css/creative.css
+/css/device.css
+/css/hase.css
+/css/energie
+
+# /file/archiv/
+/file/archiv/*.*
+
+# /file/document/
+/file/document/*.*
+
+# /file/new/
+/file/new/*.*
+
+# /file/picture/big/
+/file/picture/big/*.*
+
+# /file/picture/medium/
+/file/picture/medium/*.*
+
+# /file/picture/original/
+/file/picture/original/*.*
+
+# /file/picture/small/
+/file/picture/small/*.*
+
+# /file/picture/thumbnail/
+/file/picture/thumbnail/*.*
+
+# /images/
+/images/custom
+/images/business
+/images/classic
+/images/creative
+/images/device
+/images/hase
+/images/energie
+
+# /js/
+/js/energie
+
+# /modules/
+/modules/custom
+/modules/energie
+
+# /modules/addon/
+/modules/addon/*.cfg.php
+
+# /modules/admin/
+/modules/admin/*.cfg.php
+
+# /modules/basic/
+/modules/basic/*.cfg.php
+
+# /modules/wizard/
+/modules/wizard/*.cfg.php
+
+# /templates/
+/templates/custom
+/templates/business
+/templates/classic
+/templates/creative
+/templates/device
+/templates/hase
+/templates/energie
+/templates/mobil
+
+# /templates/default/
+/templates/default/linking.inc.php
+
+# /templates/historic/
+/templates/historic/linking.inc.php
+
+# /templates/main/
+/templates/main/select2.tem.html
+/templates/main/select1.tem.html
+
+# /extension/chaos/
+/extension/chaos/charts.cfg.php
+/extension/chaos/ip2db.cfg.php
+
+# /extension/intrabvv/
+/extension/intrabvv/.directory
+/extension/intrabvv/adressenprint.cfg.php
+/extension/intrabvv/beschaeftigte.cfg.php
+/extension/intrabvv/dienststellen.cfg.php
+/extension/intrabvv/ergebnisprotokoll.cfg.php
+/extension/intrabvv/gelbeseiten.cfg.php
+/extension/intrabvv/gesetz+verwaltung.cfg.php
+/extension/intrabvv/gesetze.cfg.php
+/extension/intrabvv/info-markt.cfg.php
+/extension/intrabvv/kunden.cfg.php
+/extension/intrabvv/listendruck.cfg.php
+/extension/intrabvv/menu-global.cfg.php
+/extension/intrabvv/menu-local.cfg.php
+/extension/intrabvv/neues.cfg.php
+/extension/intrabvv/regionalportal.cfg.php
+/extension/intrabvv/sitemap.cfg.php
+/extension/intrabvv/usered.cfg.php
