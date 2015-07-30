@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
-  $Script["desc"] = "leer - kontroll funktion";
+  $script["name"] = "leer-ctrl.inc.php v1 chaot";
+  $Script["desc"] = "short description / kurze beschreibung";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -63,8 +63,8 @@
 
     // shared function include loader
     if ( isset($cfg["leer"]["function"][$environment["kategorie"].",shared"]) &&
-         is_array($cfg["leer"]["function"][$environment["kategorie"].",shared"]) 
-       ) 
+         is_array($cfg["leer"]["function"][$environment["kategorie"].",shared"])
+       )
     {
         foreach ( $cfg["leer"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";
@@ -72,7 +72,7 @@
     }
 
     // global function include loader
-    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",global"]) && 
+    if ( isset($cfg["leer"]["function"][$environment["kategorie"].",global"]) &&
          is_array($cfg["leer"]["function"][$environment["kategorie"].",global"]) )
     {
         foreach ( $cfg["leer"]["function"][$environment["kategorie"].",global"] as $value ) {
