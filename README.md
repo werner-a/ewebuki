@@ -18,4 +18,5 @@ The requirements for *eWeBuKi* are Linux as operating system, an Apache webserve
 (e)asy (We)bsite (Bu)ilding (Ki)t
 
 License: GNU GPL v3
+
 Labels: Webkit, CMS, PHP, MySQL, Database, HTML, Content, ContentManagement, Template, Parsing
