@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "tagreplace funktion";
+// function_tagreplace.inc.php v1 chaot
+// tagreplace funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -92,17 +92,17 @@
                 // parameter?
                 $sign = substr($replace,$tagwertbeg-1,1);
                 // opentag komplettieren
-                $opentag = $opentag.$sign;               
-                
+                $opentag = $opentag.$sign;
+
                 // kompletten tag mit tagwert ersetzen
                 switch ($closetag) {
                     //
                     // Block Elemente
                     // H1-6 | P | PRE | DIV | LIST | HR | TAB, ROW, COL | CENTER
                     //
-                    case "[/H1]":                       
+                    case "[/H1]":
                     case "[/H2]":
-                    case "[/H3]":                    
+                    case "[/H3]":
                     case "[/H4]":
                     case "[/H5]":
                     case "[/H6]":
@@ -247,7 +247,7 @@
                             } else {
                                 $cellspacing = " cellspacing=\"0\"";
                             }
-                            if ( isset($tabwerte[4]) ) {                               
+                            if ( isset($tabwerte[4]) ) {
                                 $cellpadding = " cellpadding=\"".$tabwerte[4]."\"";
                             } else {
                                 $cellpadding = " cellpadding=\"1\"";

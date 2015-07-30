@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script_name = "$Id$";
-  $Script_desc = "recursiver template parser";
+// function_rparser.inc.php v1 chaot
+// recursiver template parser
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -44,8 +44,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-  aufruf rparser("template-name.$medium.html", "default-template.$medium.html", "overwrite-template.$medium.html", TRUE);  
-  
+  aufruf rparser("template-name.$medium.html", "default-template.$medium.html", "overwrite-template.$medium.html", TRUE);
+
   medium: tem = html template
   medium: pdf = html for pdf template
 */
@@ -93,7 +93,7 @@
         if ( $cfg["pdfc"]["state"] == true ) {
             $medium = "pdf";
         }
-        
+
         if ( file_exists($template) ) {
             $fd = fopen($template, "r");
             $begin = false;
