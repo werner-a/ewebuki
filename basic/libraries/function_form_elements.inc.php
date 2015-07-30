@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "form_elements";
+// function_form_elements.inc.php v1 chaot
+// form elemente funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2015 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -176,13 +176,13 @@
                     $ele_extend = $extend;
                     $ele_value  = htmlspecialchars($form_values[$fields["Field"]]);
                     $formularobject .= str_replace(
-                                            array("##name##", "##value##", "##extend##"), 
-                                            array($ele_name,  $ele_value,  $ele_extend), 
+                                            array("##name##", "##value##", "##extend##"),
+                                            array($ele_name,  $ele_value,  $ele_extend),
                                             $defaults["form"]["hidden"]["html"]
                                        );
-                    
+
 //                    $formularobject .= "<input type=\"hidden\" name=\"".$fields["Field"].$extend."\" value=\"".htmlspecialchars($form_values[$fields["Field"]])."\" class=\"hidden\" />\n";
-                    
+
                     // Radio-Elemente durchgehen
                     foreach( $options as $key => $value ) {
                         if ( $form_values[$fields["Field"]] == $value ) {
@@ -206,8 +206,8 @@
                         $ele_extend = $extend;
                         // Formular-Object aus $defaults["form"]["radio"]["html"] erzeugen
                         $formularobject .= str_replace(
-                                                array("##id##", "##label##", "##name##", "##value##", "##class##", "##check##", "##extend##"), 
-                                                array($ele_id,  $ele_label,  $ele_name,  $ele_value,  $ele_class,  $ele_check,  $ele_extend), 
+                                                array("##id##", "##label##", "##name##", "##value##", "##class##", "##check##", "##extend##"),
+                                                array($ele_id,  $ele_label,  $ele_name,  $ele_value,  $ele_class,  $ele_check,  $ele_extend),
                                                 $defaults["form"]["radio"]["html"]
                                            );
                     }

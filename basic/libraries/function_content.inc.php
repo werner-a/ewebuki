@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "content sprachabhaengig holen";
+// function_content.inc.php v1 chaot
+// content sprachabhaengig holen
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -46,7 +46,7 @@
     function content($line, $tname) {
 
         global $db, $debugging, $pathvars, $specialvars, $environment, $defaults, $ausgaben, $rechte, $eWeBuKi, $RightConcept;
-        
+
         if ( $specialvars["crc32"] == -1 ) {
             if ( $environment["ebene"] != "" && $tname == $environment["kategorie"] ) {
                 $tname = eCRC($environment["ebene"]).".".$tname;
