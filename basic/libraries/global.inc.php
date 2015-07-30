@@ -1,7 +1,7 @@
 <?php
 $Id = null;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $main_script_name = "$Id$";
+    $main_script_name = "global.inc.php v1 chaot";
     $main_script_desc = "main include file";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -143,7 +143,7 @@ $Id = null;
             require_once $pathvars["libraries"].$file;
         }
       }
-    }    
+    }
     require $pathvars["libraries"]."function_tagremove.inc.php"; // tagremove funktion
     require $pathvars["libraries"]."function_content.inc.php"; // content sprachabhaengig holen
     require $pathvars["libraries"]."function_gerdate.inc.php"; // german date

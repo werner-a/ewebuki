@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
+// overwrite.cfg.php-dist v1 chaot
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -114,7 +114,7 @@
 
     // extra tags die tagreplace nicht kennt, koennen mit eigenen skript ersetzt werden
     #$defaults["extra_tags"][set tag name] = set it;
-    
+
     // ab wann werden in der form_elements dropdowns anstatt radio button gebaut
     #$defaults["form_elements_count"] = set it;
     // Formular-Elemente definieren
@@ -122,6 +122,6 @@
     #$defaults["form"]["radio"]["html"]  = "<label for=\"##id##\">##label##</label>\n".
     #                                      "<input id=\"##id##\" type=\"radio\" name=\"##name##\" value=\"##value##\"##class####check####extend##>\n";
     #$defaults["form"]["radio"]["class"] = "";
-    
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
