@@ -1,11 +1,11 @@
 <?php require "../basic/libraries/global.inc.php";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $main_script_name = "$Id$";
+  $main_script_name = "crc32-convert.php";
   $main_script_desc = "converter fuer alte inhalte";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */

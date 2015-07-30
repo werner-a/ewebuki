@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "file wrapper";
+// wrapper.php v1 chaot
+// file wrapper
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -50,8 +50,8 @@
 
     require $pathvars["fileroot"]."conf/site.cfg.php";
     require $pathvars["fileroot"]."conf/file.cfg.php";
-    
-    if ( !isset($debugging["error_reporting"]) ) $debugging["error_reporting"] = E_ALL & ~(E_NOTICE|E_STRICT|E_DEPRECATED); 
+
+    if ( !isset($debugging["error_reporting"]) ) $debugging["error_reporting"] = E_ALL & ~(E_NOTICE|E_STRICT|E_DEPRECATED);
     error_reporting($debugging["error_reporting"]);
 
     // subdir support
@@ -124,7 +124,7 @@
         case "csv":
             $type ="text/csv";
             $filepath = $path["doc"];
-            break;            
+            break;
         case "bz2":
             $type ="application/octet-stream";
             $filepath = $path["arc"];
