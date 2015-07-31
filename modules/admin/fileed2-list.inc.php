@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "fileed2 - list";
+// fileed2-list.inc.php v1 krompi
+// fileed2 - list funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -46,13 +46,13 @@
     if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) || ($cfg["auth"]["menu"]["fileed"][2] == -1 &&  priv_check('', $cfg["fileed"]["right"],$specialvars["dyndb"] ) ) ) {
         // funktions bereich ( aufbau )
         // ***
-        
+
         if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = NULL;
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = NULL;
         if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = NULL;
         if ( !isset($environment["parameter"][4]) ) $environment["parameter"][4] = NULL;
         if ( !isset($environment["parameter"][5]) ) $environment["parameter"][5] = NULL;
-        
+
         // file_memo verwalten, inkl. ajax-checkboxen
         if ( $environment["parameter"][2] ){
             if ( isset($_SESSION["file_memo"][$environment["parameter"][2]]) ){

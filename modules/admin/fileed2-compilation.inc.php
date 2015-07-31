@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "fileed2 - compilation";
+// fileed2-compilation.inc.php v1 krompi
+// fileed2 - compilation
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -43,15 +43,14 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     function pics_sort($a, $b) {
         return ($a["sort"] < $b["sort"]) ? -1 : 1;
     }
-    
+
     if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
     if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
     if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = null;
-    
+
     if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) || ($cfg["auth"]["menu"]["fileed"][2] == -1 &&  priv_check('', $cfg["fileed"]["right"],$specialvars["dyndb"] ) ) ) {
 
         // funktions bereich

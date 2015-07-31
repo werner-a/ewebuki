@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "leer - edit funktion";
+// prived-edit.inc.php v1 emnili
+// prived - edit funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -118,7 +118,7 @@
 
         // +++
         // page basics
-        
+
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
         if ( $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""

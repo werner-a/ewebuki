@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "fileed2 - collect";
+// fileed2-collect.inc.php v1 krompi
+// fileed2 - collect
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -69,10 +69,10 @@
                                                                       );
             die();
         }
-        
+
         if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
-        
+
         // feststellen, ob die galerie schon irgendwo verwendet wird
         if ( !empty($environment["parameter"][1]) ) {
             $sql = "SELECT *
@@ -195,7 +195,7 @@
         if ( empty($ausgaben["form_hidden"]) ) $ausgaben["form_hidden"] = "";
 
         // was anzeigen
-        $mapping["main"] = eCRC($environment["ebene"]).".collect";          
+        $mapping["main"] = eCRC($environment["ebene"]).".collect";
 
         #$mapping["navi"] = "leer";
 

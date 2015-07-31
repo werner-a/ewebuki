@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "fileed2 - edit";
+// fileed2-edit.inc.php v1 krompi
+// fileed2 - edit funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -47,7 +47,7 @@
 
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = NULL;
         if ( !isset($environment["parameter"][3]) ) $environment["parameter"][3] = NULL;
-    
+
         // funktions bereich fuer erweiterungen
         // ***
 
@@ -244,7 +244,7 @@
         $hidedata["references"] = array();
 
         // wo im content wird die datei verwendet
-        $used_in = content_check($environment["parameter"][1]);       
+        $used_in = content_check($environment["parameter"][1]);
         if ( count($used_in) > 0 ) {
             $ausgaben["reference"] = implode("<br />",$used_in);
         } else {
@@ -456,7 +456,7 @@
                         } else {
                             header("Location: ".$cfg["fileed"]["basis"]."/add.html");
                             exit;
-                        }                        
+                        }
                     }
 
                     // ggf versteckte fhit-eingtraege wieder anhaengen

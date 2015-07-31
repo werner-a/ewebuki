@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "bloged - automatic loader";
+// bloged-autoload.inc.php v1 emnili
+// bloged - automatic loader
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -80,7 +80,7 @@
                     $show_kat = $environment["ebene"]."/".$environment["kategorie"];
                 }
             }
-            
+
             if ( empty($environment["parameter"][2]) ) {
                 $dataloop["list"] = show_blog($key,$tags,$cfg["auth"]["ghost"]["contented"],$cfg["bloged"]["blogs"][$key]["rows"],$show_kat);
             } else {

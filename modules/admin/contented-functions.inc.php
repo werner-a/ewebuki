@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "funktion loader";
+// contented-functions.inc.php v1 chaot
+// funktion loader
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -52,7 +52,7 @@
             if ( !isset($ausgaben["extension"]) ) $ausgaben["extension"] = null;
             if ( !isset($ausgaben["js"]) ) $ausgaben["js"] = null;
             if ( !isset($ausgaben["njs"]) ) $ausgaben["njs"] = null;
-            
+
             $sp = "    ";
             $tn = null;
 
@@ -176,7 +176,7 @@
                             $a = $i / 6;
                             if ( is_int($a) ) $tn1 .="<br clear=\"all\" />";
                     }
-                }                
+                }
                 $tn .= $tn1.$tn2;
                 #."</td></tr></table>";
             }
@@ -263,7 +263,7 @@
                 // tagMid       mid tag                                  ,''
                 // tagEnd       close tag                                ,'[/H1]'
                 //                                                     );
-                
+
                 $ausgaben["njs"] .= "ebButtons[ebButtons.length] = new ebButton(\n";
                 $ausgaben["njs"] .= "'eb_".$key."'
                                     ,'".strtoupper($key)."'
@@ -303,7 +303,7 @@
             // debug ausgabe script in seite
             #echo "<pre>".$ausgaben["js"]."</pre>";
             #echo "<pre>".$ausgaben["njs"]."</pre>";
-            
+
             $ausgaben["ce_script"] = parser($cfg["contented"]["tagjs"],"");
 
             if ( $cms_old_mode == True ) {

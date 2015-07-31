@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "fileed2 - upload";
+// fileed2-upload.inc.php v1 krompi
+// fileed2 - upload funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -50,7 +50,7 @@
 
         if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
-        
+
         #if ( count($_POST) == 0 ) {
         #} else {
             $form_values = $_POST;

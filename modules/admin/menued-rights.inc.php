@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "short description";
+// menued-righst.inc.php v1 emnili
+// menued - rechte
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -52,12 +52,12 @@
 
     if ( $data["refid"] != "0" ) {
         while ( $count != "0" ) {
-            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." INNER JOIN ".$cfg["db"]["lang"]["entries"]." ON (site_menu.mid=site_menu_lang.mid) WHERE site_menu.mid = ".$data["refid"];            
+            $sql = "SELECT * FROM ".$cfg["db"]["menu"]["entries"]." INNER JOIN ".$cfg["db"]["lang"]["entries"]." ON (site_menu.mid=site_menu_lang.mid) WHERE site_menu.mid = ".$data["refid"];
             $result = $db -> query($sql);
-            $data = $db -> fetch_array($result,1); 
+            $data = $db -> fetch_array($result,1);
             $entry[] = $data["entry"];
             $show_path = $data["label"]."/".$show_path;
-            $count = $data["refid"];  
+            $count = $data["refid"];
         }
     }
 
@@ -91,7 +91,7 @@
     // wohin schicken
     $ausgaben["form_error"] = "";
     $ausgaben["form_aktion"] = $cfg["basis"]."/rights,".$environment["parameter"][1].",".$environment["parameter"][2].",verify.html";
-    $ausgaben["form_break"] = $cfg["basis"]."/list.html";    
+    $ausgaben["form_break"] = $cfg["basis"]."/list.html";
 
     // page basics
     // ***
@@ -139,7 +139,7 @@
         $text = "";
         foreach ( $order as $value ) {
             $text .= $all[$value]." ";
-        } 
+        }
         $actuallarray[] =  $all[$cfg["db"]["user"]["key"]];
         $element["actual"] .= "<option value=\"".$all[$cfg["db"]["user"]["key"]]."\">".$text."</option>\n";
     }
@@ -150,7 +150,7 @@
             foreach ($_POST["avail"] as $name => $value ) {
                 if ( is_array($actuallarray)) {
                     if (in_array($value,$actuallarray)) {
-                        $ausgaben["form_error"] = "#(error_dupe)"; 
+                        $ausgaben["form_error"] = "#(error_dupe)";
                     } else {
                         $sql = "INSERT INTO ".$cfg["db"]["special"]["entries"]." (".$cfg["db"]["special"]["userkey"].",".$cfg["db"]["special"]["contentkey"].",".$cfg["db"]["special"]["dbasekey"].",".$cfg["db"]["special"]["tnamekey"].") VALUES ('".$value."','-1','".$base."','".$crc."')";
                         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];

@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
-  $Script["desc"] = "sortierfunktion der blogs";
+// bloged-sort.inc.php v1 emnili
+// sortierfunktion der blogs
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,15 +37,13 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
-
-    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"] == "" || 
+    if ( $cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"] == "" ||
     ( priv_check(make_ebene($environment["parameter"][3]),$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) || ( function_exists(priv_check_old) && priv_check_old("",$cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["right"]) ) )
     ) {
 
@@ -55,8 +53,8 @@
             if ( $kategorie != "" ) {
                 $where = " AND SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)+11,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)-11-POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)) ='".$kategorie."'";
             }
-            $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)+6,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-6) AS SIGNED) AS date,content,tname 
-                    FROM site_text 
+            $sql = "SELECT Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)+6,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-6) AS SIGNED) AS date,content,tname
+                    FROM site_text
                     WHERE ".$status." AND tname like '".eCRC(make_ebene($environment["parameter"][4])).".%'".$where." order by date ASC";
 
             $result = $db -> query($sql);
@@ -74,8 +72,8 @@
             }
         }
             if ($cfg["bloged"]["blogs"][make_ebene($environment["parameter"][4])]["category"] != "" ) {
-                $kati = make_ebene($environment["parameter"][3]); 
-            } else { 
+                $kati = make_ebene($environment["parameter"][3]);
+            } else {
                 $kati = "";
             }
 
@@ -92,8 +90,8 @@
 
 
         // dann punkt hoch oder runter
-        $sql = "SELECT SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)) AS kategorie,Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)+6,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-6) AS SIGNED) AS date,content,tname 
-                FROM site_text 
+        $sql = "SELECT SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content),POSITION('[/".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["category"]."]' IN content)) AS kategorie,Cast(SUBSTR(content,POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)+6,POSITION('[/".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-POSITION('[".$cfg["bloged"]["blogs"][$blog]["sort"][0]."]' IN content)-6) AS SIGNED) AS date,content,tname
+                FROM site_text
                 WHERE ".$status." AND tname ='".eCRC(make_ebene($environment["parameter"][4])).".".$environment["parameter"][2]."'";
         $result = $db -> query($sql);
         $data = $db -> fetch_array($result,1);
@@ -127,8 +125,6 @@
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
-
-    if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ ".$script["name"]." ++ ]".$debugging["char"];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

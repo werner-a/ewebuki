@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "leer - delete funktion";
+// fileed2-delete.inc.php v1 krompi
+// fileed2 - delete funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -110,7 +110,7 @@
                         );
                         $forbidden["sel_db".$value] = $data["fid"];
                     }
-             
+
                 }
                 // selection-check2
                 $compilations_OnTheFly = compilation_list("",25,1);
@@ -200,7 +200,7 @@
             $delete_admin = FALSE;
             if ( isset($cfg["fileed"]["delete_admin"] ) ) {
                 if ( priv_check("/", $cfg["fileed"]["delete_admin"] ) ) {
-                    $delete_admin = TRUE;        
+                    $delete_admin = TRUE;
                 }
             }
             foreach ( $_SESSION["file_memo"] as $value ) {

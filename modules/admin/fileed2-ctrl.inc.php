@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
-  $Script["desc"] = "fileed - kontroll funktion";
+  $script["name"] = "fileed2-ctrl.inc.php v1 krompi";
+  $Script["desc"] = "fileed2 - kontroll funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2009 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -61,7 +61,7 @@
     // include function loader
     if ( is_array($cfg["fileed"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"]."-functions.inc.php";
 
-    // shared function include loader    
+    // shared function include loader
     if ( isset($cfg["fileed"]["function"][$environment["kategorie"].",shared"]) ) {
         foreach ( $cfg["fileed"]["function"][$environment["kategorie"].",shared"] as $value ) {
             include $pathvars["moduleroot"]."libraries/function_".$value.".inc.php";

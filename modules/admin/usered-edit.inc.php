@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "leer - edit funktion";
+// usered-edit.inc.php v1 chaot
+// usered - edit funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -125,7 +125,7 @@
         if ( $specialvars["security"]["new"] != -1 ) {
             $hidedata["old_rights"]["on"] = "on";
         }
-        
+
         // was anzeigen
         $mapping["main"] = eCRC($environment["ebene"]).".modify";
         #$mapping["navi"] = "leer";
@@ -187,7 +187,7 @@
             if ( $ausgaben["form_error"] == ""  ) {
 
                 $kick = array( "PHPSESSID", "pass", "newpass", "chkpass", "form_referer", "send", "avail", "actual", "add", "del" );
-                $sqla = null; $sqlb = null; 
+                $sqla = null; $sqlb = null;
                 foreach($_POST as $name => $value) {
                     if ( !in_array($name,$kick) ) {
                         if ( $sqla != "" ) $sqla .= ", ";

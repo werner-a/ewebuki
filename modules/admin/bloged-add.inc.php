@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "leer - add funktion";
+// bloged-add.inc.php v1 emnili
+// add funktion der blogs
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -65,34 +65,34 @@
 
             $sqla  = "lang";
             $sqlb  = "'de'";
-    
+
             $sqla .= ", label";
             $sqlb .= ", 'inhalt'";
-    
+
             $sqla .= ", tname";
             $sqlb .= ", '".eCRC($_POST["link"]).".".$id."'";
-    
+
             $sqla .= ", crc32";
             $sqlb .= ", '-1'";
-    
+
             $sqla .= ", ebene";
             $sqlb .= ", '".$_POST["link"]."'";
-    
+
             $sqla .= ", kategorie";
             $sqlb .= ", '".$id."'";
-    
+
             $sqla .= ", bysurname";
             $sqlb .= ", '".$_SESSION["surname"]."'";
-    
+
             $sqla .= ", byforename";
             $sqlb .= ", '".$_SESSION["forename"]."'";
 
             $sqla .= ", byemail";
             $sqlb .= ", '".$_SESSION["email"]."'";
-    
+
             $sqla .= ", byalias";
             $sqlb .= ", '".$_SESSION["alias"]."'";
-    
+
             $sqla .= ", changed";
             $sqlb .= ", '".date("Y-m-d H:i:s")."'";
 

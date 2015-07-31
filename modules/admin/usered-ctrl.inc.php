@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id$";
+  $script["name"] = "usered-ctrl.inc.php v1 chaot";
   $Script["desc"] = "usered - kontroll funktion";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -60,7 +60,7 @@
 
     // include function loader
     #if ( isset($cfg["usered"]["function"][$environment["kategorie"]]) ) include $pathvars["moduleroot"].$cfg["usered"]["subdir"]."/".$cfg["usered"]["name"]."-functions.inc.php";
-    
+
     // shared function include loader
     if ( isset($cfg["usered"]["function"][$environment["kategorie"].",shared"]) ) {
         foreach ( $cfg["usered"]["function"][$environment["kategorie"].",shared"] as $value ) {

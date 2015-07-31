@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "short description";
+// menued2-move.inc.php v1 emnili
+// menued2 - move funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001, 2002, 2003 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,12 +37,12 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   
+
     if ( $cfg["menued"]["modify"]["move"][2] == "" || priv_check(make_ebene($environment["parameter"][2]), $cfg["menued"]["modify"]["move"][2] ) || ($cfg["auth"]["menu"]["menued"][2] == -1 &&  priv_check('', $cfg["menued"]["modify"]["move"][2],$specialvars["dyndb"] ) ) ) {
         $ausgaben["root"] = "";
         $hidedata["move"]["on"] = -1;

@@ -1,10 +1,10 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: menued.cfg.php-dist 779 2007-09-14 09:53:39Z chaot $";
+// menued2.cfg.php-dist v1 emnili
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2011 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -133,7 +133,7 @@
             "fqdn0" => "www",
       "right_admin" => $cfg["auth"]["menu"]["menued"][1],
             "right" => "",
-	
+
 	# see also rights at $cfg["menued"]["modify"] up in this file
     );
 

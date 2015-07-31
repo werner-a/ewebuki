@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "fileed2 - funktionen";
+// fileed2-functions.inc.php v1 krompi
+// fileed2 - funktionen
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -91,7 +91,7 @@
     if ( in_array("resize", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
 
         function resize( $img_org, $img_id, $img_src, $max_size, $img_path, $img_name ) {
-		
+
             global $cfg;
             $src_width = imagesx($img_src);
             $src_height = imagesy($img_src);
@@ -292,15 +292,15 @@
                                     "archive" => $cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["arc"]
                                 );
             foreach ( $cfg["file"]["base"]["pic"] as $key => $value ) {
-                if ( $key == "root") continue;                
+                if ( $key == "root") continue;
                 $SearchFiles[$key] = $cfg["file"]["base"]["webdir"].$cfg["file"]["base"]["pic"]["root"].$value."img";
                 $SearchFilesNew[$key] = $key;
             }
 
             foreach ( $SearchFiles as $key=>$value ) {
                 $reg[$key] = $value;
-            }          
-            
+            }
+
             if ( count($reg) > 0 ) {
                 $old = "(".implode("|",$reg).")_".$id."[\.]";
             } else {
@@ -321,12 +321,12 @@
                 } else {
                     $value_reg = $cfg["file"]["base"]["webdir"].$value."/".$id;
                 }
-                $RegWrapper[$value] = $value_reg;                
+                $RegWrapper[$value] = $value_reg;
             }
-            
+
             if ( count($RegWrapper) > 0 ) {
-                $new = "(".implode("|",$RegWrapper).")";                
-            }            
+                $new = "(".implode("|",$RegWrapper).")";
+            }
             #$new = $cfg["file"]["base"]["webdir"]."/fdfadsfdsf".$id."/";
 //             $sql2 = "SELECT DISTINCT ".$cfg["fileed"]["db"]["content"]["path"]."
 //                        FROM ".$cfg["fileed"]["db"]["content"]["entries"]."
@@ -392,7 +392,7 @@
     if ( in_array("compilationlist", $cfg["fileed"]["function"][$environment["kategorie"]]) ) {
         function compilation_list( $select="", $length=25, $OnTheFly=0 ) {
             global $db;
-            
+
             $compilations = array();
             if ( $OnTheFly == 0 ) {
             // selection-bilder, werden aus der site_file geholt
@@ -403,7 +403,7 @@
 
                 while ( $data = $db -> fetch_array($result,1) ){
                     // alle gruppeneintraege holen
-                    preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);                    
+                    preg_match_all("/#p([0-9]+)[,]*([0-9]*)#/i",$data["fhit"],$match);
                     foreach ( $match[1] as $key=>$value ){
 
                         if ( $match[2][$key] == "" ){

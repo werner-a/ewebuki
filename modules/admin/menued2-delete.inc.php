@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "short description";
+// menued2-delete.inc.php v1 emnili
+// menued2 -  delete funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2011 Werner Ammon <wa@chaos.de>
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -165,7 +165,7 @@
                 }
                 // +++
                 // content loeschen
-                
+
                 // neue Rechte loeschen
                 // ***
                 if ( $specialvars["security"]["new"] == -1 ) {
@@ -173,7 +173,7 @@
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
                     if ( !$result ) $ausgaben["form_error"] = $db -> error("#(text_error)<br />");
-                }                
+                }
                 // +++
                 // neue Reche loeschen
 
