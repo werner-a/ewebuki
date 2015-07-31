@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "contented - edit funktion";
+// wizard-editor.inc.php v1 emnili/krompi
+// wizard - editor funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -121,7 +121,7 @@
             $ausgaben["charakters"] = "";
             $ausgaben["eventh2"] = "";
         }
-        
+
          // eWeBuKi tag schutz part 3
         $mark_o = array( "#(", "g(", "#{", "!#" );
         $hide_o = array( "::1::", "::2::", "::3::", "::4::" );
@@ -218,7 +218,7 @@
                         if ( strstr($_POST["content"],"[/".strtoupper($value)."]") ) {
                             // oeffnende Tags zaehlen
                             preg_match_all( "/"."(\[".strtoupper($value)."=.*\])|(\[".strtoupper($value)."\])"."/Us" , $_POST["content"], $match);
-                            $count_open = count($match[0]);                            
+                            $count_open = count($match[0]);
                             // schliessende Tags zaehlen
                             preg_match_all( "/"."\[\/".strtoupper($value)."\]"."/Us" , $_POST["content"], $match);
                             $count_close = count($match[0]);

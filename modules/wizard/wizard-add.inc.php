@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "contented - edit funktion";
+// wizard-add.inc.php v1 emnili/krompi
+// wizard - add funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -163,7 +163,7 @@
                         AND tname ='".$environment["parameter"][2]."'
                     ORDER BY version DESC";
                 $result = $db -> query($sql);
-    
+
                 if ( $db -> num_rows($result) == 0 ) {
                     $sql = "SELECT version, html, content, changed, byalias
                             FROM ". SITETEXT ."
@@ -176,12 +176,12 @@
                     $result = $db -> query($sql);
                     $data = $db -> fetch_array($result,1);
                     $content = "[!]wizard:".$environment["parameter"][4]."[/!]\n\n".$data["content"];
-    
+
                     if ( $specialvars["content_release"] == -1 ) {
                         $sqla = ", status";
                         $sqlb = ", 0";
                     }
-    
+
                     $sql = "INSERT INTO ". SITETEXT ."
                                         (lang, label, tname, version,
                                         ebene, kategorie,
@@ -203,7 +203,7 @@
                                             '".$_SESSION["email"]."',
                                             '".$_SESSION["alias"]."'
                                             ".$sqlb.")";
-    
+
                     if ( $result = $db -> query($sql) ) {
                         $header = $cfg["wizard"]["basis"]."/show,".$environment["parameter"][1].",".$environment["parameter"][2].",".$environment["parameter"][3].".html";
                     } else {

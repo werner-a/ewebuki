@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "contented - edit funktion";
+// wizard-editor-list.inc.php v1 emnili/krompi
+// wizard - editor-list funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,11 +37,12 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     $buffer = "";
     // was anzeigen
     $mapping["main"] = "wizard-edit";
@@ -85,7 +86,7 @@
 
     $ausgaben["inhalt"] = "";
     foreach ( $buffer as $key => $value ) {
-        if ( $art == "def"  ) { 
+        if ( $art == "def"  ) {
             if ( $key % 2 == 0 ) {
 //                if ( (preg_match("/^\[DIV.*\/DIV\]$/is",$buffer[$key+1]) || $_POST[$key+1] == $key+1) ) {
 //                    $dataloop["faq"][$key]["checked"] = "checked";
@@ -96,7 +97,7 @@
             } else {
                 continue;
             }
-                
+
             $dataloop["faq"][$key]["answer"] = $buffer[$key+1];
             $dataloop["faq"][$key]["question"] = $value;
             $dataloop["faq"][$key]["count"] = $key;

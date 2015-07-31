@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "contented - edit funktion";
+// wizard-editor-sel.inc.php v1 emnili/krompi
+// wizard - editor-sel funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -189,7 +189,7 @@
             }
         }
     }
- 
+
 
     // abspeichern, part 2
     // * * *
@@ -230,7 +230,7 @@
 //exit;
 
         $to_insert = "[SEL=".implode(";",$tag_werte)."]".$_POST["description"]."[/SEL]";
-        
+
         if ( $cfg["wizard"]["sel_edit"]["max_num"] != "" && count(explode(":",$_POST["tagwerte"][3])) > $cfg["wizard"]["sel_edit"]["max_num"] ) {
             $ausgaben["form_error"] .= count(explode(":",$_POST["tagwerte"][3]))."#(sel_num_error)".$cfg["wizard"]["sel_edit"]["max_num"]."<br />";;
         }

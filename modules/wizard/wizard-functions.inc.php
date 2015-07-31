@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "wizard-functions: funktion loader";
+// wizard-functions.inc.php v1 emnili/krompi
+// wizard: function loader
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -123,7 +123,7 @@
 
                 $ausgaben["njs"] .= "ebButtons[ebButtons.length] = new ebButton(\n";
                 $button_label = strtoupper($key);
-                if ( $cfg["wizard"]["rename_buttons"][$key])  {                    
+                if ( $cfg["wizard"]["rename_buttons"][$key])  {
                     $button_label = $cfg["wizard"]["rename_buttons"][$key];
                 }
                 $ausgaben["njs"] .= "'eb_".$key."'
@@ -319,7 +319,7 @@
             $new_releases = null;
 
             if ( !isset($environment["parameter"][1]) ) $environment["parameter"][1] = null;
-            
+
             if ( $kategorie ) {
                 $tmp_tname = eCRC($url);
             } else {
@@ -349,7 +349,7 @@
             if ( count($buffer) > 0 ) $filter = "AND ".implode(" AND ",$buffer);
             $sql = "SELECT *
                       FROM site_text
-                     WHERE 
+                     WHERE
                             tname LIKE '".$tmp_tname."%'
                             ".$where."
                        AND label='".$label."'
@@ -486,7 +486,7 @@
 
         function lockat( $art="update" ) {
             global  $db, $cfg, $pathvars, $environment, $ausgaben, $hidedata;
-            
+
             $sql = "SELECT byalias, lockat
                     FROM site_lock
                     WHERE lang = '".$environment["language"]."'
@@ -494,7 +494,7 @@
                     AND tname ='".$environment["parameter"][2]."'";
             $result = $db -> query($sql);
             $data = $db -> fetch_array($result, $nop);
-            
+
             $LockYear = substr($data["lockat"],0,4);
             $LockMonth = substr($data["lockat"],5,2);
             $LockDay= substr($data["lockat"],8,2);
@@ -506,11 +506,11 @@
             $timestamp = mktime($LockHour,$LockMinute,$LockSecond,$LockMonth,$LockDay,$LockYear);
             $check_time = $timestamp+$cfg["wizard"]["lock_time"]+60;
             $ausgaben["lock_time"] = $cfg["wizard"]["lock_time"]*1000;
-            
+
             // lockat setzen oder updaten
             if ( $art == "update" ) {
                 // VON MIR GESPERRT
-                if ( $_SESSION["alias"] == $data["byalias"] ) {                     
+                if ( $_SESSION["alias"] == $data["byalias"] ) {
                     $sql = "UPDATE site_lock SET byalias='".$_SESSION["alias"]."',lockat='".date("Y-m-d H:i:s")."' WHERE tname='".$environment["parameter"][2]."' and lang = '".$environment["language"]."' and label='".$environment["parameter"][3]."'";
                     $result  = $db -> query($sql);
                 // VON KEINEM GESPERRT
@@ -525,7 +525,7 @@
                     $result  = $db -> query($sql);
                 }
             } elseif ( $art == "check" ) {
-                if ( $_SESSION["alias"] != $data["byalias"] ) { 
+                if ( $_SESSION["alias"] != $data["byalias"] ) {
                     if (  $check_time < time() ) {
                         if ( $data ) {
                             $sql = "DELETE from site_lock WHERE tname='".$environment["parameter"][2]."' and lang = '".$environment["language"]."' and label='".$environment["parameter"][3]."'";
@@ -548,7 +548,7 @@
                     }
                 } else {
                     $sql = "UPDATE site_lock SET byalias='".$_SESSION["alias"]."',lockat='".date("Y-m-d H:i:s")."' WHERE tname='".$environment["parameter"][2]."' and lang = '".$environment["language"]."' and label='".$environment["parameter"][3]."'";
-                    $result  = $db -> query($sql); 
+                    $result  = $db -> query($sql);
                 }
 
             } elseif ( $art == "close") {

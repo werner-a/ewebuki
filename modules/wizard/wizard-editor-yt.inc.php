@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "contented - edit funktion";
+// wizard-editor-yt.inc.php v1 emnili/krompi
+// wizard - editor-yt funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -47,10 +47,10 @@
     $mapping["main"] = "wizard-edit";
     $hidedata["youtube"] = array();
 
-    
+
     $ausgaben["radio-right"] = "";
     $ausgaben["radio-left"] = "checked";
-    
+
     $ausgaben["yurl"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
     $ausgaben["height"] = "";
     $complete = $tag_meat[$tag_marken[0]][$tag_marken[1]]["complete"];
@@ -58,13 +58,13 @@
 
     if ( $tag_werte[0] == "r") {
         $ausgaben["radio-left"] = "";
-        $ausgaben["radio-right"] = "checked";        
+        $ausgaben["radio-right"] = "checked";
     }
     $ausgaben["info"] = "";
     if ( $tag_werte[4] == "-1") {
         $ausgaben["info"] = "checked";
-    } 
-    
+    }
+
     $ausgaben["align"] = $tag_werte[0];
     $ausgaben["width"] = $tag_werte[1];
     $ausgaben["height"] = $tag_werte[2];
@@ -72,9 +72,9 @@
     // abspeichern
     // * * *
 
-    if ( $_POST["send"] ) {        
+    if ( $_POST["send"] ) {
         $to_insert = "[YT=".$_POST["align"].";".$_POST["width"].";".$_POST["height"].";".$tag_werte[3].";".$_POST["info"]."]".$_POST["yurl"]."[/YT]";
-    }    
+    }
     // + + +
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

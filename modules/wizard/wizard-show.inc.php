@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "contented - edit funktion";
+// wizard-show.inc.php v1 emnili/krompi
+// wizard - show funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,11 +37,12 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     header("HTTP/1.0 200 OK");
     // parameter-verzeichnis:
     // 1: Datenbank
@@ -50,7 +51,7 @@
     // 4: [leer]
     // 5: version
     // 6: index des bereichs der im show angezeigt wird
-    
+
     $entrance = make_id(tname2path($environment["parameter"][2]));
     $_SESSION["menu_entrance"] = $entrance["refid"];
 
@@ -161,9 +162,9 @@
         // LOCK Check
         if ( $cfg["wizard"]["lock_time"] > 0 ) {
             if ( $_GET["time_check"] == "on" ) {
-                lockat();                                
+                lockat();
             } else {
-                lockat("check");                                
+                lockat("check");
             }
         }
         // page basics
@@ -271,14 +272,14 @@
             // freigabe-test
             // * * *
             $blocked = 0;
-            if ( $specialvars["content_release"] == -1 ) {                
+            if ( $specialvars["content_release"] == -1 ) {
                 if ( priv_check($tname2path,"publish") || $artikel_check_publish ) {
                     $hidedata["publish"] = array();
                     $menu_entry = make_id(tname2path($environment["parameter"][2]));
                     $sql = "SELECT hide FROM site_menu WHERE mid=".$menu_entry["mid"];
                     $result = $db -> query($sql);
                     $data = $db -> fetch_array($result, $nop);
-                    
+
                     if ( $data["hide"] == -1 ) {
                         $menu_hide = -1;
                         $hidedata["publish"]["release_radio_on"] = "checked";
@@ -286,7 +287,7 @@
                         $menu_hide = "0";
                         $hidedata["publish"]["release_radio_off"] = "checked";
                     }
-                    
+
                 } else {
                     // ist bereits eine freigabe angefordert, dann blocken
                     $sql = "SELECT *
@@ -392,7 +393,7 @@
                                             $stop = -1;
                                         }
                                     }
-                                }                               
+                                }
                                 if ( $stop == -1 )  continue;
                             }
                             $button .= "<!--button_".$buttons."_beginn--><a href=\"".$$buttons."\">#(tag_".$buttons.")</a><!--button_".$buttons."_end-->";
@@ -544,7 +545,7 @@
                     $style = "";
                     while ( count($pic_array) > 0 ) {
                         $buffer = "wizard-icon-".implode("-",$pic_array).".png";
-                        if ( file_exists($pathvars["fileroot"].$pathvars["images"].$buffer) ) {                            
+                        if ( file_exists($pathvars["fileroot"].$pathvars["images"].$buffer) ) {
                             $style = "background-image:url('".$pathvars["images"].$buffer."');";
                             break;
                         } elseif ( file_exists($pathvars["fileroot"]."/images/default/".$buffer) ) {
@@ -728,8 +729,8 @@
             } else {
                 $ausgaben["inaccessible"] = "";
             }
-            
-            if ( $_GET["convert"] == "on" && $cfg["wizard"]["utf8_convert"]  == -1 ) {                  
+
+            if ( $_GET["convert"] == "on" && $cfg["wizard"]["utf8_convert"]  == -1 ) {
                 foreach ( $dataloop["sort_content"] as $key => $value ) {
                     $dataloop["sort_content"][$key]["value_html"] = utf8_encode($dataloop["sort_content"][$key]["value_html"]);
                 }
@@ -852,7 +853,7 @@
                             $content = utf8_encode($content);
                         }
                         header("HTTP/1.0 200 OK");
-                        $content = str_replace($cfg["wizard"]["basis"],$environment["ebene"],$content);                                                                    
+                        $content = str_replace($cfg["wizard"]["basis"],$environment["ebene"],$content);
                         $preview_content =  preg_replace(
                             array("/#\{.+\}/U","/g\(.+\)/U"),
                             array("",""),
@@ -861,7 +862,7 @@
                         // aendern des rel-namen um in der Vorschau nicht die doppelten bilder in der galerie zu haben
                         $preview_content = str_replace("rel=\"lightbox[group","rel=\"lightbox-preview[newgroup",$preview_content);
                         $preview_content = str_replace("rel=\"lightbox[","rel=\"lightbox-image[",$preview_content);
-                        
+
                         echo $preview_content;
                         die ;
                     }
@@ -903,14 +904,14 @@
                                             AND tname ='".$environment["parameter"][2]."'";
                         $result_del  = $db -> query($sql_del);
                     }
-                    unset($_SESSION["wizard_content"]);                    
+                    unset($_SESSION["wizard_content"]);
                 }
-                
+
                 // LOCK Sperre loesen
                 if ( $cfg["wizard"]["lock_time"] > 0 ) {
                     lockat('close');
                 }
-                
+
                 if ( $sql_content != "" ) {
                     if ( $db -> query($sql_content) ) {
                         if ( $cfg["wizard"]["wizardtyp"][$wizard_name]["blog_date"] == true ) {
