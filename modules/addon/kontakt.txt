@@ -1,4 +1,4 @@
--- "$Id$";
+-- kontakt.txt v1 chaot
 --
 -- Damit diese Modul funktioniert, müssen als erstes die Kommentare aus conf/addon.cfg.php entfernt werden.
 -- Dannach beötigt man noch "kontakt" und "kontakt/danke" (hidden) im Menu.

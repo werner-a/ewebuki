@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id: leer-edit.inc.php 1355 2008-05-29 12:38:53Z buffy1860 $";
-// "leer - edit funktion";
+// keyworded-edit_page.inc.php v1 krompi
+// keyworded-edit_page - edit funktion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2008 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -66,7 +66,7 @@
                                 "",
                                 $_SERVER["HTTP_REFERER"]
                 );
-                if ( preg_match("/^\/keywords\/edit_page/",$url) ) {                    
+                if ( preg_match("/^\/keywords\/edit_page/",$url) ) {
                     header("Location: ".$_SERVER["HTTP_REFERER"]);
                     exit;
                 }
@@ -127,7 +127,7 @@
 
         // alle schlagwoerter holen
         $dataloop["tags_all"] = cloud_loop("all","",$keywords);
-                
+
         if ( count($dataloop["tags_all"]) > 0 ) $hidedata["tags_all"] = array();
 
         // hidden values

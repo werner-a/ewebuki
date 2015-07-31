@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $script["name"] = "$Id: leer.inc.php 1131 2007-12-12 08:45:50Z chaot $";
-  $Script["desc"] = "short description";
+  $script["name"] = "administration.inc.php v1 emnili";
+  $Script["desc"] = "administration modul";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2010 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -46,13 +46,13 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
     if ( $_SESSION["username"] != "" ) {
-    
+
         include $pathvars["moduleroot"]."wizard/wizard.cfg.php";
         unset($cfg["wizard"]["function"]);
         include $pathvars["moduleroot"]."wizard/wizard-functions.inc.php";
 
-        // bereiche werden nach aenderungsdatum sortiert        
-        if ( !function_exists("sort_marked_content") ) {            
+        // bereiche werden nach aenderungsdatum sortiert
+        if ( !function_exists("sort_marked_content") ) {
             function sort_marked_content($a,$b) {
                 if ( $a["changed_db"] < $b["changed_db"] ) {
                     return 1;
@@ -89,7 +89,7 @@
 
                     $counter++;
                     $value["titel"] = str_replace("\"","", $value["titel"]);
-                    $value["titel"] = str_replace("'","", $value["titel"]);                    
+                    $value["titel"] = str_replace("'","", $value["titel"]);
                     $value["titel"] = str_replace("\r\n","", $value["titel"]);
                     $value["titel"] = str_replace("\n","", $value["titel"]);
                     $value["titel"] = str_replace("\r","", $value["titel"]);
@@ -142,7 +142,7 @@
             $exclude[] = $url;
             if ( !priv_check($blog_key,"edit") ) continue;
             $bereich = str_replace("/", "",$url);
-            unset($dataloop["edit_section"]);            
+            unset($dataloop["edit_section"]);
             unset($hidedata["edit_section"]);
             unset($dataloop["release_wait_section"]);
             unset($hidedata["release_wait_section"]);
@@ -153,14 +153,14 @@
             $buffer = find_marked_content( $url, $cfg, "inhalt", array(-2,-1), array(), FALSE );
 
             // buffer durchgehen und nach bereiche aufteilen
-            if ( is_array($buffer) ) {                    
+            if ( is_array($buffer) ) {
                 foreach ( $buffer as $key => $value ) {
                     foreach ( $value as $own_key => $own_value ) {
                         if ( crc32($url) == substr($own_value["tname"],0,strpos($own_value["tname"],".")) ) {
                             ${$bereich}[$key][] = $buffer[$key][$own_key];
                             unset($buffer[$key][$own_key]);
                         }
-                    } 
+                    }
                 }
             }
 
@@ -170,36 +170,36 @@
                 uasort($dataloop["edit_section"],'sort_marked_content');
             }
 
-            if ( count(${$bereich}[-2]) > 0 && priv_check($url, $cfg["wizard"]["right"]["publish"]) ) {                            
+            if ( count(${$bereich}[-2]) > 0 && priv_check($url, $cfg["wizard"]["right"]["publish"]) ) {
                 $hidedata["release_queue"]["name"] = $bereich;
-                $dataloop["release_queue"] = ${$bereich}[-2];                    
+                $dataloop["release_queue"] = ${$bereich}[-2];
             }
 
             if ( ( !is_array($hidedata["release_queue"]) && count(${$bereich}[-2]) ) && priv_check($url, $cfg["wizard"]["right"]["edit"]) ) {
                 $hidedata["release_wait_section"]["name"] = $bereich;
-                $dataloop["release_wait_section"] = ${$bereich}[-2]; 
+                $dataloop["release_wait_section"] = ${$bereich}[-2];
             }
             $ausgaben["bereiche"] .= parser("administration-blogs",'');
 
-        }     
+        }
         // normalen content ausschliesslich spezielle bereiche durchgehen
         // * * *
-        unset($dataloop["edit_section"]);            
+        unset($dataloop["edit_section"]);
         unset($hidedata["edit_section"]);
         unset($dataloop["release_wait_section"]);
         unset($hidedata["release_wait_section"]);
         unset($dataloop["release_queue"]);
         unset($hidedata["release_queue"]);
-                        
+
         $bereich = "normal";
         $buffer = find_marked_content( "/", $cfg, "inhalt", array(-2,-1), array(), FALSE, $exclude);
-      
-        if ( is_array($buffer) ) {                    
+
+        if ( is_array($buffer) ) {
             foreach ( $buffer as $key => $value ) {
                 foreach ( $value as $own_key => $own_value ) {
                     ${$bereich}[$key][] = $buffer[$key][$own_key];
                     unset($buffer[$key][$own_key]);
-                } 
+                }
             }
         }
 
@@ -209,14 +209,14 @@
             uasort($dataloop["edit_section"],'sort_marked_content');
         }
 
-        if ( count(${$bereich}[-2]) > 0 && priv_check($url, $cfg["wizard"]["right"]["publish"]) ) {                            
+        if ( count(${$bereich}[-2]) > 0 && priv_check($url, $cfg["wizard"]["right"]["publish"]) ) {
             $hidedata["release_queue"]["name"] = $bereich;
-            $dataloop["release_queue"] = ${$bereich}[-2];                    
+            $dataloop["release_queue"] = ${$bereich}[-2];
         }
 
         if ( ( !is_array($hidedata["release_queue"]) && count(${$bereich}[-2]) ) && priv_check($url, $cfg["wizard"]["right"]["edit"]) ) {
             $hidedata["release_wait_section"]["name"] = $bereich;
-            $dataloop["release_wait_section"] = ${$bereich}[-2]; 
+            $dataloop["release_wait_section"] = ${$bereich}[-2];
         }
 
         $ausgaben["bereiche"] .= parser("administration-content",'');
@@ -256,7 +256,7 @@
 
             $wizard_menu = sitemap($_POST["point_id"], "admin", "wizard",$mod,"");
 
-            $lines = explode("<li>",$wizard_menu);                
+            $lines = explode("<li>",$wizard_menu);
             array_shift($lines);
 
             $preg = '/(href="\/auth\/login,)([0-9]*)\.html"/i';
@@ -264,16 +264,16 @@
             $color = $cfg["wizard"]["color"]["a"];
             echo "<ul style=\"list-style: none\">";
 
-            // zurueck - link bauen              
+            // zurueck - link bauen
             if ( is_numeric($positionArray[0]) ) {
                 if ( is_numeric($positionArray[1]) ) {
                     $back_id = $positionArray[1];
                 } else {
                     $back_id = 0;
-                }                             
+                }
                 echo "<li><a onclick=\"aj_menu(".$back_id.")\">zurÃ¼ck</a></li>";
             }
-            // zurueck - link bauen   
+            // zurueck - link bauen
 
             foreach ( $lines as $line ) {
 
@@ -284,7 +284,7 @@
                     $line = str_replace("href=\"/auth/login,".$regs[2].".html\"","onclick= aj_menu(".$regs[2].")",$line);
                     echo "<li style=\"background-color:".$color.";margin:0;padding:0.5em;clear:both;\">".$line."</li>";
                 } else {
-                    echo "<li style=\"background-color:".$color.";margin:0;padding:0.5em;clear:both;\">".$line."</li>"; 
+                    echo "<li style=\"background-color:".$color.";margin:0;padding:0.5em;clear:both;\">".$line."</li>";
                 }
             }
             echo "</ul>";
@@ -348,8 +348,8 @@
         }
 
         // was anzeigen
-        $mapping["main"] = "administration";    
-    
+        $mapping["main"] = "administration";
+
     } else {
         header("Location: ".$pathvars["virtual"]."/");
     }
