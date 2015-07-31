@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "funktion loader";
+// funtion_show_blog.inc.php v1 emnili
+// funktion loader: show blog
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -66,10 +66,10 @@
             $specialvars["editlock"] = -1;
         }
 
-        // Variablen 
+        // Variablen
         $parameter = "";
         $getvalues = "";
-        
+
         // aus der url eine id machen
         $id = make_id($url);
         $new = $id["mid"];
@@ -210,7 +210,7 @@
         while ( $data = $db -> fetch_array($result,1) ) {
             $tag_parameter="";
             $counter++;
-            
+
             // im wizard wird der content aus der SESSION-Variablen genommen
             if ( isset($_SESSION["wizard_content"][DATABASE.",".$data["tname"].",inhalt"]) && $environment["ebene"] == "/wizard") {
                 $test = preg_replace("|\r\n|","\\r\\n",$_SESSION["wizard_content"][DATABASE.",".$data["tname"].",inhalt"]);
@@ -312,7 +312,7 @@
                 if (  $right == ""  ||  priv_check($check_url, $right )   && $wizard_right == "" ) {
                     $sort_kat = "";
                     if ( !isset($cfg["bloged"]["blogs"][$url]["sort"][1]) ) { $cfg["bloged"]["blogs"][$url]["sort"][1] = null; }
-                    if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {                        
+                    if ( $cfg["bloged"]["blogs"][$url]["sort"][1] == "-1") {
                         if ( $kategorie != "" ) {
                             $id = make_id($kategorie);
                             $sort_kat = $id["mid"];

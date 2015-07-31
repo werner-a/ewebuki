@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "menubaum bauen";
+// funtion_menutree.inc.php v1 emnili
+// funktion loader: sitemap
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -48,7 +48,7 @@
 
         if ( isset($ausgaben["path"]) ) $ausgaben["path"] = null;
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
-        
+
         $tree = null;
         $flapmenu = -1;
         $aktionlinks = -1;
@@ -56,7 +56,7 @@
         $sitemap = 0;
         $where = null;
         switch($art) {
-            case 'menued':                
+            case 'menued':
                 $sortinfo = -1;
                 break;
             case 'select':

@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "funktion loader";
+// funtion_calendar.inc.php v1 emnili
+// funktion loader: calendar
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 K�nigsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -83,7 +83,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             ( $i == 1 ) ? $para = "" : $para = $environment["parameter"][$i];
             $protect_parameter .= ",".$para;
         }
-       
+
         $jump_month_for = $monat+1;
         $jump_month_bac = $monat-1;
         $jump_year_bac = $jahr;
@@ -96,7 +96,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             $jump_month_for = 1;
             $jump_year_for = $jahr+1;
         }
-        
+
         $forward = $jahr+1;
         $back = $jahr-1;
         // bauen der monatstabelle
@@ -104,23 +104,23 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
         $ausgabe .= "<table class=\"".$class." ".$class."_months\" >\n";
         $jump_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$back.".html\">";
         $jump_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$forward.".html\">";
-        
+
         $jump_month_back = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$jump_year_bac.",".$jump_month_bac.".html\">";
         $jump_month_forward = "<a href=\"".$environment["parameter"][0].$protect_parameter.",".$jump_year_for.",".$jump_month_for.".html\">";
-                
+
         // SECURITY
         $SecureYear = 1;
-        if ( $no_secure > $SecureYear ) $SecureYear = $no_secure;                    
+        if ( $no_secure > $SecureYear ) $SecureYear = $no_secure;
         if (is_numeric($environment["parameter"][$start_parameter+1]) && abs($aktuell["year"] - $environment["parameter"][$start_parameter+1]) > $SecureYear) {
             header("Location: ".$pathvars["virtual"]."/index.html");
-        } 
+        }
         if ( $back-$aktuell["year"] < -$SecureYear) {
             $jump_back = "";
         }
         if ( $forward-$aktuell["year"] > $SecureYear) {
-            $jump_forward = "";            
+            $jump_forward = "";
         }
-        
+
         if ( $jump_year_bac-$aktuell["year"] < -$SecureYear) {
             $jump_month_back = "";
         }
@@ -191,7 +191,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             $counter++;
             $style = "";
             $onclick = "";
-            if ( $counter > $start && $counter <= ($heute["mday"]+$start) ) {                
+            if ( $counter > $start && $counter <= ($heute["mday"]+$start) ) {
                 $int_counter++;
                 $timestamp =mktime(0,0,0,$monat,$int_counter,$jahr);
                 if (is_array($inhalt) ) {
@@ -213,7 +213,7 @@ function calendar($monat="",$jahr="",$class="",$extendend="",$linked="",$no_secu
             }
             $ausgabe .= "<td ".$onclick." ".$style." class=\"".$class.$class_today."\">".$out."</td>";
         }
-        $ausgabe .= "</tr>";     
+        $ausgabe .= "</tr>";
     }
 
     $ausgabe .= "</tbody>";

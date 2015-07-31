@@ -1,11 +1,11 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "funktion loader";
+// funtion_bloglink.inc.php v1 chaot
+// funktion loader: bloglink
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
-    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+    Copyright (C)2001-2015 Werner Ammon ( wa<at>chaos.de )
 
     This script is a part of eWeBuKi
 
@@ -37,7 +37,7 @@
     c/o Werner Ammon
     Lerchenstr. 11c
 
-    86343 Königsbrunn
+    86343 Koenigsbrunn
 
     URL: http://www.chaos.de
 */
@@ -55,7 +55,7 @@
             $preg = "\[".$tag."\](.*)\[\/".$tag."\]";
             preg_match("/$preg/U",$test,$regs);
             if ( $regs[1] == "" ) continue;
-            $regs[1] = preg_replace("|\\\\r\\\\n|","",$regs[1]);   
+            $regs[1] = preg_replace("|\\\\r\\\\n|","",$regs[1]);
             $regs[1] = substr($regs[1],0,$length);
             $links .= "<li><a href=\"".$url."/".$id[1].".html\">".$regs[1]."</a></li>";
         }

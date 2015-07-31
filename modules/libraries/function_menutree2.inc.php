@@ -1,7 +1,7 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// "$Id$";
-// "eine verbesserte version der sitemap-funktion";
+// funtion_menutree2.inc.php v1 emnili
+// funktion loader:  verbesserte version der sitemap
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     eWeBuKi - a easy website building kit
@@ -48,20 +48,20 @@
 
         if ( isset($ausgaben["path"]) ) $ausgaben["path"] = null;
         if ( !isset($environment["parameter"][2]) ) $environment["parameter"][2] = null;
-       
+
         $tree = null;
         $where = null;
-                
+
         $ReplaceArray1 = array( '##href##', '##title##', '##label##', '##mid##', '##refid##', '##checked##', '##pub_id##' );
-        
-        $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label 
+
+        $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label
                   FROM  site_menu
             INNER JOIN  site_menu_lang
                     ON  site_menu.mid = site_menu_lang.mid
              LEFT JOIN  db_publikationen_assignment
                     ON  (
-                            site_menu.mid=db_publikationen_assignment.mid 
-                        AND 
+                            site_menu.mid=db_publikationen_assignment.mid
+                        AND
                             pub_id=".$environment["parameter"][3]."
                         )
                  WHERE ( site_menu.refid=".$refid.")
@@ -81,9 +81,9 @@
             $checked = "";
             if ( $pub_id ) $checked = "checked";
             if ( isset($array["extend"]) ) $title = $array["extend"];
-            
+
             $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"],$checked,$environment["parameter"][3]);
-                        
+
             $ausgaben["label"] = $array["label"];
             // wo geht der href hin?
             if ( $array["exturl"] != "" ) {
@@ -95,7 +95,7 @@
                 $buffer[$refid]["zaehler"] = $count;
                 $tree .=  str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["node"]["b"]);
             }
-            
+
             $items = "";
             foreach ( $show_item as $value ) {
                 if ( empty($cfg["publikationen"]["tree"][$value]) ) continue;
@@ -104,7 +104,7 @@
                 $items .= str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"][$value]["b"]).str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"][$value]["e"]);
             }
 
-            // listenpunkt schreiben                 
+            // listenpunkt schreiben
             $tree .= str_replace($ReplaceArray1, $ReplaceArray2,$cfg["publikationen"]["tree"]["line"]["b"]).$items;
 
             // selbstaendiger funktionsaufruf
