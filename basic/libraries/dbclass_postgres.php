@@ -445,6 +445,41 @@
             }
             return $sql;
         }
+        
+        function ps_complete($query, $params) {
+            $conn = $this->CONN;
+            // Name der Abfrage eindeutig festlegen
+            $stmtname = uniqid();
+            // Prepared Statement vorbereiten            
+            $results = $this->ps_prepare($query, $stmtname);
+            // Prepared Statement ausführen
+            $results = $this->ps_execute($params, $stmtname);
+            // Rückgabe
+            $this->RESULTS  = $results;
+            return $results;
+        }
+        
+        function ps_prepare($query, $stmtname="") {
+            // Prepared Statement vorbereiten         
+            $conn    = $this->CONN;   
+            $results = pg_prepare( $conn, $stmtname, $query );
+            // Rückgabe
+            $this->RESULTS  = $results;
+            return $results;
+        }
+        
+        function ps_execute($params, $stmtname="") {
+            // Werte vorbereiten, muß ein Array sein
+            if ( !is_array($params) ) {
+                $params = array($params);
+            }
+            // Prepared Statement ausführen
+            $conn    = $this->CONN;
+            $results = pg_execute( $conn, $stmtname, $params );
+            // Rückgabe
+            $this->RESULTS  = $results;
+            return $results;
+        }
 
     }
     return true;
