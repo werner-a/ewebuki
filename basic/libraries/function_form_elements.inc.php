@@ -266,7 +266,7 @@
                 $formularobject = "<input id=\"".$fields["Field"]."\" type=\"".$type."\"".$size.$maxlength.$class.$style." name=\"".$fields["Field"].$extend."\" value=\"".$form_values[$fields["Field"]]."\"".$readonly.">\n";
                 $element[$fields["Field"].$extend] = $formularobject;
             // id feld
-            } elseif ( strstr($fields["Type"], "int")) {
+            } elseif ( strstr($fields["Type"], "int") || strstr($fields["Type"], "float") ) {
                 if ( strstr(@$form_options[$fields["Field"]]["foption"], "hidden") ) {
                     $type = "hidden";
                 } else {
