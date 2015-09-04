@@ -164,7 +164,7 @@
     //
 
     // neuer parameter 'ebene'
-    $environment["ebene"] = substr_replace($pathvars["requested"], '', 0, strlen($pathvars["virtual"]));
+    $environment["ebene"] = addslashes(substr_replace($pathvars["requested"], '', 0, strlen($pathvars["virtual"])));
     $paramstr = strrchr($environment["ebene"],"/");
     $environment["ebene"] = str_replace($paramstr,"",$environment["ebene"]);
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg ebene: ".$environment["ebene"].$debugging["char"];
@@ -181,6 +181,7 @@
             $environment["allparameter"] .= ",".$piece;
             $pieces .= " ".$piece;
         }
+        $environment["parameter"][$key] = addslashes($piece);
     }
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "strg parameter: array( ".$pieces." )".$debugging["char"];
 
@@ -341,6 +342,7 @@
             $tname = $mapping["main"];
         } else {
             $tname = eCRC($environment["ebene"]).".".$_GET["edit"];
+            $tname = addslashes($tname);
         }
         $sql = "SELECT * FROM ". SITETEXT ."
                 WHERE tname='".$tname."'

@@ -81,6 +81,7 @@
                 } else {
                     $tname = eCRC($ebene).".".$kategorie;
                 }
+                $tname = addslashes($tname);
                 header("Location: ".$cfg["keyworded"]["basis"]."/".$environment["kategorie"].",".$tname.".html");
             } else {
                 $url = tname2path($environment["parameter"][1]);
@@ -203,6 +204,7 @@
                 } else {
                     $tname = eCRC($ebene).".".$kategorie;
                 }
+                $tname = addslashes($tname);
 
                 // zuerst alle loeschen
                 $sql = "DELETE
