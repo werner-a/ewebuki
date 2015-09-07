@@ -44,7 +44,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // aufruf: $form_elements = form_options( formular tabelle, form werte des user );
-    function form_elements( $table, $form_values, $extend = "" ) {
+    function form_elements( $table, $form_values, $extend = "", $form_types = array() ) {
         global $db, $form_options, $defaults;
 
         // wenn magic_quotes_gpc an ist muessen alle daten
@@ -59,6 +59,11 @@
         $columns = $db -> show_columns($table);
         #echo "<pre>".print_r($columns,True)."</pre>";
         foreach ( $columns as /* $key => */ $fields ) {
+            
+            // der Field-Type kann über den Paramter $form_types definiert werden 
+            if ( $form_types[$fields["Field"]] != "" ) {
+                $fields["Type"] = $form_types[$fields["Field"]];
+            }
 
             // stripslashes fuer das affenform
             if ( $stripslashes == True ) $form_values[$fields["Field"]] = stripslashes($form_values[$fields["Field"]]);
