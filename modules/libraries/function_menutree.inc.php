@@ -270,7 +270,7 @@
 
             // wo geht der href hin?
             if ( $array["exturl"] != "" ) {
-                $href = "<a class=".$class_hide." href=".$array["exturl"].">".$array["label"]."</a>";
+                $href .= "&nbsp;<a class=".$class_hide." href=".$array["exturl"].">(->ext. Link)</a>";
             }
 
             // in den buffer schreiben wieviel unterpunkte fuer jeweiligen Ueberpunkt vorhanden sind !
