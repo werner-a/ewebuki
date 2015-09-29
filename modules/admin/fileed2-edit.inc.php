@@ -528,8 +528,6 @@
                     $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
                                SET ".$sqla."
                              WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
-echo "<pre>$sql</pre>";
-exit;
 
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
