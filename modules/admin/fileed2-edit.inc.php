@@ -536,6 +536,10 @@
                         $dataloop["form_error"]["error_result"]["text"] = $db -> error("#(error_result)");
                         $hidedata["form_error"] = array();
                     }
+                    if ( !empty($_SESSION["wizard_last_edit"]) ) {
+                        $header = $_SESSION["wizard_last_edit"];
+                        unset($_SESSION["wizard_last_edit"]);
+                    }
                     if ( $header == "" ) $header = $cfg["fileed"]["basis"]."/list.html";
 
                 } else {
