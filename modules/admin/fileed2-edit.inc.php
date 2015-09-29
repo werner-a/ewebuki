@@ -133,9 +133,30 @@
                 $block_elements = array_merge($block_elements,$match[0]);
             }
         }
-        $fhit_dummy = trim(str_replace($block_elements,"",$form_values["fhit"]));
+        
+        // Loop der Schlagwoerter, die z.B. als Checkboxen auswaehlbar sein sollen
+        // soll v.a. in Kombination mit dummy_regex verwendet werden
+        if ( is_array($cfg["fileed"]["dummy_list"]) ) {
+            foreach ( $cfg["fileed"]["dummy_list"] as $value => $label ) {
+                if (in_array($value, $block_elements) ) {
+                    $checked = " checked";
+                } else {
+                    $checked = "";
+                }
+                $dataloop["dummy_list"][] = array(
+                    "value"   => $value,
+                    "label"   => $label,
+                    "checked" => $checked
+                );
+            }
+        }
+        
+        // Aufsplitten in bereinigte Schlagwoerter (fhit_dummy) und 
+        // den restlichen Schlagwoertern (fhit_delicate)
+        $fhit_dummy    = trim(str_replace($block_elements,"",$form_values["fhit"]));
         $fhit_delicate = trim(implode(" ",$block_elements));
 
+        // Steuerung, ob die Dummy-Schlagwort-Version verwendet werden soll
         if ( $rechte[$cfg["fileed"]["no_dummy"]] != -1  && $cfg["fileed"]["no_dummy"] != "" ) {
             if ( isset($_POST["fhit_dummy"]) ) {
                 $fhit_dummy = $_POST["fhit_dummy"];
@@ -462,14 +483,19 @@
                     // ggf versteckte fhit-eingtraege wieder anhaengen
                     if ( $rechte[$cfg["fileed"]["no_dummy"]] != -1 ) {
                         // dummy wird ergaenzt
-                        $fhit = $fhit_delicate." ".trim($fhit_dummy);
-                        $_POST["fhit"] = trim($fhit);
+                        if ( isset($_POST["dummy_list"]) ) {
+                            $fhit = implode(" ",$_POST["dummy_list"])." ".trim($fhit_dummy);
+                            $_POST["fhit"] = trim($fhit);
+                        } else {
+                            $fhit = $fhit_delicate." ".trim($fhit_dummy);
+                            $_POST["fhit"] = trim($fhit);
+                        }
                     }
 
                     // +++
                     // funktions bereich fuer erweiterungen
 
-                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder", "fhit_dummy", "grant_all", "perm_groups", "upload" );
+                    $kick = array( "PHPSESSID", "form_referer", "send", "image", "image_x", "image_y", "fdesc", "extract", "selection", "bnet", "cnet", "zip_fdesc", "zip_fhit", "zip_funder", "fhit_dummy", "dummy_list", "grant_all", "perm_groups", "upload" );
                     foreach($_POST as $name => $value) {
                         if ( !in_array($name,$kick) && !strstr($name, ")" ) ) {
                             if ( $sqla != "" ) $sqla .= ",\n ";
@@ -502,6 +528,8 @@
                     $sql = "UPDATE ".$cfg["fileed"]["db"]["file"]["entries"]."
                                SET ".$sqla."
                              WHERE ".$cfg["fileed"]["db"]["file"]["key"]."='".$environment["parameter"][1]."'";
+echo "<pre>$sql</pre>";
+exit;
 
                     if ( $debugging["sql_enable"] ) $debugging["ausgabe"] .= "sql: ".$sql.$debugging["char"];
                     $result  = $db -> query($sql);
