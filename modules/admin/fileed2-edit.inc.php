@@ -483,8 +483,12 @@
                     // ggf versteckte fhit-eingtraege wieder anhaengen
                     if ( $rechte[$cfg["fileed"]["no_dummy"]] != -1 ) {
                         // dummy wird ergaenzt
-                        if ( isset($_POST["dummy_list"]) ) {
-                            $fhit = implode(" ",$_POST["dummy_list"])." ".trim($fhit_dummy);
+                        if ( isset($cfg["fileed"]["dummy_list"]) ) {
+                            if ( is_array($_POST["dummy_list"]) ) {
+                                $fhit = implode(" ",$_POST["dummy_list"])." ".trim($fhit_dummy);
+                            } else {
+                                $fhit = $fhit_dummy;
+                            }
                             $_POST["fhit"] = trim($fhit);
                         } else {
                             $fhit = $fhit_delicate." ".trim($fhit_dummy);
