@@ -43,6 +43,10 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/*
+    ** autoloader: remove the # in the filename to enable it ***
+*/
+
     function tagreplace_tmpl($replace, $opentag, $tagoriginal, $closetag, $sign) {
 
         global $cfg, $defaults, $specialvars;

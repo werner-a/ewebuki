@@ -1,6 +1,6 @@
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// function_tcpdf.inc.php v1 chaot
+// function_tcpdf.inc.php v2 chaot
 // TCPDF connector
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -62,7 +62,7 @@
 
     function tcpdf_it($buffer) {
 
-        global $debugging, $cfg, $environment, $kekse;
+        global $pathvars, $debugging, $cfg, $environment, $kekse;
 
         if ( $cfg["pdfc"]["debug"] == False ) {
             $debugging["html_enable"] = 0;
@@ -130,45 +130,16 @@
         // add a page
         $pdf->AddPage();
 
-        /* NOTE:
-         * *********************************************************
-         * You can load external XHTML using :
-         *
-         * $html = file_get_contents('/path/to/your/file.html');
-         *
-         * External CSS files will be automatically loaded.
-         * Sometimes you need to fix the path of the external CSS.
-         * *********************************************************
-         */
-
-        // define some HTML content with style
-        #$html = <<<EOF
-        #EOF;
-
-        //[IMG=/file/picture/medium/img_10.jpg;;0;b]Wolkenblick[/IMG]
-        #$suchmuster = '~src="/file/(jpg|png|gif)/(\d+)/(b|m|s|o|tn)/.+"~';
-        #$ersetzung = 'src="/file/picture/$3/img_${2}.${1}"';
-        #$buffer = preg_replace($suchmuster, $ersetzung, $buffer);
-
-        $s = '~src="/file/(jpg|png|gif)/(\d+)/tn/.+"~';
-        $r = 'src="/file/picture/thumbnail/tn_${2}.${1}"';
-        #$buffer = preg_replace($s, $r, $buffer);
-
-        $s = '~src="/file/(jpg|png|gif)/(\d+)/s/.+"~';
-        $r = 'src="/file/picture/small/img_${2}.${1}"';
-        #$buffer = preg_replace($s, $r, $buffer);
-
-        $s = '~src="/file/(jpg|png|gif)/(\d+)/m/.+"~';
-        $r = 'src="/file/picture/medium/img_${2}.${1}"';
-        #$buffer = preg_replace($s, $r, $buffer);
-
-        $s = '~src="/file/(jpg|png|gif)/(\d+)/b/.+"~';
-        $r = 'src="/file/picture/big/img_${2}.${1}"';
-        #$buffer = preg_replace($s, $r, $buffer);
-
-        $s = '~src="/file/(jpg|png|gif)/(\d+)/o/.+"~';
-        $r = 'src="/file/picture/original/img_${2}.${1}"';
-        #$buffer = preg_replace($s, $r, $buffer);
+        // TCPDF connector regex extender
+        if ($handle=opendir($pathvars["libraries"]))
+        {
+            while ( false!==( $file=readdir($handle )) ) {
+                if ( strstr($file, "function_tcpdf_regex_") )
+                {
+                    require_once $pathvars["libraries"].$file;
+                }
+            }
+        }       
 
         if ( $cfg["pdfc"]["force_utf8"] == true ) {
             $html = utf8_encode($buffer);
