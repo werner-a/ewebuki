@@ -96,10 +96,13 @@
     build_table($rows[1]);
 
     function build_table($rows) {
-        global $ausgaben,$hidedata,$col_index, $row_index,$tab_rows_tag,$row_buffer,$tab_rows_tag,$col_header_marker,$row_header_marker;
+        global $ausgaben,$hidedata,$col_index, $row_index,$tab_rows_tag,$row_buffer,$tab_rows_tag,$col_header_marker,$row_header_marker, $tab_width;
 
         foreach ( $rows as $row_value ) {
 
+            // tag nach zellen aufsplitten
+            preg_match_all("/\[(COL|TH)(.*)\](.*)\[\/(COL|TH)\]/Us",$row_value,$cells);
+            
             // ist die erste spalte der kopf
             if ( $row_index == 0 ) {
                 if ( strstr($row_value,"[TH]") ) {
@@ -108,13 +111,13 @@
                     $hidedata["tab"]["col_header_check"] = "";
                 }
             }
-            // tag nach zellen aufsplitten
-            preg_match_all("/\[(COL|TH).*\](.*)\[\/(COL|TH)\]/Us",$row_value,$cells);
+            
+            
             $col_index = 0; $row_buffer = array();
 
 
             // DIE ZELLLEN DER ZEILE WERDEN DURCHGEGANGEN
-            foreach ( $cells[2] as $key=>$cell_value ) {
+            foreach ( $cells[3] as $key=>$cell_value ) {
                 // besteht die erste zeile komplett aus TH?
                 if ( $row_index == 0 ) {
                     if ( $cells[1][$key] == "TH" ) {
@@ -126,6 +129,12 @@
                     if ( $cells[1][$key] == "TH" ) {
                         $row_header_marker++;
                     }
+                }
+                
+                // Spalten-Breite rausholen
+                if ( $row_index == 0 ) {
+                    $cell_para = explode(";",$cells[2][$key]);
+                    $tab_width[$key] = str_replace(array("%", "px"), "", $cell_para[1]);
                 }
 
 
@@ -178,11 +187,26 @@
 
         $ausgaben["num_row"] = $_POST["num_row"];
         $ausgaben["num_col"] = $_POST["num_col"];
+        if ( $_POST["col_header"] == -1 ) {
+            $hidedata["tab"]["col_header_check"] = " checked=\"true\"";
+        } else {
+            $hidedata["tab"]["col_header_check"] = "";
+        }
+        if ( $_POST["row_header"] == -1 ) {
+            $hidedata["tab"]["row_header_check"] = " checked=\"true\"";
+        } else {
+            $hidedata["tab"]["row_header_check"] = "";
+        }
+        
         // zeilen durchgehen
         for ( $row_index = 0 ; $row_index < $_POST["num_row"] ; $row_index++ ) {
             // zellen durchgehen
             $row_buffer = array();
             for ( $col_index = 0 ; $col_index < $_POST["num_col"] ; $col_index++ ) {
+                if ( $row_index == 0 ) {
+                    $tab_width[$col_index] = str_replace(array("%", "px"), "", $_POST["width"][$col_index]);
+                }
+                
                 $row_buffer[] = "<td>\n".
                                     "<textarea name=\"cells[".$row_index."][".$col_index."]\" onclick=\"ebCanvas=this\">".$_POST["cells"][$row_index][$col_index]."</textarea>\n".
                                 "</td>\n";
@@ -215,10 +239,25 @@
         $delete_tab_button = "";
         if ( $cfg["wizard"]["delete_tab_row"] ) {
             $delete_tab_button = "<td class=\"tab-button\"><button onclick=\"$(this).closest('tr').remove();resort();return false;\">Delete</button></td>";
+            
+            $hidedata["tab_width_empty"] = array();
         }
         $ausgaben["tabelle"]  = "<table id=\"sort\" width=\"100%\"><tbody id=\"body_id\">\n";
-        $ausgaben["tabelle"] .= "<tr>".$delete_tab_button."\n".implode("</tr>\n<tr>".$delete_tab_button."\n",$tab_rows)."</tr>\n";
+        $ausgaben["tabelle"] = "<tr>".$delete_tab_button."\n".implode("</tr>\n<tr>".$delete_tab_button."\n",$tab_rows)."</tr>\n";
         $ausgaben["tabelle"] .= "</tbody></table>";
+        
+        $ausgaben["tab_rows"] = "<tr>".$delete_tab_button."\n".implode("</tr>\n<tr>".$delete_tab_button."\n",$tab_rows)."</tr>\n";
+        
+        $dataloop["tab_width_loop"] = array();
+        for ($i = 0; $i < $ausgaben["num_col_tag"]; $i++) {
+            $dataloop["tab_width_loop"][] = array(
+                                                "index" => $i,
+                                                "value" => $tab_width[$i]
+                                            );
+        }
+        if ( count($dataloop["tab_width_loop"]) > 0 ) {
+            $hidedata["tab_width_loop"] = array();
+        }
     }
 
     // abspeichern, part 2
@@ -237,19 +276,26 @@
             for ($i=0;$i<$_POST["num_row"];$i++) {
                 $tab .= "[ROW]\n";
                 for ($k=0;$k<$_POST["num_col"];$k++) {
+                    
+                    
+                    if ( $_POST["width"][$k] != "" ) {
+                        $width = $_POST["width"][$k]."%";
+                    } else {
+                        $width = "";
+                    }
 
                     if ( $_POST["col_header"] == -1 && $_POST["row_header"] == -1 && ($i == 0 || $k == 0) ) {
                         $cell_type = "TH";
-                        $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
+                        $tab .= "[".$cell_type."=;".$width."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
                     } elseif ( $_POST["col_header"] == -1 && $i == 0 ) {
                         $cell_type = "TH";
-                        $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
+                        $tab .= "[".$cell_type."=;".$width."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
                     } elseif ( $_POST["row_header"] == -1 && $k == 0 ) {
                         $cell_type = "TH";
-                        $tab .= "[".$cell_type."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
+                        $tab .= "[".$cell_type."=;".$width."]".tagremove(trim($_POST["cells"][$i][$k]))."[/".$cell_type."]\n";
                     } else {
                         $cell_type = "COL";
-                        $tab .= "[".$cell_type."]".trim($_POST["cells"][$i][$k])."[/".$cell_type."]\n";
+                        $tab .= "[".$cell_type."=;".$width."]".trim($_POST["cells"][$i][$k])."[/".$cell_type."]\n";
                     }
                     $num_cell++;
                 }
@@ -257,7 +303,7 @@
             }
             $tab .= "[/TAB]";
             $to_insert = $tab;
-
+            
     }
     // + + +
 
