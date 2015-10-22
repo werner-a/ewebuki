@@ -98,7 +98,7 @@
                 switch ($closetag) {
                     //
                     // Block Elemente
-                    // H1-6 | P | PRE | DIV | LIST | HR | TAB, ROW, COL | CENTER
+                    // H1-6 | P | PRE | DIV | LIST | HR | TAB, ROW, TH, COL | CENTER
                     //
                     case "[/H1]":
                     case "[/H2]":
@@ -434,7 +434,40 @@
                         break;
                     case "[/TH]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
-                        $replace = str_replace($opentag.$tagoriginal.$closetag,"<th valign=\"top\">".$tagwert."</th>",$replace);
+                        if ( $sign == "]" ) {
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<th valign=\"top\">".$tagwert."</th>",$replace);
+                        } else {
+                            $tagwerte = explode("]",$tagwert,2);
+                            $colwerte = explode(";",$tagwerte[0]);
+                            if ( $colwerte[0] == "l" ) {
+                                $align = " align=\"left\"";
+                            } elseif ( $colwerte[0] == "m" ) {
+                                $align = " align=\"center\"";
+                            } elseif ( $colwerte[0] == "r" ) {
+                                $align = " align=\"right\"";
+                            } else {
+                                $align = null;
+                            }
+                            if ( isset($colwerte[1]) ) {
+                                $width = " width=\"".$colwerte[1]."\"";
+                            } else {
+                                $width = null;
+                            }
+                            if ( isset($colwerte[2]) ) {
+                                if ( $colwerte[2] == "o" ) {
+                                    $valign = " valign=\"top\"";
+                                } elseif ( $colwerte[2] == "m" ) {
+                                    $valign = " valign=\"middle\"";
+                                } elseif ( $colwerte[2] == "u" ) {
+                                    $valign = " valign=\"bottom\"";
+                                } elseif ( $colwerte[2] == "g" ) {
+                                    $valign = " valign=\"baseline\"";
+                                }
+                            } else {
+                                $valign = " valign=\"top\"";
+                            }
+                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<th".$align.$width.$valign.">".$tagwerte[1]."</th>",$replace);
+                        }
                         break;
                     case "[/COL]":
                         if ( $specialvars["newbrmode"] == True ) $tagwert = nlreplace($tagwert);
