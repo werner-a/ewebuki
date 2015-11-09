@@ -71,7 +71,7 @@
             }
 
             // ziel
-            if ( isset($linkwerte[1]) ) {
+            if ( isset($linkwerte[1]) && $linkwerte[1] != "" ) {
                 $target = " target=\"".$linkwerte[1]."\"";
             } else {
                 $target = null;
