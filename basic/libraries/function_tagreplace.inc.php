@@ -241,18 +241,23 @@
                                 $align = null;
                                 $align_html5 = null;
                             }
-                            if ( isset($tabwerte[1]) ) {
+                            if ( isset($tabwerte[1]) && $tabwerte[1] != "" ) {
                                 $width = " width=\"".$tabwerte[1]."\"";
                                 if ( preg_match("/[0-9]+$/",$tabwerte[1]) ) $tabwerte[1] .= "px";
                                 $width_html5 = "width:".$tabwerte[1].";";
+                            } else {
+                                $width = null;
+                                $width_html5 = null;
                             }
-                            $border = null;
-                            if ( !empty($tabwerte[2]) ) {
+                            if ( !empty($tabwerte[2]) && $tabwerte[2] != "" ) {
                                 $border = " border=\"".$tabwerte[2]."\"";
                                 if ( preg_match("/[0-9]+$/",$tabwerte[2]) ) $tabwerte[2] .= "px";
                                 $border_html5 = "border-width:".$tabwerte[2].";";
+                            } else {
+                                $border = null;
+                                $border_html5 = null;
                             }
-                            if ( isset($tabwerte[3]) ) {
+                            if ( isset($tabwerte[3]) && $tabwerte[3] != "" ) {
                                 $cellspacing = " cellspacing=\"".$tabwerte[3]."\"";
                                 if ( preg_match("/[0-9]+$/",$tabwerte[3]) ) $tabwerte[3] .= "px";
                                 $cellspacing_html5 = "border-spacing: ".$tabwerte[3]."; border-collapse: separate;";
@@ -260,7 +265,7 @@
                                 $cellspacing = " cellspacing=\"0\"";
                                 $cellspacing_html5 = null;
                             }
-                            if ( isset($tabwerte[4]) ) {
+                            if ( isset($tabwerte[4]) && $tabwerte[4] != "" ) {
                                 $cellpadding = " cellpadding=\"".$tabwerte[4]."\"";
                                 if ( preg_match("/[0-9]+$/",$tabwerte[4]) ) $tabwerte[4] .= "px";
                                 $cellpadding_html = "padding: ".$tabwerte[4].";";
