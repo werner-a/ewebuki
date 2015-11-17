@@ -230,29 +230,56 @@
                             $tabwerte = explode(";",$tagwerte[0]);
                             if ( $tabwerte[0] == "l" ) {
                                 $align = " align=\"left\"";
+                                $align_html5 = "float: left;";
                             } elseif ( $tabwerte[0] == "m" ) {
                                 $align = " align=\"center\"";
+                                $align_html5 = "margin-right: auto;margin-left: auto;";
                             } elseif ( $tabwerte[0] == "r" ) {
                                 $align = " align=\"right\"";
+                                $align_html5 = "float: right;";
                             } else {
                                 $align = null;
+                                $align_html5 = null;
                             }
-                            if ( isset($tabwerte[1]) ) {
+                            if ( isset($tabwerte[1]) && $tabwerte[1] != "" ) {
                                 $width = " width=\"".$tabwerte[1]."\"";
+                                if ( preg_match("/[0-9]+$/",$tabwerte[1]) ) $tabwerte[1] .= "px";
+                                $width_html5 = "width:".$tabwerte[1].";";
+                            } else {
+                                $width = null;
+                                $width_html5 = null;
                             }
-                            $border = null;
-                            if ( !empty($tabwerte[2]) ) $border = " border=\"".$tabwerte[2]."\"";
-                            if ( isset($tabwerte[3]) ) {
+                            if ( !empty($tabwerte[2]) && $tabwerte[2] != "" ) {
+                                $border = " border=\"".$tabwerte[2]."\"";
+                                if ( preg_match("/[0-9]+$/",$tabwerte[2]) ) $tabwerte[2] .= "px";
+                                $border_html5 = "border-width:".$tabwerte[2].";";
+                            } else {
+                                $border = null;
+                                $border_html5 = null;
+                            }
+                            if ( isset($tabwerte[3]) && $tabwerte[3] != "" ) {
                                 $cellspacing = " cellspacing=\"".$tabwerte[3]."\"";
+                                if ( preg_match("/[0-9]+$/",$tabwerte[3]) ) $tabwerte[3] .= "px";
+                                $cellspacing_html5 = "border-spacing: ".$tabwerte[3]."; border-collapse: separate;";
                             } else {
                                 $cellspacing = " cellspacing=\"0\"";
+                                $cellspacing_html5 = null;
                             }
-                            if ( isset($tabwerte[4]) ) {
+                            if ( isset($tabwerte[4]) && $tabwerte[4] != "" ) {
                                 $cellpadding = " cellpadding=\"".$tabwerte[4]."\"";
+                                if ( preg_match("/[0-9]+$/",$tabwerte[4]) ) $tabwerte[4] .= "px";
+                                $cellpadding_html = "padding: ".$tabwerte[4].";";
                             } else {
                                 $cellpadding = " cellpadding=\"1\"";
+                                $cellpadding_html = null;
                             }
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<table".$cellspacing.$cellpadding.$width.$align.$border.">".$tagwerte[1]."</table>",$replace);
+                            if ( $specialvars["table_html5"] == True ) {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<table style=\"".$align_html5.$width_html5.$border_html5.$cellspacing_html5."\">".$tagwerte[1]."</table>",$replace);
+                                $replace = str_replace("<td style=\"", "<td style=\"".$cellpadding_html, $replace);
+                                $replace = str_replace("<th style=\"", "<th style=\"".$cellpadding_html, $replace);
+                            } else {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<table".$cellspacing.$cellpadding.$width.$align.$border.">".$tagwerte[1]."</table>",$replace);
+                            }
                             $replace = tagreplace($replace);
                         }
                         break;
@@ -441,32 +468,51 @@
                             $colwerte = explode(";",$tagwerte[0]);
                             if ( $colwerte[0] == "l" ) {
                                 $align = " align=\"left\"";
+                                $align_html5 = "text-align: left;";
                             } elseif ( $colwerte[0] == "m" ) {
                                 $align = " align=\"center\"";
+                                $align_html5 = "text-align: center;";
                             } elseif ( $colwerte[0] == "r" ) {
                                 $align = " align=\"right\"";
+                                $align_html5 = "text-align: right;";
                             } else {
                                 $align = null;
+                                $align_html5 = null;
                             }
                             if ( isset($colwerte[1]) ) {
                                 $width = " width=\"".$colwerte[1]."\"";
+                                if ( preg_match("/[0-9]+$/",$tabwerte[1]) ) $tabwerte[1] .= "px";
+                                $width_html5 = "width:".$colwerte[1].";";
                             } else {
                                 $width = null;
+                                $width_html5 = null;
                             }
                             if ( isset($colwerte[2]) ) {
                                 if ( $colwerte[2] == "o" ) {
                                     $valign = " valign=\"top\"";
+                                    $valign_html5 = "vertical-align: top;";
                                 } elseif ( $colwerte[2] == "m" ) {
                                     $valign = " valign=\"middle\"";
+                                    $valign_html5 = "vertical-align: middle;";
                                 } elseif ( $colwerte[2] == "u" ) {
                                     $valign = " valign=\"bottom\"";
+                                    $valign_html5 = "vertical-align: bottom;";
                                 } elseif ( $colwerte[2] == "g" ) {
                                     $valign = " valign=\"baseline\"";
+                                    $valign_html5 = "vertical-align: baseline;";
+                                } else {
+                                    $valign = " valign=\"top\"";
+                                    $valign_html5 = "vertical-align: top;";
                                 }
                             } else {
                                 $valign = " valign=\"top\"";
+                                $valign_html5 = "vertical-align: top;";
                             }
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<th".$align.$width.$valign.">".$tagwerte[1]."</th>",$replace);
+                            if ( $specialvars["table_html5"] == True ) {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<th style=\"".$align_html5.$width_html5.$valign_html5."\">".$tagwerte[1]."</th>",$replace);
+                            } else {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<th".$align.$width.$valign.">".$tagwerte[1]."</th>",$replace);
+                            }
                         }
                         break;
                     case "[/COL]":
@@ -478,32 +524,51 @@
                             $colwerte = explode(";",$tagwerte[0]);
                             if ( $colwerte[0] == "l" ) {
                                 $align = " align=\"left\"";
+                                $align_html5 = "text-align: left;";
                             } elseif ( $colwerte[0] == "m" ) {
                                 $align = " align=\"center\"";
+                                $align_html5 = "text-align: center;";
                             } elseif ( $colwerte[0] == "r" ) {
                                 $align = " align=\"right\"";
+                                $align_html5 = "text-align: right;";
                             } else {
                                 $align = null;
+                                $align_html5 = null;
                             }
                             if ( isset($colwerte[1]) ) {
                                 $width = " width=\"".$colwerte[1]."\"";
+                                if ( preg_match("/[0-9]+$/",$tabwerte[1]) ) $tabwerte[1] .= "px";
+                                $width_html5 = "width:".$colwerte[1].";";
                             } else {
                                 $width = null;
+                                $width_html5 = null;
                             }
                             if ( isset($colwerte[2]) ) {
                                 if ( $colwerte[2] == "o" ) {
                                     $valign = " valign=\"top\"";
+                                    $valign_html5 = "vertical-align: top;";
                                 } elseif ( $colwerte[2] == "m" ) {
                                     $valign = " valign=\"middle\"";
+                                    $valign_html5 = "vertical-align: middle;";
                                 } elseif ( $colwerte[2] == "u" ) {
                                     $valign = " valign=\"bottom\"";
+                                    $valign_html5 = "vertical-align: bottom;";
                                 } elseif ( $colwerte[2] == "g" ) {
                                     $valign = " valign=\"baseline\"";
+                                    $valign_html5 = "vertical-align: baseline;";
+                                } else {
+                                    $valign = " valign=\"top\"";
+                                    $valign_html5 = "vertical-align: top;";
                                 }
                             } else {
                                 $valign = " valign=\"top\"";
+                                $valign_html5 = "vertical-align: top;";
                             }
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<td".$align.$width.$valign.">".$tagwerte[1]."</td>",$replace);
+                            if ( $specialvars["table_html5"] == True ) {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<td style=\"".$align_html5.$width_html5.$valign_html5."\">".$tagwerte[1]."</td>",$replace);
+                            } else {
+                                $replace = str_replace($opentag.$tagoriginal.$closetag,"<td".$align.$width.$valign.">".$tagwerte[1]."</td>",$replace);
+                            }
                         }
                         break;
                     case "[/CENTER]":
