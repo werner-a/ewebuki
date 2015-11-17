@@ -52,9 +52,9 @@
         $tree = null;
         $where = null;
 
-        $ReplaceArray1 = array( '##href##', '##title##', '##label##', '##mid##', '##refid##', '##checked##', '##pub_id##' );
+        $ReplaceArray1 = array( '##href##', '##title##', '##label##', '##mid##', '##refid##', '##checked##', '##pub_id##', '##sort##' );
 
-        $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label
+        $sql = "SELECT  pub_id, site_menu.mid, entry, refid, label, exturl, site_menu.sort, label, db_publikationen_assignment.sort as pub_sort
                   FROM  site_menu
             INNER JOIN  site_menu_lang
                     ON  site_menu.mid = site_menu_lang.mid
@@ -82,7 +82,7 @@
             if ( $pub_id ) $checked = "checked";
             if ( isset($array["extend"]) ) $title = $array["extend"];
 
-            $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"],$checked,$environment["parameter"][3]);
+            $ReplaceArray2 = array("href=\"".$pathvars["virtual"].$buffer["pfad"].".html\"","title=\"".$title."\"",$array["label"],$array["mid"],$array["refid"],$checked,$environment["parameter"][3],$array["pub_sort"]);
 
             $ausgaben["label"] = $array["label"];
             // wo geht der href hin?
