@@ -9,6 +9,19 @@
 <body>
 <!--##begin-->
 <!--righted 807284226.modify.tem.html v1 chaot-->
+
+
+<div class="toggler">
+  <div id="effect" style="display: none" class="newClass ui-corner-all">              
+    <!--##loop-overview-->
+    <h4>!{name}</h4>
+    <div>!{text}</div>
+    <!--##cont-->                   
+  </div>
+</div>
+ 
+<div id="button" class="ui-state-default ui-corner-all">&Uuml;bersicht User-Rechte</div>
+
 <form method="post" action="!#ausgaben_form_aktion" id="eEd">
     <h1>#(ueberschrift)</h1>
 <!--    <p>#(inhalt)</p>-->
@@ -63,13 +76,22 @@
 </form>
 <p>!#ausgaben_output</p>
 <p>!#ausgaben_inaccessible</p>
-<script type="text/javascript">
+<script type="text/javascript">            
     if(typeof jQuery != "function" || typeof jQuery.ui != "object" ) {
         alert("jQuery nicht geladen! Der Rechte-Editor wird nicht funktionieren !");
     }
     $(function() {
             jQuery( "#tabmain" ).tabs();
+    });           
+  
+  $(function() {
+    $( "#button" ).click(function() {
+      $( "#effect" ).toggle();
     });
+  });
+  
+  
+  
 </script>
 <!--##end-->
 </body>

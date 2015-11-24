@@ -177,22 +177,28 @@
                     $name = "new";
                     if ( isset($infos["user"]) && is_array($infos["user"]) ) {
                         foreach ( $infos["user"] as $info_key => $info_value ) {
-                            if ( is_array($info_value["add"]) ) {
-                                if ( preg_match("/".$rights_value.",/",$info_value["add"][$user_value]) ) {
-                                    $background = $cfg["righted"]["button"]["add"]["color"];
-                                    $name = "add";
+                            if ( isset($info_value["add"]) && is_array($info_value["add"]) ) {
+                                if ( isset( $info_value["add"][$user_value]) ) {
+                                    if ( preg_match("/".$rights_value.",/",$info_value["add"][$user_value]) ) {
+                                        $background = $cfg["righted"]["button"]["add"]["color"];
+                                        $name = "add";
+                                    }
                                 }
                             }
-                            if ( is_array($info_value["inh"]) ) {
-                                if ( preg_match("/".$rights_value.",/",$info_value["inh"][$user_value]) ) {
-                                    $background = $cfg["righted"]["button"]["inh"]["color"];
-                                    $name = "add";
+                            if ( isset($info_value["inh"]) && is_array($info_value["inh"]) ) {
+                                if ( isset( $info_value["inh"][$user_value]) ) {
+                                    if ( preg_match("/".$rights_value.",/",$info_value["inh"][$user_value]) ) {
+                                        $background = $cfg["righted"]["button"]["inh"]["color"];
+                                        $name = "add";
+                                    }
                                 }
                             }
-                            if ( is_array($info_value["del"]) ) {
-                                if ( preg_match("/".$rights_value.",/",$info_value["del"][$user_value]) ) {
-                                    $background = $cfg["righted"]["button"]["del"]["color"];
-                                    $name = "del";
+                            if ( isset($info_value["del"]) && is_array($info_value["del"]) ) {
+                                if ( isset( $info_value["del"][$user_value]) ) {
+                                    if ( preg_match("/".$rights_value.",/",$info_value["del"][$user_value]) ) {
+                                        $background = $cfg["righted"]["button"]["del"]["color"];
+                                        $name = "del";
+                                    }
                                 }
                             }
                         }
@@ -205,6 +211,20 @@
             $dataloop["infos_user"][$counter]["info"] = "Bitte aktuelle config verwenden";
         }
 
+        // Rechte Uebersicht erstellen
+        $sql = "SELECT * FROM ".$cfg["righted"]["db"]["user"]["entries"];
+        $result = $db -> query($sql);
+        while ( $UserData = $db -> fetch_array($result,1) ) {
+            $text = "";
+            $User_tname = "";
+            $sql_in = "SELECT * FROM ".$cfg["righted"]["db"]["content"]["entries"]." INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE ".$cfg["righted"]["db"]["user"]["key"]."=".$UserData["uid"];
+            $result_in = $db -> query($sql_in);
+            while ( $UserRightData = $db -> fetch_array($result_in,1) ) {
+                $User_tname .= $UserRightData["tname"]." - ".$UserRightData["priv"]."<br>";
+            }            
+            $dataloop["overview"][$UserData[$cfg["righted"]["db"]["user"]["key"]]]["name"] = $UserData[$cfg["righted"]["db"]["user"]["name"]];
+            $dataloop["overview"][$UserData[$cfg["righted"]["db"]["user"]["key"]]]["text"] = parser(eCRC($environment["ebene"]).".modify-parse",'');
+        }
 
 
 
@@ -253,7 +273,8 @@
 
 
         $preg = "/^(group|user)_(add|new|del)_([0-9]*)_([0-9]*)$/";
-        if ( $environment["parameter"][3] == "verify" && preg_match($preg,key($_POST),$regs) ){
+        
+        if ( !empty($environment["parameter"][3]) && $environment["parameter"][3] == "verify" && preg_match($preg,key($_POST),$regs) ){
 
             $art = $regs[1];
             $aktion = $regs[2];
