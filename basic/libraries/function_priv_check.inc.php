@@ -107,7 +107,7 @@
         if ( !preg_match("/^[A-Za-z_\-\.0-9\/]+$/",$url) ){
             return;
         }
-
+    
         if ( $art=="group") {
             $sql = "SELECT * FROM auth_content INNER JOIN auth_group ON (auth_content.gid=auth_group.gid) INNER JOIN auth_priv ON (auth_content.pid=auth_priv.pid) WHERE auth_content.gid != 0 AND tname='".$url."'";
             $result = $db -> query($sql);
@@ -135,11 +135,23 @@
             $result = $db -> query($sql);
             while ( $all = $db -> fetch_array($result,1) ) {
                 if ( $all["neg"] == -1 ) {
-                    $hit["user"][$url_orig]["del"][$all["username"]] .= $all["priv"].",";
+                    if ( isset($hit["user"][$url_orig]["del"][$all["username"]]) ) {
+                        $hit["user"][$url_orig]["del"][$all["username"]] .= $all["priv"].",";
+                    } else {
+                        $hit["user"][$url_orig]["del"][$all["username"]] = $all["priv"].",";
+                    }
                 } elseif ( $url_orig_user != $all["tname"]) {
-                    $hit["user"][$url_orig]["inh"][$all["username"]] .= $all["priv"].",";
+                    if ( isset($hit["user"][$url_orig]["inh"][$all["username"]]) ) {
+                        $hit["user"][$url_orig]["inh"][$all["username"]] .= $all["priv"].",";    
+                    } else {
+                        $hit["user"][$url_orig]["inh"][$all["username"]] = $all["priv"].",";    
+                     }                    
                 } else {
-                    $hit["user"][$url_orig]["add"][$all["username"]] .= $all["priv"].",";
+                    if ( isset($hit["user"][$url_orig]["add"][$all["username"]]) ) {
+                        $hit["user"][$url_orig]["add"][$all["username"]] .= $all["priv"].",";
+                    } else {
+                        $hit["user"][$url_orig]["add"][$all["username"]] = $all["priv"].",";
+                    }
                 }
             }
             if ( $url_orig != "/" ) {
