@@ -134,26 +134,7 @@
                         $replace = str_replace($opentag.$tagoriginal.$closetag,"<pre>".$tagwert."</pre>",$replace);
                         break;
                     case "[/DIV]":
-                        if ( $specialvars["newbrmode"] == True && strpos( $specialvars["newbrblock"], "DIV") === false ) $tagwert = nlreplace($tagwert);
-                        if ( $sign == "]" ) {
-                            $ausgabewert = "<div>".$tagwert."</div>";
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
-                        } else {
-                            $tagwerte = explode("]",$tagwert,2);
-                            $divwerte = explode(";",$tagwerte[0]);
-                            $extrawerte = explode(":",$divwerte[0]);
-                            if ( isset($extrawerte[1]) ) $divwerte[0] = $extrawerte[1];
-                            if ( $extrawerte[0] == "id" ) {
-                                $art = "id";
-                            } else {
-                                $art = "class";
-                            }
-                            $attrib = null;
-                            if ( isset($divwerte[0]) ) {
-                                $attrib = " ".$art."=\"".$divwerte[0]."\"";
-                            }
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,"<div".$attrib.">".$tagwerte[1]."</div>",$replace);
-                        }
+                        $replace = tagreplace_div($replace, $opentag, $tagoriginal, $closetag, $sign);
                         break;
                     case "[/LIST]":
                         if ( $sign == "]" ) {
