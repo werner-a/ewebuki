@@ -69,6 +69,7 @@ $Id = null;
     $specialvars["dyndb"] = null;
     $specialvars["phpsessid"] = null;
     $specialvars["actual_label"] = null;
+    $specialvars["table_html5"] = null;
 
     // site config
     require dirname(dirname(dirname(__FILE__)))."/conf/site.cfg.php";
