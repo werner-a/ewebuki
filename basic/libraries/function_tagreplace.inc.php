@@ -137,56 +137,7 @@
                         $replace = tagreplace_div($replace, $opentag, $tagoriginal, $closetag, $sign);
                         break;
                     case "[/LIST]":
-                        if ( $sign == "]" ) {
-                            $tagwerte = explode("[*]",$tagwert);
-                            $ausgabewert  = "<ul>";
-                            while ( list ($key, $punkt) = each($tagwerte)) {
-                                if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
-                                $ausgabewert .= "<li><span>".$punkt."</span></li>";
-                            }
-                            $ausgabewert .= "</ul>";
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
-                        } else {
-                            $tagrestbeg = strpos($tagwert,"]");
-                            $listart = substr($tagwert,0,$tagrestbeg);
-                            $tagrest = substr($tagwert,$tagrestbeg+1);
-                            $tagwerte = explode("[*]",$tagrest);
-                            if ( $listart == 1 ) {
-                                $ausgabewert  = "<ol>";
-                                while ( list ($key, $punkt) = each($tagwerte)) {
-                                    if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
-                                    $ausgabewert .= "<li><span>".$punkt."</span></li>";
-                                }
-                                $ausgabewert .= "</ol>";
-                            } elseif ( $listart == "DEF" ) {
-                                $ausgabewert = "<dl>";
-                                while ( list ($key, $punkt) = each($tagwerte)) {
-                                    if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
-                                    if ( $key % 2 != 0 ) {
-                                        $ausgabewert .= "<dd>".$punkt."</dd>";
-                                    } else {
-                                        $ausgabewert .= "<dt>".$punkt."</dt>";
-                                    }
-                                }
-                                $ausgabewert .= "</dl>";
-                            } else {
-                                if ( strlen($listart) > 1 ) {
-                                    $ausgabewert  = "<ul type=\"".$listart."\">";
-                                } else {
-                                    $ausgabewert  = "<ol type=\"".$listart."\">";
-                                }
-                                while ( list ($key, $punkt) = each($tagwerte)) {
-                                    if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
-                                    $ausgabewert .= "<li><span>".$punkt."</span></li>";
-                                }
-                                if ( strlen($listart) > 1 ) {
-                                    $ausgabewert .= "</ul>";
-                                } else {
-                                    $ausgabewert .= "</ol>";
-                                }
-                            }
-                            $replace = str_replace($opentag.$tagoriginal.$closetag,$ausgabewert,$replace);
-                        }
+                        $replace = tagreplace_list($replace, $opentag, $tagoriginal, $closetag, $sign);
                         break;
                     case "[/HR]":
                         if ( !isset($defaults["tag"]["hr"]) ) {
