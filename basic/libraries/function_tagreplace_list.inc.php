@@ -83,7 +83,7 @@
                             $ausgabewert .= "<h1>".$punkt."</h1>";
                         }
                     }
-                    $ausgabewert .= "</div>/div>";
+                    $ausgabewert .= "</div></div>";
                 } else {
                     $ausgabewert = "<dl>";
                     while ( list ($key, $punkt) = each($tagwerte)) {
