@@ -72,16 +72,30 @@
                 }
                 $ausgabewert .= "</ol>";
             } elseif ( $listart == "DEF" ) {
-                $ausgabewert = "<dl>";
-                while ( list ($key, $punkt) = each($tagwerte)) {
-                    if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
-                    if ( $key % 2 != 0 ) {
-                        $ausgabewert .= "<dd>".$punkt."</dd>";
-                    } else {
-                        $ausgabewert .= "<dt>".$punkt."</dt>";
+                // tcpdf extra
+                if ( $cfg["pdfc"]["state"] == true ) {
+                    $ausgabewert = "<div class=\"pdf_state\"><div class=\"deflist\">";
+                    while ( list ($key, $punkt) = each($tagwerte)) {
+                        if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
+                        if ( $key % 2 != 0 ) {
+                            $ausgabewert .= "<p>".$punkt."</p>";
+                        } else {
+                            $ausgabewert .= "<h1>".$punkt."</h1>";
+                        }
                     }
+                    $ausgabewert .= "</div>/div>";
+                } else {
+                    $ausgabewert = "<dl>";
+                    while ( list ($key, $punkt) = each($tagwerte)) {
+                        if ( $specialvars["newbrmode"] == True ) $punkt = nlreplace($punkt);
+                        if ( $key % 2 != 0 ) {
+                            $ausgabewert .= "<dd>".$punkt."</dd>";
+                        } else {
+                            $ausgabewert .= "<dt>".$punkt."</dt>";
+                        }
+                    }
+                    $ausgabewert .= "</dl>";
                 }
-                $ausgabewert .= "</dl>";
             } else {
                 if ( strlen($listart) > 1 ) {
                     $ausgabewert  = "<ul type=\"".$listart."\">";
