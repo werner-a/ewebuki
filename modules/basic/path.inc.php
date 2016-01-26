@@ -95,7 +95,7 @@
         if ( !empty($cfg["pdfc"]["server_name"]) ) {
             $KekseServerName = $cfg["pdfc"]["server_name"];
         }
-        $kekse["html"][] = "<a href=\"http://".$KekseServerName.$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."aa</a>";
+        $kekse["html"][] = "<a href=\"http://".$KekseServerName.$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
     } else {
         $kekse["html"][] = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
     }
