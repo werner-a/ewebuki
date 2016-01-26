@@ -91,7 +91,11 @@
 
     // link zum webroot
     if ( $cfg["pdfc"]["state"] == true ) {
-        $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
+        $KekseServerName = $_SERVER["SERVER_NAME"];
+        if ( !empty($cfg["pdfc"]["server_name"]) ) {
+            $KekseServerName = $cfg["pdfc"]["server_name"];
+        }
+        $kekse["html"][] = "<a href=\"http://".$KekseServerName.$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."aa</a>";
     } else {
         $kekse["html"][] = "<a href=\"".$pathvars["virtual"]."/index.html\" title=\"".$specialvars["rootname"]."\" class=\"".$cfg["path"]["css"]["crumb"]."\">".$specialvars["rootname"]."</a>";
     }
@@ -212,7 +216,7 @@
 
             // kekse array bauen
             if ( $cfg["pdfc"]["state"] == true ) {
-                $kekse["html"][] = "<a href=\"http://".$_SERVER["SERVER_NAME"].$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
+                $kekse["html"][] = "<a href=\"http://".$KekseServerName.$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
             } else {
                 $kekse["html"][] = "<a href=\"".$pathvars["virtual"].$path.".html\" title=\"".$title."\" class=\"".$css."\">".$data["label"]."</a>";
             }
@@ -242,7 +246,7 @@
             // content navigation erstellen
             // ***
             if ( !isset($back) ) $back = null;
-            $ausgaben["M3"] = eCRC($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurück</a>";
+            $ausgaben["M3"] = eCRC($path)." <a class=\"menu_punkte\" href=\"".$pathvars["virtual"].$back.".html\">Zurï¿½ck</a>";
 
             // M0 -> ebene darueber
             if ( $path == $environment["ebene"] ) {
@@ -547,7 +551,7 @@
     // 404 error handling
 
 
-    // zurück zur haupdatenbank
+    // zurï¿½ck zur haupdatenbank
     $db -> selectDb(DATABASE,FALSE);
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ++ $script_name ++ ]".$debugging["char"];
