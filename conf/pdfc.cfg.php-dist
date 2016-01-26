@@ -65,7 +65,7 @@
          "PDF_HEADER_TITLE" => "eWeBuKi - TCPDF Connector",
         "PDF_HEADER_STRING" => "by Werner Ammon - ChaoS Networks\nwww.ewebuki.de",
                        ),
-
+      "server_name" => "",
             "state" => false,
             "debug" => false,
          "template" => "pdfc",
