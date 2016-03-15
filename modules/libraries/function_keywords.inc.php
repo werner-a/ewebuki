@@ -47,7 +47,7 @@
         include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
         if ( @!is_array($cfg["keyworded"]) ) include $pathvars["moduleroot"]."addon/keyworded.cfg.php";
 
-        function cloud_loop( $area, $quantum=0, $sel_tags=array() ) {
+        function cloud_loop( $area, $quantum=0, $sel_tags=array(), $return = "" ) {
             global $db, $environment, $pathvars, $cfg, $debugging;
 
             // nur schlagwoerter der aktuellen seite?
@@ -117,7 +117,7 @@
                 $link = "";
                 if ( !strstr($pathvars["uri"],$cfg["keyworded"]["basis"]) ) $link = $cfg["keyworded"]["basis"]."/list.html";
                 $link .= "?toggle_tag=".urlencode($data[$cfg["keyworded"]["db"]["keyword"]["keyword"]]);
-
+                $meta_keywords == "" ? $meta_keywords .= $keyword : $meta_keywords .= ", ".$keyword;
                 $loop[strtolower($keyword)] = array(
                        "keyword" => $keyword,
                     "keyword_id" => str_replace(" ","_",$keyword),
@@ -127,11 +127,17 @@
                      "link_edit" => $cfg["keyworded"]["basis"]."/rename_tag,".urlencode($keyword).".html",
                 );
             }
-            ksort($loop);
+            
+            if ( $return == "meta" ) {
+                return $meta_keywords;
+            } else {
+            
+                ksort($loop);
 
-            // maximalanzahl der angezeigten tags
-            if ( $quantum > 0 ) $loop = array_slice($loop,0,$quantum);
+                // maximalanzahl der angezeigten tags
+                if ( $quantum > 0 ) $loop = array_slice($loop,0,$quantum);
             return $loop;
+            }
         }
 
         function related_pages( $quantum=0 ) {
