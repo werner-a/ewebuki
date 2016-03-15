@@ -48,7 +48,7 @@
         // fehlermeldungen
         $ausgaben["form_error"] = "";
 
-        if ( $_POST["url"] != "" ) {
+        if ( !empty($_POST["url"]) ) {
             $ausgaben["path"] = $_POST["url"];
             foreach ( $_POST["keywords"] as $key=>$value ) {
                 if ( $value == "##value##") continue;
@@ -132,7 +132,7 @@
         if ( count($dataloop["tags_all"]) > 0 ) $hidedata["tags_all"] = array();
 
         // hidden values
-        $ausgaben["form_hidden"] .= "";
+        $ausgaben["form_hidden"] = "";
 
         // was anzeigen
         $mapping["main"] = $cfg["keyworded"]["name"].".edit_page";
@@ -160,7 +160,7 @@
         // +++
         // page basics
 
-        if ( $environment["parameter"][2] == "verify"
+        if ( isset($environment["parameter"][2]) && $environment["parameter"][2] == "verify"
             &&  ( $_POST["send"] != ""
                 || $_POST["extension1"] != ""
                 || $_POST["extension2"] != "" ) ) {

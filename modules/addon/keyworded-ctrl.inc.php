@@ -69,7 +69,7 @@
     }
 
     // global function include loader
-    if ( is_array($cfg["keyworded"]["function"][$environment["kategorie"].",global"]) ) {
+    if ( isset($cfg["keyworded"]["function"][$environment["kategorie"].",global"]) ) {
         foreach ( $cfg["keyworded"]["function"][$environment["kategorie"].",global"] as $value ) {
             include $pathvars["basicroot"]."libraries/function_".$value.".inc.php";
         }
