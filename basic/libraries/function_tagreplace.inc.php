@@ -1045,7 +1045,9 @@
                     case "[/VIDEO]":
                         $tagwerte = explode("]",$tagwert,2);
                         $ytwerte = explode(";",$tagwerte[0]);
-                        $video =  "<video controls width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\"";
+                        if ( !isset($ytwerte[1]) ) $ytwerte[1] = "";
+                        if ( !isset($ytwerte[2]) ) $ytwerte[2] = "";
+                        $video =  "<video poster=\"".$ytwerte[2]."\" controls width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\"";
                         $video .= "<source src=\"".$tagwerte[1]."\"></source>";
                         $video .= "<object><embed width=\"".$ytwerte[0]."\" height=\"".$ytwerte[1]."\" src=\"".$tagwerte[1]."\" type= \"application/x-shockwave-flash\" allowfullscreen=\"false\" allowscriptaccess=\"always\" /></object>";
                         $video .= "</video>";
