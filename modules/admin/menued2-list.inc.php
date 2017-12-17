@@ -137,10 +137,15 @@
 
         // navigation erstellen
         $ausgaben["renumber"] = "<a href=\"".$cfg["menued"]["basis"]."/sort,all,nop,0.html\">#(renumber)</a>";
+        $ausgaben["link_renumber"] = $cfg["menued"]["basis"]."/sort,all,nop,0.html";
 
         $ausgaben["new"] = null; $ausgaben["root"] = null;
         if ( priv_check( make_ebene($check_parameter),$cfg["menued"]["modify"]["add"][2],$specialvars["dyndb"]) ) {
+            // Anzeige "neuer Menüpunkt"
             $ausgaben["new"] .= "<a href=\"".$cfg["menued"]["basis"]."/add,".$check_parameter.",".@$array["refid"].".html\">g(new)</a>";
+            $hidedata["new_menu_item"]["link"] = $cfg["menued"]["basis"]."/add,".$check_parameter.",".@$array["refid"].".html";
+
+            // Rechtevergabe für Root-Verzeichnis
             $ausgaben["root"] = "";
             if ( $specialvars["security"]["new"] == -1 && priv_check("/",$cfg["menued"]["modify"]["rights"][2],$specialvars["dyndb"]) && $environment["parameter"][1] == "0" ) {
                 $ausgaben["root"] ="<ul class=\"menued\"><li><a style=\"float:right\" href=\"".$pathvars["virtual"]."/".$cfg["menued"]["subdir"]."/righted/edit,0.html\"><img style=\"float:right\" src=\"/images/default/rights.png\" alt=\"righted\" title=\"RIGHTED\" width=\"24\" height=\"18\"></img></a><span>/</span></li></ul>";

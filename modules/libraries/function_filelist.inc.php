@@ -141,6 +141,24 @@
                 $cvs_title = "";
             }
 
+            // Name des Dataloops
+            $name = "list";
+            if ( $cfg["file"]["filetyp"][$data["ffart"]] == "img" ){
+                $name = "list_images";
+            } else {
+                $name = "list_other";
+            }
+
+            if ( isset($cfg[$script_name]["element"][$cfg["file"]["filetyp"][$data["ffart"]]]) ) {
+                $element = str_replace(
+                    [],
+                    [],
+                    $cfg[$script_name]["element"][$cfg["file"]["filetyp"][$data["ffart"]]]
+                );
+            } else {
+                $element = "";
+            }
+
 
             // src-pfad fuer das thumbnail
             $src = $cfg["file"]["base"]["webdir"].
@@ -174,12 +192,6 @@
                 $sort = "";
             }
 
-            $name = "list";
-            if ( $cfg["file"]["filetyp"][$data["ffart"]] == "img" ){
-                $name = "list_images";
-            } else {
-                $name = "list_other";
-            }
             if ( !isset($cfg[$script_name]["color"]["set"]) ){
                 $cfg[$script_name]["color"]["set"] = "";
             }
@@ -189,6 +201,7 @@
             $dataloop[$name][$data["fid"]] = array (
                                                "id" => $data["fid"],
                                               "art" => $data["ffart"],
+                                          "element" => $element,
                                             "color" => $cfg[$script_name]["color"]["set"],
                                           "checked" => $checked,
                                             "ehref" => "edit,".$data["fid"].".html",

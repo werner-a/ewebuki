@@ -147,7 +147,7 @@
         }
 
         // umleitung, damit die Get-Vars wieder weg sind
-        if ( count($_GET) > 0 && !isset($_GET["edit"]) ) {
+        if ( isset($_GET["filter_sel"]) > 0 && !isset($_GET["edit"]) ) {
             $_GET["filter_sel"] == "sel" ? $filter_sel = "sel" : $filter_sel = "all";
             $header = $cfg["fileed"]["basis"]."/list,,,".$filter_sel.".html";
             header("Location: ".$header);
@@ -224,20 +224,23 @@
 //        if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "SESSION (cms_last_referer): ".$_SESSION["cms_last_referer"].$debugging["char"];
         if ( isset($_SESSION["comp_last_edit"]) ) {
             $hidedata["cms"] = array(
-                   "link" => $_SESSION["comp_last_edit"]."?referer=".$_SESSION["cms_last_referer"],
-                "display" => "inline",
+                         "link" => $_SESSION["comp_last_edit"]."?referer=".$_SESSION["cms_last_referer"],
+                      "display" => "inline",
+                "display_block" => "block",
             );
         } elseif ( isset($_SESSION["cms_last_edit"]) ) {
             // abrechen im cms editor soll zur ursrungseite springen und nicht in den fileed
             $_SESSION["page"] = $_SESSION["cms_last_referer"];
             $hidedata["cms"] = array(
-                   "link" => $_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"],
-                "display" => "inline",
+                         "link" => $_SESSION["cms_last_edit"]."?referer=".$_SESSION["cms_last_referer"],
+                      "display" => "inline",
+                "display_block" => "block",
             );
         } else {
             $hidedata["cms"] = array(
-                   "link" => "",
-                "display" => "none",
+                         "link" => "",
+                      "display" => "none",
+                "display_block" => "none",
             );
         }
 
@@ -246,10 +249,12 @@
                   "edit" => $cfg["fileed"]["basis"]."/edit.html",
                 "delete" => $cfg["fileed"]["basis"]."/delete.html",
                "collect" => $cfg["fileed"]["basis"]."/collect.html",
-               "display" => "inline"
+               "display" => "inline",
+         "display_block" => "block",
         );
         if ( !isset($_SESSION["file_memo"]) ) {
             $hidedata["file"]["display"] = "none";
+            $hidedata["file"]["display_block"] = "none";
         }
 
         // +++
