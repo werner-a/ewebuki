@@ -123,7 +123,7 @@
             break;
         case "csv":
             $type ="text/csv";
-            $filepath = $path["doc"];
+            $filepath = $path["txt"];
             break;
         case "bz2":
             $type ="application/octet-stream";
