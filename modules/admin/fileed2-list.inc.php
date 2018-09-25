@@ -431,12 +431,16 @@
                         }
                         $dataloop["list_files"][$key]["class"] = $class;
                         if ( $filetyp == "img" ) {
-                            $array = array(
-                                "o" => "Vorschau Original (original)",
-                                "b" => "Vorschau Gross (big)",
-                                "m" => "Vorschau Mittel (middle)",
-                                "s" => "Vorschau Klein (small)",
-                            );
+                            if ( isset($cfg["fileed"]["labels"]["img"]["tooltip"]) ) {
+                                $array = $cfg["fileed"]["labels"]["img"]["tooltip"];
+                            } else {
+                                $array = array(
+                                    "o" => "Vorschau Original (original)",
+                                    "b" => "Vorschau Gross (big)",
+                                    "m" => "Vorschau Mittel (middle)",
+                                    "s" => "Vorschau Klein (small)",
+                                );
+                            }
                             $aktion = "";
                             foreach ( $array as $size=>$title ) {
                                 $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"].
@@ -452,7 +456,11 @@
                             $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"]."thumbnail/tn_".$value["id"].".".$value["art"];
                             $dataloop["list_files"][$key]["thumb_src"] = $dataloop["list_files"][$key]["src"];
                         } else {
-                            $aktion = '<a title="Herunterladen (download)" href="'.$value["dhref"].'">D</a>';
+                            $tooltip = "Herunterladen (download)";
+                            $label   = "D";
+                            if ( isset($cfg["fileed"]["labels"]["other"]["tooltip"]) ) $tooltip = $cfg["fileed"]["labels"]["other"]["tooltip"];
+                            if ( isset($cfg["fileed"]["labels"]["other"]["label"]) )   $label   = $cfg["fileed"]["labels"]["other"]["label"];
+                            $aktion = '<a title="'.$tooltip.'" href="'.$value["dhref"].'">'.$label.'</a>';
                             $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"].$cfg["file"]["fileopt"][$filetyp]["name"]."_".$value["id"].".".$value["art"];
                             $dataloop["list_files"][$key]["thumb_src"] = "/images/default/thumbs_".$filetyp.".png";
                         }
