@@ -114,7 +114,8 @@
                         $form_values["fid"]."/".
                         $cfg["file"]["fileopt"]["preview_size"]."/".
                         @$form_values["fname"];
-            $hidedata["preview_img"]["id"] = $form_values["fid"];
+            $hidedata["preview_img"]["id"]   = $form_values["fid"];
+            $hidedata["preview_img"]["name"] = $form_values["ffname"];
             $hidedata["preview_img"]["path"] = $cfg["file"]["base"]["webdir"].
                                                $form_values["ffart"]."/";
         } else {

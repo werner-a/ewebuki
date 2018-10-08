@@ -441,15 +441,25 @@
                                     "s" => "Vorschau Klein (small)",
                                 );
                             }
+                            if ( isset($cfg["fileed"]["labels"]["img"]["label"]) ) {
+                                $array_label = $cfg["fileed"]["labels"]["img"]["label"];
+                            } else {
+                                $array_label = array(
+                                    "o" => "O",
+                                    "b" => "B",
+                                    "m" => "M",
+                                    "s" => "S",
+                                );
+                            }
                             $aktion = "";
                             foreach ( $array as $size=>$title ) {
                                 $srv_path = $cfg["file"]["fileopt"][$filetyp]["path"].
                                             $cfg["file"]["base"]["pic"][$size].
                                             $cfg["file"]["fileopt"][$filetyp]["name"]."_".$value["id"].".".$value["art"];
                                 if ( file_exists($srv_path) ) {
-                                    $aktion .= '<a rel="lightbox['.$value["id"].']" href="'.$value[$size."href_lb"].'" title="'.$title.'" class="fileed_preview">'.strtoupper($size).'</a>';
+                                    $aktion .= '<a rel="lightbox['.$value["id"].']" href="'.$value[$size."href_lb"].'" title="'.$title.'" class="fileed_preview">'.$array_label[$size].'</a>';
                                 } else {
-                                    $aktion .= '<s title="Error" class="fileed_preview">'.strtoupper($size).'</s>';
+                                    $aktion .= '<s title="Error" class="fileed_preview">'.$array_label[$size].'</s>';
                                 }
                             }
 
